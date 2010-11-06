@@ -112,6 +112,25 @@ class WDebug {
 		return get_included_files();
 	}
 	
+	public static function debug($trace = array(),$begin = '',$end = ''){
+		$runtime = self::getExecTime();
+		$useMem = self::getMemUsage();
+		$separate = "\r\n";
+		$trace = implode("{$separate}",self::trace($trace));
+		$debug  = "您系统整体运行情况:{$separate}";
+		$debug .= "系统运行时间:{$useTime}s{$separate}";
+		$debug .= "系统运行所耗内存:{$useMem}byte{$separate}";
+		$debug .= "系统堆栈情况:{$separate}{$debug}{$separate}";
+		if($begin && $end){
+			$PointUseTime = self::getExecTimeOfp2p($begin,$end);
+			$PointUseMem = self::getMemUsageOfp2p($begin,$end);
+			$debug .= "调试点{$begin}与{$end}之间的系统运行情况:{$separate}";
+			$debug .= "调试点之间系统运行时间:{$PointUseTime}s{$separate}";
+			$debug .= "调试点之间系统运行所耗内存:{$PointUseMem}byte{$separate}";
+		}
+		return $debug;
+	}
+
 	private static function traceArgs($args = array()){
 		foreach($args as $key => $arg){
 			if(is_array($arg)) $args[$key] = 'array('.implode(',',$arg).')';
@@ -120,6 +139,10 @@ class WDebug {
 		}
 		return $args;
 	}
+	
+	
+	
+	
 	
 }
 ?>

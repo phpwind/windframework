@@ -14,6 +14,11 @@
  * @package
  */
 class WException extends exception {
+	const ERROR = 0;
+	const WARN = 1;
+	const NOTICE = 2;
+	const PARSE = 3;
+	const SYSTEM = 4;
 	private $innerException = null;
 	/**
 	 * 异常构造函数
@@ -22,6 +27,7 @@ class WException extends exception {
 	 * @param $innerException 内部异常
 	 */
 	public function __construct($message = '',$code=0,exception $innerException = null) {
+		$message = $this->buildMessage($message,$code);
         parent::__construct($message,$code);
         $this->innerException = $innerException;
     }
@@ -46,5 +52,19 @@ class WException extends exception {
     		return $this->getTrace();
     	}
     	return array();
+    }
+    
+    public function buildMessage($message,$code){
+    	return $message;
+    }
+    
+    public function __destruct(){
+    	if(defined('LOG_RECORD')){
+    		$message = $this->getMessage()."\r\n";
+    		if(defined('DEBUG')){
+    			$message .= WDebug::debug($this->getStackTrace());
+    		}
+    		WLog::add($message,WLog::TRACE);
+    	}
     }
 }
