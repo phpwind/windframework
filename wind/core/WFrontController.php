@@ -6,7 +6,6 @@
  * @license 
  */
 
-WBasic::import('router.WRouterManager');
 
 /**
  * 
@@ -32,8 +31,11 @@ class WFrontController extends WBaseFrontController {
 		echo "hello world";
 	}
 	
-	function dispatch() {
-		
+	/**
+	 * @param unknown_type $request
+	 */
+	protected function dispatch($request) {
+
 	}
-	
+
 }

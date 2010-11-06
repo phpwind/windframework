@@ -23,7 +23,7 @@ abstract class WModule {
 		$this->_init();
 	}
 	
-	private function _init();
+	private function _init() {}
 	
 	function __get($propertyName) {
 		$this->_validateProperties($propertyName);

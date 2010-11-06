@@ -152,7 +152,7 @@ class W {
 		$classPath = str_replace(IMPORT_SEPARATOR, DIRECTORY_SEPARATOR, $classPath);
 		
 		$classNames = array();
-
+		
 		if ($isPackage) {
 			$dir = self::getRealPath(substr($classPath, 0, $pos));
 			if (!is_dir($dir))
@@ -172,11 +172,10 @@ class W {
 			closedir($dh);
 		} else
 			$classNames[] = $className;
-			
+		
 		foreach ($classNames as $value) {
 			self::_include($value, $classPath);
 		}
-		print_r(self::$_included);
 		return;
 	}
 	
@@ -190,7 +189,7 @@ class W {
 		$classPath = str_replace(IMPORT_PACKAGE, $className, $classPath);
 		$file = self::getRealPath($classPath . '.' . self::getExtendName());
 		if (!file_exists($file))
-			throw new Exception('file '.$file.' is not exists');
+			throw new Exception('file ' . $file . ' is not exists');
 		
 		if (key_exists($className, self::$_included))
 			return;
@@ -198,7 +197,6 @@ class W {
 		include $file;
 		self::$_included[$className] = $classPath;
 		self::_autoInstance($className);
-		print_r(self::$_included);
 		return true;
 	}
 	
