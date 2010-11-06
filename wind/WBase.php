@@ -6,7 +6,12 @@
  * @license
  */
 
+/* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__));
+defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
+
+/* 扩展名 */
+defined('EXT') or define('EXT', 'php');
 
 defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
 
@@ -19,8 +24,6 @@ defined('LOG_DISPLAY_TYPE') or define('LOG_DISPLAY_TYPE', 'log');
 defined('LOG_RECORD') or define('LOG_RECORD', true);
 
 defined('DEBUG') or define('DEBUG', true);
-
-defined('EXT') or define('EXT', 'php');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -44,6 +47,7 @@ class W {
 	 */
 	static public function init() {
 		self::_autoIncludeBaseLib();
+	
 	}
 	
 	/**
@@ -52,6 +56,14 @@ class W {
 	 */
 	static public function getFrameWorkPath() {
 		return WIND_PATH;
+	}
+	
+	/**
+	 * 获得系统配置文件路径信息
+	 * @return string
+	 */
+	static public function getSystemConfigPath() {
+		return SYSTEM_CONFIG_PATH;
 	}
 	
 	/**
@@ -231,6 +243,14 @@ class W {
 	static private function _autoIncludeBaseLib() {
 		self::import('base.*');
 		self::import('core.*');
+	}
+	
+	/**
+	 * 初始化系统配置信息
+	 * 
+	 */
+	static private function _initSystemConfig() {
+
 	}
 
 }
