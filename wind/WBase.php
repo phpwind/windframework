@@ -22,13 +22,11 @@ defined('DEBUG') or define('DEBUG', true);
 
 defined('EXT') or define('EXT', 'php');
 
-
-
 /**
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  */
-class WBase {
+class W {
 	
 	/* 已经被include过的类或者包 */
 	static $_included = array();
@@ -247,4 +245,4 @@ class WBase {
  * 初始化框架上下文
  * 
  * */
-WBase::init();
+W::init();
