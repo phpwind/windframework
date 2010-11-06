@@ -8,7 +8,7 @@
 
 /**
  * 所有module的基础抽象类
- * 主要实现__get(), __set() , __isset() , __unset()等方法
+ * 主要实现__get(), __set()等方法
  * 通过继承该类
  * 
  * @author Qiong Wu <papa0924@gmail.com>

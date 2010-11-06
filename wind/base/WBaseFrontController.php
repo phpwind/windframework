@@ -31,12 +31,17 @@ abstract class WBaseFrontController {
 	 */
 	abstract protected function processRequest($request);
 	
-	function __construct() {
-		$this->init();
-	}
+	/**
+	 * 请求转发，将控制权从应用系统的一部分转交给另一个部分
+	 * 此处通过实现dispatch方法，将请求处理机制转交给视图处理组件
+	 * @param WHttpRequestContext $request
+	 * @param $viewModel
+	 */
+	abstract protected function dispatch($request);
 	
-	private function init() {
-		
+	function __construct() {
+		$this->_initConfig();
+		$this->_initRequest();
 	}
 	
 	/**
@@ -49,6 +54,37 @@ abstract class WBaseFrontController {
 	function run() {
 		$request = Null;
 		$this->service($request);
+	}
+	
+	/**
+	 * 初始化配置文件
+	 */
+	private function _initConfig() {
+
+	}
+	
+	/**
+	 * 初始化请求
+	 */
+	private function _initRequest() {
+
+	}
+	
+	/**
+	 * 初始化响应
+	 */
+	private function _initResponse() {
+
+	}
+	
+	/**
+	 * 处理客户的请求
+	 * 该方法根据客户端的请求类型，调用相应的方法进行处理
+	 * @param WHttpRequestContext $request
+	 * @access private
+	 */
+	private function service($request) {
+		$this->doGet($request);
 	}
 	
 	/**
@@ -68,23 +104,4 @@ abstract class WBaseFrontController {
 		$this->processRequest($request);
 	}
 	
-	/**
-	 * 请求转发，将控制权从应用系统的一部分转交给另一个部分
-	 * 此处通过实现dispatch方法，将请求处理机制转交给视图处理组件
-	 * @param WHttpRequestContext $request
-	 * @param $viewModel
-	 */
-	protected function dispatch($request, $viewModel) {
-		//TODO
-	}
-	
-	/**
-	 * 处理客户的请求
-	 * 该方法根据客户端的请求类型，调用相应的方法进行处理
-	 * @param WHttpRequestContext $request
-	 * @access private
-	 */
-	private function service($request) {
-		$this->doGet($request);
-	}
 }

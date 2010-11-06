@@ -7,7 +7,8 @@
  * @version $Id$
  */
 
-require 'WBasic.php';
 
-WBasic::import('base.*');
-WBasic::import('core.*');
+/*
+ * 加载类库，并初始化核心文件
+ * */
+require 'WBase.php';
