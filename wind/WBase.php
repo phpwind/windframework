@@ -40,14 +40,20 @@ class W {
 	static $_instance_max = 0;
 	static $_instance_frequence = 0;
 	
+	static $_system_config = 'config.php';
+	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 * 
 	 */
-	static public function init() {
+	static public function init($config = NULL) {
 		self::_autoIncludeBaseLib();
 	
+	}
+	
+	static public function getSystemConfig() {
+		return self::getInstance('WSystemConfig');
 	}
 	
 	/**
@@ -249,8 +255,16 @@ class W {
 	 * 初始化系统配置信息
 	 * 
 	 */
-	static private function _initSystemConfig() {
-
+	static private function _initSystemConfig($config) {
+		$systemConfigPath = self::getSystemConfigPath();
+		$systemConfig = self::$_system_config;
+		if (($pos = strpos($systemConfig, '.')) !== false)
+			$systemConfig = substr($systemConfig, 0, $pos);
+		if (!file_exists($systemConfigPath . self::getSeparator() . $systemConfig))
+			throw new Exception('SYS Excetion ：配置文件不存在!!!');
+		self::import($systemConfigPath . self::getSeparator() . $systemConfig);
+		self::getInstance('WSystemConfig')->parse($systemConfig, $config);
+	
 	}
 
 }
@@ -259,4 +273,4 @@ class W {
  * 初始化框架上下文
  * 
  * */
-W::init();
+W::init($sysConfig);
