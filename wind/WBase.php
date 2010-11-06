@@ -81,15 +81,9 @@ class W {
 	 * @retur Object
 	 */
 	static public function getInstance($className) {
-		if (!class_exists($className))
-			return false;
-		if (!key_exists($className, self::$_included))
-			return false;
-		$path = self::$_included[$className];
-		if (!key_exists($className, self::$_instances)) {
-			self::_createInstance($className);
-		}
-		return self::$_instances[$className]['instance'];
+		if (key_exists($className, self::$_instances))
+			return self::$_instances[$className]['instance'];
+		return NULL;
 	}
 	
 	/**
