@@ -13,6 +13,10 @@ defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
 /* 扩展名 */
 defined('EXT') or define('EXT', 'php');
 
+/* import */
+defined('IMPORT_SEPARATOR') or define('IMPORT_SEPARATOR', '.');
+defined('IMPORT_PACKAGE') or define('IMPORT_PACKAGE', '*');
+
 defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
 
 defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
@@ -49,11 +53,28 @@ class W {
 	 */
 	static public function init($config = NULL) {
 		self::_autoIncludeBaseLib();
+		self::_initSystemConfig($config);
 	
 	}
 	
+	/**
+	 * 获得系统配置对象
+	 * @return WSystemConfig
+	 */
 	static public function getSystemConfig() {
 		return self::getInstance('WSystemConfig');
+	}
+	
+	/**
+	 * 获得文件的绝对路径
+	 * @param string $path
+	 */
+	static public function getRealPath($path = '', $root = '') {
+		if ($root)
+			$realPath = $root . self::getSeparator() . $path;
+		else
+			$realPath = self::getFrameWorkPath() . self::getSeparator() . $path;
+		return realpath($realPath);
 	}
 	
 	/**
@@ -119,38 +140,44 @@ class W {
 	 * @return void
 	 */
 	static public function import($classPath) {
-		$classPath = trim($classPath, ' .');
+		$classPath = trim($classPath, ' ' . IMPORT_SEPARATOR);
 		if (!isset($classPath))
 			throw new Exception(__CLASS__ . ' throw exception!!!!');
+		
 		if (($pos = strrpos($classPath, '.')) === false)
 			return self::_include($classPath, $classPath);
 		
 		$className = (string) substr($classPath, $pos + 1);
-		$isPackage = $className === '*';
-		$classPath = str_replace('.', DIRECTORY_SEPARATOR, $classPath);
+		$isPackage = $className === IMPORT_PACKAGE;
+		$classPath = str_replace(IMPORT_SEPARATOR, DIRECTORY_SEPARATOR, $classPath);
+		
 		$classNames = array();
+
 		if ($isPackage) {
-			$dir = (string) substr($classPath, 0, $pos);
+			$dir = self::getRealPath(substr($classPath, 0, $pos));
 			if (!is_dir($dir))
-				return false;
+				throw new Exception('文件路径 ' . $dir . ' 不存在');
+			
 			if (!$dh = opendir($dir))
-				return false;
+				throw new Exception('文件 ' . $dir . ' 打开异常');
+			
 			while (($file = readdir($dh)) !== false) {
-				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file))) {
-					$pos = strrpos($file, '.');
-					if ((string) substr($file, $pos + 1) == self::getExtendName()) {
+				if ($file != "." && $file != ".." && !(is_dir(self::getRealPath($file, $dir)))) {
+					if (($pos = strrpos($file, '.')) !== false)
 						$classNames[] = (string) substr($file, 0, $pos);
-					}
+					else
+						$classNames[] = $file;
 				}
 			}
 			closedir($dh);
 		} else
 			$classNames[] = $className;
-		
+			
 		foreach ($classNames as $value) {
-			self::_include($value, str_replace('*', $value, $classPath));
+			self::_include($value, $classPath);
 		}
-		return true;
+		print_r(self::$_included);
+		return;
 	}
 	
 	/**
@@ -160,14 +187,18 @@ class W {
 	 * @return boolean
 	 */
 	static private function _include($className, $classPath) {
-		$path = self::getFrameWorkPath() . self::getSeparator() . $classPath . '.' . self::getExtendName();
-		if (!file_exists($path))
-			return false;
+		$classPath = str_replace(IMPORT_PACKAGE, $className, $classPath);
+		$file = self::getRealPath($classPath . '.' . self::getExtendName());
+		if (!file_exists($file))
+			throw new Exception('file '.$file.' is not exists');
+		
 		if (key_exists($className, self::$_included))
-			return true;
-		include $path;
+			return;
+		
+		include $file;
 		self::$_included[$className] = $classPath;
 		self::_autoInstance($className);
+		print_r(self::$_included);
 		return true;
 	}
 	
@@ -180,7 +211,7 @@ class W {
 	 */
 	static private function _autoInstance($className) {
 		if (in_array('WContext', (array) class_implements($className, true)))
-			self::getInstance($className);
+			self::_createInstance($className);
 	}
 	
 	/**
@@ -195,13 +226,14 @@ class W {
 			return;
 		$class = new ReflectionClass($className);
 		if ($class->isAbstract() || $class->isInterface())
-			return false;
+			return;
 		$args = func_get_args();
 		unset($args[0]);
 		$object = call_user_func_array(array(
 			$class, 
 			'newInstance'
 		), $args);
+		
 		self::$_instances[$className]['instance'] = & $object;
 		if (self::$_instance_frequence)
 			self::_cleanInstanceByFrequence($className);
@@ -260,11 +292,9 @@ class W {
 		$systemConfig = self::$_system_config;
 		if (($pos = strpos($systemConfig, '.')) !== false)
 			$systemConfig = substr($systemConfig, 0, $pos);
-		if (!file_exists($systemConfigPath . self::getSeparator() . $systemConfig))
+		if (!file_exists($systemConfigPath . self::getSeparator() . $systemConfig . '.' . self::getExtendName()))
 			throw new Exception('SYS Excetion ：配置文件不存在!!!');
-		self::import($systemConfigPath . self::getSeparator() . $systemConfig);
-		self::getInstance('WSystemConfig')->parse($systemConfig, $config);
-	
+		self::getSystemConfig()->parse($systemConfig, $config);
 	}
 
 }
