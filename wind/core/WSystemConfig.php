@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WSystemConfig extends WModule implements WContext {
+class WSystemConfig extends WConfig implements WContext {
 	private $systemConfig;
 	private $config;
 	
