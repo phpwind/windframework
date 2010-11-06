@@ -16,9 +16,9 @@ defined('LOG_PATH') or define('LOG_PATH', WIND_PATH . DIRECTORY_SEPARATOR . 'log
 
 defined('LOG_DISPLAY_TYPE') or define('LOG_DISPLAY_TYPE', 'log');
 
-defined('LOG_RECORD') or define('LOG_RECORD',true);
+defined('LOG_RECORD') or define('LOG_RECORD', true);
 
-defined('DEBUG') or define('DEBUG',true);
+defined('DEBUG') or define('DEBUG', true);
 
 defined('EXT') or define('EXT', 'php');
 /**
@@ -52,8 +52,10 @@ class WBasic {
 	 */
 	static public function import($classPath) {
 		$classPath = trim($classPath, ' .');
-		if (!isset($classPath)) throw new Exception(__CLASS__ . ' throw exception!!!!');
-		if (($pos = strrpos($classPath, '.')) === false) return self::_include($classPath, $classPath);
+		if (!isset($classPath))
+			throw new Exception(__CLASS__ . ' throw exception!!!!');
+		if (($pos = strrpos($classPath, '.')) === false)
+			return self::_include($classPath, $classPath);
 		
 		$className = (string) substr($classPath, $pos + 1);
 		$isPackage = $className === '*';
@@ -61,8 +63,10 @@ class WBasic {
 		$classNames = array();
 		if ($isPackage) {
 			$dir = (string) substr($classPath, 0, $pos);
-			if (!is_dir($dir)) return false;
-			if (!$dh = opendir($dir)) return false;
+			if (!is_dir($dir))
+				return false;
+			if (!$dh = opendir($dir))
+				return false;
 			while (($file = readdir($dh)) !== false) {
 				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file))) {
 					$pos = strrpos($file, '.');
@@ -89,8 +93,10 @@ class WBasic {
 	 */
 	static private function _include($className, $classPath) {
 		$path = self::getFrameWorkPath() . self::getSeparator() . $classPath . '.' . self::getExtendName();
-		if (!file_exists($path)) return false;
-		if (key_exists($className, self::$_included)) return true;
+		if (!file_exists($path))
+			return false;
+		if (key_exists($className, self::$_included))
+			return true;
 		include $path;
 		self::$_included[$className] = $classPath;
 		self::_autoInstance($className);
@@ -105,7 +111,8 @@ class WBasic {
 	 * @return void
 	 */
 	static private function _autoInstance($className) {
-		if (in_array('WContext', (array) class_implements($className, true))) self::getInstance($className);
+		if (in_array('WContext', (array) class_implements($className, true)))
+			self::getInstance($className);
 	}
 	
 	/**
@@ -119,8 +126,10 @@ class WBasic {
 	 * @retur Object
 	 */
 	static public function getInstance($className) {
-		if (!class_exists($className)) return false;
-		if (!key_exists($className, self::$_included)) return false;
+		if (!class_exists($className))
+			return false;
+		if (!key_exists($className, self::$_included))
+			return false;
 		$path = self::$_included[$className];
 		if (!key_exists($className, self::$_instances)) {
 			self::_createInstance($className);
@@ -136,9 +145,11 @@ class WBasic {
 	 * @return void|string
 	 */
 	static private function _createInstance($className) {
-		if (key_exists($className, self::$_instances)) return;
+		if (key_exists($className, self::$_instances))
+			return;
 		$class = new ReflectionClass($className);
-		if ($class->isAbstract() || $class->isInterface()) return false;
+		if ($class->isAbstract() || $class->isInterface())
+			return false;
 		$args = func_get_args();
 		unset($args[0]);
 		$object = call_user_func_array(array(
@@ -146,8 +157,10 @@ class WBasic {
 			'newInstance'
 		), $args);
 		self::$_instances[$className]['instance'] = & $object;
-		if (self::$_instance_frequence) self::_cleanInstanceByFrequence($className);
-		if (self::$_instance_max) self::_cleanInstancesByMax();
+		if (self::$_instance_frequence)
+			self::_cleanInstanceByFrequence($className);
+		if (self::$_instance_max)
+			self::_cleanInstancesByMax();
 	}
 	
 	/**
@@ -155,7 +168,8 @@ class WBasic {
 	 * @return string
 	 */
 	static private function _cleanInstancesByMax() {
-		if (!self::$_instance_max) return false;
+		if (!self::$_instance_max)
+			return false;
 		$max = intval(self::$_instance_max);
 		if (count(self::$_instances) > ($max + 10)) {
 			self::$_instances = array_slice(self::$_instances, -$max, $max);
@@ -168,10 +182,13 @@ class WBasic {
 	 * @return string
 	 */
 	static private function _cleanInstanceByFrequence($key) {
-		if (!self::$_instance_frequence) return false;
-		if (!isset(self::$_instances[$key]['frequence'])) self::$_instances[$key]['frequence'] = self::$_instance_frequence;
+		if (!self::$_instance_frequence)
+			return false;
+		if (!isset(self::$_instances[$key]['frequence']))
+			self::$_instances[$key]['frequence'] = self::$_instance_frequence;
 		foreach (self::$_instances as $k => $v) {
-			if ($key == $k) continue;
+			if ($key == $k)
+				continue;
 			if (intval(self::$_instances[$k]['frequence']) < 1) {
 				unset(self::$_instances[$k]);
 			} else
