@@ -6,30 +6,26 @@
  * @license 
  */
 
-class WSystemConfig extends WModule implements WContext {
-	
-	function parse($config = array(), $ifRecursion = false) {
-		$args = func_get_args();
-		$obj = isset($args[2]) ? $args[2] : $this;
-		if (empty($args[2])) {
-			$systemConfig = $this->getSystemConfig();
-			$config = array_merge($systemConfig, $config);
-		}
-		foreach ($config as $key => $value) {
-			if ($ifRecursion && is_array($value)) {
-				$obj->{$key} = new stdClass();
-				$obj->parse($value, $ifRecursion, $this->{$key});
-			} else {
-				$obj->{$key} = $value;
-			}
-		}
-	}
+abstract class WConfig extends WModule {
 	
 	/**
-	 * @return WSystemConfig
+	 * 配置信息解析方法
+	 * @param array $configSystem
+	 * @param array $configCustom
 	 */
-	public static function getInstance() {
-		return W::getInstance(__CLASS__);
-	}
+	public function parse($configSystem, $configCustom) {}
+	
+	/**
+	 * 配置信息解析方法
+	 * @param xml $configSystem
+	 * @param xml $configCustom
+	 */
+	public function parseXML($configSystem, $configCustom) {}
+	
+	/**
+	 * 根据配置名称获得配置信息
+	 * @param string $configName
+	 */
+	public function getConfig($configName) {}
 
 }
