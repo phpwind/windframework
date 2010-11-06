@@ -21,6 +21,9 @@ defined('LOG_RECORD') or define('LOG_RECORD', true);
 defined('DEBUG') or define('DEBUG', true);
 
 defined('EXT') or define('EXT', 'php');
+
+
+
 /**
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
