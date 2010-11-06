@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-WBasic::import('base.WModel');
+
 /**
  * 静态单利模式加载/在应用上下文中有状态存储
  * 继承了该基类的子类在类加载的过程中都会以静态单利方式存储
