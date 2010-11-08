@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-WBasic::import('filter.WFilter');
+
 /**
  * 过滤链的实现
  * 
@@ -21,37 +21,54 @@ WBasic::import('filter.WFilter');
  * @version $Id$ 
  * @package
  */
-class WFilterChain extends WFilter{
-	/**
-	 * 保存过滤链
-	 * @var array
-	 */
+class WFilterChain extends WFilter {
+	private $filters = array();
+	
 	private $filterChain = array();
 	
 	/**
-	 * 保存过滤链中过滤器的个数
-	 * @var integer
+	 * @param WSystemConfig $configObj
+	 * @param WRouter $router
 	 */
-	private $count = 0;
+	public function __construct($configObj, $router = null) {
+		$this->init($configObj, $router);
+	}
 	
 	/**
-	 * 构造器
+	 * @param WSystemConfig $configObj
+	 * @param WRouter $router
 	 */
-	public function __construct() {
-		$this->filterChain =  array();
-		$this->count = 0;
+	public function init($configObj, $router) {
+		$filterConfig = $configObj->getFilterChainConfig();
+		$action = $router->getAction();
+		foreach ((array) $filterConfig as $key => $value) {
+			$path = $configObj->getFiltersConfig($key);
+			//TODO 规则解析
+			if ($path)
+				$filterChain[$key] = array(
+					'path' => $path, 
+					'rule' => $value
+				);
+		}
 	}
+	
 	/**
 	 * 向过滤链中添加一个过滤器
 	 * @param WFilter $filter
 	 */
-	public function addFilter($filter) {
-		if ($filter instanceof WFilter) {
-			$this->filterChain[] = $filter;
-			$this->count ++;
-		} else {
-			echo $filter . '不是有效的过滤器!请检查是否继承了基类Filter!<br/>';
+	private function addFilter($filter) {
+		if ($filter instanceof WFilter)
+			$this->filters[] = $filter;
+		else
+			throw new WException('this is not a filter object!!!');
+	}
+	
+	public function getFilter($filter) {
+		if (!$this->filters[$filter]) {
+			W::import($this->filterChain[$filter]['path']);
+			$this->addFilter(new $filter());
 		}
+		return $this->filters[$filter];
 	}
 	
 	/**
@@ -62,8 +79,11 @@ class WFilterChain extends WFilter{
 	public function doFilter($callBack, $httpRequest) {
 		$this->doPreProcessing($httpRequest);
 		$callBack = $this->parseCallBack($callBack);
-		call_user_func_array($callBack, array($httpRequest));
+		call_user_func_array($callBack, array(
+			$httpRequest
+		));
 		$this->doPostProcessing($httpRequest);
+		$this->destory();
 	}
 	
 	/**
@@ -71,7 +91,7 @@ class WFilterChain extends WFilter{
 	 */
 	public function doPreProcessing($httpRequest) {
 		foreach ($this->filterChain as $filter) {
-			$filter->doPreProcessing($httpRequest);	
+			$this->getFilter($filter)->doPreProcessing($httpRequest);
 		}
 	}
 	
@@ -79,9 +99,9 @@ class WFilterChain extends WFilter{
 	 * 执行过滤链中的后置操作
 	 */
 	public function doPostProcessing($httpRequest) {
-		for ($i = 0; $i < $this->count; $i++) {
-			$filter = array_pop($this->filterChain);
-			$filter->doPostProcessing($httpRequest);
+		$count = count($this->filterChain);
+		for ($i = $count; $i > 0; $i--) {
+			$this->getFilter($this->filterChain[$i - 1])->doPostProcessing($httpRequest);
 		}
 	}
 	
@@ -91,25 +111,31 @@ class WFilterChain extends WFilter{
 	 * @return array
 	 */
 	private function parseCallBack($callBack) {
-		if (!is_array($callBack)) return array('FrontController', 'excute');
+		if (!is_array($callBack))
+			return array(
+				'FrontController', 
+				'excute'
+			);
 		list($className, $action) = $callBack;
 		if (!class_exists($className, true)) {
 			echo $className . '不存在<br/>';
 			//throw new ClassNoExitsException($className . '不存在', 100);
-			//return false;
+		//return false;
 		}
-		if ($action && !is_callable(array($className,	$action))) {
-			echo $className . '中,不存在' . $action .'<br/>';
+		if ($action && !is_callable(array(
+			$className, 
+			$action
+		))) {
+			echo $className . '中,不存在' . $action . '<br/>';
 			//throw new NoOperatorExitsException($className . '中,不存在' . $action, 100);
-			//return false;
+		//return false;
 		}
 		return $callBack;
 	}
 	
-	public function  __destruct(){
-		$this->filterChain = NULL;
-		$this->count = NULL;
-		unset($this->filterChain);
-		unset($this->count);
+	private function destory() {
+		$this->filterChain = array();
+		$this->filters = array();
 	}
+
 }

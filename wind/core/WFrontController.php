@@ -6,7 +6,6 @@
  * @license 
  */
 
-
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -21,21 +20,64 @@
  * @version $Id$ 
  * @package 
  */
-class WFrontController extends WBaseFrontController {
+class WFrontController extends WActionServlet {
+	private $config = null;
 	
-	/**
-	 * @param unknown_type $request
-	 */
-	protected function processRequest($request) {
-		WRouterManager::init();
-		echo "hello world";
+	function init($config = array()) {
+		parent::init();
+		$this->_initConfig($config);
 	}
 	
 	/**
-	 * @param unknown_type $request
+	 * @return WConfig
 	 */
-	protected function dispatch($request) {
+	private function _initConfig($config) {
+		$realPath = W::getSystemConfigPath() . W::getSeparator() . W::$_system_config;
+		if (!file_exists($realPath))
+			throw new Exception('SYS Excetion ：config file ' . $realPath . ' is not exists!!!');
+		W::import($realPath);
+		$sysConfig = W::getVar('sysConfig');
+		$config = $config ? $config : array();
+		$configObj = new WSystemConfig();
+		$configObj->parse($sysConfig, $config);
+		$this->config = $configObj;
+	}
+	
+	protected function process() {
+		$this->beforProcess();
+		
+		$applicationController = new WWebApplicationController();
+		
+		$router = $applicationController->createRouterParser($this->config);
+		$router->doParser($this->config, $this->reuqest);
+		
+		//		$controller = $applicationController->createController($router);
+		
 
+		$filterChain = $applicationController->createFilterChain($this->config, $router);
+		
+		$filterChain->doFilter(array(
+			get_class($applicationController), 
+			'processRequest'
+		), $this->reuqest);
+		
+		$this->afterProcess();
+	}
+	
+	protected function beforProcess() {
+
+	}
+	
+	protected function afterProcess() {
+
+	}
+	
+	protected function doPost() {
+		$this->process();
+	}
+	
+	protected function doGet() {
+		$this->process();
 	}
 
 }

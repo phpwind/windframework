@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-5
+ * @author Qiong Wu <papa0924@gmail.com> 2010-11-3
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
@@ -10,130 +10,117 @@
  * 处理请求抽象基类
  * 如http请求
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package
  */
-abstract class WRequest {
-	protected static $_request = array();
-	public abstract function getCookie();
+interface WRequest {
+	
 	/**
-	 * 获取POST的值
-	 * @param string $key 
-	 * @return mixed
+	 * Returns the value of the named attribute as an <code>Array</code>,
+	 * or <code>null</code> if no attribute of the given name exists. 
+	 *
+	 * @param name	a <code>String</code> specifying the name of 
+	 * the attribute
+	 * @return an <code>Object</code> containing the value 
+	 * of the attribute, or <code>null</code> if
+	 * the attribute does not exist
 	 */
-	public abstract function getPost($key = '');
+	public function getAttribute($name);
+	
 	/**
-	 * 获取 HTTP GET的值
-	 * @param string $key 
-	 * @return mixed
+	 * Returns an array of <code>String</code> objects containing 
+	 * all of the values the given request parameter has, or 
+	 * <code>null</code> if the parameter does not exist.
+	 * <p>If the parameter has a single value, the array has a length
+	 * of 1.
+	 *
+	 * @param name	a <code>String</code> containing the name of 
+	 * the parameter whose value is requested
+	 *
+	 * @return	an array of <code>String</code> objects 
+	 * containing the parameter's values
 	 */
-	public abstract function getGet($key = '');
+	public function getParameterValues($name, $defaultValue = null);
+	
 	/**
-	 * 获取 HTTP SERVER的值
-	 * @param string $key 
-	 * @return mixed
+	 * Returns the name and version of the protocol the request uses
+	 * in the form <i>protocol/majorVersion.minorVersion</i>, for 
+	 * example, HTTP/1.1. For HTTP servlets, the value
+	 * returned is the same as the value of the CGI variable 
+	 * <code>SERVER_PROTOCOL</code>.
+	 *
+	 * @return a <code>String</code> containing the protocol 
+	 * name and version number
 	 */
-	public abstract function getServer($key = '');
+	public function getProtocol();
+	
 	/**
-	 * 获取 HTTP REQUEST的值
-	 * @param string $key 
-	 * @return mixed
+	 * Returns the host name of the server to which the request was sent.
+	 * It is the value of the part before ":" in the <code>Host</code>
+	 * header value, if any, or the resolved server name, or the server IP address.
+	 *
+	 * @return	a <code>String</code> containing the name 
+	 * of the server
 	 */
-	public abstract function getRequest($key = '');
+	public function getServerName();
+	
 	/**
-	 * 取得客户端使用的 HTTP 数据传输方法
-	 * @return string
+	 * Returns the port number to which the request was sent.
+	 * It is the value of the part after ":" in the <code>Host</code>
+	 * header value, if any, or the server port where the client connection
+	 * was accepted on.
+	 *
+	 * @return an integer specifying the port number
+	 *
 	 */
-	public abstract function getHttpMethod();
+	public function getServerPort();
+	
 	/**
-	 * 取得http请求的 MIME 内容类型。
-	 * @return string
+	 * Returns the Internet Protocol (IP) address of the client 
+	 * or last proxy that sent the request.
+	 * For HTTP servlets, same as the value of the 
+	 * CGI variable <code>REMOTE_ADDR</code>.
+	 *
+	 * @return	a <code>String</code> containing the 
+	 * IP address of the client that sent the request
+	 *
 	 */
-	public abstract function getAcceptTypes();
+	public function getRemoteAddr();
+	
 	/**
-	 * 取得客户端浏览器的原始用户代理信息。
-	 * @return string
+	 * Returns the fully qualified name of the client
+	 * or the last proxy that sent the request.
+	 * If the engine cannot or chooses not to resolve the hostname 
+	 * (to improve performance), this method returns the dotted-string form of 
+	 * the IP address. For HTTP servlets, same as the value of the CGI variable 
+	 * <code>REMOTE_HOST</code>.
+	 *
+	 * @return a <code>String</code> containing the fully 
+	 * qualified name of the client
+	 *
 	 */
-	public abstract function getUserAgent();
+	public function getRemoteHost();
+	
 	/**
-	 *验证HTTP连接中是否使用安全套接字 (ssl安全连接)
-	 *@return boolean
+	 *
+	 * Returns a boolean indicating whether this request was made using a
+	 * secure channel, such as HTTPS.
+	 *
+	 * @return a boolean indicating if the request was made using a
+	 * secure channel
 	 */
-	public abstract function IsSecureConnection();
+	public function isSecure();
+	
 	/**
-	 * 取得请求页面的URI
-	 * @return string 返回http请求页面的URI
+	 * Returns the Internet Protocol (IP) source port of the client
+	 * or last proxy that sent the request.
+	 *
+	 * @return	an integer specifying the port number
 	 */
-	public abstract function getRequestUri();
-	/**
-	 * 取得 HTTP请求 查询字符串
-	 */
-	public abstract function getQuery();
-	/**
-	 * 取得http请求当前脚本文件所在的目录
-	 * @return string;
-	 */	
-	public abstract function getFilePath();
-	/**
-	 * 取得http请求当前脚本文件的真实路径
-	 * @return string
-	 */
-	public abstract function getFile();
-	/**
-	 * 取得http请求中原始的URL
-	 * @return string
-	 */
-	public abstract function getRequestUrl();
-	public abstract function getBaseUrl();
-	/**
-	 * 取得客户端上次请求的 URL地址
-	 * @return string
-	 */
-	public abstract function getReferUrl();
-	/**
-	 * 取得http请求中的当前脚本文件名
-	 * @return string
-	 */
-	public abstract function getScript();
-	/**
-	 * 取得服务器DNS
-	 * @param $schema string
-	 * @return string
-	 */
-	public abstract function getHost($schema = '');
-	/**
-	 * 取得http请求中的完整主机地址
-	 * @return string
-	 */
-	public abstract function getUserHost();
-	/**
-	 * 取得http请求客户端中的IP地址
-	 * @return string
-	 */
-	public abstract function getUserHostAddr();
-	/**
-	 * 取得http请求中服务器端主机地址
-	 * @return string
-	 */
-	public abstract function getServerName();
-	/**
-	 *  取得http请求中服务器端主机地址的端口号
-	 * @return string
-	 */
-	public abstract function getServerPort();
-	/**
-	 * 获取HTTP请求的客户端的浏览器相关信息
-	 * @param string $userAgent 客户端浏览器的原始用户代理信息
-	 * @return array
-	 */
-	public abstract function getUserBrowser();
-	/**
-	 * 返回http头信息
-	 * @return  array;
-	 */
-	public abstract function getHeaders();
-		
+	public function getRemotePort();
+	
+	public function getRequestMethod();
 }
 
 

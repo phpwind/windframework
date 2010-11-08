@@ -16,8 +16,8 @@
  */
 abstract class WModule {
 	
-	private $_trace = array();
-	private $_serialize = NULL;
+	protected $_trace = array();
+	protected $_serialize = NULL;
 	
 	function __construct() {
 		$this->_init();
@@ -48,8 +48,7 @@ abstract class WModule {
 	private function _validateProperties($propertyName) {
 		if (!$propertyName)
 			throw new Exception('empty args !!!!');
-		if (!property_exists(__CLASS__, $propertyName))
+		if (array_key_exists($propertyName, get_class_vars(get_class($this))))
 			throw new Exception('property ' . $propertyName . ' not exist!!!!');
 	}
-
 }
