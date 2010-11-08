@@ -52,8 +52,9 @@ class W {
 	 */
 	static public function init() {
 		self::_autoIncludeBaseLib();
-		self::_loadLogOrDebug();
 		set_exception_handler(array('W','WExceptionHandler'));
+		defined('LOG_RECORD') && W::import('utility.wlog.php');
+		defined('DEBUG') && W::import('utility.wdebug.php');
 	}
 	
 	/**
@@ -280,24 +281,24 @@ class W {
 	 * @param $message
 	 * @param $trace
 	 */
-	static public function recordLog($message,$trace = array()){
+	static public function recordLog($message){
 		if(defined('LOG_RECORD')){
-    		$message = $message."\r\n";
-    		if(defined('DEBUG'))
-    			$message .= WDebug::debug($trace);
+			$message = str_replace('<br/>',"\r\n",$message);
     		WLog::log($message,WLog::TRACE);
     	}
 	}
 	
-	static private function _loadLogOrDebug(){
-		defined('LOG_RECORD') && W::import('utility.wlog.php');
-		defined('DEBUG') && W::import('utility.wdebug.php');
+	static public function debug($message,$trace=array()){
+		return defined('DEBUG') ? WDebug::debug($message,$trace) : $message;
 	}
+	
+
 	
 	static public function WExceptionHandler($e){
 		$trace = is_a($e,'WException') ? $e->getStackTrace() : $e->getTrace();
-		W::recordLog("{$e}",$trace);
-		die($e);
+		$message = W::debug("{$e}",$trace);
+		W::recordLog($message);
+		die($message);
 	}
 
 }

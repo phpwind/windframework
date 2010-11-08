@@ -112,12 +112,12 @@ class WDebug {
 		return get_included_files();
 	}
 	
-	public static function debug($trace = array(),$begin = '',$end = ''){
+	public static function debug($message = '',$trace = array(),$begin = '',$end = ''){
 		$runtime = self::getExecTime();
 		$useMem = self::getMemUsage();
-		$separate = "\r\n";
+		$separate = "<br/>";
 		$trace = implode("{$separate}",self::trace($trace));
-		$debug  = "您系统整体运行情况:{$separate}";
+		$debug .=  "{$message}{$separate}";
 		$debug .= "系统运行时间:{$runtime}s{$separate}";
 		$debug .= "系统运行所耗内存:{$useMem}byte{$separate}";
 		$debug .= "系统堆栈情况:{$separate}{$trace}{$separate}";
