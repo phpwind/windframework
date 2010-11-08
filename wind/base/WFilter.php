@@ -21,7 +21,7 @@ abstract class WFilter {
 	 * 保存该过滤器的配置信息
 	 * @var mixed $filterName 
 	 */
-	private $filterConfig = '';
+	protected $filterConfig = '';
 	/**
 	 * 初始化过滤器，设置该过滤器的配置信息
 	 * @param mixed $filterName
