@@ -53,6 +53,7 @@ class W {
 	 */
 	static public function init($config = NULL) {
 		self::_autoIncludeBaseLib();
+		self::_loadLogOrDebug();
 		self::_initSystemConfig($config);
 	
 	}
@@ -295,6 +296,11 @@ class W {
 		self::getSystemConfig()->parse($systemConfig, $config);
 	}
 	
+	/**
+	 * 异常、调试及其它信息记录到日志
+	 * @param $message
+	 * @param $trace
+	 */
 	static public function recordLog($message,$trace = array()){
 		if(defined('LOG_RECORD')){
     		$message = $message."\r\n";
@@ -302,6 +308,11 @@ class W {
     			$message .= WDebug::debug($trace);
     		WLog::add($message,WLog::ERROR);
     	}
+	}
+	
+	static private function _loadLogOrDebug(){
+		defined('LOG_RECORD') && import('utility.wlog');
+		defined('DEBUG') && import('utility.wdebug');
 	}
 
 }
