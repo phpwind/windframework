@@ -13,50 +13,52 @@
  * @version $Id$ 
  * @package
  */
-class WException extends exception {
+class WException extends Exception {
 	const ERROR = 0;
 	const WARN = 1;
 	const NOTICE = 2;
 	const PARSE = 3;
 	const SYSTEM = 4;
 	private $innerException = null;
+	
 	/**
 	 * 异常构造函数
 	 * @param $message		     异常信息
 	 * @param $code			     异常代号
 	 * @param $innerException 内部异常
 	 */
-	public function __construct($message = '',$code=0,exception $innerException = null) {
-		$message = $this->buildMessage($message,$code);
-        parent::__construct($message,$code);
-        $this->innerException = $innerException;
-        W::recordLog($this->getMessage(),$this->getStackTrace());
-    }
-    
-    /**
-     * 取得内部异常
-     */
-    public function getInnerException(){
-    	return $this->innerException;
-    }
-    
-    /**
-     * 取得异常堆栈信息
-     */
-    public function getStackTrace(){
-    	if($this->innerException){
-	    	$thisTrace = $this->getTrace();
-	    	$innerTrace = get_class($this->innerException) == __CLASS__ ? $this->innerException->getStackTrace() :$this->innerException->getTrace();
-	    	foreach($innerTrace as $trace) $thisTrace[] = $trace;
-	    	return $thisTrace;
-    	}else{
-    		return $this->getTrace();
-    	}
-    	return array();
-    }
-    
-    public function buildMessage($message,$code){
-    	return $message;
-    }
-  
+	public function __construct($message = '', $code = 0, Exception $innerException = null) {
+		$message = $this->buildMessage($message, $code);
+		parent::__construct($message, $code);
+		$this->innerException = $innerException;
+		//W::recordLog($this->getMessage(), $this->getStackTrace());
+	}
+	
+	/**
+	 * 取得内部异常
+	 */
+	public function getInnerException() {
+		return $this->innerException;
+	}
+	
+	/**
+	 * 取得异常堆栈信息
+	 */
+	public function getStackTrace() {
+		if ($this->innerException) {
+			$thisTrace = $this->getTrace();
+			$innerTrace = get_class($this->innerException) == __CLASS__ ? $this->innerException->getStackTrace() : $this->innerException->getTrace();
+			foreach ($innerTrace as $trace)
+				$thisTrace[] = $trace;
+			return $thisTrace;
+		} else {
+			return $this->getTrace();
+		}
+		return array();
+	}
+	
+	public function buildMessage($message, $code) {
+		return $message;
+	}
+
 }
