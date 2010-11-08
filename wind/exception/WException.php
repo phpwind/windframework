@@ -30,6 +30,7 @@ class WException extends exception {
 		$message = $this->buildMessage($message,$code);
         parent::__construct($message,$code);
         $this->innerException = $innerException;
+        W::recordLog($this->getMessage(),$this->getStackTrace());
     }
     
     /**
@@ -57,14 +58,5 @@ class WException extends exception {
     public function buildMessage($message,$code){
     	return $message;
     }
-    
-    public function __destruct(){
-    	if(defined('LOG_RECORD')){
-    		$message = $this->getMessage()."\r\n";
-    		if(defined('DEBUG')){
-    			$message .= WDebug::debug($this->getStackTrace());
-    		}
-    		WLog::add($message,WLog::TRACE);
-    	}
-    }
+  
 }

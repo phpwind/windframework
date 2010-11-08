@@ -294,6 +294,15 @@ class W {
 			throw new Exception('SYS Excetion ：配置文件不存在!!!');
 		self::getSystemConfig()->parse($systemConfig, $config);
 	}
+	
+	static public function recordLog($message,$trace = array()){
+		if(defined('LOG_RECORD')){
+    		$message = $message."\r\n";
+    		if(defined('DEBUG'))
+    			$message .= WDebug::debug($trace);
+    		WLog::add($message,WLog::ERROR);
+    	}
+	}
 
 }
 
