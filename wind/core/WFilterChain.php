@@ -22,21 +22,32 @@
  * @package
  */
 class WFilterChain extends WFilter {
+	/**
+	 * 保存过滤链---过滤器对象队列
+	 * @var  array $filters
+	 */
 	private $filters = array();
-	
+	/**
+	 * 保存过滤链配置信息---过滤器配置信息队列
+	 * 元素保存类型为: 'filter' => array('path' => 'path', 'rule' => 'rule')
+	 * @var  array $filterChain
+	 */
 	private $filterChain = array();
 	
 	/**
-	 * @param WSystemConfig $configObj
-	 * @param WRouter $router
+	 * 构造函数·
+	 * 用来初始化配置信息，并且解析配置信息调用
+	 * @param WSystemConfig $configObj   配置对象实例
+	 * @param WRouter $router   解析后的路由实例
 	 */
 	public function __construct($configObj, $router = null) {
 		$this->init($configObj, $router);
 	}
 	
 	/**
-	 * @param WSystemConfig $configObj
-	 * @param WRouter $router
+	 * 解析路由配置信息
+	 * @param WSystemConfig $configObj  配置信息对象
+	 * @param WRouter $router    解析后的路由实例
 	 */
 	public function init($configObj, $router) {
 		$filterConfig = $configObj->getFilterChainConfig();
@@ -54,15 +65,21 @@ class WFilterChain extends WFilter {
 	
 	/**
 	 * 向过滤链中添加一个过滤器
-	 * @param WFilter $filter
+	 * 如果该过滤器不是 WFilter的实例对象（该过滤器的实现没有继承WFilter基类），则将抛出一个异常
+	 * @access private
+	 * @param WFilter $filter 添加的具体过滤器实例对象
 	 */
 	private function addFilter($filter) {
 		if ($filter instanceof WFilter)
 			$this->filters[] = $filter;
 		else
-			throw new WException('this is not a filter object!!!');
+			throw new WException('This is not a WFilter object!!!');
 	}
 	
+	/**
+	 * 获得过滤器实例
+	 * @param string $filter  需要获取的过滤器名称
+	 */
 	public function getFilter($filter) {
 		if (!$this->filters[$filter]) {
 			W::import($this->filterChain[$filter]['path']);
@@ -73,7 +90,8 @@ class WFilterChain extends WFilter {
 	
 	/**
 	 * 过滤链的调用入口
-	 * @param array $callBack | array('className', 'action')
+	 * 首先调用的是过滤链中所有被加载的过滤器的前置操作，然后调用回调函数，最后调用过滤器的后置操作
+	 * @param array $callBack array('className', 'action')
 	 * @param WHttpRequest $httpRequest
 	 */
 	public function doFilter($callBack, $httpRequest) {
@@ -108,7 +126,7 @@ class WFilterChain extends WFilter {
 	/**
 	 * 解析回调函数
 	 * @param array $callBack
-	 * @return array
+	 * @return array array('className', 'action')
 	 */
 	private function parseCallBack($callBack) {
 		if (!is_array($callBack))
@@ -119,20 +137,22 @@ class WFilterChain extends WFilter {
 		list($className, $action) = $callBack;
 		if (!class_exists($className, true)) {
 			echo $className . '不存在<br/>';
-			//throw new ClassNoExitsException($className . '不存在', 100);
-		//return false;
+			//throw new WException($className . '不存在', 100);
 		}
 		if ($action && !is_callable(array(
 			$className, 
 			$action
 		))) {
 			echo $className . '中,不存在' . $action . '<br/>';
-			//throw new NoOperatorExitsException($className . '中,不存在' . $action, 100);
-		//return false;
+			//throw new WException($className . '中,不存在' . $action, 100);
 		}
 		return $callBack;
 	}
 	
+	/**
+	 * 清空过滤链及过滤器配置链内容
+	 * @access private
+	 */
 	private function destory() {
 		$this->filterChain = array();
 		$this->filters = array();
