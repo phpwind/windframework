@@ -118,9 +118,9 @@ class WDebug {
 		$separate = "\r\n";
 		$trace = implode("{$separate}",self::trace($trace));
 		$debug  = "您系统整体运行情况:{$separate}";
-		$debug .= "系统运行时间:{$useTime}s{$separate}";
+		$debug .= "系统运行时间:{$runtime}s{$separate}";
 		$debug .= "系统运行所耗内存:{$useMem}byte{$separate}";
-		$debug .= "系统堆栈情况:{$separate}{$debug}{$separate}";
+		$debug .= "系统堆栈情况:{$separate}{$trace}{$separate}";
 		if($begin && $end){
 			$PointUseTime = self::getExecTimeOfp2p($begin,$end);
 			$PointUseMem = self::getMemUsageOfp2p($begin,$end);

@@ -31,7 +31,6 @@ class WException extends Exception {
 		$message = $this->buildMessage($message, $code);
 		parent::__construct($message, $code);
 		$this->innerException = $innerException;
-		//W::recordLog($this->getMessage(), $this->getStackTrace());
 	}
 	
 	/**
@@ -47,7 +46,8 @@ class WException extends Exception {
 	public function getStackTrace() {
 		if ($this->innerException) {
 			$thisTrace = $this->getTrace();
-			$innerTrace = get_class($this->innerException) == __CLASS__ ? $this->innerException->getStackTrace() : $this->innerException->getTrace();
+			$class = __CLASS__;
+			$innerTrace = $this->innerException instanceof $class ? $this->innerException->getStackTrace() : $this->innerException->getTrace();
 			foreach ($innerTrace as $trace)
 				$thisTrace[] = $trace;
 			return $thisTrace;

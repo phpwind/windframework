@@ -52,6 +52,8 @@ class W {
 	 */
 	static public function init() {
 		self::_autoIncludeBaseLib();
+		self::_loadLogOrDebug();
+		set_exception_handler(array('W','WExceptionHandler'));
 	}
 	
 	/**
@@ -252,10 +254,11 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _autoIncludeBaseLib() {
+		self::import('exception.WException.php');
 		self::import('base.WModule.php');
 		self::import('base.*');
 		self::import('core.*');
-		self::import('exception.WException.php');
+		
 	}
 	
 	/**
@@ -282,13 +285,19 @@ class W {
     		$message = $message."\r\n";
     		if(defined('DEBUG'))
     			$message .= WDebug::debug($trace);
-    		WLog::add($message,WLog::ERROR);
+    		WLog::log($message,WLog::TRACE);
     	}
 	}
 	
 	static private function _loadLogOrDebug(){
-		defined('LOG_RECORD') && import('utility.wlog');
-		defined('DEBUG') && import('utility.wdebug');
+		defined('LOG_RECORD') && W::import('utility.wlog.php');
+		defined('DEBUG') && W::import('utility.wdebug.php');
+	}
+	
+	static public function WExceptionHandler($e){
+		$trace = is_a($e,'WException') ? $e->getStackTrace() : $e->getTrace();
+		W::recordLog("{$e}",$trace);
+		die($e);
 	}
 
 }

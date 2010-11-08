@@ -14,25 +14,22 @@ define('C_P', R_P . '/wind/');
 require_once (C_P . '/config.php');
 require_once (F_P . '/wind.php');
 
-print_r(W::$_included);
+
 
 $frontController = new WFrontController();
 $frontController->run();
 
 
-class TestCase
-{
-    public $a    = 1;
-    protected $b    = 2;
-    private $c    = 3;
 
-    public static function expose()
-    {
-        print_r(get_class_vars(__CLASS__));
-    }
+
+Wlog::add("afdafafa");
+function a(){
+	echo '<br/>';
+throw new WException('ddddd');	
 }
+echo 1111;
+a();
+echo 222;
 
-TestCase::expose();
-print_r(get_class_vars('TestCase'));
 
-
+//throw new Exception('Uncaught Exception');
