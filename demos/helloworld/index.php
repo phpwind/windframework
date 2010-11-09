@@ -23,10 +23,11 @@ throw new WException('ddddd');
 echo 1111;
 //a();
 echo 222;
+//trigger_error("afafa",E_USER_ERROR);
 $frontController = new WFrontController();
 $frontController->run();
 
-
+echo 111;
 
 
 

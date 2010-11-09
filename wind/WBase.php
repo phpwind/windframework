@@ -259,7 +259,6 @@ class W {
 		self::import('base.WModule.php');
 		self::import('base.*');
 		self::import('core.*');
-		
 	}
 	
 	/**
