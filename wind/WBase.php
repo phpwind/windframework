@@ -281,13 +281,18 @@ class W {
 	 * @param $message
 	 * @param $trace
 	 */
-	static public function recordLog($message){
+	static public function recordLog($message,$type = 'INFO',$ifrecord = 'add'){
 		if(defined('LOG_RECORD')){
 			$message = str_replace('<br/>',"\r\n",$message);
-    		WLog::log($message,WLog::TRACE);
+    		$ifrecord == 'add' ? WLog::add($message,strtoupper($type)) : WLog::log($message,strtoupper($type));
     	}
 	}
 	
+	/**
+	 * 对于输出信息是否debug处理
+	 * @param $message
+	 * @param $trace
+	 */
 	static public function debug($message,$trace=array()){
 		return defined('DEBUG') ? WDebug::debug($message,$trace) : $message;
 	}
@@ -297,7 +302,7 @@ class W {
 	static public function WExceptionHandler($e){
 		$trace = is_a($e,'WException') ? $e->getStackTrace() : $e->getTrace();
 		$message = W::debug("{$e}",$trace);
-		W::recordLog($message);
+		W::recordLog($message,'TRACE','log');
 		die($message);
 	}
 

@@ -15,21 +15,21 @@ require_once (C_P . '/config.php');
 require_once (F_P . '/wind.php');
 
 
-
+Wlog::add("afdafafa",'afda');
+function a(){
+	echo '<br/>';
+throw new WException('ddddd');	
+}
+echo 1111;
+//a();
+echo 222;
 $frontController = new WFrontController();
 $frontController->run();
 
 
 
 
-Wlog::add("afdafafa");
-function a(){
-	echo '<br/>';
-throw new WException('ddddd');	
-}
-echo 1111;
-a();
-echo 222;
+
 
 
 //throw new Exception('Uncaught Exception');
