@@ -62,7 +62,7 @@ class WSystemConfig extends WConfig {
 	 */
 	public function getFiltersConfig($name = '') {
 		if (isset($this->config['filters']))
-			return !$name ? $this->config['filters'] : $this->config['filters'][$name] ? $this->config['filters'][$name] : '';
+			return !$name ? $this->config['filters'] : ($this->config['filters'][$name] ? $this->config['filters'][$name] : '');
 		else
 			throw new Exception("the filter config is not exists!!!");
 	}
@@ -74,7 +74,7 @@ class WSystemConfig extends WConfig {
 	 */
 	public function getFilterChainConfig($name = '') {
 		if (isset($this->config['filterChain']))
-			return !$name ? $this->config['filterChain'] : $this->config['filterChain'][$name] ? $this->config['filterChain'][$name] : '';
+			return !$name ? $this->config['filterChain'] : ($this->config['filterChain'][$name] ? $this->config['filterChain'][$name] : '');
 		else
 			throw new Exception("the filter config is not exists!!!");
 	}
@@ -85,7 +85,7 @@ class WSystemConfig extends WConfig {
 	 */
 	public function getRouterConfig($name = '') {
 		if (isset($this->config['router']))
-			return !$name ? $this->config['router'] : $this->config['router'][$name] ? $this->config['router'][$name] : '';
+			return !$name ? $this->config['router'] : ($this->config['router'][$name] ? $this->config['router'][$name] : '');
 		else
 			throw new Exception("the router config is not exists!!!");
 	}
@@ -112,7 +112,7 @@ class WSystemConfig extends WConfig {
 	 */
 	public function getRouterParser($name = '') {
 		if (isset($this->config['routerParser']))
-			return !$name ? $this->config['routerParser'] : $this->config['routerParser'][$name] ? $this->config['routerParser'][$name] : '';
+			return !$name ? $this->config['routerParser'] : ($this->config['routerParser'][$name] ? $this->config['routerParser'][$name] : '');
 		else
 			throw new Exception("the routerParser config is not exists!!!");
 	}
