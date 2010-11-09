@@ -11,11 +11,14 @@
  * 
  * */
 $sysConfig = array(
-	'filterChain' => array(
-		'filter1' => array()
+	
+ 	//保存过滤规则
+	'filterChain' => array( 
+		'WInput' => array()
 	), 
+	//保存过滤路径
 	'filters' => array(
-		'filter1' => 'path'
+		'WInput' => 'filter.WInput.php',
 	), 
 	
 	'controllers' => array(
