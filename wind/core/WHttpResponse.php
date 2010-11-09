@@ -6,6 +6,6 @@
  * @license 
  */
 
-class WHttpResponse {
-
+class WHttpResponse implements WResponse {
+	
 }
