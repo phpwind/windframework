@@ -87,12 +87,13 @@ class WLog {
 	 */
 	private static function getFileName(){
 		self::createFolder(LOG_PATH);
+		$size = 1024*50;
 		$filename = LOG_PATH.date("Y_m_d").'.'.LOG_DISPLAY_TYPE;
-		if(is_file($filename) && 1024*50 < filesize($filename)){
-			$fileArray = explode('_',basename($filename));
-			$after = $fileArray[count($fileArray)-1];
-			$after = is_int($after) ? ++$after : 0;
-			$filename = LOG_PATH.date("Y_m_d_{$after}").'.'.LOG_DISPLAY_TYPE;
+		if(is_file($filename) && $size < filesize($filename)){
+			for($i=0;$i<100;$i++){
+				$filename = LOG_PATH.date("Y_m_d_{$i}").'.'.LOG_DISPLAY_TYPE;
+				if(!is_file($filename) || (is_file($filename) && $size > filesize($filename))) break;
+			}
 		}
 		return $filename;
 	}
