@@ -15,6 +15,7 @@
 class WInput extends WFilter {
 	/**
 	 * 过滤输入
+	 * @see security::filter
 	 */
 	public function doPreProcessing($httpRequest) {
 		$allowed = array('GLOBALS' => 1,'_GET' => 1,'_POST' => 1,'_COOKIE' => 1,'_FILES' => 1,'_SERVER' => 1,
@@ -36,6 +37,15 @@ class WInput extends WFilter {
 													'REQUEST_URI','REQUEST_METHOD','REMOTE_ADDR','SCRIPT_NAME',
 													'QUERY_STRING'));
 		!$GLOBALS['pwServer']['PHP_SELF'] && $GLOBALS['pwServer']['PHP_SELF'] = S::getServer('SCRIPT_NAME');*/
+		//输入参数安全行验证
+		foreach ($_POST as $_key => $_value) {
+			if (!in_array($_key,array('atc_content','atc_title','prosign','pwuser','pwpwd'))) {
+				WInput::checkVar($_POST[$_key]);
+			}
+		}
+		foreach ($_GET as $_key => $_value) {
+			WInput::checkVar($_GET[$_key]);
+		}
 	}
 	
 	public function doPostProcessing($httpRequest) {
@@ -44,6 +54,7 @@ class WInput extends WFilter {
 	
 	/**
 	 * 转义函数~~~此函数的位置可以考虑移植到工具类中
+	 * @see security::checkVar
 	 * @param $array
 	 */
 	public static function slashes(&$array) {
@@ -55,6 +66,23 @@ class WInput extends WFilter {
 					$array[$key] = addslashes($value);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 变量检查~~~此函数的位置可以考虑移植到工具类中
+	 * @see security::checkVar
+	 *  @param mix &$var
+	 */
+	public static function checkVar(&$var) {
+		if (is_array($var)) {
+			foreach ($var as $key => $value) {
+				WInput::checkVar($var[$key]);
+			}
+		} elseif (P_W != 'admincp') {
+			$var = str_replace(array('..',')','<','='), array('&#46;&#46;','&#41;','&#60;','&#61;'), $var);
+		} elseif (str_replace(array('<iframe','<meta','<script'), '', $var) != $var) {
+			throw new WException('word_error');
 		}
 	}
 }
