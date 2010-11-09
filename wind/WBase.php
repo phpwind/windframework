@@ -7,7 +7,6 @@
  */
 error_reporting(E_ERROR | E_PARSE);
 
-
 /* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__));
 defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
@@ -54,7 +53,10 @@ class W {
 	 */
 	static public function init() {
 		self::_autoIncludeBaseLib();
-		set_exception_handler(array('W','WExceptionHandler'));
+		set_exception_handler(array(
+			'W', 
+			'WExceptionHandler'
+		));
 		defined('LOG_RECORD') && W::import('utility.wlog.php');
 		defined('DEBUG') && W::import('utility.wdebug.php');
 	}
@@ -98,7 +100,7 @@ class W {
 	 * @return string
 	 */
 	static public function getSystemConfigPath() {
-		return SYSTEM_CONFIG_PATH;
+		return SYSTEM_CONFIG_PATH . W::getSeparator() . W::$_system_config;
 	}
 	
 	/**
@@ -282,11 +284,11 @@ class W {
 	 * @param $message
 	 * @param $trace
 	 */
-	static public function recordLog($message,$type = 'INFO',$ifrecord = 'add'){
-		if(defined('LOG_RECORD')){
-			$message = str_replace('<br/>',"\r\n",$message);
-    		$ifrecord == 'add' ? WLog::add($message,strtoupper($type)) : WLog::log($message,strtoupper($type));
-    	}
+	static public function recordLog($message, $type = 'INFO', $ifrecord = 'add') {
+		if (defined('LOG_RECORD')) {
+			$message = str_replace('<br/>', "\r\n", $message);
+			$ifrecord == 'add' ? WLog::add($message, strtoupper($type)) : WLog::log($message, strtoupper($type));
+		}
 	}
 	
 	/**
@@ -294,16 +296,14 @@ class W {
 	 * @param $message
 	 * @param $trace
 	 */
-	static public function debug($message,$trace=array()){
-		return defined('DEBUG') ? WDebug::debug($message,$trace) : $message;
+	static public function debug($message, $trace = array()) {
+		return defined('DEBUG') ? WDebug::debug($message, $trace) : $message;
 	}
 	
-
-	
-	static public function WExceptionHandler($e){
-		$trace = is_a($e,'WException') ? $e->getStackTrace() : $e->getTrace();
-		$message = W::debug("{$e}",$trace);
-		W::recordLog($message,'TRACE','log');
+	static public function WExceptionHandler($e) {
+		$trace = is_a($e, 'WException') ? $e->getStackTrace() : $e->getTrace();
+		$message = W::debug("{$e}", $trace);
+		W::recordLog($message, 'TRACE', 'log');
 		die($message);
 	}
 

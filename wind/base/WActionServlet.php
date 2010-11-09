@@ -14,44 +14,47 @@
  */
 abstract class WActionServlet {
 	protected $reuqest = null;
+	protected $response = null;
 	
 	function __construct() {
 		$this->init();
 	}
 	
-	function init() {
+	public function init() {
 		$this->_initRequest();
-	}
-	
-	function run() {
-		if ($this->reuqest === null)
-			throw new WException('init action servlet failed!!');
-		$this->service($this->reuqest);
 	}
 	
 	/**
 	 * @return WRequest
 	 */
 	private function _initRequest() {
+		//TODO ÖØ¹¹
 		$reuqest = W::getInstance('WHttpRequest');
+		
 		$this->reuqest = $reuqest;
 	}
 	
-	abstract protected function process();
+	public function run() {
+		if ($this->reuqest === null)
+			throw new WException('init action servlet failed!!');
+		$this->service($this->reuqest, $this->response);
+	}
+	
+	abstract function process($request, $resopnse);
 	
 	/**
 	 * @param WHttpRequest $request
 	 */
-	protected function service($request) {
+	protected function service($request, $resopnse) {
 		$requestMethod = $request->getRequestMethod();
 		if ($requestMethod == 'GET')
-			$this->doGet($request);
+			$this->doGet($request, $resopnse);
 		else if ($requestMethod == 'POST')
-			$this->doPost($request);
+			$this->doPost($request, $resopnse);
 		else if ($requestMethod == 'PUT')
-			$this->doPut($request);
+			$this->doPut($request, $resopnse);
 		else if ($requestMethod == 'DELETE')
-			$this->doDelete($request);
+			$this->doDelete($request, $resopnse);
 		else
 			throw new Exception('your request method is not supported!!!');
 	}
@@ -59,29 +62,29 @@ abstract class WActionServlet {
 	/**
 	 * @param WRequest $request
 	 */
-	protected function doPost($request) {
-		$this->process();
+	protected function doPost($request, $resopnse) {
+		$this->process($request, $resopnse);
 	}
 	
 	/**
 	 * @param WRequest $request
 	 */
-	protected function doGet($request) {
-		$this->process();
+	protected function doGet($request, $resopnse) {
+		$this->process($request, $resopnse);
 	}
 	
 	/**
 	 * @param WRequest $request
 	 */
-	protected function doPut($request) {
-		$this->process();
+	protected function doPut($request, $resopnse) {
+		$this->process($request, $resopnse);
 	}
 	
 	/**
 	 * @param WRequest $request
 	 */
-	protected function doDelete($request) {
-		$this->process();
+	protected function doDelete($request, $resopnse) {
+		$this->process($request, $resopnse);
 	}
 
 }

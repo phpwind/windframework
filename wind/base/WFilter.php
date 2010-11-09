@@ -27,8 +27,26 @@ abstract class WFilter {
 	 * @param mixed $filterName
 	 */
 	public function init($filterConfig) {
-		if ($filterConfig) $this->filterConfig = $filterConfig;
+		if ($filterConfig)
+			$this->filterConfig = $filterConfig;
 	}
+	
+	/**
+	 * @param WRequest $request
+	 * @param WResponse $response
+	 */
+	public function doFilter($request, $response) {
+		$this->doBeforeProcess($request, $response);
+		$filter = WFilterFactory::create();
+		if ($filter != null) {
+			if (!in_array(__CLASS__, class_parents($filter)))
+				throw new WException(get_class($filter) . ' is not extend a filter class!');
+			$filter->doFilter($request, $response);
+		} else
+			WFilterFactory::execute();
+		$this->doAfterProcess($request, $response);
+	}
+	
 	/**
 	 * 获得过滤器配置信息
 	 * @return mixed
@@ -41,11 +59,12 @@ abstract class WFilter {
 	 * 预操作，由用户的实现来决定用户的该操作是预操作还是后置操作
 	 * @param WHttpRequest $httpRequest
 	 */
-	public abstract function doPreProcessing($httpRequest);
+	abstract public function doBeforeProcess($request, $response);
+	
 	/**
 	 * 用户需要实现
 	 * 后置操作
 	 * @param WHttpRequest $httpRequest
 	 */
-	public abstract function doPostProcessing($httpRequest);
+	abstract public function doAfterProcess($request, $response);
 }

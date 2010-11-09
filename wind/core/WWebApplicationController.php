@@ -23,16 +23,6 @@ class WWebApplicationController implements WApplicationController {
 	}
 	
 	/**
-	 * 返回一个过滤链
-	 * @param WSystemConfig $configObj
-	 * @param WRouter $router
-	 * @return WFilterChain
-	 */
-	function createFilterChain($configObj, $router) {
-		return new WFilterChain($configObj, $router);
-	}
-	
-	/**
 	 * @param WSystemConfig $configObj
 	 * @return WUrlRouteParser
 	 */

@@ -73,10 +73,7 @@ class WSystemConfig extends WConfig {
 	 * @return Ambigous <string, multitype:>
 	 */
 	public function getFilterChainConfig($name = '') {
-		if (isset($this->config['filterChain']) && is_array($this->config['filterChain']))
-			return !$name ? $this->config['filterChain'] : isset($this->config['filterChain'][$name]) ? $this->config['filterChain'][$name] : '';
-		else
-			throw new Exception("the filter config is not exists!!!");
+		return !$name ? $this->config['filterChain'] : isset($this->config['filterChain'][$name]) ? $this->config['filterChain'][$name] : '';
 	}
 	
 	/**

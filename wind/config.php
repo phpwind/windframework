@@ -12,29 +12,27 @@
  * */
 $sysConfig = array(
 	
- 	//保存过滤规则
-	'filterChain' => array( 
-		'WInput' => array()
-	), 
 	//保存过滤路径
 	'filters' => array(
-		'WInput' => 'filter.WInput.php',
+		'testFilter' => 'filter.TestFilter.php', 
+		'test1Filter' => 'filter.Test1Filter.php'
 	), 
 	
-	'controllers' => array(
-		'controller1' => 'www.app.controller', 
-		'controller2' => 'www.app.controller.subcont'
-	), 
+	/* 应用配置 */
+	'apps' => array(), 
 	
+	/* 路由策略配置 */
 	'router' => array(
 		'parser' => 'url'
 	), 
+	/* URL路由规则配置  */
 	'urlRule' => array(
 		'action' => 'run', 
 		'controller' => 'index', 
 		'app1' => 'controller1', 
 		'app2' => ''
 	), 
+	/* 路由解析器配置 */
 	'routerParser' => array(
 		'url' => 'router.parser.WUrlRouteParser.php'
 	)

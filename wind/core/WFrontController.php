@@ -23,44 +23,24 @@
 class WFrontController extends WActionServlet {
 	private $config = null;
 	
+	/**
+	 * 系统初始化操作
+	 * @param array $config
+	 * @return null
+	 */
 	function init($config = array()) {
 		parent::init();
 		$this->_initConfig($config);
 	}
 	
-	/**
-	 * @return WConfig
-	 */
-	private function _initConfig($config) {
-		$realPath = W::getSystemConfigPath() . W::getSeparator() . W::$_system_config;
-		if (!file_exists($realPath))
-			throw new Exception('SYS Excetion ：config file ' . $realPath . ' is not exists!!!');
-		W::import($realPath);
-		$sysConfig = W::getVar('sysConfig');
-		$config = $config ? $config : array();
-		$configObj = new WSystemConfig();
-		$configObj->parse($sysConfig, $config);
-		$this->config = $configObj;
-	}
-	
-	protected function process() {
+	function run() {
+		if ($this->config === null)
+			throw new WException('init system config failed!');
 		$this->beforProcess();
-		
-		$applicationController = new WWebApplicationController();
-		
-		$router = $applicationController->createRouterParser($this->config);
-		$router->doParser($this->config, $this->reuqest);
-		
-		//		$controller = $applicationController->createController($router);
-		
-
-		$filterChain = $applicationController->createFilterChain($this->config, $router);
-		
-		$filterChain->doFilter(array(
-			get_class($applicationController), 
-			'processRequest'
-		), $this->reuqest);
-		
+		if (!class_exists(WFilterFactory))
+			parent::run();
+		else
+			$this->_initFilter();
 		$this->afterProcess();
 	}
 	
@@ -68,19 +48,53 @@ class WFrontController extends WActionServlet {
 
 	}
 	
+	function process($request, $response) {
+		$applicationController = new WWebApplicationController();
+		$router = $applicationController->createRouterParser();
+		$router->doParser($response, $request);
+	}
+	
 	protected function afterProcess() {
-		if(defined('LOG_RECORD')){
+		if (defined('LOG_RECORD'))
 			WLog::flush();
-		}
 		restore_exception_handler();
 	}
 	
-	protected function doPost() {
-		$this->process();
+	protected function doPost($request, $response) {
+		$this->process($request, $response);
 	}
 	
-	protected function doGet() {
-		$this->process();
+	protected function doGet($request, $response) {
+		$this->process($request, $response);
+	}
+	
+	/**
+	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
+	 */
+	private function _initFilter() {
+		WFilterFactory::setExecute(array(
+			get_class($this), 
+			'process'
+		), $this->reuqest, $this->response);
+		$filter = WFilterFactory::create($this->config);
+		if (is_object($filter))
+			$filter->doFilter($this->reuqest, $this->response);
+	}
+	
+	/**
+	 * 初始化系统配置信息
+	 * @param array $config
+	 */
+	private function _initConfig($config) {
+		$realPath = W::getSystemConfigPath();
+		if (!file_exists($realPath))
+			throw new Exception('SYS Excetion ：config file ' . $realPath . ' is not exists!!!');
+		
+		W::import($realPath);
+		$sysConfig = W::getVar('sysConfig');
+		$configObj = new WSystemConfig();
+		$configObj->parse($sysConfig, (array) $config);
+		$this->config = $configObj;
 	}
 
 }
