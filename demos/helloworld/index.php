@@ -14,23 +14,34 @@ define('C_P', R_P . '/wind/');
 require_once (C_P . '/config.php');
 require_once (F_P . '/wind.php');
 
-
-Wlog::add("afdafafa",'afda');
+$haha = array('aa'=>'afa','asdfa','dddd','aa'=>'afa','dd'=>'eeeee','ffffff');
+Wlog::add($haha,'INFO');
 function a(){
 	echo '<br/>';
 throw new WException('ddddd');	
 }
-echo 1111;
-//a();
-echo 222;
+
+a();
+
 //trigger_error("afafa",E_USER_ERROR);
 $frontController = new WFrontController();
 $frontController->run();
 
-echo 111;
 
+$a = var_export($haha,true);
+echo $a;
 
-
+class a{
+	private $a  = 2;
+	public $b = 3;
+	protected $c;
+	private function h(){
+		
+	}
+	public function tt(){
+		
+	}
+}
 
 
 //throw new Exception('Uncaught Exception');

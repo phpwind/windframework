@@ -35,6 +35,9 @@ class WLog {
 	 */
 	public static function add($msg,$logType = self::INFO){
 		self::$logs[] = self::build($msg,$logType);
+		if(count(self::$logs) > 100){
+			self::flush();
+		}
 	}
 	
 	/**
@@ -109,24 +112,30 @@ class WLog {
 	 * @return string
 	 */
 	private static function build($msg,$logType = self::INFO){
-		if(self::TRACE != $logType){
-			$trace = debug_backtrace();
-			foreach($trace as $info){
-				if('log' == $info['function'] || 'add' == $info['function']){
-					$msg .= ' in '.$info['file'] . ' on line '.$info['line'].' ['.date('Y-m-d H:i',time()).']';
-					break;
-				}
+		$msg = var_export($msg,true);
+	    return 'log' == LOG_DISPLAY_TYPE ? self::buildLog($msg,$logType) :  self::buildHtm($msg,$logType);
+	}
+	
+	private static function info(){
+		$trace = debug_backtrace();
+		$info = '';
+		foreach($trace as $info){
+			if(in_array($info['function'],array('log','add'))){
+				$info = 'This Log was recorded in '.$info['file'] . ' on line '.$info['line'].' ['.date('Y-m-d H:i',time()).']';
+				break;
 			}
 		}
-	   return 'log' == LOG_DISPLAY_TYPE ? self::buildLog($msg,$logType) :  self::buildHtm($msg,$logType);
+		return $info;
 	}
 	
 	private static function buildHtm($msg,$logType = self::INFO){
-		return '<span style="color:red"><strong>'.strtoupper($logType).'</span></strong> : '.$msg.'<br/>';
+		$msg = stripslashes(str_replace(array("\r\n","\r","\n\r","\n"),"<br/>",$msg));
+		return '<span>¡¾<strong>'.strtoupper($logType).'</strong>¡¿'.self::info()."<br/>The Detail Message:".$msg."</span><br/><br/>";
 	}
 	
 	private static function buildLog($msg,$logType = self::INFO){
-		return '¡¾'.strtoupper($logType).'¡¿'.' : '.$msg."\r\n\r\n";
+		$msg = stripslashes(str_replace("<br/>","\r\n",$msg));
+		return '¡¾'.strtoupper($logType).'¡¿'.self::info()."\r\nThe Detail Message:".$msg."\r\n\r\n";
 	}
 	
 }
