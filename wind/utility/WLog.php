@@ -113,22 +113,20 @@ class WLog {
 			$trace = debug_backtrace();
 			foreach($trace as $info){
 				if('log' == $info['function'] || 'add' == $info['function']){
-					$msg .= ' in '.$info['file'] . ' on line '.$info['line'].' ['.date('Y-m-d H:i',time()).']';break;
+					$msg .= ' in '.$info['file'] . ' on line '.$info['line'].' ['.date('Y-m-d H:i',time()).']';
+					break;
 				}
 			}
 		}
-		if('log' == LOG_DISPLAY_TYPE) return self::buildLog($msg,$logType);
-		else return self::buildHtm($msg,$logType);
+	   return 'log' == LOG_DISPLAY_TYPE ? self::buildLog($msg,$logType) :  self::buildHtm($msg,$logType);
 	}
 	
 	private static function buildHtm($msg,$logType = self::INFO){
-		$htmMsg = '<span style="color:red"><strong>'.strtoupper($logType).'</span></strong> : '.$msg.'<br/>';
-		return $htmMsg;
+		return '<span style="color:red"><strong>'.strtoupper($logType).'</span></strong> : '.$msg.'<br/>';
 	}
 	
 	private static function buildLog($msg,$logType = self::INFO){
-		$logMsg = '¡¾'.strtoupper($logType).'¡¿'.' : '.$msg."\r\n\r\n";
-		return $logMsg;
+		return '¡¾'.strtoupper($logType).'¡¿'.' : '.$msg."\r\n\r\n";
 	}
 	
 }

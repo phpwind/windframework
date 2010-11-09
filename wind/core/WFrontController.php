@@ -72,6 +72,7 @@ class WFrontController extends WActionServlet {
 		if(defined('LOG_RECORD')){
 			WLog::flush();
 		}
+		restore_exception_handler();
 	}
 	
 	protected function doPost() {
