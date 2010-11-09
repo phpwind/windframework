@@ -50,13 +50,14 @@ class WFilterChain extends WFilter {
 	 * @param WRouter $router    解析后的路由实例
 	 */
 	public function init($configObj, $router) {
-		$filterConfig = $configObj->getFilterChainConfig();
+		$filterConfig = $configObj->getFilterChainConfig();//获得过滤链信息--含有过滤规则
 		$action = $router->getAction();
 		foreach ((array) $filterConfig as $key => $value) {
 			$path = $configObj->getFiltersConfig($key);
 			//TODO 规则解析
 			if ($path)
-				$filterChain[$key] = array(
+				$this->filterChain[$key] = array(
+					'name' => $key,
 					'path' => $path, 
 					'rule' => $value
 				);
@@ -70,8 +71,8 @@ class WFilterChain extends WFilter {
 	 * @param WFilter $filter 添加的具体过滤器实例对象
 	 */
 	private function addFilter($filter) {
-		if ($filter instanceof WFilter)
-			$this->filters[] = $filter;
+		if ($filter instanceof WFilter) 
+			$this->filters[get_class($filter)] = $filter;
 		else
 			throw new WException('This is not a WFilter object!!!');
 	}
@@ -81,7 +82,7 @@ class WFilterChain extends WFilter {
 	 * @param string $filter  需要获取的过滤器名称
 	 */
 	public function getFilter($filter) {
-		if (!$this->filters[$filter]) {
+		if (!isset($this->filters[$filter])) {
 			W::import($this->filterChain[$filter]['path']);
 			$this->addFilter(new $filter());
 		}
@@ -108,7 +109,7 @@ class WFilterChain extends WFilter {
 	 * 执行过滤链中的预操作
 	 */
 	public function doPreProcessing($httpRequest) {
-		foreach ($this->filterChain as $filter) {
+		foreach ($this->filterChain as $filter => $info) {
 			$this->getFilter($filter)->doPreProcessing($httpRequest);
 		}
 	}
@@ -119,7 +120,8 @@ class WFilterChain extends WFilter {
 	public function doPostProcessing($httpRequest) {
 		$count = count($this->filterChain);
 		for ($i = $count; $i > 0; $i--) {
-			$this->getFilter($this->filterChain[$i - 1])->doPostProcessing($httpRequest);
+			$filter = array_pop($this->filterChain);
+			$this->getFilter($filter['name'])->doPostProcessing($httpRequest);
 		}
 	}
 	
