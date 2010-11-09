@@ -5,6 +5,8 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license
  */
+error_reporting(E_ERROR | E_PARSE);
+
 
 /* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__));
