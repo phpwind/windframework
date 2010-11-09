@@ -16,10 +16,6 @@ class WWebApplicationController implements WApplicationController {
 	private $router = NULL;
 	
 	function processRequest($request) {
-		$c = $request->getGet('c');
-		$a = $request->getGet('a');
-		$obj = new $c();
-		$obj->$a($request);
 	}
 	
 	function initApplicationController() {
