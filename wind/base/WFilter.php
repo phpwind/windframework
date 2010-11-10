@@ -38,6 +38,7 @@ abstract class WFilter {
 		if ($filter != null) {
 			if (!in_array(__CLASS__, class_parents($filter)))
 				throw new WException(get_class($filter) . ' is not extend a filter class!');
+			
 			$filter->doFilter($request, $response);
 		} else
 			WFilterFactory::getFactory()->execute();
