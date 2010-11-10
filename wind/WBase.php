@@ -5,10 +5,10 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license
  */
-error_reporting(E_ERROR | E_PARSE);
+//error_reporting(E_ERROR | E_PARSE);
 
 /* 路径相关配置信息  */
-defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__));
+defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
 
 /* 扩展名 */
@@ -57,24 +57,23 @@ class W {
 			'W', 
 			'WExceptionHandler'
 		));
-		defined('LOG_RECORD') && W::import('utility.wlog.php');
-		defined('DEBUG') && W::import('utility.wdebug.php');
+		defined('LOG_RECORD') && W::import('utility.wlog');
+		defined('DEBUG') && W::import('utility.wdebug');
+	}
+	
+	static public function getSystemConfig() {
+		return self::getInstance('WSystemConfig');
 	}
 	
 	/**
 	 * 获得文件的绝对路径
 	 * @param string $path
 	 */
-	static public function getRealPath($path = '', $is_dir = false, $root = '') {
-		if (!$root)
-			$root = self::getFrameWorkPath();
-		$realPath = $root . self::getSeparator() . $path;
+	static public function getRealPath($path = '', $root = '', $is_dir = false) {
+		$realPath = self::getFrameWorkPath() . $root . self::getSeparator() . $path;
 		$realPath = str_replace(IMPORT_SEPARATOR, self::getSeparator(), $realPath);
-		if (!$is_dir) {
-			$pos = strrpos($realPath, self::getSeparator());
-			$ext = substr($realPath, $pos + 1);
-			$realPath = substr($realPath, 0, $pos) . '.' . substr($realPath, $pos + 1);
-		}
+		if (!$is_dir)
+			$realPath .= '.' . self::getExtendName();
 		return realpath($realPath);
 	}
 	
@@ -100,7 +99,7 @@ class W {
 	 * @return string
 	 */
 	static public function getSystemConfigPath() {
-		return SYSTEM_CONFIG_PATH . W::getSeparator() . W::$_system_config;
+		return self::getRealPath(W::$_system_config, SYSTEM_CONFIG_PATH, false);
 	}
 	
 	/**
@@ -163,20 +162,27 @@ class W {
 	 * @return void
 	 */
 	static public function import($filePath) {
+		if (!isset($filePath))
+			throw new Exception('is not right path');
+		
 		if (file_exists($filePath)) {
 			self::_include($filePath);
 		}
 		
-		$filePath = trim(str_replace(self::getSeparator(), IMPORT_SEPARATOR, $filePath), ' ');
-		$filePath = trim($filePath, ' ' . IMPORT_SEPARATOR);
-		if (!isset($filePath) || ($pos = strrpos($filePath, '.')) === false)
-			throw new Exception('is not right path');
+		if (($pos = strrpos($filePath, '.')) === false) {
+			self::_include($filePath);
+		}
 		
-		$isPackage = (string) substr($filePath, $pos + 1) === IMPORT_PACKAGE;
+		$filePath = str_replace(self::getSeparator(), IMPORT_SEPARATOR, $filePath);
+		$filePath = trim($filePath, ' ' . IMPORT_SEPARATOR);
+		
+		$className = (string) substr($filePath, $pos + 1);
+		$filePath = (string) substr($filePath, 0, $pos);
+		$isPackage = $className === IMPORT_PACKAGE;
 		$dir = self::getFrameWorkPath();
 		$classNames = array();
 		if ($isPackage) {
-			$dir = self::getRealPath(substr($filePath, 0, $pos), true);
+			$dir = self::getRealPath(substr($filePath, 0, $pos), '', true);
 			if (!is_dir($dir))
 				throw new Exception('文件路径 ' . $dir . ' 不存在');
 			
@@ -184,17 +190,19 @@ class W {
 				throw new Exception('文件 ' . $dir . ' 打开异常');
 			
 			while (($file = readdir($dh)) !== false) {
-				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file)))
-					$classNames[] = $dir . self::getSeparator() . $file;
+				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file))) {
+					$pos = strrpos($file, '.');
+					if (($pos = strrpos($file, '.')) !== false && substr($file, $pos + 1) == self::getExtendName())
+						$classNames[] = substr($file, 0, $pos);
+				}
 			}
 			closedir($dh);
 		} else
-			$classNames[] = self::getRealPath($filePath);
+			$classNames[] = $className;
 		
-		foreach ($classNames as $value) {
-			self::_include($value);
+		foreach ($classNames as $className) {
+			self::_include($className, $filePath);
 		}
-		
 		return;
 	}
 	
@@ -204,18 +212,14 @@ class W {
 	 * @param string $classPath 类路径/文件路径
 	 * @return string
 	 */
-	static private function _include($realPath) {
-		if (empty($realPath)) {return;}
-		$pos = strrpos($realPath, self::getSeparator());
-		$fileName = substr($realPath, $pos + 1);
-		$dir = substr($realPath, 0, $pos);
-		$fileName = substr($fileName, 0, strrpos($fileName, '.'));
+	static private function _include($fileName, $filePath = '') {
+		if (empty($fileName)) {return;}
+		$realPath = self::getRealPath($fileName, $filePath);
 		if (!file_exists($realPath))
 			throw new Exception('file ' . $realPath . ' is not exists');
 		
 		if (key_exists($fileName, self::$_included)) {return $realPath;}
 		include $realPath;
-		
 		$var = get_defined_vars();
 		if (count($var) > 4)
 			self::$_vars += array_splice($var, 4);
@@ -259,8 +263,8 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _autoIncludeBaseLib() {
-		self::import('exception.WException.php');
-		self::import('base.WModule.php');
+		self::import('exception.WException');
+		self::import('base.WModule');
 		self::import('base.*');
 		self::import('core.*');
 	}

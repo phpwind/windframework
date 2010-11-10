@@ -14,8 +14,8 @@ $sysConfig = array(
 	
 	//保存过滤路径
 	'filters' => array(
-		'testFilter' => 'filter.TestFilter.php', 
-		'test1Filter' => 'filter.Test1Filter.php'
+		'testFilter' => 'filter.TestFilter', 
+		'test1Filter' => 'filter.Test1Filter'
 	), 
 	
 	/* 应用配置 */
@@ -34,6 +34,6 @@ $sysConfig = array(
 	), 
 	/* 路由解析器配置 */
 	'routerParser' => array(
-		'url' => 'router.parser.WUrlRouteParser.php'
+		'url' => 'router.parser.WUrlRouteParser'
 	)
 );

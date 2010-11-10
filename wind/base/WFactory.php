@@ -14,6 +14,8 @@
  * @package 
  */
 abstract class WFactory {
+	
 	protected static $_instance;
+	
 	static abstract function create($args = '');
 }

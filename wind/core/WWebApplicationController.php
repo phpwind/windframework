@@ -16,10 +16,12 @@ class WWebApplicationController implements WApplicationController {
 	private $router = NULL;
 	
 	function processRequest($request) {
+
 	}
 	
-	function initApplicationController() {
-
+	function createRouter() {
+		$router = WRouterFactory::create(W::getSystemConfig());
+		
 	}
 	
 	/**

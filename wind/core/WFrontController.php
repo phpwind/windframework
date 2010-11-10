@@ -92,7 +92,7 @@ class WFrontController extends WActionServlet {
 		
 		W::import($realPath);
 		$sysConfig = W::getVar('sysConfig');
-		$configObj = new WSystemConfig();
+		$configObj = W::getInstance('WSystemConfig');
 		$configObj->parse($sysConfig, (array) $config);
 		$this->config = $configObj;
 	}
