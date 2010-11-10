@@ -16,19 +16,33 @@
  * @package 
  */
 abstract class WRouter {
-	protected $_urlRule;
-	protected $_parserName = 'url';
+	protected $routerRule;
+	protected $routerName = 'url';
 	
-	protected $_action;
-	protected $_controller;
-	protected $_app1;
-	protected $_app2;
+	protected $action = 'run';
+	protected $controller = 'index';
+	protected $app1 = 'default';
+	protected $app2;
+	
+	function __construct($configObj = null) {
+		$this->init($configObj);
+	}
+	
+	/**
+	 * 初始化路由配置
+	 * @param WSystemConfig $configObj
+	 */
+	protected function init($configObj) {
+		if ($configObj === null)
+			throw new WException('Config object is null!!!');
+		$this->routerRule = $configObj->getRouterRule($this->routerName);
+	}
 	
 	/**
 	 * 通过实现该接口实现路由解析
 	 * @return WRouterContext
 	 */
-	abstract function doParser($configObj, $request);
+	abstract function doParser($request, $response);
 	
 	/**
 	 * 获得业务操作

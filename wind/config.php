@@ -34,6 +34,6 @@ $sysConfig = array(
 	), 
 	/* Â·ÓÉ½âÎöÆ÷ÅäÖÃ */
 	'routerParser' => array(
-		'url' => 'router.parser.WUrlRouteParser'
+		'url' => 'core.WUrlRouter'
 	)
 );

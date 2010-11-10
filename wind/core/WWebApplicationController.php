@@ -15,18 +15,25 @@
 class WWebApplicationController implements WApplicationController {
 	private $router = NULL;
 	
-	function processRequest($request) {
+	/**
+	 * @param WHttpRequest $request
+	 */
+	public function processRequest($request) {
 
 	}
+	
+	public function init() {}
 	
 	/**
 	 * 获得一个路由实例
 	 * @param WSystemConfig $configObj
 	 */
-	function createRouter($configObj) {
+	public function createRouter($configObj) {
 		$router = WRouterFactory::getFactory()->create($configObj);
 		if ($router === null)
 			throw new WException('create router failed!!');
 		return $router;
 	}
+	
+	public function destory() {}
 }

@@ -13,5 +13,7 @@
  * @package 
  */
 Interface WApplicationController {
-	
+	public function init();
+	public function processRequest($request);
+	public function destory();
 }

@@ -27,9 +27,9 @@ defined('LOG_PATH') or define('LOG_PATH', WIND_PATH . DIRECTORY_SEPARATOR . 'log
 
 defined('LOG_DISPLAY_TYPE') or define('LOG_DISPLAY_TYPE', 'log');
 
-defined('LOG_RECORD') or define('LOG_RECORD', true);
+//defined('LOG_RECORD') or define('LOG_RECORD', true);
 
-defined('DEBUG') or define('DEBUG', true);
+//defined('DEBUG') or define('DEBUG', true);
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>

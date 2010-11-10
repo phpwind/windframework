@@ -49,10 +49,14 @@ class WFrontController extends WActionServlet {
 	}
 	
 	function process($request, $response) {
+		$config = W::getInstance('WSystemConfig');
 		/* 初始化一个应用服务器 */
 		$applicationController = new WWebApplicationController();
-		$router = $applicationController->createRouter('');
+		$router = $applicationController->createRouter($config);
 		$router->doParser($response, $request);
+		
+		
+		$applicationController->destory();
 	}
 	
 	protected function afterProcess() {

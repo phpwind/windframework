@@ -16,8 +16,6 @@
 class WUrlRouter extends WRouter {
 	protected $_parserName = 'url';
 	
-	public function __construct() {}
-	
 	/**
 	 * 调用该方法实现路由解析
 	 * 获得到 request 的静态对象，得到request的URL信息
@@ -26,23 +24,8 @@ class WUrlRouter extends WRouter {
 	 * @param WSystemConfig $configObj
 	 * @return WRouterContext
 	 */
-	public function doParser($configObj, $request) {
-		$this->_urlRule = $configObj->getRouterRule($this->_parserName);
-		$this->_init($request);
+	public function doParser($request, $response) {
+		
 	}
 	
-	/**
-	 * 路由解析器初始化操作
-	 * @param WHttpRequest $request
-	 */
-	protected function _init($request) {
-		if (!$this->_urlRule)
-			throw new Exception('url parser rule is empty, please check your config');
-		$keys = array_keys($this->_urlRule);
-		$this->_action = $request->getGet($keys[0]);
-		$this->_controller = $request->getGet($keys[1]);
-		$this->_app1 = $request->getGet($keys[2]);
-		$this->_app2 = $request->getGet($keys[3]);
-	}
-
 }

@@ -17,13 +17,16 @@ class WRouterFactory extends WFactory {
 	private $parserPath = 'router.parser.WUrlRouteParser';
 	private $router = null;
 	
+	private static $instance = null;
+	
 	/**
 	 * 返回路由实例
 	 * @param WSystemConfig $configObj
+	 * @return WRouter
 	 */
 	function create($configObj = null) {
 		if ($this->router === null) {
-			self::initConfig($configObj);
+			$this->_initConfig($configObj);
 			if (($pos = strrpos($this->parserPath, '.')) === false)
 				$className = $this->parserPath;
 			else
@@ -32,7 +35,10 @@ class WRouterFactory extends WFactory {
 			if (!class_exists($className))
 				return null;
 			$class = new ReflectionClass($className);
-			$this->router = $class->newInstance();
+			$this->router = call_user_func_array(array(
+				$class, 
+				'newInstance'
+			), array($configObj));
 		}
 		return $this->router;
 	}

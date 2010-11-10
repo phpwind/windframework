@@ -15,6 +15,8 @@ class WFilterFactory extends WFactory {
 	private $callBack = null;
 	private $args = array();
 	
+	static private $instance = null;
+	
 	/**
 	 * 创建一个Filter
 	 * @param WSystemConfig $config
