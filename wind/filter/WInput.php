@@ -17,7 +17,7 @@ class WInput extends WFilter {
 	 * ¹ýÂËÊäÈë
 	 * @see security::filter
 	 */
-	public function doPreProcessing($httpRequest) {
+	protected function doBeforeProcess($request, $response) {
 		$allowed = array('GLOBALS' => 1,'_GET' => 1,'_POST' => 1,'_COOKIE' => 1,'_FILES' => 1,'_SERVER' => 1,
 						'P_S_T' => 1);
 		foreach ($GLOBALS as $key => $value) {
@@ -46,10 +46,11 @@ class WInput extends WFilter {
 		foreach ($_GET as $_key => $_value) {
 			WInput::checkVar($_GET[$_key]);
 		}
+		echo __CLASS__ . ' do before <br>';
 	}
 	
-	public function doPostProcessing($httpRequest) {
-		
+	protected function doAfterProcess($request, $response) {
+		echo __CLASS__ . ' do after <br>';
 	}
 	
 	/**
