@@ -3,23 +3,23 @@
  * @author xiaoxia xu <x_824@sina.com> 2010-11-4
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * @license
  */
 
 /**
  * 过滤器类抽象类
- * 
+ *
  * 用户要添加自己的过滤器类，则必须继承该抽象类,并且用户通过实现：
  * doPreProcessing和doPostProcessing来加入过滤链中。
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
- * @version $Id$ 
+ * @version $Id$
  * @package
  */
 abstract class WFilter {
 	/**
 	 * 保存该过滤器的配置信息
-	 * @var mixed $filterName 
+	 * @var mixed $filterName
 	 */
 	protected $filterConfig = '';
 	/**
@@ -30,7 +30,7 @@ abstract class WFilter {
 		if ($filterConfig)
 			$this->filterConfig = $filterConfig;
 	}
-	
+
 	/**
 	 * @param WRequest $request
 	 * @param WResponse $response
@@ -46,7 +46,7 @@ abstract class WFilter {
 			WFilterFactory::execute();
 		$this->doAfterProcess($request, $response);
 	}
-	
+
 	/**
 	 * 获得过滤器配置信息
 	 * @return mixed
@@ -60,7 +60,7 @@ abstract class WFilter {
 	 * @param WHttpRequest $httpRequest
 	 */
 	abstract public function doBeforeProcess($request, $response);
-	
+
 	/**
 	 * 用户需要实现
 	 * 后置操作
