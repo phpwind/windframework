@@ -82,24 +82,23 @@ class WFilterFactory extends WFactory {
 	
 	/**
 	 * 在filter链中动态的删除一个filter
+	 * 思路：记录删除的位置，并且从被删除的元素开始，所有后面的元素都往前移，移完之后将最后一个元素删除
 	 * @param string $filterName
 	 */
 	public function deleteFilter($filterName) {
-		if (!in_array($filterName, $this->filters))
-			return false;
-		$deleteIndex = 0;
+		$deleteIndex = -1;
 		foreach ($this->filters as $key => $value) {
-			if ($value[0] == $filterName) {
-				$deleteIndex = $key;
-				unset($this->filters[$key]);
-			}
+			if ($key > $deleteIndex && $deleteIndex >= 0) $this->filters[$key-1] = $value;
+			if ($value[0] == $filterName) $deleteIndex = $key;
 		}
-		if ($deleteIndex == $this->index)
-			$this->index++;
+		if ($deleteIndex >= 0) {
+			array_pop($this->filters);
+		}		
 	}
 	
 	/**
 	 * 在filter链中动态的添加一个filter，当befor为空时，添加到程序结尾处
+	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor前面，并将所有原befor位置后的过滤器往后移一位
 	 * @param string $filterName
 	 * @param string $path
 	 * @param string $beforFilter

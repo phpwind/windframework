@@ -87,6 +87,7 @@ class WFrontController extends WActionServlet {
 		), $this->reuqest, $this->response);
 		WFilterFactory::getFactory()->initFilters($this->config);
 		WFilterFactory::getFactory()->addFilter('WInput', 'filter.WInput', 'Test1Filter');
+		WFilterFactory::getFactory()->deleteFilter('TestFilter');
 		$filter = WFilterFactory::getFactory()->create();
 		if (is_object($filter))
 			$filter->doFilter($this->reuqest, $this->response);
