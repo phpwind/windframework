@@ -48,7 +48,9 @@ class WFrontController extends WActionServlet {
 
 	}
 	
-	function process($request, $response) {
+	function process($request, $response) {		
+		echo 'hello world!';
+		echo 'sfsdf', '<Br/>';
 		$config = W::getInstance('WSystemConfig');
 		/* 初始化一个应用服务器 */
 		$applicationController = new WWebApplicationController();
@@ -83,7 +85,9 @@ class WFrontController extends WActionServlet {
 			get_class($this), 
 			'process'
 		), $this->reuqest, $this->response);
-		$filter = WFilterFactory::getFactory()->create($this->config);
+		WFilterFactory::getFactory()->initFilters($this->config);
+		WFilterFactory::getFactory()->addFilter('WInput', 'filter.WInput', 'Test1Filter');
+		$filter = WFilterFactory::getFactory()->create();
 		if (is_object($filter))
 			$filter->doFilter($this->reuqest, $this->response);
 	}

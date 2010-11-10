@@ -84,7 +84,7 @@ class WFilterFactory extends WFactory {
 	 * 在filter链中动态的删除一个filter
 	 * @param string $filterName
 	 */
-	protected function deleteFilter($filterName) {
+	public function deleteFilter($filterName) {
 		if (!in_array($filterName, $this->filters))
 			return false;
 		$deleteIndex = 0;
@@ -104,21 +104,16 @@ class WFilterFactory extends WFactory {
 	 * @param string $path
 	 * @param string $beforFilter
 	 */
-	protected function addFilter($filterName, $path, $beforFilter = '') {
+	public function addFilter($filterName, $path, $beforFilter = '') {
 		$addIndex = count($this->filters);
 		if ($beforFilter) {
 			$exchange = null;
 			foreach ($this->filters as $key => $value) {
-				if ($key > $addIndex) {
-					$this->filters[$key] = $exchange;
-					$exchange = $value;
-				}
-				if ($value[0] == $beforFilter) {
-					$addIndex = $key + 1;
-					$exchange = $this->filters[$key + 1];
-				}
+				if ($key > $addIndex)  $this->filters[$key] = $exchange;
+				if ($value[0] == $beforFilter) $addIndex = $key;
+				$exchange = $value;
 			}
-			$exchange != null && $this->filters[$key + 1] = $exchange;
+			$exchange != null && $this->filters[] = $exchange;
 		}
 		$this->filters[$addIndex] = array(
 			$filterName, 
@@ -138,7 +133,7 @@ class WFilterFactory extends WFactory {
 	 * 初始化一个过滤器
 	 * @param WSystemConfig $config
 	 */
-	private function _initFilters($configObj) {
+	public function initFilters($configObj) {
 		$this->index = 0;
 		$this->filters = array();
 		$config = $configObj->getFiltersConfig();
@@ -149,7 +144,7 @@ class WFilterFactory extends WFactory {
 				$filterName = substr($value, $pos + 1);
 			$this->filters[] = array(
 				$filterName, 
-				$value, 
+				$value,
 				$key
 			);
 		}
