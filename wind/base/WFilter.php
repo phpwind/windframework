@@ -24,13 +24,10 @@ abstract class WFilter {
 	protected $filterConfig = '';
 	/**
 	 * 初始化过滤器，设置该过滤器的配置信息
-	 * @param mixed $filterName
+	 * @param WSystemConfig $configObj
 	 */
-	public function init($filterConfig) {
-		if ($filterConfig)
-			$this->filterConfig = $filterConfig;
-	}
-
+	public function init($configObj = null) {}
+	
 	/**
 	 * @param WRequest $request
 	 * @param WResponse $response
@@ -46,7 +43,7 @@ abstract class WFilter {
 			WFilterFactory::getFactory()->execute();
 		$this->doAfterProcess($request, $response);
 	}
-
+	
 	/**
 	 * 获得过滤器配置信息
 	 * @return mixed
@@ -59,12 +56,12 @@ abstract class WFilter {
 	 * 预操作，由用户的实现来决定用户的该操作是预操作还是后置操作
 	 * @param WHttpRequest $httpRequest
 	 */
-	abstract public function doBeforeProcess($request, $response);
-
+	abstract protected function doBeforeProcess($request, $response);
+	
 	/**
 	 * 用户需要实现
 	 * 后置操作
 	 * @param WHttpRequest $httpRequest
 	 */
-	abstract public function doAfterProcess($request, $response);
+	abstract protected function doAfterProcess($request, $response);
 }

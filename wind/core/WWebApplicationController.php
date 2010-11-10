@@ -13,13 +13,14 @@
  * @package 
  */
 class WWebApplicationController implements WApplicationController {
-	private $router = NULL;
 	
 	/**
 	 * @param WHttpRequest $request
+	 * @param WHttpResponse $response
+	 * @param WRouter $router
 	 */
-	public function processRequest($request) {
-
+	public function processRequest($request, $response, $router) {
+		
 	}
 	
 	public function init() {}

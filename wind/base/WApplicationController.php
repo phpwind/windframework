@@ -14,6 +14,6 @@
  */
 Interface WApplicationController {
 	public function init();
-	public function processRequest($request);
+	public function processRequest($request, $response, $router);
 	public function destory();
 }
