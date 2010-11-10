@@ -26,7 +26,7 @@ class WFilterFactory extends WFactory {
 		return self::createFilter();
 	}
 	
-	static function &createFilter() {
+	static function createFilter() {
 		if ((int) self::$index >= count(self::$filters)) {
 			self::$state = true;
 			return null;
@@ -59,7 +59,7 @@ class WFilterFactory extends WFactory {
 		} elseif (is_string(self::$callBack))
 			if (!function_exists(self::$callBack))
 				throw new WException(self::$callBack . ' is not exists!');
-				
+		
 		call_user_func_array(self::$callBack, (array) self::$args);
 	}
 	

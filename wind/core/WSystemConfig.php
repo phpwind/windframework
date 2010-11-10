@@ -26,6 +26,7 @@ class WSystemConfig extends WConfig {
 	public function parse($configSystem, $configCustom = array()) {
 		if (!is_array($configSystem) || !is_array($configCustom))
 			throw new Exception('the format of config file is error!!!');
+			
 		if (empty($configSystem))
 			throw new Exception('system config file is not exists!!!');
 		

@@ -20,11 +20,11 @@ class WLog {
 	const INFO = 'info';
 	const DB = 'db';
 	/*写入日志类别*/
-	private static $msgType =  array(
-		'system'=>0,
-		'email'=>1,
-		'tcp'=>2,
-		'file'=>3
+	private static $msgType = array(
+		'system' => 0, 
+		'email' => 1, 
+		'tcp' => 2, 
+		'file' => 3
 	);
 	
 	private static $logs = array();
@@ -33,9 +33,9 @@ class WLog {
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 */
-	public static function add($msg,$logType = self::INFO){
-		self::$logs[] = self::build($msg,$logType);
-		if(count(self::$logs) > 100){
+	public static function add($msg, $logType = self::INFO) {
+		self::$logs[] = self::build($msg, $logType);
+		if (count(self::$logs) > 100) {
 			self::flush();
 		}
 	}
@@ -48,11 +48,11 @@ class WLog {
 	 * @param $dst		日志被记录于何处
 	 * @param $header	其它信息
 	 */
-	public static function log($msg,$logType = self::INFO,$type = 'file',$dst = '',$header = ''){
-		$type = in_array($type,self::$msgType) ? $type : 'file';
+	public static function log($msg, $logType = self::INFO, $type = 'file', $dst = '', $header = '') {
+		$type = in_array($type, self::$msgType) ? $type : 'file';
 		$dst = empty($dst) ? self::getFileName() : $dst;
-		$msg = self::build($msg,$logType);
-		error_log($msg,self::$msgType[$type],$dst,$header);
+		$msg = self::build($msg, $logType);
+		error_log($msg, self::$msgType[$type], $dst, $header);
 	}
 	
 	/**
@@ -61,38 +61,42 @@ class WLog {
 	 * @param string $dst  日志被记录于何处
 	 * @param string $header 其它信息
 	 */
-	public static function flush($type = 'file',$dst = '',$header = ''){
-		if(empty(self::$logs)) return false;
-		$type = in_array($type,self::$msgType) ? $type : 'file';
+	public static function flush($type = 'file', $dst = '', $header = '') {
+		if (empty(self::$logs))
+			return false;
+		$type = in_array($type, self::$msgType) ? $type : 'file';
 		$dst = empty($dst) ? self::getFileName() : $dst;
-		error_log(join("",self::$logs),self::$msgType[$type],$dst,$header);
+		error_log(join("", self::$logs), self::$msgType[$type], $dst, $header);
 		self::$logs = array();
 	}
 	
 	/*
 	 * 清空日志文件
 	 */
-	public static function clearFiles($time = 0){
-		if(!is_int($time) || 0 > intval($time) || !is_dir(LOG_PATH) ) return false;
+	public static function clearFiles($time = 0) {
+		if (!is_int($time) || 0 > intval($time) || !is_dir(LOG_PATH))
+			return false;
 		$dir = dir(LOG_PATH);
-		while(false != ($file = $dir->read())){
-			$file = LOG_PATH.$file;
-			is_file($file) ? (microtime(true)-filectime($file)) > $time && unlink($file) : '';		
+		while (false != ($file = $dir->read())) {
+			$file = LOG_PATH . $file;
+			is_file($file) ? (microtime(true) - filectime($file)) > $time && unlink($file) : '';
 		}
 		$dir->close();
 		return true;
 	}
+	
 	/**
 	 * 取得日志文件名
 	 */
-	private static function getFileName(){
+	private static function getFileName() {
 		self::createFolder(LOG_PATH);
-		$size = 1024*50;
-		$filename = LOG_PATH.date("Y_m_d").'.'.LOG_DISPLAY_TYPE;
-		if(is_file($filename) && $size < filesize($filename)){
-			for($i=0;$i<100;$i++){
-				$filename = LOG_PATH.date("Y_m_d_{$i}").'.'.LOG_DISPLAY_TYPE;
-				if(!is_file($filename) || (is_file($filename) && $size > filesize($filename))) break;
+		$size = 1024 * 50;
+		$filename = LOG_PATH . date("Y_m_d") . '.' . LOG_DISPLAY_TYPE;
+		if (is_file($filename) && $size < filesize($filename)) {
+			for ($i = 0; $i < 100; $i++) {
+				$filename = LOG_PATH . date("Y_m_d_{$i}") . '.' . LOG_DISPLAY_TYPE;
+				if (!is_file($filename) || (is_file($filename) && $size > filesize($filename)))
+					break;
 			}
 		}
 		return $filename;
@@ -112,33 +116,41 @@ class WLog {
 	 * @param const  $logType 日志类别
 	 * @return string
 	 */
-	private static function build($msg,$logType = self::INFO){
-		$msg = var_export($msg,true);
-	    return 'log' == LOG_DISPLAY_TYPE ? self::buildLog($msg,$logType) :  self::buildHtm($msg,$logType);
+	private static function build($msg, $logType = self::INFO) {
+		$msg = var_export($msg, true);
+		return 'log' == LOG_DISPLAY_TYPE ? self::buildLog($msg, $logType) : self::buildHtm($msg, $logType);
 	}
 	
-	private static function info(){
+	private static function info() {
 		$trace = debug_backtrace();
 		$info = '';
-		foreach($trace as $info){
-			if(in_array($info['function'],array('log','add'))){
-				$info = 'This Log was recorded in '.$info['file'] . ' on line '.$info['line'].' ['.date('Y-m-d H:i',time()).']';
+		foreach ($trace as $info) {
+			if (in_array($info['function'], array(
+				'log', 
+				'add'
+			))) {
+				$info = 'This Log was recorded in ' . $info['file'] . ' on line ' . $info['line'] . ' [' . date('Y-m-d H:i', time()) . ']';
 				break;
 			}
 		}
 		return $info;
 	}
 	
-	private static function buildHtm($msg,$logType = self::INFO){
-		$msg = stripslashes(str_replace(array("\r\n","\r","\n\r","\n"),"<br/>",$msg));
-		return '<span>【<strong>'.strtoupper($logType).'</strong>】'.self::info()."<br/>The Detail Message:".$msg."</span><br/><br/>";
+	private static function buildHtm($msg, $logType = self::INFO) {
+		$msg = stripslashes(str_replace(array(
+			"\r\n", 
+			"\r", 
+			"\n\r", 
+			"\n"
+		), "<br/>", $msg));
+		return '<span>【<strong>' . strtoupper($logType) . '</strong>】' . self::info() . "<br/>The Detail Message:" . $msg . "</span><br/><br/>";
 	}
 	
-	private static function buildLog($msg,$logType = self::INFO){
-		$msg = stripslashes(str_replace("<br/>","\r\n",$msg));
-		return '【'.strtoupper($logType).'】'.self::info()."\r\nThe Detail Message:".$msg."\r\n\r\n";
+	private static function buildLog($msg, $logType = self::INFO) {
+		$msg = stripslashes(str_replace("<br/>", "\r\n", $msg));
+		return '【' . strtoupper($logType) . '】' . self::info() . "\r\nThe Detail Message:" . $msg . "\r\n\r\n";
 	}
-	
+
 }
 
 	

@@ -7,6 +7,7 @@
  */
 //error_reporting(E_ERROR | E_PARSE);
 
+
 /* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
@@ -44,7 +45,7 @@ class W {
 	
 	static $_vars = array();
 	
-	static $_system_config = 'config.php';
+	static $_system_config = 'config';
 	
 	/**
 	 * 初始化框架上下文
@@ -57,8 +58,8 @@ class W {
 			'W', 
 			'WExceptionHandler'
 		));
-		defined('LOG_RECORD') && W::import('utility.wlog');
-		defined('DEBUG') && W::import('utility.wdebug');
+		defined('LOG_RECORD') && W::import('utility.WLog');
+		defined('DEBUG') && W::import('utility.WDebug');
 	}
 	
 	static public function getSystemConfig() {
@@ -70,7 +71,12 @@ class W {
 	 * @param string $path
 	 */
 	static public function getRealPath($path = '', $root = '', $is_dir = false) {
-		$realPath = self::getFrameWorkPath() . $root . self::getSeparator() . $path;
+		if (file_exists($path) && $root == '')
+			return realpath($path);
+		if ($root == '' || !realpath($root))
+			$root = self::getFrameWorkPath() . $root . self::getSeparator();
+		
+		$realPath = $root . $path;
 		$realPath = str_replace(IMPORT_SEPARATOR, self::getSeparator(), $realPath);
 		if (!$is_dir)
 			$realPath .= '.' . self::getExtendName();
@@ -167,10 +173,12 @@ class W {
 		
 		if (file_exists($filePath)) {
 			self::_include($filePath);
+			return;
 		}
 		
 		if (($pos = strrpos($filePath, '.')) === false) {
 			self::_include($filePath);
+			return;
 		}
 		
 		$filePath = str_replace(self::getSeparator(), IMPORT_SEPARATOR, $filePath);
@@ -184,10 +192,10 @@ class W {
 		if ($isPackage) {
 			$dir = self::getRealPath(substr($filePath, 0, $pos), '', true);
 			if (!is_dir($dir))
-				throw new Exception('文件路径 ' . $dir . ' 不存在');
+				throw new Exception('the file path ' . $dir . ' is not exists!!');
 			
 			if (!$dh = opendir($dir))
-				throw new Exception('文件 ' . $dir . ' 打开异常');
+				throw new Exception('the file ' . $dir . ' open failed!');
 			
 			while (($file = readdir($dh)) !== false) {
 				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file))) {
@@ -218,11 +226,15 @@ class W {
 		if (!file_exists($realPath))
 			throw new Exception('file ' . $realPath . ' is not exists');
 		
-		if (key_exists($fileName, self::$_included)) {return $realPath;}
-		include $realPath;
+		if (key_exists($fileName, self::$_included))
+			return $realPath;
+		
+		if (!is_dir($realPath) && $realPath)
+			include $realPath;
+		
 		$var = get_defined_vars();
-		if (count($var) > 4)
-			self::$_vars += array_splice($var, 4);
+		if (count($var) > 3)
+			self::$_vars += array_splice($var, 3);
 		
 		self::$_included[$fileName] = $realPath;
 		return $realPath;

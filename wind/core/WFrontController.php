@@ -37,7 +37,7 @@ class WFrontController extends WActionServlet {
 		if ($this->config === null)
 			throw new WException('init system config failed!');
 		$this->beforProcess();
-		if (!class_exists(WFilterFactory))
+		if (!class_exists('WFilterFactory'))
 			parent::run();
 		else
 			$this->_initFilter();
@@ -49,9 +49,9 @@ class WFrontController extends WActionServlet {
 	}
 	
 	function process($request, $response) {
-		$applicationController = new WWebApplicationController();
+		/*$applicationController = new WWebApplicationController();
 		$router = $applicationController->createRouterParser();
-		$router->doParser($response, $request);
+		$router->doParser($response, $request);*/
 	}
 	
 	protected function afterProcess() {
