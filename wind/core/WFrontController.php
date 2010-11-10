@@ -49,9 +49,10 @@ class WFrontController extends WActionServlet {
 	}
 	
 	function process($request, $response) {
-		/*$applicationController = new WWebApplicationController();
-		$router = $applicationController->createRouterParser();
-		$router->doParser($response, $request);*/
+		/* 初始化一个应用服务器 */
+		$applicationController = new WWebApplicationController();
+		$router = $applicationController->createRouter('');
+		$router->doParser($response, $request);
 	}
 	
 	protected function afterProcess() {
@@ -72,11 +73,11 @@ class WFrontController extends WActionServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function _initFilter() {
-		WFilterFactory::setExecute(array(
+		WFilterFactory::getFactory()->setExecute(array(
 			get_class($this), 
 			'process'
 		), $this->reuqest, $this->response);
-		$filter = WFilterFactory::create($this->config);
+		$filter = WFilterFactory::getFactory()->create($this->config);
 		if (is_object($filter))
 			$filter->doFilter($this->reuqest, $this->response);
 	}

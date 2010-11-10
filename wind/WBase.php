@@ -167,7 +167,7 @@ class W {
 	 * @author Qiong Wu
 	 * @return void
 	 */
-	static public function import($filePath) {
+	static public function import($filePath, $instance = false) {
 		if (!isset($filePath))
 			throw new Exception('is not right path');
 		
@@ -177,7 +177,7 @@ class W {
 		}
 		
 		if (($pos = strrpos($filePath, '.')) === false) {
-			self::_include($filePath);
+			self::_include($filePath, '', $instance);
 			return;
 		}
 		
@@ -209,7 +209,7 @@ class W {
 			$classNames[] = $className;
 		
 		foreach ($classNames as $className) {
-			self::_include($className, $filePath);
+			self::_include($className, $filePath, $instance);
 		}
 		return;
 	}
@@ -220,7 +220,7 @@ class W {
 	 * @param string $classPath 类路径/文件路径
 	 * @return string
 	 */
-	static private function _include($fileName, $filePath = '') {
+	static private function _include($fileName, $filePath = '', $instance = false) {
 		if (empty($fileName)) {return;}
 		$realPath = self::getRealPath($fileName, $filePath);
 		if (!file_exists($realPath))
@@ -237,6 +237,7 @@ class W {
 			self::$_vars += array_splice($var, 3);
 		
 		self::$_included[$fileName] = $realPath;
+		$instance && self::getInstance($fileName);
 		return $realPath;
 	}
 	

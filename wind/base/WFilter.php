@@ -37,13 +37,13 @@ abstract class WFilter {
 	 */
 	public function doFilter($request, $response) {
 		$this->doBeforeProcess($request, $response);
-		$filter = WFilterFactory::create();
+		$filter = WFilterFactory::getFactory()->create();
 		if ($filter != null) {
 			if (!in_array(__CLASS__, class_parents($filter)))
 				throw new WException(get_class($filter) . ' is not extend a filter class!');
 			$filter->doFilter($request, $response);
 		} else
-			WFilterFactory::execute();
+			WFilterFactory::getFactory()->execute();
 		$this->doAfterProcess($request, $response);
 	}
 

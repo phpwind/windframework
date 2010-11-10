@@ -19,21 +19,14 @@ class WWebApplicationController implements WApplicationController {
 
 	}
 	
-	function createRouter() {
-		$router = WRouterFactory::create(W::getSystemConfig());
-		
-	}
-	
 	/**
+	 * 获得一个路由实例
 	 * @param WSystemConfig $configObj
-	 * @return WUrlRouteParser
 	 */
-	function createRouterParser($configObj) {
-		$parser = $configObj->getRouterConfig('parser');
-		$path = $configObj->getRouterParser($parser);
-		W::import($configObj->getRouterParser($parser));
-		//TODO get router class name
-		return new WUrlRouter();
+	function createRouter($configObj) {
+		$router = WRouterFactory::getFactory()->create($configObj);
+		if ($router === null)
+			throw new WException('create router failed!!');
+		return $router;
 	}
-
 }

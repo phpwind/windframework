@@ -15,7 +15,9 @@
  */
 abstract class WFactory {
 	
-	protected static $_instance;
+	protected static $instance = null;
 	
-	static abstract function create($args = '');
+	abstract static function getFactory();
+	
+	abstract function create($args = '');
 }

@@ -7,60 +7,60 @@
  */
 
 class WFilterFactory extends WFactory {
-	private static $index = 0;
-	private static $filters = array();
-	private static $configs = array();
-	private static $state = false;
+	private $index = 0;
+	private $filters = array();
+	private $configs = array();
+	private $state = false;
 	
-	private static $callBack = null;
-	private static $args = array();
+	private $callBack = null;
+	private $args = array();
 	
 	/**
 	 * 创建一个Filter
 	 * @param WSystemConfig $config
 	 * @return WFilter
 	 */
-	static function create($config = null) {
-		if ($config != null && empty(self::$filters))
-			self::_initFilters($config);
-		return self::createFilter();
+	function create($config = null) {
+		if ($config != null && empty($this->filters))
+			$this->_initFilters($config);
+		return $this->createFilter();
 	}
 	
-	static function createFilter() {
-		if ((int) self::$index >= count(self::$filters)) {
-			self::$state = true;
+	function createFilter() {
+		if ((int) $this->index >= count($this->filters)) {
+			$this->state = true;
 			return null;
 		}
-		list($filterName, $path) = self::$filters[self::$index++];
+		list($filterName, $path) = $this->filters[$this->index++];
 		W::import($path);
 		if ($filterName && class_exists($filterName) && in_array('WFilter', class_parents($filterName))) {
 			$class = new ReflectionClass($filterName);
 			$object = $class->newInstance();
 			return $object;
 		}
-		self::createFilter();
+		$this->createFilter();
 	}
 	
 	/**
 	 * 执行完过滤器后执行该方法的回调
 	 */
-	static public function execute() {
-		if (self::$callBack === null)
-			self::$callBack = array(
+	public function execute() {
+		if ($this->callBack === null)
+			$this->callBack = array(
 				'WFrontController', 
 				'process'
 			);
-		if (is_array(self::$callBack)) {
-			list($className, $action) = self::$callBack;
+		if (is_array($this->callBack)) {
+			list($className, $action) = $this->callBack;
 			if (!class_exists($className, true))
 				throw new WException($className . ' is not exists!');
 			if (!in_array($action, get_class_methods($className)))
 				throw new WException('method ' . $action . ' is not exists in ' . $className . '!');
-		} elseif (is_string(self::$callBack))
-			if (!function_exists(self::$callBack))
-				throw new WException(self::$callBack . ' is not exists!');
+		} elseif (is_string($this->callBack))
+			if (!function_exists($this->callBack))
+				throw new WException($this->callBack . ' is not exists!');
 		
-		call_user_func_array(self::$callBack, (array) self::$args);
+		call_user_func_array($this->callBack, (array) $this->args);
 	}
 	
 	/**
@@ -69,31 +69,31 @@ class WFilterFactory extends WFactory {
 	 * @param array $callback
 	 * @param array $args
 	 */
-	static public function setExecute($callback) {
+	public function setExecute($callback) {
 		$args = func_get_args();
 		if (count($args) > 1) {
 			unset($args[0]);
-			self::$args = $args;
+			$this->args = $args;
 		}
-		self::$callBack = $callback;
+		$this->callBack = $callback;
 	}
 	
 	/**
 	 * 在filter链中动态的删除一个filter
 	 * @param string $filterName
 	 */
-	static protected function deleteFilter($filterName) {
-		if (!in_array($filterName, self::$filters))
+	protected function deleteFilter($filterName) {
+		if (!in_array($filterName, $this->filters))
 			return false;
 		$deleteIndex = 0;
-		foreach (self::$filters as $key => $value) {
+		foreach ($this->filters as $key => $value) {
 			if ($value[0] == $filterName) {
 				$deleteIndex = $key;
-				unset(self::$filters[$key]);
+				unset($this->filters[$key]);
 			}
 		}
-		if ($deleteIndex == self::$index)
-			self::$index++;
+		if ($deleteIndex == $this->index)
+			$this->index++;
 	}
 	
 	/**
@@ -102,23 +102,23 @@ class WFilterFactory extends WFactory {
 	 * @param string $path
 	 * @param string $beforFilter
 	 */
-	static protected function addFilter($filterName, $path, $beforFilter = '') {
-		$addIndex = count(self::$filters);
+	protected function addFilter($filterName, $path, $beforFilter = '') {
+		$addIndex = count($this->filters);
 		if ($beforFilter) {
 			$exchange = null;
-			foreach (self::$filters as $key => $value) {
+			foreach ($this->filters as $key => $value) {
 				if ($key > $addIndex) {
-					self::$filters[$key] = $exchange;
+					$this->filters[$key] = $exchange;
 					$exchange = $value;
 				}
 				if ($value[0] == $beforFilter) {
 					$addIndex = $key + 1;
-					$exchange = self::$filters[$key + 1];
+					$exchange = $this->filters[$key + 1];
 				}
 			}
-			$exchange != null && self::$filters[$key + 1] = $exchange;
+			$exchange != null && $this->filters[$key + 1] = $exchange;
 		}
-		self::$filters[$addIndex] = array(
+		$this->filters[$addIndex] = array(
 			$filterName, 
 			$path
 		);
@@ -128,25 +128,44 @@ class WFilterFactory extends WFactory {
 	 * 获得当前过滤器状态，是否已经被初始化了
 	 * @return string
 	 */
-	static public function getState() {
-		return self::$state;
+	public function getState() {
+		return $this->state;
 	}
 	
 	/**
 	 * 初始化一个过滤器
 	 * @param WSystemConfig $config
 	 */
-	static private function _initFilters($configObj) {
-		self::$index = 0;
-		self::$filters = array();
+	private function _initFilters($configObj) {
+		$this->index = 0;
+		$this->filters = array();
 		$config = $configObj->getFiltersConfig();
 		foreach ((array) $config as $key => $value) {
-			self::$filters[] = array(
-				$key, 
-				$value
+			if (($pos = strrpos($value, '.')) === false)
+				$filterName = $value;
+			else
+				$filterName = substr($value, $pos + 1);
+			$this->filters[] = array(
+				$filterName, 
+				$value, 
+				$key
 			);
 		}
-		self::$configs = $config;
+		$this->configs = $config;
 	}
-
+	
+	/**
+	 * @return WFilterFactory
+	 */
+	static function getFactory() {
+		if (self::$instance === null) {
+			$class = new ReflectionClass(__CLASS__);
+			$args = func_get_args();
+			self::$instance = call_user_func_array(array(
+				$class, 
+				'newInstance'
+			), (array) $args);
+		}
+		return self::$instance;
+	}
 }
