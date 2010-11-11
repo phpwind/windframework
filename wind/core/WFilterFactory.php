@@ -98,7 +98,7 @@ class WFilterFactory extends WFactory {
 	
 	/**
 	 * 在filter链中动态的添加一个filter，当befor为空时，添加到程序结尾处
-	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor前面，并将所有原befor位置后的过滤器往后移一位
+	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor后面，并将所有原befor位置后的过滤器往后移一位
 	 * @param string $filterName
 	 * @param string $path
 	 * @param string $beforFilter
@@ -108,9 +108,15 @@ class WFilterFactory extends WFactory {
 		if ($beforFilter) {
 			$exchange = null;
 			foreach ($this->filters as $key => $value) {
-				if ($key > $addIndex)  $this->filters[$key] = $exchange;
-				if ($value[0] == $beforFilter) $addIndex = $key;
-				$exchange = $value;
+				if ($key > $addIndex) { 
+					$this->filters[$key] = $exchange;
+					$exchange = $value;
+				}
+				if ($value[0] == $beforFilter) {
+					$addIndex = $key+1;
+					if (!isset($this->filters[$key+1])) break;
+					$exchange = $this->filters[$key+1];
+				}
 			}
 			$exchange != null && $this->filters[] = $exchange;
 		}
@@ -132,7 +138,7 @@ class WFilterFactory extends WFactory {
 	 * 初始化一个过滤器
 	 * @param WSystemConfig $config
 	 */
-	public function initFilters($configObj) {
+	private function _initFilters($configObj) {
 		$this->index = 0;
 		$this->filters = array();
 		$config = $configObj->getFiltersConfig();
