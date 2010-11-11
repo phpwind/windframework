@@ -21,12 +21,16 @@ abstract class WDbAdapter{
 	protected $last_errstr = '';
 	protected $last_errcode = 0;
 	protected $sqlBuilder = null;
-	protected $is_conntected = 0;
+	protected $isConntected = 0;
+	protected $isLog = false;
 	
 	
 	protected $transCounter = 0;
 	public $enableSavePoint = 0;
 	protected $savepoint = array();
+	
+	protected static $writeTimes = 0;
+	protected static $readTimes = 0;
 	protected function __construct(){
 		
 	}
@@ -39,6 +43,7 @@ abstract class WDbAdapter{
 	public function addConnect();
 	public function switchConnect();
 	public function switchDataBase();
+	public function getSqlBuilder();
 	public function query();
 	public function exceute();
 	public function insert();
@@ -46,6 +51,9 @@ abstract class WDbAdapter{
 	public function select();
 	public function delete();
 	public function getAll();
+	public function getMetaTables();
+	public function getMetaColumns();
+	public function getExecSqlTime();
 	
 	protected function close();
 	protected function dispose();
@@ -55,7 +63,16 @@ abstract class WDbAdapter{
 	public function getAffectedRows();
 	public function getInsertId();
 	public function getLastSql(){
-		return $this->sql;
+		return $this->last_sql;
+	}
+	public function getWriteTimes(){
+		return self::$writeTimes;
+	}
+	public function getReadTimes(){
+		return self::$readTimes;
+	}
+	public function getQueryTimes(){
+		return (int)self::$writeTimes+(int)self::$readTimes;
 	}
 	
 	
