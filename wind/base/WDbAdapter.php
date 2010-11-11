@@ -14,7 +14,7 @@
  * @package 
  */
 abstract class WDbAdapter{
-	protected $linked = array();
+	
 	protected $linking = null;
 	protected $queryId = '';
 	protected $last_sql = '';
@@ -24,22 +24,54 @@ abstract class WDbAdapter{
 	protected $isConntected = 0;
 	protected $isLog = false;
 	
-	
+	protected $dbtype = '';
 	protected $transCounter = 0;
 	public $enableSavePoint = 0;
 	protected $savepoint = array();
 	
 	protected static $writeTimes = 0;
 	protected static $readTimes = 0;
+	protected static $linked = array();
+	protected static $config = array();
 	protected function __construct(){
 		
 	}
 	
-	private function parseConfig(){
-		
+	private function parseConfig($config){
+		$db_config = array();
+		if(empty($config) || !is_array($config)){
+			throw new WSqlException("database config is not correct",1);
+		}
+		foreach($config as $key=>$value){
+			if(is_array($value)) $db_config[$key] = $value;
+			if(is_string($value)) $db_config[$key] = $this->parseDsn($value);
+		}
+		return self::$config = $db_config;
 	}
-	private function parseDSN();
-	protected function connect();
+	private function parseDSN($dsn){
+		$ifdsn = preg_match('/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(0|1)*$/',trim($dsn),$config);
+		if(empty($dsn) || empty($ifdsn) || empty($config)){
+			throw new WSqlException("database config is not correct",1);
+		}
+     	return array (
+            'dbtype'   => $config[1],
+            'dbuser'  => $config[2],
+            'dbpass'   => $config[3],
+            'dbhost'  => $config[4],
+            'dbport'    => $config[5],
+     		'dbname'   => $config[6],
+     		'master'   => $config[7],
+           );
+	}
+	
+	function patchConnect(){
+		foreach(self::$config as $key=>$value){
+			$tmp = $value['master'];
+			self::$linked[$tmp][$key] = $this->connect($value);
+		}
+	}
+	
+	protected abstract function connect($config);
 	public function addConnect();
 	public function switchConnect();
 	public function switchDataBase();

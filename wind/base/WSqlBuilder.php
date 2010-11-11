@@ -35,4 +35,8 @@ abstract class WSqlBuilder{
 	public abstract function getUpdateSql();
 	public abstract function getDeleteSql();
 	public abstract function getSelectSql();
+	
+	public function escapeString(){
+		
+	}
 }
