@@ -8,21 +8,98 @@
 
 class WHttpRequest extends WModule implements WRequest {
 	
+	/**
+	 * 访问的端口号
+	 * @var int
+	 */
 	private $_port = null;
+	/**
+	 * 客户端IP
+	 * @var string
+	 */
+	private $_clientIp = null;
 	
+	/**
+	 * 语言信息
+	 * @var string
+	 */
 	private $_language = null;
+	
+	/**
+	 * 路径信息
+	 * @var string
+	 */
 	private $_pathInfo = null;
+	
+	/**
+	 * @var string
+	 */
 	private $_scriptUrl = null;
+	
+	/**
+	 * @var string
+	 */
 	private $_requestUri = null;
+	
+	/**
+	 * 基础路径信息
+	 * @var string
+	 */
 	private $_baseUrl = null;
+	private $_hostInfo = null;
+	
+	private static $_instance = null;
+	
+	/**
+	 * 请求参数信息
+	 * @var array
+	 */
+	private $_params = array();
+	
+	/**
+	 * 返回请求对象的单例实例
+	 * 
+	 * @return WHttpRequest
+	 */
+	function &getInstance() {
+		if (self::$_instance === null) {
+			$class = __CLASS__;
+			self::$_instance = new $class();
+		}
+		return self::$_instance;
+	}
 	
 	/**
 	 * 根据名称获得服务器和执行环境信息,如果名称不存在则返回NULL
 	 * 
-	 * @param string $name
+	 * @param string|null $name
 	 */
 	function getAttribute($name) {
-		return isset($_REQUEST[$name]) ? $_REQUEST[$name] : null;
+		if (isset($_GET[$name]))
+			return $_GET[$name];
+		else if (isset($_POST[$name]))
+			return $_POST[$name];
+		else if (isset($_COOKIE[$name]))
+			return $_COOKIE[$name];
+		else if (isset($_REQUEST[$name]))
+			return $_REQUEST[$name];
+		else if (isset($_ENV[$name]))
+			return $_ENV[$name];
+		else if (isset($_SERVER[$name]))
+			return $_SERVER[$name];
+		else
+			return null;
+	}
+	
+	/**
+	 * 从query中取值
+	 * 
+	 * @param string $name
+	 * @param string $default
+	 * @return string|null
+	 */
+	function getQuery($name = null, $defaultValue = null) {
+		return $this->getGet($name, $defaultValue);
 	}
 	
 	/**
@@ -30,10 +107,12 @@ class WHttpRequest extends WModule implements WRequest {
 	 * 
 	 * @param string $name
 	 * @param string $defaultValue
-	 * @return string
+	 * @return string|null
 	 */
-	public function getPost($name = '', $defaultValue = null) {
-		return !$name ? $defaultValue : isset($_POST[$name]) ? $_POST[$name] : $defaultValue;
+	public function getPost($name = null, $defaultValue = null) {
+		if ($name)
+			return $_POST;
+		return isset($_POST[$name]) ? $_POST[$name] : $defaultValue;
 	}
 	
 	/**
@@ -41,17 +120,60 @@ class WHttpRequest extends WModule implements WRequest {
 	 * 
 	 * @param string $name
 	 * @param string $defaultValue
-	 * @return string
+	 * @return string|null
 	 */
 	public function getGet($name = '', $defaultValue = null) {
-		return !$name ? $defaultValue : isset($_GET[$name]) ? $_GET[$name] : $defaultValue;
+		if ($name == null)
+			return $_GET;
+		return (isset($_GET[$name])) ? $_GET[$name] : $defaultValue;
 	}
 	
 	/**
-	 * @param unknown_type $name
+	 * 返回cookie的值，如果$name=null则返回所有Cookie值
+	 * 
+	 * @param string $key
+	 * @param string $defaultValue
+	 * @return string|null|array
 	 */
-	public function getParameterValues($name, $defaultValue = null) {
-		return isset($_GET[$name]) ? $_GET[$name] : (isset($_POST[$name]) ? $_POST[$name] : $defaultValue);
+	public function getCookie($name = null, $defaultValue = null) {
+		if ($name == null)
+			return $_COOKIE;
+		return (isset($_COOKIE[$name])) ? $_COOKIE : $defaultValue;
+	}
+	
+	/**
+	 * 返回Server的值，如果$name为空则返回所有Server的值
+	 * 
+	 * @param string $name
+	 * @param string $defaultValue
+	 * @return string|null|array
+	 */
+	public function getServer($name = null, $defaultValue = null) {
+		if ($name == null)
+			return $_SERVER;
+		return (isset($_SERVER[$name])) ? $_SERVER[$name] : $defaultValue;
+	}
+	
+	/**
+	 * 返回env中的值，如果$name为null则返回所有env的值
+	 * 
+	 * @param string|null $name
+	 * @param string $defaultValue
+	 * @return string|null|array
+	 */
+	public function getEnv($name = null, $defaultValue = null) {
+		if ($name == null)
+			return $_ENV;
+		return (isset($_ENV[$name])) ? $_ENV[$name] : $defaultValue;
+	}
+	
+	/**
+	 * 获取协议名称
+	 * 
+	 * @return string
+	 */
+	public function getScheme() {
+		return ($this->getServer('HTTPS') == 'on') ? 'https' : 'http';
 	}
 	
 	/**
@@ -59,81 +181,146 @@ class WHttpRequest extends WModule implements WRequest {
 	 * @return string
 	 */
 	public function getProtocol() {
-		return isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
+		return $this->getServer('SERVER_PROTOCOL', 'HTTP/1.0');
 	}
 	
 	/**
-	 * 返回当前执行脚本的绝对路径
-	 * @return string
+	 * 返回访问IP
+	 * 
+	 * @return string|0.0.0.0
 	 */
-	public function getScriptUrl() {
-		if ($this->_scriptUrl === null) {
-			$scriptName = basename($_SERVER['SCRIPT_FILENAME']);
-			if (basename($_SERVER['SCRIPT_NAME']) === $scriptName)
-				$this->_scriptUrl = $_SERVER['SCRIPT_NAME'];
-			else if (basename($_SERVER['PHP_SELF']) === $scriptName)
-				$this->_scriptUrl = $_SERVER['PHP_SELF'];
-			else if (isset($_SERVER['ORIG_SCRIPT_NAME']) && basename($_SERVER['ORIG_SCRIPT_NAME']) === $scriptName)
-				$this->_scriptUrl = $_SERVER['ORIG_SCRIPT_NAME'];
-			else if (($pos = strpos($_SERVER['PHP_SELF'], '/' . $scriptName)) !== false)
-				$this->_scriptUrl = substr($_SERVER['SCRIPT_NAME'], 0, $pos) . '/' . $scriptName;
-			else if (isset($_SERVER['DOCUMENT_ROOT']) && strpos($_SERVER['SCRIPT_FILENAME'], $_SERVER['DOCUMENT_ROOT']) === 0)
-				$this->_scriptUrl = str_replace('\\', '/', str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']));
-			else
-				throw new Exception('CHttpRequest is unable to determine the entry script URL.');
-		}
-		return $this->_scriptUrl;
+	public function getClientIp() {
+		if (!$this->_clientIp)
+			$this->_getClientIp();
+		return $this->_clientIp;
 	}
 	
 	/**
-	 * 返回要访问的页面
+	 * 获得请求的方法
+	 */
+	public function getRequestMethod() {
+		return $this->getServer('REQUEST_METHOD', 'POST');
+	}
+	
+	/**
+	 * 返回该请求是否为ajax请求
+	 * @return Boolean
+	 */
+	public function getIsAjaxRequest() {
+		return $this->getServer('HTTP_X_REQUESTED_WITH') === 'XMLHttpRequest';
+	}
+	
+	/**
+	 * Returns a boolean indicating whether this request was made using a
+	 * secure channel, such as HTTPS.
+	 * @return Boolean
+	 */
+	public function isSecure() {
+		return !strcasecmp($this->getServer('HTTPS'), 'on');
+	}
+	
+	/**
+	 * 返回请求是否为GET请求类型
+	 * @return boolean 
+	 */
+	public function isGet() {
+		return !strcasecmp($this->getRequestMethod(), 'GET');
+	}
+	
+	/**
+	 * 返回请求是否为POST请求类型
+	 * @return boolean
+	 */
+	public function isPost() {
+		return !strcasecmp($this->getRequestMethod(), 'POST');
+	}
+	
+	/**
+	 * 返回请求是否为PUT请求类型
+	 * @return boolean
+	 */
+	public function isPut() {
+		return !strcasecmp($this->getRequestMethod(), 'PUT');
+	}
+	
+	/**
+	 * 返回请求是否为DELETE请求类型
+	 * @return boolean
+	 */
+	public function isDelete() {
+		return !strcasecmp($this->getRequestMethod(), 'Delete');
+	}
+	
+	/**
+	 * 初始化请求的资源标识符
+	 * 这里的uri是去除协议名、主机名的
+	 * 
 	 * @return string
 	 */
 	public function getRequestUri() {
-		if ($this->_requestUri === null) {
-			if (isset($_SERVER['HTTP_X_REWRITE_URL']))
-				$this->_requestUri = $_SERVER['HTTP_X_REWRITE_URL'];
-			else if (isset($_SERVER['REQUEST_URI'])) {
-				$this->_requestUri = $_SERVER['REQUEST_URI'];
-				if (strpos($this->_requestUri, $_SERVER['HTTP_HOST']) !== false)
-					$this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
-			} else if (isset($_SERVER['ORIG_PATH_INFO'])) {
-				$this->_requestUri = $_SERVER['ORIG_PATH_INFO'];
-				if (!empty($_SERVER['QUERY_STRING']))
-					$this->_requestUri .= '?' . $_SERVER['QUERY_STRING'];
-			} else
-				throw new Exception('CHttpRequest is unable to determine the request URI.');
-		}
+		if (!$this->_requestUri)
+			$this->initRequestUri();
 		return $this->_requestUri;
 	}
 	
 	/**
+	 * 返回当前执行脚本的绝对路径
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_scriptUrl = /example/index.php
+	 * 
+	 * @throws WException
+	 * @return string
+	 */
+	public function getScriptUrl() {
+		if (!$this->_scriptUrl)
+			$this->_initScriptUrl();
+		return $this->_scriptUrl;
+	}
+	
+	/**
+	 * 获取Http头信息
+	 * @param string $header 头部名称
+	 */
+	public function getHeader($header) {
+		$temp = strtoupper(str_replace('-', '_', $header));
+		if (substr($temp, 0, 5) != 'HTTP_')
+			$temp = 'HTTP_' . $temp;
+		if (($header = $this->getServer($temp)) != null)
+			return $header;
+		if (function_exists('apache_request_headers')) {
+			$headers = apache_request_headers();
+			if (!empty($headers[$header]))
+				return $headers[$header];
+		}
+		return false;
+	}
+	
+	/**
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
+	 * 
+	 * @throws WException
 	 * @return string
 	 */
 	public function getPathInfo() {
-		if ($this->_pathInfo === null) {
-			$requestUri = urldecode($this->getRequestUri());
-			$scriptUrl = $this->getScriptUrl();
-			$baseUrl = $this->getBaseUrl();
-			if (strpos($requestUri, $scriptUrl) === 0)
-				$pathInfo = substr($requestUri, strlen($scriptUrl));
-			else if ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
-				$pathInfo = substr($requestUri, strlen($baseUrl));
-			else if (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
-				$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
-			else
-				throw new Exception('CHttpRequest is unable to determine the path info of the request.');
-			
-			if (($pos = strpos($pathInfo, '?')) !== false)
-				$pathInfo = substr($pathInfo, 0, $pos);
-			$this->_pathInfo = trim($pathInfo, '/');
-		}
+		if (!$this->_pathInfo)
+			$this->_initPathInfo();
 		return $this->_pathInfo;
 	}
 	
 	/**
-	 * 设置跟路径
+	 * 获取基础URL,这里是去除了脚本文件以及访问参数信息的URL地址信息
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_baseUrl = example
+	 * return absolute url address when absolute is true 
+	 * 'example' will be return when absolute is false
+	 * 'http://www.phpwind.net/example' will be return when absolute is true
+	 * 'http://www.phpwind.net:80/example' will be return when absolute is true
+	 * 'http://www.phpwind.net:443/example' will be return when absolute is true
+	 * 
 	 * @param boolean $absolute
 	 * @return string
 	 */
@@ -144,24 +331,47 @@ class WHttpRequest extends WModule implements WRequest {
 	}
 	
 	/**
-	 * 返回当前运行脚本所在的服务器的主机名。如果脚本运行于虚拟主机中，该名称是由那个虚拟主机所设置的值决定
+	 * 获得主机信息，包含协议信息，主机名，访问端口信息
+	 * 
+	 * @return string
 	 */
-	public function getServerName() {
-		return isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+	public function getHostInfo() {
+		if ($this->_hostInfo === null)
+			$this->_initHostInfo();
+		return $this->_hostInfo;
 	}
 	
 	/**
+	 * 返回当前运行脚本所在的服务器的主机名。
+	 * 如果脚本运行于虚拟主机中
+	 * 该名称是由那个虚拟主机所设置的值决定
+	 * 
+	 * @return string|''
+	 */
+	public function getServerName() {
+		return $this->getServer('SERVER_NAME', '');
+	}
+	
+	/**
+	 * 返回服务端口号
+	 * https链接的默认端口号为443
+	 * http链接的默认端口号为80
+	 * 
 	 * @return int
 	 */
 	public function getServerPort() {
-		if ($this->_port === null) {
+		if (!$this->_port) {
 			$_default = $this->isSecure() ? 443 : 80;
-			$this->_port = isset($_SERVER['SERVER_PORT']) ? (int) $_SERVER['SERVER_PORT'] : $_default;
+			$this->setServerPort($this->getServer('SERVER_PORT', $_default));
 		}
 		return $this->_port;
 	}
 	
 	/**
+	 * 设置服务端口号
+	 * https链接的默认端口号为443
+	 * http链接的默认端口号为80
+	 * 
 	 * @param int $port
 	 */
 	public function setServerPort($port) {
@@ -169,57 +379,31 @@ class WHttpRequest extends WModule implements WRequest {
 	}
 	
 	/**
-	 * 返回浏览当前页面的用户的 IP 地址
-	 */
-	public function getRemoteAddr() {
-		return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
-	}
-	
-	/**
-	 * 返回浏览当前页面的用户的主机名。DNS 反向解析不依赖于用户的 REMOTE_ADDR
+	 * 返回浏览当前页面的用户的主机名
+	 * DNS 反向解析不依赖于用户的 REMOTE_ADDR
+	 * 
+	 * @return string|null
 	 */
 	public function getRemoteHost() {
-		return isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
-	}
-	
-	/**
-	 * 获得请求的方法
-	 */
-	public function getRequestMethod() {
-		return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'POST';
-	}
-	
-	/**
-	 * Returns a boolean indicating whether this request was made using a
-	 * secure channel, such as HTTPS.
-	 * @return Boolean
-	 */
-	public function isSecure() {
-		return isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'], 'on');
-	}
-	
-	/**
-	 * 返回该请求是否为ajax请求
-	 * @return Boolean
-	 */
-	public function getIsAjaxRequest() {
-		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+		return $this->getServer('REMOTE_HOST');
 	}
 	
 	/**
 	 * 返回浏览器发送Referer请求头，可以让服务器了解和追踪发出本次请求的起源URL地址
-	 * @return string or null 
+	 * 
+	 * @return string|null 
 	 */
 	public function getUrlReferer() {
-		return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+		return $this->getServer('HTTP_REFERER');
 	}
 	
 	/**
 	 * 获得用户机器上连接到 Web 服务器所使用的端口号
-	 * @return number or null
+	 * 
+	 * @return number|null
 	 */
 	public function getRemotePort() {
-		return isset($_SERVER['REMOTE_PORT']) ? (int) $_SERVER['REMOTE_PORT'] : null;
+		return $this->getServer('REMOTE_PORT');
 	}
 	
 	/**
@@ -230,44 +414,175 @@ class WHttpRequest extends WModule implements WRequest {
 	 * @return string
 	 */
 	public function getUserAgent() {
-		return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		return $this->getServer('HTTP_USER_AGENT', '');
 	}
 	
 	/**
 	 * 返回当前请求头中 Accept: 项的内容，
 	 * Accept头字段用于指出客户端程序能够处理的MIME类型，例如 text/html,image/*
 	 * 
-	 * @return array
+	 * @return string|''
 	 */
 	public function getAcceptTypes() {
-		if (isset($_SERVER['HTTP_ACCEPT']))
-			return explode(',', $_SERVER['HTTP_ACCEPT']);
-		return null;
+		return $this->getServer('HTTP_ACCEPT', '');
 	}
 	
 	/**
 	 * 返回客户端程序可以能够进行解码的数据编码方式，这里的编码方式通常指某种压缩方式
 	 * 
-	 * @return array or null
+	 * @return string|''
 	 */
 	public function getAcceptCharset() {
-		if (isset($_SERVER['HTTP_ACCEPT_ENCODING']))
-			return explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']);
-		return null;
+		return $this->getServer('HTTP_ACCEPT_ENCODING', '');
 	}
 	
 	/**
 	 * 返回客户端程序期望服务器返回哪个国家的语言文档 
 	 * Accept-Language: en-us,zh-cn
 	 * 
-	 * @return multitype:|NULL
+	 * @return string
 	 */
 	public function getAcceptLanguage() {
-		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-			$_language = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		if (!$this->_language) {
+			$_language = explode(',', $this->getServer('HTTP_ACCEPT_LANGUAGE', ''));
 			$this->_language = $_language[0] ? $_language[0] : 'zh-cn';
 		}
 		return $this->_language;
+	}
+	
+	/**
+	 * 返回访问的IP地址
+	 * 
+	 * Example:
+	 * $this->_clientIp = 127.0.0.1
+	 * 
+	 * @return string 
+	 */
+	private function _getClientIp() {
+		if (($ip = $this->getServer('HTTP_CLIENT_IP')) != null) {
+			$this->_clientIp = $ip;
+		} elseif (($_ip = $this->getServer('HTTP_X_FORWARDED_FOR')) != null) {
+			$ip = strtok($_ip, ',');
+			do {
+				$ip = ip2long($ip);
+				if (!(($ip == 0) || ($ip == 0xFFFFFFFF) || ($ip == 0x7F000001) || (($ip >= 0x0A000000) && ($ip <= 0x0AFFFFFF)) || (($ip >= 0xC0A8FFFF) && ($ip <= 0xC0A80000)) || (($ip >= 0xAC1FFFFF) && ($ip <= 0xAC100000)))) {
+					$this->_clientIp = long2ip($ip);
+					return;
+				}
+			} while (($ip = strtok(',')));
+		} elseif (($ip = $this->getServer('HTTP_PROXY_USER')) != null) {
+			$this->_clientIp = $ip;
+		} elseif (($ip = $this->getServer('REMOTE_ADDR')) != null) {
+			$this->_clientIp = $ip;
+		} else {
+			$this->_clientIp = "0.0.0.0";
+		}
+	}
+	
+	/**
+	 * 初始化请求的资源标识符
+	 * 这里的uri是去除协议名、主机名的
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_requestUri = /example/index.php?a=test
+	 * 
+	 * @throws WException
+	 * @return
+	 */
+	private function initRequestUri() {
+		if (($requestUri = $this->getServer('HTTP_X_REWRITE_URL')) != null) {
+			$this->_requestUri = $requestUri;
+		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
+			$this->_requestUri = $requestUri;
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) //去掉请求头部中的hose项
+				$this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
+			$this->_requestUri = $requestUri;
+			if (($query = $this->getServer('QUERY_STRING')) != null)
+				$this->_requestUri .= '?' . $query;
+		} else
+			throw new WException(__CLASS__ . ' is unable to determine the request URI.');
+		
+		$this->_requestUri = $requestUri;
+	}
+	
+	/**
+	 * 初始化当前执行脚本的绝对路径
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_scriptUrl = /example/index.php
+	 * 
+	 * @throws WException
+	 * @return
+	 */
+	private function _initScriptUrl() {
+		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null)
+			throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+		
+		$scriptName = basename($scriptName);
+		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
+			$this->_scriptUrl = $_scriptName;
+		} elseif (($_scriptName = $this->getServer('PHP_SELF')) != null && basename($_scriptName) === $scriptName) {
+			$this->_scriptUrl = $_scriptName;
+		} elseif (($_scriptName = $this->getServer('ORIG_SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
+			$this->_scriptUrl = $_scriptName;
+		} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
+			$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
+		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
+			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
+		} else
+			throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+	}
+	
+	/**
+	 * 获得主机信息，包含协议信息，主机名，访问端口信息
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_hostInfo = http://www.phpwind.net/
+	 * $this->_hostInfo = http://www.phpwind.net:80/
+	 * $this->_hostInfo = https://www.phpwind.net:443/
+	 * 
+	 * @throws WException
+	 * @return 
+	 */
+	private function _initHostInfo() {
+		$http = $this->isSecure() ? 'https' : 'http';
+		if (($httpHost = $this->getServer('HTTP_HOST')) != null)
+			$this->_hostInfo = $http . '://' . $httpHost;
+		elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
+			$this->_hostInfo = $http . '://' . $httpHost;
+			if (($port = $this->getServerPort()) != null)
+				$this->_hostInfo .= ':' . $port;
+		} else
+			throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+	}
+	
+	/**
+	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
+	 * 
+	 * @throws WException
+	 * @return
+	 */
+	private function _initPathInfo() {
+		$requestUri = urldecode($this->getRequestUri());
+		$scriptUrl = $this->getScriptUrl();
+		$baseUrl = $this->getBaseUrl();
+		if (strpos($requestUri, $scriptUrl) === 0)
+			$pathInfo = substr($requestUri, strlen($scriptUrl));
+		elseif ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
+			$pathInfo = substr($requestUri, strlen($baseUrl));
+		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
+			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+		else
+			throw new WException('');
+		
+		if (($pos = strpos($pathInfo, '?')) !== false)
+			$pathInfo = substr($pathInfo, 0, $pos);
+		
+		$this->_pathInfo = trim($pathInfo, '/');
 	}
 
 }
