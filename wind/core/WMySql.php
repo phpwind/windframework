@@ -21,6 +21,7 @@ class WMySql extends WDbAdapter {
 		if (isset ( $key )) {
 			throw new WSqlException ( "you must define master and slave database", 1 );
 		}
+		$this->key = $key;
 		$host = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
 		$pconnect = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
 		$force = $config ['force'] ? $config ['force'] : $this->force;

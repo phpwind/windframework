@@ -22,9 +22,10 @@ abstract class WDbAdapter {
 	protected $sqlBuilder = null;
 	protected $isConntected = 0;
 	protected $isLog = false;
-	
+	protected $key = '';
 	
 	protected $dbtype = '';
+	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocsql' => 'OcSql' );
 	protected $transCounter = 0;
 	public $enableSavePoint = 0;
 	protected $savepoint = array ();
@@ -72,16 +73,36 @@ abstract class WDbAdapter {
 			throw new WSqlException ( "this database connecton is not exists", 1 );
 		}
 		$this->linking = self::$linked [$key];
+		$this->key = $key;
 	}
 	public function changeDb();
-	public function getSqlBuilder() {
+	public function getSqlBuilderFactory() {
+		$config = self::$config [$this->key];
+		if (empty ( $config ) || ! is_array ( $config )) {
+			throw new WSqlException ( "database config is not correct", 1 );
+		}
+		$dbType = $this->dbMap[strtolower($config ['dbtype'])];
+		$builder = 'W'.$dbType.'Builder';
+		$this->sqlBuilder = W::getInstance($builder);//¼ÓÔØÎÊÌâ
 	}
-	public abstract function query();
-	public abstract function exceute();
-	public abstract function insert();
-	public abstract function update();
-	public abstract function select();
-	public abstract function delete();
+	public abstract function query($sql,$key,$current);
+	public abstract function exceute($sql,$key,$current);
+	public  function insert(){
+		$sql = $this->sqlBuilder->getInsertSql();
+		return $this->execute($sql,$key);
+	}
+	public  function update(){
+		$sql = $this->sqlBuilder->getUpdateSql();
+		return $this->execute($sql,$key);
+	}
+	public function select(){
+		$sql = $this->sqlBuilder->getUpdateSql();
+		return $this->query($sql,$key);
+	}
+	public  function delete(){
+		$sql = $this->sqlBuilder->getDeleteSql();
+		return $this->execute($sql,$key);
+	}
 	public abstract function getAll();
 	public abstract function getMetaTables();
 	public abstract function getMetaColumns();
@@ -111,28 +132,30 @@ abstract class WDbAdapter {
 		return $key ? self::$linked [$key] : $this->linking;
 	}
 	
-	protected function getMasterSlave(){
-		$array = array();
-		foreach(self::$config as $key=>$value){
-			if(in_array($value['optype'],array('master','slave'))){
-				$array[$value['optype']][$key] = $value;
+	protected function getMasterSlave() {
+		$array = array ();
+		foreach ( self::$config as $key => $value ) {
+			if (in_array ( $value ['optype'], array ('master', 'slave' ) )) {
+				$array [$value ['optype']] [$key] = $value;
 			}
 		}
 		return $array;
 	}
 	
-	protected function getLinking($optype = '',$key = ''){
-		$masterSlave = $this->getMasterSlave();
-		$config = empty($masterSlave) || empty($optype) ? self::$config : $masterSlave[$optype];
-		$key = $key ? $key : $this->getConfigKeyByPostion($config, mt_rand(0,count($config)-1));
-		$this->linking = self::$linked[$key];
+	protected function getLinking($optype = '', $key = '') {
+		$masterSlave = $this->getMasterSlave ();
+		$config = empty ( $masterSlave ) || empty ( $optype ) ? self::$config : $masterSlave [$optype];
+		$key = $key ? $key : $this->getConfigKeyByPostion ( $config, mt_rand ( 0, count ( $config ) - 1 ) );
+		$this->linking = self::$linked [$key];
+		$this->key = $key;
 	}
 	
-	private function getConfigKeyByPostion($config,$pos = 0){
+	private function getConfigKeyByPostion($config, $pos = 0) {
 		$i = 0;
-		foreach((array)$config as $key=>$value){
-			if($pos === $i) return $key;
-			$i++;
+		foreach ( ( array ) $config as $key => $value ) {
+			if ($pos === $i)
+				return $key;
+			$i ++;
 		}
 		return '';
 	}
