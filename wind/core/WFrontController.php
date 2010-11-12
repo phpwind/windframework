@@ -58,6 +58,7 @@ class WFrontController extends WActionServlet {
 		$router = $applicationController->createRouter($config);
 		$router->doParser($request, $response);
 		
+		
 		$applicationController->processRequest($request, $response, $router);
 		
 		$applicationController->destory();
