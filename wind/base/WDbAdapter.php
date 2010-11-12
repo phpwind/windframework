@@ -23,6 +23,7 @@ abstract class WDbAdapter {
 	protected $isConntected = 0;
 	protected $isLog = false;
 	
+	
 	protected $dbtype = '';
 	protected $transCounter = 0;
 	public $enableSavePoint = 0;
@@ -106,7 +107,7 @@ abstract class WDbAdapter {
 		return ( int ) self::$writeTimes + ( int ) self::$readTimes;
 	}
 	
-	protected function getLink($key = '') {
+	protected function getLinked($key = '') {
 		return $key ? self::$linked [$key] : $this->linking;
 	}
 	
@@ -120,7 +121,7 @@ abstract class WDbAdapter {
 		return $array;
 	}
 	
-	protected function getlinking($optype = '',$key = ''){
+	protected function getLinking($optype = '',$key = ''){
 		$masterSlave = $this->getMasterSlave();
 		$config = empty($masterSlave) || empty($optype) ? self::$config : $masterSlave[$optype];
 		$key = $key ? $key : $this->getConfigKeyByPostion($config, mt_rand(0,count($config)-1));
