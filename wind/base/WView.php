@@ -6,7 +6,7 @@
  * @license 
  */
 class WView {
-	private static $configs = array ();
+	private $config = array ();
 	private static $instance = null;
 	private $viewContents = ''; //输出的内容
 	private $var; //模板变量输出
@@ -15,15 +15,20 @@ class WView {
 	//TODO 试图配置信息解析
 	public function getInstance($config = NULL) {
 		if (self::$instance == null) {
-			$this->_initView ( $config );
-			self::$instance = new WView ();
+			$class = new ReflectionClass(__CLASS__);
+			$args = func_get_args();
+			self::$instance = call_user_func_array(array(
+				$class, 
+				'newInstance'
+			), array());
+			self::$instance ->_initView ( $config );
 		}
 		return self::$instance;
 	}
 	//TODO
 	private function _initView($config) {
 		if (! $config)
-			$config = array ('engine' => 'php', 'cache_path' => '', 'tmpExt' => '.phtml' );
+			$config = array ('engine' => 'php', 'cache_path' => '', 'tmpExt' => 'phtml' );
 		$this->config = $config;
 	}
 	public function assign($val, $value) {
@@ -87,18 +92,20 @@ class WView {
 	 */
 	//TODO 获得模板内容
 	public function fetch($templateFile = '', $charset = '', $contentType = 'text/html', $return = true) {
-		$templateFile = $this->config ['cache_path'] . $templateFile . $this->config ['tmpExt'];
-		if (! file_exists ( $templateFile ))
+		$templateFile = $this->config ['cache_path'] . $templateFile . '.' . $this->config ['tmpExt'];
+		if (!file_exists ( $templateFile ))
 			return;
 		(! $charset) && $charset = $this->config ['charset'];
 		(! $contentType) && $contentType = 'text/html';
-		header ( "Content-Type:" . $contentType . "; charset=" . $charset );
-		header ( "Cache-control: private" ); //支持页面回跳
+		if(!headers_sent()) {
+			header ( "Content-Type:" . $contentType . "; charset=" . $charset );
+			header ( "Cache-control: private" ); //支持页面回跳
+		}
 		if (extension_loaded ( 'zlib' ))
 			ob_start ( 'ob_gzhandler' ); //开启缓存输出
 		else
 			ob_start ();
-		extract ( $this->val, EXTR_OVERWRITE );
+		extract ( $this->var, EXTR_OVERWRITE );
 		include $templateFile;
 		$this->viewContent = ob_get_contents ();
 		if ($return) {
