@@ -49,7 +49,7 @@ abstract class WDbAdapter{
 		return self::$config = $db_config;
 	}
 	private function parseDSN($dsn){
-		$ifdsn = preg_match('/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(0|1)*$/',trim($dsn),$config);
+		$ifdsn = preg_match('/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)*$/',trim($dsn),$config);
 		if(empty($dsn) || empty($ifdsn) || empty($config)){
 			throw new WSqlException("database config is not correct",1);
 		}
@@ -64,15 +64,27 @@ abstract class WDbAdapter{
            );
 	}
 	
-	function patchConnect(){
+	protected function patchConnect(){
 		foreach(self::$config as $key=>$value){
-			$tmp = $value['master'];
-			self::$linked[$tmp][$key] = $this->connect($value);
+			if($this->checkMasterSlave()){
+				if($tmp = $value['master']){
+					self::$linked[$tmp][$key] = $this->connect($value);
+				}else{
+					throw new WSqlException("you must define master and slave database",1);
+				}
+				
+			}else{
+				self::$linked[$key] = $this->connect($value);
+			}
 		}
 	}
 	
 	protected abstract function connect($config);
-	public function addConnect();
+	public function addConnect($config){
+		if($this->isLink($config[''])){
+			
+		}
+	}
 	public function switchConnect();
 	public function switchDataBase();
 	public function getSqlBuilder();
@@ -105,6 +117,17 @@ abstract class WDbAdapter{
 	}
 	public function getQueryTimes(){
 		return (int)self::$writeTimes+(int)self::$readTimes;
+	}
+	
+	protected function checkMasterSlave(){
+		return defined('MASTER_SLAVE');
+	}
+	
+	protected function isLink($key,$master = ''){
+		if(empty($key)){
+			throw new WSqlException("DataBase link of key is error",1);
+		}
+		return $this->checkMasterSlave() ? isset(self::$linked[$master][$key]) : isset(self::$linked[$key]);
 	}
 	
 	

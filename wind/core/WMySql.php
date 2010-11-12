@@ -12,6 +12,25 @@
  * @version $Id$ 
  * @package 
  */
-class WMySql extends WDbAdapter{
+class WMySql extends WDbAdapter {
 	
+	protected function connect($config,$key='') {
+		if(is_array($config) || empty($config)){
+			throw new WSqlException ( "database config is not correct", 1 );
+		}
+		$host = $config['dbport'] ? $config['dbhost'].':'.$config['dbport'] : $config['dbhost'];
+		$pconect = $config['pconnect'] ? $config['pconnect'] : $this->pconnect;
+		$force = $config['force'] ? $config['force'] : $this->force;
+		if ($this->checkMasterSlave ()) {
+			if ($tmp = $config ['master']) {
+				self::$linked [$tmp] [$key] = $this->connect ( $value );
+			} else {
+				throw new WSqlException ( "you must define master and slave database", 1 );
+			}
+		
+		} else {
+			if($this->isLink($key))
+			self::$linked [$key] = $this->connect ( $value );
+		}
+	}
 }
