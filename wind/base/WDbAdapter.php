@@ -67,6 +67,20 @@ abstract class WDbAdapter {
 	}
 	
 	public abstract function connect($config, $key);
+	public abstract function query($sql,$key,$current);
+	public abstract function exceute($sql,$key,$current);
+	public abstract function getAll();
+	public abstract function getMetaTables();
+	public abstract function getMetaColumns();
+	public abstract function savePoint();
+	public abstract function beginTrans();
+	public abstract function rollbackTrans();
+	public abstract function getAffectedRows();
+	public abstract function getInsertId();
+	
+	public  function getExecSqlTime(){
+		
+	}
 	
 	public function changeConn($key) {
 		if (! isset ( self::$linked [$key] )) {
@@ -75,7 +89,7 @@ abstract class WDbAdapter {
 		$this->linking = self::$linked [$key];
 		$this->key = $key;
 	}
-	public function changeDb();
+
 	public function getSqlBuilderFactory() {
 		$config = self::$config [$this->key];
 		if (empty ( $config ) || ! is_array ( $config )) {
@@ -85,15 +99,13 @@ abstract class WDbAdapter {
 		$builder = 'W'.$dbType.'Builder';
 		$this->sqlBuilder = W::getInstance($builder);//¼ÓÔØÎÊÌâ
 	}
-	public abstract function query($sql,$key,$current);
-	public abstract function exceute($sql,$key,$current);
 	public  function insert(){
 		$sql = $this->sqlBuilder->getInsertSql();
-		return $this->execute($sql,$key);
+		return $this->exceute($sql,$key);
 	}
 	public  function update(){
 		$sql = $this->sqlBuilder->getUpdateSql();
-		return $this->execute($sql,$key);
+		return $this->exceute($sql,$key);
 	}
 	public function select(){
 		$sql = $this->sqlBuilder->getUpdateSql();
@@ -101,20 +113,13 @@ abstract class WDbAdapter {
 	}
 	public  function delete(){
 		$sql = $this->sqlBuilder->getDeleteSql();
-		return $this->execute($sql,$key);
+		return $this->exceute($sql,$key);
 	}
-	public abstract function getAll();
-	public abstract function getMetaTables();
-	public abstract function getMetaColumns();
-	public abstract function getExecSqlTime();
+
 	
 	protected function close();
 	protected function dispose();
-	public function savePoint();
-	public function beginTrans();
-	public function rollbackTrans();
-	public function getAffectedRows();
-	public function getInsertId();
+
 	public function getLastSql() {
 		return $this->last_sql;
 	}
