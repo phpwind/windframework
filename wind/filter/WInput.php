@@ -80,10 +80,11 @@ class WInput extends WFilter {
 			foreach ($var as $key => $value) {
 				WInput::checkVar($var[$key]);
 			}
-		} elseif (P_W != 'admincp') {
+		} else {
 			$var = str_replace(array('..',')','<','='), array('&#46;&#46;','&#41;','&#60;','&#61;'), $var);
-		} elseif (str_replace(array('<iframe','<meta','<script'), '', $var) != $var) {
-			throw new WException('word_error');
+			if (str_replace(array('<iframe','<meta','<script'), '', $var) != $var) {
+				throw new WException('word_error');
+			}
 		}
 	}
 }
