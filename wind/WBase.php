@@ -7,15 +7,12 @@
  */
 //error_reporting(E_ERROR | E_PARSE);
 
-
 /* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH);
-
-/* 扩展名 */
-defined('EXT') or define('EXT', 'php');
+defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH . 'config.php');
 
 /* import */
+defined('IMPORT_NAMESPACE') or define('IMPORT_NAMESPACE', ':');
 defined('IMPORT_SEPARATOR') or define('IMPORT_SEPARATOR', '.');
 defined('IMPORT_PACKAGE') or define('IMPORT_PACKAGE', '*');
 
@@ -23,13 +20,15 @@ defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
 
 defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
 
-defined('LOG_PATH') or define('LOG_PATH', WIND_PATH . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR);
+defined('LOG_PATH') or define('LOG_PATH', WIND_PATH . 'log' . DIRECTORY_SEPARATOR);
 
 defined('LOG_DISPLAY_TYPE') or define('LOG_DISPLAY_TYPE', 'log');
 
 //defined('LOG_RECORD') or define('LOG_RECORD', true);
 
+
 //defined('DEBUG') or define('DEBUG', true);
+
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -39,20 +38,19 @@ class W {
 	
 	/* 已经被include过的类或者包 */
 	static $_included = array();
-	
 	/* 已经被实例化过的对象集合 */
 	static $_instances = array();
-	
 	static $_vars = array();
 	
-	static $_system_config = 'config';
+	static $_namespace = '';
+	static $_apps = array();
 	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
-	 * 
 	 */
 	static public function init() {
+		self::setApps('WIND', self::getFrameWorkPath());
 		self::_autoIncludeBaseLib();
 		set_exception_handler(array(
 			'W', 
@@ -62,6 +60,19 @@ class W {
 		defined('DEBUG') && W::import('utility.WDebug');
 	}
 	
+	/**
+	 * 设置应用访问路径, 默认应用 $name 设置为default
+	 * @param string $name
+	 * @param string $path
+	 */
+	static public function setApps($name, $path) {
+		self::$_apps[$name] = $path;
+	}
+	
+	/**
+	 * 获得系统配置对象
+	 * @return multitype:
+	 */
 	static public function getSystemConfig() {
 		return self::getInstance('WSystemConfig');
 	}
@@ -70,23 +81,37 @@ class W {
 	 * 获得文件的绝对路径
 	 * @param string $path
 	 */
-	static public function getRealPath($path = '', $root = '', $is_dir = false) {
-		if (file_exists($path) && $root == '')
-			return realpath($path);
-		if ($root == '' || !realpath($root))
-			$root = self::getFrameWorkPath() . $root . self::getSeparator();
+	static public function getRealPath($path = '') {
+		if (file_exists($path))
+			return $path;
 		
-		$realPath = $root . $path;
+		$realPath = self::getApplicationRootPath() . self::getSeparator() . $path;
 		$realPath = str_replace(IMPORT_SEPARATOR, self::getSeparator(), $realPath);
-		if (!$is_dir)
-			$realPath .= '.' . self::getExtendName();
+		if (!is_dir($realPath)) {
+			foreach ((array) self::getExtendNames() as $key => $value) {
+				if (file_exists($realPath . '.' . $value)) {
+					$realPath .= '.' . $value;
+					break;
+				}
+			}
+		}
 		return realpath($realPath);
 	}
 	
+	/**
+	 * 返回全局import变量
+	 * @param string $name
+	 * @return multitype:
+	 */
 	static public function getVar($name) {
 		return self::$_vars[$name];
 	}
 	
+	/**
+	 * 设置全局import变量
+	 * @param string $name
+	 * @param array|string|obj $value
+	 */
 	static public function setVar($name, $value) {
 		if (!isset(self::$_vars[$name]))
 			self::$_vars[$name] = $value;
@@ -101,11 +126,20 @@ class W {
 	}
 	
 	/**
+	 * 根据应用名称返回应用的根路径，为空的情况下返回当前应用
+	 * @param string $app
+	 * @return tring
+	 */
+	static public function getApplicationRootPath() {
+		return (self::$_namespace && self::$_apps[self::$_namespace]) ? self::$_apps[self::$_namespace] : self::$_apps['default'];
+	}
+	
+	/**
 	 * 获得系统配置文件路径信息
 	 * @return string
 	 */
 	static public function getSystemConfigPath() {
-		return self::getRealPath(W::$_system_config, SYSTEM_CONFIG_PATH, false);
+		return self::getRealPath(SYSTEM_CONFIG_PATH);
 	}
 	
 	/**
@@ -117,24 +151,20 @@ class W {
 	}
 	
 	/**
-	 * 获得文件扩展名
-	 * @return string
-	 */
-	static public function getExtendName() {
-		return EXT;
-	}
-	
-	/**
 	 * 获得支持加载的扩展名数组
 	 * 判断扩展名是否支持
 	 * @param string $ext
 	 * @return boolean|multitype:string 
 	 */
 	static public function getExtendNames($ext = '') {
-		$exts = array();
-		if ($ext)
-			return in_array($ext, $exts);
-		return $exts;
+		$exts = array(
+			'php', 
+			'htm',
+			'class.php', 
+			'db.php', 
+			'phpx'
+		);
+		return $ext ? $exts[$ext] : $exts;
 	}
 	
 	/**
@@ -177,20 +207,21 @@ class W {
 		}
 		
 		if (($pos = strrpos($filePath, '.')) === false) {
-			self::_include($filePath, '', $instance);
+			self::_include($filePath, $instance);
 			return;
 		}
 		
-		$filePath = str_replace(self::getSeparator(), IMPORT_SEPARATOR, $filePath);
-		$filePath = trim($filePath, ' ' . IMPORT_SEPARATOR);
-		
 		$className = (string) substr($filePath, $pos + 1);
 		$filePath = (string) substr($filePath, 0, $pos);
+		if (($pos = strpos($filePath, IMPORT_NAMESPACE)) !== false) {
+			self::$_namespace = (string) substr($filePath, 0, $pos);
+			$filePath = (string) substr($filePath, $pos + 1);
+		} else
+			self::$_namespace = '';
 		$isPackage = $className === IMPORT_PACKAGE;
-		$dir = self::getFrameWorkPath();
 		$classNames = array();
 		if ($isPackage) {
-			$dir = self::getRealPath(substr($filePath, 0, $pos), '', true);
+			$dir = self::getRealPath($filePath);
 			if (!is_dir($dir))
 				throw new Exception('the file path ' . $dir . ' is not exists!!');
 			
@@ -200,7 +231,7 @@ class W {
 			while (($file = readdir($dh)) !== false) {
 				if ($file != "." && $file != ".." && !(is_dir($dir . self::getSeparator() . $file))) {
 					$pos = strrpos($file, '.');
-					if (($pos = strrpos($file, '.')) !== false && substr($file, $pos + 1) == self::getExtendName())
+					if (($pos = strrpos($file, '.')) !== false)
 						$classNames[] = substr($file, 0, $pos);
 				}
 			}
@@ -222,7 +253,11 @@ class W {
 	 */
 	static private function _include($fileName, $filePath = '', $instance = false) {
 		if (empty($fileName)) {return;}
-		$realPath = self::getRealPath($fileName, $filePath);
+		if ($filePath)
+			$realPath = self::getRealPath($filePath . IMPORT_SEPARATOR . $fileName);
+		else
+			$realPath = self::getRealPath($fileName);
+		
 		if (!file_exists($realPath))
 			throw new Exception('file ' . $realPath . ' is not exists');
 		
@@ -254,21 +289,13 @@ class W {
 		$class = new ReflectionClass($className);
 		if ($class->isAbstract() || $class->isInterface())
 			return;
-		
 		if (!is_array($args))
 			$args = array();
 		$object = call_user_func_array(array(
 			$class, 
 			'newInstance'
 		), $args);
-		
-		/*if (in_array('WContext', (array) class_implements($className))) {
-			$class->setStaticPropertyValue('instance', & $object);
-			$scope = $class->getStaticPropertyValue('scope', 'request');
-			//TODO 变量作用域设置
-		}*/
 		self::$_instances[$className] = & $object;
-	
 	}
 	
 	/**
@@ -276,24 +303,10 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _autoIncludeBaseLib() {
-		self::import('exception.WException');
-		self::import('base.WModule');
-		self::import('base.*');
-		self::import('core.*');
-	}
-	
-	/**
-	 * 初始化系统配置信息
-	 * 
-	 */
-	static private function _initSystemConfig($config) {
-		$systemConfigPath = self::getSystemConfigPath();
-		$systemConfig = self::$_system_config;
-		$realPath = self::getRealPath($systemConfig, false, $systemConfigPath);
-		if (!file_exists($realPath))
-			throw new Exception('SYS Excetion ：配置文件不存在!!!');
-		self::import($realPath);
-		self::getSystemConfig()->parse($systemConfig, $config);
+		self::import('WIND' . IMPORT_NAMESPACE . 'exception.WException');
+		self::import('WIND' . IMPORT_NAMESPACE . 'base.WModule');
+		self::import('WIND' . IMPORT_NAMESPACE . 'base.*');
+		self::import('WIND' . IMPORT_NAMESPACE . 'core.*');
 	}
 	
 	/**
@@ -323,7 +336,6 @@ class W {
 		W::recordLog($message, 'TRACE', 'log');
 		die($message);
 	}
-
 }
 
 W::init();
