@@ -60,26 +60,17 @@ abstract class WDbAdapter{
             'dbhost'  => $config[4],
             'dbport'    => $config[5],
      		'dbname'   => $config[6],
-     		'master'   => $config[7],
+     		'optype'   => $config[7],
            );
 	}
 	
 	protected function patchConnect(){
 		foreach(self::$config as $key=>$value){
-			if($this->checkMasterSlave()){
-				if($tmp = $value['master']){
-					self::$linked[$tmp][$key] = $this->connect($value);
-				}else{
-					throw new WSqlException("you must define master and slave database",1);
-				}
-				
-			}else{
-				self::$linked[$key] = $this->connect($value);
-			}
+			$this->connect($value,$key);
 		}
 	}
 	
-	protected abstract function connect($config);
+	protected abstract function connect($config,$key);
 	public function addConnect($config){
 		if($this->isLink($config[''])){
 			
@@ -123,11 +114,8 @@ abstract class WDbAdapter{
 		return defined('MASTER_SLAVE');
 	}
 	
-	protected function isLink($key,$master = ''){
-		if(empty($key)){
-			throw new WSqlException("DataBase link of key is error",1);
-		}
-		return $this->checkMasterSlave() ? isset(self::$linked[$master][$key]) : isset(self::$linked[$key]);
+	protected function getLink($key = ''){
+		return $key ? self::$linked[$key] : $this->linking;
 	}
 	
 	

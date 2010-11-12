@@ -14,23 +14,44 @@
  */
 class WMySql extends WDbAdapter {
 	
-	protected function connect($config,$key='') {
-		if(is_array($config) || empty($config)){
+	protected function connect($config, $key) {
+		if (is_array ( $config ) || empty ( $config )) {
 			throw new WSqlException ( "database config is not correct", 1 );
 		}
-		$host = $config['dbport'] ? $config['dbhost'].':'.$config['dbport'] : $config['dbhost'];
-		$pconect = $config['pconnect'] ? $config['pconnect'] : $this->pconnect;
-		$force = $config['force'] ? $config['force'] : $this->force;
-		if ($this->checkMasterSlave ()) {
-			if ($tmp = $config ['master']) {
-				self::$linked [$tmp] [$key] = $this->connect ( $value );
-			} else {
-				throw new WSqlException ( "you must define master and slave database", 1 );
+		if (isset ( $key )) {
+			throw new WSqlException ( "you must define master and slave database", 1 );
+		}
+		$host = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
+		$pconnect = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
+		$force = $config ['force'] ? $config ['force'] : $this->force;
+		$charset = $config ['charset'] ? $config ['charset'] : $this->charset;
+		if (! ($linked = $this->getLink ( $key ))) {
+			$linked = $pconnect ? mysql_pconnect ( $host, $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $host, $config ['dbuser'], $config ['dbpass'], $force );
+			if($config['dbname'] && is_resource($linked)){
+				$this->setDataBase($config['dbname'],$linked);
 			}
-		
-		} else {
-			if($this->isLink($key))
-			self::$linked [$key] = $this->connect ( $value );
+			$this->setCharSet($charset,$linked);
+		}
+		return self::$linked [$key] = $linked;
+	}
+	
+	public function getVersion($link = null) {
+		return mysql_get_server_info ( $link );
+	}
+	
+	public function setCharSet($charset, $link = null) {
+		$version = ( int ) substr ( $this->getVersion ( $link ), 0, 1 );
+		if ($version > 4) {
+			$this->execute ( "SET NAMES '" . $charset . "'", $link );
+		}
+		if ($version > 5) {
+			$this->execute ( "SET sql_mode=''", $link );
 		}
 	}
+	
+	public function setDataBase($databse,$link = null){
+		if(!$this->execute("USE $databse",$link)){
+			mysql_select_db($database,$link);
+		}
+	} 
 }
