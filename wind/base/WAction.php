@@ -7,5 +7,5 @@
  */
 
 interface WAction {
-
+	static function run($request, $response);
 }
