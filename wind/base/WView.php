@@ -226,12 +226,18 @@ class WView {
 			case 'JSON':
 				header("Content-Type:text/html; charset=utf-8");
 				exit(json_encode($data));
+				break;
 			case 'XML':				
 				header("Content-Type:application/xml; charset=utf-8");
 				//TODO xml½âÎöÊä³ö
 				exit(WView::xml_encode($data));
+				break;
+			case 'HTML':
+				header("Content-Type:text/html; charset=utf-8");
+				exit(serialize($data));
+				break;
 			default:
-				exit('ERROR!');
+				exit($data);
 		}
 	}
 	
