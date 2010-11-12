@@ -16,13 +16,15 @@
  * @package 
  */
 abstract class WRouter {
-	protected $routerRule;
+	protected $routerRule = '';
 	protected $routerName = 'url';
 	
 	protected $action = 'run';
 	protected $controller = 'index';
-	protected $app1 = 'default';
+	protected $app1 = 'actionControllers';
 	protected $app2;
+	
+	protected $configObj = null;
 	
 	function __construct($configObj = null) {
 		$this->init($configObj);
@@ -36,6 +38,7 @@ abstract class WRouter {
 		if ($configObj === null)
 			throw new WException('Config object is null!!!');
 		$this->routerRule = $configObj->getRouterRule($this->routerName);
+		$this->configObj = $configObj;
 	}
 	
 	/**
@@ -44,32 +47,35 @@ abstract class WRouter {
 	 */
 	abstract function doParser($request, $response);
 	
+	abstract function &getActionHandle();
+	abstract function &getControllerHandle();
+	
 	/**
 	 * 获得业务操作
 	 */
 	public function getAction() {
-		return $this->_action;
+		return $this->action;
 	}
 	
 	/**
 	 * 获得业务对象
 	 */
 	public function getController() {
-		return $this->_controller;
+		return $this->controller;
 	}
 	
 	/**
 	 * 获得一组应用入口目录名
 	 */
 	public function getApp1() {
-		return $this->_app1;
+		return $this->app1;
 	}
 	
 	/**
 	 * 获得一组应用入口二级目录名
 	 */
 	public function getApp2() {
-		return $this->_app2;
+		return $this->app2;
 	}
 
 }
