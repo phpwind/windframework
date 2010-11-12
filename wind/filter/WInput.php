@@ -46,11 +46,9 @@ class WInput extends WFilter {
 		foreach ($_GET as $_key => $_value) {
 			WInput::checkVar($_GET[$_key]);
 		}
-		echo __CLASS__ . ' do before <br>';
 	}
 	
 	protected function doAfterProcess($request, $response) {
-		echo __CLASS__ . ' do after <br>';
 	}
 	
 	/**
