@@ -14,7 +14,7 @@
  */
 class WMySql extends WDbAdapter {
 	
-	protected function connect($config, $key) {
+	public function connect($config, $key) {
 		if (is_array ( $config ) || empty ( $config )) {
 			throw new WSqlException ( "database config is not correct", 1 );
 		}
@@ -31,8 +31,12 @@ class WMySql extends WDbAdapter {
 				$this->setDataBase($config['dbname'],$linked);
 			}
 			$this->setCharSet($charset,$linked);
+			self::$linked [$key] = $linked;
+			if(isset(self::$config[$key])){
+				self::$config[$key] = $config;
+			}
 		}
-		return self::$linked [$key] = $linked;
+		return $linked;
 	}
 	
 	public function getVersion($link = null) {
@@ -43,9 +47,6 @@ class WMySql extends WDbAdapter {
 		$version = ( int ) substr ( $this->getVersion ( $link ), 0, 1 );
 		if ($version > 4) {
 			$this->execute ( "SET NAMES '" . $charset . "'", $link );
-		}
-		if ($version > 5) {
-			$this->execute ( "SET sql_mode=''", $link );
 		}
 	}
 	
