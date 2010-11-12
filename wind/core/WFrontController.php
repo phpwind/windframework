@@ -37,7 +37,8 @@ class WFrontController extends WActionServlet {
 		if ($this->config === null)
 			throw new WException('init system config failed!');
 		$this->beforProcess();
-		if (!class_exists('WFilterFactory'))
+		$filters = $this->config->getConfig('filters');
+		if (!class_exists('WFilterFactory') || empty($filters))
 			parent::run();
 		else
 			$this->_initFilter();
@@ -48,15 +49,14 @@ class WFrontController extends WActionServlet {
 
 	}
 	
-	function process($request, $response) {		
-		echo 'hello world!';
-		echo 'sfsdf', '<Br/>';
+	function process($request, $response) {
 		$config = W::getInstance('WSystemConfig');
 		/* 初始化一个应用服务器 */
 		$applicationController = new WWebApplicationController();
-		$applicationController->init();
+		$applicationController->init($config);
+		
 		$router = $applicationController->createRouter($config);
-		$router->doParser($response, $request);
+		$router->doParser($request, $response);
 		
 		$applicationController->processRequest($request, $response, $router);
 		
@@ -86,7 +86,6 @@ class WFrontController extends WActionServlet {
 			'process'
 		), $this->reuqest, $this->response);
 		$filter = WFilterFactory::getFactory()->create($this->config);
-		WFilterFactory::getFactory()->addFilter('WInput', 'filter.WInput', 'TestFilter');
 		if (is_object($filter))
 			$filter->doFilter($this->reuqest, $this->response);
 	}
@@ -97,9 +96,6 @@ class WFrontController extends WActionServlet {
 	 */
 	private function _initConfig($config) {
 		$realPath = W::getSystemConfigPath();
-		if (!file_exists($realPath))
-			throw new Exception('SYS Excetion ：config file ' . $realPath . ' is not exists!!!');
-		
 		W::import($realPath);
 		$sysConfig = W::getVar('sysConfig');
 		$configObj = W::getInstance('WSystemConfig');
