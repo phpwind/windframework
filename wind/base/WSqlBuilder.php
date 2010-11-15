@@ -16,28 +16,29 @@ abstract class WSqlBuilder{
 	
 	public abstract function buildTable($table);
 	public abstract function buildDistinct($distinct);
-	public abstract function buildField();
-	public abstract function buildUnion();
-	public abstract function buildJoin();
-	public abstract function buildWhere();
+	public abstract function buildField($field);
+	public abstract function buildJoin($join);
+	public abstract function buildWhere($order);
 	public abstract function buildGroup($group);
 	public abstract function buildOrder($order);
 	public abstract function buildHaving($having);
 	public abstract function buildLimit($limit,$offset);
-	public abstract function buildSet();
-	public abstract function buildData($data);
+	public abstract function buildSet($data);
+	public abstract function buildData($setData);
 	public abstract function escapeString($value);
 	public  function getInsertSql($option){
 		return sprintf("INSERT  %s %s VALUES %s",$this->buildTable($option['table']),$this->buildField($option['field']),$this->buildData($option['data']));
 	}
-	public  function getUpdateSql(){
-		return sprintf("UPDATE  %s %s SET %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	public  function getUpdateSql($option){
+		return sprintf("UPDATE  %s  SET %s %s %s %s",$this->buildTable($option['table']),$this->buildSet($option['set']),$this->buildWhere($optiion['where']),$this->buildOrder($optiion['order']),$this->buildLimit($option['limit']));
 	}
-	public  function getDeleteSql(){
-		return sprintf("DELETE  %s %s FROM %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	public  function getDeleteSql($option){
+		return sprintf("DELETE FROM %s %s %s %s",$this->buildTable($optiion['table']),$this->buildWhere($optiion['where']),$this->buildOrder($optiion['order']),$this->buildLimit($option['limit']));
 	}
-	public  function getSelectSql(){
-		return sprintf("SELECT  %s  FROM %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	public  function getSelectSql($option){
+		return sprintf("SELECT %s  %s  FROM %s %s %s %s %s %s %s",$this->buildDistinct($option['distinct']),$this->buildField($option['field']),
+			   $this->buildTable($option['table']),$this->buildJoin(),$this->buildWhere($option['where']),$this->buildGroup($option['group']),
+			   $this->buildHaving($option['having']),$this->buildOrder($option['order']),$this->buildLimit($option['limit']));
 	}
 
 

@@ -15,21 +15,21 @@
 
 class WMySqlBuilder extends WSqlBuilder{
 
-	public  function buildTable($table,$as = ' ',$alias = ''){
+	public  function buildTable($table){
 		if(empty($table) || !is_string($table) || !is_array($table)){
 			throw new WSqlException('table is not mepty');
 		}
-		$tableList = is_string($table) ? explode(',',$table) : $table;
-		$standTable = '';
-		foreach($tableList as $key=>$value){
+		$table = is_string($table) ? explode(',',$table) : $table;
+		$tableList = '';
+		foreach($table as $key=>$value){
 			if(is_int($key)){
-				$standTable .=  $standTable ? ','.$this->getStandardSqlInfo($value,$as,$alias) : $this->getStandardSqlInfo($value,$as,$alias);
+				$tableList .=  $tableList ? ','.$value : $value;
 			}
 			if(is_string($key)){
-				$standTable .=  $standTable ? ','.$this->getStandardSqlInfo($key,$as,$value) : $this->getStandardSqlInfo($key,$as,$value);
+				$tableList .=  $tableList ? ','.$this->getAlias($key,$as,$value) : $this->getAlias($key,$as,$value);
 			}
 		}
-		return $standTable;
+		return $tableList;
 		
 	}
 	
@@ -37,24 +37,51 @@ class WMySqlBuilder extends WSqlBuilder{
 		return $distinct ? ' DISTINCT ' : '';
 	}
 	public  function buildField($field){
-		$rawField = '';
-		if(empty($field)) $rawField = '*';
-		if(!is_string($table) || !is_array($table)){
-			throw new WSqlException('table is not mepty');
+		$fieldList = '';
+		if(empty($field)) {
+			$fieldList = '*';
 		}
-		
+		if(!is_string($field) || !is_array($field)){
+			throw new WSqlException('field is illegal');
+		}
+		$field = is_string($field) ? explode(',',$field) : $field;
+		foreach($field as $key=>$value){
+			if(is_int($key)){
+				$fieldList .=  $fieldList ? ','.$value : $value;
+			}
+			if(is_string($key)){
+				$fieldList .=  $fieldList ? ','.$this->getAlias($key,$as,$value) : $this->getAlias($key,$as,$value);
+			}
+		}
+		return $fieldList;
 	}
-	public  function buildUnion(){
 
-	}
-	public  function buildJoin(){
-
+	public  function buildJoin($join){
+		if(empty($join)) {
+			return '';
+		}
+		if(is_string($join)){
+			return $join;
+		}
+		foreach($join as $table=>$config){
+			if(is_string($config)) {
+				$joinContidion .= $joinContidion ? ','.$config : $config;
+				continue;
+			}
+			if(is_array($config)){
+				$table = $this->getAlias($table,$as,$config['alias']);
+				$joinWhere = $config['where'] ? ' ON '.$config['where'] : '';
+				$condition = $config['type'] .' JOIN '.$table.$joinWhere;
+				$joinContidion .= $joinContidion ? ','.$condition : $condition;
+			}
+		}
+		return $joinContidion;
 	}
 	public  function buildWhere(){
 
 	}
 	public  function buildGroup($group){
-		return isset($group) ? ' GROUP BY '.$group : '';
+		return $group ? ' GROUP BY '.(is_array($group) ? implode(',',$group) : $group).' ' : '';
 	}
 	public  function buildOrder($order){
 		$orderby = '';
@@ -68,7 +95,7 @@ class WMySqlBuilder extends WSqlBuilder{
 		return $orderby ? ' ORDER BY '.$orderby : '';
 	}
 	public  function buildHaving($having){
-		return isset($having) ? ' HAVING '.$having  : ' ';
+		return $having ? ' HAVING '.$having  : ' ';
 	}
 	public  function buildLimit($limit,$offset){
 		return ($sql =  $limit > 0 ? ' LIMIT '.$limit : '') ?  $offset > 0 ? $sql .' OFFSET '.$offset : $sql : '';
@@ -92,17 +119,9 @@ class WMySqlBuilder extends WSqlBuilder{
 		return $value;
 	}
 	
-	public function  getStandardSqlInfo($name,$as = ' ',$alias = ''){
-		if( false !== strrpos($name,'`') ||  false !== strpos($name,'*')) return $name;
-		$ifmatch = preg_match('/([\s| ])+/i',trim($name),$match);
-		if($ifmatch && !strpos($name,')')){
-			$name = explode($match[1],$name);
-			$as = in_array(strtolower($as),array(' ','as')) ? $as : ' ';
-			$name = in_array(strtolower($name[0]),array('distinct')) ? $name[0].'  `'.$name[count($name)-1].'`': '`'.$name[0].'`  '.strtoupper($as).' `'.$name[count($name)-1].'`';
-		}else{
-			$alias = $alias ? ' '.strtoupper($as).' '.$alias : '';
-			$name = (strpos($name,')')   ? str_replace(array('(',')',' '),array('(`','`)',''),$name) : '`'.$name.'`').$alias;
-		}
-		return $name;
+	private function getAlias($name,$as =' ',$alias = ''){
+		return ' '.($alias ?  $name.' '.strtoupper($as).' '.$alias :$name).' ';
 	}
+	
+	
 }
