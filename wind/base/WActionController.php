@@ -12,8 +12,15 @@
  * @version $Id$ 
  * @package 
  */
-interface WActionController {
+abstract class WActionController {
+	private $request = null;
+	private $response = null;
 	
-	public function run();
-
+	public function __construct($request, $response) {
+		$this->request = $request;
+		$this->response = $response;
+	}
+	
+	public function run() {}
+	
 }

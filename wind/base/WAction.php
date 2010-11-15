@@ -6,6 +6,16 @@
  * @license 
  */
 
-interface WAction {
-	static function run($request, $response);
+abstract class WAction {
+	private $request = null;
+	private $response = null;
+	
+	public function __construct($request, $response) {
+		$this->request = $request;
+		$this->response = $response;
+	}
+	
+	static function run() {
+	}
+	
 }

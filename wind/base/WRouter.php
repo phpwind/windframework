@@ -10,6 +10,7 @@
  * 路由解析器接口
  * 职责: 路由解析, 返回路由对象
  * 实现路由解析器必须实现该接口的doParser()方法
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -17,38 +18,68 @@
  */
 abstract class WRouter {
 	protected $routerRule = '';
-	protected $routerName = 'url';
+	protected $routerName = '';
 	
 	protected $action = 'run';
 	protected $controller = 'index';
-	protected $app1 = 'actionControllers';
-	protected $app2;
+	protected $module = '';
 	
-	protected $configObj = null;
+	protected $modules = array();
 	
-	function __construct($configObj = null) {
+	protected $modulePath = '';
+	protected $actionForm = 'actionForm';
+	
+	public function __construct($configObj = null) {
 		$this->init($configObj);
 	}
 	
 	/**
 	 * 初始化路由配置
+	 * 
 	 * @param WSystemConfig $configObj
 	 */
 	protected function init($configObj) {
 		if ($configObj === null)
-			throw new WException('Config object is null!!!');
+			throw new WException('Config object is null.');
+		
+		$this->modules = $configObj->getModulesConfig();
 		$this->routerRule = $configObj->getRouterRule($this->routerName);
-		$this->configObj = $configObj;
 	}
 	
 	/**
 	 * 通过实现该接口实现路由解析
+	 * 
 	 * @return WRouterContext
 	 */
 	abstract function doParser($request, $response);
 	
-	abstract function &getActionHandle();
-	abstract function &getControllerHandle();
+	/**
+	 * 获得请求处理类,返回一个数组，array('$className','$method')
+	 * 
+	 * @return array
+	 */
+	abstract public function getActionHandle();
+	
+	/**
+	 * 获得请求处理类,返回一个数组，array('$className','$method')
+	 * 
+	 * @return array
+	 */
+	abstract public function getControllerHandle();
+	
+	/**
+	 * 获得请求处理类,返回一个数组，array('$className','$method')
+	 * 
+	 * @return array
+	 */
+	abstract public function getActionFormHandle();
+	
+	/**
+	 * 获得请求处理类,返回一个数组，array('$className','$method')
+	 * 
+	 * @return array
+	 */
+	abstract public function getDefaultViewHandle();
 	
 	/**
 	 * 获得业务操作
@@ -67,15 +98,8 @@ abstract class WRouter {
 	/**
 	 * 获得一组应用入口目录名
 	 */
-	public function getApp1() {
-		return $this->app1;
-	}
-	
-	/**
-	 * 获得一组应用入口二级目录名
-	 */
-	public function getApp2() {
-		return $this->app2;
+	public function getModule() {
+		return $this->module;
 	}
 
 }
