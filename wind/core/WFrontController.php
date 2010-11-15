@@ -22,18 +22,26 @@
  */
 class WFrontController extends WActionServlet {
 	private $config = null;
+	private static $instance = null;
 	
-	/**
-	 * 系统初始化操作
-	 * @param array $config
-	 * @return null
-	 */
-	function init($config = array()) {
-		parent::init();
+	protected function __construct($config = array()) {
+		parent::__construct();
 		$this->_initConfig($config);
 	}
 	
-	function run() {
+	/**
+	 * @param array $config
+	 * @return WFrontController
+	 */
+	static public function &getInstance(array $config = array()) {
+		if (self::$instance === null) {
+			$class = __CLASS__;
+			self::$instance = new $class($config);
+		}
+		return self::$instance;
+	}
+	
+	public function run() {
 		if ($this->config === null)
 			throw new WException('init system config failed!');
 		$this->beforProcess();
@@ -53,13 +61,9 @@ class WFrontController extends WActionServlet {
 		$config = W::getInstance('WSystemConfig');
 		/* 初始化一个应用服务器 */
 		$applicationController = new WWebApplicationController();
-		$applicationController->init($config);
+		$applicationController->init();
 		
-		$router = $applicationController->createRouter($config);
-		$router->doParser($request, $response);
-		
-		
-		$applicationController->processRequest($request, $response, $router);
+		$applicationController->processRequest($request, $response, $config);
 		
 		$applicationController->destory();
 	}
