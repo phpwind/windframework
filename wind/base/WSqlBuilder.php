@@ -14,10 +14,6 @@
  */
 abstract class WSqlBuilder{
 	
-	public $sql = array(
-		'SELECT','DISTINCT','FIELD','FROM','TABLE','UNION'
-	);
-	public abstract function getBuildedSql();
 	public abstract function buildTable();
 	public abstract function buildDistinct();
 	public abstract function buildField();
@@ -29,14 +25,44 @@ abstract class WSqlBuilder{
 	public abstract function buildHaving();
 	public abstract function buildLimit();
 	public abstract function buildSet();
-	public abstract function buildValue();
-	public abstract function pauseParse();
-	public abstract function getInsertSql();
-	public abstract function getUpdateSql();
-	public abstract function getDeleteSql();
-	public abstract function getSelectSql();
-	
-	public function escapeString(){
-		
+	public abstract function buildData();
+	public abstract function escapeString();
+	public  function getInsertSql($option){
+		return sprintf("INSERT  %s %s VALUES %s",$this->buildTable($option['table']),$this->buildField($option['field']),$this->buildData($option['data']));
+	}
+	public  function getUpdateSql(){
+		return sprintf("UPDATE  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	}
+	public  function getDeleteSql(){
+		return sprintf("DELETE  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	}
+	public  function getSelectSql(){
+		return sprintf("SELECT  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+	}
+
+
+	public function getDimension($array = array()){
+		if(!is_array($array)) return 0;			
+		static $dim = 0;
+		foreach($array as $value){
+			$dim++;
+			$this->getDimension($value);
+		}
+		return $dim + 1;
+    }
+
+	public function buildSingleData($data){
+		foreach($data as $key=>$value){
+			$data[$key] = $this->escapeString($value);
+		}
+		return '('.implode(',',$data).')';
+	}
+
+	public function buildMultiData($multiData){
+		$iValue = '';
+		foreach($multiData as $data){
+			$iValue .= $this->buildSingleData($data);
+		}
+		return $iValue;
 	}
 }
