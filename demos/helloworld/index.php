@@ -15,7 +15,7 @@ require_once (C_P . '/config.php');
 require_once (F_P . '/wind.php');
 
 $haha = array('aa'=>'afa','asdfa','dddd','aa'=>'afa','dd'=>'eeeee','ffffff');
-Wlog::add($haha,'INFO');
+
 function a(){
 	echo '<br/>';
 throw new WException('ddddd');	
