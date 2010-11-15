@@ -28,7 +28,6 @@ class WWebApplicationController implements WApplicationController {
 	public function processRequest($request, $response, $configObj) {
 		$router = $this->createRouter($configObj);
 		$router->doParser($request, $response);
-		
 		if (($base = $configObj->getConfig('baseController')) == 'WActionController')
 			list($className, $method) = $router->getControllerHandle($request, $response);
 		elseif (($base = $configObj->getConfig('baseController')) == 'WAction')
@@ -52,7 +51,7 @@ class WWebApplicationController implements WApplicationController {
 			));
 			
 			//TODO 验证表单，并错误处理
-			if ($actionForm->getIsValidate()) {
+			if ($actionForm->getIsValidation()) {
 				$this->validateProcessActionForm($actionForm);
 			}
 		}
