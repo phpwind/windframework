@@ -92,13 +92,16 @@ class WUrlRouter extends WRouter {
 		if (!$this->modulePath)
 			throw new WException('The path of module is not exists.');
 		
-		$formPath = $this->modulePath . '.' . 'actionForm';
-		$className = $this->controller . $this->action . 'Form';
-		W::import($formPath . '.' . $className);
-		if (!class_exists($className))
+		try {
+			$formPath = $this->modulePath . '.' . 'actionForm';
+			$className = $this->controller . $this->action . 'Form';
+			W::import($formPath . '.' . $className);
+			if (class_exists($className))
+				return $className;
+		} catch (Exception $exception) {
 			return null;
-		
-		return $className;
+		}
+		return null;
 	}
 	
 	/**
