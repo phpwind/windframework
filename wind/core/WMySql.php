@@ -55,6 +55,37 @@ class WMySql extends WDbAdapter {
 		}
 		mysql_query ( $sql, $this->linking );
 	}
+	
+	public  function getAll(){
+		
+	}
+	public  function getMetaTables(){
+		
+	}
+	public  function getMetaColumns(){
+		
+	}
+	public  function savePoint(){
+		
+	}
+	public  function beginTrans(){
+		
+	}
+	public  function rollbackTrans(){
+		
+	}
+	public  function getAffectedRows(){
+		
+	}
+	public  function getInsertId(){
+		
+	}
+	protected  function close(){
+		
+	}
+	protected  function dispose(){
+		
+	}
 	public function getVersion($key = '') {
 		return mysql_get_server_info ( $this->getLinked ( $key ) );
 	}

@@ -26,7 +26,7 @@ class WMySqlBuilder extends WSqlBuilder{
 		
 	}
 	
-	public  function buildDistinct($distinct = false){
+	public  function buildDistinct($distinct){
 		return $distinct ? ' DISTINCT ' : '';
 	}
 	public  function buildField(){
@@ -57,7 +57,7 @@ class WMySqlBuilder extends WSqlBuilder{
 	public  function buildHaving($having){
 		return isset($having) ? ' HAVING '.$having  : ' ';
 	}
-	public  function buildLimit($limit,$offset = 0){
+	public  function buildLimit($limit,$offset){
 		return ($sql =  $limit > 0 ? ' LIMIT '.$limit : '') ?  $offset > 0 ? $sql .' OFFSET '.$offset : $sql : '';
 	}
 	
@@ -66,6 +66,10 @@ class WMySqlBuilder extends WSqlBuilder{
 			throw new WSqlExceptiion($data);
 		}
 		return $this->getDimension($data) == 1 ? $this->buildSingleData($data) : $this->buildMultiData($data);
+	}
+	
+	public function buildSet(){
+		
 	}
 
 

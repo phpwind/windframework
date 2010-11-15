@@ -67,8 +67,8 @@ abstract class WDbAdapter {
 	}
 	
 	public abstract function connect($config, $key);
-	public abstract function query($sql,$key,$current);
-	public abstract function exceute($sql,$key,$current);
+	public abstract function query($sql,$key='',$current = true);
+	public abstract function execute($sql,$key='',$current = true);
 	public abstract function getAll();
 	public abstract function getMetaTables();
 	public abstract function getMetaColumns();
@@ -77,6 +77,8 @@ abstract class WDbAdapter {
 	public abstract function rollbackTrans();
 	public abstract function getAffectedRows();
 	public abstract function getInsertId();
+	protected abstract function close();
+	protected abstract function dispose();
 	
 	public  function getExecSqlTime(){
 		
@@ -115,10 +117,6 @@ abstract class WDbAdapter {
 		$sql = $this->sqlBuilder->getDeleteSql();
 		return $this->exceute($sql,$key);
 	}
-
-	
-	protected function close();
-	protected function dispose();
 
 	public function getLastSql() {
 		return $this->last_sql;
