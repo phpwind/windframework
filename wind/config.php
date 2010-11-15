@@ -11,15 +11,26 @@
  * 
  * */
 $sysConfig = array(
-	
 	//保存过滤路径
-	'filters' => array(
-		'testFilter' => 'filter.TestFilter', 
-		'test1Filter' => 'filter.Test1Filter'
-	), 
+	'filters' => array(),
 	
-	/* 应用配置 */
-	'apps' => array(), 
+	/* 应用路径配置 */
+	'modules' => array(
+		'default' => 'actionControllers'
+	),
+	
+	/*模板路径配置*/
+	'view' => array(
+		'viewPath' => 'template',  //模板文件路径
+		'ext' => 'htm' //模板文件后缀名
+	),
+	
+	/*
+	 * 这个配置选项有两个值，配置操作结构是基于WActionController或者基于WAction
+	 * 基于WAction：则目录结构是actionControllers/controller/action.php
+	 * 基于WActionController：则目录结构是actionControllers/controller.php
+	 * */
+	'baseController' => 'WActionController',
 	
 	/* 路由策略配置 */
 	'router' => array(
@@ -29,11 +40,10 @@ $sysConfig = array(
 	'urlRule' => array(
 		'action' => 'run', 
 		'controller' => 'index', 
-		'app1' => 'controller1', 
-		'app2' => ''
+		'module' => ''
 	), 
 	/* 路由解析器配置 */
 	'routerParser' => array(
-		'url' => 'core.WUrlRouter'
+		'url' => 'WIND:core.WUrlRouter'
 	)
 );
