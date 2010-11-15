@@ -6,6 +6,13 @@
  * @license 
  */
 
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ */
+
 class WMySqlBuilder extends WSqlBuilder{
 
 	public  function buildTable($table,$as = ' ',$alias = ''){
@@ -16,10 +23,10 @@ class WMySqlBuilder extends WSqlBuilder{
 		$standTable = '';
 		foreach($tableList as $key=>$value){
 			if(is_int($key)){
-				$standTable .=  $standTable ? ','.$this->getStandardDbChar($value,$as,$alias) : $this->getStandardDbChar($value,$as,$alias);
+				$standTable .=  $standTable ? ','.$this->getStandardSqlInfo($value,$as,$alias) : $this->getStandardSqlInfo($value,$as,$alias);
 			}
 			if(is_string($key)){
-				$standTable .=  $standTable ? ','.$this->getStandardDbChar($key,$as,$value) : $this->getStandardDbChar($key,$as,$value);
+				$standTable .=  $standTable ? ','.$this->getStandardSqlInfo($key,$as,$value) : $this->getStandardSqlInfo($key,$as,$value);
 			}
 		}
 		return $standTable;
@@ -29,7 +36,13 @@ class WMySqlBuilder extends WSqlBuilder{
 	public  function buildDistinct($distinct){
 		return $distinct ? ' DISTINCT ' : '';
 	}
-	public  function buildField(){
+	public  function buildField($field){
+		$rawField = '';
+		if(empty($field)) $rawField = '*';
+		if(!is_string($table) || !is_array($table)){
+			throw new WSqlException('table is not mepty');
+		}
+		
 	}
 	public  function buildUnion(){
 
@@ -79,17 +92,16 @@ class WMySqlBuilder extends WSqlBuilder{
 		return $value;
 	}
 	
-	public function  getStandardDbChar($name,$as = ' ',$alias = ''){
-		if(strrpos($name,'`')) return $name;
+	public function  getStandardSqlInfo($name,$as = ' ',$alias = ''){
+		if( false !== strrpos($name,'`') ||  false !== strpos($name,'*')) return $name;
 		$ifmatch = preg_match('/([\s| ])+/i',trim($name),$match);
-		$stand = '';
-		if($ifmatch){
+		if($ifmatch && !strpos($name,')')){
 			$name = explode($match[1],$name);
 			$as = in_array(strtolower($as),array(' ','as')) ? $as : ' ';
-			$name = '`'.$name[0].'` '.strtoupper($as).' '.$name[count($name)-1];
+			$name = in_array(strtolower($name[0]),array('distinct')) ? $name[0].'  `'.$name[count($name)-1].'`': '`'.$name[0].'`  '.strtoupper($as).' `'.$name[count($name)-1].'`';
 		}else{
 			$alias = $alias ? ' '.strtoupper($as).' '.$alias : '';
-			$name = (strrpos($name,')') || in_array(strtolower($name),array('*','distinct'))) ? $name : '`'.$name.'`'.$alias;
+			$name = (strpos($name,')')   ? str_replace(array('(',')',' '),array('(`','`)',''),$name) : '`'.$name.'`').$alias;
 		}
 		return $name;
 	}

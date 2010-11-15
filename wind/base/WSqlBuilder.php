@@ -31,13 +31,13 @@ abstract class WSqlBuilder{
 		return sprintf("INSERT  %s %s VALUES %s",$this->buildTable($option['table']),$this->buildField($option['field']),$this->buildData($option['data']));
 	}
 	public  function getUpdateSql(){
-		return sprintf("UPDATE  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+		return sprintf("UPDATE  %s %s SET %s",$this->buildTable(),$this->buildField(),$this->buildValue());
 	}
 	public  function getDeleteSql(){
-		return sprintf("DELETE  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+		return sprintf("DELETE  %s %s FROM %s",$this->buildTable(),$this->buildField(),$this->buildValue());
 	}
 	public  function getSelectSql(){
-		return sprintf("SELECT  %s %s VALUES %s",$this->buildTable(),$this->buildField(),$this->buildValue());
+		return sprintf("SELECT  %s  FROM %s",$this->buildTable(),$this->buildField(),$this->buildValue());
 	}
 
 
