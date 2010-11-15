@@ -8,10 +8,26 @@
 
 class WMySqlBuilder extends WSqlBuilder{
 
-	public  function buildTable(){
+	public  function buildTable($table,$as = ' ',$alias = ''){
+		if(empty($table) || !is_string($table) || !is_array($table)){
+			throw new WSqlException('table is not mepty');
+		}
+		$tableList = is_string($table) ? explode(',',$table) : $table;
+		$standTable = '';
+		foreach($tableList as $key=>$value){
+			if(is_int($key)){
+				$standTable .=  $standTable ? ','.$this->getStandardDbChar($value,$as,$alias) : $this->getStandardDbChar($value,$as,$alias);
+			}
+			if(is_string($key)){
+				$standTable .=  $standTable ? ','.$this->getStandardDbChar($key,$as,$value) : $this->getStandardDbChar($key,$as,$value);
+			}
+		}
+		return $standTable;
+		
 	}
+	
 	public  function buildDistinct($distinct = false){
-		return $distinct ' DISTINCT ' : '';
+		return $distinct ? ' DISTINCT ' : '';
 	}
 	public  function buildField(){
 	}
@@ -57,5 +73,20 @@ class WMySqlBuilder extends WSqlBuilder{
 
 	public  function escapeString($value){
 		return $value;
+	}
+	
+	public function  getStandardDbChar($name,$as = ' ',$alias = ''){
+		if(strrpos($name,'`')) return $name;
+		$ifmatch = preg_match('/([\s| ])+/i',trim($name),$match);
+		$stand = '';
+		if($ifmatch){
+			$name = explode($match[1],$name);
+			$as = in_array(strtolower($as),array(' ','as')) ? $as : ' ';
+			$name = '`'.$name[0].'` '.strtoupper($as).' '.$name[count($name)-1];
+		}else{
+			$alias = $alias ? ' '.strtoupper($as).' '.$alias : '';
+			$name = (strrpos($name,')') || in_array(strtolower($name),array('*','distinct'))) ? $name : '`'.$name.'`'.$alias;
+		}
+		return $name;
 	}
 }
