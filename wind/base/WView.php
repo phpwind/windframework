@@ -205,7 +205,7 @@ class WView {
 			case 'phpwind':
 			default:
 				$tmplangfile2 = $this->config['cachePath'] . $template . '.' . $this->config['templateExt'];;
-				$this->viewContent = WTemplate::fetch($templateFile, $template2, $this->var);
+				$this->viewContent = WTemplate::fetch($templateFile, $tmplangfile2, $this->var);
 				echo $this->viewContent;
 				break;
 		}
