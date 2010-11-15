@@ -56,12 +56,10 @@ class WWebApplicationController implements WApplicationController {
 			}
 		}
 		
-		$forward = $action->$method();
+		$action->$method();
+		$viewer = $action->getViewer($configObj, $router);
 		
-		if (!$forward)
-			$forward = $router->getDefaultViewHandle();
-		
-		$this->processActionForward($request, $response, $forward);
+		$this->processActionForward($request, $response, $viewer);
 	}
 	
 	/**
@@ -72,17 +70,15 @@ class WWebApplicationController implements WApplicationController {
 	}
 	
 	/**
-	 * 处理响应
+	 * 处理页面输出与重定向
+	 * 
 	 * @param WHttpRequest $request
 	 * @param WHttpResponse $response
-	 * @param WviewFactory $forward
+	 * @param WViewer $viewer
 	 */
-	protected function processActionForward($request, $response, $forward) {
-		ob_start();
-		W::import('template.hello');
+	protected function processActionForward($request, $response, $viewer) {
 		
-		echo ob_get_clean();
-		$response->sendResponse();
+		echo $viewer->display();
 	}
 	
 	/**

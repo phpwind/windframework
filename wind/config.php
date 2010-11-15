@@ -11,7 +11,7 @@
  * 
  * */
 $sysConfig = array(
-	//保存过滤路径
+	/* 保存过滤路径 */
 	'filters' => array(),
 	
 	/* 应用路径配置 */
@@ -19,10 +19,16 @@ $sysConfig = array(
 		'default' => 'actionControllers'
 	),
 	
-	/*模板路径配置*/
+	/* 模板路径配置 */
 	'view' => array(
 		'viewPath' => 'template',  //模板文件路径
+		'tpl' => 'index',  //默认的模板文件
+		'engine' => 'default',  //default,smarty
 		'ext' => 'htm' //模板文件后缀名
+	), 
+	
+	'viewEngine' => array(
+		'default' => 'WIND:core.WViewer'
 	),
 	
 	/*
@@ -36,12 +42,14 @@ $sysConfig = array(
 	'router' => array(
 		'parser' => 'url'
 	), 
+	
 	/* URL路由规则配置  */
 	'urlRule' => array(
 		'action' => 'run', 
 		'controller' => 'index', 
 		'module' => ''
-	), 
+	),
+	 
 	/* 路由解析器配置 */
 	'routerParser' => array(
 		'url' => 'WIND:core.WUrlRouter'

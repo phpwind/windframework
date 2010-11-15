@@ -97,6 +97,7 @@ class WFrontController extends WActionServlet {
 	
 	/**
 	 * 初始化系统配置信息
+	 * 
 	 * @param array $config
 	 */
 	private function _initConfig($config) {

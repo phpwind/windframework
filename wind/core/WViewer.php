@@ -7,13 +7,51 @@
  */
 
 class WViewer {
-	private static $instance;
+	private $output = '';
+	private $template = '';
+	private $viewContainer = '';
+	private $vars = array();
 	
-	static public function getInstance() {
-		if (self::$instance === null) {
-			$class = __CLASS__;
-			self::$instance = new $class();
-		}
-		return self::$instance;
+	public function __construct($tpl = '') {
+		$this->template = $tpl;
 	}
+	
+	/**
+	 * 将变量注册到模板空间中
+	 * 
+	 */
+	public function assign($vars = '', $key = null) {
+		if ($key) {
+			$this->vars[$key] = $vars;
+			return;
+		}
+		if (is_array($vars)) {
+			foreach ($vars as $k => $v) {
+				$this->vars[$k] = $v;
+			}
+		} elseif (is_object($vars)) {
+			$this->vars += get_object_vars($vars);
+		}
+	}
+	
+	public function display() {
+		$this->fetch();
+		return $this->viewContainer;
+	}
+	
+	/**
+	 * 获取模板内容
+	 */
+	private function fetch() {
+		if (!file_exists($this->template))
+			throw new WException('the template file ' . $this->template . ' is not exists.');
+		
+		if ($this->vars)
+			extract($this->vars, EXTR_REFS);
+		
+		ob_start();
+		include $this->template;
+		$this->viewContainer = ob_get_clean();
+	}
+
 }

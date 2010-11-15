@@ -6,24 +6,71 @@
  * @license 
  */
 
+/**
+ * 根据视图的逻辑名称，返回视图模板内容
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
 class WViewFactory {
+	
+	/* 视图配置信息  */
+	const VIEW_CONFIG = 'view';
+	const VIEW_ENGINE = 'viewEngine';
 	
 	private $viewPath = 'template';
 	private $ext = 'htm';
+	private $tpl = 'index';
+	private $engine = 'default';
+	private $engines = array();
 	private $config = array();
 	
-	private $forward = '';
-	
-	const VIEW_CONFIG = 'view';
-	
+	private $viewer = null;
 	private static $instance = null;
 	
 	protected function __construct($configObj = null) {
 		$this->initConfig($configObj);
 	}
 	
-	public function setForward($forward) {
-		$this->forward;
+	/**
+	 * 返回视图对象
+	 * 
+	 * @return WViewer
+	 */
+	public function create($tpl = '') {
+		if ($this->viewer === null) {
+			if (!($enginePath = $this->engines[$this->engine]))
+				throw new WException('Template engine ' . $this->engine . ' is not exists.');
+			if (!($tpl = $this->getViewTemplate($tpl)))
+				throw new WException('Template file ' . $this->tpl . ' is not exists.');
+			
+			W::import($enginePath);
+			$className = substr($enginePath, strrpos($enginePath, '.') + 1);
+			$class = new ReflectionClass($className);
+			$object = call_user_func_array(array(
+				$class, 
+				'newInstance'
+			), array(
+				$tpl
+			));
+			$this->viewer = &$object;
+		}
+		return $this->viewer;
+	}
+	
+	/**
+	 * 根据模板名称获得模板文件
+	 * 模板文件名称|扩展名|绝对路径信息
+	 * 
+	 * @param string $viewName
+	 * @return array()
+	 */
+	private function getViewTemplate($tpl = null) {
+		$tpl && $this->tpl = $tpl;
+		
+		return W::getRealPath($this->viewPath . '.' . $this->tpl, $this->ext);
 	}
 	
 	/**
@@ -35,33 +82,20 @@ class WViewFactory {
 		if ($configObj == null)
 			return;
 		
+		$this->engines = $configObj->getConfig(self::VIEW_ENGINE);
 		$this->config = $configObj->getConfig(self::VIEW_CONFIG);
+		
 		if (isset($this->config['viewPath']))
 			$this->viewPath = $this->config['viewPath'];
 		
 		if (isset($this->config['ext']))
 			$this->ext = $this->config['ext'];
-	}
-	
-	/**
-	 * 根据模板名称获得模板文件
-	 * 
-	 * @param string $viewName
-	 * @return string
-	 */
-	private function getViewTemplate($viewName) {
-		return '';
-	}
-	
-	/**
-	 * 根据视图forward的逻辑视图名称获得真是的视图文件名
-	 * @return string
-	 */
-	private function getViewFileName() {
-		if (!$this->forward)
-			$this->forward = 'index';
 		
-		return $this->forward . $this->ext;
+		if (isset($this->config['tpl']))
+			$this->tpl = $this->config['tpl'];
+		
+		if (isset($this->config['engine']))
+			$this->engine = $this->config['engine'];
 	}
 	
 	/**

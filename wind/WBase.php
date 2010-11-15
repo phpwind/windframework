@@ -7,6 +7,7 @@
  */
 //error_reporting(E_ERROR | E_PARSE);
 
+
 /* 路径相关配置信息  */
 defined('WIND_PATH') or define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 defined('SYSTEM_CONFIG_PATH') or define('SYSTEM_CONFIG_PATH', WIND_PATH . 'config.php');
@@ -81,19 +82,32 @@ class W {
 	 * 获得文件的绝对路径
 	 * @param string $path
 	 */
-	static public function getRealPath($path = '') {
+	static public function getRealPath($path = '', $ext = '', $info = false) {
 		if (file_exists($path))
 			return $path;
+			
+		self::_setNamespace($path);
 		
 		$realPath = self::getApplicationRootPath() . self::getSeparator() . $path;
 		$realPath = str_replace(IMPORT_SEPARATOR, self::getSeparator(), $realPath);
-		if (!is_dir($realPath)) {
+		if ($ext && file_exists($realPath . '.' . $ext))
+			$realPath .= '.' . $ext;
+		elseif (!is_dir($realPath) && !$ext) {
 			foreach ((array) self::getExtendNames() as $key => $value) {
 				if (file_exists($realPath . '.' . $value)) {
 					$realPath .= '.' . $value;
 					break;
 				}
 			}
+		}
+		if ($info) {
+			if (!file_exists($realPath))
+				throw new WException('The file path ' . $realPath . ' is not a file.');
+			return array(
+				basename($realPath, $value), 
+				$value, 
+				$realPath
+			);
 		}
 		return realpath($realPath);
 	}
@@ -159,7 +173,7 @@ class W {
 	static public function getExtendNames($ext = '') {
 		$exts = array(
 			'php', 
-			'htm',
+			'htm', 
 			'class.php', 
 			'db.php', 
 			'phpx'
@@ -181,6 +195,15 @@ class W {
 		if (!key_exists($className, self::$_instances))
 			self::_createInstance($className, $args);
 		return self::$_instances[$className];
+	}
+	
+	static private function _setNamespace(&$filePath) {
+		if (($pos = strpos($filePath, IMPORT_NAMESPACE)) !== false) {
+			self::$_namespace = (string) substr($filePath, 0, $pos);
+			$filePath = (string) substr($filePath, $pos + 1);
+		} else
+			self::$_namespace = '';
+		return $filePath;
 	}
 	
 	/**
@@ -213,11 +236,7 @@ class W {
 		
 		$className = (string) substr($filePath, $pos + 1);
 		$filePath = (string) substr($filePath, 0, $pos);
-		if (($pos = strpos($filePath, IMPORT_NAMESPACE)) !== false) {
-			self::$_namespace = (string) substr($filePath, 0, $pos);
-			$filePath = (string) substr($filePath, $pos + 1);
-		} else
-			self::$_namespace = '';
+		//self::_setNamespace($filePath);
 		$isPackage = $className === IMPORT_PACKAGE;
 		$classNames = array();
 		if ($isPackage) {

@@ -39,6 +39,8 @@ abstract class WActionServlet {
 			throw new WException('init action servlet failed!!');
 		
 		$this->service($this->reuqest, $this->response);
+		
+		$this->response->sendResponse();
 	}
 	
 	abstract function process($request, $resopnse);

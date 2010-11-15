@@ -216,6 +216,7 @@ class WView {
 			ob_end_flush();
 		}
 	}
+	
 	/**
 	 * 处理 ajax请求的返回信息显示
 	 * @param mixed $data  显示的数据
