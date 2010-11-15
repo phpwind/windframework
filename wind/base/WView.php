@@ -71,7 +71,7 @@ class WView {
 	public function setTemplateExt($ext) {
 		($ext) && $this->config['templateExt'] = $ext;
 	}
-	//TODO 解析变量
+	//TODO 解析配置信息
 	private function _initView($config) {
 		if (!is_array($config)) {
 			$this->config = array('cachePath' => R_P . '/cache/', 
@@ -143,7 +143,7 @@ class WView {
 	 */
 	//TODO url有效性判断，此处是否可以将具体的实现转移至工具类中，以便其它地方调用
 	public function redirect($url, $params = array(), $delayTime = 0, $msg = '') {
-		$url = str_replace ( array ("\n", "\r" ), '', $url );
+		$url = str_replace(array("\n", "\r" ), '', $url);
 		$parse = '';
 		foreach ((array)$params as $key => $value) {
 			($value != '') && $parse .= "{$key}={$value}&";
@@ -163,7 +163,7 @@ class WView {
 		}
 		$jumpStr = "<meta http-equiv='Refresh' content='{$delayTime};URL={$url}'>";
 		($delayTime > 0) && $jumpStr .= $msg;
-		exit ( $jumpStr );
+		exit($jumpStr );
 	}
 	
 	/**
@@ -184,34 +184,36 @@ class WView {
 	 * @param boolean $return 是否返回还是立即显示
 	 */
 	//TODO 获得模板内容
-	public function fetch($templateFile = '', $charset = '', $contentType = 'text/html', $return = true) {
-		$templateFile = $this->config['templatePath'] . $templateFile . '.' . $this->config['templateExt'];
-		if (!file_exists($templateFile)) return;
+	public function fetch($template = '', $charset = '', $contentType = 'text/html', $return = true) {
+		if ($template == '') return;
+		$templateFile = $this->config['templatePath'] . $template . '.' . $this->config['templateExt'];
+		
 		(!$charset) && $charset = $this->config ['charset'];
 		(!$contentType) && $contentType = 'text/html';
-		
 		if(!headers_sent()) {
 			header("Content-Type:" . $contentType . "; charset=" . $charset);
 			header("Cache-control: private"); //支持页面回跳
 		}
 		(extension_loaded('zlib')) ? ob_start('ob_gzhandler') : ob_start();
-		if ($this->config['engine'] == 'php') {
-			extract($this->var, EXTR_OVERWRITE );
-			include $templateFile;
-			$this->viewContent = ob_get_contents();
+		switch (strtolower($this->config['engine'])) {
+			case 'php':
+				extract($this->var, EXTR_OVERWRITE );
+				if (!file_exists($templateFile) || !is_readable($templateFile)) return 'ERR_TEMPLATE:' . $templateFile;
+				include $templateFile;
+				$this->viewContent = ob_get_contents();
+				break;
+			case 'phpwind':
+			default:
+				$tmplangfile2 = $this->config['cachePath'] . $template . '.' . $this->config['templateExt'];;
+				$this->viewContent = WTemplate::fetch($templateFile, $template2, $this->var);
+				echo $this->viewContent;
+				break;
 		}
 		if ($return) {
 			ob_end_clean();
 			return $this->viewContent;
 		} else {
 			ob_end_flush();
-		}
-	}
-	//TODO  如果模板需要解析编译，则进行cache判断
-	private function getCache($templateFile) {
-		//TODO  如果源文件修改而模板文件没有修改··重新生成缓存更新~~~
-		if(@filemtime($templateFile) > @filemtime($objfile)) {
-			parse_template($file, $templateid, $tpldir);
 		}
 	}
 	/**
@@ -225,7 +227,9 @@ class WView {
 		switch ($type) {
 			case 'JSON':
 				header("Content-Type:text/html; charset=utf-8");
-				exit(json_encode($data));
+				if (is_array($data)) $data = json_encode($data);
+				elseif (is_object($data)) $data = json_encode(get_object_vars($data));
+				exit($data);
 				break;
 			case 'XML':				
 				header("Content-Type:application/xml; charset=utf-8");
@@ -241,6 +245,11 @@ class WView {
 		}
 	}
 	
+	/**
+	 * 将数据组装成正确的xml输出
+	 * @param mixed $data 需要解析的数据
+	 * @return string 解析后的数据
+	 */
 	//TODO 解析xml考虑放在全局类库中
 	public function xml_encode($data) {
 		$xml = new DOMDocument();
