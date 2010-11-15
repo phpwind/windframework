@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package
  */
-class WSystemConfig extends WConfig {
+class WSystemConfig extends WConfig { 
 	private $system = array();
 	private $custom = array();
 	private $config = array();
@@ -26,7 +26,7 @@ class WSystemConfig extends WConfig {
 	public function parse($configSystem, $configCustom = array()) {
 		if (!is_array($configSystem) || !is_array($configCustom))
 			throw new Exception('the format of config file is error!!!');
-			
+		
 		if (empty($configSystem))
 			throw new Exception('system config file is not exists!!!');
 		
@@ -50,11 +50,8 @@ class WSystemConfig extends WConfig {
 	 * @return string
 	 */
 	public function getConfig($configName) {
-		if ($configName && isset($this->config[$configName])) {
+		if ($configName && isset($this->config[$configName]))
 			return $this->config[$configName];
-		} else {
-			throw new Exception("{$configName}配置信息不存在", 5);
-		}
 	}
 	
 	/**
@@ -64,55 +61,63 @@ class WSystemConfig extends WConfig {
 	public function getFiltersConfig($name = '') {
 		if (isset($this->config['filters']))
 			return !$name ? $this->config['filters'] : ($this->config['filters'][$name] ? $this->config['filters'][$name] : '');
-		else
-			throw new Exception("the filter config is not exists!!!");
 	}
 	
 	/**
-	 * 返回过滤器链
+	 * 返回应用配置信息，没有任何应用配置信息则返回''
 	 * @param string $name
-	 * @return Ambigous <string, multitype:>
+	 * @return string
 	 */
-	public function getFilterChainConfig($name = '') {
-		return !$name ? $this->config['filterChain'] : isset($this->config['filterChain'][$name]) ? $this->config['filterChain'][$name] : '';
+	public function getModulesConfig($name = '', $default = null) {
+		if (!isset($this->config['modules']))
+			return $default;
+		if (!$name)
+			return $this->config['modules'];
+		
+		return $this->config['modules'][$name] ? $this->config['modules'][$name] : $default;
 	}
 	
 	/**
 	 * 获得路由配置信息
-	 * @return string
+	 * 
+	 * @param string $name
+	 * @return string|null|array
 	 */
-	public function getRouterConfig($name = '') {
-		if (isset($this->config['router']))
-			return !$name ? $this->config['router'] : ($this->config['router'][$name] ? $this->config['router'][$name] : '');
-		else
-			throw new Exception("the router config is not exists!!!");
+	public function getRouterConfig($name = '', $default = null) {
+		if (!isset($this->config['router']))
+			return $default;
+		if (!$name)
+			return $this->config['router'];
+		
+		return isset($this->config['router'][$name]) ? $this->config['router'][$name] : $default;
 	}
 	
 	/**
-	 * 获得路由规则配置
-	 * @param unknown_type $name
-	 * @return Ambigous <string, multitype:>
+	 * 获得路由解析规则配置
+	 * 
+	 * @param string $name
+	 * @return array|null
 	 */
-	public function getRouterRule($name = '') {
-		if (empty($name))
-			$name = $this->getRouterConfig('parser');
-		
-		$name = $name . 'Rule';
-		if (isset($this->config[$name]))
-			return $this->config[$name];
-		else
-			throw new Exception("the routerParser config is not exists!!!");
+	public function getRouterRule($name = '', $default = null) {
+		if ($name) {
+			$name = $name . 'Rule';
+			return isset($this->config[$name]) ? $this->config[$name] : $default;
+		} else
+			throw new WException('');
 	}
 	
 	/**
 	 * 返回路由解析器配置
+	 * 
 	 * @return string
 	 */
-	public function getRouterParser($name = '') {
-		if (isset($this->config['routerParser']))
-			return !$name ? $this->config['routerParser'] : ($this->config['routerParser'][$name] ? $this->config['routerParser'][$name] : '');
-		else
-			throw new Exception("the routerParser config is not exists!!!");
+	public function getRouterParser($name = '', $default = null) {
+		if (!isset($this->config['routerParser']))
+			return $default;
+		if (!$name)
+			return $this->config['routerParser'];
+		
+		return $this->config['routerParser'][$name] ? $this->config['routerParser'][$name] : $default;
 	}
 
 }

@@ -15,24 +15,104 @@
 class WWebApplicationController implements WApplicationController {
 	
 	/**
+	 * 初始化配置信息
+	 * @param WSystemConfig $configObj
+	 */
+	public function init() {}
+	
+	/**
 	 * @param WHttpRequest $request
 	 * @param WHttpResponse $response
-	 * @param WRouter $router
+	 * @param WSystemConfig $configObj
 	 */
-	public function processRequest($request, $response, $router) {
+	public function processRequest($request, $response, $configObj) {
+		$router = $this->createRouter($configObj);
+		$router->doParser($request, $response);
 		
+		if (($base = $configObj->getConfig('baseController')) == 'WActionController')
+			list($className, $method) = $router->getControllerHandle($request, $response);
+		elseif (($base = $configObj->getConfig('baseController')) == 'WAction')
+			list($className, $method) = $router->getActionHandle($request, $response);
+		else
+			throw new WException('determine the baseController is failed in config.php.');
+		
+		$class = new ReflectionClass($className);
+		$action = call_user_func_array(array(
+			$class, 
+			'newInstance'
+		), array(
+			$request, 
+			$response
+		));
+		
+		if (($formHandle = $router->getActionFormHandle()) != null) {
+			$actionForm = W::getInstance($formHandle, array(
+				$request, 
+				$response
+			));
+			
+			//TODO 验证表单，并错误处理
+			if ($actionForm->getIsValidate()) {
+				$this->validateProcessActionForm($actionForm);
+			}
+		}
+		
+		$forward = $action->$method();
+		
+		if (!$forward)
+			$forward = $router->getDefaultViewHandle();
+		
+		$this->processActionForward($request, $response, $forward);
 	}
 	
-	public function init() {}
+	/**
+	 * @param WActionForm $actionForm
+	 */
+	protected function validateProcessActionForm($actionForm) {
+		$result = $actionForm->validation();
+	}
+	
+	/**
+	 * 处理响应
+	 * @param WHttpRequest $request
+	 * @param WHttpResponse $response
+	 * @param WviewFactory $forward
+	 */
+	protected function processActionForward($request, $response, $forward) {
+		ob_start();
+		W::import('template.hello');
+		
+		echo ob_get_clean();
+		$response->sendResponse();
+	}
 	
 	/**
 	 * 获得一个路由实例
 	 * @param WSystemConfig $configObj
+	 * @return WRouter
 	 */
-	public function createRouter($configObj) {
-		$router = WRouterFactory::getFactory()->create($configObj);
-		if ($router === null)
-			throw new WException('create router failed!!');
+	public function &createRouter($configObj) {
+		$parser = 'url';
+		$parserPath = 'router.parser.WUrlRouteParser';
+		if (($_parser = $configObj->getRouterConfig('parser')) != null)
+			$parser = $_parser;
+		if (($_parserPath = $configObj->getRouterParser($parser)) != null)
+			$parserPath = $_parserPath;
+		if (($pos = strrpos($parserPath, '.')) === false)
+			$className = $parserPath;
+		else
+			$className = substr($parserPath, $pos + 1);
+		W::import($parserPath);
+		if (!class_exists($className))
+			throw new WException('The router ' . $className . ' is not exists.');
+		
+		$class = new ReflectionClass($className);
+		$router = call_user_func_array(array(
+			$class, 
+			'newInstance'
+		), array(
+			$configObj
+		));
 		return $router;
 	}
 	

@@ -14,12 +14,9 @@
  * @package 
  */
 class WUrlRouter extends WRouter {
-	protected $parserName = 'url';
+	protected $routerName = 'url';
 	
-	protected $actionKey = '';
-	protected $controllerKey = '';
-	protected $app1Key = '';
-	protected $app2Key = '';
+	protected $module = '';
 	
 	/**
 	 * 调用该方法实现路由解析
@@ -31,13 +28,87 @@ class WUrlRouter extends WRouter {
 	 */
 	public function doParser($request, $response) {
 		if (!$this->routerRule)
-			$this->routerRule = array(
-				'a' => 'run', 
-				'c' => 'index', 
-				'app1' => 'controller1', 
-				'app2' => ''
-			);
+			throw new WException('The url parser rule is empty.');
+		
 		$this->_setValues($request, $response);
+	}
+	
+	/**
+	 * 通过实现WAction接口的调用该方法
+	 * 
+	 * @param WHttpRequest $request
+	 * @param WHttpResponse $response
+	 */
+	public function getActionHandle() {
+		if (empty($this->modules))
+			throw new WException('the modules is empty.');
+		
+		$module = $this->getModule() ? $this->modules[$this->getModule()] : 'actionControllers';
+		$module .= '.' . $this->getController() . 'Controller';
+		$className = $this->getAction() . 'Action';
+		$method = 'run';
+		W::import($module . '.' . $className);
+		if (!class_exists($className))
+			throw new WException('The class ' . $className . ' is not exists.');
+		
+		if (!in_array(get_class_methods($method, $className)))
+			throw new WException('The mehtod ' . $method . ' is not exists in class ' . $className . '.');
+		
+		$this->modulePath = $module;
+		return array(
+			$className, 
+			$method
+		);
+	}
+	
+	/**
+	 * 通过实现WActionController接口的调用该方法
+	 */
+	public function getControllerHandle() {
+		if (empty($this->modules))
+			throw new WException('the modules is empty.');
+		
+		$module = $this->getModule() ? $this->modules[$this->getModule()] : 'actionControllers';
+		$className = $this->getController() . 'Controller';
+		$method = $this->getAction();
+		W::import($module . '.' . $className);
+		if (!class_exists($className))
+			throw new WException('The class ' . $className . ' is not exists.');
+		
+		elseif (!in_array($method, get_class_methods($className)))
+			throw new WException('The mehtod ' . $method . ' is not exists in class ' . $className . '.');
+		
+		$this->modulePath = $module;
+		return array(
+			$className, 
+			$method
+		);
+	}
+	
+	/**
+	 * 返回请求的ActionForm句柄，如果未定义则返回null
+	 */
+	public function getActionFormHandle() {
+		if (!$this->modulePath)
+			throw new WException('The path of module is not exists.');
+		
+		$formPath = $this->modulePath . '.' . 'actionForm';
+		$className = $this->controller . $this->action . 'Form';
+		W::import($formPath . '.' . $className);
+		if (!class_exists($className))
+			return null;
+		
+		return $className;
+	}
+	
+	/**
+	 * 返回请求的ActionForm句柄，如果未定义则返回null
+	 */
+	public function getDefaultViewHandle() {
+		if (!$this->modulePath)
+			throw new WException('The path of module is not exists.');
+		
+		return $this->controller . '_' . $this->action;
 	}
 	
 	/**
@@ -46,84 +117,9 @@ class WUrlRouter extends WRouter {
 	 */
 	private function _setValues($request, $response) {
 		$keys = array_keys($this->routerRule);
-		$this->actionKey = $keys[0];
-		$this->controllerKey = $keys[1];
-		$this->app1Key = $keys[2];
-		$this->app2Key = $keys[3];
-		
-		$this->_setApp2($request, $response);
-		$this->_setApp1($request, $response);
-		$this->_setController($request, $response);
-		$this->_setAction($request, $response);
-	
-	}
-	
-	/**
-	 * 获得一个操作句柄
-	 * @return NULL|object
-	 */
-	public function &getActionHandle() {
-		$path = $this->app2 . '.' . $this->app1 . '.' . $this->controller;
-		$actionName = $this->action . 'Action';
-		W::import(trim($path . '.' . $actionName, '.'));
-		if (!class_exists($actionName))
-			return null;
-		$class = new ReflectionClass($actionName);
-		$object = $class->newInstance();
-		return $object;
-	}
-	
-	/**
-	 * 获得一个操作句柄
-	 * @return NULL|object
-	 */
-	public function &getControllerHandle() {
-		$path = $this->app2 . '.' . $this->app1 . '.' . $this->controller;
-		W::import(trim($path, '.'));
-		if (!class_exists($this->controller))
-			return null;
-		$class = new ReflectionClass($this->controller);
-		$object = $class->newInstance();
-		return $object;
-	}
-	
-	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
-	 */
-	private function _setAction($request, $response) {
-		$action = $request->getGet($this->actionKey);
-		$action && $this->action = $action;
-	}
-	
-	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
-	 */
-	private function _setController($request, $response) {
-		$controller = $request->getGet($this->controllerKey);
-		$controller && $this->controller = $controller;
-		$this->controller .= 'Controller';
-	}
-	
-	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
-	 */
-	private function _setApp1($request, $response) {
-		$app1 = $request->getGet($this->app1Key);
-		$app1 && $app1 = $this->configObj->getApplicationConfig($app1);
-		$app1 && $this->app1 = $app1;
-	}
-	
-	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
-	 */
-	private function _setApp2($request, $response) {
-		$app2 = $request->getGet($this->app2Key);
-		$app2 && $app2 = $this->configObj->getApplicationConfig($app2);
-		$app2 && $this->app2 = $app2;
+		$this->action = $request->getGet($keys[0], $this->action);
+		$this->controller = $request->getGet($keys[1], $this->controller);
+		$this->module = $request->getGet($keys[2], $this->module);
 	}
 
 }
