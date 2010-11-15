@@ -18,7 +18,7 @@ abstract class WSqlBuilder{
 	public abstract function buildDistinct($distinct);
 	public abstract function buildField($field);
 	public abstract function buildJoin($join);
-	public abstract function buildWhere($order);
+	public abstract function buildWhere($where);
 	public abstract function buildGroup($group);
 	public abstract function buildOrder($order);
 	public abstract function buildHaving($having);

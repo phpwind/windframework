@@ -77,7 +77,7 @@ class WMySqlBuilder extends WSqlBuilder{
 		}
 		return $joinContidion;
 	}
-	public  function buildWhere(){
+	public  function buildWhere($where){
 
 	}
 	public  function buildGroup($group){
@@ -108,7 +108,7 @@ class WMySqlBuilder extends WSqlBuilder{
 		return $this->getDimension($data) == 1 ? $this->buildSingleData($data) : $this->buildMultiData($data);
 	}
 	
-	public function buildSet(){
+	public function buildSet($set){
 		
 	}
 
