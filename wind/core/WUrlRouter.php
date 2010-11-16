@@ -95,6 +95,7 @@ class WUrlRouter extends WRouter {
 		try {
 			$formPath = $this->modulePath . '.' . 'actionForm';
 			$className = $this->controller . $this->action . 'Form';
+			if (!is_file($formPath . '.' . $className . '.php')) return null;
 			W::import($formPath . '.' . $className);
 			if (class_exists($className))
 				return $className;
