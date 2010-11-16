@@ -46,9 +46,7 @@ abstract class WActionFrom extends WModule {
 	   if (!$_params) return false;
 	   foreach ($_params as $_key => $_value) {
 	   	  //是否设置了setter方法，表单中的空间名和form中的属性名一一对应
-	   		if (method_exists($this, "set{$_key}")) {
-	   			call_user_func(array($this, "set{$_key}"), $_value);
-	   		}
+	   	   $this->$_key = $_value;
 	   }
 	}
 	
