@@ -26,18 +26,21 @@ abstract class WModule {
 	private function _init() {}
 	
 	public function __get($propertyName) {
-		$this->_validateProperties($propertyName);
+		if (!$this->_validateProperties($propertyName))
+			return;
 		return $this->$propertyName;
 	}
 	
 	public function __set($propertyName, $value) {
-		$this->_validateProperties($propertyName);
+		if (!$this->_validateProperties($propertyName))
+			return;
 		$this->_trace['setted'][$propertyName] = $value;
 		$this->$propertyName = $value;
 	}
 	
 	public function isseted($propertyName) {
-		$this->_validateProperties($propertyName);
+		if (!$this->_validateProperties($propertyName))
+			return;
 		return array_key_exists($propertyName, $this->_trace['setted']);
 	}
 	
@@ -47,9 +50,10 @@ abstract class WModule {
 	 */
 	private function _validateProperties($propertyName) {
 		if (!$propertyName)
-			throw new Exception('empty args !!!!');
+			return false;
 		if (array_key_exists($propertyName, get_class_vars(get_class($this))))
-			throw new Exception('property ' . $propertyName . ' not exist!!!!');
+			return false;
+		return true;
 	}
-	
+
 }
