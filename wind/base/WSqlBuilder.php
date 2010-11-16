@@ -12,58 +12,139 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WSqlBuilder{
+abstract class WSqlBuilder {
 	
-	public abstract function buildTable($table);
-	public abstract function buildDistinct($distinct);
-	public abstract function buildField($field);
-	public abstract function buildJoin($join);
-	public abstract function buildWhere($where);
-	public abstract function buildGroup($group);
-	public abstract function buildOrder($order);
-	public abstract function buildHaving($having);
-	public abstract function buildLimit($limit,$offset);
+	protected $compare = array ('gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'eq' => '=', 'neq' => '!=', 'in' => 'IN', 'notin' => 'NOT IN', 'notlike' => 'NOT LIKE', 'like' => 'LIKE' );
+	protected $logic = array ('and' => 'AND', 'or' => 'OR', 'xor' => 'XOR' );
+	protected $group = array ('left' => '(', 'right' => ')' );
+	
+	/**
+	 * @param unknown_type $table
+	 */
+	public abstract function buildTable($table = array());
+	/**
+	 * @param unknown_type $distinct
+	 */
+	public abstract function buildDistinct($distinct = false);
+	/**
+	 * @param unknown_type $field
+	 */
+	public abstract function buildField($field = array());
+	/**
+	 * @param unknown_type $join
+	 */
+	public abstract function buildJoin($join = array());
+	/**
+	 * @param unknown_type $where
+	 */
+	public abstract function buildWhere($where = array());
+	/**
+	 * @param unknown_type $group
+	 */
+	public abstract function buildGroup($group = array());
+	/**
+	 * @param unknown_type $order
+	 */
+	public abstract function buildOrder($order = array());
+	/**
+	 * @param unknown_type $having
+	 */
+	public abstract function buildHaving($having = '');
+	/**
+	 * @param unknown_type $limit
+	 * @param unknown_type $offset
+	 */
+	public abstract function buildLimit($limit = 0, $offset = 0);
+	/**
+	 * @param unknown_type $data
+	 */
 	public abstract function buildSet($data);
+	/**
+	 * @param unknown_type $setData
+	 */
 	public abstract function buildData($setData);
+	/**
+	 * @param unknown_type $value
+	 */
 	public abstract function escapeString($value);
-	public  function getInsertSql($option){
-		return sprintf("INSERT  %s %s VALUES %s",$this->buildTable($option['table']),$this->buildField($option['field']),$this->buildData($option['data']));
+	
+	/**
+	 * @param unknown_type $option
+	 * @return string
+	 */
+	public function getInsertSql($option) {
+		return sprintf ( "INSERT%s%sVALUES%s", $this->buildTable ( $option ['table'] ), $this->buildField ( $option ['field'] ), $this->buildData ( $option ['data'] ) );
 	}
-	public  function getUpdateSql($option){
-		return sprintf("UPDATE  %s  SET %s %s %s %s",$this->buildTable($option['table']),$this->buildSet($option['set']),$this->buildWhere($optiion['where']),$this->buildOrder($optiion['order']),$this->buildLimit($option['limit']));
+	/**
+	 * @param unknown_type $option
+	 * @return string
+	 */
+	public function getUpdateSql($option) {
+		return sprintf ( "UPDATE%sSET%s%s%s%s", $this->buildTable ( $option ['table'] ), $this->buildSet ( $option ['set'] ), $this->buildWhere ( $option ['where'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'] ) );
 	}
-	public  function getDeleteSql($option){
-		return sprintf("DELETE FROM %s %s %s %s",$this->buildTable($optiion['table']),$this->buildWhere($optiion['where']),$this->buildOrder($optiion['order']),$this->buildLimit($option['limit']));
+	/**
+	 * @param unknown_type $option
+	 * @return string
+	 */
+	public function getDeleteSql($option) {
+		return sprintf ( "DELETE FROM%s%s%s%s", $this->buildTable ( $option ['table'] ), $this->buildWhere ( $option ['where'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'] ) );
 	}
-	public  function getSelectSql($option){
-		return sprintf("SELECT %s  %s  FROM %s %s %s %s %s %s %s",$this->buildDistinct($option['distinct']),$this->buildField($option['field']),
-			   $this->buildTable($option['table']),$this->buildJoin(),$this->buildWhere($option['where']),$this->buildGroup($option['group']),
-			   $this->buildHaving($option['having']),$this->buildOrder($option['order']),$this->buildLimit($option['limit']));
+	/**
+	 * @param unknown_type $option
+	 * @return string
+	 */
+	public function getSelectSql($option) {
+		return sprintf ( "SELECT%s%sFROM%s%s%s%s%s%s%s", $this->buildDistinct ( $option ['distinct'] ), $this->buildField ( $option ['field'] ), $this->buildTable ( $option ['table'] ), $this->buildJoin (), $this->buildWhere ( $option ['where'] ), $this->buildGroup ( $option ['group'] ), $this->buildHaving ( $option ['having'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'], $option ['offset'] ) );
 	}
-
-
-	public function getDimension($array = array()){
-		if(!is_array($array)) return 0;			
-		static $dim = 0;
-		foreach($array as $value){
-			$dim++;
-			$this->getDimension($value);
+	
+	/**
+	 * @param unknown_type $option
+	 * @return string
+	 */
+	public function getReplaceSql($option){
+		return sprintf ( "REPLACE%s%sSET%s", $this->buildTable ( $option ['table'] ), $this->buildField ( $option ['field'] ), $this->buildData ( $option ['data'] ) );
+	}
+	
+	/**
+	 * @param unknown_type $array
+	 * @return number|number
+	 */
+	public function getDimension($array = array()) {
+		$dim = 0;
+		foreach ($array as $value ) {
+			return  is_array($value) ? $dim+=2 : ++$dim;
 		}
-		return $dim + 1;
-    }
-
-	public function buildSingleData($data){
-		foreach($data as $key=>$value){
-			$data[$key] = $this->escapeString($value);
-		}
-		return '('.implode(',',$data).')';
+		return $dim;
 	}
-
-	public function buildMultiData($multiData){
+	
+	/**
+	 * @param unknown_type $data
+	 * @return string
+	 */
+	public function buildSingleData($data) {
+		foreach ( $data as $key => $value ) {
+			$data [$key] = $this->escapeString ( $value );
+		}
+		return $this->sqlFillSpace('(' . implode ( ',', $data ) . ')');
+	}
+	
+	/**
+	 * @param unknown_type $multiData
+	 * @return string
+	 */
+	public function buildMultiData($multiData) {
 		$iValue = '';
-		foreach($multiData as $data){
-			$iValue .= $this->buildSingleData($data);
+		foreach ( $multiData as $data ) {
+			$iValue .= $this->buildSingleData ( $data );
 		}
 		return $iValue;
+	}
+	
+	/**
+	 * @param unknown_type $value
+	 * @return string
+	 */
+	public function sqlFillSpace($value) {
+		return str_pad ( $value, strlen ( $value ) + 2, " ", STR_PAD_BOTH );
 	}
 }
