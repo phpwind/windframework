@@ -77,8 +77,7 @@ class WWebApplicationController implements WApplicationController {
 	 * @param WViewer $viewer
 	 */
 	protected function processActionForward($request, $response, $viewer) {
-		
-		echo $viewer->display();
+		$response->setBody($viewer->display());
 	}
 	
 	/**

@@ -7,6 +7,12 @@
  */
 
 /**
+ * 1xx：信息，请求收到，继续处理
+ * 2xx：成功，行为被成功地接受、理解和采纳
+ * 3xx：重定向，为了完成请求，必须进一步执行的动作
+ * 4xx：客户端错误，请求包含语法错误或者请求无法实现
+ * 5xx：服务器错误，服务器不能实现一种明显无效的请求
+ *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -14,7 +20,7 @@
  */
 class WHttpResponse implements WResponse {
 	
-	private $_data = array();
+	private $_body = array();
 	
 	private $_headers = array();
 	
@@ -298,12 +304,16 @@ class WHttpResponse implements WResponse {
 	 * @param string $name 响应头的名称
 	 * @param string $value 响应头的字段取值
 	 */
-	public function setHeader($name, $value) {
+	public function setHeader($name, $value, $replace = false) {
 		$name = $this->_normalizeHeader($name);
-		$this->_headers[$name] = array(
-			'name' => $name, 
-			'value' => $value
-		);
+		foreach ($this->_headers as $key => $value) {
+			if ($value['name'] == $name)
+				$this->_headers[$key] = array(
+					'name' => $name, 
+					'value' => $value, 
+					'replace' => $replace
+				);
+		}
 	}
 	
 	/**
@@ -312,8 +322,13 @@ class WHttpResponse implements WResponse {
 	 * @param string $name 响应头的名称
 	 * @param string $value 响应头的字段取值
 	 */
-	public function addHeader() {
-
+	public function addHeader($name, $value, $replace = false) {
+		$name = $this->_normalizeHeader($name);
+		$this->_headers[] = array(
+			'name' => $name, 
+			'value' => $value, 
+			'replace' => $replace
+		);
 	}
 	
 	/**
@@ -323,7 +338,23 @@ class WHttpResponse implements WResponse {
 	 * @param string $message
 	 */
 	public function setStatus($status, $message = '') {
-
+		if (!is_int($status) || $status < 100 || $status > 505)
+			return;
+		
+		$this->_status = (int) $status;
+	}
+	
+	/**
+	 * 设置相应内容
+	 * 
+	 * @param string $content
+	 * @param string $name
+	 */
+	public function setBody($content, $name = null) {
+		if ($name == null || !is_string($name))
+			$name = 'default';
+		
+		$this->_body[$name] = (string) $content;
 	}
 	
 	/**
@@ -336,25 +367,17 @@ class WHttpResponse implements WResponse {
 	}
 	
 	/**
-	 * 设置响应码
-	 * 
-	 * @param int $code 响应状态码 
-	 */
-	function setHttpResponseCode($code) {
-		if (!is_int($code) || (100 > $code) || (599 < $code))
-			return $this;
-		$this->_isRedirect = (300 <= $code) && (307 >= $code);
-		$this->_httpResponseCode = $code;
-	}
-	
-	/**
 	 * 发送一个错误的响应信息
 	 * 
 	 * @param int $status
 	 * @param string $message
 	 */
 	public function sendError($status, $message = '') {
-
+		if (!is_int($status) || $status < 400 || $status > 505)
+			return;
+		
+		$this->setBody($message);
+		$this->setStatus($status);
 	}
 	
 	/**
@@ -362,8 +385,14 @@ class WHttpResponse implements WResponse {
 	 * 
 	 * @param string $location
 	 */
-	public function sendRedirect($location) {
-
+	public function sendRedirect($location, $status = 302) {
+		if (!is_int($status) || $status < 300 || $status > 399)
+			return;
+		
+		$this->setHeader('Location', $location, true);
+		$this->setStatus($status);
+		$this->_isRedirect = true;
+		$this->sendHeaders();
 	}
 	
 	/**
@@ -379,14 +408,44 @@ class WHttpResponse implements WResponse {
 	 * 发送响应头部信息
 	 */
 	public function sendHeaders() {
-		
+		if ($this->isSendedHeader())
+			return;
+		foreach ($this->_headers as $header) {
+			header($header['name'] . ': ' . $header['value'], $header['replace']);
+		}
+		header('HTTP/1.1 ' . $this->_status);
 	}
 	
 	/**
 	 * 发送响应内容
 	 */
 	public function sendBody() {
+		foreach ($this->_body as $content) {
+			echo $content;
+		}
+	}
+	
+	/**
+	 * 获取内容
+	 * 
+	 * @param string $spec 内容的名称
+	 * @return string|null
+	 */
+	public function getBody($name = false) {
+		if ($name === false) {
+			ob_start();
+			$this->sendBody();
+			return ob_get_clean();
+		} elseif ($name === true) {
+			return $this->_body;
+		} else if (isset($this->_body[$name]))
+			return $this->_body[$name];
 		
+		return null;
+	}
+	
+	public function clearBody() {
+		$this->_body = array();
 	}
 	
 	/**
@@ -396,7 +455,7 @@ class WHttpResponse implements WResponse {
 		$sended = headers_sent($file, $line);
 		if ($throw && $sended)
 			throw new WException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
-			
+		
 		return $sended;
 	}
 	

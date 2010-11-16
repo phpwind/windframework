@@ -6,14 +6,16 @@
  * @license 
  */
 
-class WViewer {
-	private $output = '';
-	private $template = '';
-	private $viewContainer = '';
-	private $vars = array();
+class WViewer extends WBaseViewer {
+	private $_layout = null;
 	
-	public function __construct($tpl = '') {
-		$this->template = $tpl;
+	/**
+	 * 显示输出视图
+	 * @return string
+	 */
+	public function display() {
+		$this->fetch();
+		return $this->viewContainer;
 	}
 	
 	/**
@@ -34,15 +36,10 @@ class WViewer {
 		}
 	}
 	
-	public function display() {
-		$this->fetch();
-		return $this->viewContainer;
-	}
-	
 	/**
 	 * 获取模板内容
 	 */
-	private function fetch() {
+	protected function fetch() {
 		if (!file_exists($this->template))
 			throw new WException('the template file ' . $this->template . ' is not exists.');
 		
