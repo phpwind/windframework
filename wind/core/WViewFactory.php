@@ -7,7 +7,9 @@
  */
 
 /**
- * 根据视图的逻辑名称，返回视图模板内容
+ * 根据视图的配置信息返回视图引擎对象的引用
+ *
+ * 根据视图的逻辑名称，返回视图模板地址
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -21,17 +23,19 @@ class WViewFactory {
 	const VIEW_ENGINE = 'viewEngine';
 	
 	private $viewPath = 'template';
-	private $ext = 'htm';
 	private $tpl = 'index';
+	private $ext = 'htm';
 	private $engine = 'default';
+	
+	/* 配置信息 */
 	private $engines = array();
 	private $config = array();
 	
 	private $viewer = null;
 	private static $instance = null;
 	
-	protected function __construct($configObj = null) {
-		$this->initConfig($configObj);
+	protected function __construct() {
+		$this->initConfig();
 	}
 	
 	/**
@@ -43,18 +47,14 @@ class WViewFactory {
 		if ($this->viewer === null) {
 			if (!($enginePath = $this->engines[$this->engine]))
 				throw new WException('Template engine ' . $this->engine . ' is not exists.');
+			
 			if (!($tpl = $this->getViewTemplate($tpl)))
 				throw new WException('Template file ' . $this->tpl . ' is not exists.');
 			
 			W::import($enginePath);
 			$className = substr($enginePath, strrpos($enginePath, '.') + 1);
 			$class = new ReflectionClass($className);
-			$object = call_user_func_array(array(
-				$class, 
-				'newInstance'
-			), array(
-				$tpl
-			));
+			$object = call_user_func_array(array($class, 'newInstance'), array($tpl));
 			$this->viewer = &$object;
 		}
 		return $this->viewer;
@@ -69,16 +69,26 @@ class WViewFactory {
 	 */
 	private function getViewTemplate($tpl = null) {
 		$tpl && $this->tpl = $tpl;
+		if (!is_array($this->viewPath))
+			$this->viewPath = array($this->viewPath);
+			
+		foreach ($this->viewPath as $key => $value) {
+			$realPath = W::getRealPath($value . '.' . $this->tpl, $this->ext);
+			if ($realPath)
+				break;
+		}
+		if (!$realPath)
+			throw new WException('template file is not exist.');
 		
-		return W::getRealPath($this->viewPath . '.' . $this->tpl, $this->ext);
+		return $realPath ? $realPath : null;
 	}
 	
 	/**
 	 * 初始化配置文件，获得模板路径信息
 	 * 
-	 * @param WSystemConfig $configObj
 	 */
-	private function initConfig(WSystemConfig $configObj) {
+	private function initConfig() {
+		$configObj = W::getInstance('WSystemConfig');
 		if ($configObj == null)
 			return;
 		
@@ -99,13 +109,12 @@ class WViewFactory {
 	}
 	
 	/**
-	 * @param WSystemConfig $configObj
 	 * @return WViewFactory
 	 */
-	static public function getInstance(WSystemConfig $configObj = null) {
+	static public function getInstance() {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class($configObj);
+			self::$instance = new $class();
 		}
 		return self::$instance;
 	}

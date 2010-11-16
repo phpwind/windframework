@@ -27,10 +27,10 @@ abstract class WActionServlet {
 	protected function __construct() {
 		try {
 			$this->reuqest = W::getInstance('WHttpRequest');
-			$this->response = W::getInstance('WHttpResponse');
+			$this->response = $this->reuqest->getResponse();
+			
 		} catch (Exception $exception) {
 			throw new WException('init action servlet failed!!');
-		
 		}
 	}
 	

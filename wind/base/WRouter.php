@@ -70,7 +70,7 @@ abstract class WRouter {
 	/**
 	 * 获得请求处理类,返回一个数组，array('$className','$method')
 	 * 
-	 * @return array
+	 * @return WActionform
 	 */
 	abstract public function getActionFormHandle();
 	

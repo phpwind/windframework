@@ -58,12 +58,11 @@ class WFrontController extends WActionServlet {
 	}
 	
 	function process($request, $response) {
-		$config = W::getInstance('WSystemConfig');
 		/* 初始化一个应用服务器 */
 		$applicationController = new WWebApplicationController();
 		$applicationController->init();
 		
-		$applicationController->processRequest($request, $response, $config);
+		$applicationController->processRequest($request, $response);
 		
 		$applicationController->destory();
 	}
@@ -86,10 +85,7 @@ class WFrontController extends WActionServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function _initFilter() {
-		WFilterFactory::getFactory()->setExecute(array(
-			get_class($this), 
-			'process'
-		), $this->reuqest, $this->response);
+		WFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->reuqest, $this->response);
 		$filter = WFilterFactory::getFactory()->create($this->config);
 		if (is_object($filter))
 			$filter->doFilter($this->reuqest, $this->response);

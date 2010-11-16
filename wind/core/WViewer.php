@@ -13,14 +13,16 @@ class WViewer extends WBaseViewer {
 	 * 显示输出视图
 	 * @return string
 	 */
-	public function display() {
+	public function display($tpl = '') {
+		if ($tpl)
+			$this->tpl = $tpl;
+		
 		$this->fetch();
 		return $this->viewContainer;
 	}
 	
 	/**
 	 * 将变量注册到模板空间中
-	 * 
 	 */
 	public function assign($vars = '', $key = null) {
 		if ($key) {
@@ -37,17 +39,38 @@ class WViewer extends WBaseViewer {
 	}
 	
 	/**
+	 * 设置layout对象
+	 * 
+	 * @param WLayout $layout
+	 * @return
+	 */
+	public function setLayout($layout) {
+		if (!$layout)
+			return;
+		$layout->setTpl($this->tpl);
+		$this->_layout = $layout;
+	}
+	
+	/**
 	 * 获取模板内容
 	 */
 	protected function fetch() {
-		if (!file_exists($this->template))
-			throw new WException('the template file ' . $this->template . ' is not exists.');
+		if (!file_exists($this->tpl))
+			throw new WException('the template file ' . $this->tpl . ' is not exists.');
 		
 		if ($this->vars)
 			extract($this->vars, EXTR_REFS);
 		
 		ob_start();
-		include $this->template;
+		if ($this->_layout) {
+			$this->_layout->parser();
+			$segments = $this->_layout->getSegments();
+			foreach ($segments as $key => $value) {
+				@include $value;
+			}
+		} else {
+			@include $this->tpl;
+		}
 		$this->viewContainer = ob_get_clean();
 	}
 

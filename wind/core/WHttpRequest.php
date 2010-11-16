@@ -138,7 +138,20 @@ class WHttpRequest extends WModule implements WRequest {
 	public function getCookie($name = null, $defaultValue = null) {
 		if ($name == null)
 			return $_COOKIE;
-		return (isset($_COOKIE[$name])) ? $_COOKIE : $defaultValue;
+		return (isset($_COOKIE[$name])) ? $_COOKIE[$name] : $defaultValue;
+	}
+	
+	/**
+	 * 返回session的值，如果$name=null则返回所有Cookie值
+	 * 
+	 * @param string $key
+	 * @param string $defaultValue
+	 * @return string|null|array
+	 */
+	public function getSession($name = null, $defaultValue = null) {
+		if ($name == null)
+			return $_SESSION;
+		return (isset($_SESSION[$name])) ? $_SESSION[$name] : $defaultValue;
 	}
 	
 	/**
@@ -448,6 +461,13 @@ class WHttpRequest extends WModule implements WRequest {
 			$this->_language = $_language[0] ? $_language[0] : 'zh-cn';
 		}
 		return $this->_language;
+	}
+	
+	/**
+	 * 获得返回信息
+	 */
+	public function getResponse() {
+		return W::getInstance('WHttpResponse');
 	}
 	
 	/**

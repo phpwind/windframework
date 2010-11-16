@@ -6,19 +6,43 @@
  * @license 
  */
 
+/**
+ * 视图引擎基类
+ * 通过继承该方法可以实现对视图模板的调用解析
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
 abstract class WBaseViewer {
-	protected $output = '';
-	protected $template = '';
+	/**
+	 * 视图模板的路径信息
+	 * 
+	 * @var $template
+	 */
+	protected $tpl = '';
+	
+	/**
+	 * 视图内容
+	 * @var $viewContainer
+	 */
 	protected $viewContainer = '';
-	protected $vars = array();
 	
 	public function __construct($tpl = '') {
-		$this->template = $tpl;
+		$this->tpl = $tpl;
 	}
 	
-	abstract public function display();
+	/**
+	 * 视图变量信息
+	 * 
+	 * @var $vars
+	 */
+	protected $vars = array();
+	
+	abstract public function display($tpl = '');
 	
 	abstract public function assign($vars = '', $key = null);
 	
-	abstract protected function fetch();
+	protected function fetch() {}
 }

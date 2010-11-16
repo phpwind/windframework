@@ -6,8 +6,8 @@
  * @license 
  */
 
-abstract class WActionFrom extends WModule {
-	private $_isValidate = false;
+abstract class WActionForm extends WModule {
+	protected $_isValidate = false;
 	
 	/**
 	 * @param WHttpRequest $request

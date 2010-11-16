@@ -25,48 +25,56 @@ class WWebApplicationController implements WApplicationController {
 	 * @param WHttpResponse $response
 	 * @param WSystemConfig $configObj
 	 */
-	public function processRequest($request, $response, $configObj) {
-		$router = $this->createRouter($configObj);
+	public function processRequest($request, $response) {
+		$router = $this->createRouter();
 		$router->doParser($request, $response);
-		if (($base = $configObj->getConfig('baseController')) == 'WActionController')
+		
+		list($action, $method) = $this->getActionHandle($request, $response, $router);
+		
+		$this->processActionForm($request, $response, $router);
+		
+		$action->beforeAction();
+		$action->$method($request, $response);
+		$action->afterAction();
+		$action->actionForward($request, $response, $router);
+		
+		$this->processActionForward($request, $response);
+	}
+	
+	/**
+	 * 返回action类
+	 */
+	protected function getActionHandle($request, $response, $router) {
+		$configObj = W::getInstance('WSystemConfig');
+		if (($base = $configObj->getConfig('controller')) == 'WActionController')
 			list($className, $method) = $router->getControllerHandle($request, $response);
-		elseif (($base = $configObj->getConfig('baseController')) == 'WAction')
+		
+		elseif (($base = $configObj->getConfig('controller')) == 'WAction')
 			list($className, $method) = $router->getActionHandle($request, $response);
+		
 		else
 			throw new WException('determine the baseController is failed in config.php.');
 		
 		$class = new ReflectionClass($className);
-		$action = call_user_func_array(array(
-			$class, 
-			'newInstance'
-		), array(
-			$request, 
-			$response
-		));
+		$action = call_user_func_array(array($class, 'newInstance'), array($request, $response));
 		
-		if (($formHandle = $router->getActionFormHandle()) != null) {
-			$actionForm = W::getInstance($formHandle, array(
-				$request, 
-				$response
-			));
-			
-			//TODO 验证表单，并错误处理
-			if ($actionForm->getIsValidation()) {
-				$this->validateProcessActionForm($actionForm);
-			}
-		}
-		
-		$action->$method();
-		$viewer = $action->getViewer($configObj, $router);
-		
-		$this->processActionForward($request, $response, $viewer);
+		return array($action, $method);
 	}
 	
 	/**
-	 * @param WActionForm $actionForm
+	 * 自动设置actionform对象
+	 * @param WHttpRequest $request
+	 * @param WHttpResponse $response
+	 * @param WRouter $router
 	 */
-	protected function validateProcessActionForm($actionForm) {
-		$result = $actionForm->validation();
+	protected function processActionForm($request, $response, $router) {
+		if (($formHandle = $router->getActionFormHandle()) == null)
+			return;
+			
+		/* @var $actionForm WActionForm */
+		$actionForm = W::getInstance($formHandle, array($request, $response));
+		if ($actionForm->getIsValidation())
+			$actionForm->validation();
 	}
 	
 	/**
@@ -74,9 +82,13 @@ class WWebApplicationController implements WApplicationController {
 	 * 
 	 * @param WHttpRequest $request
 	 * @param WHttpResponse $response
-	 * @param WViewer $viewer
+	 * @param WActionForward $forward
 	 */
-	protected function processActionForward($request, $response, $viewer) {
+	protected function processActionForward($request, $response) {
+		$viewer = WViewFactory::getInstance()->create();
+		if ($viewer == null)
+			throw new WException('The instance of viewer is null.');
+		
 		$response->setBody($viewer->display());
 	}
 	
@@ -85,9 +97,11 @@ class WWebApplicationController implements WApplicationController {
 	 * @param WSystemConfig $configObj
 	 * @return WRouter
 	 */
-	public function &createRouter($configObj) {
+	public function &createRouter() {
 		$parser = 'url';
 		$parserPath = 'router.parser.WUrlRouteParser';
+		$configObj = W::getInstance('WSystemConfig');
+		
 		if (($_parser = $configObj->getRouterConfig('parser')) != null)
 			$parser = $_parser;
 		if (($_parserPath = $configObj->getRouterParser($parser)) != null)
@@ -101,12 +115,7 @@ class WWebApplicationController implements WApplicationController {
 			throw new WException('The router ' . $className . ' is not exists.');
 		
 		$class = new ReflectionClass($className);
-		$router = call_user_func_array(array(
-			$class, 
-			'newInstance'
-		), array(
-			$configObj
-		));
+		$router = call_user_func_array(array($class, 'newInstance'), array($configObj));
 		return $router;
 	}
 	

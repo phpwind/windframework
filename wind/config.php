@@ -19,7 +19,7 @@ $sysConfig = array(
 		'default' => 'actionControllers'
 	),
 	
-	/* 模板路径配置 */
+	/* 模板相关配置信息 */
 	'view' => array(
 		'viewPath' => 'template',  //模板文件路径
 		'tpl' => 'index',  //默认的模板文件
@@ -27,8 +27,11 @@ $sysConfig = array(
 		'ext' => 'htm' //模板文件后缀名
 	), 
 	
+	/* 模板引擎配置信息 */
 	'viewEngine' => array(
-		'default' => 'WIND:core.WViewer'
+		'default' => 'WIND:core.WViewer', 
+		'pw' => 'WIND:core.WPWViewer', 
+		'smarty' => 'WIND:core.WSmartyViewer'
 	),
 	
 	/*
@@ -36,7 +39,7 @@ $sysConfig = array(
 	 * 基于WAction：则目录结构是actionControllers/controller/action.php
 	 * 基于WActionController：则目录结构是actionControllers/controller.php
 	 * */
-	'baseController' => 'WActionController',
+	'controller' => 'WActionController',
 	
 	/* 路由策略配置 */
 	'router' => array(
