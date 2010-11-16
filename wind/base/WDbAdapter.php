@@ -39,6 +39,10 @@ abstract class WDbAdapter {
 		$this->patchConnect ();
 	}
 	
+	/**
+	 * @param unknown_type $config
+	 * @return Ambigous <multitype:, multitype:unknown >
+	 */
 	private function parseConfig($config) {
 		$db_config = array ();
 		if (empty ( $config ) || ! is_array ( $config )) {
@@ -52,6 +56,10 @@ abstract class WDbAdapter {
 		}
 		return self::$config = $db_config;
 	}
+	/**
+	 * @param unknown_type $dsn
+	 * @return multitype:unknown 
+	 */
 	private function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)*$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
@@ -60,6 +68,9 @@ abstract class WDbAdapter {
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7] );
 	}
 	
+	/**
+	 * 
+	 */
 	protected function patchConnect() {
 		foreach ( self::$config as $key => $value ) {
 			$this->connect ( $value, $key );
@@ -84,6 +95,9 @@ abstract class WDbAdapter {
 		
 	}
 	
+	/**
+	 * @param unknown_type $key
+	 */
 	public function changeConn($key) {
 		if (! isset ( self::$linked [$key] )) {
 			throw new WSqlException ( "this database connecton is not exists", 1 );
@@ -92,6 +106,10 @@ abstract class WDbAdapter {
 		$this->key = $key;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public function getSqlBuilderFactory() {
 		$config = self::$config [$this->key];
 		if (empty ( $config ) || ! is_array ( $config )) {
@@ -101,20 +119,43 @@ abstract class WDbAdapter {
 		$builder = 'W'.$dbType.'Builder';
 		$this->sqlBuilder = W::getInstance($builder);//¼ÓÔØÎÊÌâ
 	}
-	public  function insert(){
-		$sql = $this->sqlBuilder->getInsertSql();
+
+	/**
+	 * @param unknown_type $option
+	 * @param unknown_type $key
+	 */
+	public  function insert($option,$key){
+		$sql = $this->sqlBuilder->getInsertSql($key);
 		return $this->exceute($sql,$key);
 	}
-	public  function update(){
-		$sql = $this->sqlBuilder->getUpdateSql();
+	
+	/**
+	 * @param unknown_type $option
+	 * @param unknown_type $key
+	 */
+	public  function update($option,$key){
+		$sql = $this->sqlBuilder->getUpdateSql($key);
 		return $this->exceute($sql,$key);
 	}
-	public function select(){
-		$sql = $this->sqlBuilder->getUpdateSql();
+	/**
+	 * @param unknown_type $option
+	 * @param unknown_type $key
+	 */
+	public function select($option,$key){
+		$sql = $this->sqlBuilder->getUpdateSql($option,$key);
 		return $this->query($sql,$key);
 	}
-	public  function delete(){
-		$sql = $this->sqlBuilder->getDeleteSql();
+	/**
+	 * @param unknown_type $option
+	 * @param unknown_type $key
+	 */
+	public  function delete($option,$key){
+		$sql = $this->sqlBuilder->getDeleteSql($option);
+		return $this->exceute($sql,$key);
+	}
+	
+	public function replace($option,$key){
+		$sql = $this->sqlBuilder->getDeleteSql($option);
 		return $this->exceute($sql,$key);
 	}
 
@@ -145,6 +186,10 @@ abstract class WDbAdapter {
 		return $array;
 	}
 	
+	/**
+	 * @param unknown_type $optype
+	 * @param unknown_type $key
+	 */
 	protected function getLinking($optype = '', $key = '') {
 		$masterSlave = $this->getMasterSlave ();
 		$config = empty ( $masterSlave ) || empty ( $optype ) ? self::$config : $masterSlave [$optype];
@@ -153,6 +198,11 @@ abstract class WDbAdapter {
 		$this->key = $key;
 	}
 	
+	/**
+	 * @param unknown_type $config
+	 * @param unknown_type $pos
+	 * @return unknown|string
+	 */
 	private function getConfigKeyByPostion($config, $pos = 0) {
 		$i = 0;
 		foreach ( ( array ) $config as $key => $value ) {
