@@ -6,6 +6,13 @@
  * @license 
  */
 
+/**
+ * 过滤器工场
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package
+ */
 class WFilterFactory extends WFactory {
 	private $index = 0;
 	private $filters = array();
@@ -19,16 +26,22 @@ class WFilterFactory extends WFactory {
 	
 	/**
 	 * 创建一个Filter
+	 * 
 	 * @param WSystemConfig $config
-	 * @return WFilter
+	 * @return WFilter 
 	 */
-	function create($config = null) {
+	public function create($config = null) {
 		if ($config != null && empty($this->filters))
 			$this->_initFilters($config);
 		return $this->createFilter();
 	}
 	
-	function createFilter() {
+	/**
+	 * 创建一个filter
+	 * 
+	 * @return WFilter 
+	 */
+	public function createFilter() {
 		if ((int) $this->index >= count($this->filters)) {
 			$this->state = true;
 			return null;
@@ -83,6 +96,7 @@ class WFilterFactory extends WFactory {
 	/**
 	 * 在filter链中动态的删除一个filter
 	 * 思路：记录删除的位置，并且从被删除的元素开始，所有后面的元素都往前移，移完之后将最后一个元素删除
+	 * 
 	 * @param string $filterName
 	 */
 	public function deleteFilter($filterName) {
@@ -97,8 +111,11 @@ class WFilterFactory extends WFactory {
 	}
 	
 	/**
-	 * 在filter链中动态的添加一个filter，当befor为空时，添加到程序结尾处
-	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor后面，并将所有原befor位置后的过滤器往后移一位
+	 * 在filter链中动态的添加一个filter
+	 * 当befor为空时，添加到程序结尾处
+	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor后面，
+	 *               并将所有原befor位置后的过滤器往后移一位
+	 * 
 	 * @param string $filterName
 	 * @param string $path
 	 * @param string $beforFilter
@@ -128,7 +145,8 @@ class WFilterFactory extends WFactory {
 	
 	/**
 	 * 获得当前过滤器状态，是否已经被初始化了
-	 * @return string
+	 * 
+	 * @return boolean 
 	 */
 	public function getState() {
 		return $this->state;
@@ -136,6 +154,7 @@ class WFilterFactory extends WFactory {
 	
 	/**
 	 * 初始化一个过滤器
+	 * 
 	 * @param WSystemConfig $config
 	 */
 	private function _initFilters($configObj) {
@@ -157,6 +176,8 @@ class WFilterFactory extends WFactory {
 	}
 	
 	/**
+	 * 创建一个工厂
+	 * 
 	 * @return WFilterFactory
 	 */
 	static function getFactory() {
