@@ -49,11 +49,7 @@ abstract class WModule {
 	 * @param string $propertyName
 	 */
 	private function _validateProperties($propertyName) {
-		if (!$propertyName)
-			return false;
-		if (array_key_exists($propertyName, get_class_vars(get_class($this))))
-			return false;
-		return true;
+		return $propertyName && array_key_exists($propertyName, get_class_vars(get_class($this)));
 	}
 
 }
