@@ -17,9 +17,13 @@
  */
 interface WBaseViewer {
 	
+	public function setTpl($tpl = '');
+	
+	public function setLayout($layout = null);
+	
 	public function windDisplay($tpl = '');
 	
 	public function windAssign($vars = '', $key = null);
 	
-	public function windFetch() {}
+	public function windFetch();
 }

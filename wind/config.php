@@ -31,7 +31,7 @@ $sysConfig = array(
 	'viewEngine' => array(
 		'default' => 'WIND:core.WViewer', 
 		'pw' => 'WIND:core.WPWViewer', 
-		'smarty' => 'WIND:core.WSmartyViewer'
+		'smarty' => 'core.WSmartyViewer'
 	),
 	
 	/*

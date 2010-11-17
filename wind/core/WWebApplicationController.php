@@ -84,12 +84,12 @@ class WWebApplicationController implements WApplicationController {
 	 * @param WHttpResponse $response
 	 * @param WActionForward $forward
 	 */
-	protected function processActionForward($request, $response) { 
+	protected function processActionForward($request, $response) {
 		$viewer = WViewFactory::getInstance()->create();
 		if ($viewer == null)
 			throw new WException('The instance of viewer is null.');
 		
-		$response->setBody($viewer->display());
+		$response->setBody($viewer->windDisplay());
 	}
 	
 	/**

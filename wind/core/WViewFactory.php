@@ -53,8 +53,8 @@ class WViewFactory {
 			
 			W::import($enginePath);
 			$className = substr($enginePath, strrpos($enginePath, '.') + 1);
-			$class = new ReflectionClass($className);
-			$object = call_user_func_array(array($class, 'newInstance'), array($tpl));
+			$object = new $className();
+			$object->setTpl($tpl);
 			$this->viewer = &$object;
 		}
 		return $this->viewer;
@@ -71,7 +71,7 @@ class WViewFactory {
 		$tpl && $this->tpl = $tpl;
 		if (!is_array($this->viewPath))
 			$this->viewPath = array($this->viewPath);
-			
+		
 		foreach ($this->viewPath as $key => $value) {
 			$realPath = W::getRealPath($value . '.' . $this->tpl, $this->ext);
 			if ($realPath)

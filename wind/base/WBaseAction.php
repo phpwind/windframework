@@ -97,12 +97,12 @@ abstract class WBaseAction {
 	public function actionForward($request, $response, $router) {
 		if (!$this->forward)
 			$this->forward = $router->getDefaultViewHandle();
-			
+		
 		$viewer = WViewFactory::getInstance()->create($this->forward);
-		if (!$request->getIsAjaxRequest()) {
+		if (!$request->getIsAjaxRequest() && $this->layout instanceof WLayout) {
 			$viewer->setLayout($this->layout);
 		}
-		$viewer->assign($this->view);
+		$viewer->windAssign($this->view);
 	}
 
 }

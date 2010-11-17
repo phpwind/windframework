@@ -23,29 +23,33 @@ class WError {
 	 * @param string $message
 	 * @param boolean $clear
 	 */
-	static public function addError($message, $clear = false) {
+	public function addError($message, $clear = false) {
 		self::$error[] = $message;
 	}
 	
 	/**
 	 * 清理所有错误记录
 	 */
-	static public function clearError() {
+	public function clearError() {
 		self::$error = array();
 	}
 	
 	/**
 	 * 返回所有错误记录
 	 */
-	static public function getError() {
+	public function getError() {
 		return self::$error;
 	}
 	
 	/**
 	 * 中断处理，并立即输出错误消息
 	 */
-	static public function showMessage($message) {
+	public function showMessage($message) {
 
+	}
+	
+	static public function getInstance() {
+		
 	}
 
 }

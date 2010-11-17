@@ -6,25 +6,51 @@
  * @license 
  */
 
-class WViewer extends WBaseViewer {
+class WViewer implements WBaseViewer {
 	private $_layout = null;
 	
 	/**
-	 * 显示输出视图
-	 * @return string
+	 * 视图模板的路径信息
+	 * 
+	 * @var $template
 	 */
-	public function display($tpl = '') {
+	protected $tpl = '';
+	
+	/**
+	 * 视图内容
+	 * @var $viewContainer
+	 */
+	protected $viewContainer = '';
+	
+	/**
+	 * 视图变量信息
+	 * 
+	 * @var $vars
+	 */
+	protected $vars = array();
+	
+	/**
+	 * 设置layout对象
+	 * 
+	 * @param WLayout $layout
+	 * @return
+	 */
+	public function setLayout($layout = '') {
+		if (!$layout)
+			return;
+		$layout->setTpl($this->tpl);
+		$this->_layout = $layout;
+	}
+	
+	public function windDisplay($tpl = '') {
 		if ($tpl)
 			$this->tpl = $tpl;
 		
-		$this->fetch();
+		$this->windFetch();
 		return $this->viewContainer;
 	}
 	
-	/**
-	 * 将变量注册到模板空间中
-	 */
-	public function assign($vars = '', $key = null) {
+	public function windAssign($vars = '', $key = null) {
 		if ($key) {
 			$this->vars[$key] = $vars;
 			return;
@@ -38,23 +64,7 @@ class WViewer extends WBaseViewer {
 		}
 	}
 	
-	/**
-	 * 设置layout对象
-	 * 
-	 * @param WLayout $layout
-	 * @return
-	 */
-	public function setLayout($layout) {
-		if (!$layout)
-			return;
-		$layout->setTpl($this->tpl);
-		$this->_layout = $layout;
-	}
-	
-	/**
-	 * 获取模板内容
-	 */
-	protected function fetch() {
+	public function windFetch() {
 		if (!file_exists($this->tpl))
 			throw new WException('the template file ' . $this->tpl . ' is not exists.');
 		
@@ -72,6 +82,13 @@ class WViewer extends WBaseViewer {
 			@include $this->tpl;
 		}
 		$this->viewContainer = ob_get_clean();
+	}
+	
+	/**
+	 * @param string $tpl
+	 */
+	public function setTpl($tpl = '') {
+		$this->tpl = $tpl;
 	}
 
 }
