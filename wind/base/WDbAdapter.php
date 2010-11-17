@@ -111,7 +111,7 @@ abstract class WDbAdapter {
 	private function parseConfig($config) {
 		$db_config = array ();
 		if (empty ( $config ) || ! is_array ( $config )) {
-			throw new WSqlException ( "database config is not correct", 1 );
+			throw new WSqlException ( "Database Config is not correct", 1 );
 		}
 		foreach ( $config as $key => $value ) {
 			if (is_array ( $value ))
@@ -130,7 +130,7 @@ abstract class WDbAdapter {
 	private function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)?\/?(0|1)?\/?(0|1)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
-			throw new WSqlException ( "database config is not correct", 1 );
+			throw new WSqlException ( "Database config is not correct format", 1 );
 		}
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7],'pconnect'=>$config [8],'force'=>$config [9] );
 	}
@@ -174,7 +174,7 @@ abstract class WDbAdapter {
 	public abstract function getInsertId();
 	public abstract function close();
 	public abstract function dispose();
-	
+	protected abstract function error();
 	public  function getExecSqlTime(){
 		
 	}
@@ -185,7 +185,7 @@ abstract class WDbAdapter {
 	 */
 	public function changeConn($key) {
 		if (! isset ( self::$linked [$key] )) {
-			throw new WSqlException ( "this database connecton is not exists", 1 );
+			throw new WSqlException ( "this Database Connecton is not exists", 1 );
 		}
 		$this->linking = self::$linked [$key];
 		$this->key = $key;
@@ -207,7 +207,7 @@ abstract class WDbAdapter {
 	public function getSqlBuilderFactory() {
 		$config = self::$config [$this->key];
 		if (empty ( $config ) || ! is_array ( $config )) {
-			throw new WSqlException ( "database config is not correct", 1 );
+			throw new WSqlException ( "Database Config is not correct format", 1 );
 		}
 		$dbType = $this->dbMap[strtolower($config ['dbtype'])];
 		$builderClass = 'W'.$dbType.'Builder';
@@ -221,8 +221,10 @@ abstract class WDbAdapter {
 	 * @return boolean
 	 */
 	public  function insert($option,$key = ''){
-		$sql = $this->sqlBuilder->getInsertSql($optiion);
-		return $this->exceute($sql,$key);
+		$this->last_sql = $this->sqlBuilder->getInsertSql($optiion);
+		$this->exceute($this->last_sql,$key);
+		$this->error();
+		$this->logSql();
 	}
 	
 	/**
@@ -232,8 +234,10 @@ abstract class WDbAdapter {
 	 * @return boolean
 	 */
 	public  function update($option,$key = ''){
-		$sql = $this->sqlBuilder->getUpdateSql($option);
-		return $this->exceute($sql,$key);
+		$this->last_sql = $this->sqlBuilder->getUpdateSql($option);
+		$this->exceute($this->last_sql,$key);
+		$this->error();
+		$this->logSql();
 	}
 	/**
 	 * 执行查询数据操作
@@ -242,8 +246,10 @@ abstract class WDbAdapter {
 	 * @return boolean
 	 */
 	public function select($option,$key = ''){
-		$sql = $this->sqlBuilder->getSelectSql($option);
-		return $this->query($sql,$key);
+		$this->last_sql = $this->sqlBuilder->getSelectSql($option);
+		$this->query($this->last_sql,$key);
+		$this->error();
+		$this->logSql();
 	}
 	/**
 	 * 执行删除数据操作
@@ -252,8 +258,10 @@ abstract class WDbAdapter {
 	 * @return boolean
 	 */
 	public  function delete($option,$key = ''){
-		$sql = $this->sqlBuilder->getDeleteSql($option);
-		return $this->exceute($sql,$key);
+		$this->last_sql = $this->sqlBuilder->getDeleteSql($option);
+		$this->exceute($this->last_sql,$key);
+		$this->error();
+		$this->logSql();
 	}
 	
 	/**
@@ -263,8 +271,10 @@ abstract class WDbAdapter {
 	 * @return boolean
 	 */
 	public function replace($option,$key = ''){
-		$sql = $this->sqlBuilder->getReplaceSql($option);
-		return $this->exceute($sql,$key);
+		$this->last_sql = $this->sqlBuilder->getReplaceSql($option);
+		$this->exceute($this->last_sql,$key);
+		$this->error();
+		$this->logSql();
 	}
 
 	/**
@@ -365,6 +375,10 @@ abstract class WDbAdapter {
 		return '';
 	}
 	
+	protected function logSql(){
+		W::recordLog($this->last_sql,'DB','log');
+	}
+	
 	/**
 	 * 检查$linked中连接的合法性
 	 * @param string $key config的key
@@ -372,9 +386,11 @@ abstract class WDbAdapter {
 	 */
 	protected function checkKey($key = ''){
 		if($key && !in_array($key,array_keys(self::$linked))){
-			throw new WSqlException('key is not exists',1);
+			throw new WSqlException('Database identify is not exists',1);
 		}
 		return $key;
 	}
+	
+	
 
 }

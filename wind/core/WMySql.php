@@ -45,7 +45,7 @@ class WMySql extends WDbAdapter {
 			$this->getLinking ( 'slave', $key );
 		}
 		if (! is_resource ( $this->linking )) {
-			throw new WSqlException ( "this database is not validate handle", 1 );
+			throw new WSqlException ( "This linking is not validate handle or resource", 1 );
 		}
 		$key = $key ? $key : $this->key;
 		if(isset(self::$readTimes[$key])){
@@ -54,6 +54,7 @@ class WMySql extends WDbAdapter {
 			self::$readTimes[$key] = 1;
 		}
 		$this->query = mysql_query ( $sql, $this->linking );
+		return true;
 	}
 	
 	public function execute($sql,$key = '') {
@@ -68,6 +69,7 @@ class WMySql extends WDbAdapter {
 			self::$writeTimes[$key] = 1;
 		}
 		$this->query = mysql_query ( $sql, $this->linking );
+		return true;
 	}
 	
 	public  function getAll(){
@@ -120,5 +122,13 @@ class WMySql extends WDbAdapter {
 	
 	public function changeDB($databse, $key = '') {
 		return $this->execute ( "USE $databse", $key);
+	}
+	
+	protected function error(){
+		$this->last_errstr = mysql_error();
+		$this->last_errcode = mysql_errno();
+		if($this->last_errstr || $this->last_errcode){
+			throw new WSqlException($this->last_errstr,$this->last_errcode);
+		}
 	}
 }
