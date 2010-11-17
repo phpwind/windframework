@@ -14,6 +14,9 @@
  */
 class WMySql extends WDbAdapter {
 	
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#connect()
+	 */
 	public function connect($config, $key) {
 		if (!is_array ( $config ) || empty ( $config )) {
 			throw new WSqlException ( "database config is not correct", 1 );
@@ -39,6 +42,9 @@ class WMySql extends WDbAdapter {
 		return  $this->linking;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#query()
+	 */
 	public function query($sql, $key = '') {
 		$this->checkKey($key);
 		if(empty($this->switch)){
@@ -57,6 +63,9 @@ class WMySql extends WDbAdapter {
 		return true;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#execute()
+	 */
 	public function execute($sql,$key = '') {
 		$this->checkKey($key);
 		if(empty($this->switch)){
