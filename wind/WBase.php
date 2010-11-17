@@ -209,7 +209,7 @@ class W {
 	/**
 	 * 加载一个类或者加载一个包
 	 * 以框架路径为跟路径进行加载
-	 * 加载一个类的参数方式：'core.WFrontController.php'
+	 * 加载一个类的参数方式：'core.WFrontController'
 	 * 加载一个包的参数方式：'core.*'
 	 *
 	 * 如果加载的类是继承了上下文类 WContext
@@ -217,6 +217,7 @@ class W {
 	 * 用户可以通过getInstance()方法获得该对象
 	 *
 	 * @param string $classPath
+	 * @param boolean $instance
 	 * @author Qiong Wu
 	 * @return void
 	 */
