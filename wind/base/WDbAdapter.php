@@ -164,16 +164,54 @@ abstract class WDbAdapter {
 	 * @return boolean;
 	 */
 	public abstract function execute($sql,$key='');
-	public abstract function getAll();
+	
+	/**
+	 * @param int $fetch_type 取得结果集
+	 */
+	public abstract function getAllResult($fetch_type = MYSQL_ASSOC);
+	/**
+	 *取得数据库元数据表
+	 */
 	public abstract function getMetaTables();
+	/**
+	 *取得数据表元数据列 
+	 */
 	public abstract function getMetaColumns();
+	/**
+	 * 保存事务点
+	 */
 	public abstract function savePoint();
+	/**
+	 * 开始事务点
+	 */
 	public abstract function beginTrans();
+	/**
+	 * 回滚事务
+	 */
 	public abstract function rollbackTrans();
-	public abstract function getAffectedRows();
-	public abstract function getInsertId();
+	/**
+	 * 取得受影响的数据行数
+	 * @param string|int 数据库连接标识
+	 * @return int
+	 */
+	public abstract function getAffectedRows($key = '');
+	/**
+	 * 取得最后插入ID
+	 * @param string|int 数据库连接标识
+	 * @return int
+	 */
+	public abstract function getInsertId($key = '');
+	/**
+	 * 关闭数据库
+	 */
 	public abstract function close();
+	/**
+	 * 释放数据库连接资源
+	 */
 	public abstract function dispose();
+	/**
+	 * 数据库操作操作处理
+	 */
 	protected abstract function error();
 	public  function getExecSqlTime(){
 		

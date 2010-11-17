@@ -81,8 +81,21 @@ class WMySql extends WDbAdapter {
 		return true;
 	}
 	
-	public  function getAll(){
-		
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#getAllResult()
+	 */
+	public  function getAllResult($fetch_type = MYSQL_ASSOC){
+		if(!is_resource($this->query)){
+			throw new WSqlException('The Query is not validate handle or resource',1);
+		}
+		if(!in_array($fetch_type,array(1,2,3))){
+			throw new WSqlException('The fetch_type is not validate handle or resource',1);
+		}
+		$result = array();
+		while($record = mysql_fetch_array($this->query,$fetch_type)){
+			$result[] = $record;
+		}
+		return $result;
 	}
 	public  function getMetaTables(){
 		
@@ -99,17 +112,29 @@ class WMySql extends WDbAdapter {
 	public  function rollbackTrans(){
 		
 	}
-	public  function getAffectedRows(){
-		
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#getAffectedRows()
+	 */
+	public  function getAffectedRows($key=''){
+		return $this->query('ROW_COUNT()',$key);
 	}
-	public  function getInsertId(){
-		
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#getInsertId()
+	 */
+	public  function getInsertId($key=''){
+		return $this->query('LAST_INSERT_ID()',$key);
 	}
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#close()
+	 */
 	public  function close(){
 		foreach(self::$linked as $key=>$value){
 			mysql_close($value);
 		}
 	}
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#dispose()
+	 */
 	public  function dispose(){
 		foreach(self::$linked as $key=>$value){
 			mysql_close($value);
@@ -117,10 +142,20 @@ class WMySql extends WDbAdapter {
 		}
 		$this->linking = null;
 	}
+	/**
+	 * 取得mysql版本号
+	 * @param string|int $key 数据库连接标识
+	 * @return string
+	 */
 	public function getVersion($key = '') {
 		return mysql_get_server_info ( $this->getLinked ( $key ) );
 	}
 	
+	/**
+	 * @param string $charset 字符集
+	 * @param string | int $key 数据库连接标识
+	 * @return boolean
+	 */
 	public function setCharSet($charset, $key = '') {
 		$version = ( int ) substr ( $this->getVersion ( $key ), 0, 1 );
 		if ($version > 4) {
@@ -129,10 +164,20 @@ class WMySql extends WDbAdapter {
 		return true;
 	}
 	
+	/**
+	 * 切换数据库
+	 * @see wind/base/WDbAdapter#changeDB()
+	 * @param string $databse 要切换的数据库
+	 * @param string | int $key 数据库连接标识
+	 * @return boolean
+	 */
 	public function changeDB($databse, $key = '') {
 		return $this->execute ( "USE $databse", $key);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#error()
+	 */
 	protected function error(){
 		$this->last_errstr = mysql_error();
 		$this->last_errcode = mysql_errno();
