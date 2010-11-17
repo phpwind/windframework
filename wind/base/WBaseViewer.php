@@ -15,34 +15,11 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WBaseViewer {
-	/**
-	 * 视图模板的路径信息
-	 * 
-	 * @var $template
-	 */
-	protected $tpl = '';
+interface WBaseViewer {
 	
-	/**
-	 * 视图内容
-	 * @var $viewContainer
-	 */
-	protected $viewContainer = '';
+	public function windDisplay($tpl = '');
 	
-	public function __construct($tpl = '') {
-		$this->tpl = $tpl;
-	}
+	public function windAssign($vars = '', $key = null);
 	
-	/**
-	 * 视图变量信息
-	 * 
-	 * @var $vars
-	 */
-	protected $vars = array();
-	
-	abstract public function display($tpl = '');
-	
-	abstract public function assign($vars = '', $key = null);
-	
-	protected function fetch() {}
+	public function windFetch() {}
 }
