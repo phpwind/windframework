@@ -35,22 +35,29 @@ class WMySql extends WDbAdapter {
 			if (isset ( self::$config [$key] )) {
 				self::$config [$key] = $config;
 			}
-			$this->key = $key;
 		}
 		return  $this->linking;
 	}
 	
 	public function query($sql, $key = '') {
+		$this->checkKey($key);
 		if(empty($this->switch)){
 			$this->getLinking ( 'slave', $key );
 		}
 		if (! is_resource ( $this->linking )) {
 			throw new WSqlException ( "this database is not validate handle", 1 );
 		}
+		$key = $key ? $key : $this->key;
+		if(isset(self::$readTimes[$key])){
+			self::$readTimes[$key]++;
+		}else{
+			self::$readTimes[$key] = 1;
+		}
 		$this->query = mysql_query ( $sql, $this->linking );
 	}
 	
 	public function execute($sql,$key = '') {
+		$this->checkKey($key);
 		if(empty($this->switch)){
 			$this->getLinking ( 'master', $key );
 		}
@@ -60,7 +67,6 @@ class WMySql extends WDbAdapter {
 		}else{
 			self::$writeTimes[$key] = 1;
 		}
-		echo $sql;mysql_select_db('phpwind',$this->linking);
 		$this->query = mysql_query ( $sql, $this->linking );
 	}
 	
