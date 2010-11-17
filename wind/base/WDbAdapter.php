@@ -14,15 +14,40 @@
  */
 abstract class WDbAdapter {
 	
+	/**
+	 * @var resource 当前dbl连接句柄
+	 */
 	protected $linking = null;
-	protected $queryId = '';
+	
+	/**
+	 * @var resource 当前查询句柄
+	 */
+	protected $query = '';
+	/**
+	 * @var string 前次执行的sqly语句
+	 */
 	protected $last_sql = '';
+	/**
+	 * @var string 前句执行sql时的错误字符串
+	 */
 	protected $last_errstr = '';
+	/**
+	 * @var int 前句执行sql时的错误代码
+	 */
 	protected $last_errcode = 0;
+	/**
+	 * @var WSqlBuilder sql语句生成器
+	 */
 	protected $sqlBuilder = null;
+	/**
+	 * @var int 是否连接
+	 */
 	protected $isConntected = 0;
-	protected $isLog = false;
 	protected $key = '';
+	protected $charset = 'gbk';
+	protected $force = false;
+	protected $pconnect = false;
+	protected $switch = 0;
 	
 	protected $dbtype = '';
 	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocsql' => 'OcSql' );
@@ -30,13 +55,26 @@ abstract class WDbAdapter {
 	public $enableSavePoint = 0;
 	protected $savepoint = array ();
 	
-	protected static $writeTimes = 0;
-	protected static $readTimes = 0;
+	/**
+	 * @var array 记录向数据库写入次数
+	 */
+	public static $writeTimes = array();
+	/**
+	 * @var array 记录从数据库读入次数
+	 */
+	protected static $readTimes = array();
+	/**
+	 * @var array 数据库连接池
+	 */
 	protected static $linked = array ();
+	/**
+	 * @var array 数据库连接句柄
+	 */
 	protected static $config = array ();
-	protected function __construct($config) {
+	public function __construct($config) {
 		$this->parseConfig ( $config );
 		$this->patchConnect ();
+		$this->getSqlBuilderFactory();
 	}
 	
 	/**
@@ -78,8 +116,8 @@ abstract class WDbAdapter {
 	}
 	
 	public abstract function connect($config, $key);
-	public abstract function query($sql,$key='',$current = true);
-	public abstract function execute($sql,$key='',$current = true);
+	public abstract function query($sql,$key='');
+	public abstract function execute($sql,$key='');
 	public abstract function getAll();
 	public abstract function getMetaTables();
 	public abstract function getMetaColumns();
@@ -88,8 +126,8 @@ abstract class WDbAdapter {
 	public abstract function rollbackTrans();
 	public abstract function getAffectedRows();
 	public abstract function getInsertId();
-	protected abstract function close();
-	protected abstract function dispose();
+	public abstract function close();
+	public abstract function dispose();
 	
 	public  function getExecSqlTime(){
 		
@@ -104,6 +142,10 @@ abstract class WDbAdapter {
 		}
 		$this->linking = self::$linked [$key];
 		$this->key = $key;
+		$this->switch = 1;
+	}
+	public function freeChange(){
+		$this->switch = 0;
 	}
 
 	
@@ -116,16 +158,17 @@ abstract class WDbAdapter {
 			throw new WSqlException ( "database config is not correct", 1 );
 		}
 		$dbType = $this->dbMap[strtolower($config ['dbtype'])];
-		$builder = 'W'.$dbType.'Builder';
-		$this->sqlBuilder = W::getInstance($builder);//加载问题
+		$builderClass = 'W'.$dbType.'Builder';
+		$this->sqlBuilder = W::getInstance($builderClass);//加载问题
+		
 	}
 
 	/**
 	 * @param unknown_type $option
 	 * @param unknown_type $key
 	 */
-	public  function insert($option,$key){
-		$sql = $this->sqlBuilder->getInsertSql($key);
+	public  function insert($option,$key = ''){
+		$sql = $this->sqlBuilder->getInsertSql($optiion);
 		return $this->exceute($sql,$key);
 	}
 	
@@ -133,29 +176,29 @@ abstract class WDbAdapter {
 	 * @param unknown_type $option
 	 * @param unknown_type $key
 	 */
-	public  function update($option,$key){
-		$sql = $this->sqlBuilder->getUpdateSql($key);
+	public  function update($option,$key = ''){
+		$sql = $this->sqlBuilder->getUpdateSql($option);
 		return $this->exceute($sql,$key);
 	}
 	/**
 	 * @param unknown_type $option
 	 * @param unknown_type $key
 	 */
-	public function select($option,$key){
-		$sql = $this->sqlBuilder->getUpdateSql($option,$key);
+	public function select($option,$key = ''){
+		$sql = $this->sqlBuilder->getSelectSql($option);
 		return $this->query($sql,$key);
 	}
 	/**
 	 * @param unknown_type $option
 	 * @param unknown_type $key
 	 */
-	public  function delete($option,$key){
+	public  function delete($option,$key = ''){
 		$sql = $this->sqlBuilder->getDeleteSql($option);
 		return $this->exceute($sql,$key);
 	}
 	
-	public function replace($option,$key){
-		$sql = $this->sqlBuilder->getDeleteSql($option);
+	public function replace($option,$key = ''){
+		$sql = $this->sqlBuilder->getReplaceSql($option);
 		return $this->exceute($sql,$key);
 	}
 
