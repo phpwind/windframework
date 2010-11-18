@@ -51,14 +51,9 @@ class W {
 	 * 1. 策略加载框架必须的基础类库
 	 */
 	static public function init() {
-		self::setApps('WIND', self::getFrameWorkPath());
-		self::_autoIncludeBaseLib();
-		set_exception_handler(array(
-			'W', 
-			'WExceptionHandler'
-		));
-		defined('LOG_RECORD') && W::import('utility.WLog');
-		defined('DEBUG') && W::import('utility.WDebug');
+		self::_initConfig();
+		self::_initBaseLib();
+		self::_initLog();
 	}
 	
 	/**
@@ -85,7 +80,7 @@ class W {
 	static public function getRealPath($path = '', $ext = '', $info = false) {
 		if (file_exists($path))
 			return $path;
-			
+		
 		self::_setNamespace($path);
 		
 		$realPath = self::getApplicationRootPath() . self::getSeparator() . $path;
@@ -103,11 +98,7 @@ class W {
 		if ($info) {
 			if (!file_exists($realPath))
 				throw new WException('The file path ' . $realPath . ' is not a file.');
-			return array(
-				basename($realPath, $value), 
-				$value, 
-				$realPath
-			);
+			return array(basename($realPath, $value), $value, $realPath);
 		}
 		return realpath($realPath);
 	}
@@ -171,13 +162,7 @@ class W {
 	 * @return boolean|multitype:string 
 	 */
 	static public function getExtendNames($ext = '') {
-		$exts = array(
-			'php', 
-			'htm', 
-			'class.php', 
-			'db.php', 
-			'phpx'
-		);
+		$exts = array('php', 'htm', 'class.php', 'db.php', 'phpx');
 		return $ext ? $exts[$ext] : $exts;
 	}
 	
@@ -207,6 +192,30 @@ class W {
 	}
 	
 	/**
+	 * 路径解析方法
+	 * 返回一个路径解析结果数组
+	 * array('是不是一个文件夹','文件路径','文件名','应用命名空间')
+	 * @param string $filePath
+	 * @return array
+	 */
+	static public function parseFilePath($filePath) {
+		/*$isDir = $realPath = $fileName = $nameSpace = '';
+		if (!is_dir($filePath) ||!file_exists($filePath)) {
+		}
+		
+		if (($pos = strrpos($filePath, '.')) === false) {
+			self::_include($filePath);
+			return;
+		}
+		
+		$className = (string) substr($filePath, $pos + 1);
+		$filePath = (string) substr($filePath, 0, $pos);
+		//self::_setNamespace($filePath);
+		$isPackage = $className === IMPORT_PACKAGE;
+		return array();*/
+	}
+	
+	/**
 	 * 加载一个类或者加载一个包
 	 * 以框架路径为跟路径进行加载
 	 * 加载一个类的参数方式：'core.WFrontController'
@@ -221,7 +230,7 @@ class W {
 	 * @author Qiong Wu
 	 * @return void
 	 */
-	static public function import($filePath, $instance = false) {
+	static public function import($filePath) {
 		if (!isset($filePath))
 			throw new Exception('is not right path');
 		
@@ -231,7 +240,7 @@ class W {
 		}
 		
 		if (($pos = strrpos($filePath, '.')) === false) {
-			self::_include($filePath, $instance);
+			self::_include($filePath);
 			return;
 		}
 		
@@ -260,7 +269,7 @@ class W {
 			$classNames[] = $className;
 		
 		foreach ($classNames as $className) {
-			self::_include($className, $filePath, $instance);
+			self::_include($className, $filePath);
 		}
 		return;
 	}
@@ -271,7 +280,7 @@ class W {
 	 * @param string $classPath 类路径/文件路径
 	 * @return string
 	 */
-	static private function _include($fileName, $filePath = '', $instance = false) {
+	static private function _include($fileName, $filePath = '') {
 		if (empty($fileName)) {return;}
 		if ($filePath)
 			$realPath = self::getRealPath($filePath . IMPORT_SEPARATOR . $fileName);
@@ -292,7 +301,6 @@ class W {
 			self::$_vars += array_splice($var, 3);
 		
 		self::$_included[$fileName] = $realPath;
-		$instance && self::getInstance($fileName);
 		return $realPath;
 	}
 	
@@ -311,10 +319,7 @@ class W {
 			return;
 		if (!is_array($args))
 			$args = array();
-		$object = call_user_func_array(array(
-			$class, 
-			'newInstance'
-		), $args);
+		$object = call_user_func_array(array($class, 'newInstance'), $args);
 		self::$_instances[$className] = & $object;
 	}
 	
@@ -322,11 +327,53 @@ class W {
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
 	 */
-	static private function _autoIncludeBaseLib() {
-		self::import('WIND' . IMPORT_NAMESPACE . 'exception.WException');
-		self::import('WIND' . IMPORT_NAMESPACE . 'base.WModule');
-		self::import('WIND' . IMPORT_NAMESPACE . 'base.*');
-		self::import('WIND' . IMPORT_NAMESPACE . 'core.*');
+	static private function _initBaseLib() {
+		/* 核心加载 */
+		W::import('WIND:core.base.impl.*');
+		W::import('WIND:core.base.*');
+		W::import('WIND:core.*');
+		
+		/* 组件加载 */
+		W::import('WIND:components.exception.base.impl.*');
+		W::import('WIND:components.exception.base.*');
+		W::import('WIND:components.exception.*');
+		W::import('WIND:components.form.base.impl.*');
+		W::import('WIND:components.form.base.*');
+		W::import('WIND:components.form.*');
+		W::import('WIND:components.filter.base.impl.*');
+		W::import('WIND:components.filter.base.*');
+		W::import('WIND:components.filter.*');
+		W::import('WIND:components.log.base.impl.*');
+		W::import('WIND:components.log.base.*');
+		W::import('WIND:components.log.*');
+		W::import('WIND:components.request.base.impl.*');
+		W::import('WIND:components.request.base.*');
+		W::import('WIND:components.request.*');
+		W::import('WIND:components.response.base.impl.*');
+		W::import('WIND:components.response.base.*');
+		W::import('WIND:components.response.*');
+		W::import('WIND:components.router.base.impl.*');
+		W::import('WIND:components.router.base.*');
+		W::import('WIND:components.router.*');
+		W::import('WIND:components.viewer.base.impl.*');
+		W::import('WIND:components.viewer.base.*');
+		W::import('WIND:components.viewer.*');
+	}
+	
+	/**
+	 * 解析配置文件
+	 */
+	static private function _initConfig() {
+		self::setApps('WIND', self::getFrameWorkPath());
+	}
+	
+	/**
+	 * 初始化系统日志，调试系统
+	 */
+	static private function _initLog() {
+		set_exception_handler(array('W', 'WExceptionHandler'));
+		defined('LOG_RECORD') && W::import('utility.WLog');
+		defined('DEBUG') && W::import('utility.WDebug');
 	}
 	
 	/**
@@ -335,6 +382,7 @@ class W {
 	 * @param $trace
 	 */
 	static public function recordLog($message, $type = 'INFO', $ifrecord = 'add') {
+		//TODO 重构
 		if (defined('LOG_RECORD')) {
 			$message = str_replace('<br/>', "\r\n", $message);
 			$ifrecord == 'add' ? WLog::add($message, strtoupper($type)) : WLog::log($message, strtoupper($type));
@@ -347,6 +395,7 @@ class W {
 	 * @param $trace
 	 */
 	static public function debug($message, $trace = array()) {
+		//TODO 重构
 		return defined('DEBUG') ? WDebug::debug($message, $trace) : $message;
 	}
 	
