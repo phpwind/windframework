@@ -22,9 +22,9 @@ class WViewFactory {
 	const VIEW_CONFIG = 'view';
 	const VIEW_ENGINE = 'viewEngine';
 	
-	private $viewPath = 'template';
+	private $viewPath = 'templates';
 	private $tpl = 'index';
-	private $ext = 'htm';
+	private $ext = 'phtml';
 	private $engine = 'default';
 	
 	/* ÅäÖÃÐÅÏ¢ */
@@ -50,11 +50,12 @@ class WViewFactory {
 			
 			if (!($tpl = $this->getViewTemplate($tpl)))
 				throw new WException('Template file ' . $this->tpl . ' is not exists.');
-			
 			W::import($enginePath);
 			$className = substr($enginePath, strrpos($enginePath, '.') + 1);
 			$object = new $className();
 			$object->setTpl($tpl);
+			($this->config['compileDir']) && $object->setCompileDir($this->config['compileDir']);
+			($this->config['cacheDir']) && $object->setCacheDir($this->config['cacheDir']);
 			$this->viewer = &$object;
 		}
 		return $this->viewer;
@@ -71,9 +72,8 @@ class WViewFactory {
 		$tpl && $this->tpl = $tpl;
 		if (!is_array($this->viewPath))
 			$this->viewPath = array($this->viewPath);
-		
 		foreach ($this->viewPath as $key => $value) {
-			$realPath = W::getRealPath($value . '.' . $this->tpl, $this->ext);
+			$realPath = W::getRealPath($value . W::getSeparator() . $this->tpl, $this->ext);
 			if ($realPath)
 				break;
 		}
@@ -94,7 +94,6 @@ class WViewFactory {
 		
 		$this->engines = $configObj->getConfig(self::VIEW_ENGINE);
 		$this->config = $configObj->getConfig(self::VIEW_CONFIG);
-		
 		if (isset($this->config['viewPath']))
 			$this->viewPath = $this->config['viewPath'];
 		
