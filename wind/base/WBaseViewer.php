@@ -26,4 +26,8 @@ interface WBaseViewer {
 	public function windAssign($vars = '', $key = null);
 	
 	public function windFetch();
+	
+	public function setCacheDir($cacheDir); //设置缓存路径
+	
+	public function setCompileDir($compileDir);//设置编译路径
 }
