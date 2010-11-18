@@ -90,7 +90,9 @@ class WViewer implements WBaseViewer {
 	public function setTpl($tpl = '') {
 		$this->tpl = $tpl;
 	}
-	
+	public function setTemplateDir($templateDir) {
+		//TODO if has template then do same about config here
+	}
 	public function setCacheDir($cacheDir) {
 		//TODO if has compile then do same about config here
 	}

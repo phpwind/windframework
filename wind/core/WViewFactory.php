@@ -56,6 +56,7 @@ class WViewFactory {
 			$object->setTpl($tpl);
 			($this->config['compileDir']) && $object->setCompileDir($this->config['compileDir']);
 			($this->config['cacheDir']) && $object->setCacheDir($this->config['cacheDir']);
+			($this->config['viewPath']) && $object->setTemplateDir($this->config['viewPath']);
 			$this->viewer = &$object;
 		}
 		return $this->viewer;
