@@ -51,18 +51,13 @@ abstract class WBaseAction {
 	 * 
 	 * @param  $view
 	 */
-	protected function setView($value, $key = '') {
-		if ($key) {
-			$this->view->$key = $value;
-		} else {
-			if (is_string($value)) {
-				$this->view->default = $value;
-				return;
-			} elseif (is_object($value))
-				$value = get_object_vars($value);
+	protected function setView($key, $value = '') {
+		if (is_string($key)) {
+			($value == '') ? $this->view->default = $key : $this->view->$key = $value;
+		} elseif (is_object($key)) {
+			$value = get_object_vars($key);
 			foreach ($value as $k => $v) {
-				if ($k)
-					$this->view->$k = $v;
+				($k) && $this->view->$k = $v;
 			}
 		}
 		return;
