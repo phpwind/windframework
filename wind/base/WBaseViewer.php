@@ -30,4 +30,6 @@ interface WBaseViewer {
 	public function setCacheDir($cacheDir); //设置缓存路径
 	
 	public function setCompileDir($compileDir);//设置编译路径
+	
+	public function setTemplateDir($templateDir);//设置模板路径
 }
