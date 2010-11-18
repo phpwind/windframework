@@ -14,8 +14,9 @@
  */
 class WMySqlBuilder extends WSqlBuilder {
 	
-	/**
-	 * @param unknown_type $table
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
 	public function buildTable($table = array()) {
 		if (empty ( $table ) || (! is_string ( $table ) && ! is_array ( $table ))) {
@@ -34,15 +35,16 @@ class WMySqlBuilder extends WSqlBuilder {
 		return $this->sqlFillSpace ( $tableList );
 	}
 	
-	/**
-	 * @param unknown_type $distinct
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildDistinct()
 	 */
 	public function buildDistinct($distinct = false) {
 		return $this->sqlFillSpace ( $distinct ? 'DISTINCT' : '' );
 	}
 	
-	/**
-	 * @param unknown_type $field
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildField()
 	 */
 	public function buildField($field = array()) {
 		$fieldList = '';
@@ -72,18 +74,19 @@ class WMySqlBuilder extends WSqlBuilder {
 			return '';
 		}
 		if (is_string ( $join )) {
-			return $join;
+			return $this->sqlFillSpace($join);
 		}
+		$joinContidion = '';
 		foreach ( $join as $table => $config ) {
-			if (is_string ( $config )) {
-				$joinContidion .= $joinContidion ? ',' . $config : $config;
+			if (is_string ( $config ) && is_int($table)) {
+				$joinContidion .= $joinContidion ? ' ' . $config : $config;
 				continue;
 			}
-			if (is_array ( $config )) {
-				$table = $this->getAlias ( $table, $as, $config ['alias'] );
-				$joinWhere = $config ['where'] ? ' ON ' . $config ['where'] : '';
-				$condition = $config ['type'] . ' JOIN ' . $table . $joinWhere;
-				$joinContidion .= $joinContidion ? ',' . $condition : $condition;
+			if (is_array ( $config ) && is_string($table)) {
+				$table = $this->getAlias ( $table, $as, $config [2] );
+				$joinWhere = $config [1] ? ' ON ' . $config [1] : '';
+				$condition = $config [0] . ' JOIN ' . $table . $joinWhere;
+				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}
 		return $this->sqlFillSpace ( $joinContidion );
@@ -96,10 +99,10 @@ class WMySqlBuilder extends WSqlBuilder {
 			return '';
 		}
 		if (is_string ( $where )) {
-			return ' WHERE ' . $where;
+			return 'WHERE' . $this->sqlFillSpace($where);
 		}
 		if (! is_array ( $where )) {
-			throw new WSqlException ( '', 0 );
+			throw new WSqlException ( 'The Where Condition is not correct', 0 );
 		}
 		list ( $lConter, $gConter, $conConter ) = $this->checkWhere ( $where );
 		$_where = $tmp_where = '';
@@ -127,14 +130,16 @@ class WMySqlBuilder extends WSqlBuilder {
 		}
 		return $_where ? 'WHERE ' . $_where : '';
 	}
-	/**
-	 * @param unknown_type $group
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildGroup()
 	 */
 	public function buildGroup($group = array()) {
 		return $this->sqlFillSpace ( $group ? 'GROUP BY ' . (is_array ( $group ) ? implode ( ',', $group ) : $group) . '' : '' );
 	}
-	/**
-	 * @param unknown_type $order
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildOrder()
 	 */
 	public function buildOrder($order = array()) {
 		$orderby = '';
@@ -147,26 +152,31 @@ class WMySqlBuilder extends WSqlBuilder {
 		}
 		return $this->sqlFillSpace ( $orderby ? 'ORDER BY ' . $orderby : '' );
 	}
-	/**
-	 * @param unknown_type $having
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildHaving()
 	 */
 	public function buildHaving($having = '') {
 		return $this->sqlFillSpace ( $having ? 'HAVING ' . $having : '' );
 	}
-	/**
-	 * @param unknown_type $limit
-	 * @param unknown_type $offset
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildLimit()
 	 */
 	public function buildLimit($limit = 0, $offset = 0) {
+		if(is_string($limit)){
+			return $this->sqlFillSpace($limit);
+		}
 		return $this->sqlFillSpace ( ($sql = $limit > 0 ? 'LIMIT ' . $limit : '') ? $offset > 0 ? $sql . ' OFFSET ' . $offset : $sql : '' );
 	}
 	
-	/**
-	 * @param unknown_type $data
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildData()
 	 */
 	public function buildData($data) {
 		if (empty ( $data ) || ! is_array ( $data )) {
-			throw new WSqlExceptiion ( $data );
+			throw new WSqlException ( "The insert data is empty",1 );
 		}
 		return $this->getDimension ( $data ) == 1 ? $this->buildSingleData ( $data ) : $this->buildMultiData ( $data );
 	}
@@ -195,18 +205,21 @@ class WMySqlBuilder extends WSqlBuilder {
 	}
 	
 	/**
-	 * @param unknown_type $name
-	 * @param unknown_type $as
-	 * @param unknown_type $alias
+	 * 取得别名标识
+	 * @param string $name 源名称
+	 * @param string $as   别名标识
+	 * @param string $alias 别名
+	 * @return string
 	 */
 	private function getAlias($name, $as = ' ', $alias = '') {
 		return $this->sqlFillSpace ( ($alias ? $name . $this->sqlFillSpace ( strtoupper ( $as ) ) . $alias : $name) );
 	}
 	
 	/**
-	 * @param unknown_type $field
-	 * @param unknown_type $value
-	 * @param unknown_type $compare
+	 * 解析查询表达式
+	 * @param string $field  列名
+	 * @param unknown_type $value 列值
+	 * @param unknown_type $compare 表达式
 	 * @return string
 	 */
 	private function buildCompare($field, $value, $compare) {
@@ -228,7 +241,8 @@ class WMySqlBuilder extends WSqlBuilder {
 	}
 	
 	/**
-	 * @param unknown_type $where
+	 * 判断是否存逻辑运算符
+	 * @param array $where
 	 * @return string|string
 	 */
 	private function serachLogic($where) {
@@ -241,8 +255,9 @@ class WMySqlBuilder extends WSqlBuilder {
 	}
 	
 	/**
-	 * @param unknown_type $where
-	 * @return multitype:unknown number 
+	 * 检查是否是合法的查询条件
+	 * @param array $where
+	 * @return array  
 	 */
 	private function checkWhere($where) {
 		$logic = $group = $condition = 0;

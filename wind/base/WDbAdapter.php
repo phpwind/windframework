@@ -73,8 +73,17 @@ abstract class WDbAdapter {
 	 * @var array 框架支持的数据库种类
 	 */
 	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocsql' => 'OcSql' );
+	/**
+	 * @var int 事务记数器
+	 */
 	protected $transCounter = 0;
+	/**
+	 * @var int 是否启用事务
+	 */
 	public $enableSavePoint = 0;
+	/**
+	 * @var array 事务回滚点
+	 */
 	protected $savepoint = array ();
 	
 	/**
@@ -108,7 +117,7 @@ abstract class WDbAdapter {
 	 * 							'optype'=>'master','pconnect'=>1,'force'=>1);
 	 * @return array 返回解析后的数据库配置
 	 */
-	private function parseConfig($config) {
+	final private function parseConfig($config) {
 		$db_config = array ();
 		if (empty ( $config ) || ! is_array ( $config )) {
 			throw new WSqlException ( "Database Config is not correct", 1 );
@@ -127,7 +136,7 @@ abstract class WDbAdapter {
 	 * @param unknown_type $dsn 数据库连接格式
 	 * @return array 
 	 */
-	private function parseDSN($dsn) {
+	final private function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)?\/?(0|1)?\/?(0|1)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
 			throw new WSqlException ( "Database config is not correct format", 1 );
@@ -138,7 +147,7 @@ abstract class WDbAdapter {
 	/**
 	 * 连接数据库,构造连接池
 	 */
-	protected function patchConnect() {
+	final protected function patchConnect() {
 		foreach ( self::$config as $key => $value ) {
 			$this->connect ( $value, $key );
 		}
@@ -151,20 +160,13 @@ abstract class WDbAdapter {
 	 */
 	public abstract function connect($config, $key);
 	/**
-	 * 执行数据库查询
+	 * 执行相关sql语句操作
 	 * @param string $sql sql语句
-	 * @param string | int $key 数据库连接标识
+	 * @param string|int|resource $key 数据库连接标识
+	 * @param string optype 主从数据库(master/slave);
 	 * @return boolean;
 	 */
-	public abstract function query($sql,$key='');
-	/**
-	 * 执行数据库写入
-	 * @param string $sql sql语句
-	 * @param string | int $key 数据库连接标识
-	 * @return boolean;
-	 */
-	public abstract function execute($sql,$key='');
-	
+	public abstract function query($sql,$key='',$optype = '');
 	/**
 	 * @param int $fetch_type 取得结果集
 	 */
@@ -180,7 +182,7 @@ abstract class WDbAdapter {
 	/**
 	 * 保存事务点
 	 */
-	public abstract function savePoint();
+	//public abstract function savePoint();
 	/**
 	 * 开始事务点
 	 */
@@ -188,7 +190,7 @@ abstract class WDbAdapter {
 	/**
 	 * 回滚事务
 	 */
-	public abstract function rollbackTrans();
+	//public abstract function rollbackTrans();
 	/**
 	 * 取得受影响的数据行数
 	 * @param string|int 数据库连接标识
@@ -213,15 +215,44 @@ abstract class WDbAdapter {
 	 * 数据库操作操作处理
 	 */
 	protected abstract function error();
-	public  function getExecSqlTime(){
-		
+
+	/**
+	 * 执行数据库读取
+	 * @param string $sql sql语句
+	 * @param string|int|resource $key 数据库连接标识
+	 * @return boolean;
+	 */
+	final public function read($sql, $key = '') {
+		$this->query ( $sql, $key ,'slave');
+		$key = $key && !is_resource($key) ? $key : $this->key;
+		if (isset ( self::$readTimes [$key] )) {
+			self::$readTimes [$key] ++;
+		} else {
+			self::$readTimes [$key] = 1;
+		}
+	}
+	
+	/**
+	 * 执行数据库写入
+	 * @param string $sql sql语句
+	 * @param string|int|resource $key 数据库连接标识
+	 * @return boolean;
+	 */
+	final public function write($sql, $key = '') {
+		$this->query( $sql, $key ,'master');
+		$key = $key && !is_resource($key) ? $key : $this->key;
+		if (isset ( self::$writeTimes [$key] )) {
+			self::$writeTimes [$key] ++;
+		} else {
+			self::$writeTimes [$key] = 1;
+		}
 	}
 	
 	/**
 	 * 切换数据库连接
 	 * @param string $key 数据库连接标识
 	 */
-	public function changeConn($key) {
+	final public function changeConn($key) {
 		if (! isset ( self::$linked [$key] )) {
 			throw new WSqlException ( "this Database Connecton is not exists", 1 );
 		}
@@ -242,7 +273,7 @@ abstract class WDbAdapter {
 	 * sqlbuilder Factory
 	 * @return WSqlBuilder 返回sql语句生成器
 	 */
-	public function getSqlBuilderFactory() {
+	final public function getSqlBuilderFactory() {
 		$config = self::$config [$this->key];
 		if (empty ( $config ) || ! is_array ( $config )) {
 			throw new WSqlException ( "Database Config is not correct format", 1 );
@@ -258,11 +289,8 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public  function insert($option,$key = ''){
-		$this->last_sql = $this->sqlBuilder->getInsertSql($optiion);
-		$this->exceute($this->last_sql,$key);
-		$this->error();
-		$this->logSql();
+	final public  function insert($option,$key = ''){
+		$this->write($this->sqlBuilder->getInsertSql($option),$key);
 	}
 	
 	/**
@@ -271,11 +299,8 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public  function update($option,$key = ''){
-		$this->last_sql = $this->sqlBuilder->getUpdateSql($option);
-		$this->exceute($this->last_sql,$key);
-		$this->error();
-		$this->logSql();
+	final public  function update($option,$key = ''){
+		$this->write($this->sqlBuilder->getUpdateSql($option),$key);
 	}
 	/**
 	 * 执行查询数据操作
@@ -283,11 +308,8 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public function select($option,$key = ''){
-		$this->last_sql = $this->sqlBuilder->getSelectSql($option);
-		$this->query($this->last_sql,$key);
-		$this->error();
-		$this->logSql();
+	final public function select($option,$key = ''){
+		$this->read($this->sqlBuilder->getSelectSql($option),$key);
 	}
 	/**
 	 * 执行删除数据操作
@@ -295,11 +317,8 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public  function delete($option,$key = ''){
-		$this->last_sql = $this->sqlBuilder->getDeleteSql($option);
-		$this->exceute($this->last_sql,$key);
-		$this->error();
-		$this->logSql();
+	final public  function delete($option,$key = ''){
+		$this->write($this->sqlBuilder->getDeleteSql($option),$key);
 	}
 	
 	/**
@@ -308,26 +327,23 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public function replace($option,$key = ''){
-		$this->last_sql = $this->sqlBuilder->getReplaceSql($option);
-		$this->exceute($this->last_sql,$key);
-		$this->error();
-		$this->logSql();
+	final public function replace($option,$key = ''){
+		$this->write($this->sqlBuilder->getReplaceSql($option),$key);
 	}
 
 	/**
 	 * 返回上一条sqly语句
 	 * @return string
 	 */
-	public function getLastSql() {
+	final public function getLastSql() {
 		return $this->last_sql;
 	}
 	/**
-	 * @param strin | int $key 数据库连接标识
+	 * @param string | int $key 数据库连接标识
 	 * @return number 写数据库次数
 	 */
-	public function getWriteTimes($key = '') {
-		if($key = $this->checkKey($key)){
+	final public function getWriteTimes($key = '') {
+		if(($key = $this->checkKey($key))){
 			return self::$writeTimes[$key];
 		}
 		$writes = 0;
@@ -338,11 +354,11 @@ abstract class WDbAdapter {
 	}
 	
 	/**
-	 * @param strin | int $key 数据库连接标识
+	 * @param string | int $key 数据库连接标识
 	 * @return number 读数据库次数
 	 */
-	public function getReadTimes($key='') {
-		if($key = $this->checkKey($key)){
+	final public function getReadTimes($key='') {print_r(self::$readTimes);
+		if(($key = $this->checkKey($key))){
 			return self::$readTimes[$key];
 		}
 		$reads = 0;
@@ -356,13 +372,13 @@ abstract class WDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return number 读写数据库次数
 	 */
-	public function getQueryTimes($key = '') {
+	final public function getQueryTimes($key = '') {
 		return $this->getReadTimes($key) + $this->getWriteTimes($key);
 	}
 	
 	/**
 	 * 返回数据库连接
-	 * @param strin | int $key 数据库标识
+	 * @param string | int $key 数据库标识
 	 * @return resource 返回数据库连接
 	 */
 	protected function getLinked($key = '') {
@@ -387,14 +403,18 @@ abstract class WDbAdapter {
 	 * 取得当前数据库连接
 	 * @param string $optype 数据库主从配置(master/slave);
 	 * @param string | int $key 数据库连接标识
+	 * @return resource
 	 */
 	protected function getLinking($optype = '', $key = '') {
 		$this->checkKey($key);
+		if(is_resource($key)){
+			return $this->linking = $key;
+		}
 		$masterSlave = $this->getMasterSlave ();
 		$config = empty ( $masterSlave ) || empty ( $optype ) ? self::$config : $masterSlave [$optype];
 		$key = $key ? $key : $this->getConfigKeyByPostion ( $config, mt_rand ( 0, count ( $config ) - 1 ) );
-		$this->linking = self::$linked [$key];
 		$this->key = $key;
+		return $this->linking = self::$linked [$key];
 	}
 	
 	/**
@@ -403,7 +423,7 @@ abstract class WDbAdapter {
 	 * @param int $pos config的位置
 	 * @return string 返回config的key
 	 */
-	private function getConfigKeyByPostion($config, $pos = 0) {
+	final private function getConfigKeyByPostion($config, $pos = 0) {
 		$i = 0;
 		foreach ( ( array ) $config as $key => $value ) {
 			if ($pos === $i)
@@ -413,17 +433,21 @@ abstract class WDbAdapter {
 		return '';
 	}
 	
-	protected function logSql(){
-		W::recordLog($this->last_sql,'DB','log');
+	/**
+	 * @param string $sql
+	 */
+	final protected function logSql($sql = ''){
+		$sql = $sql ? $sql : $this->last_sql;
+		W::recordLog($sql,'DB','log');
 	}
 	
 	/**
 	 * 检查$linked中连接的合法性
-	 * @param string $key config的key
-	 * @return string
+	 * @param string|int|resource $key config的key或者连接资源
+	 * @return string|resource
 	 */
-	protected function checkKey($key = ''){
-		if($key && !in_array($key,array_keys(self::$linked))){
+	final protected function checkKey($key = ''){
+		if($key && !in_array($key,array_keys(self::$linked)) && !is_resource($key)){
 			throw new WSqlException('Database identify is not exists',1);
 		}
 		return $key;
