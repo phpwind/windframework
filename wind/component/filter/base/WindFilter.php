@@ -16,7 +16,7 @@
  * @version $Id$
  * @package
  */
-abstract class WFilter {
+abstract class WindFilter {
 	/**
 	 * 保存该过滤器的配置信息
 	 * @var mixed $filterName
@@ -36,8 +36,7 @@ abstract class WFilter {
 		$this->doBeforeProcess($request, $response);
 		$filter = WFilterFactory::getFactory()->create();
 		if ($filter != null) {
-			if (!in_array(__CLASS__, class_parents($filter)))
-				throw new WException(get_class($filter) . ' is not extend a filter class!');
+			if (!in_array(__CLASS__, class_parents($filter))) throw new WException(get_class($filter) . ' is not extend a filter class!');
 			
 			$filter->doFilter($request, $response);
 		} else

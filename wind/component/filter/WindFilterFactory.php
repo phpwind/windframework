@@ -14,7 +14,7 @@ W::import('WIND:utilities.factory.WFactory');
  * @version $Id$ 
  * @package
  */
-class WFilterFactory extends WFactory {
+class WindFilterFactory extends WFactory {
 	private $index = 0;
 	private $filters = array();
 	private $configs = array();
@@ -179,7 +179,7 @@ class WFilterFactory extends WFactory {
 	/**
 	 * 创建一个工厂
 	 * 
-	 * @return WFilterFactory
+	 * @return WindFilterFactory
 	 */
 	static function getFactory() {
 		if (self::$instance === null) {
