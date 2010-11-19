@@ -14,12 +14,6 @@
  * @package 
  */
 class WPackge{
-	 
-	
-	
-	
-	
-	
 	
 	/**
 	 * 去除指定文件的注释及空白
@@ -28,11 +22,6 @@ class WPackge{
 	public function  stripWhiteSpace($filename){
 		return php_strip_whitespace($filename);
 	}
-	
-	
-	
-	
-	
 	/**
 	 * 去除注释
 	 * @param string $content 要去除的内容
@@ -40,7 +29,7 @@ class WPackge{
 	 * @return string
 	 */
 	public function stripComment($content,$replace = ''){
-		return preg_replace("/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n\'\"]*[\r\n])*/Us",$replace,$content);
+		return preg_replace("/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us",$replace,$content);
 	}
 	
 	/**
@@ -135,7 +124,7 @@ class WPackge{
 					$this->readContentFromDir($name);
 				}
 				if($this->isFile($name)){
-					$content[$dir] = $this->readContentFromFile($name);
+					$content[] = $this->readContentFromFile($name);
 				}
 			}
 			$handle->close();
@@ -199,23 +188,6 @@ class WPackge{
 		
 	}
 	
-	public function packgeByDir($dir){
-		
-	}
-	
-	public function packgeByTime($dir){
-	}
-	
-	
 }
 
-
-
-
-$dir =  substr(__FILE__,0,strrpos(__FILE__,DIRECTORY_SEPARATOR));
-echo $dir;
-
-$pack = new WPackge();
-//echo php_strip_whitespace(__FILE__);
-$content = $pack->packge("E:\www\bbs\phpwind_wind\wind",'test.php');
 

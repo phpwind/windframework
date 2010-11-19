@@ -571,9 +571,9 @@ class WHttpRequest extends WModule implements WRequest {
 	private function _initHostInfo() {
 		$http = $this->isSecure() ? 'https' : 'http';
 		if (($httpHost = $this->getServer('HTTP_HOST')) != null)
-			$this->_hostInfo = $http . '://' . $httpHost;
+			$this->_hostInfo = $http . ':\/\/' . $httpHost;
 		elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
-			$this->_hostInfo = $http . '://' . $httpHost;
+			$this->_hostInfo = $http . ':\/\/' . $httpHost;
 			if (($port = $this->getServerPort()) != null)
 				$this->_hostInfo .= ':' . $port;
 		} else
