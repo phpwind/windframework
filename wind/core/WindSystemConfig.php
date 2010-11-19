@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package
  */
-class WSystemConfig extends WConfig { 
+class WindSystemConfig extends WConfig { 
 	private $system = array();
 	private $custom = array();
 	private $config = array();

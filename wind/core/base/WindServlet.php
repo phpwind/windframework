@@ -5,14 +5,14 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.exception.WindException');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WActionServlet {
+abstract class WindServlet {
 	protected $reuqest = null;
 	protected $response = null;
 	
@@ -28,15 +28,14 @@ abstract class WActionServlet {
 		try {
 			$this->reuqest = W::getInstance('WHttpRequest');
 			$this->response = $this->reuqest->getResponse();
-			
+		
 		} catch (Exception $exception) {
 			throw new WException('init action servlet failed!!');
 		}
 	}
 	
 	public function run() {
-		if ($this->reuqest === null || $this->response === null)
-			throw new WException('init action servlet failed!!');
+		if ($this->reuqest === null || $this->response === null) throw new WException('init action servlet failed!!');
 		
 		$this->service($this->reuqest, $this->response);
 		

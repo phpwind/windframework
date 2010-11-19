@@ -6,7 +6,7 @@
  * @license 
  */
 
-abstract class WBaseAction {
+abstract class WindBaseAction {
 	/**
 	 * йсм╪пео╒
 	 * 

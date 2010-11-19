@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package 
  */
-class WError {
+class WindError {
 	private static $error = array();
 	
 	/**
@@ -49,7 +49,7 @@ class WError {
 	}
 	
 	static public function getInstance() {
-		
+
 	}
 
 }

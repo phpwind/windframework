@@ -6,6 +6,7 @@
  * @license 
  */
 
+L::import('WIND:core.base.WActionServlet');
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -20,7 +21,7 @@
  * @version $Id$ 
  * @package 
  */
-class WFrontController extends WActionServlet {
+class WindFrontController extends WActionServlet {
 	private $config = null;
 	private static $instance = null;
 	
@@ -31,7 +32,7 @@ class WFrontController extends WActionServlet {
 	
 	/**
 	 * @param array $config
-	 * @return WFrontController
+	 * @return WindFrontController
 	 */
 	static public function &getInstance(array $config = array()) {
 		if (self::$instance === null) {

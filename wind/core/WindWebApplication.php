@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WWebApplicationController implements WApplicationController {
+class WindWebApplication implements WApplicationController {
 	
 	/**
 	 * 初始化配置信息
@@ -85,6 +85,8 @@ class WWebApplicationController implements WApplicationController {
 	 * @param WActionForward $forward
 	 */
 	protected function processActionForward($request, $response) {
+		
+		W::import('WIND:components.viewer.*');
 		$viewer = WViewFactory::getInstance()->create();
 		if ($viewer == null)
 			throw new WException('The instance of viewer is null.');
