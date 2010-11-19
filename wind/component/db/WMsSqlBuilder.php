@@ -1,21 +1,11 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-11
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-18
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
-/**
- * mysql常用sql语句组装器
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- */
-class WMySqlBuilder extends WSqlBuilder {
-	
-	
+class WMsSqlBuilder extends WSqlBuilder{
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
@@ -187,7 +177,7 @@ class WMySqlBuilder extends WSqlBuilder {
 	 */
 	public function buildSet($set) {
 		if (empty ( $set )) {
-			throw new WSqlException ( "The update data is empty" );
+			throw new WSqlException ( "update data is empty" );
 		}
 		if (is_string ( $set )) {
 			return $set;
@@ -201,8 +191,8 @@ class WMySqlBuilder extends WSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#escapeString()
 	 */
-	public function escapeString($value) {
-		return " '" . $value . "' ";
+	public function escapeString($value, $key = '') {
+		return $value;
 	}
 	
 	/**
@@ -288,5 +278,5 @@ class WMySqlBuilder extends WSqlBuilder {
 		}
 		return array ($logic, $group, $condition );
 	}
+	
 }
-
