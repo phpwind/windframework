@@ -27,7 +27,7 @@ class WPackge{
 	}
 	
 	public function stripNR($content){
-		return preg_replace("/(?:\n|\r)*/",' ',$content);
+		return preg_replace("/[\n|\r]{2,}/","\n",$content);
 	}
 	
 	public function stripSpace($content){
@@ -51,10 +51,29 @@ class WPackge{
 		return false;
 	}
 	
-	public function readContentFromDir($dir){
+	public function readContentFromDir($dir,$ndir = array('.','..','.svn')){
+		static $content = array();
 		if($this->isDir($dir)){
-			
+			$handle = dir($dir);
+			while(false != ($tmp = $handle->read())){
+				$name = $this->realDir($dir).$tmp;
+				if($this->isDir($name) && !in_array($tmp,$ndir)){
+					$this->readContentFromDir($name);
+				}
+				if($this->isFile($name)){
+					$content[$dir] = $this->readContentFromFile($name);
+				}
+			}
+			$handle->close();
 		}
+		return $content;
+	}
+	
+	public function realDir($path){
+		if(($pos = strrpos($path,DIRECTORY_SEPARATOR)) === strlen($path) - 1){
+			return $path;
+		}
+		return $path.DIRECTORY_SEPARATOR;
 	}
 	
 	public function isFile($filename){
@@ -62,14 +81,21 @@ class WPackge{
 	}
 	
 	public function isDir($dir){
-		return is_dir($filename);
+		return is_dir($dir);
 	}
 	
-	public function packge($dir = ''){
-		$dir = is_string($dir) ? array($dir) : $dir;
-		foreach($dir as $key=>$dir){
-			
+	public function packge($dir,$dst = '',$ndir = array('.','..','.svn')){
+		if(!($content = $this->readContentFromDir($dir,$ndir))){
+			return false;
 		}
+		$content = implode("\n\r",$content);
+		$content = $this->stripComment($content);
+		$content = $this->stripPhpIdentify($content);
+		$content = $this->stripNR($content);
+		$contnet = $this->stripSpace($content);
+		echo $content;
+		return true;
+		
 	}
 	
 	public function packgeByDir($dir){
@@ -77,13 +103,13 @@ class WPackge{
 	}
 	
 	public function packgeByTime($dir){
-		
 	}
 	
 	
 }
+$dir =  substr(__FILE__,0,strrpos(__FILE__,DIRECTORY_SEPARATOR));
 
 $pack = new WPackge();
 //echo php_strip_whitespace(__FILE__);
-echo '<br/>';
-echo $pack->stripSpace($pack->stripComment($pack->stripPhpIdentify($pack->readContentFromFile(__FILE__))));
+$content = $pack->packge($dir);
+
