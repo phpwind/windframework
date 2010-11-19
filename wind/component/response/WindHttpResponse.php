@@ -18,7 +18,7 @@
  * @version $Id$ 
  * @package 
  */
-class WHttpResponse implements WResponse {
+class WindHttpResponse implements WResponse {
 	
 	private $_body = array();
 	
@@ -493,7 +493,7 @@ class WHttpResponse implements WResponse {
 	
 	/**
 	 * 返回一个WhttpResponse单例对象
-	 * @return WHttpResponse
+	 * @return WindHttpResponse
 	 */
 	static function &getInstance() {
 		if (self::$_instance == null) {
