@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WSqlBuilder {
+abstract class WindSqlBuilder {
 	
 	/**
 	 * @var array 运算表达式

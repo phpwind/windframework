@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WDbAdapter {
+abstract class WindDbAdapter {
 	
 	/**
 	 * @var resource µ±Ç°²éÑ¯¾ä±ú

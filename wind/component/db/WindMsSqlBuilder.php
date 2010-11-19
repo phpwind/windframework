@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class WMsSqlBuilder extends WSqlBuilder{
+class WindMsSqlBuilder extends WSqlBuilder{
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */

@@ -1,13 +1,22 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-18
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-11
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
 
-class WMsSql extends WDbAdapter{
-public function connect($config, $key) {
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ */
+class WindMySql extends WDbAdapter {
+	/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#connect()
+	 */
+	public function connect($config, $key) {
 		if (! is_array ( $config ) || empty ( $config )) {
 			throw new WSqlException ( "database config is not correct", 1 );
 		}
@@ -20,7 +29,7 @@ public function connect($config, $key) {
 		$charset = $config ['charset'] ? $config ['charset'] : $this->charset;
 		$this->key = $key;
 		if (! ($this->linked[$key] = $this->getLinked ( $key ))) {
-			$this->linked[$key] =  $pconnect ? mssql_pconnect ( $host, $config ['dbuser'], $config ['dbpass'] ) : mssql_connect ( $host, $config ['dbuser'], $config ['dbpass'], $force );
+			$this->linked[$key] =  $pconnect ? mysql_pconnect ( $host, $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $host, $config ['dbuser'], $config ['dbpass'], $force );
 			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
 				$this->changeDB ( $config ['dbname'], $key);
 			}
@@ -37,7 +46,7 @@ public function connect($config, $key) {
 	 */
 	public function query($sql, $key = '',$optype = '') {
 		$this->getExecDbLink ($optype,$key);
-		$this->query = mssql_query ( $sql, $this->linked[$this->key] );
+		$this->query = mysql_query ( $sql, $this->linked[$this->key] );
 		$this->last_sql = $sql;
 		$this->error();
 		$this->logSql();
@@ -55,7 +64,7 @@ public function connect($config, $key) {
 			throw new WSqlException ( 'The fetch_type is not validate handle or resource', 1 );
 		}
 		$result = array ();
-		while (($record = mssql_fetch_array ( $this->query, $fetch_type ))) {
+		while (($record = mysql_fetch_array ( $this->query, $fetch_type ))) {
 			$result [] = $record;
 		}
 		return $result;
@@ -115,7 +124,7 @@ public function connect($config, $key) {
 	 */
 	public function close() {
 		foreach ( $this->linked as $key => $value ) {
-			mssql_close ( $value );
+			mysql_close ( $value );
 		}
 	}
 	/* (non-PHPdoc)
@@ -123,7 +132,7 @@ public function connect($config, $key) {
 	 */
 	public function dispose() {
 		foreach ( $this->linked as $key => $value ) {
-			mssql_close ( $value );
+			mysql_close ( $value );
 			unset ( $this->linked [$key] );
 		}
 		$this->linking = null;
@@ -134,7 +143,8 @@ public function connect($config, $key) {
 	 * @return string
 	 */
 	public function getVersion($key = '') {
-		
+		$link = is_resource ( $key ) ? $key : $this->getLinked ( $key );
+		return mysql_get_server_info ( $link );
 	}
 	
 	/**
@@ -165,6 +175,10 @@ public function connect($config, $key) {
 	 * @see wind/base/WDbAdapter#error()
 	 */
 	protected function error() {
-		
+		$this->last_errstr = mysql_error ();
+		$this->last_errcode = mysql_errno ();
+		if ($this->last_errstr || $this->last_errcode) {
+			throw new WSqlException ( $this->last_errstr, $this->last_errcode );
+		}
 	}
 }

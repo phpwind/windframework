@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WMySqlBuilder extends WSqlBuilder {
+class WindMySqlBuilder extends WSqlBuilder {
 	
 	
 	/* (non-PHPdoc)
