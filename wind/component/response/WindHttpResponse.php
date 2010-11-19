@@ -5,6 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
+L::import('WIND:component.request.base.impl.WindResponseImpl');
+L::import('WIND:component.exception.WindException');
 
 /**
  * 1xx：信息，请求收到，继续处理
@@ -18,7 +20,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindHttpResponse implements WResponse {
+class WindHttpResponse implements WindResponseImpl {
 	
 	private $_body = array();
 	
@@ -307,12 +309,8 @@ class WindHttpResponse implements WResponse {
 	public function setHeader($name, $value, $replace = false) {
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $value) {
-			if ($value['name'] == $name)
-				$this->_headers[$key] = array(
-					'name' => $name, 
-					'value' => $value, 
-					'replace' => $replace
-				);
+			if ($value['name'] == $name) $this->_headers[$key] = array('name' => $name, 'value' => $value, 
+				'replace' => $replace);
 		}
 	}
 	
@@ -324,11 +322,7 @@ class WindHttpResponse implements WResponse {
 	 */
 	public function addHeader($name, $value, $replace = false) {
 		$name = $this->_normalizeHeader($name);
-		$this->_headers[] = array(
-			'name' => $name, 
-			'value' => $value, 
-			'replace' => $replace
-		);
+		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
 	
 	/**
@@ -338,8 +332,7 @@ class WindHttpResponse implements WResponse {
 	 * @param string $message
 	 */
 	public function setStatus($status, $message = '') {
-		if (!is_int($status) || $status < 100 || $status > 505)
-			return;
+		if (!is_int($status) || $status < 100 || $status > 505) return;
 		
 		$this->_status = (int) $status;
 	}
@@ -351,8 +344,7 @@ class WindHttpResponse implements WResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
-		if ($name == null || !is_string($name))
-			$name = 'default';
+		if ($name == null || !is_string($name)) $name = 'default';
 		
 		$this->_body[$name] = (string) $content;
 	}
@@ -373,8 +365,7 @@ class WindHttpResponse implements WResponse {
 	 * @param string $message
 	 */
 	public function sendError($status, $message = '') {
-		if (!is_int($status) || $status < 400 || $status > 505)
-			return;
+		if (!is_int($status) || $status < 400 || $status > 505) return;
 		
 		$this->setBody($message);
 		$this->setStatus($status);
@@ -386,8 +377,7 @@ class WindHttpResponse implements WResponse {
 	 * @param string $location
 	 */
 	public function sendRedirect($location, $status = 302) {
-		if (!is_int($status) || $status < 300 || $status > 399)
-			return;
+		if (!is_int($status) || $status < 300 || $status > 399) return;
 		
 		$this->setHeader('Location', $location, true);
 		$this->setStatus($status);
@@ -408,8 +398,7 @@ class WindHttpResponse implements WResponse {
 	 * 发送响应头部信息
 	 */
 	public function sendHeaders() {
-		if ($this->isSendedHeader())
-			return;
+		if ($this->isSendedHeader()) return;
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
@@ -438,8 +427,7 @@ class WindHttpResponse implements WResponse {
 			return ob_get_clean();
 		} elseif ($name === true) {
 			return $this->_body;
-		} else if (isset($this->_body[$name]))
-			return $this->_body[$name];
+		} else if (isset($this->_body[$name])) return $this->_body[$name];
 		
 		return null;
 	}
@@ -453,8 +441,7 @@ class WindHttpResponse implements WResponse {
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
-		if ($throw && $sended)
-			throw new WException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+		if ($throw && $sended) throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
@@ -482,10 +469,7 @@ class WindHttpResponse implements WResponse {
 	 * @return string
 	 */
 	private function _normalizeHeader($name) {
-		$filtered = str_replace(array(
-			'-', 
-			'_'
-		), ' ', (string) $name);
+		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
 		return $filtered;
