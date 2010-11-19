@@ -8,6 +8,7 @@
 
 /**
  * 异常处理机制
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy: weihu $>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id: WindException.php 37 2010-11-08 12:57:04Z weihu $ 
@@ -23,6 +24,7 @@ class WindException extends Exception {
 	
 	/**
 	 * 异常构造函数
+	 * 
 	 * @param $message		     异常信息
 	 * @param $code			     异常代号
 	 * @param $innerException 内部异常
