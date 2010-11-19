@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package
  */
-class WDebug {
+class WindDebug {
 	
 	private static $breakpoint = array();
 	public static function setBreakPoint($point = '') {

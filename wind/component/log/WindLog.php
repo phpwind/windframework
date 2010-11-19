@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package
  */
-class WLog {
+class WindLog {
 	/*¥ÌŒÛ¿‡–Õ*/
 	const ERROR = 'error';
 	const TRACE = 'trace';

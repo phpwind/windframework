@@ -6,7 +6,7 @@
  * @license 
  */
 
-class WMsg{
+class WindMsg{
 
 	private static $message = array();
 	public  static $postTpl = 'post';
