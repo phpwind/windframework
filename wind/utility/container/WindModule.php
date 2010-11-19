@@ -14,7 +14,7 @@
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  */
-abstract class WModule {
+abstract class WindModule {
 	
 	protected $_trace = array();
 	protected $_serialize = NULL;
