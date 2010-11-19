@@ -13,7 +13,7 @@ W::import('WIND:utilities.container.WModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WActionForm extends WModule {
+abstract class WindActionForm extends WModule {
 	protected $_isValidate = false;
 	
 	/**
@@ -26,7 +26,7 @@ abstract class WActionForm extends WModule {
 	
 	/**
 	 * 验证方法，调用该方法完成所有验证操作
-	 * 执行在继承WActionForm类的actionForm中，所有以validate结尾的函数
+	 * 执行在继承WindActionForm类的actionForm中，所有以validate结尾的函数
 	 */
 	public function validation() {
 		$object = new ReflectionClass(get_class($this));
@@ -43,7 +43,7 @@ abstract class WActionForm extends WModule {
 	
 	/**
 	 * 设置属性值
-	 * 在继承WActionForm类的actionForm中，所有需要设置的属性应该显示的声明其setter函数用来进行属性设置
+	 * 在继承WindActionForm类的actionForm中，所有需要设置的属性应该显示的声明其setter函数用来进行属性设置
 	 * @param WHttpRequest $request
 	 */
 	private function _setProperties($request) {
