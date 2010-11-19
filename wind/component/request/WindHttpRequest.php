@@ -69,7 +69,7 @@ class WindHttpRequest implements WindRequestImpl {
 	 * 
 	 * @return WindHttpRequest
 	 */
-	function &getInstance() {
+	static public function &getInstance() {
 		if (self::$_instance === null) {
 			$class = __CLASS__;
 			self::$_instance = new $class();
@@ -82,7 +82,7 @@ class WindHttpRequest implements WindRequestImpl {
 	 * 
 	 * @param string|null $name
 	 */
-	function getAttribute($name) {
+	public function getAttribute($name) {
 		if (isset($_GET[$name]))
 			return $_GET[$name];
 		else if (isset($_POST[$name]))
@@ -106,7 +106,7 @@ class WindHttpRequest implements WindRequestImpl {
 	 * @param string $default
 	 * @return string|null
 	 */
-	function getQuery($name = null, $defaultValue = null) {
+	public function getQuery($name = null, $defaultValue = null) {
 		return $this->getGet($name, $defaultValue);
 	}
 	
@@ -283,7 +283,7 @@ class WindHttpRequest implements WindRequestImpl {
 	 * http://www.phpwind.net/example/index.php?a=test
 	 * $this->_scriptUrl = /example/index.php
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return string
 	 */
 	public function getScriptUrl() {
@@ -309,7 +309,7 @@ class WindHttpRequest implements WindRequestImpl {
 	/**
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return string
 	 */
 	public function getPathInfo() {
@@ -500,7 +500,7 @@ class WindHttpRequest implements WindRequestImpl {
 	 * http://www.phpwind.net/example/index.php?a=test
 	 * $this->_requestUri = /example/index.php?a=test
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return
 	 */
 	private function initRequestUri() {
@@ -508,13 +508,12 @@ class WindHttpRequest implements WindRequestImpl {
 			$this->_requestUri = $requestUri;
 		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
 			$this->_requestUri = $requestUri;
-			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) //去掉请求头部中的hose项
-$this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
 			$this->_requestUri = $requestUri;
 			if (($query = $this->getServer('QUERY_STRING')) != null) $this->_requestUri .= '?' . $query;
 		} else
-			throw new WException(__CLASS__ . ' is unable to determine the request URI.');
+			throw new WindException(__CLASS__ . ' is unable to determine the request URI.');
 		
 		$this->_requestUri = $requestUri;
 	}
@@ -526,11 +525,11 @@ $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 	 * http://www.phpwind.net/example/index.php?a=test
 	 * $this->_scriptUrl = /example/index.php
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return
 	 */
 	private function _initScriptUrl() {
-		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
 		
 		$scriptName = basename($scriptName);
 		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
@@ -544,7 +543,7 @@ $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
 			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
 		} else
-			throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
 	}
 	
 	/**
@@ -556,7 +555,7 @@ $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 	 * $this->_hostInfo = http://www.phpwind.net:80/
 	 * $this->_hostInfo = https://www.phpwind.net:443/
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return 
 	 */
 	private function _initHostInfo() {
@@ -567,13 +566,13 @@ $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 			$this->_hostInfo = $http . '://' . $httpHost;
 			if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
 		} else
-			throw new WException(__CLASS__ . ' determine the entry script URL failed!!');
+			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
 	}
 	
 	/**
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
-	 * @throws WException
+	 * @throws WindException
 	 * @return
 	 */
 	private function _initPathInfo() {
@@ -587,7 +586,7 @@ $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
 			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
 		else
-			throw new WException('');
+			throw new WindException('');
 		
 		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
 		
