@@ -458,9 +458,10 @@ class WindHttpRequest implements WindRequestImpl {
 	
 	/**
 	 * 获得返回信息
+	 * @return WindHttpResponse
 	 */
 	public function getResponse() {
-		return W::getInstance('WHttpResponse');
+		return WindHttpResponse::getInstance();
 	}
 	
 	/**
