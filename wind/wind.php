@@ -10,5 +10,4 @@
 /*
  * 加载类库，并初始化核心文件
  * */
-
-require 'WBase.php';
+require 'WindBase.php';
