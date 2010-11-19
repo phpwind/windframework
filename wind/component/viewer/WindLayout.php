@@ -15,7 +15,7 @@
  * @version $Id$ 
  * @package 
  */
-class WLayout {
+class WindLayout {
 	/* layout Âß¼­Ãû³Æ */
 	private $layout = '';
 	

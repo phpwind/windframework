@@ -16,7 +16,7 @@
  * @version $Id$ 
  * @package 
  */
-class WViewFactory {
+class WindViewFactory {
 	
 	/*  ”Õº≈‰÷√–≈œ¢  */
 	const VIEW_CONFIG = 'view';
@@ -109,7 +109,7 @@ class WViewFactory {
 	}
 	
 	/**
-	 * @return WViewFactory
+	 * @return WindViewFactory
 	 */
 	static public function getInstance() {
 		if (self::$instance === null) {

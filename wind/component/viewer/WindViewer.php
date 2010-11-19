@@ -6,7 +6,7 @@
  * @license 
  */
 
-class WViewer implements WBaseViewer {
+class WindViewer implements WBaseViewer {
 	private $_layout = null;
 	
 	/**

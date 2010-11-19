@@ -15,7 +15,7 @@
  * @version $Id$ 
  * @package 
  */
-interface WBaseViewer {
+interface WindBaseViewerImpl {
 	
 	public function setTpl($tpl = '');
 	
