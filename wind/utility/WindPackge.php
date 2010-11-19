@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WPackge{
+class WindPack{
 	
 	/**
 	 * 去除指定文件的注释及空白
@@ -97,11 +97,11 @@ class WPackge{
 	/**
 	 * 根据文件后缀得取对应的mime内容
 	 * @param string $content 要打包的内容内容
-	 * @param string $mime 文件后缀类型
+	 * @param string $suffix 文件后缀类型
 	 * @return string
 	 */
-	public function getContentByMime($content,$mime = 'php'){
-		switch($mime){
+	public function getContentBySuffix($content,$suffix){
+		switch($suffix){
 			case 'php' : $content = '<?php'.$content.'?>';
 			default: $content = $content;
 		}
@@ -111,19 +111,20 @@ class WPackge{
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
 	 * @param string $dir 目录名
-	 * @param array $ndir 不须要取得文件内容的目录
+	 * @param array $ndir 不须要打包的文件夹
+	 * @param array $suffix 不须要打包的文件类型
 	 * @return array
 	 */
-	public function readContentFromDir($dir,$ndir = array('.','..','.svn')){
+	public function readContentFromDir($dir,$ndir = array('.','..','.svn'),$suffix = array()){
 		static $content = array();
 		if($this->isDir($dir)){
 			$handle = dir($dir);
 			while(false != ($tmp = $handle->read())){
 				$name = $this->realDir($dir).$tmp;
 				if($this->isDir($name) && !in_array($tmp,$ndir)){
-					$this->readContentFromDir($name);
+					$this->readContentFromDir($name,$ndir,$suffix);
 				}
-				if($this->isFile($name)){
+				if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix)){
 					$content[] = $this->readContentFromFile($name);
 				}
 			}
@@ -167,27 +168,30 @@ class WPackge{
 	 * @param string $dir 要打包的目录
 	 * @param sgring $dst 文件名
 	 * @param array $ndir 不须要打包的目录
+	 * @param array $suffix 不永许打包的文件类型
 	 * @return string
 	 */
-	public function packge($dir,$dst,$ndir = array('.','..','.svn')){
+	public function pack($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array()){
 		if(empty($dst)){
 			return false;
 		}
-		if(!($content = $this->readContentFromDir($dir,$ndir))){
+		$suffix = is_array($suffix) ? $suffix : array($suffix);
+		if(!($content = $this->readContentFromDir($dir,$ndir,$suffix))){
 			return false;
 		}
-		$mime = substr($dst,strrpos($dst,'.')+1);
 		$content = implode("\n\r",$content);
 		$content = $this->stripComment($content);
 		$content = $this->stripPhpIdentify($content);
 		$content = $this->stripNR($content);
 		$content = $this->stripSpace($content);
-		$content = $this->getContentByMime($content,$mime);
+		$content = $this->getContentBySuffix($content,$this->getFileSuffix($dst));
 		$this->writeContentToFile($dst,$content);
 		return true;
 		
 	}
 	
+	public function getFileSuffix($filename){
+		return substr($filename,strrpos($filename,'.')+1);
+	}
+	
 }
-
-
