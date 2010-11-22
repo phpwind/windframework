@@ -26,21 +26,18 @@ abstract class WindModule {
 	private function _init() {}
 	
 	public function __get($propertyName) {
-		if (!$this->_validateProperties($propertyName))
-			return;
+		if (!$this->_validateProperties($propertyName)) return;
 		return $this->$propertyName;
 	}
 	
 	public function __set($propertyName, $value) {
-		if (!$this->_validateProperties($propertyName))
-			return;
+		if (!$this->_validateProperties($propertyName)) return;
 		$this->_trace['setted'][$propertyName] = $value;
 		$this->$propertyName = $value;
 	}
 	
 	public function isseted($propertyName) {
-		if (!$this->_validateProperties($propertyName))
-			return;
+		if (!$this->_validateProperties($propertyName)) return;
 		return array_key_exists($propertyName, $this->_trace['setted']);
 	}
 	
