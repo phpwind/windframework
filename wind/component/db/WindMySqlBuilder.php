@@ -86,7 +86,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			if (is_array ( $config ) && is_string($table)) {
 				$table = $this->getAlias ( $table, $as, $config [2] );
 				$joinWhere = $config [1] ? ' ON ' . $config [1] : '';
-				$condition = $config [0] . ' JOIN ' . $table . $joinWhere;
+				$condition = strtoupper($config [0]) . ' JOIN ' . $table . $joinWhere;
 				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}
@@ -102,34 +102,8 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		if (is_string ( $where )) {
 			return 'WHERE' . $this->sqlFillSpace($where);
 		}
-		if (! is_array ( $where )) {
-			throw new WindSqlException ( 'The Where Condition is not correct', 0 );
-		}
-		list ( $lConter, $gConter, $conConter ) = $this->checkWhere ( $where );
-		$_where = $tmp_where = '';
-		$i = 0;
-		$ifLogic = $this->serachLogic ( $where );
-		foreach ( $where as $key => $value ) {
-			if (is_int ( $key )) {
-				if (in_array ( $value, array_keys ( $this->logic ) )) {
-					$logic = $this->logic [$value];
-				}
-				if (in_array ( $value, array_keys ( $this->group ) )) {
-					$group = $this->group [$value];
-				}
-			}
-			if (is_string ( $key )) {
-				if (in_array ( $key, array_keys ( $this->compare ) )) {
-					$logic = $i > 0 && empty ( $ifLogic ) && $conConter > 1 ? $this->sqlFillSpace ( 'AND' ) : $logic;
-					$tmp_where = $this->buildCompare ( $value [0], $value [1], $key );
-					$i ++;
-				}
-			}
-			$tmp_where = $this->sqlFillSpace ( $group ? $group == '(' ? $group . $tmp_where : $tmp_where . $group : $tmp_where );
-			$_where .= $logic ? $logic . $tmp_where : $tmp_where;
-			$group = $logic = $tmp_where = '';
-		}
-		return $_where ? 'WHERE ' . $_where : '';
+		$_where = $this->formatWhere($where);
+		return $this->sqlFillSpace ('WHERE '.implode(' ',$_where)) ;
 	}
 	
 	/* (non-PHPdoc)
@@ -203,7 +177,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#buildAffected()
 	 */
 	public function buildAffected($ifquery){
-		$rows = $ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()';echo $rows;
+		$rows = $ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()';
 		return $this->sqlFillSpace("$rows AS afftectedRows");
 	}
 	
@@ -212,6 +186,26 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	 */
 	public function buildLastInsertId(){
 		return $this->sqlFillSpace('LAST_INSERT_ID() AS insertId');
+	}
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#getMetaTableSql()
+	 */
+	public function getMetaTableSql($schema){
+		if(empty($schema)){
+			throw new WindSqlException("The database is empty");
+		}echo 'SHOW TABLES FROM '.$this->escapeString($schema);
+		return $this->sqlFillSpace('SHOW TABLES FROM '.$schema);
+	}
+	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#getMetaColumnSql()
+	 */
+	public function getMetaColumnSql($table){
+		if(empty($table)){
+			throw new WindSqlException("The table is empty");
+		}
+		return $this->sqlFillSpace('SHOW COLUMNS FROM '.$table);
 	}
 	
 	/* (non-PHPdoc)
@@ -235,16 +229,17 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	/**
 	 * 解析查询表达式
 	 * @param string $field  列名
-	 * @param unknown_type $value 列值
-	 * @param unknown_type $compare 表达式
+	 * @param stirng $value 列值
+	 * @param string $compare 表达式
+	 * @param mixed  $ifconvert 否要对$value进行转换
 	 * @return string
 	 */
-	private function buildCompare($field, $value, $compare) {
+	private function buildCompare($field, $value, $compare,$ifconvert = true) {
 		if (empty ( $field ) || empty ( $value )) {
-			throw new WindSqlException ( '', '' );
+			throw new WindSqlException ( '', 1 );
 		}
 		if (! in_array ( $compare, array_keys ( $this->compare ) )) {
-			throw new WindSqlException ( '', '' );
+			throw new WindSqlException ( '', 1 );
 		}
 		if (in_array ( $compare, array ('in', 'notin' ) )) {
 			$value = explode ( ',', $value );
@@ -252,57 +247,74 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			$value = implode ( ',', $value );
 			$parsedCompare = $field . $this->sqlFillSpace ( $this->compare [$compare] ) . '(' . $value . ')';
 		} else {
-			$parsedCompare = $field . $this->sqlFillSpace ( $this->compare [$compare] ) . $this->escapeString ( $value );
+			$parsedCompare = $field . $this->sqlFillSpace ( $this->compare [$compare] ) . ($ifconvert ? $value : $this->escapeString ( $value ));
 		}
 		return $parsedCompare;
 	}
-	
-	/**
-	 * 判断是否存逻辑运算符
-	 * @param array $where
-	 * @return string|string
-	 */
-	private function serachLogic($where) {
-		foreach ( $this->logic as $key => $value ) {
-			if (array_search ( $key, $where )) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
+
+		/**
 	 * 检查是否是合法的查询条件
 	 * @param array $where
 	 * @return array  
 	 */
-	private function checkWhere($where) {
-		$logic = $group = $condition = 0;
+	private function staticWhere($where,&$statics = array('logic'=>0,'group'=>0,'condition'=>0)) {
 		foreach ( $where as $key => $value ) {
-			if (is_int ( $key )) {
+			if (is_int ( $key ) && is_string($value)) {
 				if (in_array ( $value, array_keys ( $this->logic ) )) {
-					$logic ++;
+					$statics['logic']++;
 				}
 				if (in_array ( $value, array_keys ( $this->group ) )) {
-					$group ++;
+					$statics['group'] ++;
 				}
 			}
-			if (is_string ( $key )) {
+			if (is_string ( $key ) && is_array($value)) {
 				if (in_array ( $key, array_keys ( $this->compare ) )) {
-					$condition ++;
+					$statics['condition']++;
 				}
+			}
+			if(is_int($key) && is_array($value)){
+				$this->staticWhere($value,&$statics);
 			}
 		}
+		return $statics;
+	}
+	
+	private function checkWhere($where){
+		if (! is_array ( $where )) {
+			throw new WindSqlException ( 'The Where Condition is not correct', 0 );
+		}
+		extract($this->staticWhere($where));
 		if ($group % 2 === 1) {
 			throw new WindSqlException ( 'kuo huao is not match', 1 );
 		}
-		if ($logic && $condition && $condition - $logic != 1) {
+		if ($logic && $condition && $condition - $logic != 1) {echo 33;
 			throw new WindSqlException ( 'condition is not match', 1 );
 		}
 		if ($group && $condition === 0) {
 			throw new WindSqlException ( 'condition is not match', 1 );
 		}
-		return array ($logic, $group, $condition );
+		return array($logic,$group,$condition);
+	}
+	
+	private function formatWhere($where,&$_where=array()){
+		$this->checkWhere ( $where );
+		foreach ( $where as $key => $value ) {
+			if (is_int ( $key ) && is_string($value)) {
+					if (in_array ( $value, array_keys ( $this->logic ) )) {
+						$_where[] = $this->logic [$value];
+					}
+					if (in_array ( $value, array_keys ( $this->group ) )) {
+						$_where[] = $this->group [$value];
+					}
+			}
+			if (is_string ( $key ) && is_array($value)) {
+					$_where[] = $this->buildCompare ( $value [0], $value [1], $key,$value[2] );
+			}			
+			if(is_int ( $key ) && is_array($value)){
+				  $this->formatWhere($value,$_where);
+			}
+		}
+		return $_where;
 	}
 }
 

@@ -59,14 +59,7 @@ class WindMySql extends WindDbAdapter {
 		}
 		return $result;
 	}
-	public function getMetaTables() {
-	
-	}
-	public function getMetaColumns() {
-	
-	}
-	
-	
+
 	public function beginTrans($key = '') {
 		if ($this->transCounter == 0) {
 			$this->write ( 'START TRANSACTION', $key );

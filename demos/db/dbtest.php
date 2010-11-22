@@ -40,8 +40,11 @@ $option['join'] =  array('pw_posts'=>array('left','a.uid=b.authorid','b'));
 //不指定db连接
 
 //指定db连接
-$mysql->select($option,'phpwind');
-$mysql->getAffectedRows(false,'phpwind');
+$mysql->select($option);
+$result = $mysql->getAllResult();
+print_r($result);
+$mysql->getAffectedRows(true);
+$mysql->getMetaColumns('pw_members');
 $result = $mysql->getAllResult();
 print_r($result);
 //更新数据
@@ -79,6 +82,12 @@ $option['where'] = array('lt'=>array('a.uid',10));
 $option['field'] =  array('a.uid'=>'ids','a.username');
 $option['join'] =  array('pw_posts'=>array('left','a.uid=b.authorid','b'));
 $mssql->select($option);
-$result = $mssql->getAffectedRows(true);
 $result = $mssql->getAllResult();
 print_r($result);
+$result = $mssql->getMetaColumns('pw_posts');
+$result = $mssql->getAllResult();
+print_r($result);
+
+define('A','asfa');
+
+echo A;

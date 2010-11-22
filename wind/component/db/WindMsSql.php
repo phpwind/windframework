@@ -14,7 +14,6 @@ class WindMsSql extends WindDbAdapter {
 			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
 				$this->changeDB ( $config ['dbname'], $key);
 			}
-			$this->setCharSet ( $config['charset'], $key );
 			if (!isset ( $this->config [$key] )) {
 				$this->config [$key] = $config;
 			}
@@ -39,7 +38,7 @@ class WindMsSql extends WindDbAdapter {
 	 */
 	public function getAllResult($fetch_type = MYSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
-			throw new WindSqlException ( 'The Query is not validate handle or resource', 1 );
+			throw new WindSqlException ( 'The Query is not validate handle  resource', 1 );
 		}
 		if (! in_array ( $fetch_type, array (1, 2, 3 ) )) {
 			throw new WindSqlException ( 'The fetch_type is not validate handle or resource', 1 );
@@ -50,12 +49,7 @@ class WindMsSql extends WindDbAdapter {
 		}
 		return $result;
 	}
-	public function getMetaTables() {
-	
-	}
-	public function getMetaColumns() {
-	
-	}
+
 	
 	public function beginTrans($key = '') {
 
@@ -90,20 +84,7 @@ class WindMsSql extends WindDbAdapter {
 	public function getVersion($key = '') {
 	
 	}
-	
-	/**
-	 * @param string $charset 字符集
-	 * @param string | int $key 数据库连接标识
-	 * @return boolean
-	 */
-	public function setCharSet($charset, $key = '') {
-		$version = ( int ) substr ( $this->getVersion ( $key ), 0, 1 );
-		if ($version > 4) {
-			$this->read ( "SET NAMES '" . $charset . "'", $key );
-		}
-		return true;
-	}
-	
+
 	/**
 	 * 切换数据库
 	 * @see wind/base/WDbAdapter#changeDB()

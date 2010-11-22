@@ -174,14 +174,6 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function getAllResult($fetch_type = MYSQL_ASSOC);
 	/**
-	 *取得数据库元数据表
-	 */
-	public abstract function getMetaTables();
-	/**
-	 *取得数据表元数据列 
-	 */
-	public abstract function getMetaColumns();
-	/**
 	 * 保存事务点
 	 */
 	//public abstract function savePoint();
@@ -333,6 +325,22 @@ abstract class WindDbAdapter {
 	final public  function getInsertId($key = ''){
 		$this->getExecDbLink('slave',$key);
 		return $this->read($this->getSqlBuilderFactory($this->key)->getLastInsertIdSql(),$this->key);
+	}
+	
+	/**
+	 *取得数据库元数据表
+	 */
+	public  function getMetaTables($schema = '',$key = ''){
+		$this->getExecDbLink('slave',$key);
+		$schema = $schema ? $schema : $this->config[$this->key]['dbname'];
+		return $this->read($this->getSqlBuilderFactory($this->key)->getMetaTableSql($schema),$this->key);
+	}
+	/**
+	 *取得数据表元数据列 
+	 */
+	public  function getMetaColumns($table,$key = ''){
+		$this->getExecDbLink('slave',$key);
+		return $this->read($this->getSqlBuilderFactory($this->key)->getMetaColumnSql($table),$this->key);
 	}
 	/**
 	 * 关闭数据库

@@ -104,12 +104,6 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public abstract function buildData($setData);
-	/**
-	 * 对字符串转义
-	 * @param string $value
-	 * @return string
-	 */
-	public abstract function escapeString($value);
 	
 	/**
 	 *返回影响行数的sql语句
@@ -124,6 +118,22 @@ abstract class WindSqlBuilder {
 	 */
 	public abstract function buildLastInsertId();
 	
+	/**
+	 * 对字符串转义
+	 * @param string $value
+	 * @return string
+	 */
+	public abstract function escapeString($value);
+	
+	/**
+	 * @param strint $schema 数据库名
+	 */
+	public abstract function getMetaTableSql($schema);
+	
+	/**
+	 * @param string $table  表名
+	 */
+	public abstract function getMetaColumnSql($table);
 	/**
 	 * 解析新增SQL语句
 	 * @param array $option

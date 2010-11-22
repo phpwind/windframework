@@ -13,5 +13,5 @@
  * @package 
  */
 class WindSqlException extends WindException {
-
+	
 }
