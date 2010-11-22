@@ -373,7 +373,7 @@ abstract class WindDbAdapter {
 	 * @param string | int $key 数据库标识
 	 * @return resource 返回数据库连接
 	 */
-	protected function getLinked($key = '') {
+	final protected function getLinked($key = '') {
 		return $this->linked [$key];
 	}
 	
@@ -381,7 +381,7 @@ abstract class WindDbAdapter {
 	 * 查看是是否要主从数据库设置，并按主从配置返回数据库配置信息
 	 * @return array
 	 */
-	protected function getMasterSlave() {
+	final protected function getMasterSlave() {
 		$array = array ();
 		foreach ( $this->config as $key => $value ) {
 			if (in_array ( $value ['optype'], array ('master', 'slave' ) )) {
@@ -397,7 +397,7 @@ abstract class WindDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return string|int 返回真正的执行数据库连接标识
 	 */
-	protected function getExecDbLink($optype = '',$key='') {
+	final protected function getExecDbLink($optype = '',$key='') {
 		if (empty ( $this->switch )) {
 			$masterSlave = $this->getMasterSlave ();
 			$config = (empty ( $masterSlave ) || empty ( $optype )) ? $this->config : $masterSlave [$optype];
