@@ -32,8 +32,6 @@ class WindFrontController extends WindServlet {
 	protected function __construct($config = array()) {
 		parent::__construct();
 		$this->_initConfig($config);
-		print_r('sss');
-		exit();
 	}
 	
 	public function run() {
