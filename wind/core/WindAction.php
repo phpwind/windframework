@@ -6,14 +6,14 @@
  * @license 
  */
 
-L::import('WIND:core.base.WBaseAction');
+L::import('WIND:core.base.WindBaseAction');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-class WindAction extends WBaseAction {
+class WindAction extends WindBaseAction {
 	/**
 	 * @param WHttpRequest $request
 	 * @param WHttpResponse $response

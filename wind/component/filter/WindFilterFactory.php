@@ -5,7 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-W::import('WIND:utilities.factory.WFactory');
+
+L::import('WIND:utility.factory.impl.WindFactoryImpl');
 
 /**
  * 过滤器工场
@@ -14,7 +15,7 @@ W::import('WIND:utilities.factory.WFactory');
  * @version $Id$ 
  * @package
  */
-class WindFilterFactory extends WFactory {
+class WindFilterFactory implements WindFactoryImpl {
 	private $index = 0;
 	private $filters = array();
 	private $configs = array();
@@ -23,7 +24,7 @@ class WindFilterFactory extends WFactory {
 	private $callBack = null;
 	private $args = array();
 	
-	static private $instance = null;
+	private static $instance = null;
 	
 	/**
 	 * 创建一个Filter
@@ -32,8 +33,7 @@ class WindFilterFactory extends WFactory {
 	 * @return WFilter 
 	 */
 	public function create($config = null) {
-		if ($config != null && empty($this->filters))
-			$this->_initFilters($config);
+		if ($config != null && empty($this->filters)) $this->_initFilters($config);
 		return $this->createFilter();
 	}
 	
@@ -48,7 +48,7 @@ class WindFilterFactory extends WFactory {
 			return null;
 		}
 		list($filterName, $path) = $this->filters[$this->index++];
-		W::import($path);
+		L::import($path);
 		if ($filterName && class_exists($filterName) && in_array('WFilter', class_parents($filterName))) {
 			$class = new ReflectionClass($filterName);
 			$object = $class->newInstance();
@@ -61,20 +61,13 @@ class WindFilterFactory extends WFactory {
 	 * 执行完过滤器后执行该方法的回调
 	 */
 	public function execute() {
-		if ($this->callBack === null)
-			$this->callBack = array(
-				'WFrontController', 
-				'process'
-			);
+		if ($this->callBack === null) $this->callBack = array('WFrontController', 'process');
 		if (is_array($this->callBack)) {
 			list($className, $action) = $this->callBack;
-			if (!class_exists($className, true))
-				throw new WException($className . ' is not exists!');
-			if (!in_array($action, get_class_methods($className)))
-				throw new WException('method ' . $action . ' is not exists in ' . $className . '!');
+			if (!class_exists($className, true)) throw new WException($className . ' is not exists!');
+			if (!in_array($action, get_class_methods($className))) throw new WException('method ' . $action . ' is not exists in ' . $className . '!');
 		} elseif (is_string($this->callBack))
-			if (!function_exists($this->callBack))
-				throw new WException($this->callBack . ' is not exists!');
+			if (!function_exists($this->callBack)) throw new WException($this->callBack . ' is not exists!');
 		
 		call_user_func_array($this->callBack, (array) $this->args);
 	}
@@ -103,19 +96,19 @@ class WindFilterFactory extends WFactory {
 	public function deleteFilter($filterName) {
 		$deleteIndex = -1;
 		foreach ($this->filters as $key => $value) {
-			if ($key > $deleteIndex && $deleteIndex >= 0) $this->filters[$key-1] = $value;
+			if ($key > $deleteIndex && $deleteIndex >= 0) $this->filters[$key - 1] = $value;
 			if ($value[0] == $filterName) $deleteIndex = $key;
 		}
 		if ($deleteIndex >= 0) {
 			array_pop($this->filters);
-		}		
+		}
 	}
 	
 	/**
 	 * 在filter链中动态的添加一个filter
 	 * 当befor为空时，添加到程序结尾处
 	 * 如果befor有值，则遍历数组，找到befor的位置，将新的过滤器添加到befor后面，
-	 *               并将所有原befor位置后的过滤器往后移一位
+	 * 并将所有原befor位置后的过滤器往后移一位
 	 * 
 	 * @param string $filterName
 	 * @param string $path
@@ -126,22 +119,19 @@ class WindFilterFactory extends WFactory {
 		if ($beforFilter) {
 			$exchange = null;
 			foreach ($this->filters as $key => $value) {
-				if ($key > $addIndex) { 
+				if ($key > $addIndex) {
 					$this->filters[$key] = $exchange;
 					$exchange = $value;
 				}
 				if ($value[0] == $beforFilter) {
-					$addIndex = $key+1;
-					if (!isset($this->filters[$key+1])) break;
-					$exchange = $this->filters[$key+1];
+					$addIndex = $key + 1;
+					if (!isset($this->filters[$key + 1])) break;
+					$exchange = $this->filters[$key + 1];
 				}
 			}
 			$exchange != null && $this->filters[] = $exchange;
 		}
-		$this->filters[$addIndex] = array(
-			$filterName, 
-			$path
-		);
+		$this->filters[$addIndex] = array($filterName, $path);
 	}
 	
 	/**
@@ -167,11 +157,7 @@ class WindFilterFactory extends WFactory {
 				$filterName = $value;
 			else
 				$filterName = substr($value, $pos + 1);
-			$this->filters[] = array(
-				$filterName, 
-				$value,
-				$key
-			);
+			$this->filters[] = array($filterName, $value, $key);
 		}
 		$this->configs = $config;
 	}
@@ -185,10 +171,7 @@ class WindFilterFactory extends WFactory {
 		if (self::$instance === null) {
 			$class = new ReflectionClass(__CLASS__);
 			$args = func_get_args();
-			self::$instance = call_user_func_array(array(
-				$class, 
-				'newInstance'
-			), (array) $args);
+			self::$instance = call_user_func_array(array($class, 'newInstance'), (array) $args);
 		}
 		return self::$instance;
 	}

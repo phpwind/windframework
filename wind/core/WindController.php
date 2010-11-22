@@ -6,14 +6,14 @@
  * @license 
  */
 
-L::import('WIND:core.base.WBaseAction');
+L::import('WIND:core.base.WindBaseAction');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-class WindController extends WBaseAction {
+class WindController extends WindBaseAction {
 	
 	public function __construct($request, $response) {
 		parent::__construct();

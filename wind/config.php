@@ -36,13 +36,6 @@ $sysConfig = array(
 		'smarty' => 'libs.WSmarty',
 	),
 
-	/*
-	 * 这个配置选项有两个值，配置操作结构是基于WActionController或者基于WAction
-	 * 基于WAction：则目录结构是actionControllers/controller/action.php
-	 * 基于WActionController：则目录结构是actionControllers/controller.php
-	 * */
-	'controller' => 'WActionController',
-
 	/* 路由策略配置 */
 	'router' => array(
 		'parser' => 'url'
@@ -57,6 +50,6 @@ $sysConfig = array(
 
 	/* 路由解析器配置 */
 	'routerParser' => array(
-		'url' => 'WIND:core.WUrlRouter'
+		'url' => 'WIND:component.router.WindUrlRouter'
 	)
 );

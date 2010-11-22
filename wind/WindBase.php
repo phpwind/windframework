@@ -28,6 +28,7 @@ define('DEBUG', true);*/
 class W {
 	private static $_apps = array();
 	private static $_default = 'WIDN';
+	private static $_systemConfig = null;
 	
 	/**
 	 * 初始化框架上下文
@@ -40,22 +41,37 @@ class W {
 	}
 	
 	/**
+	 * 返回系统配置信息
+	 * 
+	 * @return array
+	 */
+	static public function getSystemConfig() {
+		if (W::$_systemConfig === null) {
+			if (!file_exists(SYSTEM_CONFIG_PATH)) throw new Exception('System config file ' . SYSTEM_CONFIG_PATH . ' is not exists!');
+			@include SYSTEM_CONFIG_PATH;
+			$vars = get_defined_vars();
+			W::$_systemConfig = (array) array_pop($vars);
+		}
+		return W::$_systemConfig;
+	}
+	
+	/**
 	 * 获得应用相关配置信息
 	 * 
 	 * @param string $name
 	 * @return array
 	 */
 	static public function getApps($name = '') {
-		return $name ? W::$_apps[$name] : W::$_default;
+		return $name ? W::$_apps[$name] : W::$_apps[W::$_default];
 	}
 	
 	/**
-	 * 获得系统配置
-	 * 
-	 * @return object
+	 * @param unknown_type $name
+	 * @param unknown_type $default
 	 */
-	static public function getSystemConfig() {
-		return self::getInstance('WSystemConfig');
+	static public function setApps($name = '', $value = array(), $default = false) {
+		W::$_apps[$name] = $value;
+		if ($default) W::$_default = $name;
 	}
 	
 	/**
@@ -67,13 +83,17 @@ class W {
 		L::import('WIND:core.base.impl.*');
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.*');
+		
+		L::import('WIND:component.exception.base.impl.*');
+		L::import('WIND:component.exception.base.*');
+		L::import('WIND:component.exception.WindException');
 	}
 	
 	/**
 	 * 解析配置文件
 	 */
 	static private function _initConfig() {
-		W::$_apps = array('WIND' => array('rootPath' => WIND_PATH));
+		W::$_apps['WIND'] = array('rootPath' => WIND_PATH);
 	}
 	
 	/**
@@ -124,7 +144,6 @@ class W {
  * @package 
  */
 class L {
-	
 	private static $_imports = array();
 	private static $_instances = array();
 	private static $_extensions = array('php', 'htm', 'class.php', 'db.php', 'phpx');
@@ -150,22 +169,26 @@ class L {
 	 */
 	static public function import($filePath) {
 		if (!$filePath) return null;
+		if (file_exists($filePath)) {
+			L::_include($filePath);
+			return $filePath;
+		}
 		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);
 		$fileNames = array();
 		if (!$isPackage) {
-			self::_include($realPath, $fileName);
+			L::_include($realPath, $fileName);
 			return $realPath;
 		}
 		if (!$dh = opendir($realPath)) throw new Exception('the file ' . $realPath . ' open failed!');
 		while (($file = readdir($dh)) !== false) {
 			if ($file != "." && $file != ".." && !(is_dir($realPath . D_S . $file))) {
 				if (($pos = strrpos($file, '.')) === false) $pos = strlen($file);
-				$fileNames[] = substr($file, 0, $pos);
+				$fileNames[] = array(substr($file, 0, $pos), substr($file, $pos + 1));
 			}
 		}
 		closedir($dh);
 		foreach ($fileNames as $var) {
-			self::_include($realPath, $var);
+			L::_include($realPath . D_S . $var[0] . '.' . $var[1], $var[0]);
 		}
 		return $realPath;
 	}
@@ -187,7 +210,7 @@ class L {
 	
 	/**
 	 * 解析路径信息，并返回路径的详情
-	 * 
+	 * 返回array('isPackage','fileName','extension','realPath')
 	 * @param string $filePath 路径信息
 	 * @param boolean $info 是否返回路径详情
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
@@ -195,7 +218,7 @@ class L {
 	 */
 	static public function getRealPath($filePath, $info = false, $ext = '') {
 		$isPackage = false;
-		$fileName = '';
+		$fileName = $namespace = '';
 		if (is_dir($filePath)) {
 			if (!$info) return realpath($filePath);
 			$isPackage = true;
@@ -228,8 +251,8 @@ class L {
 				}
 			}
 		}
-		if ($info) return array($isPackage, $fileName, $ext, realpath($filePath));
-		$realpath = $fileName ? $filePath . D_S . $fileName . $ext : $filePath;
+		$realpath = !$isPackage ? $filePath . D_S . $fileName . '.' . $ext : $filePath;
+		if ($info) return array($isPackage, $fileName, $ext, realpath($realpath));
 		return realpath($realpath);
 	}
 	
@@ -260,6 +283,7 @@ class L {
 		if (empty($realPath)) return;
 		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
 		if (key_exists($fileName, self::$_imports)) return $realPath;
+		include $realPath;
 		self::$_imports[$fileName] = $realPath;
 		return $realPath;
 	}

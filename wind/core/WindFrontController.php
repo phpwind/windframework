@@ -6,7 +6,11 @@
  * @license 
  */
 
-L::import('WIND:core.base.WActionServlet');
+L::import('WIND:core.base.WindServlet');
+L::import('WIND:component.exception.WindException');
+L::import('WIND:component.filter.WindFilterFactory');
+L::import('WIND:core.WindSystemConfig');
+L::import('WIND:core.WindWebApplication');
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -21,7 +25,7 @@ L::import('WIND:core.base.WActionServlet');
  * @version $Id$ 
  * @package 
  */
-class WindFrontController extends WActionServlet {
+class WindFrontController extends WindServlet {
 	private $config = null;
 	private static $instance = null;
 	
@@ -30,24 +34,11 @@ class WindFrontController extends WActionServlet {
 		$this->_initConfig($config);
 	}
 	
-	/**
-	 * @param array $config
-	 * @return WindFrontController
-	 */
-	static public function &getInstance(array $config = array()) {
-		if (self::$instance === null) {
-			$class = __CLASS__;
-			self::$instance = new $class($config);
-		}
-		return self::$instance;
-	}
-	
 	public function run() {
-		if ($this->config === null)
-			throw new WException('init system config failed!');
+		if ($this->config === null) throw new WindException('init system config failed!');
 		$this->beforProcess();
 		$filters = $this->config->getConfig('filters');
-		if (!class_exists('WFilterFactory') || empty($filters))
+		if (!class_exists('WindFilterFactory') || empty($filters))
 			parent::run();
 		else
 			$this->_initFilter();
@@ -59,8 +50,8 @@ class WindFrontController extends WActionServlet {
 	}
 	
 	function process($request, $response) {
-		/* 初始化一个应用服务器 */
-		$applicationController = new WWebApplicationController();
+		/* 初始化一个应用服务器 TODO重构此代码 */
+		$applicationController = new WindWebApplication();
 		$applicationController->init();
 		
 		$applicationController->processRequest($request, $response);
@@ -69,8 +60,7 @@ class WindFrontController extends WActionServlet {
 	}
 	
 	protected function afterProcess() {
-		if (defined('LOG_RECORD'))
-			WLog::flush();
+		if (defined('LOG_RECORD')) WindLog::flush();
 		restore_exception_handler();
 	}
 	
@@ -86,10 +76,9 @@ class WindFrontController extends WActionServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function _initFilter() {
-		WFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->reuqest, $this->response);
-		$filter = WFilterFactory::getFactory()->create($this->config);
-		if (is_object($filter))
-			$filter->doFilter($this->reuqest, $this->response);
+		WindFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->reuqest, $this->response);
+		$filter = WindFilterFactory::getFactory()->create($this->config);
+		if (is_object($filter)) $filter->doFilter($this->reuqest, $this->response);
 	}
 	
 	/**
@@ -98,12 +87,20 @@ class WindFrontController extends WActionServlet {
 	 * @param array $config
 	 */
 	private function _initConfig($config) {
-		$realPath = W::getSystemConfigPath();
-		W::import($realPath);
-		$sysConfig = W::getVar('sysConfig');
-		$configObj = W::getInstance('WSystemConfig');
-		$configObj->parse($sysConfig, (array) $config);
+		$configObj = WindSystemConfig::getInstance();
+		$configObj->parse((array) W::getSystemConfig(), (array) $config);
 		$this->config = $configObj;
 	}
-
+	
+	/**
+	 * @param array $config
+	 * @return WindFrontController
+	 */
+	static public function &getInstance(array $config = array()) {
+		if (self::$instance === null) {
+			$class = __CLASS__;
+			self::$instance = new $class($config);
+		}
+		return self::$instance;
+	}
 }

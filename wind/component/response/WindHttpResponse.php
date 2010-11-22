@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.request.base.impl.WindResponseImpl');
+L::import('WIND:component.response.base.impl.WindResponseImpl');
 L::import('WIND:component.exception.WindException');
 
 /**

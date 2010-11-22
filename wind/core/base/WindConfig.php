@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-W::import('WIND:utility.container.WModule');
+L::import('WIND:utility.container.WindModule');
 
 /**
  * 配置信息
@@ -14,7 +14,7 @@ W::import('WIND:utility.container.WModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WindConfig extends WModule {
+abstract class WindConfig extends WindModule {
 	
 	/**
 	 * 配置信息解析方法

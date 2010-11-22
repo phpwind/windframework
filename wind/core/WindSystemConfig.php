@@ -5,6 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
+L::import('WIND:');
 
 /**
  * 配置信息解析
@@ -13,10 +14,11 @@
  * @version $Id$ 
  * @package
  */
-class WindSystemConfig extends WConfig { 
+class WindSystemConfig extends WindConfig {
 	private $system = array();
 	private $custom = array();
 	private $config = array();
+	private static $instance = null;
 	
 	/**
 	 * 争对数组格式的解析
@@ -24,11 +26,9 @@ class WindSystemConfig extends WConfig {
 	 * @param array $configCustom
 	 */
 	public function parse($configSystem, $configCustom = array()) {
-		if (!is_array($configSystem) || !is_array($configCustom))
-			throw new Exception('the format of config file is error!!!');
+		if (!is_array($configSystem) || !is_array($configCustom)) throw new Exception('the format of config file is error!!!');
 		
-		if (empty($configSystem))
-			throw new Exception('system config file is not exists!!!');
+		if (empty($configSystem)) throw new Exception('system config file is not exists!!!');
 		
 		$this->config = array_merge($configSystem, $configCustom);
 		$this->system = $configSystem;
@@ -50,8 +50,7 @@ class WindSystemConfig extends WConfig {
 	 * @return string
 	 */
 	public function getConfig($configName) {
-		if ($configName && isset($this->config[$configName]))
-			return $this->config[$configName];
+		if ($configName && isset($this->config[$configName])) return $this->config[$configName];
 	}
 	
 	/**
@@ -59,8 +58,7 @@ class WindSystemConfig extends WConfig {
 	 * @param string $name
 	 */
 	public function getFiltersConfig($name = '') {
-		if (isset($this->config['filters']))
-			return !$name ? $this->config['filters'] : ($this->config['filters'][$name] ? $this->config['filters'][$name] : '');
+		if (isset($this->config['filters'])) return !$name ? $this->config['filters'] : ($this->config['filters'][$name] ? $this->config['filters'][$name] : '');
 	}
 	
 	/**
@@ -69,10 +67,8 @@ class WindSystemConfig extends WConfig {
 	 * @return string
 	 */
 	public function getModulesConfig($name = '', $default = null) {
-		if (!isset($this->config['modules']))
-			return $default;
-		if (!$name)
-			return $this->config['modules'];
+		if (!isset($this->config['modules'])) return $default;
+		if (!$name) return $this->config['modules'];
 		
 		return $this->config['modules'][$name] ? $this->config['modules'][$name] : $default;
 	}
@@ -84,10 +80,8 @@ class WindSystemConfig extends WConfig {
 	 * @return string|null|array
 	 */
 	public function getRouterConfig($name = '', $default = null) {
-		if (!isset($this->config['router']))
-			return $default;
-		if (!$name)
-			return $this->config['router'];
+		if (!isset($this->config['router'])) return $default;
+		if (!$name) return $this->config['router'];
 		
 		return isset($this->config['router'][$name]) ? $this->config['router'][$name] : $default;
 	}
@@ -103,7 +97,7 @@ class WindSystemConfig extends WConfig {
 			$name = $name . 'Rule';
 			return isset($this->config[$name]) ? $this->config[$name] : $default;
 		} else
-			throw new WException('');
+			throw new WindException('');
 	}
 	
 	/**
@@ -112,12 +106,21 @@ class WindSystemConfig extends WConfig {
 	 * @return string
 	 */
 	public function getRouterParser($name = '', $default = null) {
-		if (!isset($this->config['routerParser']))
-			return $default;
-		if (!$name)
-			return $this->config['routerParser'];
+		if (!isset($this->config['routerParser'])) return $default;
+		if (!$name) return $this->config['routerParser'];
 		
 		return $this->config['routerParser'][$name] ? $this->config['routerParser'][$name] : $default;
+	}
+	
+	/**
+	 * @return WindSystemConfig
+	 */
+	static public function getInstance() {
+		if (self::$instance === null) {
+			$class = __CLASS__;
+			self::$instance = new $class();
+		}
+		return self::$instance;
 	}
 
 }

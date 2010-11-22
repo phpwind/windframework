@@ -39,9 +39,7 @@ abstract class WindServlet {
 	
 	public function run() {
 		if ($this->reuqest === null || $this->response === null) throw new WindException('init action servlet failed!!');
-		
 		$this->service($this->reuqest, $this->response);
-		
 		$this->response->sendResponse();
 	}
 	
