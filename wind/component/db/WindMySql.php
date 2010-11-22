@@ -12,16 +12,16 @@
  * @version $Id$ 
  * @package 
  */
-class WindMySql extends WDbAdapter {
+class WindMySql extends WindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#connect()
 	 */
 	public function connect($config, $key) {
 		if (! is_array ( $config ) || empty ( $config )) {
-			throw new WSqlException ( "database config is not correct", 1 );
+			throw new WindSqlException ( "database config is not correct", 1 );
 		}
 		if (! isset ( $key )) {
-			throw new WSqlException ( "you must define master and slave database", 1 );
+			throw new WindSqlException ( "you must define master and slave database", 1 );
 		}
 		$host = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
 		$pconnect = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
@@ -58,10 +58,10 @@ class WindMySql extends WDbAdapter {
 	 */
 	public function getAllResult($fetch_type = MYSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
-			throw new WSqlException ( 'The Query is not validate handle or resource', 1 );
+			throw new WindSqlException ( 'The Query is not validate handle or resource', 1 );
 		}
 		if (! in_array ( $fetch_type, array (1, 2, 3 ) )) {
-			throw new WSqlException ( 'The fetch_type is not validate handle or resource', 1 );
+			throw new WindSqlException ( 'The fetch_type is not validate handle or resource', 1 );
 		}
 		$result = array ();
 		while (($record = mysql_fetch_array ( $this->query, $fetch_type ))) {
@@ -91,7 +91,7 @@ class WindMySql extends WDbAdapter {
 	
 	public function commitTrans($key = '') {
 		if ($this->transCounter <= 0) {
-			throw new WSqlException('The Transaction is not start',1);
+			throw new WindSqlException('The Transaction is not start',1);
 		}
 		--$this->transCounter;
 		if ($this->transCounter == 0) {
@@ -106,18 +106,6 @@ class WindMySql extends WDbAdapter {
 				$this->write ( "ROLLBACK TO SAVEPOINT `{$savepoint}`" );
 			}
 		}
-	}
-	/* (non-PHPdoc)
-	 * @see wind/base/WDbAdapter#getAffectedRows()
-	 */
-	public function getAffectedRows($key = '') {
-		return $this->read ( 'SELECT ROW_COUNT()', $key );
-	}
-	/* (non-PHPdoc)
-	 * @see wind/base/WDbAdapter#getInsertId()
-	 */
-	public function getInsertId($key = '') {
-		return $this->read ( 'SELECT LAST_INSERT_ID()', $key );
 	}
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#close()
@@ -178,7 +166,7 @@ class WindMySql extends WDbAdapter {
 		$this->last_errstr = mysql_error ();
 		$this->last_errcode = mysql_errno ();
 		if ($this->last_errstr || $this->last_errcode) {
-			throw new WSqlException ( $this->last_errstr, $this->last_errcode );
+			throw new WindSqlException ( $this->last_errstr, $this->last_errcode );
 		}
 	}
 }

@@ -112,6 +112,19 @@ abstract class WindSqlBuilder {
 	public abstract function escapeString($value);
 	
 	/**
+	 *返回影响行数的sql语句
+	 *@param $ifquery 是否是select 语句
+	 *@return string 
+	 */
+	public abstract function buildAffected($ifquery);
+	
+	/**
+	 *返回取得最后新增的sql语句
+	 *@return string 
+	 */
+	public abstract function buildLastInsertId();
+	
+	/**
 	 * 解析新增SQL语句
 	 * @param array $option
 	 * @return string
@@ -151,6 +164,14 @@ abstract class WindSqlBuilder {
 	 */
 	public function getReplaceSql($option){
 		return sprintf ( "REPLACE%s%sSET%s", $this->buildTable ( $option ['table'] ), $this->buildField ( $option ['field'] ), $this->buildData ( $option ['data'] ) );
+	}
+	
+	public function getAffectedSql($ifquery){
+		return sprintf ("SELECT%s",$this->buildAffected($ifquery));
+	}
+	
+	public function getLastInsertIdSql(){
+		return sprintf ("SELECT%s",$this->buildLastInsertId());
 	}
 	
 	/**

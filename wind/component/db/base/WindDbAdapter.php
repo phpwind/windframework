@@ -107,7 +107,7 @@ abstract class WindDbAdapter {
 	final private function parseConfig($config) {
 		$db_config = array ();
 		if (empty ( $config ) || ! is_array ( $config )) {
-			throw new WSqlException ( "Database Config is not correct", 1 );
+			throw new WindSqlException ( "Database Config is not correct", 1 );
 		}
 		foreach ( $config as $key => $value ) {
 			if (is_array ( $value ))
@@ -126,7 +126,7 @@ abstract class WindDbAdapter {
 	final private function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)?\/?(0|1)?\/?(0|1)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
-			throw new WSqlException ( "Database config is not correct format", 1 );
+			throw new WindSqlException ( "Database config is not correct format", 1 );
 		}
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7],'pconnect'=>$config [8],'force'=>$config [9] );
 	}
@@ -178,21 +178,6 @@ abstract class WindDbAdapter {
 	 * 回滚事务
 	 */
 	//public abstract function rollbackTrans();
-	/**
-	 * 取得受影响的数据行数
-	 * @param string|int 数据库连接标识
-	 * @return int
-	 */
-	public abstract function getAffectedRows($key = '');
-	/**
-	 * 取得最后插入ID
-	 * @param string|int 数据库连接标识
-	 * @return int
-	 */
-	public abstract function getInsertId($key = '');
-	/**
-	 * 关闭数据库
-	 */
 	public abstract function close();
 	/**
 	 * 释放数据库连接资源
@@ -257,7 +242,9 @@ abstract class WindDbAdapter {
 	 * @return WSqlBuilder 返回sql语句生成器
 	 */
 	final public function getSqlBuilderFactory($key = '') {
-		return  W::getInstance('W'.$this->dbMap[$this->getSchema($key)].'Builder');
+		$name = 'Wind'.$this->dbMap[$this->getSchema($key)].'Builder';
+		return new $name();
+		return  L::getInstance('Wind'.$this->dbMap[$this->getSchema($key)].'Builder');
 	}
 
 	/**
@@ -312,6 +299,29 @@ abstract class WindDbAdapter {
 		$this->getExecDbLink('master',$key);
 		return $this->write($this->getSqlBuilderFactory($this->key)->getReplaceSql($option),$this->key);
 	}
+	
+	/**
+	 * 取得受影响的数据行数
+	 * @param 是否是查询
+	 * @param string|int 数据库连接标识
+	 * @return int
+	 */
+	final public  function getAffectedRows($ifquery = false,$key = ''){
+		$this->getExecDbLink('slave',$key);
+		return $this->read($this->getSqlBuilderFactory($this->key)->getAffectedSql($ifquery),$this->key);
+	}
+	/**
+	 * 取得最后插入ID
+	 * @param string|int 数据库连接标识
+	 * @return int
+	 */
+	final public  function getInsertId($key = ''){
+		$this->getExecDbLink('slave',$key);
+		return $this->read($this->getSqlBuilderFactory($this->key)->getLastInsertIdSql(),$this->key);
+	}
+	/**
+	 * 关闭数据库
+	 */
 
 	/**
 	 * 返回上一条sqly语句
@@ -430,7 +440,7 @@ abstract class WindDbAdapter {
 	 */
 	final protected function checkKey($key = ''){
 		if(!in_array($key,array_keys($this->linked)) || !is_resource($this->linked[$key])){
-			throw new WSqlException('Database identify is not exists',1);
+			throw new WindSqlException('Database identify is not exists',1);
 		}
 		return $key;
 	}

@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindMySqlBuilder extends WSqlBuilder {
+class WindMySqlBuilder extends WindSqlBuilder {
 	
 	
 	/* (non-PHPdoc)
@@ -21,7 +21,7 @@ class WindMySqlBuilder extends WSqlBuilder {
 	 */
 	public function buildTable($table = array()) {
 		if (empty ( $table ) || (! is_string ( $table ) && ! is_array ( $table ))) {
-			throw new WSqlException ( 'table is not mepty' );
+			throw new WindSqlException ( 'table is not mepty' );
 		}
 		$table = is_string ( $table ) ? explode ( ',', $table ) : $table;
 		$tableList = '';
@@ -53,7 +53,7 @@ class WindMySqlBuilder extends WSqlBuilder {
 			$fieldList = '*';
 		}
 		if (! is_string ( $field ) && ! is_array ( $field )) {
-			throw new WSqlException ( 'field is illegal' );
+			throw new WindSqlException ( 'field is illegal' );
 		}
 		$field = is_string ( $field ) ? explode ( ',', $field ) : $field;
 		foreach ( $field as $key => $value ) {
@@ -103,7 +103,7 @@ class WindMySqlBuilder extends WSqlBuilder {
 			return 'WHERE' . $this->sqlFillSpace($where);
 		}
 		if (! is_array ( $where )) {
-			throw new WSqlException ( 'The Where Condition is not correct', 0 );
+			throw new WindSqlException ( 'The Where Condition is not correct', 0 );
 		}
 		list ( $lConter, $gConter, $conConter ) = $this->checkWhere ( $where );
 		$_where = $tmp_where = '';
@@ -177,7 +177,7 @@ class WindMySqlBuilder extends WSqlBuilder {
 	 */
 	public function buildData($data) {
 		if (empty ( $data ) || ! is_array ( $data )) {
-			throw new WSqlException ( "The insert data is empty",1 );
+			throw new WindSqlException ( "The insert data is empty",1 );
 		}
 		return $this->getDimension ( $data ) == 1 ? $this->buildSingleData ( $data ) : $this->buildMultiData ( $data );
 	}
@@ -187,7 +187,7 @@ class WindMySqlBuilder extends WSqlBuilder {
 	 */
 	public function buildSet($set) {
 		if (empty ( $set )) {
-			throw new WSqlException ( "The update data is empty" );
+			throw new WindSqlException ( "The update data is empty" );
 		}
 		if (is_string ( $set )) {
 			return $set;
@@ -196,6 +196,22 @@ class WindMySqlBuilder extends WSqlBuilder {
 			$data [] = $key . '=' . $this->escapeString ( $value );
 		}
 		return $this->sqlFillSpace ( implode ( ',', $data ) );
+	}
+	
+
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildAffected()
+	 */
+	public function buildAffected($ifquery){
+		$rows = $ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()';echo $rows;
+		return $this->sqlFillSpace("$rows AS afftectedRows");
+	}
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildLastInsertId()
+	 */
+	public function buildLastInsertId(){
+		return $this->sqlFillSpace('LAST_INSERT_ID() AS insertId');
 	}
 	
 	/* (non-PHPdoc)
@@ -225,10 +241,10 @@ class WindMySqlBuilder extends WSqlBuilder {
 	 */
 	private function buildCompare($field, $value, $compare) {
 		if (empty ( $field ) || empty ( $value )) {
-			throw new WSqlException ( '', '' );
+			throw new WindSqlException ( '', '' );
 		}
 		if (! in_array ( $compare, array_keys ( $this->compare ) )) {
-			throw new WSqlException ( '', '' );
+			throw new WindSqlException ( '', '' );
 		}
 		if (in_array ( $compare, array ('in', 'notin' ) )) {
 			$value = explode ( ',', $value );
@@ -278,13 +294,13 @@ class WindMySqlBuilder extends WSqlBuilder {
 			}
 		}
 		if ($group % 2 === 1) {
-			throw new WSqlException ( 'kuo huao is not match', 1 );
+			throw new WindSqlException ( 'kuo huao is not match', 1 );
 		}
 		if ($logic && $condition && $condition - $logic != 1) {
-			throw new WSqlException ( 'condition is not match', 1 );
+			throw new WindSqlException ( 'condition is not match', 1 );
 		}
 		if ($group && $condition === 0) {
-			throw new WSqlException ( 'condition is not match', 1 );
+			throw new WindSqlException ( 'condition is not match', 1 );
 		}
 		return array ($logic, $group, $condition );
 	}

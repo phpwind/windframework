@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class WindMsSqlBuilder extends WSqlBuilder{
+class WindMsSqlBuilder extends WindSqlBuilder{
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
@@ -186,6 +186,21 @@ class WindMsSqlBuilder extends WSqlBuilder{
 			$data [] = $key . '=' . $this->escapeString ( $value );
 		}
 		return $this->sqlFillSpace ( implode ( ',', $data ) );
+	}
+	
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildAffected()
+	 */
+	public function buildAffected($ifquery){
+		return $this->sqlFillSpace('@@ROWCOUNT AS affectedRows');
+	}
+	
+	/* (non-PHPdoc)
+	 * @see wind/base/WSqlBuilder#buildLastInsertId()
+	 */
+	public function buildLastInsertId(){
+		return $this->sqlFillSpace('@@IDENTITY as insertId');
 	}
 	
 	/* (non-PHPdoc)
