@@ -16,7 +16,7 @@ L::import('WIND:component.request.WindHttpResponse');
  * @package 
  */
 abstract class WindServlet {
-	protected $reuqest = null;
+	protected $request = null;
 	protected $response = null;
 	
 	const METHOD_DELETE = "DELETE";
@@ -29,8 +29,8 @@ abstract class WindServlet {
 	
 	protected function __construct() {
 		try {
-			$this->reuqest = WindHttpRequest::getInstance();
-			$this->response = $this->reuqest->getResponse();
+			$this->request = WindHttpRequest::getInstance();
+			$this->response = $this->request->getResponse();
 		
 		} catch (Exception $exception) {
 			throw new WindException('init action servlet failed!!');
@@ -38,8 +38,8 @@ abstract class WindServlet {
 	}
 	
 	public function run() {
-		if ($this->reuqest === null || $this->response === null) throw new WindException('init action servlet failed!!');
-		$this->service($this->reuqest, $this->response);
+		if ($this->request === null || $this->response === null) throw new WindException('init action servlet failed!!');
+		$this->service($this->request, $this->response);
 		$this->response->sendResponse();
 	}
 	
