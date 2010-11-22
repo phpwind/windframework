@@ -6,12 +6,13 @@
  * @license 
  */
 class XML {
-	private $XMLData;
-	private $root;
-	private $object;
+	protected $XMLData;
+	protected $object;
+	protected $outputEncoding;
 	
-	public function __construct($data) {
+	public function __construct($data, $encoding) {
 		$this->setXMLData($data);
+		$this->setOutputEncoding($encoding);
 	}
 	
 	public function setXMLData($data) {
@@ -22,6 +23,10 @@ class XML {
 			throw new Exception('输入参数不是有效的xml格式');
 		}
 	}
+	public function setOutputEncoding($encoding) {
+		if ($encoding) $this->outputEncoding = strtoupper(trim($encoding));
+	}
+	
 	/**
 	 * 根据指定文件路径读取XML数据
 	 *
@@ -32,6 +37,7 @@ class XML {
 		if (!is_file($filePath) || strtolower(substr($filePath, -4)) != '.xml') throw new Exception("你输入的xml文件不是有效的xml文件");
 		$this->setXMLData(file_get_contents($filePath));
 	}
+	
 	/**
 	 * 是否为xml格式文件
 	 *
@@ -66,21 +72,21 @@ class XML {
 			return $this->object->xpath($tagPath);
 		}
 	}
-    static public function getContentsList($elements) {
+    public function getContentsList($elements) {
     	(!is_array($elements)) && $elements = array($elements);
     	$_result = array();
     	foreach ($elements as $key => $element) {
-    		$_result[] = XML::getTagContents($element);
+    		$_result[] = self::getTagContents($element);
     	}
     	return $_result;
     }
     
-	static public function getTagContents($element) {
+	public function getTagContents($element) {
 		$_array = array();
 		$_array['tagName'] = $element->getName();
 		$_array['value'] = strval($element[0]);
-		$_array['attributes'] = XML::getAttributes($element);
-		$_array['children'] = XML::getChilds($element);
+		$_array['attributes'] = self::getAttributes($element);
+		$_array['children'] = self::getChilds($element);
 		return $_array;
 	}
 	
@@ -90,7 +96,7 @@ class XML {
 	 * @param SimpleXMLElement $element
 	 * @return array  返回该节点的属性
 	 */
-	static public function getAttributes($element) {
+	public function getAttributes($element) {
 		$_attributes = array();
 		$attributes = $element->attributes();
 		if (!$attributes) return $_attributes;
@@ -101,16 +107,29 @@ class XML {
 		return $_attributes;
 	}
 	
-	static public function getChilds($element) {
+	public function getChilds($element) {
 		$_childs = array();
 		$childs = $element->children();
 		if (!$childs) return $_childs;
 		foreach ($childs as $key => $value) {
-			$_childs[] = XML::getTagContents($value);
+			$_childs[] = self::getTagContents($value);
 		}
 		return $_childs;
 	}
-	static private function PostHost($host, $data = '', $method = 'GET', $showagent = null, $port = null, $timeout = 30) {
+	
+	public function dataConvert($data, $from_encoding = 'UTF-8', $to_encoding = '') {
+		if (!$to_encoding) $to_encoding = $this->outputEncoding;
+		if (function_exists('mb_convert_encoding')) {
+			return mb_convert_encoding($data, $to_encoding, $from_encoding);
+		} else {
+			/*L::loadClass('Chinese', 'utility/lang', false);
+			$chs = new Chinese($db_charset, $to_encoding);
+			return $chs->Convert($data);*/
+		}
+		return $data;
+	}
+	
+	private function PostHost($host, $data = '', $method = 'GET', $showagent = null, $port = null, $timeout = 30) {
 		//Copyright (c) 2003-2103 phpwind
 		$parse = @parse_url($host);
 		if (empty($parse)) return false;
