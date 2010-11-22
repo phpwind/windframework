@@ -6,6 +6,8 @@
  * @license
  */
 L::import('WIND:core.base.impl.WindConfigImpl');
+L::import('WIND:utility.xml.xml');
+
 class WindXMLConfig extends XML implements WindConfigImpl {
 	private $xmlArray;
 
@@ -19,19 +21,20 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	}
 
 	private function fetchContents() {
-		$app = $this->createParser()->getElementByXPath(WindConfigImpl::app);
-		if (!$app) throw new Exception('Ó¦ÓÃÅäÖÃ±ØÐëÅäÖÃ');
-		$_temp = array(WindConfigImpl::appName, WindConfigImpl::appPath, WindConfigImpl::appConfig);
-		$this->xmlArray[WindConfigImpl::app] = $this->getSecondChildTree(WindConfigImpl::app, $_temp);
+		$app = $this->createParser()->getElementByXPath(WindConfigImpl::APP);
+		if (!$app) throw new Exception('the app config must be setting');
+		$_temp = array(WindConfigImpl::APPNAME, WindConfigImpl::APPROOTPATH, WindConfigImpl::APPCONFIG);
+		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $_temp);
+		if (empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))  throw new Exception('the "appconfig" of the "app" config must be setted!');
 
-		$this->xmlArray[WindConfigImpl::isOpen] = $this->getNoChild(WindConfigImpl::isOpen);
-		$this->xmlArray[WindConfigImpl::describe] = $this->getNoChild(WindConfigImpl::describe);
+		$this->xmlArray[WindConfigImpl::ISOPEN] = $this->getNoChild(WindConfigImpl::ISOPEN);
+		$this->xmlArray[WindConfigImpl::DESCRIBE] = $this->getNoChild(WindConfigImpl::DESCRIBE);
 
-		$this->xmlArray[WindConfigImpl::filters] = $this->getThirdChildTree(WindConfigImpl::filters, WindConfigImpl::filter, WindConfigImpl::filterName, WindConfigImpl::filterPath);
+		$this->xmlArray[WindConfigImpl::FILTERS] = $this->getThirdChildTree(WindConfigImpl::FILTERS, WindConfigImpl::FILTER, WindConfigImpl::FILTERNAME, WindConfigImpl::FILTERPATH);
 
-		$_temp = array(WindConfigImpl::templateDir, WindConfigImpl::compileDir, WindConfigImpl::cacheDir, WindConfigImpl::templateExt, WindConfigImpl::engine);
-		$this->xmlArray[WindConfigImpl::template] = $this->getSecondChildTree(WindConfigImpl::template, $_temp);
-		$this->xmlArray[WindConfigImpl::urlRule] = $this->getSecondChildTree(WindConfigImpl::urlRule, WindConfigImpl::routerPase);
+		$_temp = array(WindConfigImpl::TEMPLATEDIR, WindConfigImpl::COMPILERDIR, WindConfigImpl::CACHEDIR, WindConfigImpl::TEMPLATEEXT, WindConfigImpl::ENGINE);
+		$this->xmlArray[WindConfigImpl::TEMPLATE] = $this->getSecondChildTree(WindConfigImpl::TEMPLATE, $_temp);
+		$this->xmlArray[WindConfigImpl::URLRULE] = $this->getSecondChildTree(WindConfigImpl::URLRULE, WindConfigImpl::ROUTERPASE);
 		return $this->xmlArray;
 	}
 
@@ -59,6 +62,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 		(!is_array($valueNode)) && $valueNode = array($valueNode);
 		(!is_array($secondeParentNode)) && $secondeParentNode = array($secondeParentNode);
 		$dom = $this->getElementByXPath($parentNode);
+		if (!isset($dom[0])) return array(); 
 		$childs = $this->getChilds($dom[0]);
 		$_childs = array();
 		foreach($childs as $child) {

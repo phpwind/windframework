@@ -17,9 +17,10 @@ class WindConfigParser implements WindConfigImpl {
 	private $defaultPath = '';//缺省的配置文件路径
 	private $userAppPath = '';//用户配置文件路径
 	private $globalAppsPath = '';//全局应用配置路径
+	private $globalAppsConfig = '';//全局应用配置文件
 	private $parserEngine = '';//配置使用的解析引擎
 	private $configExt = array('php' , 'xml', 'properpoties', 'ini');//会用到的用户配置格式
-    
+	private $encoding = 'gbk';
 	/**
 	 * 初始化
 	 * 
@@ -27,10 +28,11 @@ class WindConfigParser implements WindConfigImpl {
 	 * @param $userAppPath
 	 * @param $defaultPath
 	 */
-	public function __construct($globalAppsPath, $userAppPath, $defaultPath) {
-		$this->setGlobalAppsPath(realpath($globalAppsPath));
+	public function __construct($globalAppsPath, $userAppPath, $defaultPath, $outputEncoding = 'gbk') {
+		$this->setGlobalAppsPath($globalAppsPath);
 		$this->setUserAppPath(realpath($userAppPath));
 		$this->setDefaultPath(realpath($defaultPath));
+		$outputEncoding && $this->encoding = $outputEncoding;
 	}
 	
 	/**
@@ -57,7 +59,9 @@ class WindConfigParser implements WindConfigImpl {
 	 * @author xiaoxia xu
 	 */
 	public function setGlobalAppsPath($globalAppsPath) {
-		(file_exists($globalAppsPath)) && $this->globalAppsPath = $globalAppsPath;
+		$this->globalAppsConfig = $globalAppsPath;//设置配置文件的位置
+		$this->globalAppsPath = dirname($globalAppsPath);
+		
 	}
 	
 	/**
@@ -69,16 +73,15 @@ class WindConfigParser implements WindConfigImpl {
 	 * 如果配置文件不存在，则读取缺省的配置文件，并检查是否已被修改
 	 *        			如果原配置文件已被修改，则再次解析原配置文件及默认配置文件生成缓存。
 	 *        			如果没有修改，则直接返回缓存文件
-	 * @param unknown_type $path
 	 */
-	public function getConfig($path) {
+	public function getConfig() {
 		$oConfig = $this->isExist($this->userAppPath);
-		$defaultConfig = $this->isExist($this->defaultPath);
+		$defaultConfig = $this->defaultPath . '/wind_config.xml';
 		if ($oConfig == null) $oConfig = $defaultConfig;
 		//如果缓存文件存在并且原文件没有更新，则直接读取缓存
-		if ($path = $this->isCached()) {
-			if (filemtime($oConfig) <= filemtime($path)) {
-				L::import($path);
+		if (($path = $this->isCached()) && is_file($path)) {
+			if (is_file($oConfig) && (filemtime($oConfig) < filemtime($path)) && filemtime($defaultConfig) < filemtime($path)) {
+				include($path);
 				return $config;
 			}
 		}
@@ -93,7 +96,9 @@ class WindConfigParser implements WindConfigImpl {
 	public function parserConfig() {
 		$uConfig = $dConfig = array();
 		$defaultConfigP = $this->isExist($this->defaultPath);
-		($defaultConfigP) && $dConfig = $this->switchParser($defaultConfigP);//获得缺省的配置文件
+		$default = $this->defaultPath . '/wind_config.xml';
+		$this->parserEngine = 'XML';
+		($default) && $dConfig = $this->switchParser($default);//获得缺省的配置文件
 		$oConfigP = $this->isExist($this->userAppPath);
 		($oConfigP) && $uConfig = $this->switchParser($oConfigP);
 		return $this->mergeConfig($dConfig, $uConfig);
@@ -108,19 +113,25 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return array 返回修改后的应用配置信息
 	 */
 	public function addAppsConfig($config) {
-		$globalConfigP = $this->isExist($this->globalPath);
-		$config = array();
-		if ($globalConfigP == null) {
-			$globalConfigP = $this->globalPath . '/config.php';
-		} else {
-			L::import($globalConfigP);
+		$globalConfigP = $this->globalAppsPath . '/config.php';
+		$sysConfig = array();
+		if (is_file($globalConfigP)) {
+			include($globalConfigP);
 		}
-		$appName = $config['appname'] ? $config['appname'] : $this->getAppName();
-		$config[$appName] = $config;
-		$this->writeover($globalConfigP, varExport($config));
-		return $config;
+		$appName = isset($config[WindConfigImpl::APPNAME]) ? $config[WindConfigImpl::APPNAME] : $this->getAppName();
+		$sysConfig[$appName] = $config;
+		$this->writeover($globalConfigP, "<?php\r\n \$sysConfig = " . $this->varExport($sysConfig) . ";\r\n?>");
+		return $sysConfig;
 	}
-	
+	/**
+	 * 提供一个接口，用于获得全局应用配置文件内容
+	 * @return array 
+	 */
+	public function getAppsConfig() {
+		$globalConfigP = $this->globalAppsPath . '/config.php';
+		include($globalConfigP);
+		return $sysConfig;
+	}
 	
 	/**
 	 * 处理配置文件
@@ -134,11 +145,12 @@ class WindConfigParser implements WindConfigImpl {
 	public function mergeConfig($defaultConfig, $appConfig) {
 		if (count($appConfig) == 0) $appConfig = $defaultConfig;
 		$app = $appConfig[WindConfigImpl::APP];
-		(!$app[WindConfigImpl::APPNAME]) && $app[WindConfigImpl::APPNAME] = $this->getAppName();
-		(!$app[WindConfigImpl::APPROOTPATH]) && $app[WindConfigImpl::APPROOTPATH] = $this->userAppPath;
-		$app[WindConfigImpl::APPCONFIG] = $this->userAppPath . $app[WindConfigImpl::APPCONFIG];
+		(!isset($app[WindConfigImpl::APPNAME]) || $app[WindConfigImpl::APPNAME] == '') && $app[WindConfigImpl::APPNAME] = $this->getAppName();
+		(!isset($app[WindConfigImpl::APPROOTPATH]) || $app[WindConfigImpl::APPROOTPATH] == '') && $app[WindConfigImpl::APPROOTPATH] = $this->userAppPath;
+		(isset($app[WindConfigImpl::APPCONFIG])) && $app[WindConfigImpl::APPCONFIG] = $this->userAppPath . $app[WindConfigImpl::APPCONFIG];
+		$app[WindConfigImpl::APPCONFIG] = $app[WindConfigImpl::APPCONFIG]. '/' . $app[WindConfigImpl::APPNAME] . '_config.php';
 		foreach ($defaultConfig as $key => $value) {
-			if (in_array($key, WindConfigImpl::MERMEARRAY) && $appConfig[$key]) {
+			if (in_array($key, explode(',', WindConfigImpl::MERMEARRAY)) && $appConfig[$key]) {
 				!is_array($value) && $value = array($value);
 				!is_array($appConfig[$key]) && $appConfig[$key] = array($appConfig[$key]);
 				$defaultConfig[$key] = array_merge($value, $appConfig[$key]);
@@ -147,7 +159,7 @@ class WindConfigParser implements WindConfigImpl {
 			}
 		}
 		$defaultConfig[WindConfigImpl::APP] = $app;
-		$this->writeover($globalConfigP, varExport($defaultConfig));
+		$this->writeover($app[WindConfigImpl::APPCONFIG], "<?php\r\n \$config = " . $this->varExport($defaultConfig) . ";\r\n?>");
 		$this->addAppsConfig($app);
 		return $defaultConfig;
 	}
@@ -163,10 +175,12 @@ class WindConfigParser implements WindConfigImpl {
 			case 'XML':
 				return $this->parserXML($configPath, $this->encoding);
 				break;
-			case '':
+			case 'PHP':
+				include($configPath);
+				return $config;
 				break;
 			default:
-				throw WindException('The Config ' . $configPath . ' cannot parsered because of the error format!');
+				throw new WindException('The Config ' . $configPath . ' cannot parsered because of the error format!');
 				break;
 		}
 	}
@@ -178,11 +192,11 @@ class WindConfigParser implements WindConfigImpl {
 	 * @param string $encoding  输出的编码
 	 */
 	public function parserXML($configPath, $encoding) {
-		L::import('WIND:core.base.WindXMLConfig');
+		L::import('WIND:core.WindXMLConfig');
 	    $xml = new WindXMLConfig();
 	    $xml->setXMLFile($configPath);
 	    $xml->setOutputEncoding($encoding);
-	    return $xml->fetchContents();
+	    return $xml->getResult();
 	}
 	
 	public function parserProperties() {
@@ -229,16 +243,17 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return string 返回缓存路径 | '';
 	 */
 	private function isCached() {
-		L::import($this->globalAppsPath . '/config.php');
+		if (!is_file($this->globalAppsConfig)) return '';
+		include($this->globalAppsConfig);
 		$appConfig = array();
-		foreach ($config as $appName => $config) {
-			if ($config['rootpath'] == $this->userAppPath) {
-				$appConfig['appName'] = $appName;
+		foreach ($sysConfig as $appName => $config) {
+			if (isset($config[WindConfigImpl::APPROOTPATH]) && $config[WindConfigImpl::APPROOTPATH] == $this->userAppPath) {
 				$appConfig = $sysConfig[$appName];
+				$appConfig[WindConfigImpl::APPNAME] = $appName;
 				break;
 			}
 		}
-		if ($appConfig) return $appConfig['cachepath'];
+		if (isset($appConfig[WindConfigImpl::APPCONFIG])) return $appConfig[WindConfigImpl::APPCONFIG];
 		else return '';
 	}
 	
@@ -285,7 +300,11 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return bool 是否写入成功
 	 */
 	public function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
-		$fileName = realpath($fileName);
+		$tmpname = strtolower($fileName);
+		$tmparray = array('://',"\0");
+		$tmparray[] = '..';
+		if (str_replace($tmparray, '', $tmpname) != $tmpname) exit('forbidden');
+		
 		touch($fileName);
 		$handle = fopen($fileName, $method);
 		$ifLock && flock($handle, LOCK_EX);
