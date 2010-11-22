@@ -6,6 +6,7 @@
  * @license
  */
 
+
 /*
  * 框架核心配置文件 <路由配置，应用配置，过滤器配置...>
  *
@@ -19,18 +20,25 @@ $sysConfig = array(
 		'default' => 'actionControllers'
 	),
 
-	/* 模板相关配置信息 */
+	/* 
+	 * 模板相关配置信息
+	 * 1.模板文件存放路径
+	 * 2.默认的模板文件名称
+	 * 3.模板文件后缀名
+	 * 4.视图解析器
+	 * 5.模板文件的缓存路径
+	 * 6.模板编译路径
+	 *  */
 	'view' => array(
-		'viewPath' => 'template',  //模板文件路径
-		'tpl' => 'index',  //默认的模板文件
-		'engine' => 'default',  //default,smarty
-		'ext' => 'htm', //模板文件后缀名
-		'cacheDir' => 'cache',//模板文件的缓存路径 
-		'compileDir' => 'compile',//模板编译路径
+		'templatePath' => 'template',
+		'templateName' => 'index',  
+		'templateExt' => 'htm',
+		'resolver' => 'default',
+		'cacheDir' => 'cache',
+		'compileDir' => 'compile',
 	),
-
 	/* 模板引擎配置信息 */
-	'viewEngine' => array(
+	'viewerResolver' => array(
 		'default' => 'WIND:core.WViewer',
 		'pw' => 'WIND:core.WPWViewer',
 		'smarty' => 'libs.WSmarty',
@@ -50,6 +58,6 @@ $sysConfig = array(
 
 	/* 路由解析器配置 */
 	'routerParser' => array(
-		'url' => 'WIND:component.router.WindUrlRouter'
+		'url' => 'WIND:component.router.WindUrlBasedRouter'
 	)
 );

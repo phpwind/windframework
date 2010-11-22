@@ -15,21 +15,26 @@
  * @version $Id$ 
  * @package 
  */
-interface WindBaseViewerImpl {
+interface WindViewerImpl {
 	
-	public function setTpl($tpl = '');
-	
-	public function setLayout($layout = null);
-	
+	/**
+	 * 显示输出视图内容
+	 * 
+	 * @param string $tpl
+	 */
 	public function windDisplay($tpl = '');
 	
-	public function windAssign($vars = '', $key = null);
+	/**
+	 * 设置视图变量信息
+	 * 
+	 * @param array $vars
+	 * @param string $key
+	 */
+	public function windAssign($vars, $key = '');
 	
+	/**
+	 * 获取模板内容与变量信息
+	 */
 	public function windFetch();
 	
-	public function setCacheDir($cacheDir); //设置缓存路径
-	
-	public function setCompileDir($compileDir);//设置编译路径
-	
-	public function setTemplateDir($templateDir);//设置模板路径
 }

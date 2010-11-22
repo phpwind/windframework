@@ -9,9 +9,9 @@
 
 
 /* 路径相关配置信息  */
-define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('SYSTEM_CONFIG_PATH', WIND_PATH . 'config.php');
-define('D_S', DIRECTORY_SEPARATOR);
+!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+!defined('SYSTEM_CONFIG_PATH') && define('SYSTEM_CONFIG_PATH', WIND_PATH . 'config.php');
+!defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
@@ -27,7 +27,7 @@ define('DEBUG', true);*/
  */
 class W {
 	private static $_apps = array();
-	private static $_default = 'WIDN';
+	private static $_default = '';
 	private static $_systemConfig = null;
 	
 	/**
@@ -47,7 +47,9 @@ class W {
 	 */
 	static public function getSystemConfig() {
 		if (W::$_systemConfig === null) {
-			if (!file_exists(SYSTEM_CONFIG_PATH)) throw new Exception('System config file ' . SYSTEM_CONFIG_PATH . ' is not exists!');
+			if (!file_exists(SYSTEM_CONFIG_PATH)) {
+				throw new Exception('System config file ' . SYSTEM_CONFIG_PATH . ' is not exists!');
+			}
 			@include SYSTEM_CONFIG_PATH;
 			$vars = get_defined_vars();
 			W::$_systemConfig = (array) array_pop($vars);
@@ -66,12 +68,14 @@ class W {
 	}
 	
 	/**
-	 * @param unknown_type $name
-	 * @param unknown_type $default
+	 * @param string $name
+	 * @param array $value
+	 * @param boolean $default
 	 */
 	static public function setApps($name = '', $value = array(), $default = false) {
 		W::$_apps[$name] = $value;
 		if ($default) W::$_default = $name;
+		L::register($name, $value['rootPath']);
 	}
 	
 	/**
@@ -93,7 +97,7 @@ class W {
 	 * 解析配置文件
 	 */
 	static private function _initConfig() {
-		W::$_apps['WIND'] = array('rootPath' => WIND_PATH);
+		W::setApps('WIND', array('rootPath' => WIND_PATH));
 	}
 	
 	/**
@@ -144,12 +148,25 @@ class W {
  * @package 
  */
 class L {
+	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_instances = array();
 	private static $_extensions = array('php', 'htm', 'class.php', 'db.php', 'phpx');
 	
 	static public function getImports($key = '') {
 		return $key ? L::$_imports[$key] : L::$_imports;
+	}
+	
+	/**
+	 * 将路径信息注册到命名空间
+	 * 
+	 * @param string $name
+	 * @param string $path
+	 */
+	static public function register($name, $path) {
+		if (!isset(L::$_namespace[$name])) {
+			L::$_namespace[$name] = $path;
+		}
 	}
 	
 	/**
@@ -299,12 +316,12 @@ class L {
 	
 	/**
 	 * 获得跟路径信息
-	 * 
 	 * @return string
 	 */
 	static private function _getAppRootPath($namespace = '') {
-		$app = W::getApps($namespace);
-		return $app['rootPath'];
+		if ($namespace && isset(L::$_namespace[$namespace])) return L::$_namespace[$namespace];
+		$rp = W::getApps();
+		return $rp['rootPath'];
 	}
 }
 

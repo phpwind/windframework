@@ -8,6 +8,7 @@
 
 L::import('WIND:core.base.impl.WindApplicationImpl');
 L::import('WIND:component.exception.WindException');
+L::import('WIND:component.viewer.WindViewFactory');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -23,37 +24,36 @@ class WindWebApplication implements WindApplicationImpl {
 	public function init() {}
 	
 	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @param WSystemConfig $configObj
 	 */
 	public function processRequest($request, $response) {
 		$router = $this->createRouter();
 		$router->doParser($request, $response);
 		
-		list($action, $method) = $this->getActionHandle($request, $response, $router);
-		
-		$this->processActionForm($request, $response, $router);
-		
+		/* 获得操作句柄 */
+		list($action, $method) = $this->getActionHandle($request, $response);
 		$action->beforeAction();
 		$action->$method($request, $response);
 		$action->afterAction();
-		$action->actionForward($request, $response, $router);
 		
-		$this->processActionForward($request, $response);
+		/* 获得请求跳转信息 */
+		$mav = $action->getModulAndView();
+		$this->processDispatch($request, $response, $mav);
 	}
 	
 	/**
 	 * 返回action类
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 * @return array(WindAction,string)
 	 */
-	protected function getActionHandle($request, $response, $router) {
-		$configObj = WindSystemConfig::getInstance();
-		list($className, $method) = $router->getControllerHandle($request, $response);
+	protected function getActionHandle($request, $response) {
+		list($className, $method) = $response->getRouter()->getActionHandle();
 		if ($className === null || $method === null) {
-			list($className, $method) = $router->getActionHandle($request, $response);
-		}
-		if ($className === null || $method === null) {
-			throw new WindException('get controller handle is failed.');
+			throw new WindException('can\'t create action handle.');
 		}
 		$class = new ReflectionClass($className);
 		$action = call_user_func_array(array($class, 'newInstance'), array($request, $response));
@@ -62,8 +62,8 @@ class WindWebApplication implements WindApplicationImpl {
 	
 	/**
 	 * 自动设置actionform对象
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @param WRouter $router
 	 */
 	protected function processActionForm($request, $response, $router) {
@@ -77,15 +77,14 @@ class WindWebApplication implements WindApplicationImpl {
 	/**
 	 * 处理页面输出与重定向
 	 * 
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @param WActionForward $forward
 	 */
-	protected function processActionForward($request, $response) {
-		W::import('WIND:components.viewer.*');
-		$viewer = WViewFactory::getInstance()->create();
+	protected function processDispatch($request, $response, $mav) {
+		/*$viewer = WViewFactory::getInstance()->create();
 		if ($viewer == null) throw new WindException('The instance of viewer is null.');
-		$response->setBody($viewer->windDisplay());
+		$response->setBody($viewer->windDisplay());*/
 	}
 	
 	/**

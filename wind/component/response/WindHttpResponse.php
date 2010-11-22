@@ -30,6 +30,8 @@ class WindHttpResponse implements WindResponseImpl {
 	
 	private $_status = '';
 	
+	private $_router = null;
+	
 	private static $_instance = null;
 	
 	/*
@@ -486,4 +488,16 @@ class WindHttpResponse implements WindResponseImpl {
 		}
 		return self::$_instance;
 	}
+	
+	public function setRouter(&$router = null) {
+		$this->_router = $router;
+	}
+	
+	/**
+	 * @return WindRouter
+	 */
+	public function getRouter() {
+		return $this->_router;
+	}
+
 }

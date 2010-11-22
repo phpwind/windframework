@@ -19,6 +19,7 @@
 abstract class WindRouter {
 	protected $routerRule = '';
 	protected $routerName = '';
+	protected $method = 'run';
 	
 	protected $action = 'run';
 	protected $controller = 'index';
@@ -56,14 +57,23 @@ abstract class WindRouter {
 	 * 
 	 * @return array
 	 */
-	abstract public function getActionHandle();
-	
-	/**
-	 * 获得请求处理类,返回一个数组，array('$className','$method')
-	 * 
-	 * @return array
-	 */
-	abstract public function getControllerHandle();
+	public function getActionHandle() {
+		if (empty($this->modules)) throw new WindException('the modules is empty.');
+		$module = $this->modules[$this->getModule()];
+		$className = $this->getController();
+		$method = $this->getAction();
+		L::import($module . '.' . $className);
+		if (!class_exists($className)) {
+			$module .= $module . '.' . $className;
+			$className = $this->getAction();
+			L::import($module . '.' . $className);
+			if (!class_exists($className)) return array(null, null);
+			$method = $this->method;
+		}
+		if (!in_array($method, get_class_methods($className))) return array(null, null);
+		$this->modulePath = $module;
+		return array($className, $method);
+	}
 	
 	/**
 	 * 获得请求处理类,返回一个数组，array('$className','$method')

@@ -8,18 +8,11 @@
 
 abstract class WindBaseAction {
 	/**
-	 * 视图信息
+	 * 页面跳转信息model and view对象
 	 * 
-	 * @var $forward
+	 * @var $mav
 	 */
-	protected $forward = '';
-	
-	/**
-	 * 页面布局信息
-	 * 
-	 * @var $layout
-	 */
-	protected $layout = '';
+	protected $mav = null;
 	
 	/**
 	 * 输出参数信息
@@ -30,7 +23,7 @@ abstract class WindBaseAction {
 	
 	public function __construct() {
 		$this->view = new stdClass();
-		$this->layout = new WLayout();
+		$this->mav = new WindModelAndView();
 	}
 	
 	public function beforeAction() {}
@@ -38,66 +31,13 @@ abstract class WindBaseAction {
 	public function afterAction() {}
 	
 	/**
-	 * 设置视图跳转信息
-	 * 
-	 * @param string $forward
-	 */
-	protected function setForward($forward) {
-		$this->forward = $forward;
-	}
-	
-	/**
-	 * 设置视图变量
-	 * 
-	 * @param  $view
-	 */
-	protected function setView($key, $value = '') {
-		if (is_string($key)) {
-			($value == '') ? $this->view->default = $key : $this->view->$key = $value;
-		} elseif (is_object($key)) {
-			$value = get_object_vars($key);
-			foreach ($value as $k => $v) {
-				($k) && $this->view->$k = $v;
-			}
-		}
-		return;
-	}
-	
-	/**
-	 * 设置页面布局切片模板
-	 * 
-	 * @param string|array $segment
-	 */
-	protected function setSegment($segment) {
-		if ($this->layout == null)
-			return;
-		$this->layout->setSegments($segment);
-	}
-	
-	/**
-	 * 设置视图的布局信息
-	 * 
-	 * @param string $layout
-	 */
-	protected function setLayout($layout) {
-		$this->layout->setLayout($layout);
-	}
-	
-	/**
 	 * 返回视图对像
-	 * @param WhttpRequest $request
-	 * @param WHttpResponse $response
+	 * 
 	 * @param WRouter $router
+	 * @return WindForward
 	 */
-	public function actionForward($request, $response, $router) {
-		if (!$this->forward)
-			$this->forward = $router->getDefaultViewHandle();
-		
-		$viewer = WViewFactory::getInstance()->create($this->forward);
-		if (!$request->getIsAjaxRequest() && $this->layout instanceof WLayout) {
-			$viewer->setLayout($this->layout);
-		}
-		$viewer->windAssign($this->view);
+	public function getModulAndView() {
+		return $this->mav;
 	}
 
 }

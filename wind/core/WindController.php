@@ -22,4 +22,5 @@ class WindController extends WindBaseAction {
 	}
 	
 	public function run() {}
+	
 }

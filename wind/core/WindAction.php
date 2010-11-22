@@ -14,9 +14,10 @@ L::import('WIND:core.base.WindBaseAction');
  * @package 
  */
 class WindAction extends WindBaseAction {
+	
 	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 */
 	public function run($request, $response) {}
 
