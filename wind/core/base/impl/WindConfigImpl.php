@@ -33,5 +33,5 @@ interface WindConfigImpl {
 	 * 用于设置需要合并的项,
 	 * 默认都是以覆盖的方式，
 	 */
-	const MERMEARRAY = array(WindConfigImpl::FILTERS,);
+	const MERMEARRAY = "filters,";
 }
