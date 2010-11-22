@@ -3,46 +3,45 @@
  * @author xiaoxia xu <x_824@sina.com> 2010-11-19
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * @license
  */
 L::import('WIND:core.base.impl.WindConfigImpl');
-L::import('WIND:utility.xml.xml');
 class WindXMLConfig extends XML implements WindConfigImpl {
 	private $xmlArray;
-	
+
 	public function __construct($data = '', $encoding = 'gbk') {
 		parent::__construct($data, $encoding);
 		$this->xmlArray = array();
 	}
-	
+
 	public function getResult() {
 		return $this->fetchContents();
 	}
-	
+
 	private function fetchContents() {
-		$app = $this->createParser()->getElementByXPath(WindConfig::app);
+		$app = $this->createParser()->getElementByXPath(WindConfigImpl::app);
 		if (!$app) throw new Exception('Ó¦ÓÃÅäÖÃ±ØÐëÅäÖÃ');
-		$_temp = array(WindConfig::appName, WindConfig::appPath, WindConfig::appConfig);
-		$this->xmlArray[WindConfig::app] = $this->getSecondChildTree(WindConfig::app, $_temp);
-		
-		$this->xmlArray[WindConfig::isOpen] = $this->getNoChild(WindConfig::isOpen);		
-		$this->xmlArray[WindConfig::describe] = $this->getNoChild(WindConfig::describe);
-		
-		$this->xmlArray[WindConfig::filters] = $this->getThirdChildTree(WindConfig::filters, WindConfig::filter, WindConfig::filterName, WindConfig::filterPath);
-		
-		$_temp = array(WindConfig::templateDir, WindConfig::compileDir, WindConfig::cacheDir, WindConfig::templateExt, WindConfig::engine);		
-		$this->xmlArray[WindConfig::template] = $this->getSecondChildTree(WindConfig::template, $_temp);
-		$this->xmlArray[WindConfig::urlRule] = $this->getSecondChildTree(WindConfig::urlRule, WindConfig::routerPase);
+		$_temp = array(WindConfigImpl::appName, WindConfigImpl::appPath, WindConfigImpl::appConfig);
+		$this->xmlArray[WindConfigImpl::app] = $this->getSecondChildTree(WindConfigImpl::app, $_temp);
+
+		$this->xmlArray[WindConfigImpl::isOpen] = $this->getNoChild(WindConfigImpl::isOpen);
+		$this->xmlArray[WindConfigImpl::describe] = $this->getNoChild(WindConfigImpl::describe);
+
+		$this->xmlArray[WindConfigImpl::filters] = $this->getThirdChildTree(WindConfigImpl::filters, WindConfigImpl::filter, WindConfigImpl::filterName, WindConfigImpl::filterPath);
+
+		$_temp = array(WindConfigImpl::templateDir, WindConfigImpl::compileDir, WindConfigImpl::cacheDir, WindConfigImpl::templateExt, WindConfigImpl::engine);
+		$this->xmlArray[WindConfigImpl::template] = $this->getSecondChildTree(WindConfigImpl::template, $_temp);
+		$this->xmlArray[WindConfigImpl::urlRule] = $this->getSecondChildTree(WindConfigImpl::urlRule, WindConfigImpl::routerPase);
 		return $this->xmlArray;
 	}
-	
+
 	private function getNoChild($node) {
 		$dom = $this->getElementByXPath($node);
 		if ($dom) return $this->escape(strval($dom[0]));
 	}
-	
+
 	private function getSecondChildTree($parentNode, $nodes) {
-		if (!$nodes || !$parentNode) return array(); 
+		if (!$nodes || !$parentNode) return array();
 		(!is_array($nodes)) && $nodes = array($nodes);
 		$dom = $this->getElementByXPath($parentNode);
 		if (!$dom) return array();
@@ -53,9 +52,9 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 		}
 		return $_result;
 	}
-	
+
 	private function getThirdChildTree($parentNode, $secondeParentNode, $keyNode, $valueNode) {
-		if (!$parentNode || !$secondeParentNode) return array(); 
+		if (!$parentNode || !$secondeParentNode) return array();
 		(!is_array($keyNode)) && $keyNode = array($keyNode);
 		(!is_array($valueNode)) && $valueNode = array($valueNode);
 		(!is_array($secondeParentNode)) && $secondeParentNode = array($secondeParentNode);
@@ -76,25 +75,16 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 		}
 		return $_childs;
 	}
-	
+
 	private function createParser() {
 		if (is_object($this->object)) return $this;
 		$this->doParser();
 		return $this;
 	}
-	
+
 	private function escape($param) {
 		$param = $this->dataConvert($param);
-		if (is_string($param)) return "'" . $param . "'";
-		if (is_array($param)) {
-			foreach ($param as $key => $value) {
-				$key = "'" . $key . "'";
-				$value = $this->escape($value);
-				unset($param[$key]);
-				$param[$key] = $value;
-			}
-		}
 		return $param;
 	}
-	
+
 }
