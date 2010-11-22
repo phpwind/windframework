@@ -17,23 +17,13 @@ class WindMySql extends WindDbAdapter {
 	 * @see wind/base/WDbAdapter#connect()
 	 */
 	public function connect($config, $key) {
-		if (! is_array ( $config ) || empty ( $config )) {
-			throw new WindSqlException ( "database config is not correct", 1 );
-		}
-		if (! isset ( $key )) {
-			throw new WindSqlException ( "you must define master and slave database", 1 );
-		}
-		$host = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
-		$pconnect = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
-		$force = $config ['force'] ? $config ['force'] : $this->force;
-		$charset = $config ['charset'] ? $config ['charset'] : $this->charset;
 		$this->key = $key;
 		if (! ($this->linked[$key] = $this->getLinked ( $key ))) {
-			$this->linked[$key] =  $pconnect ? mysql_pconnect ( $host, $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $host, $config ['dbuser'], $config ['dbpass'], $force );
+			$this->linked[$key] =  $pconnect ? mysql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
 			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
 				$this->changeDB ( $config ['dbname'], $key);
 			}
-			$this->setCharSet ( $charset, $key );
+			$this->setCharSet ( $config['charset'], $key );
 			if (!isset ( $this->config [$key] )) {
 				$this->config [$key] = $config;
 			}

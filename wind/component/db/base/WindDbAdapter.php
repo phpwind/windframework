@@ -131,11 +131,26 @@ abstract class WindDbAdapter {
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7],'pconnect'=>$config [8],'force'=>$config [9] );
 	}
 	
+	final private function formatConfig($config,$key){
+		if (! is_array ( $config ) || empty ( $config )) {
+			throw new WindSqlException ( "database config is not correct", 1 );
+		}
+		if (! isset ( $key )) {
+			throw new WindSqlException ( "you must define master and slave database", 1 );
+		}
+		$config ['dbhost'] = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
+		$config ['pconnect'] = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
+		$config ['force'] = $config ['force'] ? $config ['force'] : $this->force;
+		$config ['charset'] = $config ['charset'] ? $config ['charset'] : $this->charset;
+		return $config;
+	}
+	
 	/**
 	 * 连接数据库,构造连接池
 	 */
 	final protected function patchConnect() {
 		foreach ( $this->config as $key => $value ) {
+			$value = $this->formatConfig($value,$key);
 			$this->connect ( $value, $key );
 		}
 	}
