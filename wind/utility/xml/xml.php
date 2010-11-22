@@ -68,9 +68,7 @@ class XML {
 	}
 	
 	public function getElementByXPath($tagPath) {
-		if ($tagPath) {
-			return $this->object->xpath($tagPath);
-		}
+		if ($tagPath) return $this->object->xpath($tagPath);
 	}
     public function getContentsList($elements) {
     	(!is_array($elements)) && $elements = array($elements);
