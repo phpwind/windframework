@@ -5,9 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.base.WindConfig');
+L::import('WIND:core.base.impl.WindConfigImpl');
 L::import('WIND:utility.xml.xml');
-class WindXMLConfig extends XML implements WindConfig {
+class WindXMLConfig extends XML implements WindConfigImpl {
 	private $xmlArray;
 	
 	public function __construct($data = '', $encoding = 'gbk') {
