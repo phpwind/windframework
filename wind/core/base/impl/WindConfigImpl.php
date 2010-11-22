@@ -6,26 +6,32 @@
  * @license 
  */
 interface WindConfigImpl {
-	const app = 'app';
-	const appName = 'appName';
-	const appPath = 'appPath';
-	const appConfig = 'appConfig';
+	const APP = 'app';
+	const APPNAME = 'appName';
+	const APPROOTPATH = 'appPath';
+	const APPCONFIG = 'appConfig';
 	
-	const isOpen = 'isOpen';
-	const describe = 'describe';
+	const ISOPEN = 'isOpen';
+	const DESCRIBE = 'describe';
 	
-	const filters = 'filters';
-	const filter = 'filter';
-	const filterName = 'filterName';
-	const filterPath = 'filterPath';
+	const FILTERS = 'filters';
+	const FILTER = 'filter';
+	const FILTERNAME = 'filterName';
+	const FILTERPATH = 'filterPath';
 	
-	const template = 'template';
-	const templateDir = 'templateDir';
-	const compileDir = 'compileDir';
-	const cacheDir = 'cacheDir';
-	const templateExt = 'templateExt';
-	const engine = 'engine';
+	const TEMPLATE = 'template';
+	const TEMPLATEDIR = 'templateDir';
+	const COMPILERDIR = 'compileDir';
+	const CACHEDIR = 'cacheDir';
+	const TEMPLATEEXT = 'templateExt';
+	const ENGINE = 'engine';
 	
-	const urlRule = 'urlRule';
-	const routerPase = 'routerPase';
+	const URLRULE = 'urlRule';
+	const ROUTERPASE = 'routerPase';
+	
+	/**
+	 * 用于设置需要合并的项,
+	 * 默认都是以覆盖的方式，
+	 */
+	const MERMEARRAY = array(WindConfigDefine::FILTERS,);
 }
