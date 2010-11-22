@@ -5,9 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('base/impl/WConfig.php');
-require_once('../utility/xml/xml.php');
-class WindXMLConfig extends XML implements WConfig {
+L::import('WIND:core.base.WindConfig');
+L::import('WIND:utility.xml.xml');
+class WindXMLConfig extends XML implements WindConfig {
 	private $xmlArray;
 	
 	public function __construct($data = '', $encoding = 'gbk') {
@@ -20,19 +20,19 @@ class WindXMLConfig extends XML implements WConfig {
 	}
 	
 	private function fetchContents() {
-		$app = $this->createParser()->getElementByXPath(WConfig::app);
+		$app = $this->createParser()->getElementByXPath(WindConfig::app);
 		if (!$app) throw new Exception('Ó¦ÓÃÅäÖÃ±ØÐëÅäÖÃ');
-		$_temp = array(WConfig::appName, WConfig::appPath, WConfig::appConfig);
-		$this->xmlArray[WConfig::app] = $this->getSecondChildTree(WConfig::app, $_temp);
+		$_temp = array(WindConfig::appName, WindConfig::appPath, WindConfig::appConfig);
+		$this->xmlArray[WindConfig::app] = $this->getSecondChildTree(WindConfig::app, $_temp);
 		
-		$this->xmlArray[WConfig::isOpen] = $this->getNoChild(WConfig::isOpen);		
-		$this->xmlArray[WConfig::describe] = $this->getNoChild(WConfig::describe);
+		$this->xmlArray[WindConfig::isOpen] = $this->getNoChild(WindConfig::isOpen);		
+		$this->xmlArray[WindConfig::describe] = $this->getNoChild(WindConfig::describe);
 		
-		$this->xmlArray[WConfig::filters] = $this->getThirdChildTree(WConfig::filters, WConfig::filter, WConfig::filterName, WConfig::filterPath);
+		$this->xmlArray[WindConfig::filters] = $this->getThirdChildTree(WindConfig::filters, WindConfig::filter, WindConfig::filterName, WindConfig::filterPath);
 		
-		$_temp = array(WConfig::templateDir, WConfig::compileDir, WConfig::cacheDir, WConfig::templateExt, WConfig::engine);		
-		$this->xmlArray[WConfig::template] = $this->getSecondChildTree(WConfig::template, $_temp);
-		$this->xmlArray[WConfig::urlRule] = $this->getSecondChildTree(WConfig::urlRule, WConfig::routerPase);
+		$_temp = array(WindConfig::templateDir, WindConfig::compileDir, WindConfig::cacheDir, WindConfig::templateExt, WindConfig::engine);		
+		$this->xmlArray[WindConfig::template] = $this->getSecondChildTree(WindConfig::template, $_temp);
+		$this->xmlArray[WindConfig::urlRule] = $this->getSecondChildTree(WindConfig::urlRule, WindConfig::routerPase);
 		return $this->xmlArray;
 	}
 	
