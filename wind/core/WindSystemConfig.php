@@ -24,7 +24,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param array $configSystem
 	 * @param array $configCustom
 	 */
-	/*public function parse($configSystem, $configCustom = array()) {
+	public function parse($configSystem, $configCustom = array()) {
 		if (!is_array($configSystem) || !is_array($configCustom)) throw new Exception('the format of config file is error!!!');
 		
 		if (empty($configSystem)) throw new Exception('system config file is not exists!!!');
@@ -33,13 +33,13 @@ class WindSystemConfig extends WindConfig {
 		$this->system = $configSystem;
 		$this->custom = $configCustom;
 	}
-	*/
+	
 	/**
 	 * 真对数组格式的解析
 	 * @param array $configSystem
 	 * @param array $configCustom
 	 */
-	public function parse($globalAppsPath, $userAppPath, $defaultPath) {
+	public function _parse($globalAppsPath, $userAppPath, $defaultPath) {
 		$parser = new WindConfigParser($globalAppsPath, $userAppPath, $defaultPath);
 		$this->config = $parser->getConfig();
 		$this->globalConfig = $parser->getAppsConfig();

@@ -88,8 +88,8 @@ class WindFrontController extends WindServlet {
 	 */
 	private function _initConfig($config) {
 		$configObj = WindSystemConfig::getInstance();
-		//$configObj->parse((array) W::getSystemConfig(), (array) $config);
-		$configObj->parse(SYSTEM_CONFIG_PATH, dirname($this->request->getServer('SCRIPT_FILENAME')), WIND_PATH);
+		$configObj->parse((array) W::getSystemConfig(), (array) $config);
+//		$configObj->parse(SYSTEM_CONFIG_PATH, dirname($this->request->getServer('SCRIPT_FILENAME')), WIND_PATH);
 		$this->config = $configObj;
 	}
 	
