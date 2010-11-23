@@ -5,16 +5,51 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
+
+/**
+ * xml解析的工具
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class XML {
-	protected $XMLData;
+	/**
+	 *  需要解析的数据
+	 *  
+	 * @var string
+	 */
+	protected $XMLData; 
+	/**
+	 * 建立解析的对象
+	 * 
+	 * @var SimpleXMLElement
+	 */
 	protected $object;
+	/**
+	 * 解析输出的编码
+	 * 
+	 * @var string
+	 */
 	protected $outputEncoding;
 	
-	public function __construct($data, $encoding) {
+	/**
+	 * 构造函数,初始化对象
+	 * 
+	 * @param string $data
+	 * @param string $encoding
+	 */
+	public function __construct($data = '', $encoding = 'gbk') {
 		$this->setXMLData($data);
 		$this->setOutputEncoding($encoding);
 	}
 	
+	/**
+	 * 设置需要解析的xml内容
+	 * 
+	 * @param string $data
+	 */
 	public function setXMLData($data) {
 		if (!$data) return false;
 		if ($this->isXMLFile($data)) {
@@ -23,6 +58,11 @@ class XML {
 			throw new Exception('输入参数不是有效的xml格式');
 		}
 	}
+	/**
+	 * 设置解析输出的编码
+	 * 
+	 * @param string $encoding
+	 */
 	public function setOutputEncoding($encoding) {
 		if ($encoding) $this->outputEncoding = strtoupper(trim($encoding));
 	}
@@ -34,14 +74,15 @@ class XML {
 	 */
 	public function setXMLFile($filePath) {
 		$filePath = realpath($filePath);
-		if (!is_file($filePath) || strtolower(substr($filePath, -4)) != '.xml') throw new Exception("你输入的xml文件不是有效的xml文件");
+		if (!is_file($filePath) || strtolower(substr($filePath, -4)) != '.xml') throw new Exception("The file which your put is not a well-format xml file!");
 		$this->setXMLData(file_get_contents($filePath));
 	}
 	
 	/**
 	 * 是否为xml格式文件
-	 *
-	 * @return unknown
+	 * 
+	 * @access private
+	 * @return boolean
 	 */
 	private function isXMLFile($data) {
 		if (strpos(strtolower($data), '<?xml') === false) {
@@ -59,17 +100,58 @@ class XML {
 		$this->setXMLData(XML::PostHost($url));
 	}
 	
-	public function doParser() {
+	/**
+	 * 创建解析对象
+	 */
+	public function ceateParser() {
    		$this->object = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
 	}
 	
+	/**
+	 * 返回解析对象
+	 * 
+	 * @return SimpleXMLElement
+	 */
 	public function getXMLDocument() {
 		return $this->object;
 	}
 	
+	/**
+	 * 根据标签的路径获得该标签的对象
+	 * 
+	 * 如下格式<pre/>:
+	 * <WIND>
+	 *    <app>
+	 *       <appName>Test</appName>
+	 *    </app>
+	 * </WIND>
+	 * 1：采用相对路径调用：
+	 * 		如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('app');
+	 * 		如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('app/appName');
+	 * 2：采用完全路径调用：
+	 * 		如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('/WIND/app');
+	 * 		如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('/WIND/app/appName');
+	 * 
+	 * @param string $tagPath
+	 * @return array SimpleXMLElement objects 
+	 */
 	public function getElementByXPath($tagPath) {
 		if ($tagPath) return $this->object->xpath($tagPath);
 	}
+	
+	/**
+	 * 输入通过getElementByXPath获得的对象集合,解析输出对应的数组
+	 * 
+	 * 每个元素都有格式
+	 * $array = array('tagName' => '该标签的名字',
+	 * 				  'value' => '对应标签的内容',
+	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 *                'children' => array(child1, child2,....);
+	 * 
+	 * 
+	 * @param array SimpleXMLElement objects   $elements
+	 * @return array
+	 */
     public function getContentsList($elements) {
     	(!is_array($elements)) && $elements = array($elements);
     	$_result = array();
@@ -79,10 +161,22 @@ class XML {
     	return $_result;
     }
     
+    /**
+	 * 将输入SimpleXMLElement对象,解析输出对应的内容及其子标签
+	 * 
+	 * 每个元素都有格式
+	 * $array = array('tagName' => '该标签的名字',
+	 * 				  'value' => '对应标签的内容',
+	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 *                'children' => array(child1, child2,....);
+	 * 
+	 * @param SimpleXMLElement object   $element
+	 * @return array
+	 */
 	public function getTagContents($element) {
 		$_array = array();
 		$_array['tagName'] = $element->getName();
-		$_array['value'] = strval($element[0]);
+		$_array['value'] = self::escape($element[0]);
 		$_array['attributes'] = self::getAttributes($element);
 		$_array['children'] = self::getChilds($element);
 		return $_array;
@@ -91,6 +185,9 @@ class XML {
 	/**
 	 * 返回节点的属性
 	 * 使用XML::getAttributes($element);
+	 * 返回的格式为：
+	 * $array = array('属性名字' => '属性值', ... );
+	 * 
 	 * @param SimpleXMLElement $element
 	 * @return array  返回该节点的属性
 	 */
@@ -98,13 +195,18 @@ class XML {
 		$_attributes = array();
 		$attributes = $element->attributes();
 		if (!$attributes) return $_attributes;
-		
 		foreach ($attributes as $key => $value) {
-			$_attributes[$key] = strval($value);
+			$_attributes[$key] = self::escape($value);
 		}
 		return $_attributes;
 	}
 	
+	/**
+	 * 获得指定标签下的所有子标签
+	 * 
+	 * @param SimpleXMLElement $element
+	 * @return array 
+	 */
 	public function getChilds($element) {
 		$_childs = array();
 		$childs = $element->children();
@@ -115,7 +217,26 @@ class XML {
 		return $_childs;
 	}
 	
-	public function dataConvert($data, $from_encoding = 'UTF-8', $to_encoding = '') {
+	/**
+	 * 给输出结果进行转码（根据设置的输出编码进行转换）
+	 * 
+	 * @access private
+	 * @param string $param
+	 * @return string
+	 */
+	public function escape($param) {
+		return self::dataConvert(strval($param));
+	}
+		
+	/**
+	 * 将输入的内容进行转码输出
+	 * 
+	 * @param string $data
+	 * @param string $from_encoding
+	 * @param string $to_encoding
+	 * @return string
+	 */
+	protected function dataConvert($data, $from_encoding = 'UTF-8', $to_encoding = '') {
 		if (!$to_encoding) $to_encoding = $this->outputEncoding;
 		if (function_exists('mb_convert_encoding')) {
 			return mb_convert_encoding($data, $to_encoding, $from_encoding);
@@ -127,6 +248,18 @@ class XML {
 		return $data;
 	}
 	
+	/**
+	 * 从给定的一个网址中获得xml内容
+	 * 
+	 * @access private
+	 * @param string $host
+	 * @param string $data
+	 * @param string $method
+	 * @param string $showagent
+	 * @param string $port
+	 * @param integer $timeout
+	 * @return string 
+	 */
 	private function PostHost($host, $data = '', $method = 'GET', $showagent = null, $port = null, $timeout = 30) {
 		//Copyright (c) 2003-2103 phpwind
 		$parse = @parse_url($host);
