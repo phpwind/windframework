@@ -135,8 +135,9 @@ class WindConfigParser implements WindConfigImpl {
 	
 	/**
 	 * 处理配置文件
-	 * 根据在WindConfigDefine中的设置对相关配置项进行合并/覆盖
+	 * 根据在WindConfigImpl中的设置对相关配置项进行合并/覆盖
 	 * 如果应用配置中没有配置相关选项，则使用默认配置中的选项
+	 * 如果是需要合并的项，则将缺省项和用户配置项进行合并
 	 * 
 	 * @param array $defaultConfig 默认的配置文件
 	 * @param array $appConfig 应用的配置文件
@@ -305,7 +306,7 @@ class WindConfigParser implements WindConfigImpl {
 		$tmparray[] = '..';
 		if (str_replace($tmparray, '', $tmpname) != $tmpname) exit('forbidden');
 		
-		touch($fileName);
+		if (!touch($fileName)) throw WindException('The path "' . $fileName . '" is unwritable!');
 		$handle = fopen($fileName, $method);
 		$ifLock && flock($handle, LOCK_EX);
 		$writeCheck = fwrite($handle, $data);
