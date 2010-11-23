@@ -31,10 +31,11 @@ class WindXMLConfig extends XML implements WindConfigImpl {
     
 	/**
 	 * 返回解析的结果
+	 * @param boolean $isCheck 是否需要检查配置
 	 * @return array 返回解析后的数据信息
 	 */
-	public function getResult() {
-		return $this->fetchContents();
+	public function getResult($isCheck = true) {
+		return $this->fetchContents($isCheck);
 	}
     
 	/**
@@ -44,14 +45,15 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	 * 对应的解析格式调用对应的解析函数。
 	 * 
 	 * @access private 
+	 * @param boolean $isCheck 是否需要检查配置
 	 * @return array
 	 */
-	private function fetchContents() {
+	private function fetchContents($isCheck = true) {
 		$app = $this->createParser()->getElementByXPath(WindConfigImpl::APP);
-		if (!$app) throw new WindException('the app config must be setting');
+		if ($isCheck && !$app) throw new WindException('the app config must be setting');
 		$_temp = array(WindConfigImpl::APPNAME, WindConfigImpl::APPROOTPATH, WindConfigImpl::APPCONFIG);
 		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $_temp);
-		if (empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))  throw new WindException('the "appconfig" of the "app" config must be setted!');
+		if ($isCheck && empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))  throw new WindException('the "appconfig" of the "app" config must be setted!');
 
 		$this->xmlArray[WindConfigImpl::ISOPEN] = $this->getNoChild(WindConfigImpl::ISOPEN);
 		$this->xmlArray[WindConfigImpl::DESCRIBE] = $this->getNoChild(WindConfigImpl::DESCRIBE);
@@ -71,7 +73,9 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	 */
 	private function getNoChild($node) {
 		$dom = $this->getElementByXPath($node);
-		if ($dom) return $this->escape(strval($dom[0]));
+		if (!isset($dom[0])) return '';
+		$contents = $this->getTagContents($dom[0]);
+		return $contents['value'];
 	}
     
 	/**
@@ -88,7 +92,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 		$childs = $this->getChilds($dom[0]);
 		$_result = array();
 		foreach ($childs as $child) {
-			(in_array($child['tagName'], $nodes)) && $_result[$child['tagName']] = $this->escape($child['value']);
+			(in_array($child['tagName'], $nodes)) && $_result[$child['tagName']] = $child['value'];
 		}
 		return $_result;
 	}
@@ -138,7 +142,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 			foreach ($_secondeChild as $_key => $_second) {
 				if (!in_array($_second['tagName'], $keyNode) && !in_array($_second['tagName'], $valueNode)) unset($_secondeChild[$_key]);
 				in_array($_second['tagName'], $keyNode) && $_keys[] = $_second['value'];
-				in_array($_second['tagName'], $valueNode) && $_values[] = $this->escape($_second['value']);
+				in_array($_second['tagName'], $valueNode) && $_values[] = $_second['value'];
 			}
 			$_childs = array_merge($_childs, array_combine($_keys, $_values));
 		}
@@ -152,19 +156,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	 */
 	private function createParser() {
 		if (is_object($this->object)) return $this;
-		$this->doParser();
+		$this->ceateParser();
 		return $this;
 	}
-	
-	/**
-	 * 给输出结果进行转码（根据设置的输出编码进行转换）
-	 * @access private
-	 * @param string $param
-	 * @return string
-	 */
-	private function escape($param) {
-		$param = $this->dataConvert($param);
-		return $param;
-	}
-
 }

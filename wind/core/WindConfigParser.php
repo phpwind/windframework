@@ -41,7 +41,7 @@ class WindConfigParser implements WindConfigImpl {
 	 * @author xiaoxia xu
 	 */
 	public function setDefaultPath($defaultPath) {
-		(file_exists($defaultPath)) && $this->defaultPath = $defaultPath;
+		(file_exists($defaultPath)) && $this->defaultPath = rtrim(rtrim($defaultPath, '/'), '\\');
 	}
 
 	/**
@@ -50,7 +50,7 @@ class WindConfigParser implements WindConfigImpl {
 	 * @author xiaoxia xu
 	 */
 	public function setUserAppPath($userAppPath) {
-		(file_exists($userAppPath)) && $this->userAppPath = $userAppPath;
+		(file_exists($userAppPath)) && $this->userAppPath = rtrim(rtrim($userAppPath, '/'), '\\');
 	}
 
 	/**
@@ -60,7 +60,7 @@ class WindConfigParser implements WindConfigImpl {
 	 */
 	public function setGlobalAppsPath($globalAppsPath) {
 		$this->globalAppsConfig = $globalAppsPath;//设置配置文件的位置
-		$this->globalAppsPath = dirname($globalAppsPath);
+		$this->globalAppsPath = rtrim(rtrim(dirname($globalAppsPath), '/'), '\\');
 		
 	}
 	
@@ -98,7 +98,7 @@ class WindConfigParser implements WindConfigImpl {
 		$defaultConfigP = $this->isExist($this->defaultPath);
 		$default = $this->defaultPath . '/wind_config.xml';
 		$this->parserEngine = 'XML';
-		($default) && $dConfig = $this->switchParser($default);//获得缺省的配置文件
+		($default) && $dConfig = $this->switchParser($default, false);//获得缺省的配置文件
 		$oConfigP = $this->isExist($this->userAppPath);
 		($oConfigP) && $uConfig = $this->switchParser($oConfigP);
 		return $this->mergeConfig($dConfig, $uConfig);
@@ -169,12 +169,13 @@ class WindConfigParser implements WindConfigImpl {
 	 * 选择合适的解析器
 	 * 
 	 * @param string $configPath
+	 * @param boolean $isCheck 是否需要进行配置检查
 	 * @return array 返回解析的结果
 	 */
-	public function switchParser($configPath) {
+	public function switchParser($configPath, $isCheck = true) {
 		switch($this->parserEngine) {
 			case 'XML':
-				return $this->parserXML($configPath, $this->encoding);
+				return $this->parserXML($configPath, $this->encoding, $isCheck);
 				break;
 			case 'PHP':
 				include($configPath);
@@ -190,14 +191,15 @@ class WindConfigParser implements WindConfigImpl {
 	 * 解析XML格式的配置文件
 	 * 
 	 * @param string $configPath  被解析文件的路径
+	 * @param boolean $isCheck 是否需要检查配置
 	 * @param string $encoding  输出的编码
 	 */
-	public function parserXML($configPath, $encoding) {
+	public function parserXML($configPath, $encoding, $isCheck = true) {
 		L::import('WIND:core.WindXMLConfig');
 	    $xml = new WindXMLConfig();
 	    $xml->setXMLFile($configPath);
 	    $xml->setOutputEncoding($encoding);
-	    return $xml->getResult();
+	    return $xml->getResult($isCheck);
 	}
 	
 	public function parserProperties() {
