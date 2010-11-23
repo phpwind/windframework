@@ -10,6 +10,7 @@ interface WindConfigImpl {
 	const APPNAME = 'appName';
 	const APPROOTPATH = 'appPath';
 	const APPCONFIG = 'appConfig';
+	const APPAUTHOR = 'appAuthor';
 	
 	const ISOPEN = 'isOpen';
 	const DESCRIBE = 'describe';
@@ -34,5 +35,5 @@ interface WindConfigImpl {
 	 * 比如我要合并filters的项，那我只要跟上filters项即可
 	 * 默认都是以覆盖的方式，
 	 */
-	const MERGEARRAY = "filters";
+	const MERGEARRAY = "app,filters";
 }
