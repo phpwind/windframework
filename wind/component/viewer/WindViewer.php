@@ -20,7 +20,7 @@ L::import('viewer:base.impl.WindViewerImpl');
  * @version $Id$ 
  * @package 
  */
-class WindUrlBasedViewer implements WindViewerImpl {
+class WindViewer implements WindViewerImpl {
 	
 	/**
 	 * @var WindView

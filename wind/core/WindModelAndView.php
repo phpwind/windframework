@@ -14,7 +14,7 @@
  */
 class WindModelAndView {
 	private $viewName = '';
-	private $viewPath = '';
+	private $path = '';
 	private $isRedirect = false;
 	private $redirect = '';
 	private $model = '';
@@ -124,6 +124,10 @@ class WindModelAndView {
 	}
 	
 	public function getView() {
+		if ($this->view == null) {
+			$this->view = new WindView();
+			$this->view->setViewWithObject($this);
+		}
 		return $this->view;
 	}
 	
@@ -132,25 +136,13 @@ class WindModelAndView {
 	 * 
 	 * @param string $path
 	 */
-	public function setViewPath($viewPath) {
-		if ($viewPath) return;
-		$this->viewPath = $viewPath;
+	public function setPath($path) {
+		if ($path) return;
+		$this->path = $path;
 	}
 	
-	public function getViewPath() {
-		return $this->viewPath;
-	}
-	
-	/**
-	 * 清理该类的状态信息
-	 */
-	public function clear() {
-		$this->viewName = '';
-		$this->viewPath = '';
-		$this->isRedirect = false;
-		$this->redirect = '';
-		$this->model = null;
-		$this->view = null;
+	public function getPath() {
+		return $this->path;
 	}
 
 }

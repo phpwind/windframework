@@ -133,7 +133,7 @@ class W {
 	}
 	
 	static public function WExceptionHandler($e) {
-		$trace = is_a($e, 'WException') ? $e->getStackTrace() : $e->getTrace();
+		$trace = is_a($e, 'WindException') ? $e->getStackTrace() : $e->getTrace();
 		$message = W::debug("{$e}", $trace);
 		W::recordLog($message, 'TRACE', 'log');
 		die($message);

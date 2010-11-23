@@ -82,6 +82,7 @@ class WindWebApplication implements WindApplicationImpl {
 	 * @param WActionForward $forward
 	 */
 	protected function processDispatch($request, $response, $mav) {
+		
 		/*$viewer = WViewFactory::getInstance()->create();
 		if ($viewer == null) throw new WindException('The instance of viewer is null.');
 		$response->setBody($viewer->windDisplay());*/

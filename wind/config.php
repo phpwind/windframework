@@ -34,6 +34,7 @@ $sysConfig = array(
 		'templateName' => 'index',  
 		'templateExt' => 'htm',
 		'resolver' => 'default',
+		'isCache' => 'false',
 		'cacheDir' => 'cache',
 		'compileDir' => 'compile',
 	),

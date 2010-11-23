@@ -45,8 +45,25 @@ class WindView {
 	private $viewerResolvers = array();
 	private $config = array();
 	
-	protected function __construct() {
+	private $mav = null;
+	
+	/**
+	 * @param string $templateName
+	 */
+	protected function __construct($templateName = '') {
 		$this->initConfig();
+		if ($templateName) $this->templateName = $templateName;
+	}
+	
+	/**
+	 * 通过modelandview视图信息设置view
+	 * @param WindModelAndView $mav
+	 */
+	public function setViewWithObject(&$mav) {
+		if ($mav instanceof WindModelAndView) {
+			$this->mav = $mav;
+			$this->templateName = $this->mav->getViewName();
+		}
 	}
 	
 	/**
