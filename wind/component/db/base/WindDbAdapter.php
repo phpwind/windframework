@@ -107,7 +107,7 @@ abstract class WindDbAdapter {
 	final private function parseConfig($config) {
 		$db_config = array ();
 		if (empty ( $config ) || ! is_array ( $config )) {
-			throw new WindSqlException ( "Database Config is not correct", 1 );
+			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
 		foreach ( $config as $key => $value ) {
 			if (is_array ( $value ))
@@ -126,17 +126,17 @@ abstract class WindDbAdapter {
 	final private function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)?\/?(0|1)?\/?(0|1)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
-			throw new WindSqlException ( "Database config is not correct format", 1 );
+			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7],'pconnect'=>$config [8],'force'=>$config [9] );
 	}
 	
 	final private function formatConfig($config,$key){
 		if (! is_array ( $config ) || empty ( $config )) {
-			throw new WindSqlException ( "database config is not correct", 1 );
+			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
 		if (! isset ( $key )) {
-			throw new WindSqlException ( "you must define master and slave database", 1 );
+			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
 		$config ['dbhost'] = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
 		$config ['pconnect'] = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
@@ -463,7 +463,7 @@ abstract class WindDbAdapter {
 	 */
 	final protected function checkKey($key = ''){
 		if(!in_array($key,array_keys($this->linked)) || !is_resource($this->linked[$key])){
-			throw new WindSqlException('Database identify is not exists',1);
+			throw new WindSqlException(WindSqlException::DB_LINK_EXIST);
 		}
 		return $key;
 	}

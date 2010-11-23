@@ -15,11 +15,6 @@
  * @package
  */
 class WindException extends Exception {
-	const ERROR = 0;
-	const WARN = 1;
-	const NOTICE = 2;
-	const PARSE = 3;
-	const SYSTEM = 4;
 	private $innerException = null;
 	
 	/**

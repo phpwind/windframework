@@ -11,7 +11,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	public function buildTable($table = array()) {
 		if (empty ( $table ) || (! is_string ( $table ) && ! is_array ( $table ))) {
-			throw new WindSqlException ( 'table is not mepty' );
+			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$table = is_string ( $table ) ? explode ( ',', $table ) : $table;
 		$tableList = '';
@@ -43,7 +43,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 			$fieldList = '*';
 		}
 		if (! is_string ( $field ) && ! is_array ( $field )) {
-			throw new WindSqlException ( 'field is illegal' );
+			throw new WindSqlException (WindSqlException::DB_QUERY_FIELD_FORMAT);
 		}
 		$field = is_string ( $field ) ? explode ( ',', $field ) : $field;
 		foreach ( $field as $key => $value ) {
@@ -141,7 +141,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	public function buildData($data) {
 		if (empty ( $data ) || ! is_array ( $data )) {
-			throw new WindSqlException ( "The insert data is empty",1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_INSERT_DATA);
 		}
 		return $this->getDimension ( $data ) == 1 ? $this->buildSingleData ( $data ) : $this->buildMultiData ( $data );
 	}
@@ -151,7 +151,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	public function buildSet($set) {
 		if (empty ( $set )) {
-			throw new WindSqlException ( "update data is empty" );
+			throw new WindSqlException (WindSqlException::DB_QUERY_UPDATE_DATA);
 		}
 		if (is_string ( $set )) {
 			return $set;
@@ -182,7 +182,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	public function getMetaTableSql($schema){
 		if(empty($schema)){
-			throw new WindSqlException("The database is empty");
+			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
 		return $this->sqlFillSpace("SELECT name,object_id FROM sys.all_objects WHERE type = 'U'");
 	}
@@ -192,12 +192,11 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	public function getMetaColumnSql($table){
 		if(empty($table)){
-			throw new WindSqlException("The table is empty");
+			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$option['table'] = array('sys.objects'=>'a','sys.all_columns'=>'b','sys.types'=>'c');
 		$option['field'] = array('b.name'=>'Field','b.max_length','b.precision','b.scale','b.is_nullable','b.is_identity','c.name'=>'Type');
 		$option['where'] = array(array('eq'=>array('a.object_id','b.object_id',true)),'and',array('eq'=>array(' b.system_type_id','c.system_type_id',true)),'and','eq'=>array('a.name',$table));
-		//echo $this->getSelectSql($option);
 		return $this->getSelectSql($option);
 		
 	}
@@ -229,11 +228,11 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @return string
 	 */
 	private function buildCompare($field, $value, $compare,$ifconvert = true) {
-		if (empty ( $field ) || empty ( $value )) {
-			throw new WindSqlException ( '', 1 );
+		if (empty ( $field ) || !isset ( $value )) {
+			throw new WindSqlException (WindSqlException::DB_QUERY_COMPARESS_ERROR);
 		}
 		if (! in_array ( $compare, array_keys ( $this->compare ) )) {
-			throw new WindSqlException ( '', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_COMPARESS_EXIST);
 		}
 		if (in_array ( $compare, array ('in', 'notin' ) )) {
 			$value = explode ( ',', $value );
@@ -275,17 +274,17 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	
 	private function checkWhere($where){
 		if (! is_array ( $where )) {
-			throw new WindSqlException ( 'The Where Condition is not correct', 0 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_CONDTTION_FORMAT);
 		}
 		extract($this->staticWhere($where));
 		if ($group % 2 === 1) {
-			throw new WindSqlException ( 'kuo huao is not match', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_GROUP_MATCH);
 		}
-		if ($logic && $condition && $condition - $logic != 1) {echo 33;
-			throw new WindSqlException ( 'condition is not match', 1 );
+		if ($logic && $condition && $condition - $logic != 1) {
+			throw new WindSqlException (WindSqlException::DB_QUERY_LOGIC_MATCH);
 		}
 		if ($group && $condition === 0) {
-			throw new WindSqlException ( 'condition is not match', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_GROUP_MATCH);
 		}
 		return array($logic,$group,$condition);
 	}

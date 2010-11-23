@@ -19,7 +19,7 @@ class WindMySql extends WindDbAdapter {
 	public function connect($config, $key) {
 		$this->key = $key;
 		if (! ($this->linked[$key] = $this->getLinked ( $key ))) {
-			$this->linked[$key] =  $pconnect ? mysql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
+			$this->linked[$key] =  $config['pconnect'] ? mysql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mysql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
 			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
 				$this->changeDB ( $config ['dbname'], $key);
 			}
@@ -48,10 +48,10 @@ class WindMySql extends WindDbAdapter {
 	 */
 	public function getAllResult($fetch_type = MYSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
-			throw new WindSqlException ( 'The Query is not validate handle or resource', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_LINK_EMPTY);
 		}
 		if (! in_array ( $fetch_type, array (1, 2, 3 ) )) {
-			throw new WindSqlException ( 'The fetch_type is not validate handle or resource', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_FETCH_ERROR);
 		}
 		$result = array ();
 		while (($record = mysql_fetch_array ( $this->query, $fetch_type ))) {
@@ -74,7 +74,7 @@ class WindMySql extends WindDbAdapter {
 	
 	public function commitTrans($key = '') {
 		if ($this->transCounter <= 0) {
-			throw new WindSqlException('The Transaction is not start',1);
+			throw new WindSqlException(WindSqlException::DB_QUERY_TRAN_BEGIN);
 		}
 		--$this->transCounter;
 		if ($this->transCounter == 0) {

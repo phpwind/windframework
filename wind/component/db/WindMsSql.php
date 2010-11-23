@@ -10,7 +10,7 @@ class WindMsSql extends WindDbAdapter {
 	public function connect($config, $key) {
 		$this->key = $key;
 		if (! ($this->linked[$key] = $this->getLinked ( $key ))) {
-			$this->linked[$key] =  $pconnect ? mssql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mssql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
+			$this->linked[$key] =  $config['pconnect'] ? mssql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mssql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
 			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
 				$this->changeDB ( $config ['dbname'], $key);
 			}
@@ -38,10 +38,10 @@ class WindMsSql extends WindDbAdapter {
 	 */
 	public function getAllResult($fetch_type = MYSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
-			throw new WindSqlException ( 'The Query is not validate handle  resource', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_LINK_EMPTY);
 		}
 		if (! in_array ( $fetch_type, array (1, 2, 3 ) )) {
-			throw new WindSqlException ( 'The fetch_type is not validate handle or resource', 1 );
+			throw new WindSqlException (WindSqlException::DB_QUERY_FETCH_ERROR);
 		}
 		$result = array ();
 		while ( ($record = mssql_fetch_array ( $this->query, $fetch_type )) ) {
