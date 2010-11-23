@@ -30,8 +30,9 @@ interface WindConfigImpl {
 	const ROUTERPASE = 'routerPase';
 	
 	/**
-	 * 用于设置需要合并的项,
+	 * 用于设置需要合并的项,用,号分隔---注意 这里只要指定一级配置项即可，
+	 * 比如我要合并filters的项，那我只要跟上filters项即可
 	 * 默认都是以覆盖的方式，
 	 */
-	const MERMEARRAY = "filters,";
+	const MERGEARRAY = "filters";
 }
