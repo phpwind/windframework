@@ -17,8 +17,10 @@ class WindModelAndView {
 	private $path = '';
 	private $isRedirect = false;
 	private $redirect = '';
-	private $model = null;
+	private $model = array();
 	private $view = null;
+	
+	private $layout = null;
 	
 	/**
 	 * @param string $name //name of this forward
@@ -27,7 +29,6 @@ class WindModelAndView {
 	 * @param string $module //module prefix
 	 */
 	public function __construct($viewName = '', $redirect = '') {
-		$this->model = new stdClass();
 		$this->setViewName($viewName);
 		$this->setRedirect($redirect);
 	}
@@ -81,9 +82,7 @@ class WindModelAndView {
 		if ($key && is_string($key))
 			$this->model[$key] = $model;
 		else
-			foreach ($model as $key => $value) {
-				$this->model->$key = $value;
-			}
+			$this->model += $model;
 	}
 	
 	/**

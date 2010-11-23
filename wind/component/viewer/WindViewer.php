@@ -53,7 +53,11 @@ class WindViewer implements WindViewerImpl {
 	 */
 	public function windFetch($template = '') {
 		$template = $this->getViewTemplate($template);
-		if ($this->vars) extract($this->vars, EXTR_REFS);
+		if ($this->view && $this->view->getMav())
+			extract($this->view->getMav()->getModel(), EXTR_REFS);
+		elseif ($this->vars)
+			extract($this->vars, EXTR_REFS);
+			
 		ob_start();
 		@include $template;
 		$this->viewContainer = ob_get_clean();

@@ -76,7 +76,7 @@ class WindView {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function dispatch(WindHttpRequest $request, WindHttpResponse $response) {
+	public function dispatch($request, $response) {
 		if ($this->mav === null) throw new WindException('dispatch error.');
 		if ($this->mav->isRedirect())
 			$this->_dispatchWithRedirect($request, $response);
@@ -93,7 +93,7 @@ class WindView {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithRedirect(WindHttpRequest $request, WindHttpResponse $response) {
+	private function _dispatchWithRedirect($request, $response) {
 		if ($this->mav === null || !$this->mav->getRedirect()) throw new WindException('redirect error.');
 		$response->sendRedirect($this->mav->getRedirect());
 		//TODO 
@@ -105,7 +105,7 @@ class WindView {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithAction(WindHttpRequest $request, WindHttpResponse $response) {	
+	private function _dispatchWithAction($request, $response) {	
 
 	//TODO
 	}
@@ -116,9 +116,8 @@ class WindView {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithTemplate(WindHttpRequest $request, WindHttpResponse $response) {
+	private function _dispatchWithTemplate($request, $response) {
 		$viewer = $this->createViewerResolver();
-		$viewer->windAssign($this->mav->getModel());
 		$response->setBody($viewer->windDisplay());
 	}
 	
@@ -261,6 +260,13 @@ class WindView {
 	 */
 	public function setTemplateCompileDir($templateCompileDir) {
 		$this->templateCompileDir = $templateCompileDir;
+	}
+	
+	/**
+	 * @return WindModelAndView $mav
+	 */
+	public function getMav() {
+		return $this->mav;
 	}
 
 }
