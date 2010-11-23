@@ -15,11 +15,13 @@ L::import("WIND:core.base.impl.WindConfigImpl");
  */
 class WindConfigParser implements WindConfigImpl {
 	private $defaultPath = '';//缺省的配置文件路径
+	private $defaultConfig = '';//缺省的配置文件
 	private $userAppPath = '';//用户配置文件路径
+	private $userAppConfig = '';//保存用户配置文件
 	private $globalAppsPath = '';//全局应用配置路径
 	private $globalAppsConfig = '';//全局应用配置文件
 	private $parserEngine = '';//配置使用的解析引擎
-	private $configExt = array('php' , 'xml', 'properpoties', 'ini');//会用到的用户配置格式
+	private $configExt = array('xml', 'properpoties', 'ini');//会用到的用户配置格式
 	private $encoding = 'gbk';
 	/**
 	 * 初始化
@@ -37,15 +39,18 @@ class WindConfigParser implements WindConfigImpl {
 	
 	/**
 	 * 设置默认配置文件路径
+	 * 
 	 * @param $defaultPath the $defaultPath to set
 	 * @author xiaoxia xu
 	 */
 	public function setDefaultPath($defaultPath) {
 		(file_exists($defaultPath)) && $this->defaultPath = rtrim(rtrim($defaultPath, '/'), '\\');
+		$this->defaultConfig = realpath($this->defaultPath . '/wind_config.xml');
 	}
 
 	/**
 	 * 设置用户应用的配置文件路径
+	 * 
 	 * @param $userAppPath the $userAppPath to set
 	 * @author xiaoxia xu
 	 */
@@ -55,6 +60,7 @@ class WindConfigParser implements WindConfigImpl {
 
 	/**
 	 * 设置全局应用配置文件
+	 * 
 	 * @param $globalAppsPath the $globalAppsPath to set
 	 * @author xiaoxia xu
 	 */
@@ -75,12 +81,12 @@ class WindConfigParser implements WindConfigImpl {
 	 *        			如果没有修改，则直接返回缓存文件
 	 */
 	public function getConfig() {
-		$oConfig = $this->isExist($this->userAppPath);
-		$defaultConfig = $this->defaultPath . '/wind_config.xml';
-		if ($oConfig == null) $oConfig = $defaultConfig;
+		$oConfig = $this->isExist($this->userAppPath, true);
+		if ($oConfig === false) $oConfig = $this->defaultConfig;
 		//如果缓存文件存在并且原文件没有更新，则直接读取缓存
-		if (($path = $this->isCached()) && is_file($path)) {
-			if (is_file($oConfig) && (filemtime($oConfig) < filemtime($path)) && filemtime($defaultConfig) < filemtime($path)) {
+		if (($path = $this->isCached()) !== false && is_file($path)) {
+			if (is_file($oConfig) && (filemtime($oConfig) < filemtime($path)) && filemtime($this->defaultConfig) < filemtime($path)) {
+				echo 'include';
 				include($path);
 				return $config;
 			}
@@ -95,12 +101,9 @@ class WindConfigParser implements WindConfigImpl {
 	 */
 	public function parserConfig() {
 		$uConfig = $dConfig = array();
-		$defaultConfigP = $this->isExist($this->defaultPath);
-		$default = $this->defaultPath . '/wind_config.xml';
-		$this->parserEngine = 'XML';
-		($default) && $dConfig = $this->switchParser($default, false);//获得缺省的配置文件
-		$oConfigP = $this->isExist($this->userAppPath);
-		($oConfigP) && $uConfig = $this->switchParser($oConfigP);
+		$dConfig = $this->parserXML($this->defaultConfig, $this->encoding, false);//获得缺省的配置文件
+		$oConfigP = ($this->userAppConfig != '') ? $this->userAppConfig : $this->isExist($this->userAppPath, true);
+		($oConfigP !== false) && $uConfig = $this->switchParser($oConfigP);
 		return $this->mergeConfig($dConfig, $uConfig);
 	}
 	/**
@@ -113,14 +116,13 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return array 返回修改后的应用配置信息
 	 */
 	public function addAppsConfig($config) {
-		$globalConfigP = $this->globalAppsPath . '/config.php';
 		$sysConfig = array();
-		if (is_file($globalConfigP)) {
-			include($globalConfigP);
-		}
+		if (is_file($this->globalAppsConfig)) {
+			include($this->globalAppsConfig);
+		}//不存在，则创建
 		$appName = isset($config[WindConfigImpl::APPNAME]) ? $config[WindConfigImpl::APPNAME] : $this->getAppName();
 		$sysConfig[$appName] = $config;
-		$this->writeover($globalConfigP, "<?php\r\n \$sysConfig = " . $this->varExport($sysConfig) . ";\r\n?>");
+		$this->writeover($this->globalAppsConfig, "<?php\r\n \$sysConfig = " . $this->varExport($sysConfig) . ";\r\n?>");
 		return $sysConfig;
 	}
 	/**
@@ -128,9 +130,10 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return array 
 	 */
 	public function getAppsConfig() {
-		$globalConfigP = $this->globalAppsPath . '/config.php';
-		include($globalConfigP);
-		return $sysConfig;
+		if (is_file($this->globalAppsConfig)) {
+			include($this->globalAppsConfig);
+			return $sysConfig;
+		} else throw new WindException('The file "' . $this->globalAppsConfig . '" is not exists!');
 	}
 	
 	/**
@@ -148,19 +151,22 @@ class WindConfigParser implements WindConfigImpl {
 		$app = $appConfig[WindConfigImpl::APP];
 		(!isset($app[WindConfigImpl::APPNAME]) || $app[WindConfigImpl::APPNAME] == '') && $app[WindConfigImpl::APPNAME] = $this->getAppName();
 		(!isset($app[WindConfigImpl::APPROOTPATH]) || $app[WindConfigImpl::APPROOTPATH] == '') && $app[WindConfigImpl::APPROOTPATH] = $this->userAppPath;
-		(isset($app[WindConfigImpl::APPCONFIG])) && $app[WindConfigImpl::APPCONFIG] = $this->userAppPath . $app[WindConfigImpl::APPCONFIG];
+		(isset($app[WindConfigImpl::APPCONFIG])) && $app[WindConfigImpl::APPCONFIG] = $this->userAppPath . rtrim(rtrim($app[WindConfigImpl::APPCONFIG], '/'), '\\');
 		$app[WindConfigImpl::APPCONFIG] = $app[WindConfigImpl::APPCONFIG]. '/' . $app[WindConfigImpl::APPNAME] . '_config.php';
+		$appConfig[WindConfigImpl::APP] = $app;
+		$_merge = (strpos(WindConfigImpl::MERGEARRAY, ',') === false) ? array(WindConfigImpl::MERGEARRAY) : explode(',', WindConfigImpl::MERGEARRAY);
 		foreach ($defaultConfig as $key => $value) {
-			$_merge = (strpos(WindConfigImpl::MERGEARRAY, ',') === false) ? array(WindConfigImpl::MERGEARRAY) : explode(',', WindConfigImpl::MERGEARRAY);
 			if (in_array($key, $_merge) && $appConfig[$key]) {
 				!is_array($value) && $value = array($value);
 				!is_array($appConfig[$key]) && $appConfig[$key] = array($appConfig[$key]);
+				
+				print_r($value);
+				print_r($appConfig[$key]);
 				$defaultConfig[$key] = array_merge($value, $appConfig[$key]);
 			} else {
 				($appConfig[$key]) && $defaultConfig[$key] = $appConfig[$key];
 			}
 		}
-		$defaultConfig[WindConfigImpl::APP] = $app;
 		$this->writeover($app[WindConfigImpl::APPCONFIG], "<?php\r\n \$config = " . $this->varExport($defaultConfig) . ";\r\n?>");
 		$this->addAppsConfig($app);
 		return $defaultConfig;
@@ -228,17 +234,19 @@ class WindConfigParser implements WindConfigImpl {
 	 * 判断文件是否存在，如果存在则返回该配置文件（包含路径），并且设置解析的引擎类型，如果不存在返回NULL
 	 * 
 	 * @param string $path
+	 * @param string $isSave
 	 * @return mixed null | string 
 	 */
-	private function isExist($path) {
+	private function isExist($path, $isSave = false) {
 		foreach ($this->configExt as $ext) {
-			$_temp = realpath($path . '/' . 'config.' . $ext);
+			$_temp = realpath($path . '/config.' . $ext);
 			if (is_file($_temp)) {
 				$this->parserEngine = strtoupper($ext);
+				($isSave) && $this->userAppConfig = $_temp;
 				return $_temp;
 			} 
 		}
-		return null;
+		return false;
 	}
 	
 	/**
@@ -247,7 +255,7 @@ class WindConfigParser implements WindConfigImpl {
 	 * @return string 返回缓存路径 | '';
 	 */
 	private function isCached() {
-		if (!is_file($this->globalAppsConfig)) return '';
+		if (!is_file($this->globalAppsConfig)) return false;
 		include($this->globalAppsConfig);
 		$appConfig = array();
 		foreach ($sysConfig as $appName => $config) {
@@ -258,7 +266,7 @@ class WindConfigParser implements WindConfigImpl {
 			}
 		}
 		if (isset($appConfig[WindConfigImpl::APPCONFIG])) return $appConfig[WindConfigImpl::APPCONFIG];
-		else return '';
+		else return false;
 	}
 	
 	/**

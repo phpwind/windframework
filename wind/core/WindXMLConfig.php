@@ -18,7 +18,7 @@ L::import('WIND:utility.xml.xml');
  */
 class WindXMLConfig extends XML implements WindConfigImpl {
 	private $xmlArray;
-   
+    private $childConfig;
 	/**
 	 * 构造函数，设置输出编码及变量初始化
 	 * @param string $data
@@ -27,8 +27,44 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	public function __construct($data = '', $encoding = 'gbk') {
 		parent::__construct($data, $encoding);
 		$this->xmlArray = array();
+		$this->setChildConfig();
 	}
     
+	/**
+	 * 配置标签下的子标签集
+	 * 
+	 */
+	private function setChildConfig() {
+		$_config = array();
+		//关于应用的配置
+		$_config[WindConfigImpl::APP] = array(
+					WindConfigImpl::APPNAME, 
+					WindConfigImpl::APPROOTPATH, 
+					WindConfigImpl::APPCONFIG, 
+					WindConfigImpl::APPAUTHOR);
+		//关于过滤器的配置
+		/* 
+		 * secondNodes: 代表了该标签的子级标签
+		 * keyNodes: 代表了该标签的内容将作为键保存
+		 * valueNodes: 代表了该标签的内容将作为值保存
+		 */			
+		$_config[WindConfigImpl::FILTERS] = array(
+		            'secondNodes' => array(WindConfigImpl::FILTER),
+		            'keyNodes' => array(WindConfigImpl::FILTERNAME),
+		            'valueNodes' => array(WindConfigImpl::FILTERPATH));
+		//配置视图相关
+		$_config[WindConfigImpl::TEMPLATE] = array(
+					WindConfigImpl::TEMPLATEDIR, 
+					WindConfigImpl::COMPILERDIR, 
+					WindConfigImpl::CACHEDIR, 
+					WindConfigImpl::TEMPLATEEXT, 
+					WindConfigImpl::ENGINE);
+		//配置路由相关
+	    $_config[WindConfigImpl::URLRULE] = array(
+	    			WindConfigImpl::ROUTERPASE);
+	    			
+		$this->childConfig = $_config;
+	}
 	/**
 	 * 返回解析的结果
 	 * @param boolean $isCheck 是否需要检查配置
@@ -51,18 +87,19 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	private function fetchContents($isCheck = true) {
 		$app = $this->createParser()->getElementByXPath(WindConfigImpl::APP);
 		if ($isCheck && !$app) throw new WindException('the app config must be setting');
-		$_temp = array(WindConfigImpl::APPNAME, WindConfigImpl::APPROOTPATH, WindConfigImpl::APPCONFIG);
-		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $_temp);
+		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $this->childConfig[WindConfigImpl::APP]);
 		if ($isCheck && empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))  throw new WindException('the "appconfig" of the "app" config must be setted!');
 
 		$this->xmlArray[WindConfigImpl::ISOPEN] = $this->getNoChild(WindConfigImpl::ISOPEN);
 		$this->xmlArray[WindConfigImpl::DESCRIBE] = $this->getNoChild(WindConfigImpl::DESCRIBE);
 
-		$this->xmlArray[WindConfigImpl::FILTERS] = $this->getThirdChildTree(WindConfigImpl::FILTERS, WindConfigImpl::FILTER, WindConfigImpl::FILTERNAME, WindConfigImpl::FILTERPATH);
+		$this->xmlArray[WindConfigImpl::FILTERS] = $this->getThirdChildTree(WindConfigImpl::FILTERS, 
+																			$this->childConfig[WindConfigImpl::FILTERS]['secondNodes'], 
+																			$this->childConfig[WindConfigImpl::FILTERS]['keyNodes'], 
+																			$this->childConfig[WindConfigImpl::FILTERS]['valueNodes']);
 
-		$_temp = array(WindConfigImpl::TEMPLATEDIR, WindConfigImpl::COMPILERDIR, WindConfigImpl::CACHEDIR, WindConfigImpl::TEMPLATEEXT, WindConfigImpl::ENGINE);
-		$this->xmlArray[WindConfigImpl::TEMPLATE] = $this->getSecondChildTree(WindConfigImpl::TEMPLATE, $_temp);
-		$this->xmlArray[WindConfigImpl::URLRULE] = $this->getSecondChildTree(WindConfigImpl::URLRULE, WindConfigImpl::ROUTERPASE);
+		$this->xmlArray[WindConfigImpl::TEMPLATE] = $this->getSecondChildTree(WindConfigImpl::TEMPLATE, $this->childConfig[WindConfigImpl::TEMPLATE]);
+		$this->xmlArray[WindConfigImpl::URLRULE] = $this->getSecondChildTree(WindConfigImpl::URLRULE, $this->childConfig[WindConfigImpl::URLRULE]);
 		return $this->xmlArray;
 	}
     
