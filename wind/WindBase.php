@@ -301,7 +301,7 @@ class L {
 		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
 		if (key_exists($fileName, self::$_imports)) return $realPath;
 		include $realPath;
-		self::$_imports[$fileName] = $realPath;
+		$fileName && self::$_imports[$fileName] = $realPath;
 		return $realPath;
 	}
 	

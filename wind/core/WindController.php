@@ -15,12 +15,21 @@ L::import('WIND:core.base.WindBaseAction');
  */
 class WindController extends WindBaseAction {
 	
-	public function __construct($request, $response) {
+	/**
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	public function __construct(WindHttpRequest $request, WindHttpResponse $response) {
 		parent::__construct();
 		$this->request = $request;
 		$this->response = $response;
+		
+		//设置默认的视图名称
+		$default = $response->getRouter()->getDefaultViewHandle();
+		$this->setDefaultViewTemplate($default);
 	}
 	
 	public function run() {}
-	
+
 }

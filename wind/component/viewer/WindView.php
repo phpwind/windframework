@@ -45,14 +45,19 @@ class WindView {
 	private $viewerResolvers = array();
 	private $config = array();
 	
+	/**
+	 * @var $this->mav WindModelAndView
+	 */
 	private $mav = null;
 	
 	/**
 	 * @param string $templateName
+	 * @param WindModelAndView $mav
 	 */
-	protected function __construct($templateName = '') {
+	public function __construct($templateName = '', $mav = null) {
 		$this->initConfig();
 		if ($templateName) $this->templateName = $templateName;
+		$this->mav = $mav ? $mav : new WindModelAndView($templateName);
 	}
 	
 	/**
@@ -67,6 +72,57 @@ class WindView {
 	}
 	
 	/**
+	 * 请求分发
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	public function dispatch(WindHttpRequest $request, WindHttpResponse $response) {
+		if ($this->mav === null) throw new WindException('dispatch error.');
+		if ($this->mav->isRedirect())
+			$this->_dispatchWithRedirect($request, $response);
+		elseif ($this->mav->getPath())
+			$this->_dispatchWithAction($request, $response);
+		else
+			$this->_dispatchWithTemplate($request, $response);
+		return;
+	}
+	
+	/**
+	 * 请求分发一个重定向请求
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	private function _dispatchWithRedirect(WindHttpRequest $request, WindHttpResponse $response) {
+		if ($this->mav === null || !$this->mav->getRedirect()) throw new WindException('redirect error.');
+		$response->sendRedirect($this->mav->getRedirect());
+		//TODO 
+	}
+	
+	/**
+	 * 请求分发一个操作请求
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	private function _dispatchWithAction(WindHttpRequest $request, WindHttpResponse $response) {	
+
+	//TODO
+	}
+	
+	/**
+	 * 请求分发一个模板请求
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	private function _dispatchWithTemplate(WindHttpRequest $request, WindHttpResponse $response) {
+		$viewer = $this->createViewerResolver();
+		$viewer->windAssign($this->mav->getModel());
+		$response->setBody($viewer->windDisplay());
+	}
+	
+	/**
 	 * 返回视图解析器对象
 	 * 
 	 * @return WindViewer
@@ -75,7 +131,9 @@ class WindView {
 		$viewerResolver = $this->viewerResolvers[$this->reolver];
 		list(, $className, , $viewerResolver) = L::getRealPath($viewerResolver, true);
 		L::import($viewerResolver);
-		if (!class_exists($className)) throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
+		if (!class_exists($className)) {
+			throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
+		}
 		$object = new $className();
 		$object->setView($this);
 		return $object;
@@ -88,7 +146,7 @@ class WindView {
 		$configObj = WindSystemConfig::getInstance();
 		if ($configObj == null) throw new WindException('config object is null.');
 		
-		$this->viewerResolvers = $configObj->getConfig(self::VIEWR_RESOLVER);
+		$this->viewerResolvers = $configObj->getConfig(self::VIEWER_RESOLVER);
 		
 		if (isset($this->config[self::VIEW_CONFIG_TEMPLATE_PATH])) {
 			$this->templatePath = $this->config[self::VIEW_CONFIG_TEMPLATE_PATH];

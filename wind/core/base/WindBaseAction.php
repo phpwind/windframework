@@ -6,11 +6,18 @@
  * @license 
  */
 
+L::import('WIND:core.WindModelAndView');
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
 abstract class WindBaseAction {
 	/**
 	 * 页面跳转信息model and view对象
 	 * 
-	 * @var $mav
+	 * @var $mav WindModelAndView
 	 */
 	protected $mav = null;
 	
@@ -29,6 +36,20 @@ abstract class WindBaseAction {
 	public function beforeAction() {}
 	
 	public function afterAction() {}
+	
+	/**
+	 * 设置默认模板
+	 */
+	public function setDefaultViewTemplate($default) {
+		$this->getModelAndView()->setViewName($default);
+	}
+	
+	/**
+	 * @return WindModelAndView $mav
+	 */
+	protected function getModelAndView() {
+		return $this->mav;
+	}
 	
 	/**
 	 * 返回视图对像

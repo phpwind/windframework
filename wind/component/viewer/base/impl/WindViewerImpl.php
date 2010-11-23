@@ -35,6 +35,6 @@ interface WindViewerImpl {
 	/**
 	 * 获取模板内容与变量信息
 	 */
-	public function windFetch();
+	public function windFetch($template = '');
 	
 }

@@ -40,8 +40,8 @@ $sysConfig = array(
 	),
 	/* 模板引擎配置信息 */
 	'viewerResolver' => array(
-		'default' => 'WIND:core.WViewer',
-		'pw' => 'WIND:core.WPWViewer',
+		'default' => 'WIND:component.viewer.WindViewer',
+		'pw' => 'WIND:component.viewer.WindPWViewer',
 		'smarty' => 'libs.WSmarty',
 	),
 

@@ -51,7 +51,7 @@ class WindViewer implements WindViewerImpl {
 	/**
 	 * 获取模板信息
 	 */
-	public function windFetch($template) {
+	public function windFetch($template = '') {
 		$template = $this->getViewTemplate($template);
 		if ($this->vars) extract($this->vars, EXTR_REFS);
 		ob_start();
@@ -65,7 +65,7 @@ class WindViewer implements WindViewerImpl {
 	 * @param object|array|string $vars
 	 * @param string $key
 	 */
-	public function windAssign($vars = '', $key = '') {
+	public function windAssign($vars, $key = '') {
 		if (is_array($vars))
 			$this->windAssignWithArray($vars, $key);
 		elseif (is_object($vars))
@@ -93,7 +93,7 @@ class WindViewer implements WindViewerImpl {
 	public function windAssignWithObject($vars, $key = '') {
 		if (!is_object($vars)) return;
 		if ($key) $this->vars[$key] = $vars;
-		$this->vars += get_class_vars($vars);
+		$this->vars += get_object_vars($vars);
 	}
 	
 	/**
@@ -137,9 +137,8 @@ class WindViewer implements WindViewerImpl {
 	 */
 	private function _getViewTemplate($templateName, $templatePath, $templateExt = '') {
 		if (!$templateName) throw new WindException('template file is not exists.');
-		
 		$filePath = $templatePath . '.' . $templateName;
-		return W::getRealPath($filePath, false, $templateExt);
+		return L::getRealPath($filePath, false, $templateExt);
 	}
 	
 	/**

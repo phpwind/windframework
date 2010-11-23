@@ -17,7 +17,7 @@ class WindModelAndView {
 	private $path = '';
 	private $isRedirect = false;
 	private $redirect = '';
-	private $model = '';
+	private $model = null;
 	private $view = null;
 	
 	/**
@@ -27,8 +27,13 @@ class WindModelAndView {
 	 * @param string $module //module prefix
 	 */
 	public function __construct($viewName = '', $redirect = '') {
+		$this->model = new stdClass();
 		$this->setViewName($viewName);
 		$this->setRedirect($redirect);
+	}
+	
+	public function getModel() {
+		return $this->model;
 	}
 	
 	/**
@@ -77,7 +82,7 @@ class WindModelAndView {
 			$this->model[$key] = $model;
 		else
 			foreach ($model as $key => $value) {
-				$this->model[$key] = $value;
+				$this->model->$key = $value;
 			}
 	}
 	
@@ -125,6 +130,7 @@ class WindModelAndView {
 	
 	public function getView() {
 		if ($this->view == null) {
+			L::import('WIND:component.viewer.WindView');
 			$this->view = new WindView();
 			$this->view->setViewWithObject($this);
 		}
