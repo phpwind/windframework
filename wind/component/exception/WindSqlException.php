@@ -30,13 +30,6 @@ class WindSqlException extends WindException {
 	const DB_QUERY_TRAN_BEGIN = 'Transaction has not started';
 	const DB_QUERY_COMPARESS_ERROR = 'Query comparison is incorrect conversion or assembly';
 	const DB_QUERY_COMPARESS_EXIST = 'Comparison does not exist query';
-	const DB_TABLE_EMPTY='Table is  mepty';
-	const DB_EMPTY='Database is  mepty';
-	public function __construct($message,$code = 0,WindException $innerException = null){
-		parent::__construct($message,$code,$innerException);
-	}
-	function buildMessage($message,$code){
-		return 'DBERROR'.':'.$message;
-	}
-	
+	const DB_TABLE_EMPTY='Table is  empty';
+	const DB_EMPTY='Database is  empty';
 }
