@@ -140,7 +140,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 			$_keys = array();
 			$_values = array();
 			foreach ($_secondeChild as $_key => $_second) {
-				if (!in_array($_second['tagName'], $keyNode) && !in_array($_second['tagName'], $valueNode)) unset($_secondeChild[$_key]);
+				if (!in_array($_second['tagName'], $keyNode) && !in_array($_second['tagName'], $valueNode)) continue;
 				in_array($_second['tagName'], $keyNode) && $_keys[] = $_second['value'];
 				in_array($_second['tagName'], $valueNode) && $_values[] = $_second['value'];
 			}

@@ -151,7 +151,8 @@ class WindConfigParser implements WindConfigImpl {
 		(isset($app[WindConfigImpl::APPCONFIG])) && $app[WindConfigImpl::APPCONFIG] = $this->userAppPath . $app[WindConfigImpl::APPCONFIG];
 		$app[WindConfigImpl::APPCONFIG] = $app[WindConfigImpl::APPCONFIG]. '/' . $app[WindConfigImpl::APPNAME] . '_config.php';
 		foreach ($defaultConfig as $key => $value) {
-			if (in_array($key, explode(',', WindConfigImpl::MERMEARRAY)) && $appConfig[$key]) {
+			$_merge = (strpos(WindConfigImpl::MERGEARRAY, ',') === false) ? array(WindConfigImpl::MERGEARRAY) : explode(',', WindConfigImpl::MERGEARRAY);
+			if (in_array($key, $_merge) && $appConfig[$key]) {
 				!is_array($value) && $value = array($value);
 				!is_array($appConfig[$key]) && $appConfig[$key] = array($appConfig[$key]);
 				$defaultConfig[$key] = array_merge($value, $appConfig[$key]);
