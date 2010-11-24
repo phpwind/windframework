@@ -8,7 +8,7 @@
 interface WindConfigImpl {
 	const APP = 'app';
 	const APPNAME = 'appName';
-	const APPROOTPATH = 'appPath';
+	const APPROOTPATH = 'rootPath';
 	const APPCONFIG = 'appConfig';
 	const APPAUTHOR = 'appAuthor';
 	
