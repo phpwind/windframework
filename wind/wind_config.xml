@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<WIND></WIND>
+<WIND>
+  <app>
+    <appName>default</appName>
+    <appAuthor>PHPWIND</appAuthor>
+    <appPath>default</appPath>
+    <appConfig>data</appConfig>
+  </app>
+  <isOpen>0</isOpen>
+  <describe>測試測試测试测试</describe>
+  <filters>
+  	<filter>
+  		<filterName>windFilter</filterName>
+  		<filterPath>/filter</filterPath>
+  	</filter>
+  </filters>
+  <template>
+    <templateDir>template</templateDir>
+    <compileDir>compile</compileDir>
+    <cacheDir>cache</cacheDir>
+    <templateExt>htm</templateExt>
+    <engine>php</engine>
+  </template>
+</WIND>
