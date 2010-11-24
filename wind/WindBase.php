@@ -28,6 +28,7 @@ define('DEBUG', true);*/
 class W {
 	private static $_apps = array();
 	private static $_default = '';
+	private static $_current = '';
 	private static $_systemConfig = null;
 	
 	/**
@@ -98,6 +99,7 @@ class W {
 	 */
 	static private function _initConfig() {
 		W::setApps('WIND', array('rootPath' => WIND_PATH));
+	
 	}
 	
 	/**
@@ -233,7 +235,7 @@ class L {
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
 	 * @return string|array
 	 */
-	static public function getRealPath($filePath, $info = false, $ext = '') {
+	static public function getRealPath($filePath, $info = false, $ext = '', $dir = '') {
 		$isPackage = false;
 		$fileName = $namespace = '';
 		if (is_dir($filePath)) {
@@ -250,14 +252,17 @@ class L {
 			if (($pos = strrpos($filePath, '.')) === false) {
 				$fileName = $filePath;
 			} else {
-				$fileName = (string) substr($filePath, $pos + 1);
-				$filePath = (string) substr($filePath, 0, $pos);
+				$fileName = substr($filePath, $pos + 1);
+				$filePath = substr($filePath, 0, $pos);
 			}
 			if (($pos = strpos($filePath, ':')) !== false) {
-				$namespace = (string) substr($filePath, 0, $pos);
-				$filePath = (string) substr($filePath, $pos + 1);
+				$namespace = substr($filePath, 0, $pos);
+				$filePath = substr($filePath, $pos + 1);
 			}
-			$filePath = L::_getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
+			if ($dir)
+				$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
+			else
+				$filePath = L::_getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
 			$isPackage = $fileName === '*';
 			if (!$isPackage && !$ext) {
 				foreach ((array) L::_getExtension() as $key => $value) {
