@@ -39,7 +39,7 @@ class WindWebApplication implements WindApplicationImpl {
 		$action->afterAction();
 		
 		/* 获得请求跳转信息 */
-		$mav = $action->getModulAndView();
+		$mav = $action->getModelAndView();
 		$this->processDispatch($request, $response, $mav);
 	}
 	

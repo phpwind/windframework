@@ -118,7 +118,8 @@ class WindView {
 	 */
 	private function _dispatchWithTemplate($request, $response) {
 		$viewer = $this->createViewerResolver();
-		$response->setBody($viewer->windDisplay());
+		$viewer->windAssign($this->mav->getModel());
+		$response->setBody($viewer->windFetch());
 	}
 	
 	/**
@@ -134,7 +135,7 @@ class WindView {
 			throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
 		}
 		$object = new $className();
-		$object->setView($this);
+		$object->initViewerResolverWithView($this);
 		return $object;
 	}
 	

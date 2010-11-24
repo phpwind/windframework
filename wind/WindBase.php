@@ -186,7 +186,7 @@ class L {
 	 */
 	static public function import($filePath) {
 		if (!$filePath) return null;
-		if (file_exists($filePath)) {
+		if (is_file($filePath)) {
 			L::_include($filePath);
 			return $filePath;
 		}

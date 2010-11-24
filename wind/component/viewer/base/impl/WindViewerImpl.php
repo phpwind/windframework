@@ -18,13 +18,6 @@
 interface WindViewerImpl {
 	
 	/**
-	 * 显示输出视图内容
-	 * 
-	 * @param string $tpl
-	 */
-	public function windDisplay($tpl = '');
-	
-	/**
 	 * 设置视图变量信息
 	 * 
 	 * @param array $vars
@@ -36,5 +29,11 @@ interface WindViewerImpl {
 	 * 获取模板内容与变量信息
 	 */
 	public function windFetch($template = '');
+	
+	/**
+	 * 获得一个视图信息，并初始化解析器
+	 * @param WindView $view
+	 */
+	public function initViewerResolverWithView($view);
 	
 }

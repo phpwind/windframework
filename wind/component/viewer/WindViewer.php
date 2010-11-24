@@ -22,45 +22,27 @@ L::import('viewer:base.impl.WindViewerImpl');
  */
 class WindViewer implements WindViewerImpl {
 	
-	/**
-	 * @var WindView
-	 */
-	protected $view = null;
-	
-	/**
-	 * 视图内容
-	 * @var $viewContainer
-	 */
-	protected $viewContainer = '';
-	
 	protected $template = '';
+	protected $templatePath = '';
+	protected $view = null;
 	
 	/**
 	 * 视图变量信息
 	 * @var $vars
 	 */
 	protected $vars = array();
-	protected $isCache = false;
-	
-	public function windDisplay($template = '') {
-		//TODO
-		$this->windFetch($template);
-		return $this->viewContainer;
-	}
 	
 	/**
 	 * 获取模板信息
 	 */
 	public function windFetch($template = '') {
 		$template = $this->getViewTemplate($template);
-		if ($this->view && $this->view->getMav())
-			extract($this->view->getMav()->getModel(), EXTR_REFS);
-		elseif ($this->vars)
-			extract($this->vars, EXTR_REFS);
-			
+		if ($this->vars) extract($this->vars, EXTR_REFS);
+		
 		ob_start();
 		@include $template;
-		$this->viewContainer = ob_get_clean();
+		
+		return ob_get_clean();
 	}
 	
 	/**
@@ -124,13 +106,9 @@ class WindViewer implements WindViewerImpl {
 	public function getViewTemplate($templateName = '', $templateExt = '') {
 		if (!$templateName) $templateName = $this->view->getTemplateName();
 		if (!$templateExt) $templateExt = $this->view->getTemplateExt();
-		$templatePath = $this->view->getTemplatePath();
+		$templatePath = $this->templatePath;
 		$templatePath = $this->_getViewTemplate($templateName, $templatePath, $templateExt);
 		return $templatePath;
-	}
-	
-	private function _getViewCache() {
-
 	}
 	
 	/**
@@ -150,7 +128,9 @@ class WindViewer implements WindViewerImpl {
 	 * 
 	 * @param WindView $view
 	 */
-	public function setView($view) {
+	public function initViewerResolverWithView($view) {
+		$this->template = $view->getTemplateName();
+		$this->templatePath = $view->getTemplatePath();
 		$this->view = $view;
 	}
 }

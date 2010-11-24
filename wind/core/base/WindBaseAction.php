@@ -47,17 +47,7 @@ abstract class WindBaseAction {
 	/**
 	 * @return WindModelAndView $mav
 	 */
-	protected function getModelAndView() {
-		return $this->mav;
-	}
-	
-	/**
-	 * ·µ»ØÊÓÍ¼¶ÔÏñ
-	 * 
-	 * @param WRouter $router
-	 * @return WindForward
-	 */
-	public function getModulAndView() {
+	public function getModelAndView() {
 		return $this->mav;
 	}
 
