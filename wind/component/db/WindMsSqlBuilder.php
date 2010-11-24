@@ -194,9 +194,33 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 		if(empty($table)){
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
-		$option['table'] = array('sys.objects'=>'a','sys.all_columns'=>'b','sys.types'=>'c');
-		$option['field'] = array('b.name'=>'Field','b.max_length','b.precision','b.scale','b.is_nullable','b.is_identity','c.name'=>'Type');
-		$option['where'] = array(array('eq'=>array('a.object_id','b.object_id',true)),'and',array('eq'=>array(' b.system_type_id','c.system_type_id',true)),'and','eq'=>array('a.name',$table));
+		$option['table'] = array(
+			'sys.objects'=>'a',
+			'sys.all_columns'=>'b',
+			'sys.types'=>'c'
+		);
+		$option['field'] = array(
+			'b.name'=>'Field',
+			'b.max_length',
+			'b.precision',
+			'b.scale',
+			'b.is_nullable',
+			'b.is_identity',
+			'c.name'=>'Type'
+		);
+		$option['where'] = array(
+			array(
+				'eq'=>array('a.object_id','b.object_id',true)
+			),
+			'and',
+			array(
+				'eq'=>array(' b.system_type_id','c.system_type_id',true)
+			),
+			'and',
+			'eq'=>array(
+			'a.name',$table
+			)
+		);
 		return $this->getSelectSql($option);
 		
 	}
