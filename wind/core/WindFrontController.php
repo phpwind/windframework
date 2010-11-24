@@ -31,7 +31,9 @@ class WindFrontController extends WindServlet {
 	
 	protected function __construct($config = array()) {
 		parent::__construct();
+		echo '<pre/>';
 		$this->_initConfig($config);
+		exit();
 	}
 	
 	public function run() {
@@ -87,9 +89,13 @@ class WindFrontController extends WindServlet {
 	 * @param array $config
 	 */
 	private function _initConfig($config) {
+		$configParser = new WindConfigParser($this->request);
+		$appName = $configParser->parser();//执行解析
+		W::parserConfig();//设置全局apps
+		W::setCurrentApp($appName);
 		$configObj = WindSystemConfig::getInstance();
-		$configObj->parse((array) W::getSystemConfig(), (array) $config);
-//		$configObj->parse(SYSTEM_CONFIG_PATH, dirname($this->request->getServer('SCRIPT_FILENAME')), WIND_PATH);
+		$configObj->parse((array) W::getSystemConfig(), W::getCurrentApp());
+//		$configObj->parse((array) W::getSystemConfig(), (array) $config);
 		$this->config = $configObj;
 	}
 	

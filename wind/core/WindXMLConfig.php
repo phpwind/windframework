@@ -36,6 +36,10 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	 */
 	private function setChildConfig() {
 		$_config = array();
+		//关于应用的信息
+		$_config[WindConfigImpl::ISOPEN] = WindConfigImpl::ISOPEN;
+		$_config[WindConfigImpl::DESCRIBE] = WindConfigImpl::DESCRIBE;
+		
 		//关于应用的配置
 		$_config[WindConfigImpl::APP] = array(
 					WindConfigImpl::APPNAME, 
@@ -88,8 +92,20 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 		$app = $this->createParser()->getElementByXPath(WindConfigImpl::APP);
 		if ($isCheck && !$app) throw new WindException('the app config must be setting');
 		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $this->childConfig[WindConfigImpl::APP]);
-		if ($isCheck && empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))  throw new WindException('the "appconfig" of the "app" config must be setted!');
-
+		if ($isCheck && empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))
+			throw new WindException('the "appconfig" of the "app" config must be setted!');
+/*
+		foreach ($this->childConfig as $key => $value) {
+			if (is_string($value)) {
+				$this->xmlArray[$key] = $this->getNoChild($value);
+			} elseif (is_array($value)) {
+				if (in_array(array('secondNodes', 'keyNodes', 'valueNodes'), sarray_keys($value))) {
+					$this->xmlArray[$key] = $this->getThirdChildTree($key, $value['secondNodes'], $value['keyNodes'], $value('valueNodes'));
+				} else {
+					$this->xmlArray[$key] = $this->getSecondChildTree($key, $value);
+				}
+			}
+		}*/
 		$this->xmlArray[WindConfigImpl::ISOPEN] = $this->getNoChild(WindConfigImpl::ISOPEN);
 		$this->xmlArray[WindConfigImpl::DESCRIBE] = $this->getNoChild(WindConfigImpl::DESCRIBE);
 

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:');
+//L::import('WIND:');
 
 /**
  * 配置信息解析
@@ -24,7 +24,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param array $configSystem
 	 * @param array $configCustom
 	 */
-	public function parse($configSystem, $configCustom = array()) {
+	public function _parse($configSystem, $configCustom = array()) {
 		if (!is_array($configSystem) || !is_array($configCustom)) throw new Exception('the format of config file is error!!!');
 		
 		if (empty($configSystem)) throw new Exception('system config file is not exists!!!');
@@ -35,14 +35,22 @@ class WindSystemConfig extends WindConfig {
 	}
 	
 	/**
-	 * 真对数组格式的解析
-	 * @param array $configSystem
-	 * @param array $configCustom
+	 * 针对数组格式的解析
+	 * @param array $configSystem  全局缓存配置
+	 * @param string $current  当前应用的名字
 	 */
-	public function _parse($globalAppsPath, $userAppPath, $defaultPath) {
-		$parser = new WindConfigParser($globalAppsPath, $userAppPath, $defaultPath);
-		$this->config = $parser->getConfig();
-		$this->globalConfig = $parser->getAppsConfig();
+	public function parse($configSystem, $current) {
+		if (!is_array($configSystem) || !$current) 
+			throw new Exception('the format of config file is error!!!');
+		$this->system = $configSystem;
+		if (!$configSystem[$current]) throw new Exception('the current app name is error!!!');
+		if (is_file($configSystem[$current]['appConfig'])) {
+			include ($configSystem[$current]['appConfig']);
+			$this->config = $config;
+		} else {
+			include (L::getRealPath($configSystem[$current]['appConfig']));
+			$this->config = $config;
+		}
 	}
 	
 	/**
