@@ -153,11 +153,13 @@ class WindFilterFactory implements IWindFactory {
 		$this->filters = array();
 		$config = $configObj->getFiltersConfig();
 		foreach ((array) $config as $key => $value) {
-			if (($pos = strrpos($value, '.')) === false)
-				$filterName = $value;
+			$path = $value[IWindConfig::FILTER_NAME];
+			$name = $value[IWindConfig::FILTER_PATH];
+			if (($pos = strrpos($path, '.')) === false)
+				$filterName = $path;
 			else
-				$filterName = substr($value, $pos + 1);
-			$this->filters[] = array($filterName, $value, $key);
+				$filterName = substr($path, $pos + 1);
+			$this->filters[] = array($filterName, $path, $name);
 		}
 		$this->configs = $config;
 	}
