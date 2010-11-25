@@ -13,10 +13,10 @@ $preload = WIND_PATH.PRELOAD_FILE;
 if(!is_file($preload)){
 	 require $preload;
 }else{
-	L::import('WIND:utility.WindPackge');
-	$pack = L::getInstance('WindPackge');
+	L::import('WIND:utility.WindPack');
+	$pack = L::getInstance('WindPack');
 	$pack->pack(array('core','utility'),PRELOAD_FILE);
-	require $preload;
+	//require $preload;
 
 }
 

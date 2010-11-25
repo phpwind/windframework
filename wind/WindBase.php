@@ -13,7 +13,7 @@ define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
 define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
-define('PRELOAD_FILE','preload.php');
+define('PRELOAD_FILE','WindPreload.php');
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
 define('LOG_PATH', WIND_PATH . 'log' . D_S);
