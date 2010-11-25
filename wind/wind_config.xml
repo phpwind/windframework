@@ -1,19 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
+　<!-- 应用配置信息  -->
   <app>
     <name>default</name>
     <rootPath>default</rootPath>
     <configPath>data</configPath>
   </app>
   
-  <isOpen>0</isOpen>
-  <describe>測試測試测试测试</describe>
+  <!-- 模板相关配置信息
+	 * 1.模板文件存放路径
+	 * 2.默认的模板文件名称
+	 * 3.模板文件后缀名
+	 * 4.视图解析器
+	 * 5.模板文件的缓存路径
+	 * 6.模板编译路径 -->
+  <view>
+  	<templatePath>template</templatePath>
+  	<templateName>index</templateName>
+  	<templateExt>htm</templateExt>
+  	<resolver>default</resolver>
+  	<isCache>false</isCache>
+  	<cacheDir>cache</cacheDir>
+  	<compileDir>compile</compileDir>
+  </view>
   
-  <template>
-	<templateDir>template</templateDir>
-	<compileDir>compile</compileDir>
-	<cacheDir>cache</cacheDir>
-	<templateExt>htm</templateExt>
-	<engine>php</engine>
-  </template>
+  <!-- 模板引擎配置信息 -->
+  <viewerResolver>
+      <default>WIND:component.viewer.WindViewer</default>
+      <pw>WIND:component.viewer.WindPWViewer</pw>
+      <smarty>libs.WSmarty</smarty>
+  </viewerResolver>
+  
+  <!-- 过滤器链 -->
+  <filters>
+  	 <filter name="WindInput">
+  	 	<filterName>WindInput</filterName>
+  	 	<filterPath></filterPath>
+  	 </filter>
+  </filters>
+  
+  <!-- 路由策略配置 -->
+  <router>
+  	<parser>url</parser>
+  </router>
+  
+  
+  <!-- URL路由规则配置 -->
+  <urlRul>
+     <action>run</action>
+     <controller>index</controller>
+     <module></module>
+  </urlRul>
+  
+  <!-- 路由解析器配置  -->
+  <routerParser>
+  	 <url>WIND:component.router.WindUrlBasedRouter</url>
+  </routerParser>
 </WIND>
