@@ -13,7 +13,7 @@ define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
 define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
-define('VERSION','1.0.1');
+define('VERSION','1.0.2');
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
 define('LOG_PATH', WIND_PATH . 'log' . D_S);
@@ -67,7 +67,7 @@ class W {
 	 * @return array
 	 */
 	static public function getApps($name = '') {
-		return $name ? W::$_apps[$name] : W::$_apps[W::$_current];
+		return $name ? W::$_apps[$name] : W::$_apps[W::$_default];
 	}
 	
 	/**
