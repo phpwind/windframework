@@ -87,6 +87,7 @@ class WindFrontController extends WindServlet {
 	 * @param array $config
 	 */
 	private function _initConfig($config) {
+		L::import('WIND:component.config.WindConfigParser');
 		$configParser = new WindConfigParser($this->request);
 		$appConfig = $configParser->parser();
 		//TODO

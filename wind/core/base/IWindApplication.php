@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-Interface WindApplicationImpl {
+Interface IWindApplication {
 	public function init();
 	public function processRequest($request, $response);
 	public function destory();

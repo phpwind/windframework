@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.base.impl.WindApplicationImpl');
+L::import('WIND:core.base.IWindApplication');
 L::import('WIND:component.exception.WindException');
 L::import('WIND:component.viewer.WindViewFactory');
 /**
@@ -15,7 +15,7 @@ L::import('WIND:component.viewer.WindViewFactory');
  * @version $Id$ 
  * @package 
  */
-class WindWebApplication implements WindApplicationImpl {
+class WindWebApplication implements IWindApplication {
 	
 	/**
 	 * 初始化配置信息
