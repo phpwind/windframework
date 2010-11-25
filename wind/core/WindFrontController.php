@@ -88,11 +88,14 @@ class WindFrontController extends WindServlet {
 	 */
 	private function _initConfig($config) {
 		$configParser = new WindConfigParser($this->request);
-		$appConfig = $configParser->parser();//执行解析
-		W::parserConfig($appConfig);//设置全局apps
+		$appConfig = $configParser->parser();
+		//TODO
+		$currentApp = $appConfig[IWindConfig::APP];
+		W::setApps($currentApp[IWindConfig::APP_NAME], $currentApp);
+		W::setCurrentApp($currentApp[IWindConfig::APP_NAME]);
+		
 		$configObj = WindSystemConfig::getInstance();
-		$configObj->parse($appConfig); 
-//		$configObj->parse((array) W::getSystemConfig(), (array) $config);
+		$configObj->parse($appConfig);
 		$this->config = $configObj;
 	}
 	

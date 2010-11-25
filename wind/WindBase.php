@@ -14,6 +14,7 @@ define('WIND_PATH', dirname(__FILE__) . D_S);
 define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
 define('VERSION','1.0.2');
+
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
 define('LOG_PATH', WIND_PATH . 'log' . D_S);
@@ -76,34 +77,18 @@ class W {
 	 * @param boolean $default
 	 */
 	static public function setApps($name = '', $value = array(), $default = false) {
+		if (empty($value)) return;
 		W::$_apps[$name] = $value;
 		if ($default) W::$_default = $name;
 		L::register($name, $value['rootPath']);
 	}
 	
 	/**
-	 * 解析配置文件
-	 */
-	static public function parserConfig($appConfig = array()) {
-		if ($appConfig) {
-			$currentApp = $appConfig[IWindConfig::APP];
-			W::setApps($currentApp[IWindConfig::APP_NAME], $currentApp[IWindConfig::APP_ROOTPATH]);
-			W::setCurrentApp($currentApp[IWindConfig::APP_NAME]);
-		}
-		$cahceConfig = COMPILE_PATH . '/config.php';
-		if (!is_file($cahceConfig)) return false;
-		@include $cahceConfig;
-		foreach ($sysConfig as $appName => $appConfig) {
-			W::setApps($appName, $appConfig);
-		}
-	}
-	
-	/**
 	 * 设置当前应用名字
 	 * @param string $name
 	 */
-	static public function setCurrentApp($name) {
-		if (!$name) throw new WindException('Please set a exists AppName!');
+	static public function setCurrentApp($name = '') {
+		if (!$name) return;
 		W::$_current = $name;
 	}
 	/**
@@ -160,6 +145,11 @@ class W {
 	 */
 	static private function _initConfig() {
 		W::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
+		if (!is_file(COMPILE_PATH . '/config.php')) return false;
+		$sysConfig = @include COMPILE_PATH . '/config.php';
+		foreach ($sysConfig as $appName => $appConfig) {
+			W::setApps($appName, $appConfig);
+		}
 	}
 	
 	/**
@@ -180,7 +170,7 @@ class W {
 		//TODO 重构
 		if (defined('LOG_RECORD')) {
 			$message = str_replace('<br/>', "\r\n", $message);
-			$ifrecord == 'add' ? WLog::add($message, strtoupper($type)) : WLog::log($message, strtoupper($type));
+			$ifrecord == 'add' ? WindLog::add($message, strtoupper($type)) : WindLog::log($message, strtoupper($type));
 		}
 	}
 	
@@ -191,7 +181,7 @@ class W {
 	 */
 	static public function debug($message, $trace = array()) {
 		//TODO 重构
-		return defined('DEBUG') ? WDebug::debug($message, $trace) : $message;
+		return defined('DEBUG') ? WindDebug::debug($message, $trace) : $message;
 	}
 	
 	static public function WExceptionHandler($e) {
@@ -395,5 +385,14 @@ class L {
 		return $rp['rootPath'];
 	}
 }
+
+/*if(!is_file(WIND_PATH.PRELOAD_FILE)){
+	 require WIND_PATH.PRELOAD_FILE;
+}else{
+	L::import('WIND:utility.WindPack');
+	$pack = L::getInstance('WindPack');
+	$pack->pack(array('core','utility'),WIND_PATH.PRELOAD_FILE);
+	require WIND_PATH.PRELOAD_FILE;
+}*/
 
 W::init();
