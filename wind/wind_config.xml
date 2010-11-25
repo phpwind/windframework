@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-	<app global='' name=''>
-		<name></name>
-		<rootPath></rootPath>
-		<configPath></configPath>
-	</app>
-	<filters>
-		<filter name='windFilter' path='filter' />
-		<filter name='windFilter' path='filter' />
-	</filters>
-	<templates>
-		<template>
-			<templateDir>template</templateDir>
-			<compileDir>compile</compileDir>
-			<cacheDir>cache</cacheDir>
-			<templateExt>htm</templateExt>
-			<engine>php</engine>
-		</template>
-		<templateDir>template</templateDir>
-		<compileDir>compile</compileDir>
-		<cacheDir>cache</cacheDir>
-		<templateExt>htm</templateExt>
-		<engine>php</engine>
-	</templates>
+  <app>
+    <name>default</name>
+    <rootPath>default</rootPath>
+    <configPath>data</configPath>
+  </app>
+  
+  <isOpen>0</isOpen>
+  <describe>測試測試测试测试</describe>
+  
+  <template>
+	<templateDir>template</templateDir>
+	<compileDir>compile</compileDir>
+	<cacheDir>cache</cacheDir>
+	<templateExt>htm</templateExt>
+	<engine>php</engine>
+  </template>
 </WIND>
