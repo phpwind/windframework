@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.response.base.impl.WindResponseImpl');
+L::import('WIND:component.response.base.IWindResponse');
 L::import('WIND:component.exception.WindException');
 
 /**
@@ -20,7 +20,7 @@ L::import('WIND:component.exception.WindException');
  * @version $Id$ 
  * @package 
  */
-class WindHttpResponse implements WindResponseImpl {
+class WindHttpResponse implements IWindResponse {
 	
 	private $_body = array();
 	

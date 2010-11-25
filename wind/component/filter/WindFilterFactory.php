@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:utility.factory.impl.WindFactoryImpl');
+L::import('WIND:utility.factory.IWindFactory');
 
 /**
  * ¹ýÂËÆ÷¹¤³¡
@@ -15,7 +15,7 @@ L::import('WIND:utility.factory.impl.WindFactoryImpl');
  * @version $Id$ 
  * @package
  */
-class WindFilterFactory implements WindFactoryImpl {
+class WindFilterFactory implements IWindFactory {
 	private $index = 0;
 	private $filters = array();
 	private $configs = array();

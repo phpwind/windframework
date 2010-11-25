@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package
  */
-interface WindRequestImpl {
+interface IWindRequest {
 
 }
 

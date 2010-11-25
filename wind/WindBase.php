@@ -9,13 +9,13 @@
 
 
 /* 路径相关配置信息  */
-!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-!defined('CONFIG_CACHE_PATH') && define('CONFIG_CACHE_PATH', WIND_PATH);//定义全局配置文件生成路径
-!defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
+define('D_S', DIRECTORY_SEPARATOR);
+define('WIND_PATH', dirname(__FILE__) . D_S);
+define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
-define('LOG_PATH', WIND_PATH . 'log' . DIRECTORY_SEPARATOR);
+define('LOG_PATH', WIND_PATH . 'log' . D_S);
 define('LOG_DISPLAY_TYPE', 'log');
 
 /*define('LOG_RECORD', true);
@@ -30,7 +30,7 @@ class W {
 	private static $_default = '';
 	private static $_current = '';
 	private static $_systemConfig = null;
-
+	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
@@ -40,7 +40,7 @@ class W {
 		self::_initBaseLib();
 		self::_initLog();
 	}
-
+	
 	/**
 	 * 返回系统配置信息
 	 *
@@ -58,7 +58,7 @@ class W {
 		}
 		return W::$_systemConfig;
 	}
-
+	
 	/**
 	 * 获得应用相关配置信息
 	 *
@@ -68,7 +68,7 @@ class W {
 	static public function getApps($name = '') {
 		return $name ? W::$_apps[$name] : W::$_apps[W::$_default];
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @param array $value
@@ -79,7 +79,7 @@ class W {
 		if ($default) W::$_default = $name;
 		L::register($name, $value['rootPath']);
 	}
-
+	
 	/**
 	 * 解析配置文件
 	 */
@@ -93,7 +93,7 @@ class W {
 			W::setApps($appName, $appConfig);
 		}
 	}
-
+	
 	/**
 	 * 设置当前应用名字
 	 * @param string $name
@@ -108,7 +108,7 @@ class W {
 	 */
 	static public function getCurrentApp() {
 		return W::$_current;
-
+	
 	}
 	/**
 	 * 自动加载框架底层类库
@@ -116,23 +116,20 @@ class W {
 	 */
 	static private function _initBaseLib() {
 		/* 核心加载 */
-		L::import('WIND:core.base.impl.*');
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.*');
-
-		L::import('WIND:component.exception.base.impl.*');
+		
 		L::import('WIND:component.exception.base.*');
 		L::import('WIND:component.exception.WindException');
 	}
-
+	
 	/**
 	 * 解析配置文件
 	 */
 	static private function _initConfig() {
-		W::setApps('WIND', array('rootPath' => WIND_PATH));
-
+		W::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
 	}
-
+	
 	/**
 	 * 初始化系统日志，调试系统
 	 */
@@ -141,7 +138,7 @@ class W {
 		defined('LOG_RECORD') && W::import('utility.WLog');
 		defined('DEBUG') && W::import('utility.WDebug');
 	}
-
+	
 	/**
 	 * 异常、调试及其它信息记录到日志
 	 * @param $message
@@ -154,7 +151,7 @@ class W {
 			$ifrecord == 'add' ? WLog::add($message, strtoupper($type)) : WLog::log($message, strtoupper($type));
 		}
 	}
-
+	
 	/**
 	 * 对于输出信息是否debug处理
 	 * @param $message
@@ -164,7 +161,7 @@ class W {
 		//TODO 重构
 		return defined('DEBUG') ? WDebug::debug($message, $trace) : $message;
 	}
-
+	
 	static public function WExceptionHandler($e) {
 		$trace = is_a($e, 'WindException') ? $e->getStackTrace() : $e->getTrace();
 		$message = W::debug("{$e}", $trace);
@@ -185,11 +182,11 @@ class L {
 	private static $_imports = array();
 	private static $_instances = array();
 	private static $_extensions = array('php', 'htm', 'class.php', 'db.php', 'phpx');
-
+	
 	static public function getImports($key = '') {
 		return $key ? L::$_imports[$key] : L::$_imports;
 	}
-
+	
 	/**
 	 * 将路径信息注册到命名空间
 	 *
@@ -201,7 +198,7 @@ class L {
 			L::$_namespace[$name] = $path;
 		}
 	}
-
+	
 	/**
 	 * 加载一个类或者加载一个包
 	 * 如果加载的包中有子文件夹不进行循环加载
@@ -242,7 +239,7 @@ class L {
 		}
 		return $realPath;
 	}
-
+	
 	/**
 	 * 获得一个类的静态单例对象
 	 * 全局的静态单例对象以数组的形式保存在 < self::$_instances >中，索引为类名称
@@ -257,7 +254,7 @@ class L {
 		if (!key_exists($className, L::$_instances)) L::_createInstance($className, $args);
 		return L::$_instances[$className];
 	}
-
+	
 	/**
 	 * 解析路径信息，并返回路径的详情
 	 * 返回array('isPackage','fileName','extension','realPath')
@@ -308,7 +305,7 @@ class L {
 		if ($info) return array($isPackage, $fileName, $ext, realpath($realpath));
 		return realpath($realpath);
 	}
-
+	
 	/**
 	 * 根据类名称创建类的单例对象，并保存到静态对象中
 	 * 同时调用清理单例对象的策略
@@ -324,7 +321,7 @@ class L {
 		$object = call_user_func_array(array($class, 'newInstance'), $args);
 		L::$_instances[$className] = & $object;
 	}
-
+	
 	/**
 	 * 全局包含文件的唯一入口
 	 *
@@ -340,7 +337,7 @@ class L {
 		$fileName && self::$_imports[$fileName] = $realPath;
 		return $realPath;
 	}
-
+	
 	/**
 	 * 获得所有支持的扩展名
 	 *
@@ -349,7 +346,7 @@ class L {
 	static private function _getExtension() {
 		return L::$_extensions;
 	}
-
+	
 	/**
 	 * 获得跟路径信息
 	 * @return string

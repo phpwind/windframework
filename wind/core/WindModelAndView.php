@@ -127,6 +127,9 @@ class WindModelAndView {
 		$this->view = $view;
 	}
 	
+	/**
+	 * @return WindView
+	 */
 	public function getView() {
 		if ($this->view == null) {
 			L::import('WIND:component.viewer.WindView');

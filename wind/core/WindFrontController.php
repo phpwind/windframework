@@ -94,7 +94,7 @@ class WindFrontController extends WindServlet {
 		W::parserConfig();//ÉèÖÃÈ«¾Öapps
 		W::setCurrentApp($appName);
 		$configObj = WindSystemConfig::getInstance();
-		$configObj->parse((array) W::getSystemConfig(), W::getCurrentApp());
+		$configObj->parse((array) W::getSystemConfig(), W::getCurrentApp()); 
 //		$configObj->parse((array) W::getSystemConfig(), (array) $config);
 		$this->config = $configObj;
 	}

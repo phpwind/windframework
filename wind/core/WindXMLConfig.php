@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-L::import('WIND:core.base.impl.WindConfigImpl');
+L::import('WIND:core.base.IWindConfig');
 L::import('WIND:utility.xml.xml');
 
 /**
@@ -16,7 +16,7 @@ L::import('WIND:utility.xml.xml');
  * @version $Id$ 
  * @package
  */
-class WindXMLConfig extends XML implements WindConfigImpl {
+class WindXMLConfig extends XML implements IWindConfig {
 	private $xmlArray;
     private $childConfig;
 	/**
@@ -37,35 +37,33 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	private function setChildConfig() {
 		$_config = array();
 		//关于应用的信息
-		$_config[WindConfigImpl::ISOPEN] = WindConfigImpl::ISOPEN;
-		$_config[WindConfigImpl::DESCRIBE] = WindConfigImpl::DESCRIBE;
 		
 		//关于应用的配置
-		$_config[WindConfigImpl::APP] = array(
-					WindConfigImpl::APPNAME, 
-					WindConfigImpl::APPROOTPATH, 
-					WindConfigImpl::APPCONFIG, 
-					WindConfigImpl::APPAUTHOR);
+		$_config[IWindConfig::APP] = array(
+					IWindConfig::APPNAME, 
+					IWindConfig::APPROOTPATH, 
+					IWindConfig::APPCONFIG, 
+					IWindConfig::APPAUTHOR);
 		//关于过滤器的配置
 		/* 
 		 * secondNodes: 代表了该标签的子级标签
 		 * keyNodes: 代表了该标签的内容将作为键保存
 		 * valueNodes: 代表了该标签的内容将作为值保存
 		 */			
-		$_config[WindConfigImpl::FILTERS] = array(
-		            'secondNodes' => array(WindConfigImpl::FILTER),
-		            'keyNodes' => array(WindConfigImpl::FILTERNAME),
-		            'valueNodes' => array(WindConfigImpl::FILTERPATH));
+		$_config[IWindConfig::FILTERS] = array(
+		            'secondNodes' => array(IWindConfig::FILTER),
+		            'keyNodes' => array(IWindConfig::FILTERNAME),
+		            'valueNodes' => array(IWindConfig::FILTERPATH));
 		//配置视图相关
-		$_config[WindConfigImpl::TEMPLATE] = array(
-					WindConfigImpl::TEMPLATEDIR, 
-					WindConfigImpl::COMPILERDIR, 
-					WindConfigImpl::CACHEDIR, 
-					WindConfigImpl::TEMPLATEEXT, 
-					WindConfigImpl::ENGINE);
+		$_config[IWindConfig::TEMPLATE] = array(
+					IWindConfig::TEMPLATEDIR, 
+					IWindConfig::COMPILERDIR, 
+					IWindConfig::CACHEDIR, 
+					IWindConfig::TEMPLATEEXT, 
+					IWindConfig::ENGINE);
 		//配置路由相关
-	    $_config[WindConfigImpl::URLRULE] = array(
-	    			WindConfigImpl::ROUTERPASE);
+	    $_config[IWindConfig::URLRULE] = array(
+	    			IWindConfig::ROUTERPASE);
 	    			
 		$this->childConfig = $_config;
 	}
@@ -81,7 +79,7 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	/**
 	 * 内容解析
 	 * 
-	 * 内容的解析依赖于配置文件中配置项的格式进行，每个配置项对应的在WindConfigImpl中都必须有对应的常量声明
+	 * 内容的解析依赖于配置文件中配置项的格式进行，每个配置项对应的在IWindConfig中都必须有对应的常量声明
 	 * 对应的解析格式调用对应的解析函数。
 	 * 
 	 * @access private 
@@ -89,10 +87,10 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 	 * @return array
 	 */
 	private function fetchContents($isCheck = true) {
-		$app = $this->createParser()->getElementByXPath(WindConfigImpl::APP);
+		$app = $this->createParser()->getElementByXPath(IWindConfig::APP);
 		if ($isCheck && !$app) throw new WindException('the app config must be setting');
-		$this->xmlArray[WindConfigImpl::APP] = $this->getSecondChildTree(WindConfigImpl::APP, $this->childConfig[WindConfigImpl::APP]);
-		if ($isCheck && empty($this->xmlArray[WindConfigImpl::APP][WindConfigImpl::APPCONFIG]))
+		$this->xmlArray[IWindConfig::APP] = $this->getSecondChildTree(IWindConfig::APP, $this->childConfig[IWindConfig::APP]);
+		if ($isCheck && empty($this->xmlArray[IWindConfig::APP][IWindConfig::APPCONFIG]))
 			throw new WindException('the "appconfig" of the "app" config must be setted!');
 /*
 		foreach ($this->childConfig as $key => $value) {
@@ -106,16 +104,14 @@ class WindXMLConfig extends XML implements WindConfigImpl {
 				}
 			}
 		}*/
-		$this->xmlArray[WindConfigImpl::ISOPEN] = $this->getNoChild(WindConfigImpl::ISOPEN);
-		$this->xmlArray[WindConfigImpl::DESCRIBE] = $this->getNoChild(WindConfigImpl::DESCRIBE);
+			
+		$this->xmlArray[IWindConfig::FILTERS] = $this->getThirdChildTree(IWindConfig::FILTERS, 
+																			$this->childConfig[IWindConfig::FILTERS]['secondNodes'], 
+																			$this->childConfig[IWindConfig::FILTERS]['keyNodes'], 
+																			$this->childConfig[IWindConfig::FILTERS]['valueNodes']);
 
-		$this->xmlArray[WindConfigImpl::FILTERS] = $this->getThirdChildTree(WindConfigImpl::FILTERS, 
-																			$this->childConfig[WindConfigImpl::FILTERS]['secondNodes'], 
-																			$this->childConfig[WindConfigImpl::FILTERS]['keyNodes'], 
-																			$this->childConfig[WindConfigImpl::FILTERS]['valueNodes']);
-
-		$this->xmlArray[WindConfigImpl::TEMPLATE] = $this->getSecondChildTree(WindConfigImpl::TEMPLATE, $this->childConfig[WindConfigImpl::TEMPLATE]);
-		$this->xmlArray[WindConfigImpl::URLRULE] = $this->getSecondChildTree(WindConfigImpl::URLRULE, $this->childConfig[WindConfigImpl::URLRULE]);
+		$this->xmlArray[IWindConfig::TEMPLATE] = $this->getSecondChildTree(IWindConfig::TEMPLATE, $this->childConfig[IWindConfig::TEMPLATE]);
+		$this->xmlArray[IWindConfig::URLRULE] = $this->getSecondChildTree(IWindConfig::URLRULE, $this->childConfig[IWindConfig::URLRULE]);
 		return $this->xmlArray;
 	}
     

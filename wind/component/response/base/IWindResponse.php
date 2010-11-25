@@ -6,7 +6,7 @@
  * @license 
  */
 
-interface WindResponseImpl {
+interface IWindResponse {
 	
 	/**
 	 * 设置路由信息

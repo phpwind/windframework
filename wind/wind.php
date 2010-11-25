@@ -7,9 +7,6 @@
  * @version $Id$
  */
 
-/*
- * 加载类库，并初始化核心文件
- * */
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 //require 'WindBase.php';
 echo '<pre>';

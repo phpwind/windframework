@@ -17,7 +17,6 @@
  * @package 
  */
 class WindView {
-	
 	/*  ”Õº≈‰÷√–≈œ¢  */
 	const VIEW_CONFIG = 'view';
 	const VIEW_CONFIG_TEMPLATE_PATH = 'templatePath';

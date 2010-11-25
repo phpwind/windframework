@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.request.base.impl.WindRequestImpl');
+L::import('WIND:component.request.base.IWindRequest');
 L::import('WIND:component.exception.WindException');
 L::import('WIND:component.response.WindHttpResponse');
 
@@ -15,7 +15,7 @@ L::import('WIND:component.response.WindHttpResponse');
  * @version $Id$ 
  * @package 
  */
-class WindHttpRequest implements WindRequestImpl {
+class WindHttpRequest implements IWindRequest {
 	
 	/**
 	 * ·ÃÎÊµÄ¶Ë¿ÚºÅ

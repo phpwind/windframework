@@ -5,15 +5,11 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-interface WindConfigImpl {
+interface IWindConfig {
 	const APP = 'app';
-	const APPNAME = 'appName';
-	const APPROOTPATH = 'rootPath';
-	const APPCONFIG = 'appConfig';
-	const APPAUTHOR = 'appAuthor';
-	
-	const ISOPEN = 'isOpen';
-	const DESCRIBE = 'describe';
+	const APP_NAME = 'name';
+	const APP_ROOTPATH = 'rootPath';
+	const APP_CONFIG = 'configPath';
 	
 	const FILTERS = 'filters';
 	const FILTER = 'filter';
@@ -30,10 +26,5 @@ interface WindConfigImpl {
 	const URLRULE = 'urlRule';
 	const ROUTERPASE = 'routerPase';
 	
-	/**
-	 * 用于设置需要合并的项,用,号分隔---注意 这里只要指定一级配置项即可，
-	 * 比如我要合并filters的项，那我只要跟上filters项即可
-	 * 默认都是以覆盖的方式，
-	 */
-	const MERGEARRAY = "app,filters";
+	
 }

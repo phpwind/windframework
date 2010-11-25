@@ -61,20 +61,6 @@ class WindWebApplication implements WindApplicationImpl {
 	}
 	
 	/**
-	 * 自动设置actionform对象
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 * @param WRouter $router
-	 */
-	protected function processActionForm($request, $response, $router) {
-		if (($formHandle = $router->getActionFormHandle()) == null) return;
-		
-		/* @var $actionForm WActionForm */
-		$actionForm = W::getInstance($formHandle, array($request, $response));
-		if ($actionForm->getIsValidation()) $actionForm->validation();
-	}
-	
-	/**
 	 * 处理页面输出与重定向
 	 * 
 	 * @param WindHttpRequest $request
@@ -82,11 +68,7 @@ class WindWebApplication implements WindApplicationImpl {
 	 * @param WindModelAndView $mav
 	 */
 	protected function processDispatch($request, $response, $mav) {
-		$view = $mav->getView();
-		$view->dispatch($request, $response);
-		/*$viewer = WViewFactory::getInstance()->create();
-		if ($viewer == null) throw new WindException('The instance of viewer is null.');
-		$response->setBody($viewer->windDisplay());*/
+		WindDispatcher::getInstance($mav)->dispatch($request, $response);
 	}
 	
 	/**

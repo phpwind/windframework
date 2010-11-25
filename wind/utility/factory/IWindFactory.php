@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-interface WindFactoryImpl {
+interface IWindFactory {
 	
 	static public function getFactory();
 	
