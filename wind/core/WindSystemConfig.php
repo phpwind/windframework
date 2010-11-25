@@ -39,18 +39,10 @@ class WindSystemConfig extends WindConfig {
 	 * @param array $configSystem  全局缓存配置
 	 * @param string $current  当前应用的名字
 	 */
-	public function parse($configSystem, $current) {
-		if (!is_array($configSystem) || !$current) 
+	public function parse($config) {
+		if (!is_array($config)) 
 			throw new Exception('the format of config file is error!!!');
-		$this->system = $configSystem;
-		if (!$configSystem[$current]) throw new Exception('the current app name is error!!!');
-		if (is_file($configSystem[$current]['appConfig'])) {
-			include ($configSystem[$current]['appConfig']);
-			$this->config = $config;
-		} else {
-			include (L::getRealPath($configSystem[$current]['appConfig']));
-			$this->config = $config;
-		}
+		$this->config = $config;
 	}
 	
 	/**
@@ -63,11 +55,42 @@ class WindSystemConfig extends WindConfig {
 	}
 	
 	/**
+	 * 根据配置名的路径取得相应的配置信息
+	 * 
+	 * $var = array(
+	 *     'templates' => array(
+	 *         'template' => array(
+	 *            'templateDir' => '/date';
+	 *            'templateCache'  => '/cache';
+	 *            )
+	 *     ))
+	 * 如果想获得templateDir下的值，
+	 * 则如下调用WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
+	 * 如果该路径中某一个节点不存在，则返回''
+	 * @param mixed
+	 * @return mixed
+	 */
+	public function getConfigPath() {
+		$vars = func_get_args();
+		$current = $this->config;
+		foreach ($vars as $name) {
+			if (isset($current[$name])) $current = $current[$name];
+			return '';
+		}
+		return $current;
+	}
+	
+	/**
 	 * 返回过滤器
 	 * @param string $name
 	 */
 	public function getFiltersConfig($name = '') {
-		if (isset($this->config['filters'])) return !$name ? $this->config['filters'] : ($this->config['filters'][$name] ? $this->config['filters'][$name] : '');
+		if (!$this->config[IWindConfig::FILTERS]) return array();
+		if ($name == '' ) return $this->config[IWindConfig::FILTERS];
+		$filters = $this->config[IWindConfig::FILTERS];
+		foreach ($filters as $one) {
+			if ($one[IWindConfig::FILTERNAME] == $name) return $one;
+		}
 	}
 	
 	/**
@@ -76,10 +99,10 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getModulesConfig($name = '', $default = null) {
-		if (!isset($this->config['modules'])) return $default;
-		if (!$name) return $this->config['modules'];
+		if (!isset($this->config['app'])) return $default;
+		if (!$name) return $this->config['app'];
 		
-		return $this->config['modules'][$name] ? $this->config['modules'][$name] : $default;
+		return $this->config['app'][$name] ? $this->config['app'][$name] : $default;
 	}
 	
 	/**

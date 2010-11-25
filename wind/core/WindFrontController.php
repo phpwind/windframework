@@ -31,9 +31,7 @@ class WindFrontController extends WindServlet {
 	
 	protected function __construct($config = array()) {
 		parent::__construct();
-		echo '<pre/>';
 		$this->_initConfig($config);
-		exit();
 	}
 	
 	public function run() {
@@ -78,9 +76,9 @@ class WindFrontController extends WindServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function _initFilter() {
-		WindFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->reuqest, $this->response);
+		WindFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create($this->config);
-		if (is_object($filter)) $filter->doFilter($this->reuqest, $this->response);
+		if (is_object($filter)) $filter->doFilter($this->request, $this->response);
 	}
 	
 	/**
@@ -90,11 +88,10 @@ class WindFrontController extends WindServlet {
 	 */
 	private function _initConfig($config) {
 		$configParser = new WindConfigParser($this->request);
-		$appName = $configParser->parser();//执行解析
-		W::parserConfig();//设置全局apps
-		W::setCurrentApp($appName);
+		$appConfig = $configParser->parser();//执行解析
+		W::parserConfig($appConfig);//设置全局apps
 		$configObj = WindSystemConfig::getInstance();
-		$configObj->parse((array) W::getSystemConfig(), W::getCurrentApp()); 
+		$configObj->parse($appConfig); 
 //		$configObj->parse((array) W::getSystemConfig(), (array) $config);
 		$this->config = $configObj;
 	}
