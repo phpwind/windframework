@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-//L::import('WIND:');
 
 /**
  * 配置信息解析
@@ -14,35 +13,17 @@
  * @version $Id$ 
  * @package
  */
-class WindSystemConfig extends WindConfig {
-	private $globalConfig = array();
+class WindSystemConfig {
 	private $config = array();
 	private static $instance = null;
 	
 	/**
-	 * 争对数组格式的解析
+	 * 初始化配置文件对象
 	 * @param array $configSystem
-	 * @param array $configCustom
 	 */
-	public function _parse($configSystem, $configCustom = array()) {
-		if (!is_array($configSystem) || !is_array($configCustom)) throw new Exception('the format of config file is error!!!');
-		
+	public function __construct($configSystem) {
 		if (empty($configSystem)) throw new Exception('system config file is not exists!!!');
-		
-		$this->config = array_merge($configSystem, $configCustom);
-		$this->system = $configSystem;
-		$this->custom = $configCustom;
-	}
-	
-	/**
-	 * 针对数组格式的解析
-	 * @param array $configSystem  全局缓存配置
-	 * @param string $current  当前应用的名字
-	 */
-	public function parse($config) {
-		if (!is_array($config)) 
-			throw new Exception('the format of config file is error!!!');
-		$this->config = $config;
+		$this->config = $configSystem;
 	}
 	
 	/**
@@ -58,12 +39,12 @@ class WindSystemConfig extends WindConfig {
 	 * 根据配置名的路径取得相应的配置信息
 	 * 
 	 * $var = array(
-	 *     'templates' => array(
-	 *         'template' => array(
-	 *            'templateDir' => '/date';
-	 *            'templateCache'  => '/cache';
-	 *            )
-	 *     ))
+	 * 'templates' => array(
+	 * 'template' => array(
+	 * 'templateDir' => '/date';
+	 * 'templateCache'  => '/cache';
+	 * )
+	 * ))
 	 * 如果想获得templateDir下的值，
 	 * 则如下调用WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
 	 * 如果该路径中某一个节点不存在，则返回''
@@ -86,7 +67,7 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function getFiltersConfig($name = '') {
 		if (!$this->config[IWindConfig::FILTERS]) return array();
-		if ($name == '' ) return $this->config[IWindConfig::FILTERS];
+		if ($name == '') return $this->config[IWindConfig::FILTERS];
 		$filters = $this->config[IWindConfig::FILTERS];
 		foreach ($filters as $one) {
 			if ($one[IWindConfig::FILTERNAME] == $name) return $one;
