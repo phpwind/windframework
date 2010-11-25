@@ -146,9 +146,10 @@ class WindPack{
 	 * @param mixed $dir 目录名
 	 * @param array $ndir 不须要打包的文件夹
 	 * @param array $suffix 不须要打包的文件类型
+	 * @param array $nfile 不须要打包的文件
 	 * @return array
 	 */
-	public function readContentFromDir($dir,$ndir = array('.','..','.svn'),$suffix = array()){
+	public function readContentFromDir($dir,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		static $content = array();
 		$dir = is_array($dir) ? $dir : array($dir);
 		foreach($dir as $_dir){
@@ -157,11 +158,11 @@ class WindPack{
 				while(false != ($tmp = $handle->read())){
 					$name = $this->realDir($_dir).$tmp;
 					if($this->isDir($name) && !in_array($tmp,$ndir)){
-						$this->readContentFromDir($name,$ndir,$suffix);
+						$this->readContentFromDir($name,$ndir,$suffix,$nfile);
 					}
-					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix)){
+					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix) && !in_array($file = $this->getFileName($name),$nfile)){
 						$content[] = $this->readContentFromFile($name);
-						$this->setPackList($this->getFileName($name),$name);
+						$this->setPackList($file,$name);
 					}
 				}
 				$handle->close();
@@ -222,12 +223,12 @@ class WindPack{
 	 * @param array $suffix 不永许打包的文件类型
 	 * @return string
 	 */
-	public function pack($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array()){
+	public function pack($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		if(empty($dst)){
 			return false;
 		}
 		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir($dir,$ndir,$suffix))){
+		if(!($content = $this->readContentFromDir($dir,$ndir,$suffix,$nfile))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
@@ -239,7 +240,6 @@ class WindPack{
 		$content = $this->getPackComment($content,$fileSuffix);
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
-		//echo $this->formatPackList();
 		return true;
 		
 	}
