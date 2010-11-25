@@ -13,8 +13,8 @@ interface IWindConfig {
 
 	const FILTERS = 'filters';
 	const FILTER = 'filter';
-	const FILTERNAME = 'filterName';
-	const FILTERPATH = 'filterPath';
+	const FILTER_NAME = 'filterName';
+	const FILTER_PATH = 'filterPath';
     
 	const TEMPLATES = 'templates';
 	const TEMPLATE = 'template';
@@ -27,9 +27,6 @@ interface IWindConfig {
 	const ISOPEN = 'isOpen';
 	const DESCRIBE = 'describe';
 	
-	const AAAAA = 'AAAAA';
-	const bbbb = 'bbbb';
-
 
 	const ATTRINAME = 'name';
 	const GLOBALATTR = 'isGlobal';
@@ -38,5 +35,5 @@ interface IWindConfig {
 	 * ”√”⁄
 	 * @var unknown_type
 	 */
-	const PARSERARRAY = 'app, filters, templates, isOpen, describe, AAAAA, BBBBB';
+	const PARSERARRAY = 'app, filters, template, isOpen, describe';
 }
