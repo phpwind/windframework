@@ -13,7 +13,7 @@ define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
 define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
-define('VERSION','1.0.2');
+define('VERSION', '1.0.2');
 
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
@@ -29,7 +29,6 @@ define('DEBUG', true);*/
  */
 class W {
 	private static $_apps = array();
-	private static $_default = '';
 	private static $_current = '';
 	private static $_systemConfig = null;
 	
@@ -39,7 +38,7 @@ class W {
 	 */
 	static public function init() {
 		self::_initConfig();
-		self::_initLoad();
+		self::_initBaseLib();
 		self::_initLog();
 	}
 	
@@ -68,7 +67,12 @@ class W {
 	 * @return array
 	 */
 	static public function getApps($name = '') {
-		return $name ? W::$_apps[$name] : W::$_apps[W::$_default];
+		if ($name && isset(W::$_apps[$name]))
+			return W::$_apps[$name];
+		elseif (W::$_current && isset(W::$_apps[W::$_current]))
+			return W::$_apps[W::$_current];
+		else
+			return '';
 	}
 	
 	/**
@@ -76,70 +80,60 @@ class W {
 	 * @param array $value
 	 * @param boolean $default
 	 */
-	static public function setApps($name = '', $value = array(), $default = false) {
+	static public function setApps($name = '', $value = array(), $current = false) {
 		if (empty($value)) return;
 		W::$_apps[$name] = $value;
-		if ($default) W::$_default = $name;
+		if ($current) self::$_current = $name;
 		L::register($name, $value['rootPath']);
 	}
 	
-	/**
-	 * 设置当前应用名字
-	 * @param string $name
-	 */
-	static public function setCurrentApp($name = '') {
-		if (!$name) return;
-		W::$_current = $name;
+	static public function setCurrentApp($name) {
+		if ($name) self::$_current = $name;
 	}
+	
 	/**
 	 * 获得当前应用名字
 	 * @return string $name
 	 */
 	static public function getCurrentApp() {
-		return W::$_current;
-	
+		return self::$_current;
 	}
 	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _initBaseLib() {
-		/* 核心加载 */
-		L::import('WIND:core.base.*');
-		L::import('WIND:core.*');
-		L::import('WIND:component.exception.base.*');
-		L::import('WIND:component.exception.WindException');
+		//		if (self::_initAutoLoad()) return;
+		L::import('WIND:core.WindFrontController');
 	}
 	
-	static private function _initLoad(){
-		if(self::_ifPreLoad()){
-			self::_preLoad();
-		}else{
-			self::_initBaseLib();
+	/**
+	 * 自动加载
+	 */
+	static private function _initAutoLoad() {
+		if (self::ifCompile()) {
+			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
+			if (!is_file($packfile)) {
+				L::import('WIND:utility.WindPack');
+				$pack = new WindPack();
+				$pack->pack(array('core'), $packfile);
+			}
+			if (is_file($packfile)) {
+				@include $packfile;
+				return true;
+			}
 		}
+		return false;
 	}
 	
-	static private function _preLoad(){
-		$packfile = self::_getPreLoadFile();
-		if(is_file($packfile)){
-			require $packfile;
-		}else{
-			L::import('WIND:utility.WindPack');
-			$pack = L::getInstance('WindPack');
-			$pack->pack(array('core'),$packfile);
-			require $packfile;
-		}
-		
+	/**
+	 * 是否支持预编译
+	 * @return string
+	 */
+	static public function ifCompile() {
+		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH) ? true : false;
 	}
 	
-	static private function _getPreLoadFile(){
-		return COMPILE_PATH.'preload_'.VERSION.'.php';
-	}
-	
-	static private function _ifPreLoad(){
-		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH)  ? true : false;
-	}
-
 	/**
 	 * 解析配置文件
 	 */
@@ -221,8 +215,8 @@ class L {
 		}
 	}
 	
-	static public function setImports($class = array()){
-		foreach($class as $key => $value){
+	static public function setImports($class = array()) {
+		foreach ($class as $key => $value) {
 			self::$_imports[$key] = isset(self::$_imports[$key]) ? self::$_imports[$key] : $value;
 		}
 	}
@@ -380,19 +374,12 @@ class L {
 	 * @return string
 	 */
 	static private function _getAppRootPath($namespace = '') {
-		if ($namespace && isset(L::$_namespace[$namespace])) return L::$_namespace[$namespace];
-		$rp = W::getApps();
-		return $rp['rootPath'];
+		if ($namespace && isset(L::$_namespace[$namespace])) {
+			return L::$_namespace[$namespace];
+		} else {
+			return W::getCurrentApp() ? L::$_namespace[W::getCurrentApp()] : '';
+		}
 	}
 }
-
-/*if(!is_file(WIND_PATH.PRELOAD_FILE)){
-	 require WIND_PATH.PRELOAD_FILE;
-}else{
-	L::import('WIND:utility.WindPack');
-	$pack = L::getInstance('WindPack');
-	$pack->pack(array('core','utility'),WIND_PATH.PRELOAD_FILE);
-	require WIND_PATH.PRELOAD_FILE;
-}*/
 
 W::init();
