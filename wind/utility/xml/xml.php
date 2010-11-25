@@ -269,11 +269,11 @@ class XML {
 		} elseif (!$parse['port']) {
 			$parse['port'] = '80';
 		}
-		$parse['host'] = str_replace(array('http://', 'https://'), array('', 'ssl://'), $parse['scheme'] . "://") . $parse['host'];
+		$parse['host'] = str_replace(array('http:\/\/', 'https:\/\/'), array('', 'ssl:\/\/'), $parse['scheme'] . ":\/\/") . $parse['host'];
 		if (!$fp = @fsockopen($parse['host'],$parse['port'],$errnum,$errstr,$timeout)) return false;
 		$method = strtoupper($method);
 		$wlength = $wdata = $responseText = '';
-		$parse['path'] = str_replace(array('\\', '//'), '/', $parse['path']) . "?" . $parse['query'];
+		$parse['path'] = str_replace(array('\\', '\/\/'), '/', $parse['path']) . "?" . $parse['query'];
 		if ($method == 'GET') {
 			$separator = $parse['query'] ? '&' : '';
 			substr($data,0,1) == '&' && $data = substr($data,1);

@@ -119,16 +119,16 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 以DSN格式解析数数库配置，其中(主从optype,永久连接pconnect,强制新连接force)可选
-	 * @example mysql:://username:password@localhost:port/dbname/optype/pconect/force
+	 * @example mysql:://username:password@localhost:port/dbname/force/pconect/optype/
 	 * @param unknown_type $dsn 数据库连接格式
 	 * @return array 
 	 */
-	final private function parseDSN($dsn) {
-		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(.+)\/?(master|slave)?\/?(0|1)?\/?(0|1)?\/?$/', trim ( $dsn ), $config );
+	final public function parseDSN($dsn) {
+		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(\w+)\/(\w+)\/(0|1)\/(0|1)\/(master|slave)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
-		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6], 'optype' => $config [7],'pconnect'=>$config [8],'force'=>$config [9] );
+		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6],'charset'=>$config [7], 'force' => $config [8],'pconnect'=>$config [9],'optype'=>$config [10] );
 	}
 	
 	final private function formatConfig($config,$key){
@@ -185,6 +185,9 @@ abstract class WindDbAdapter {
 	 * 回滚事务
 	 */
 	//public abstract function rollbackTrans();
+	/**
+	 * 关闭数据库
+	 */
 	public abstract function close();
 	/**
 	 * 释放数据库连接资源
@@ -342,9 +345,7 @@ abstract class WindDbAdapter {
 		$this->getExecDbLink('slave',$key);
 		return $this->read($this->getSqlBuilderFactory($this->key)->getMetaColumnSql($table),$this->key);
 	}
-	/**
-	 * 关闭数据库
-	 */
+
 
 	/**
 	 * 返回上一条sqly语句

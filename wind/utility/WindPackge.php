@@ -15,6 +15,7 @@
  */
 class WindPack{
 	
+	private $packList = array();
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
@@ -29,7 +30,7 @@ class WindPack{
 	 * @return string
 	 */
 	public function stripComment($content,$replace = ''){
-		return preg_replace("/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us",$replace,$content);
+		return preg_replace('/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us',$replace,$content);
 	}
 	
 	/**
@@ -62,6 +63,26 @@ class WindPack{
 		return preg_replace("/(?:<\?(?:php)*)|(\?>)/i",$replace,$content);
 	}
 	
+	public function getPackList(){
+		return $this->packList;
+	}
+	
+	public function formatPackList($comment = false,$pack = array(),$samekey = ''){
+		$list = array();
+		$sep = $comment ? "\r\n*" : "\r\n";
+		$format = '';
+		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
+		foreach($pack as $key=>$value){
+			if(is_array($value)){
+				$format .= $this->formatPackList($comment,$value,$key);
+			}else{
+				$key = $samekey ? $samekey : $key;
+				$format .= $key.'=>'.$value.$sep;
+			}
+		}
+		return $format;
+		
+	}
 	/**
 	 *从文件读取内容
 	 * @param string $filename 文件名
@@ -103,34 +124,64 @@ class WindPack{
 	public function getContentBySuffix($content,$suffix){
 		switch($suffix){
 			case 'php' : $content = '<?php'.$content.'?>';
-			default: $content = $content;
+			default: ;
 		}
 		return $content;
 	}
 	
+	public function getCommentBySuffix($content,$suffix,$other= ''){
+		switch($suffix){
+			case 'php' : $content = "\r\n/**$other\r\n*".$content."\r\n*/\r\n";
+			default: ;
+		}
+		return $content;
+	}
+	
+	public function getPackComment($content,$suffix){
+		return $this->getCommentBySuffix($this->formatPackList(true),$suffix,'Your pack list').$content;
+	}
+	
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
-	 * @param string $dir 目录名
+	 * @param mixed $dir 目录名
 	 * @param array $ndir 不须要打包的文件夹
 	 * @param array $suffix 不须要打包的文件类型
 	 * @return array
 	 */
 	public function readContentFromDir($dir,$ndir = array('.','..','.svn'),$suffix = array()){
 		static $content = array();
-		if($this->isDir($dir)){
-			$handle = dir($dir);
-			while(false != ($tmp = $handle->read())){
-				$name = $this->realDir($dir).$tmp;
-				if($this->isDir($name) && !in_array($tmp,$ndir)){
-					$this->readContentFromDir($name,$ndir,$suffix);
+		$dir = is_array($dir) ? $dir : array($dir);
+		foreach($dir as $_dir){
+			if($this->isDir($_dir)){
+				$handle = dir($_dir);
+				while(false != ($tmp = $handle->read())){
+					$name = $this->realDir($_dir).$tmp;
+					if($this->isDir($name) && !in_array($tmp,$ndir)){
+						$this->readContentFromDir($name,$ndir,$suffix);
+					}
+					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix)){
+						$content[] = $this->readContentFromFile($name);
+						$this->setPackList($this->getFileName($name),$name);
+					}
 				}
-				if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix)){
-					$content[] = $this->readContentFromFile($name);
-				}
+				$handle->close();
 			}
-			$handle->close();
 		}
 		return $content;
+	}
+	
+	public function setPackList($key,$value){
+		if(isset($this->packList[$key])){
+			if(is_array($this->packList[$key])){
+				array_push($this->packList[$key],$value);
+			}else{
+				$tmp_name = $this->packList[$key];
+				$this->packList[$key] = array($tmp_name,$value);
+				
+			}
+		}else{
+			$this->packList[$key] = $value;
+		}
 	}
 	
 	/**
@@ -165,7 +216,7 @@ class WindPack{
 	
 	/**
 	 * 将指定目录下的所有文件内容打包的一个文件
-	 * @param string $dir 要打包的目录
+	 * @param mixed $dir 要打包的目录
 	 * @param sgring $dst 文件名
 	 * @param array $ndir 不须要打包的目录
 	 * @param array $suffix 不永许打包的文件类型
@@ -179,19 +230,27 @@ class WindPack{
 		if(!($content = $this->readContentFromDir($dir,$ndir,$suffix))){
 			return false;
 		}
+		$fileSuffix = $this->getFileSuffix($dst);
 		$content = implode("\n\r",$content);
 		$content = $this->stripComment($content);
 		$content = $this->stripPhpIdentify($content);
 		$content = $this->stripNR($content);
 		$content = $this->stripSpace($content);
-		$content = $this->getContentBySuffix($content,$this->getFileSuffix($dst));
+		$content = $this->getPackComment($content,$fileSuffix);
+		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
+		//echo $this->formatPackList();
 		return true;
 		
 	}
 	
 	public function getFileSuffix($filename){
 		return substr($filename,strrpos($filename,'.')+1);
+	}
+	
+	public function getFileName($path,$ifsuffix = false){
+		$filename = substr($path, strrpos($path,DIRECTORY_SEPARATOR)+1);
+		return  $ifsuffix ? $filename : substr($filename,0,strrpos($filename,'.'));
 	}
 	
 }

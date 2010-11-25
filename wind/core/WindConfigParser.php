@@ -350,7 +350,7 @@ class WindConfigParser implements WindConfigImpl {
 		echo $fileName;
 		
 		$tmpname = strtolower($fileName);
-		$tmparray = array('://',"\0");
+		$tmparray = array(':\/\/',"\0");
 		$tmparray[] = '..';
 		if (str_replace($tmparray, '', $tmpname) != $tmpname) exit('forbidden');
 		
