@@ -63,12 +63,45 @@ class WindPack{
 		return preg_replace("/(?:<\?(?:php)*)|(\?>)/i",$replace,$content);
 	}
 	
+	/**
+	 * 根据指定规则替换指定内容中相应的内容
+	 * @param string $content
+	 * @param string $rule
+	 * @param string $replace
+	 * @return string
+	 */
+	public function stripStrByRule($content,$rule,$replace = ''){
+		return preg_replace("/$rule/",$replace,$content);
+	}
+	
+	/**
+	 * 去除多余的文件导入信息
+	 * @param string $content
+	 * @param string $replace
+	 * @return string
+	 */
+	public function stripImport($content,$replace = ''){
+		$str = preg_match_all('/[\t\n\r]+L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$].+)[\"\'][\t ]*\)[\t ]*/',$content,$matches);
+		if($matches[1]){
+			foreach($matches[1] as $value){
+				$name = substr($value,strrpos($value,'.')+1);
+				if(preg_match("/class[\t ]+$name/",$content)){
+					$this->stripStrByRule($content,addslashes($value),$replace);
+				}
+			}
+		}
+		return $content;
+	}
+	
+	/**
+	 * 取得被打包的文件列表
+	 * @return array:
+	 */
 	public function getPackList(){
 		return $this->packList;
 	}
 	
 	public function formatPackList($comment = false,$pack = array(),$samekey = ''){
-		$list = array();
 		$sep = $comment ? "\r\n*" : "\r\n";
 		$format = '';
 		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
@@ -82,6 +115,20 @@ class WindPack{
 		}
 		return $format;
 		
+	}
+	
+	public function convertPackList($pack = array(),$samekey = ''){
+		static $list = array();
+		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
+		foreach($pack as $key=>$value){
+			if(is_array($value)){
+				$this->convertPackList($value,$key);
+			}else{
+				$key = $samekey ? $samekey : $key;
+				array_push($list,$key.'='.$value);
+			}
+		}
+		return $list;
 	}
 	/**
 	 *从文件读取内容
@@ -129,6 +176,12 @@ class WindPack{
 		return $content;
 	}
 	
+	/**
+	 * @param string $content
+	 * @param string $suffix
+	 * @param string $other
+	 * @return string
+	 */
 	public function getCommentBySuffix($content,$suffix,$other= ''){
 		switch($suffix){
 			case 'php' : $content = "\r\n/**$other\r\n*".$content."\r\n*/\r\n";
@@ -137,8 +190,39 @@ class WindPack{
 		return $content;
 	}
 	
+	/**
+	 * 向打包文件里面添加注释
+	 * @param string $content
+	 * @param string $suffix
+	 * @return string
+	 */
 	public function getPackComment($content,$suffix){
 		return $this->getCommentBySuffix($this->formatPackList(true),$suffix,'Your pack list').$content;
+	}
+	
+	/**
+	 * 将指定的数组转化形字符串格式
+	 * @param array $pack
+	 * @return string
+	 */
+	public function getPackListAsString($pack = array()){
+		$str = '';
+		$packs = $pack ? $pack : $this->getPackList();
+		foreach($packs as $key =>$value){
+			$str .= (is_string($key) ? '"'.$key.'"' : $key ).'=>';
+			if(is_array($value)){
+				$str .='array(';
+				$str .= $this->getPackListAsString($value);
+				$str .= ')';
+			}else{
+				$str .= (is_string($value) ? '"'.$value.'"' : $value ).',';
+			}
+		}
+		return empty($pack) ? 'array('.$str.')' : $str;
+	}
+	public function getPackImport($content = ''){
+		$packlist = $this->getPackListAsString();
+		return "\r\nL::patchImprots(".$packlist.");\r\n".$content;
 	}
 	
 	/**
@@ -171,14 +255,18 @@ class WindPack{
 		return $content;
 	}
 	
-	public function setPackList($key,$value){
+	/**
+	 * 添加被打包的文件到列表
+	 * @param  string $key
+	 * @param  string $value
+	 */
+	private function setPackList($key,$value){
 		if(isset($this->packList[$key])){
 			if(is_array($this->packList[$key])){
 				array_push($this->packList[$key],$value);
 			}else{
 				$tmp_name = $this->packList[$key];
 				$this->packList[$key] = array($tmp_name,$value);
-				
 			}
 		}else{
 			$this->packList[$key] = $value;
@@ -237,12 +325,19 @@ class WindPack{
 		$content = $this->stripPhpIdentify($content);
 		$content = $this->stripNR($content);
 		$content = $this->stripSpace($content);
+		$content = $this->getPackImport($content,$fileSuffix);
 		$content = $this->getPackComment($content,$fileSuffix);
+		$content = $this->stripImport($content);
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
 		return true;
 		
 	}
+	
+	function strInContent($content,$findStr){
+		return strstr($content,$findStr);
+	}
+	
 	
 	public function getFileSuffix($filename){
 		return substr($filename,strrpos($filename,'.')+1);

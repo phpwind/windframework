@@ -7,29 +7,17 @@
  * @version $Id$
  */
 
-!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-//require 'WindBase.php';
-echo '<pre>';
-$preload = WIND_PATH.'WindPreload.php';
+
+require 'WindBase.php';
+$preload = WIND_PATH.PRELOAD_FILE;
 if(!is_file($preload)){
-	//L::import($preload);
-	require $preload;
+	 require $preload;
 }else{
-	//L::import('WIND:utility.WindPackge');
-	require WIND_PATH.'/utility'.'/WindPackge.php';
-	//$pack = L::getInstance('WindPackge');
-	$pack = new WindPack();
-	$pack->pack(array('core','utility'),'WindPreload.php');
-	foreach($pack->getPackList() as $key=>$value){
-		//L::regiserImport($key,$value);
-	}
-	print_r($pack->getPackList());
-	//require $preload;
-	
-	$pack->setPackList('WindAction','asdfafafa');
-	$str = '/*'.$pack->formatPackList(true).'*/';
-	preg_match_all('/\*(\w+=>.+)/',$str,$match);
-	print_r($match);
+	L::import('WIND:utility.WindPackge');
+	$pack = L::getInstance('WindPackge');
+	$pack->pack(array('core','utility'),PRELOAD_FILE);
+	require $preload;
+
 }
 
 
