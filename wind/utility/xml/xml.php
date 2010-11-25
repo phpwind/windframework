@@ -176,10 +176,61 @@ class XML {
 	public function getTagContents($element) {
 		$_array = array();
 		$_array['tagName'] = $element->getName();
-		$_array['value'] = self::escape($element[0]);
+		$_array['value'] = self::getValue($element);
 		$_array['attributes'] = self::getAttributes($element);
-		$_array['children'] = self::getChilds($element);
+		$_array['children'] = self::getChildren($element);
 		return $_array;
+	}
+	
+	/**
+	 * 获得当前对象的内容
+	 * 将输入SimpleXMLElement对象,解析输出其对应的内容（不包含子标签）
+	 * 
+	 * 每个元素都有格式
+	 * $array = array('tagName' => '该标签的名字',
+	 * 				  'value' => '对应标签的内容',
+	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 * 			)
+	 * 
+	 * @param SimpleXMLElement object   $element
+	 * @return array
+	 */
+	public function getCurrent($element) {
+		$_array = array();
+		$_array['tagName'] = $element->getName();
+		$_array['value'] = self::getValue($element);
+		$_array['attributes'] = self::getAttributes($element);
+		return $_array;
+	}
+	
+	/**
+	 * 获得该标签的内容
+	 * @param SimpleXMLElement $element
+	 * @return string
+	 */
+	public function getValue($element) {
+		if ($element[0]) return self::escape($element[0]);
+		return '';
+	}
+	
+	/**
+	 * 获得该标签的内容
+	 * @param SimpleXMLElement $element
+	 * @return string
+	 */
+	public function getTagName($element) {
+		return $element->getName();
+	}
+	
+	/**
+	 * 判断该元素是否有属性
+	 * 
+	 * @param SimpleXMLElement $element
+	 * @return boolean
+	 */
+	public function hasAttributes($element) {
+		if ($element->attributes()) return true;
+		return false;
 	}
 	
 	/**
@@ -202,12 +253,23 @@ class XML {
 	}
 	
 	/**
+	 * 判断该元素是否有子标签
+	 * 
+	 * @param SimpleXMLElement $element
+	 * @return boolean
+	 */
+	public function hasChildren($element) {
+		if ($element->children()) return true;
+		return false;
+	}
+	
+	/**
 	 * 获得指定标签下的所有子标签
 	 * 
 	 * @param SimpleXMLElement $element
 	 * @return array 
 	 */
-	public function getChilds($element) {
+	public function getChildren($element) {
 		$_childs = array();
 		$childs = $element->children();
 		if (!$childs) return $_childs;
