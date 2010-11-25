@@ -6,6 +6,7 @@
  * @license 
  */
 L::import("WIND:core.base.IWindConfig");
+
 /**
  * 解析并整合配置文件同时生成缓存
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -217,7 +218,7 @@ class WindConfigParser implements IWindConfig {
 	private function getParser($parser = 'xml') {
 		switch ($parser) {
 			case 'XML':
-				L::import('WIND:core.WindXMLConfig');
+				L::import("WIND:component.config.WindXMLConfig");
 				$this->parser = new WindXMLConfig();
 				break;
 			default:
