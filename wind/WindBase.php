@@ -83,11 +83,14 @@ class W {
 	/**
 	 * ½âÎöÅäÖÃÎÄ¼þ
 	 */
-	static public function parserConfig() {
-		$cahceConfig = CONFIG_CACHE_PATH . '/config.php';
-		if (!file_exists($cahceConfig)) {
-			throw new Exception('System config file ' . $cahceConfig . ' is not exists!');
+	static public function parserConfig($appConfig = array()) {
+		if ($appConfig) {
+			$currentApp = $appConfig[IWindConfig::APP];
+			W::setApps($currentApp[IWindConfig::APP_NAME], $currentApp[IWindConfig::APP_ROOTPATH]);
+			W::setCurrentApp($currentApp[IWindConfig::APP_NAME]);
 		}
+		$cahceConfig = COMPILE_PATH . '/config.php';
+		if (!is_file($cahceConfig)) return false;
 		@include $cahceConfig;
 		foreach ($sysConfig as $appName => $appConfig) {
 			W::setApps($appName, $appConfig);
