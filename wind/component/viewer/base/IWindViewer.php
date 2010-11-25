@@ -34,6 +34,6 @@ interface WindViewerImpl {
 	 * 获得一个视图信息，并初始化解析器
 	 * @param WindView $view
 	 */
-	public function initViewerResolverWithView($view);
+	public function initWithView($view);
 	
 }

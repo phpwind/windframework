@@ -24,7 +24,11 @@ class WindViewer implements WindViewerImpl {
 	
 	protected $template = '';
 	protected $templatePath = '';
+	protected $templateExt = '';
+	
 	protected $view = null;
+	protected $layout = null;
+	protected $layoutMapping = array();
 	
 	/**
 	 * 视图变量信息
@@ -36,12 +40,20 @@ class WindViewer implements WindViewerImpl {
 	 * 获取模板信息
 	 */
 	public function windFetch($template = '') {
-		$template = $this->getViewTemplate($template);
 		if ($this->vars) extract($this->vars, EXTR_REFS);
-		
 		ob_start();
-		@include $template;
-		
+		if (($segments = $this->parserLayout()) == null) {
+			$template = $this->getViewTemplate($template);
+			@include $template;
+		} else {
+			foreach ($segments as $value) {
+				if (isset($this->layoutMapping[$value])) {
+					$value = $this->layoutMapping[$value];
+				}
+				$template = $this->getViewTemplate($value);
+				if (is_file($template)) @include $template;
+			}
+		}
 		return ob_get_clean();
 	}
 	
@@ -97,30 +109,29 @@ class WindViewer implements WindViewerImpl {
 	}
 	
 	/**
-	 * 获得模板文件
-	 * 
-	 * @param string $templateName
-	 * @param string $templateExt
+	 * 如果存在布局文件则解析布局信息
 	 * @return array()
 	 */
-	public function getViewTemplate($templateName = '', $templateExt = '') {
-		if (!$templateName) $templateName = $this->view->getTemplateName();
-		if (!$templateExt) $templateExt = $this->view->getTemplateExt();
-		$templatePath = $this->templatePath;
-		$templatePath = $this->_getViewTemplate($templateName, $templatePath, $templateExt);
-		return $templatePath;
+	public function parserLayout() {
+		if ($this->layout === null) return null;
+		return $this->layout->parserLayout($this->templatePath, $this->templateExt);
 	}
 	
 	/**
-	 * 根据模板名称获得模板文件
+	 * 模板路径解析
+	 * 根据模板的逻辑名称，返回模板的绝对路径信息
 	 * 
-	 * @param string $viewName
-	 * @return array()
+	 * @param string $templateName
+	 * @param string $templateExt
+	 * @return string | false
 	 */
-	private function _getViewTemplate($templateName, $templatePath, $templateExt = '') {
-		if (!$templateName) throw new WindException('template file is not exists.');
-		$filePath = $templatePath . '.' . $templateName;
-		return L::getRealPath($filePath, false, $templateExt);
+	public function getViewTemplate($templateName = '', $templateExt = '') {
+		if (!$templateName) $templateName = $this->template;
+		if (!$templateExt) $templateExt = $this->templateExt;
+		if (strrpos($templateName, ':') === false) {
+			$templateName = $this->templatePath . '.' . $templateName;
+		}
+		return L::getRealPath($templateName, false, $templateExt);
 	}
 	
 	/**
@@ -128,9 +139,19 @@ class WindViewer implements WindViewerImpl {
 	 * 
 	 * @param WindView $view
 	 */
-	public function initViewerResolverWithView($view) {
+	public function initWithView($view) {
 		$this->template = $view->getTemplateName();
 		$this->templatePath = $view->getTemplatePath();
+		$this->templateExt = $view->getTemplateExt();
+		$this->layout = $view->getMav()->getLayout();
+		$this->layoutMapping = $view->getMav()->getLayoutMapping();
 		$this->view = $view;
+	}
+	
+	/**
+	 * @return WindView
+	 */
+	public function getView() {
+		return $this->view;
 	}
 }

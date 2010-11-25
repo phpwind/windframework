@@ -16,80 +16,53 @@
  * @package 
  */
 class WindLayout {
-	/* layout 逻辑名称 */
-	private $layout = '';
-	
-	/* 模板文件路径信息 */
-	private $tpl = '';
-	
-	private $dirName = '';
-	private $ext = '';
-	private $tplName = '';
-	
 	/**
 	 * 布局信息
-	 * array('fileName' => 'filePath')
 	 * @var $_segments
 	 */
 	private $segments = array();
+	private $layout = '';
 	
 	/**
 	 * 设置layout布局文件
+	 * 可以为一个布局文件的逻辑名称，如：layout.mainLayout
+	 * 则程序会在模板路径下面寻找layout目录下的mainLayout布局文件，后缀名和模板的后缀名保持一致
 	 * 
 	 * @param string $layout
 	 */
-	public function setLayout($layout) {
+	public function setLayoutFile($layout) {
 		$this->layout = $layout;
 	}
 	
 	/**
-	 * 设置模板的路径信息
-	 * @param string $tpl
-	 */
-	public function setTpl($tpl) {
-		$pathInfo = @pathinfo($tpl);
-		$this->dirName = $pathInfo['dirname'];
-		$this->ext = $pathInfo['extension'];
-		$this->tplName = substr($pathInfo['basename'], 0, strrpos($pathInfo['basename'], '.'));
-		$this->tpl = $tpl;
-	}
-	
-	/**
-	 * 通过解析配置文件，获得布局信息
-	 * @param string $config
-	 */
-	public function parser() {
-		if ($this->layout)
-			$this->_parserLayoutFile();
-	}
-	
-	/**
-	 * 设置页面片段
+	 * 设置模板文件包含文件
+	 * 可以为一个布局文件的逻辑名称，如：segments.header
+	 * 则程序会在模板路径下面寻找segments目录下的header布局文件，后缀名和模板的后缀名保持一致
 	 * 
-	 * @param array|string $segment
+	 * @param string $fileName
 	 */
-	public function setSegments($segment) {
-		if (is_array($segment))
-			$this->segments += $segment;
-		else
-			$this->segments[] = $segment;
+	private function includeFile($fileName) {
+		$this->setSegments($fileName);
 	}
 	
-	public function getSegments() {
-		foreach ($this->segments as $key => $value) {
-			$file = $this->dirName . W::getSeparator() . $value . '.' . $this->ext;
-			if (file_exists($file))
-				$this->segments[$value] = $file;
-		}
-		return $this->segments;
+	private function setSegments($segment) {
+		$this->segments[] = $segment;
+	}
+	
+	private function setContent($key = 'current') {
+		$this->setSegments('key_' . $key);
 	}
 	
 	/**
 	 * 解析layout布局文件
 	 */
-	private function _parserLayoutFile() {
-		$file = $this->dirName . W::getSeparator() . $this->layout . '.' . $this->ext;
-		if (file_exists($file))
-			include $file;
+	public function parserLayout($dirName = '', $ext = '') {
+		if ($this->layout) {
+			$file = L::getRealPath($dirName . '.' . $this->layout, false, $ext);
+			if (!$file) throw new WindException('cant find layout file.');
+			@include $file;
+		}
+		return $this->segments;
 	}
+
 }

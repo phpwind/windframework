@@ -20,6 +20,7 @@ class WindModelAndView {
 	private $model = array();
 	private $view = null;
 	
+	private $layoutMapping = array();
 	private $layout = null;
 	
 	/**
@@ -33,6 +34,32 @@ class WindModelAndView {
 		$this->setRedirect($redirect);
 	}
 	
+	/**
+	 * 接收一个layout对象初始化ModelAndView
+	 * @param WindLayout $layout
+	 */
+	public function setLayout($layout) {
+		if ($layout instanceof WindLayout) {
+			$this->layout = $layout;
+		} else
+			throw new WindException('object type error.');
+	}
+	
+	/**
+	 * @return WindLayout
+	 */
+	public function &getLayout() {
+		return $this->layout;
+	}
+	
+	public function getLayoutMapping() {
+		return $this->layoutMapping;
+	}
+	
+	/**
+	 * 返回全局数据对象
+	 * @return array
+	 */
 	public function getModel() {
 		return $this->model;
 	}
@@ -114,20 +141,33 @@ class WindModelAndView {
 	 * 
 	 * @param string $name
 	 */
-	public function setViewName($viewName) {
+	public function setViewName($viewName, $key = 'current') {
 		if (!$viewName) return;
+		$this->layoutMapping['key_' . $key] = $viewName;
 		$this->viewName = $viewName;
 	}
 	
+	/**
+	 * 返回视图的逻辑名称
+	 * 
+	 * @return string
+	 */
 	public function getViewName() {
 		return $this->viewName;
 	}
 	
+	/**
+	 * 设置view对象
+	 * 
+	 * @param WindView $view
+	 */
 	public function setView($view = null) {
 		$this->view = $view;
 	}
 	
 	/**
+	 * 返回WindView对象
+	 * 
 	 * @return WindView
 	 */
 	public function getView() {
@@ -149,6 +189,11 @@ class WindModelAndView {
 		$this->path = $path;
 	}
 	
+	/**
+	 * 返回视图的路径信息
+	 * 
+	 * @return string
+	 */
 	public function getPath() {
 		return $this->path;
 	}
