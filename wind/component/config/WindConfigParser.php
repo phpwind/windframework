@@ -28,7 +28,7 @@ class WindConfigParser implements IWindConfig {
 	private $globalAppsPath = COMPILE_PATH;
 	private $globalAppsConfig = 'config.php';
 	
-	private $parser = null;
+	private $configParser = null;
 	private $parserEngine = 'xml';
 	private $configExt = array('xml', 'properpoties', 'ini');
 	
@@ -61,7 +61,6 @@ class WindConfigParser implements IWindConfig {
 			$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig;
 			$defaultConfig = $this->_parser($defaultConfigPath);
 		}
-		
 	}
 	
 	/**
@@ -71,16 +70,16 @@ class WindConfigParser implements IWindConfig {
 	 * @param string $configFile
 	 * @return array
 	 */
-	private function _parser($configFile) {
+	private function execuseParser($configFile) {
 		list(, $fileName, $ext, $realPath) = L::getRealPath($configFile, true);
 		if (!$realPath) return array();
-		if ($this->parser === null) {
+		if ($this->configParser === null) {
 			$this->initParser($ext);
-			$this->parser->setOutputEncoding($this->encoding);
+			$this->configParser->setOutputEncoding($this->encoding);
 		}
-		$this->parser->setXMLFile($realPath);
-		$this->parser->parser();
-		return $this->parser->getResult();
+		$this->configParser->setXMLFile($realPath);
+		$this->configParser->parser();
+		return $this->configParser->getResult();
 	}
 	
 	/**
@@ -190,7 +189,7 @@ class WindConfigParser implements IWindConfig {
 		switch ($parser) {
 			case 'XML':
 				L::import("WIND:component.config.WindXMLConfig");
-				$this->parser = new WindXMLConfig();
+				$this->configParser = new WindXMLConfig();
 				break;
 			default:
 				throw new WindException('init config parser error.');
