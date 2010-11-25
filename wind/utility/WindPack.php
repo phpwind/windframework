@@ -81,12 +81,13 @@ class WindPack{
 	 * @return string
 	 */
 	public function stripImport($content,$replace = ''){
-		$str = preg_match_all('/[\t\n\r]+L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$].+)[\"\'][\t ]*\)[\t ]*/',$content,$matches);
-		if($matches[1]){
-			foreach($matches[1] as $value){
+		$str = preg_match_all('/[\t\n\r]+L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$].+)[\"\'][\t ]*\)[\t ]*/',$content,$matchs);
+		if($matchs[1]){
+			foreach($matchs[1] as $key=>$value){
 				$name = substr($value,strrpos($value,'.')+1);
-				if(preg_match("/class[\t ]+$name/",$content)){
-					$this->stripStrByRule($content,addslashes($value),$replace);
+				if(preg_match("/(abstract[\t ]*|class|interface)[\t ]+$name/i",$content)){
+					$strip = str_replace(array('(',')'),array('\(','\)'),addslashes($matchs[0][$key])).'[\t ]*;';
+					$content = $this->stripStrByRule($content,$strip,$replace);
 				}
 			}
 		}
@@ -222,7 +223,7 @@ class WindPack{
 	}
 	public function getPackImport($content = ''){
 		$packlist = $this->getPackListAsString();
-		return "\r\nL::patchImprots(".$packlist.");\r\n".$content;
+		return "\r\nL::setImports(".$packlist.");\r\n".$content;
 	}
 	
 	/**

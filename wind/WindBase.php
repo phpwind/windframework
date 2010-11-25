@@ -13,7 +13,7 @@ define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
 define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
-define('PRELOAD_FILE','WindPreload.php');
+define('VERSION','1.0.1');
 define('RUNTIME_START', microtime(true));
 define('USEMEM_START', memory_get_usage());
 define('LOG_PATH', WIND_PATH . 'log' . D_S);
@@ -38,7 +38,7 @@ class W {
 	 */
 	static public function init() {
 		self::_initConfig();
-		self::_initBaseLib();
+		self::_initLoad();
 		self::_initLog();
 	}
 	
@@ -122,11 +122,39 @@ class W {
 		/* 核心加载 */
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.*');
-		
 		L::import('WIND:component.exception.base.*');
 		L::import('WIND:component.exception.WindException');
 	}
 	
+	static private function _initLoad(){
+		if(self::_ifPreLoad()){
+			self::_preLoad();
+		}else{
+			self::_initBaseLib();
+		}
+	}
+	
+	static private function _preLoad(){
+		$packfile = self::_getPreLoadFile();
+		if(is_file($packfile)){
+			require $packfile;
+		}else{
+			L::import('WIND:utility.WindPack');
+			$pack = L::getInstance('WindPack');
+			$pack->pack(array('core'),$packfile);
+			require $packfile;
+		}
+		
+	}
+	
+	static private function _getPreLoadFile(){
+		return COMPILE_PATH.'preload_'.VERSION.'.php';
+	}
+	
+	static private function _ifPreLoad(){
+		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH)  ? true : false;
+	}
+
 	/**
 	 * 解析配置文件
 	 */
@@ -200,6 +228,12 @@ class L {
 	static public function register($name, $path) {
 		if (!isset(L::$_namespace[$name])) {
 			L::$_namespace[$name] = $path;
+		}
+	}
+	
+	static public function setImports($class = array()){
+		foreach($class as $key => $value){
+			self::$_imports[$key] = isset(self::$_imports[$key]) ? self::$_imports[$key] : $value;
 		}
 	}
 	
@@ -362,12 +396,4 @@ class L {
 	}
 }
 
-if(!is_file(WIND_PATH.PRELOAD_FILE)){
-	 require WIND_PATH.PRELOAD_FILE;
-}else{
-	L::import('WIND:utility.WindPack');
-	$pack = L::getInstance('WindPack');
-	$pack->pack(array('core','utility'),WIND_PATH.PRELOAD_FILE);
-	require WIND_PATH.PRELOAD_FILE;
-}
 W::init();
