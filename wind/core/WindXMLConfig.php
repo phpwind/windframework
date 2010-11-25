@@ -131,7 +131,7 @@ class WindXMLConfig extends XML {
 		$tag = $element->getName();
 		$attributes = self::getAttributes($element);
 		$attributes['tagName'] = $tag;
-		(isset($attributes[IWindConfig::ATTRINAME])) && $tag = $attributes[IWindConfig::ATTRINAME];
+		(isset($attributes[IWindConfig::ATTRNAME])) && $tag = $attributes[IWindConfig::ATTRNAME];
 		$this->setGAM($attributes);
 		return array($tag, array());
 	}
@@ -145,7 +145,7 @@ class WindXMLConfig extends XML {
 	private function setGAM($attributes) {
 		if (!$this->isCheck) return false;
 		$tag = $attributes['tagName'];
-		$name = isset($attributes[IWindConfig::ATTRINAME]) ? $attributes[IWindConfig::ATTRINAME] : $tag;
+		$name = isset($attributes[IWindConfig::ATTRNAME]) ? $attributes[IWindConfig::ATTRNAME] : $tag;
 		(isset($attributes[IWindConfig::GLOBALATTR]) && $attributes[IWindConfig::GLOBALATTR] == 'true') && $this->GAM[IWindConfig::GLOBALATTR][$name] = $tag;
 		(isset($attributes[IWindConfig::MERGEATTR]) && $attributes[IWindConfig::MERGEATTR] == 'true') && $this->GAM[IWindConfig::MERGEATTR][$name] = $tag;
 		$this->isCheck = false;
