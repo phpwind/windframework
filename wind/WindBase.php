@@ -67,7 +67,7 @@ class W {
 	 * @return array
 	 */
 	static public function getApps($name = '') {
-		return $name ? W::$_apps[$name] : W::$_apps[W::$_default];
+		return $name ? W::$_apps[$name] : W::$_apps[W::$_current];
 	}
 	
 	/**
