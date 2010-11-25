@@ -362,4 +362,12 @@ class L {
 	}
 }
 
+if(!is_file(WIND_PATH.PRELOAD_FILE)){
+	 require WIND_PATH.PRELOAD_FILE;
+}else{
+	L::import('WIND:utility.WindPack');
+	$pack = L::getInstance('WindPack');
+	$pack->pack(array('core','utility'),WIND_PATH.PRELOAD_FILE);
+	require WIND_PATH.PRELOAD_FILE;
+}
 W::init();

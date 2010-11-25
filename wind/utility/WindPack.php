@@ -246,7 +246,7 @@ class WindPack{
 					}
 					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix) && !in_array($file = $this->getFileName($name),$nfile)){
 						$content[] = $this->readContentFromFile($name);
-						$this->setPackList($file,$name);
+						$this->setPackList($file,$this->getRealName($name));
 					}
 				}
 				$handle->close();
@@ -346,6 +346,10 @@ class WindPack{
 	public function getFileName($path,$ifsuffix = false){
 		$filename = substr($path, strrpos($path,DIRECTORY_SEPARATOR)+1);
 		return  $ifsuffix ? $filename : substr($filename,0,strrpos($filename,'.'));
+	}
+	
+	private function getRealName($name){
+		return WIND_PATH.$name;
 	}
 	
 }
