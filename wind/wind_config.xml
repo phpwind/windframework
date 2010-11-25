@@ -32,12 +32,12 @@
   </viewerResolver>
   
   <!-- 过滤器链 -->
-  <filters>
-  	 <filter name="WindInput">
-  	 	<filterName>WindInput</filterName>
+  <!--<filters>
+  	 <filter>
+  	 	<filterName></filterName>
   	 	<filterPath></filterPath>
   	 </filter>
-  </filters>
+  </filters>-->
   
   <!-- 路由策略配置 -->
   <router>
@@ -46,11 +46,11 @@
   
   
   <!-- URL路由规则配置 -->
-  <urlRul>
+  <urlRule>
      <action>run</action>
      <controller>index</controller>
      <module></module>
-  </urlRul>
+  </urlRule>
   
   <!-- 路由解析器配置  -->
   <routerParser>
