@@ -5,42 +5,39 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class WindError {
-	private static $error = array();
+class WindErrorMessage extends WindMessage {
+	private static $instance = null;
+	private function __construct() {}
 	
 	/**
-	 * 添加一条错误记录
+	 * 添加错误信息
 	 * 
 	 * @param string $message
-	 * @param boolean $clear
+	 * @param string $key
 	 */
-	public function addError($message, $clear = false) {
-		self::$error[] = $message;
+	public function addError($message, $key = '') {
+		parent::addMessage($message, $key);
 	}
 	
 	/**
-	 * 清理所有错误记录
+	 * 返回错误信息
+	 * 
+	 * @param string $key
+	 * @return Ambigous <string, multitype:>
 	 */
-	public function clearError() {
-		self::$error = array();
+	public function getError($key = '') {
+		return parent::getMessage($key);
 	}
 	
 	/**
-	 * 返回所有错误记录
+	 * @return WindErrorMessage
 	 */
-	public function getError() {
-		return self::$error;
-	}
-	
-	/**
-	 * 中断处理，并立即输出错误消息
-	 */
-	public function showMessage($message) {
-
-	}
-	
-	static public function getInstance() {
-
+	static public function &getInstance() {
+		if (self::$instance === null) {
+			$class = __CLASS__;
+			self::$instance = new $class();
+		}
+		return self::$instance;
 	}
 
 }
