@@ -6,6 +6,7 @@
  * @license
  */
 L::import('WIND:core.base.IWindConfig');
+L::import('WIND:component.config.base.IWindParser');
 L::import('WIND:utility.xml.xml');
 
 /**
@@ -16,7 +17,7 @@ L::import('WIND:utility.xml.xml');
  * @version $Id$
  * @package
  */
-class WindXMLConfig extends XML {
+class WindXMLConfig extends XML implements IWindParser {
 	private $xmlArray;
     private $childConfig;
     private $isCheck;
@@ -26,9 +27,17 @@ class WindXMLConfig extends XML {
 	 * @param string $data
 	 * @param string $encoding
 	 */
-	public function __construct($data = '', $encoding = 'gbk') {
-		parent::__construct($data, $encoding);
+	public function __construct($encoding = 'gbk') {
+		$this->setOutputEncoding($encoding);
 		$this->GAM = array();
+	}
+	
+	/**
+	 * 加载需要解析的文件
+	 * @param unknown_type $filename
+	 */
+	public function loadFile($filename) {
+		$this->setXMLFile($filename);
 	}
 
 	/**
@@ -110,6 +119,11 @@ class WindXMLConfig extends XML {
 			list($childTag, $childValue) = $this->getContent($child);
 			$childArray[$childTag] = $childValue;
 		}
+		if (count($childArray) == 0) {
+			(trim(self::getValue($element)) != '' ) && $childArray = trim(self::getValue($element));
+		} else {
+			(trim(self::getValue($element)) != '' ) && $childArray[] = trim(self::getValue($element));
+		}		
 		return array($tag, $childArray);
 	}
 
@@ -175,8 +189,7 @@ class WindXMLConfig extends XML {
 	private function getContentHasAttAndChild($element) {
 		list($tag, $atttrValue) = $this->getContentHasAttributes($element);
 		list($tag1, $childValue) = $this->getContentHasChildren($element);
-		$contents = array_merge($atttrValue, $childValue);
-		return array($tag, $contents);
+		return array($tag, $childValue);
 	}
 	
     /*
@@ -199,7 +212,7 @@ class WindXMLConfig extends XML {
 		if (in_array($key, array_keys($this->GAM))) return $this->GAM[$key];
 		return $this->GAM;
 	}
-
+	
 	/**
 	 * 创建解析器
 	 * @access private
