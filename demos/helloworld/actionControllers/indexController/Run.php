@@ -6,12 +6,11 @@
  * @license 
  */
 
-class Run extends WAction {
+class Run extends WindAction {
 	
 	public function run($request, $response) {
 		echo "hello world!!!";
 		
-		return $viewermodule;
 	}
 
 }
