@@ -76,7 +76,6 @@ class WindConfigParser implements IWindConfig {
 		if (!W::ifCompile()) return false;
 		if (!W::getApps()) return false;
 		$app = W::getApps();
-		var_dump($app);
 		if (!is_file($app[IWindConfig::APP_CONFIG])) return false;
 		$config = $this->fetchConfigExit($app[IWindConfig::APP_ROOTPATH]);
 		if ($config == '') return false;
@@ -110,7 +109,6 @@ class WindConfigParser implements IWindConfig {
 		$rootPath = dirname($request->getServer('SCRIPT_FILENAME'));
 		if ($this->isCompiled()) {
 			$app = W::getApps();
-			echo 'include';
 			return @include $app[IWindConfig::APP_CONFIG];
 		}
 		$userConfigPath = $this->fetchConfigExit($rootPath);
