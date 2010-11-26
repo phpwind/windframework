@@ -116,7 +116,11 @@ class WindConfigParser implements IWindConfig {
 		list($userConfig, $this->userGAM) = $this->executeParser($this->userAppConfigPath);
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
 		$userConfig[IWindConfig::APP] = $this->getAppInfo($rootPath, $userConfig);
+		
+		W::setApps($userConfig[IWindConfig::APP][IWindConfig::APP_NAME], $userConfig[IWindConfig::APP]);
+		W::setCurrentApp($userConfig[IWindConfig::APP]);
 		$this->updateGlobalCache($userConfig);
+		
 		Common::writeover($userConfig[IWindConfig::APP][IWindConfig::APP_CONFIG], "<?php\r\n return " . Common::varExport($userConfig) . ";\r\n?>");
 		return $userConfig;
 	}

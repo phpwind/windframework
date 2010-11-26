@@ -89,9 +89,6 @@ class WindFrontController extends WindServlet {
 		L::import('WIND:component.config.WindConfigParser');
 		$configParser = new WindConfigParser();
 		$appConfig = $configParser->parser($this->request);
-		$currentApp = $appConfig[IWindConfig::APP];
-		W::setApps($currentApp[IWindConfig::APP_NAME], $currentApp);
-		W::setCurrentApp($currentApp[IWindConfig::APP_NAME]);
 		C::init($appConfig);
 	}
 	
