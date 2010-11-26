@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-W::import('WIND:utilities.container.WModule');
+W::import('WIND:utilities.container.WindModule');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,7 +13,7 @@ W::import('WIND:utilities.container.WModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WindActionForm extends WModule {
+abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
 	
 	/**
