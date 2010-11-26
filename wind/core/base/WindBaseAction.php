@@ -41,7 +41,7 @@ abstract class WindBaseAction {
 	 * ÉèÖÃÄ¬ÈÏÄ£°å
 	 */
 	public function setDefaultViewTemplate($default) {
-		$this->getModelAndView()->setViewName($default);
+		$this->mav->setViewName($default);
 	}
 	
 	/**
