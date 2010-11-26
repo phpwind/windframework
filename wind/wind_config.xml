@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-  <app>
+  <app isGlobal='true'>
     <name></name>
     <rootPath></rootPath>
     <configPath></configPath>
   </app>
+  <modules>
+  	<module>
+  		<name>default</name>
+  		<path>actionControllers</path>
+  	</module>
+  </modules>
   <view>
   	<templatePath>template</templatePath>
   	<templateName>index</templateName>
@@ -23,9 +29,9 @@
   	<parser>url</parser>
   </router>
   <urlRule>
-     <action>run</action>
-     <controller>index</controller>
-     <module></module>
+     <action name='a'>run</action>
+     <controller name='c'>index</controller>
+     <module name='m'>default</module>
   </urlRule>
   <routerParser>
   	 <url>WIND:component.router.WindUrlBasedRouter</url>
