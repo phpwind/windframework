@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import("WIND:core.base.IWindConfig");
+L::import("WIND:component.config.base.IWindConfig");
 L::import('WIND:utility.Common');
 /**
  * 配置文件解析类
