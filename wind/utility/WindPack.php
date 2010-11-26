@@ -81,7 +81,7 @@ class WindPack{
 	 * @return string
 	 */
 	public function stripImport($content,$replace = ''){
-		$str = preg_match_all('/[\t\n\r]+L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$].+)[\"\'][\t ]*\)[\t ]*/',$content,$matchs);
+		$str = preg_match_all('/L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$][\w\.:]+)[\"\'][\t ]*\)[\t ]*/',$content,$matchs);
 		if($matchs[1]){
 			foreach($matchs[1] as $key=>$value){
 				$name = substr($value,strrpos($value,'.')+1);
@@ -221,20 +221,22 @@ class WindPack{
 		}
 		return empty($pack) ? 'array('.$str.')' : $str;
 	}
-	public function getPackImport($content = ''){
+	public function getPackImport($content = '',$sep = "\r\n"){
 		$packlist = $this->getPackListAsString();
-		return "\r\nL::setImports(".$packlist.");\r\n".$content;
+		$sep =  isset($sep) ? $sep : "\r\n";
+		return "{$sep}L::setImports(".$packlist.");{$sep}".$content;
 	}
 	
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
+	 * @param boolean $iformat 是否格式化内容。$iformat = true表示格式化内容，效率高，iformat = false表示得到易于阅读的内容，但 效率低
 	 * @param mixed $dir 目录名
 	 * @param array $ndir 不须要打包的文件夹
 	 * @param array $suffix 不须要打包的文件类型
 	 * @param array $nfile 不须要打包的文件
 	 * @return array
 	 */
-	public function readContentFromDir($dir,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+	public function readContentFromDir($iformat = false,$dir = array(),$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		static $content = array();
 		$dir = is_array($dir) ? $dir : array($dir);
 		foreach($dir as $_dir){
@@ -243,10 +245,10 @@ class WindPack{
 				while(false != ($tmp = $handle->read())){
 					$name = $this->realDir($_dir).$tmp;
 					if($this->isDir($name) && !in_array($tmp,$ndir)){
-						$this->readContentFromDir($name,$ndir,$suffix,$nfile);
+						$this->readContentFromDir($iformat,$name,$ndir,$suffix,$nfile);
 					}
 					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix) && !in_array($file = $this->getFileName($name),$nfile)){
-						$content[] = $this->readContentFromFile($name);
+						$content[] = $iformat ? $this->stripWhiteSpace($name) : $this->readContentFromFile($name);
 						$this->setPackList($file,$this->getRealName($name));
 					}
 				}
@@ -305,7 +307,7 @@ class WindPack{
 	}
 	
 	/**
-	 * 将指定目录下的所有文件内容打包的一个文件
+	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
 	 * @param mixed $dir 要打包的目录
 	 * @param sgring $dst 文件名
 	 * @param array $ndir 不须要打包的目录
@@ -317,7 +319,7 @@ class WindPack{
 			return false;
 		}
 		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir($dir,$ndir,$suffix,$nfile))){
+		if(!($content = $this->readContentFromDir(false,$dir,$ndir,$suffix,$nfile))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
@@ -326,12 +328,38 @@ class WindPack{
 		$content = $this->stripPhpIdentify($content);
 		$content = $this->stripNR($content);
 		$content = $this->stripSpace($content);
-		$content = $this->getPackImport($content,$fileSuffix);
+		$content = $this->getPackImport($content);
 		$content = $this->stripImport($content);
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
 		return true;
-		
+	}
+	
+	/**
+	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个压缩的文件,效率高，但不易阅读
+	 * @param mixed $dir 要打包的目录
+	 * @param sgring $dst 文件名
+	 * @param array $ndir 不须要打包的目录
+	 * @param array $suffix 不永许打包的文件类型
+	 * @return string
+	 */
+	public function packCompress($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+		if(empty($dst)){
+			return false;
+		}
+		$suffix = is_array($suffix) ? $suffix : array($suffix);
+		if(!($content = $this->readContentFromDir(true,$dir,$ndir,$suffix,$nfile))){
+			return false;
+		}
+		$fileSuffix = $this->getFileSuffix($dst);
+		$content = implode('',$content);
+		$content = $this->stripNR($content,'');
+		$content = $this->stripPhpIdentify($content);
+		$content = $this->getPackImport($content,' ');
+		$content = $this->stripImport($content);
+		$content = $this->getContentBySuffix($content,$fileSuffix);
+		$this->writeContentToFile($dst,$content);
+		return true;
 	}
 	
 	function strInContent($content,$findStr){
