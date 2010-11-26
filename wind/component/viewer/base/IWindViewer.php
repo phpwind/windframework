@@ -15,7 +15,7 @@
  * @version $Id$ 
  * @package 
  */
-interface WindViewerImpl {
+interface IWindViewer {
 	
 	/**
 	 * 设置视图变量信息
@@ -35,5 +35,5 @@ interface WindViewerImpl {
 	 * @param WindView $view
 	 */
 	public function initWithView($view);
-	
+
 }

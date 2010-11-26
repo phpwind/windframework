@@ -106,7 +106,8 @@ class W {
 	 */
 	static private function _initBaseLib() {
 		if (false === self::_initLoad()) {
-			L::import('WIND:core.WindFrontController');
+			L::import('WIND:core.base.*');
+			L::import('WIND:core.*');
 		}
 	}
 	
@@ -394,7 +395,7 @@ class L {
  */
 class C {
 	private static $config = array();
-	
+	private static $c;
 	/**
 	 * 初始化配置文件对象
 	 * @param array $configSystem
@@ -404,6 +405,7 @@ class C {
 			throw new Exception('system config file is not exists.');
 		}
 		self::$config = $configSystem;
+		self::$c = new C();
 	}
 	
 	/**
@@ -413,14 +415,18 @@ class C {
 	 * @return string
 	 */
 	static public function getConfig($configName = '', $subConfigName = '') {
+		if (!$configName) return self::$config;
 		$_config = array();
-		if ($configName && isset(self::$config[$configName])) {
+		if (isset(self::$config[$configName])) {
 			$_config = self::$config[$configName];
 		}
-		if ($subConfigName && is_array($_config) && isset($_config[$subConfigName])) {
-			$_config = $_config[$subConfigName];
+		if (!$subConfigName) return $_config;
+		
+		$_subConfig = array();
+		if (is_array($_config) && isset($_config[$subConfigName])) {
+			$_subConfig = $_config[$subConfigName];
 		}
-		return $_config;
+		return $_subConfig;
 	}
 	
 	/**
@@ -467,7 +473,7 @@ class C {
 	 * @param string $name
 	 * @return array|string
 	 */
-	public function getRouterParsers($name = '') {
+	static public function getRouterParsers($name = '') {
 		return self::getConfig(IWindConfig::ROUTER_PARSERS, $name);
 	}
 }

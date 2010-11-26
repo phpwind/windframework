@@ -17,6 +17,7 @@
  * @package 
  */
 abstract class WindRouter {
+	protected $routerConfig = array();
 	protected $routerRule = '';
 	protected $routerName = '';
 	protected $method = 'run';
@@ -25,13 +26,11 @@ abstract class WindRouter {
 	protected $controller = 'index';
 	protected $module = 'default';
 	
-	protected $modules = array();
-	
 	protected $modulePath = '';
 	protected $actionForm = 'actionForm';
 	
-	public function __construct($configObj = null) {
-		$this->init($configObj);
+	public function __construct($routerConfig) {
+		$this->init($routerConfig);
 	}
 	
 	/**
@@ -39,10 +38,8 @@ abstract class WindRouter {
 	 * 
 	 * @param WSystemConfig $configObj
 	 */
-	protected function init($configObj) {
-		if ($configObj === null) throw new WindException('Config object is null.');
-		$this->modules = $configObj->getModulesConfig();
-		$this->routerRule = $configObj->getRouterRule($this->routerName);
+	protected function init($routerConfig) {
+		$this->routerConfig = $routerConfig;
 	}
 	
 	/**
@@ -58,8 +55,8 @@ abstract class WindRouter {
 	 * @return array
 	 */
 	public function getActionHandle() {
-		if (empty($this->modules)) throw new WindException('the modules is empty.');
-		$module = $this->modules[$this->getModule()];
+		$moduleConfig = C::getModules($this->getModule());
+		$module = $moduleConfig[IWindConfig::MODULE_PATH];
 		$className = $this->getController();
 		$method = $this->getAction();
 		L::import($module . '.' . $className);
@@ -74,20 +71,6 @@ abstract class WindRouter {
 		$this->modulePath = $module;
 		return array($className, $method);
 	}
-	
-	/**
-	 * 获得请求处理类,返回一个数组，array('$className','$method')
-	 * 
-	 * @return array
-	 */
-	abstract public function getActionFormHandle();
-	
-	/**
-	 * 获得请求处理类,返回一个数组，array('$className','$method')
-	 * 
-	 * @return array
-	 */
-	abstract public function getDefaultViewHandle();
 	
 	/**
 	 * 获得业务操作

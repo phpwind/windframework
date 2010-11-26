@@ -46,7 +46,7 @@ class WindSystemConfig {
 	 * )
 	 * ))
 	 * 如果想获得templateDir下的值，
-	 * 则如下调用WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
+	 * 则如下调用-WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
 	 * 如果该路径中某一个节点不存在，则返回''
 	 * @param mixed
 	 * @return mixed
@@ -126,7 +126,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * @return WindSystemConfig
+	 * @return -WindSystemConfig
 	 */
 	static public function getInstance($config = '') {
 		if (self::$instance === null) {

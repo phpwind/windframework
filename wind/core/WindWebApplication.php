@@ -77,13 +77,14 @@ class WindWebApplication implements IWindApplication {
 	 * @return WRouter
 	 */
 	public function &createRouter() {
-		$configObj = WindSystemConfig::getInstance();
-		$parser = $configObj->getRouterConfig('parser');
-		$parserPath = $configObj->getRouterParser($parser);
+		$parserConfig = C::getRouterParsers(C::getRouter('parser'));
+		$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
 		list(, $className, , $parserPath) = L::getRealPath($parserPath, true);
 		L::import($parserPath);
-		if (!class_exists($className)) throw new WindException('The router ' . $className . ' is not exists.');
-		$router = new $className($configObj);
+		if (!class_exists($className)) {
+			throw new WindException('The router ' . $className . ' is not exists.');
+		}
+		$router = new $className($parserConfig);
 		return $router;
 	}
 	

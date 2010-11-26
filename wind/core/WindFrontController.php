@@ -26,22 +26,20 @@ L::import('WIND:core.WindWebApplication');
  * @package 
  */
 class WindFrontController extends WindServlet {
-	private $config = null;
 	private static $instance = null;
 	
-	protected function __construct($config = array()) {
+	protected function __construct() {
 		parent::__construct();
-		$this->_initConfig($config);
+		$this->_initConfig();
 	}
 	
 	public function run() {
-		if ($this->config === null) throw new WindException('init system config failed!');
 		$this->beforProcess();
-		$filters = $this->config->getConfig('filters');
-		if (!class_exists('WindFilterFactory') || empty($filters))
-			parent::run();
-		else
+//		$filters = C::getConfig(IWindConfig::FILTERS);
+		if (!empty($filters)) {
 			$this->_initFilter();
+		} else
+			parent::run();
 		$this->afterProcess();
 	}
 	
@@ -76,8 +74,9 @@ class WindFrontController extends WindServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function _initFilter() {
+		L::import('WIND:component.filter.WindFilterFactory');
 		WindFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->request, $this->response);
-		$filter = WindFilterFactory::getFactory()->create($this->config);
+		$filter = WindFilterFactory::getFactory()->create();
 		if (is_object($filter)) $filter->doFilter($this->request, $this->response);
 	}
 	
@@ -86,7 +85,7 @@ class WindFrontController extends WindServlet {
 	 * 
 	 * @param array $config
 	 */
-	private function _initConfig($config) {
+	private function _initConfig() {
 		L::import('WIND:component.config.WindConfigParser');
 		$configParser = new WindConfigParser();
 		$appConfig = $configParser->parser($this->request);
@@ -95,18 +94,16 @@ class WindFrontController extends WindServlet {
 		W::setApps($currentApp[IWindConfig::APP_NAME], $currentApp);
 		W::setCurrentApp($currentApp[IWindConfig::APP_NAME]);
 		
-		$configObj = WindSystemConfig::getInstance($appConfig);
-		$this->config = $configObj;
+		C::init($appConfig);
 	}
 	
 	/**
-	 * @param array $config
 	 * @return WindFrontController
 	 */
-	static public function &getInstance(array $config = array()) {
+	static public function &getInstance() {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class($config);
+			self::$instance = new $class();
 		}
 		return self::$instance;
 	}

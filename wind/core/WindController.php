@@ -24,12 +24,14 @@ class WindController extends WindBaseAction {
 		parent::__construct();
 		$this->request = $request;
 		$this->response = $response;
-		
-		//设置默认的视图名称
-		$default = $response->getRouter()->getDefaultViewHandle();
-		$this->setDefaultViewTemplate($default);
+		$this->setDefaultViewHandle();
 	}
 	
 	public function run() {}
+	
+	private function setDefaultViewHandle() {
+		$view = $this->response->getRouter()->getController() . '_' . $this->response->getRouter()->getAction();
+		$this->setDefaultViewTemplate($view);
+	}
 
 }

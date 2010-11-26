@@ -18,7 +18,6 @@ L::import('WIND:utility.factory.IWindFactory');
 class WindFilterFactory implements IWindFactory {
 	private $index = 0;
 	private $filters = array();
-	private $configs = array();
 	private $state = false;
 	
 	private $callBack = null;
@@ -32,8 +31,10 @@ class WindFilterFactory implements IWindFactory {
 	 * @param WSystemConfig $config
 	 * @return WFilter 
 	 */
-	public function create($config = null) {
-		if ($config != null && empty($this->filters)) $this->_initFilters($config);
+	public function create() {
+		if (empty($this->filters)) {
+			$this->_initFilters();
+		}
 		return $this->createFilter();
 	}
 	
@@ -50,9 +51,7 @@ class WindFilterFactory implements IWindFactory {
 		list($filterName, $path) = $this->filters[$this->index++];
 		L::import($path);
 		if ($filterName && class_exists($filterName) && in_array('WFilter', class_parents($filterName))) {
-			$class = new ReflectionClass($filterName);
-			$object = $class->newInstance();
-			return $object;
+			return new $filterName();
 		}
 		$this->createFilter();
 	}
@@ -148,11 +147,11 @@ class WindFilterFactory implements IWindFactory {
 	 * 
 	 * @param WSystemConfig $config
 	 */
-	private function _initFilters($configObj) {
+	private function _initFilters() {
 		$this->index = 0;
 		$this->filters = array();
-		$config = $configObj->getFiltersConfig();
-		foreach ((array) $config as $key => $value) {
+		$filters = C::getConfig('filters');
+		foreach ((array) $filters as $key => $value) {
 			$path = $value[IWindConfig::FILTER_NAME];
 			$name = $value[IWindConfig::FILTER_PATH];
 			if (($pos = strrpos($path, '.')) === false)
@@ -161,7 +160,6 @@ class WindFilterFactory implements IWindFactory {
 				$filterName = substr($path, $pos + 1);
 			$this->filters[] = array($filterName, $path, $name);
 		}
-		$this->configs = $config;
 	}
 	
 	/**
@@ -171,9 +169,8 @@ class WindFilterFactory implements IWindFactory {
 	 */
 	static function getFactory() {
 		if (self::$instance === null) {
-			$class = new ReflectionClass(__CLASS__);
-			$args = func_get_args();
-			self::$instance = call_user_func_array(array($class, 'newInstance'), (array) $args);
+			$class = __CLASS__;
+			self::$instance = new $class();
 		}
 		return self::$instance;
 	}

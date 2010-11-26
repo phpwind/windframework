@@ -7,7 +7,7 @@
  */
 
 L::register('viewer', dirname(__FILE__));
-L::import('viewer:base.impl.WindViewerImpl');
+L::import('viewer:base.IWindViewer');
 /**
  * 默认视图引擎
  * 基于URL的视图引擎，视图名和模板名称保持一致
@@ -20,7 +20,7 @@ L::import('viewer:base.impl.WindViewerImpl');
  * @version $Id$ 
  * @package 
  */
-class WindViewer implements WindViewerImpl {
+class WindViewer implements IWindViewer {
 	
 	protected $template = '';
 	protected $templatePath = '';

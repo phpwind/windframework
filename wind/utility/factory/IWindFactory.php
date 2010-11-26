@@ -17,5 +17,5 @@ interface IWindFactory {
 	
 	static public function getFactory();
 	
-	public function create($args = '');
+	public function create();
 }

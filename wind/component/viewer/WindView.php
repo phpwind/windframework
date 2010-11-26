@@ -17,17 +17,6 @@
  * @package 
  */
 class WindView {
-	/* 视图配置信息  */
-	const VIEW_CONFIG = 'view';
-	const VIEW_CONFIG_TEMPLATE_PATH = 'templatePath';
-	const VIEW_CONFIG_TEMPLATE_NAME = 'templateName';
-	const VIEW_CONFIG_TEMPLATE_EXT = 'templateExt';
-	const VIEW_CONFIG_RESOLVER = 'resolver';
-	const VIEW_CONFIG_CACHE_DIR = 'cacheDir';
-	const VIEW_CONFIG_COMPILE_DIR = 'compileDir';
-	
-	const VIEWER_RESOLVER = 'viewerResolver';
-	
 	private $templatePath = 'template';
 	private $templateName = 'index';
 	private $templateExt = 'htm';
@@ -35,14 +24,7 @@ class WindView {
 	private $templateCacheDir = '';
 	private $templateCompileDir = '';
 	
-	/**
-	 * 默认的视图解析器
-	 * 
-	 * @var string
-	 */
 	private $reolver = 'default';
-	private $viewerResolvers = array();
-	private $config = array();
 	
 	/**
 	 * @var $this->mav WindModelAndView
@@ -76,14 +58,14 @@ class WindView {
 	 * @return WindViewer
 	 */
 	public function &createViewerResolver() {
-		$viewerResolver = $this->viewerResolvers[$this->reolver];
+		$viewerResolver = C::getViewerResolvers($this->reolver);
 		list(, $className, , $viewerResolver) = L::getRealPath($viewerResolver, true);
 		L::import($viewerResolver);
 		if (!class_exists($className)) {
 			throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
 		}
 		$object = new $className();
-		$object->initViewerResolverWithView($this);
+		$object->initWithView($this);
 		return $object;
 	}
 	
@@ -91,29 +73,11 @@ class WindView {
 	 * 初始化配置文件，获得模板路径信息
 	 */
 	private function initConfig() {
-		$configObj = WindSystemConfig::getInstance();
-		if ($configObj == null) throw new WindException('config object is null.');
-		
-		$this->viewerResolvers = $configObj->getConfig(self::VIEWER_RESOLVER);
-		
-		if (isset($this->config[self::VIEW_CONFIG_TEMPLATE_PATH])) {
-			$this->templatePath = $this->config[self::VIEW_CONFIG_TEMPLATE_PATH];
-		}
-		if (isset($this->config[self::VIEW_CONFIG_TEMPLATE_EXT])) {
-			$this->templateExt = $this->config[self::VIEW_CONFIG_TEMPLATE_EXT];
-		}
-		if (isset($this->config[self::VIEW_CONFIG_TEMPLATE_NAME])) {
-			$this->templateName = $this->config[self::VIEW_CONFIG_TEMPLATE_NAME];
-		}
-		if (isset($this->config[self::VIEW_CONFIG_CACHE_DIR])) {
-			$this->templateCacheDir = $this->config[self::VIEW_CONFIG_CACHE_DIR];
-		}
-		if (isset($this->config[self::VIEW_CONFIG_COMPILE_DIR])) {
-			$this->templateCompileDir = $this->config[self::VIEW_CONFIG_COMPILE_DIR];
-		}
-		if (isset($this->config[self::VIEW_CONFIG_RESOLVER])) {
-			$this->reolver = $this->config[self::VIEW_CONFIG_RESOLVER];
-		}
+		$this->templatePath = C::getTemplate(IWindConfig::TEMPLATE_PATH);
+		$this->templateName = C::getTemplate(IWindConfig::TEMPLATE_NAME);
+		$this->templateCacheDir = C::getTemplate(IWindConfig::TEMPLATE_CACHE_DIR);
+		$this->templateCompileDir = C::getTemplate(IWindConfig::TEMPLATE_COMPILER_DIR);
+		$this->reolver = C::getTemplate(IWindConfig::TEMPLATE_RESOLVER);
 	}
 	
 	/**

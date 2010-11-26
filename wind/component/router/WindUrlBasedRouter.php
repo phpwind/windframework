@@ -21,8 +21,6 @@ L::import('WIND:component.exception.WindException');
  * @package 
  */
 class WindUrlBasedRouter extends WindRouter {
-	protected $routerName = 'url';
-	
 	/**
 	 * 调用该方法实现路由解析
 	 * 获得到 request 的静态对象，得到request的URL信息
@@ -32,34 +30,7 @@ class WindUrlBasedRouter extends WindRouter {
 	 * @param WindHttpResponse $response
 	 */
 	public function doParser($request, $response) {
-		if (!$this->routerRule) throw new WindException('The url parser rule is empty.');
 		$this->_setValues($request, $response);
-	}
-	
-	/**
-	 * 返回请求的ActionForm句柄，如果未定义则返回null
-	 */
-	public function getActionFormHandle() {
-		if (!$this->modulePath) throw new WindException('The path of module is not exists.');
-		
-		try {
-			$formPath = $this->modulePath . '.' . 'actionForm';
-			$className = $this->controller . $this->action . 'Form';
-			if (!is_file($formPath . '.' . $className . '.php')) return null;
-			W::import($formPath . '.' . $className);
-			if (class_exists($className)) return $className;
-		} catch (Exception $exception) {
-			return null;
-		}
-		return null;
-	}
-	
-	/**
-	 * 返回请求的ActionForm句柄，如果未定义则返回null
-	 */
-	public function getDefaultViewHandle() {
-		if (!$this->modulePath) throw new WindException('The path of module is not exists.');
-		return $this->controller . '_' . $this->action;
 	}
 	
 	/**
@@ -67,7 +38,8 @@ class WindUrlBasedRouter extends WindRouter {
 	 * @param WindHttpResponse $response
 	 */
 	private function _setValues($request, $response) {
-		$keys = array_keys($this->routerRule);
+		$rule = $this->routerConfig[IWindConfig::ROUTER_PARSERS_RULE];
+		$keys = array_keys($rule);
 		$this->action = $request->getGet($keys[0], $this->action);
 		$this->controller = $request->getGet($keys[1], $this->controller);
 		$this->module = $request->getGet($keys[2], $this->module);
