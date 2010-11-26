@@ -6,14 +6,13 @@
  * @license
  */
 header("Content-type: text/html; charset=gbk");
-
-define('R_P', dirname ( __FILE__ ));
+define('R_P', dirname(__FILE__));
 define('F_P', R_P . '/../../wind/');
 define('C_P', R_P . '/wind/');
 
-require_once(C_P . '/config.php');
-require_once(F_P . '/wind.php');
-W::setApps('default', R_P);
+//require_once (R_P . '/data/config.php');
+require_once (F_P . '/wind.php');
 
+W::setApps('SMARTY', array('rootPath' => R_P), true);
 
-WFrontController::getInstance($config)->run();
+WindFrontController::getInstance()->run();

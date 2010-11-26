@@ -5,22 +5,23 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-class indexController extends WActionController {
+class IndexController extends WindController {
 	private $a = 2;
 	public $b = 3;
 	protected $c;
 	public function run() {
-		$view = WViewFactory::getInstance()->create('body.phtml');
-		$view->windAssign('content', 'Hello World!');
+		echo "asdfasdf";
+		$this->getModelAndView()->setViewName('body');
+		$this->getModelAndView()->setModel(array('test' => 'hello World!'));
+		/*$view->windAssign('content', 'Hello World!');
 		$view->windAssign('name', '【鹊桥】小组');
 		$view->windAssign('title', 'Smarty引入之后的测试');
-		$view->windAssign('count', '8888888');
+		$view->windAssign('count', '8888888');*/
 	}
 	
-	public function show() {
-		$this->setForward('foot.phtml');
+	public function show() {	/*$this->setForward('foot.phtml');
 		$this->setView('content', 'welcome');
 		$this->setView('name', '【鹊桥】小组');
-		$this->setView('count', '1000');
+		$this->setView('count', '1000');*/
 	}
 }

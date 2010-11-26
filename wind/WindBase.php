@@ -9,16 +9,16 @@
 
 
 /* 路径相关配置信息  */
-define('D_S', DIRECTORY_SEPARATOR);
-define('WIND_PATH', dirname(__FILE__) . D_S);
-define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
+!defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
+!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
+!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 
-define('VERSION', '1.0.2');
+!defined('VERSION') && define('VERSION', '1.0.2');
 
-define('RUNTIME_START', microtime(true));
-define('USEMEM_START', memory_get_usage());
-define('LOG_PATH', WIND_PATH . 'log' . D_S);
-define('LOG_DISPLAY_TYPE', 'log');
+!defined('RUNTIME_START') && define('RUNTIME_START', microtime(true));
+!defined('USEMEM_START') && define('USEMEM_START', memory_get_usage());
+!defined('LOG_PATH') && define('LOG_PATH', WIND_PATH . 'log' . D_S);
+!defined('LOG_DISPLAY_TYPE') && define('LOG_DISPLAY_TYPE', 'log');
 
 /*define('LOG_RECORD', true);
 define('DEBUG', true);*/
@@ -103,7 +103,7 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _initBaseLib() {
-		if (false === self::_initLoad()){
+		if (false === self::_initLoad()) {
 			L::import('WIND:component.exception.WindException');
 			L::import('WIND:component.request.WindHttpRequest');
 			L::import('WIND:component.request.WindHttpResponse');

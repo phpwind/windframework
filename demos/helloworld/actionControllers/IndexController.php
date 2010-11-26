@@ -18,6 +18,7 @@ class IndexController extends WindController {
 		echo "mmmmm";
 		
 		$this->getModelAndView()->setModel(array('test'=>'hello~'));
+		
 		$this->getModelAndView()->setViewName('index_run');
 	}
 
