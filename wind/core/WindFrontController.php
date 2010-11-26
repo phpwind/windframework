@@ -8,9 +8,6 @@
 
 L::import('WIND:core.base.WindServlet');
 L::import('WIND:component.exception.WindException');
-L::import('WIND:component.filter.WindFilterFactory');
-L::import('WIND:core.WindSystemConfig');
-L::import('WIND:core.WindWebApplication');
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -49,6 +46,7 @@ class WindFrontController extends WindServlet {
 	
 	function process($request, $response) {
 		/* 初始化一个应用服务器 TODO重构此代码 */
+		L::import('WIND:core.WindWebApplication');
 		$applicationController = new WindWebApplication();
 		$applicationController->init();
 		
