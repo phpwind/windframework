@@ -104,11 +104,7 @@ class W {
 	 */
 	static private function _initBaseLib() {
 		if (false === self::_initLoad()) {
-			L::import('WIND:component.exception.WindException');
-			L::import('WIND:component.request.WindHttpRequest');
-			L::import('WIND:component.request.WindHttpResponse');
-			L::import('WIND:core.*');
-		
+			L::import('WIND:core.WindFrontController');
 		}
 	}
 	
