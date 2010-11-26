@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-  <app isGlobal='true'>
-    <name></name>
-    <rootPath></rootPath>
-    <configPath></configPath>
-  </app>
-  <modules>
-  	<module>
-  		<name>default</name>
-  		<path>actionControllers</path>
-  	</module>
-  </modules>
-  <view>
-  	<templatePath>template</templatePath>
-  	<templateName>index</templateName>
-  	<templateExt>htm</templateExt>
-  	<resolver>default</resolver>
-  	<isCache>false</isCache>
-  	<cacheDir>cache</cacheDir>
-  	<compileDir>compile</compileDir>
-  </view>
-  <viewerResolver>
-      <default>WIND:component.viewer.WindViewer</default>
-      <pw>WIND:component.viewer.WindPWViewer</pw>
-      <smarty>libs.WSmarty</smarty>
-  </viewerResolver>
-  <router>
-  	<parser>url</parser>
-  </router>
-  <urlRule>
-     <action name='a'>run</action>
-     <controller name='c'>index</controller>
-     <module name='m'>default</module>
-  </urlRule>
-  <routerParser>
-  	 <url>WIND:component.router.WindUrlBasedRouter</url>
-  </routerParser>
+	<app isGlobal='true'>
+		<name></name>
+		<rootPath></rootPath>
+		<configPath></configPath>
+	</app>
+	<modules>
+		<module>
+			<name>default</name>
+			<path>actionControllers</path>
+		</module>
+	</modules>
+	<filters>
+		<filter></filter>
+	</filters>
+	<template>
+		<path>template</path>
+		<name>index</name>
+		<ext>htm</ext>
+		<resolver>default</resolver>
+		<isCache>false</isCache>
+		<cacheDir>cache</cacheDir>
+		<compileDir>compile</compileDir>
+	</template>
+	<viewerResolvers>
+		<default>WIND:component.viewer.WindViewer</default>
+		<pw>WIND:component.viewer.WindPWViewer</pw>
+		<smarty>libs.WSmarty</smarty>
+	</viewerResolvers>
+	<router>
+		<parser>url</parser>
+	</router>
+	<routerParsers>
+		<parser name='url'>
+			<rule>
+				<action name='a'>run</action>
+				<controller name='c'>index</controller>
+				<module name='m'>default</module>
+			</rule>
+			<path>WIND:component.router.WindUrlBasedRouter</path>
+		</parser>
+	</routerParsers>
 </WIND>
