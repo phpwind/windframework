@@ -41,4 +41,10 @@
 			<path>WIND:component.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
+	<debug>false</debug>
+	<log>
+		<ifopen>false</ifopen>
+		<logFolder>log</logFolder>
+		<logDisplay>log</logDisplay>
+	</log>
 </WIND>

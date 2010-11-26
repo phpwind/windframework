@@ -154,7 +154,7 @@ class W {
 	 * 初始化系统日志，调试系统
 	 */
 	static private function _initLog() {
-		set_exception_handler(array('W', 'WExceptionHandler'));
+		set_exception_handler(array('W', 'exceptionHandle'));
 		defined('LOG_RECORD') && L::import('utility.WLog');
 		defined('DEBUG') && L::import('utility.WDebug');
 	}
@@ -181,7 +181,7 @@ class W {
 		return defined('DEBUG') ? WindDebug::debug($message, $trace) : $message;
 	}
 	
-	static public function WExceptionHandler($e) {
+	static public function exceptionHandle($e) {
 		$trace = in_array('WindException',class_parents($e)) ? $e->getStackTrace() : $e->getTrace();
 		$message = W::debug("{$e}", $trace);
 		W::recordLog($message, 'TRACE', 'log');

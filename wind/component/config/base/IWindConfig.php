@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, modules, filters, template, viewerResolvers, router, routerParsers';
+	const PARSERARRAY = 'app, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
 
 	/**
 	 * 应用配置信息
@@ -67,7 +67,12 @@ interface IWindConfig {
 	const ROUTER_PARSERS = 'routerParsers';
 	const ROUTER_PARSERS_RULE = 'rule';
 	const ROUTER_PARSERS_PATH = 'path';
-
+	
+	/**
+	 * 调试和日志控制
+	 */
+	const DEBUG = 'debug';
+	const LOG = 'log';
 	/**
 	 * 定义允许拥有的属性
 	 * name: 可以定义一些列的item中每一个item的名字以区分每一个
