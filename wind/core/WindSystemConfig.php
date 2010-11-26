@@ -128,10 +128,10 @@ class WindSystemConfig {
 	/**
 	 * @return WindSystemConfig
 	 */
-	static public function getInstance() {
+	static public function getInstance($config = '') {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class();
+			self::$instance = new $class($config);
 		}
 		return self::$instance;
 	}
