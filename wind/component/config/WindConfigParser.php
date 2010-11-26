@@ -23,6 +23,7 @@ class WindConfigParser implements IWindConfig {
 	private $defaultPath = WIND_PATH;
 	private $defaultConfig = 'wind_config';
 	
+	private $userAppConfigPath;
 	private $userAppConfig = 'config';
 	
 	private $globalAppsPath = COMPILE_PATH;
@@ -47,7 +48,6 @@ class WindConfigParser implements IWindConfig {
 		if ($outputEncoding) $this->encoding = $outputEncoding;
 	}
 	
-	
 	/**
 	 * 初始化配置文件解析器
 	 * @access private
@@ -64,7 +64,7 @@ class WindConfigParser implements IWindConfig {
 				break;
 		}
 	}
-
+	
 	/**
 	 * 返回是否需要执行解析过程
 	 * 如果compile文件夹未被定义或不可写则返回false
@@ -74,22 +74,21 @@ class WindConfigParser implements IWindConfig {
 	 */
 	private function isCompiled() {
 		if (!W::ifCompile()) return false;
-		if (!W::getApps()) return false;
-		$app = W::getApps();
+		if (!($app = W::getApps())) return false;
 		if (!is_file($app[IWindConfig::APP_CONFIG])) return false;
-		$config = $this->fetchConfigExit($app[IWindConfig::APP_ROOTPATH]);
-		if ($config == '') return false;
-		
-		$_configLastT = filemtime($config);
-		$_cacheLastT = filemtime($app[IWindConfig::APP_CONFIG]);
+		$this->userAppConfigPath = $this->fetchConfigExit($app[IWindConfig::APP_ROOTPATH]);
+		$configLastT = $this->userAppConfigPath ? filemtime($this->userAppConfigPath) : 0;
 		$defaultConfig = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
-		$_defaultConfigLastT = filemtime($defaultConfig);
-		if ($_configLastT >= $_cacheLastT  || $_defaultConfigLastT >= $_cacheLastT) return false;
+		if (!is_file($defaultConfig)) {
+			throw new WindException('default config file ' . $defaultConfig . ' is not exists.');
+		}
+		$defaultConfigLastT = filemtime($defaultConfig);
+		$cacheLastT = filemtime($app[IWindConfig::APP_CONFIG]);
+		if ($configLastT >= $cacheLastT || $defaultConfigLastT >= $cacheLastT) return false;
 		return true;
 	}
-
+	
 	/**
-	 * 
 	 * @return mixed boolean |multitype:
 	 */
 	private function fetchConfigExit($rootPath) {
@@ -102,8 +101,9 @@ class WindConfigParser implements IWindConfig {
 		}
 		return '';
 	}
+	
 	/**
-	 * @param WindHttpRequest $request  //请求信息
+	 * @param WindHttpRequest $request
 	 */
 	public function parser($request) {
 		$rootPath = dirname($request->getServer('SCRIPT_FILENAME'));
@@ -111,34 +111,35 @@ class WindConfigParser implements IWindConfig {
 			$app = W::getApps();
 			return @include $app[IWindConfig::APP_CONFIG];
 		}
-		$userConfigPath = $this->fetchConfigExit($rootPath);
 		$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
-		list($defaultConfig, $this->defaultGAM) = $this->execuseParser(realpath($defaultConfigPath));
-		$userConfig = $this->execuseParser($userConfigPath);
-		$empty = false;
-		if (count($userConfig) == 0) {
-			$userConfig = $defaultConfig;
-			$empty = true;
-		} else {
-			list($userConfig, $this->userGAM) = $userConfig;
-		}
-		
+		list($defaultConfig, $this->defaultGAM) = $this->executeParser(realpath($defaultConfigPath));
+		list($userConfig, $this->userGAM) = $this->executeParser($this->userAppConfigPath);
+		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
+		$userConfig[IWindConfig::APP] = $this->getAppInfo($rootPath, $userConfig);
+		$this->updateGlobalCache($userConfig);
+		Common::writeover($userConfig[IWindConfig::APP][IWindConfig::APP_CONFIG], "<?php\r\n return " . Common::varExport($userConfig) . ";\r\n?>");
+		return $userConfig;
+	}
+	
+	/**
+	 * @param rootPath
+	 * @param userConfig
+	 */
+	private function getAppInfo($rootPath, $userConfig) {
 		$app = isset($userConfig[IWindConfig::APP]) ? $userConfig[IWindConfig::APP] : array();
 		if (!isset($app[IWindConfig::APP_NAME]) || $app[IWindConfig::APP_NAME] == '' || $app[IWindConfig::APP_NAME] == 'default') {
-		     $app[IWindConfig::APP_NAME] = $this->getAppName($rootPath);
+			$app[IWindConfig::APP_NAME] = $this->getAppName($rootPath);
 		}
 		if (!isset($app[IWindConfig::APP_ROOTPATH]) || $app[IWindConfig::APP_ROOTPATH] == '' || $app[IWindConfig::APP_ROOTPATH] == 'default') {
 			$app[IWindConfig::APP_ROOTPATH] = realpath($rootPath);
 		}
-		$_file = '/' . $app[IWindConfig::APP_NAME] . '_config.php';
-		if (!isset($app[IWindConfig::APP_CONFIG]) || $app[IWindConfig::APP_CONFIG] == '' ) {
+		$_file = D_S . $app[IWindConfig::APP_NAME] . '_config.php';
+		if (!isset($app[IWindConfig::APP_CONFIG]) || $app[IWindConfig::APP_CONFIG] == '') {
 			$app[IWindConfig::APP_CONFIG] = $this->globalAppsPath . $_file;
 		} else {
-			$app[IWindConfig::APP_CONFIG] = $this->getRealPath($app[IWindConfig::APP_NAME], $app[IWindConfig::APP_ROOTPATH], $app[IWindConfig::APP_CONFIG]) . $_file;
+			$app[IWindConfig::APP_CONFIG] = $this->getRealPath($app[IWindConfig::APP_ROOTPATH], $app[IWindConfig::APP_CONFIG]) . $_file;
 		}
-		$userConfig[IWindConfig::APP] = $app;
-		
-		return $this->mergeConfig($defaultConfig, $userConfig, $empty);
+		return $app;
 	}
 	
 	/**
@@ -148,9 +149,8 @@ class WindConfigParser implements IWindConfig {
 	 * @param string $configFile
 	 * @return array
 	 */
-	private function execuseParser($configFile) {
-		//list(, $fileName, $ext, $realPath) = L::getRealPath($configFile, true);
-		if (!$configFile) return array();
+	private function executeParser($configFile) {
+		if (!$configFile) return array(null, null);
 		if ($this->configParser === null) {
 			$this->initParser();
 		}
@@ -169,37 +169,25 @@ class WindConfigParser implements IWindConfig {
 	 * @param array $appConfig 应用的配置文件
 	 * @return array 返回处理后的配置文件
 	 */
-	private function mergeConfig($defaultConfig, $appConfig, $flag = false) {
-		if ($flag === false) {
-			$_merge = $this->getGAM(IWindConfig::ISMERGE);
-			$hasInDefaultConfigKeys = array();
-			foreach ($appConfig as $key => $value) {
-				if (in_array($key, $_merge) && isset($defaultConfig[$key])) {
-					!is_array($value) && $value = array($value);
-					!is_array($defaultConfig[$key]) && $defaultConfig[$key] = array($defaultConfig[$key]);
-					$appConfig[$key] = array_merge($value, $defaultConfig[$key]);
-				}
-				(!isset($defaultConfig[$key])) && $hasInDefaultConfigKeys[] = $key;
+	private function mergeConfig($defaultConfig, $appConfig) {
+		if (!$appConfig) return $defaultConfig;
+		$_merge = $this->defaultGAM[IWindConfig::ISMERGE];
+		$hasInDefaultConfigKeys = array();
+		foreach ($appConfig as $key => $value) {
+			if (in_array($key, $_merge) && isset($defaultConfig[$key])) {
+				!is_array($value) && $value = array($value);
+				!is_array($defaultConfig[$key]) && $defaultConfig[$key] = array($defaultConfig[$key]);
+				$appConfig[$key] = array_merge($value, $defaultConfig[$key]);
 			}
-			//将应用配置中不缺省的项填充到应用配置中；
-			$appConfigKeys = array_keys($appConfig);
-			$_notInAppConfig = array_diff(array_keys($defaultConfig), $hasInDefaultConfigKeys);
-			foreach ($_notInAppConfig as $key) {
-				if (in_array($key, $appConfigKeys)) continue;
-				$appConfig[$key] = $defaultConfig[$key];
-			}
+			(!isset($defaultConfig[$key])) && $hasInDefaultConfigKeys[] = $key;
 		}
-		Common::writeover($appConfig[IWindConfig::APP][IWindConfig::APP_CONFIG], "<?php\r\n return " . Common::varExport($appConfig) . ";\r\n?>");
-		$this->updateGlobalCache($appConfig);
+		$appConfigKeys = array_keys($appConfig);
+		$_notInAppConfig = array_diff(array_keys($defaultConfig), $hasInDefaultConfigKeys);
+		foreach ($_notInAppConfig as $key) {
+			if (in_array($key, $appConfigKeys)) continue;
+			$appConfig[$key] = $defaultConfig[$key];
+		}
 		return $appConfig;
-	}
-	
-	private function getGAM($key) {
-		$_tmp1 = isset($this->userGAM[$key]) ? $this->userGAM[$key] : array();
-		$_tmp2 = isset($this->defaultGAM[$key]) ? $this->defaultGAM[$key] : array();
-		if ($_tmp1 && $_tmp2) return array_merge($_tmp1, $_tmp2);
-		if ($_tmp1) return $_tmp1;
-		return $_tmp2;
 	}
 	
 	/**
@@ -211,21 +199,20 @@ class WindConfigParser implements IWindConfig {
 	 * @param array $config
 	 */
 	private function updateGlobalCache($config) {
-		if (!W::ifCompile()) return false;
-		$_global = $this->getGAM(IWindConfig::ISGLOBAL);
-		if (count($_global) == 0 ) return false;
+		$_global = $this->defaultGAM[IWindConfig::ISGLOBAL];
+		if (count($_global) == 0) return false;
 		$_globalArray = array();
 		foreach ($_global as $key) {
-			if (trim($key) == IWindConfig::APP) continue;
-			isset($config[$key]) && $_globalArray[$key] = $config[$key];
+			if (!isset($config[$key])) continue;
+			$_temp = $config[$key];
+			if ($_temp['name']) $key = $_temp['name'];
+			$_globalArray[$key] = $_temp;
 		}
 		$globalConfigPath = $this->globalAppsPath . D_S . $this->globalAppsConfig;
 		$sysConfig = array();
 		if (is_file($globalConfigPath)) {
 			$sysConfig = @include ($globalConfigPath);
 		}
-		$_app = $config[IWindConfig::APP];
-		$sysConfig[$_app[IWindConfig::APP_NAME]] = $_app;
 		$sysConfig = array_merge($sysConfig, $_globalArray);
 		Common::writeover($globalConfigPath, "<?php\r\n return " . Common::varExport($sysConfig) . ";\r\n?>");
 		return true;
@@ -233,15 +220,14 @@ class WindConfigParser implements IWindConfig {
 	
 	/**
 	 * 通过命名空间返回真实路径
-	 * @param string $nameSpace 默认的命名空间
-	 * @param string $oPah 路径
-	 * @param string $file 需要查找的文件路径
+	 * @param string $rootPath 路径
+	 * @param string $oPath 需要查找的文件路径
 	 */
-	private function getRealPath($nameSpace, $rootPath, $oPah) {
-		if (strpos(':', $oPah) === false) {
-			return L::getRealPath($nameSpace . ':' . $oPah . '.*', '', '', $rootPath);
+	private function getRealPath($rootPath, $oPath) {
+		if (strpos(':', $oPath) === false) {
+			return L::getRealPath($oPath . '.*', '', '', $rootPath);
 		} else {
-			return L::getRealPath($oPah . '.*', '', '', $rootPath);
+			return L::getRealPath($oPath . '.*');
 		}
 	}
 	
