@@ -120,7 +120,7 @@ class W {
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
 				$pack = L::getInstance('WindPack');
-				$pack->pack(array(WIND_PATH . 'core'), $packfile);
+				$pack->packCompress(array(WIND_PATH.'core'), $packfile);
 			}
 			if (is_file($packfile)) {
 				@include $packfile;
