@@ -104,7 +104,10 @@ class W {
 	 */
 	static private function _initBaseLib() {
 		if (false === self::_initLoad()) {
-			L::import('WIND:core.WindFrontController');
+			L::import('WIND:component.exception.WindException');
+			L::import('WIND:component.request.WindHttpRequest');
+			L::import('WIND:component.request.WindHttpResponse');
+			L::import('WIND:core.*');
 		}
 	}
 	
@@ -117,7 +120,7 @@ class W {
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
 				$pack = L::getInstance('WindPack');
-				$pack->pack(array('core'), $packfile);
+				$pack->pack(array(WIND_PATH.'core'), $packfile);
 			}
 			if (is_file($packfile)) {
 				@include $packfile;
