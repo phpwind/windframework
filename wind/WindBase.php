@@ -103,25 +103,24 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _initBaseLib() {
-		//		if (self::_initAutoLoad()) return;
-		L::import('WIND:core.WindFrontController');
+		if (false === self::_initLoad()){
+			L::import('WIND:core.WindFrontController');
+		}
 	}
 	
 	/**
 	 * 自动加载
 	 */
-	static private function _initAutoLoad() {
+	static private function _initLoad() {
 		if (self::ifCompile()) {
 			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
-				$pack = new WindPack();
+				$pack = L::getInstance('WindPack');
 				$pack->pack(array('core'), $packfile);
 			}
-			if (is_file($packfile)) {
-				@include $packfile;
-				return true;
-			}
+			include $packfile;
+			return true;
 		}
 		return false;
 	}

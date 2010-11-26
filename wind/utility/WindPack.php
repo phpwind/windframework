@@ -327,7 +327,6 @@ class WindPack{
 		$content = $this->stripNR($content);
 		$content = $this->stripSpace($content);
 		$content = $this->getPackImport($content,$fileSuffix);
-		$content = $this->getPackComment($content,$fileSuffix);
 		$content = $this->stripImport($content);
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
