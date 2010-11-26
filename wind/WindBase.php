@@ -119,8 +119,10 @@ class W {
 				$pack = L::getInstance('WindPack');
 				$pack->pack(array('core'), $packfile);
 			}
-			include $packfile;
-			return true;
+			if (is_file($packfile)) {
+				@include $packfile;
+				return true;
+			}
 		}
 		return false;
 	}
