@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, filters, view, viewerResolver, router, urlRule, routerParser';
+	const PARSERARRAY = 'app, modules, filters, view, viewerResolver, router, urlRule, routerParser';
 	
 	/**
 	 * 应用配置信息
@@ -19,6 +19,12 @@ interface IWindConfig {
 	const APP_ROOTPATH = 'rootPath';
 	const APP_CONFIG = 'configPath';
     
+	/**
+	 * 模快設置
+	 */
+	const MODULES = 'modules';
+	const MODULE_NAME = 'name';
+	const MODULE_PATH = 'path';
 	/**
 	 * 过滤器链
 	 */
