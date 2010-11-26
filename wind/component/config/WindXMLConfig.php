@@ -58,7 +58,8 @@ class WindXMLConfig extends XML implements IWindParser {
 			$this->isCheck = true;
 			foreach($elements as $element) {
 				list($key, $value) = $this->getContent($element);
-				$_array[$key] = $value;
+				if (($value = $this->isEmpty($value)) !== true)
+					$_array[$key] = $value;
 			}
 		}
 		$this->xmlArray = $_array;
@@ -96,8 +97,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	private function getContentNone($element) {
 		$tagName = $element->getName();
-		$value = self::getValue($element);
-		return array($tagName, $value);
+		return array($tagName, trim(self::getValue($element)));
 	}
 
 	/**
@@ -117,7 +117,8 @@ class WindXMLConfig extends XML implements IWindParser {
 		$childArray = array();
 		foreach ($childs as $child) {
 			list($childTag, $childValue) = $this->getContent($child);
-			$childArray[$childTag] = $childValue;
+			if (($value = $this->isEmpty($childValue)) !== true)
+					$childArray[$childTag] = $value;
 		}
 		if (count($childArray) == 0) {
 			(trim(self::getValue($element)) != '' ) && $childArray = trim(self::getValue($element));
@@ -126,7 +127,21 @@ class WindXMLConfig extends XML implements IWindParser {
 		}		
 		return array($tag, $childArray);
 	}
-
+    
+	/**
+	 * 判断是否为空，如果为空返回true,否则返回false
+	 * @param mixed $value
+	 * @return mixed boolean | 
+	 */
+	private function isEmpty($value) {
+		if (is_array($value)) {
+			return (count($value) == 0) ? true : $value;
+		}
+		if (is_string($value)) {
+			return (trim($value) == '') ? true : trim($value);
+		}
+	}
+	
 	/**
 	 * 获得含有子标签的标签内容：
 	 * <AA>
