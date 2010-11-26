@@ -9,8 +9,8 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, modules, filters, view, viewerResolver, router, urlRule, routerParser';
-	
+	const PARSERARRAY = 'app, modules, filters, template, viewerResolvers, router, routerParsers';
+
 	/**
 	 * 应用配置信息
 	 */
@@ -18,7 +18,7 @@ interface IWindConfig {
 	const APP_NAME = 'name';
 	const APP_ROOTPATH = 'rootPath';
 	const APP_CONFIG = 'configPath';
-    
+
 	/**
 	 * 模快設置
 	 */
@@ -31,7 +31,7 @@ interface IWindConfig {
 	const FILTERS = 'filters';
 	const FILTER_NAME = 'filterName';
 	const FILTER_PATH = 'filterPath';
-    
+
 	/**
 	 * 模板相关配置信息
 	 * 1.模板文件存放路径
@@ -49,7 +49,7 @@ interface IWindConfig {
 	const TEMPLATE_ISCACHE = 'isCache';
 	const TEMPLATE_CACHE_DIR = 'cacheDir';
 	const TEMPLATE_COMPILER_DIR = 'compileDir';
-	
+
     /**
      * 模板引擎配置信息
      */
@@ -60,14 +60,14 @@ interface IWindConfig {
 	 */
 	const ROUTER = 'router';
 	const ROUTER_PARSER = 'parser';
-	
+
 	/**
 	 * 路由解析器配置
 	 */
 	const ROUTER_PARSERS = 'routerParsers';
 	const ROUTER_PARSERS_RULE = 'rule';
 	const ROUTER_PARSERS_PATH = 'path';
-	
+
 	/**
 	 * 定义允许拥有的属性
 	 * name: 可以定义一些列的item中每一个item的名字以区分每一个
