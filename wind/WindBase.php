@@ -20,6 +20,8 @@
 !defined('LOG_PATH') && define('LOG_PATH', WIND_PATH . 'log' . D_S);
 !defined('LOG_DISPLAY_TYPE') && define('LOG_DISPLAY_TYPE', 'log');
 
+!defined('IS_DEBUG') && define('IS_DEBUG', true);
+
 /*define('LOG_RECORD', true);
 define('DEBUG', true);*/
 
@@ -104,10 +106,7 @@ class W {
 	 */
 	static private function _initBaseLib() {
 		if (false === self::_initLoad()) {
-			L::import('WIND:component.exception.WindException');
-			L::import('WIND:component.request.WindHttpRequest');
-			L::import('WIND:component.request.WindHttpResponse');
-			L::import('WIND:core.*');
+			L::import('WIND:core.WindFrontController');
 		}
 	}
 	
@@ -115,12 +114,12 @@ class W {
 	 * 自动加载
 	 */
 	static private function _initLoad() {
-		if (self::ifCompile()) {
+		if (self::ifCompile() && !IS_DEBUG) {
 			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
 				$pack = L::getInstance('WindPack');
-				$pack->pack(array(WIND_PATH.'core'), $packfile);
+				$pack->pack(array(WIND_PATH . 'core'), $packfile);
 			}
 			if (is_file($packfile)) {
 				@include $packfile;
@@ -155,8 +154,8 @@ class W {
 	 */
 	static private function _initLog() {
 		set_exception_handler(array('W', 'WExceptionHandler'));
-		defined('LOG_RECORD') && W::import('utility.WLog');
-		defined('DEBUG') && W::import('utility.WDebug');
+		defined('LOG_RECORD') && L::import('utility.WLog');
+		defined('DEBUG') && L::import('utility.WDebug');
 	}
 	
 	/**
@@ -164,8 +163,7 @@ class W {
 	 * @param $message
 	 * @param $trace
 	 */
-	static public function recordLog($message, $type = 'INFO', $ifrecord = 'add') {
-		//TODO 重构
+	static public function recordLog($message, $type = 'INFO', $ifrecord = 'add') { //TODO 重构
 		if (defined('LOG_RECORD')) {
 			$message = str_replace('<br/>', "\r\n", $message);
 			$ifrecord == 'add' ? WindLog::add($message, strtoupper($type)) : WindLog::log($message, strtoupper($type));
@@ -383,6 +381,94 @@ class L {
 		} else {
 			return W::getCurrentApp() ? L::$_namespace[W::getCurrentApp()] : '';
 		}
+	}
+}
+
+/**
+ * 全文配置访问
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
+class C {
+	private static $config = array();
+	
+	/**
+	 * 初始化配置文件对象
+	 * @param array $configSystem
+	 */
+	static public function init($configSystem) {
+		if (empty($configSystem)) {
+			throw new Exception('system config file is not exists.');
+		}
+		self::$config = $configSystem;
+	}
+	
+	/**
+	 * 根据配置名取得相应的配置
+	 * @param string $configName
+	 * @param string $subConfigName
+	 * @return string
+	 */
+	static public function getConfig($configName = '', $subConfigName = '') {
+		$_config = array();
+		if ($configName && isset(self::$config[$configName])) {
+			$_config = self::$config[$configName];
+		}
+		if ($subConfigName && is_array($_config) && isset($_config[$subConfigName])) {
+			$_config = $_config[$subConfigName];
+		}
+		return $_config;
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	static public function getModules($name = '') {
+		return self::getConfig(IWindConfig::MODULES, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	static public function getTemplate($name = '') {
+		return self::getConfig(IWindConfig::TEMPLATE, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	static public function getFilters($name = '') {
+		return self::getConfig(IWindConfig::FILTERS, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	static public function getViewerResolvers($name = '') {
+		return self::getConfig(IWindConfig::VIEWER_RESOLVERS, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	static public function getRouter($name = '') {
+		return self::getConfig(IWindConfig::ROUTER, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	public function getRouterParsers($name = '') {
+		return self::getConfig(IWindConfig::ROUTER_PARSERS, $name);
 	}
 }
 
