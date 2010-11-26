@@ -49,7 +49,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	 * @return boolean
 	 */
 	public function parser() {
-		$this->createParser();
+		$this->ceateParser();
 		$parseArray = trim(IWindConfig::PARSERARRAY, ',');
 		$_parseTags = (strpos($parseArray, ',') === false) ? array($parseArray) : explode(',', $parseArray);
 		$_array = array();
@@ -175,8 +175,8 @@ class WindXMLConfig extends XML implements IWindParser {
 		if (!$this->isCheck) return false;
 		$tag = $attributes['tagName'];
 		$name = isset($attributes[IWindConfig::ATTRNAME]) ? $attributes[IWindConfig::ATTRNAME] : $tag;
-		(isset($attributes[IWindConfig::GLOBALATTR]) && $attributes[IWindConfig::GLOBALATTR] == 'true') && $this->GAM[IWindConfig::GLOBALATTR][$name] = $tag;
-		(isset($attributes[IWindConfig::MERGEATTR]) && $attributes[IWindConfig::MERGEATTR] == 'true') && $this->GAM[IWindConfig::MERGEATTR][$name] = $tag;
+		(isset($attributes[IWindConfig::ISGLOBAL]) && $attributes[IWindConfig::ISGLOBAL] == 'true') && $this->GAM[IWindConfig::ISGLOBAL][$name] = $tag;
+		(isset($attributes[IWindConfig::ISMERGE]) && $attributes[IWindConfig::ISMERGE] == 'true') && $this->GAM[IWindConfig::ISMERGE][$name] = $tag;
 		$this->isCheck = false;
 		return true;
 	}
@@ -226,16 +226,5 @@ class WindXMLConfig extends XML implements IWindParser {
 	public function getGAM($key = '') {
 		if (in_array($key, array_keys($this->GAM))) return $this->GAM[$key];
 		return $this->GAM;
-	}
-	
-	/**
-	 * ´´½¨½âÎöÆ÷
-	 * @access private
-	 * @return XML object
-	 */
-	private function createParser() {
-		if (is_object($this->object)) return $this;
-		$this->ceateParser();
-		return $this;
 	}
 }

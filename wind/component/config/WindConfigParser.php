@@ -113,32 +113,29 @@ class WindConfigParser implements IWindConfig {
 		}
 		$userConfigPath = $this->fetchConfigExit($rootPath);
 		$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
-		
 		list($defaultConfig, $this->defaultGAM) = $this->execuseParser(realpath($defaultConfigPath));
-		$userConfig = $this->execuseParser($userConfigPath);
+		list($userConfig, $this->userGAM) = $this->execuseParser($userConfigPath);
 		$empty = false;
 		if (count($userConfig) == 0) {
 			$userConfig = $defaultConfig;
 			$empty = true;
-		} else {
-			list($userConfig, $this->userGAM) = $userConfig;
 		}
-		
-		$app = $userConfig[IWindConfig::APP];
-		if (!isset($app[IWindConfig::APP_NAME]) || $app[IWindConfig::APP_NAME] == '' || $app[IWindConfig::APP_NAME] == 'default') {
-		     $app[IWindConfig::APP_NAME] = $this->getAppName($rootPath);
+		if (isset($userConfig[IWindConfig::APP])) {
+			$app = $userConfig[IWindConfig::APP];
+			if (!isset($app[IWindConfig::APP_NAME]) || $app[IWindConfig::APP_NAME] == '' || $app[IWindConfig::APP_NAME] == 'default') {
+			     $app[IWindConfig::APP_NAME] = $this->getAppName($rootPath);
+			}
+			if (!isset($app[IWindConfig::APP_ROOTPATH]) || $app[IWindConfig::APP_ROOTPATH] == '' || $app[IWindConfig::APP_ROOTPATH] == 'default') {
+				$app[IWindConfig::APP_ROOTPATH] = realpath($rootPath);
+			}
+			$_file = '/' . $app[IWindConfig::APP_NAME] . '_config.php';
+			if (!isset($app[IWindConfig::APP_CONFIG]) || $app[IWindConfig::APP_CONFIG] == '' ) {
+				$app[IWindConfig::APP_CONFIG] = $this->globalAppsPath . $_file;
+			} else {
+				$app[IWindConfig::APP_CONFIG] = $this->getRealPath($app[IWindConfig::APP_NAME], $app[IWindConfig::APP_ROOTPATH], $app[IWindConfig::APP_CONFIG]) . $_file;
+			}
+			$userConfig[IWindConfig::APP] = $app;
 		}
-		if (!isset($app[IWindConfig::APP_ROOTPATH]) || $app[IWindConfig::APP_ROOTPATH] == '' || $app[IWindConfig::APP_ROOTPATH] == 'default') {
-			$app[IWindConfig::APP_ROOTPATH] = realpath($rootPath);
-		}
-		$_file = '/' . $app[IWindConfig::APP_NAME] . '_config.php';
-		if (!isset($app[IWindConfig::APP_CONFIG]) || $app[IWindConfig::APP_CONFIG] == '' ) {
-			$app[IWindConfig::APP_CONFIG] = $this->globalAppsPath . $_file;
-		} else {
-			$app[IWindConfig::APP_CONFIG] = $this->getRealPath($app[IWindConfig::APP_NAME], $app[IWindConfig::APP_ROOTPATH], $app[IWindConfig::APP_CONFIG]) . $_file;
-		}
-		$userConfig[IWindConfig::APP] = $app;
-		
 		return $this->mergeConfig($defaultConfig, $userConfig, $empty);
 	}
 	
@@ -172,7 +169,7 @@ class WindConfigParser implements IWindConfig {
 	 */
 	private function mergeConfig($defaultConfig, $appConfig, $flag = false) {
 		if ($flag === false) {
-			$_merge = $this->getGAM(IWindConfig::MERGEATTR);
+			$_merge = $this->getGAM(IWindConfig::ISMERGE);
 			$hasInDefaultConfigKeys = array();
 			foreach ($appConfig as $key => $value) {
 				if (in_array($key, $_merge) && isset($defaultConfig[$key])) {
@@ -190,6 +187,7 @@ class WindConfigParser implements IWindConfig {
 				$appConfig[$key] = $defaultConfig[$key];
 			}
 		}
+		if (!isset($appConfig[IWindConfig::APP])) return $appConfig;
 		Common::writeover($appConfig[IWindConfig::APP][IWindConfig::APP_CONFIG], "<?php\r\n return " . Common::varExport($appConfig) . ";\r\n?>");
 		$this->updateGlobalCache($appConfig);
 		return $appConfig;
@@ -213,7 +211,7 @@ class WindConfigParser implements IWindConfig {
 	 */
 	private function updateGlobalCache($config) {
 		if (!W::ifCompile()) return false;
-		$_global = $this->getGAM(IWindConfig::GLOBALATTR);
+		$_global = $this->getGAM(IWindConfig::ISGLOBAL);
 		if (count($_global) == 0 ) return false;
 		$_globalArray = array();
 		foreach ($_global as $key) {
