@@ -114,12 +114,15 @@ class WindConfigParser implements IWindConfig {
 		$userConfigPath = $this->fetchConfigExit($rootPath);
 		$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
 		list($defaultConfig, $this->defaultGAM) = $this->execuseParser(realpath($defaultConfigPath));
-		list($userConfig, $this->userGAM) = $this->execuseParser($userConfigPath);
+		$userConfig = $this->execuseParser($userConfigPath);
 		$empty = false;
 		if (count($userConfig) == 0) {
 			$userConfig = $defaultConfig;
 			$empty = true;
+		} else {
+			list($userConfig, $this->userGAM) = $userConfig;
 		}
+		
 		if (isset($userConfig[IWindConfig::APP])) {
 			$app = $userConfig[IWindConfig::APP];
 			if (!isset($app[IWindConfig::APP_NAME]) || $app[IWindConfig::APP_NAME] == '' || $app[IWindConfig::APP_NAME] == 'default') {
