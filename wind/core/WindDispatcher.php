@@ -61,7 +61,7 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	private function _dispatchWithAction($request, $response) {
-		
+
 	}
 	
 	/**
