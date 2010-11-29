@@ -9,5 +9,6 @@ class OtherAction extends WindBaseAction {
 	
 	public function run() {
 		echo "other action";
+		$this->setTemplate('header');
 	}
 }

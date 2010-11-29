@@ -19,6 +19,7 @@ class WindDispatcher {
 	
 	private $path = '';
 	private $mav = null;
+	private $mavs = array();
 	private $router = null;
 	
 	private static $instance = null;
@@ -77,9 +78,11 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	private function _dispatchWithTemplate($request, $response) {
-		$viewer = $this->getMav()->getView()->createViewerResolver();
-		$viewer->windAssign($response->getData());
-		$response->setBody($viewer->windFetch());
+		while ($mav = array_pop($this->mavs)) {
+			$viewer = $mav->getView()->createViewerResolver();
+			$viewer->windAssign($response->getData());
+			$response->setBody($viewer->windFetch());
+		}
 	}
 	
 	/**
@@ -97,6 +100,7 @@ class WindDispatcher {
 	 */
 	public function setMav($mav) {
 		if ($mav instanceof WindModelAndView) {
+			$this->mavs[] = $mav;
 			$this->mav = $mav;
 		} else
 			throw new WindException('The type of object error.');

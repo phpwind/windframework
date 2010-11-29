@@ -357,9 +357,9 @@ class L {
 	static private function _include($realPath, $fileName = '') {
 		if (empty($realPath)) return;
 		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
-		if (key_exists($fileName, self::$_imports)) return $realPath;
+		if (in_array($realPath, self::$_imports)) return $realPath;
 		include $realPath;
-		$fileName && self::$_imports[$fileName] = $realPath;
+		self::$_imports[] = $realPath;
 		return $realPath;
 	}
 	
