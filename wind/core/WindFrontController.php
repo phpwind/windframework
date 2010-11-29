@@ -97,7 +97,7 @@ class WindFrontController extends WindServlet {
 		if ($response->getDispatcher() && $response->getDispatcher()->getAction()) return;
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($request, $response);
-		$response->setDispatcher(WindDispatcher::getInstance()->setRouter($router));
+		$response->setDispatcher(WindDispatcher::getInstance()->initWithRouter($router));
 	}
 	
 	/**

@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class OtherAction extends WindBaseAction {
+class OtherController extends WindBaseAction {
 	
 	public function run() {
 		$this->setViewData(array('test1'=>'asdfasdfsafd'));

@@ -34,14 +34,20 @@ class W {
 	private static $_current = '';
 	private static $_systemConfig = null;
 	
-	/**
-	 * 初始化框架上下文
-	 * 1. 策略加载框架必须的基础类库
-	 */
 	static public function init() {
 		self::_initConfig();
 		self::_initBaseLib();
 		self::_initLog();
+	}
+	
+	/**
+	 * 初始化框架上下文
+	 * 1. 策略加载框架必须的基础类库
+	 */
+	static public function application($current) {
+		self::init();
+		W::setCurrentApp('TEST');
+		return WindFrontController::getInstance();
 	}
 	
 	/**
@@ -485,5 +491,3 @@ class C {
 		return self::getConfig(IWindConfig::APPLICATIONS, $name);
 	}
 }
-
-W::init();

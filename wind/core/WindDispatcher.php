@@ -17,10 +17,8 @@ class WindDispatcher {
 	private $controller = 'index';
 	private $module = 'apps';
 	
-	private $path = '';
 	private $mav = null;
 	private $mavs = array();
-	private $router = null;
 	
 	private static $instance = null;
 	
@@ -66,8 +64,7 @@ class WindDispatcher {
 	 */
 	private function _dispatchWithAction($action, $request, $response) {
 		if (!$action) throw new WindException('action handled is empty.');
-		$this->action = $action;
-		$this->path = $this->getMav()->getActionPath();
+		$this->initWithModelAndView($this->getMav());
 		WindFrontController::getInstance()->getApplicationHandle()->processRequest($request, $response);
 	}
 	
@@ -109,15 +106,31 @@ class WindDispatcher {
 	}
 	
 	/**
+	 * @param WindModelAndView $mav
+	 */
+	public function initWithModelAndView($mav) {
+		$this->action = $mav->getAction();
+		$path = $this->getMav()->getActionPath();
+		if (!$path) return;
+		if (($pos = strpos($path, ':')) !== false) {
+			$path = substr($path, $pos + 1);
+		}
+		if (($pos = strrpos($path, '.')) !== false) {
+			$this->controller = substr($path, $pos + 1);
+			$this->module = substr($path, 0, $pos);
+		} else
+			$this->controller = $path;
+	}
+	
+	/**
 	 * @param WindRouter $router
 	 * @return WindDispatcher
 	 */
-	public function setRouter($router) {
+	public function initWithRouter($router) {
 		if ($router instanceof WindRouter) {
 			$this->module = $router->getModule();
 			$this->controller = $router->getController();
 			$this->action = $router->getAction();
-			$this->router = $router;
 		}
 		return $this;
 	}
@@ -126,16 +139,20 @@ class WindDispatcher {
 	 * 返回处理操作句柄
 	 * @return array($className,$method)
 	 */
-	public function getActionHandle($path = '') {
-		if (!$path) $path = $this->path;
-		if ($path == '') {
-			$moduleConfig = C::getModules($this->module);
-			$path = $moduleConfig[IWindConfig::MODULE_PATH] . '.' . $this->controller . 'Controller';
+	public function getActionHandle() {
+		$moduleConfig = C::getModules($this->module);
+		$module = $moduleConfig ? $moduleConfig[IWindConfig::MODULE_PATH] : $this->module;
+		$path = $module . '.' . $this->controller;
+		if (!preg_match("/Controller$/i", $path)) {
+			$path .= 'Controller';
 		}
 		$method = $this->action;
 		list(, $className, , $realPath) = L::getRealPath($path, true);
 		if (!$realPath) {
 			$path .= $this->action;
+			if (!preg_match("/Action$/i", $path)) {
+				$path .= 'Action';
+			}
 			list(, $className, , $realPath) = L::getRealPath($path, true);
 			$method = 'run';
 		}

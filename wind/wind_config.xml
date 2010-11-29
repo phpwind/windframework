@@ -16,6 +16,10 @@
 			<name>default</name>
 			<path>actionControllers</path>
 		</module>
+		<module name='other'>
+			<name>other</name>
+			<path>otherControllers</path>
+		</module>
 	</modules>
 	<filters>
 		<filter></filter>

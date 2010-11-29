@@ -63,7 +63,6 @@ class WindModelAndView {
 		return $this->layoutMapping;
 	}
 	
-	
 	/**
 	 * 设置视图的重定向信息
 	 * 
@@ -150,8 +149,9 @@ class WindModelAndView {
 	 * @param $action the $action to set
 	 * @author Qiong Wu
 	 */
-	public function setAction($action) {
+	public function setAction($action, $path = '') {
 		$this->action = $action;
+		if ($path) $this->setActionPath($path);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ class WindModelAndView {
 	public function getActionPath() {
 		return $this->actionPath;
 	}
-
+	
 	/**
 	 * @param $actionPath the $actionPath to set
 	 * @author Qiong Wu
@@ -168,6 +168,5 @@ class WindModelAndView {
 	public function setActionPath($actionPath) {
 		$this->actionPath = $actionPath;
 	}
-
 
 }

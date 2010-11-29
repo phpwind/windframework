@@ -9,8 +9,6 @@
 class ReadController extends WindBaseAction {
 	
 	public function run() {
-		$this->getModelAndView()->setActionPath('otherControllers.OtherAction');
-		$this->getModelAndView()->setAction('run');
-		$this->setTemplate('read');
+		echo 'hello ,i am read.';
 	}
 }
