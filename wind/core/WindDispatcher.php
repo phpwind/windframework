@@ -20,12 +20,18 @@ class WindDispatcher {
 	private $mav = null;
 	private $mavs = array();
 	
+	private $request = null;
+	private $response = null;
+	
 	private static $instance = null;
 	
 	/**
 	 * @param WindModelAndView $mav
 	 */
-	public function __construct() {}
+	public function __construct($request, $response) {
+		$this->request = $request;
+		$this->response = $response;
+	}
 	
 	/**
 	 * 请求分发处理
@@ -33,39 +39,33 @@ class WindDispatcher {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function dispatch($request, $response) {
+	public function dispatch() {
 		if ($this->getMav() === null) throw new WindException('dispatch error.');
 		if (($redirect = $this->getMav()->getRedirect()) !== '')
-			$this->_dispatchWithRedirect($redirect, $request, $response);
+			$this->_dispatchWithRedirect($redirect);
 		
 		elseif (($action = $this->getMav()->getAction()) !== '')
-			$this->_dispatchWithAction($action, $request, $response);
+			$this->_dispatchWithAction($action);
 		
 		else
-			$this->_dispatchWithTemplate($request, $response);
+			$this->_dispatchWithTemplate();
 		return;
 	}
 	
 	/**
 	 * 请求分发一个重定向请求
 	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithRedirect($redirect, $request, $response) {
-		$response->sendRedirect($redirect);
+	private function _dispatchWithRedirect($redirect) {
+		$this->response->sendRedirect($redirect);
 	}
 	
 	/**
 	 * 请求分发一个操作请求
 	 * @param String $action
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithAction($action, $request, $response) {
-		if (!$action) throw new WindException('action handled is empty.');
-		$this->initWithModelAndView($this->getMav());
-		WindFrontController::getInstance()->getApplicationHandle()->processRequest($request, $response);
+	private function _dispatchWithAction($action) {
+		WindFrontController::getInstance()->getApplicationHandle()->processRequest($this->request, $this->response);
 	}
 	
 	/**
@@ -74,12 +74,11 @@ class WindDispatcher {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithTemplate($request, $response) {
-		while ($mav = array_pop($this->mavs)) {
-			$viewer = $mav->getView()->createViewerResolver();
-			$viewer->windAssign($response->getData());
-			$response->setBody($viewer->windFetch(), $mav->getViewName());
-		}
+	private function _dispatchWithTemplate() {
+		$viewer = $this->getMav()->getView()->createViewerResolver();
+		$viewer->windAssign($this->response->getData());
+		$viewName = $this->getMav()->getViewName();
+		$this->response->setBody($viewer->windFetch(), $viewName);
 	}
 	
 	/**
@@ -98,7 +97,7 @@ class WindDispatcher {
 	public function setMav($mav) {
 		if ($mav instanceof WindModelAndView) {
 			$this->mavs[] = $mav;
-			$this->mav = $mav;
+			$this->initWithModelAndView($mav);
 		} else
 			throw new WindException('The type of object error.');
 		
@@ -108,7 +107,8 @@ class WindDispatcher {
 	/**
 	 * @param WindModelAndView $mav
 	 */
-	public function initWithModelAndView($mav) {
+	private function initWithModelAndView($mav) {
+		$this->mav = $mav;
 		$this->action = $mav->getAction();
 		$path = $this->getMav()->getActionPath();
 		if (!$path) return;
@@ -166,10 +166,10 @@ class WindDispatcher {
 	/**
 	 * @return WindDispatcher
 	 */
-	static public function getInstance() {
+	static public function getInstance($request = null, $response = null) {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class();
+			self::$instance = new $class($request, $response);
 		}
 		return self::$instance;
 	}
