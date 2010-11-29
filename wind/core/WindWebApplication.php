@@ -9,6 +9,7 @@
 L::import('WIND:core.base.IWindApplication');
 L::import('WIND:component.exception.WindException');
 L::import('WIND:component.viewer.WindViewFactory');
+L::import('WIND:component.router.WindRouterFactory');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -29,9 +30,6 @@ class WindWebApplication implements IWindApplication {
 	 * @param WSystemConfig $configObj
 	 */
 	public function processRequest($request, $response) {
-		$router = $this->createRouter();
-		$router->doParser($request, $response);
-		
 		/* 获得操作句柄 */
 		list($action, $method) = $this->getActionHandle($request, $response);
 		$action->beforeAction();
@@ -51,12 +49,11 @@ class WindWebApplication implements IWindApplication {
 	 * @return array(WindAction,string)
 	 */
 	protected function getActionHandle($request, $response) {
-		list($className, $method) = $response->getRouter()->getActionHandle();
+		list($className, $method) = WindDispatcher::getInstance()->getActionHandle();
 		if ($className === null || $method === null) {
 			throw new WindException('can\'t create action handle.');
 		}
-		$class = new ReflectionClass($className);
-		$action = call_user_func_array(array($class, 'newInstance'), array($request, $response));
+		$action = new $className($request, $response);
 		return array($action, $method);
 	}
 	
@@ -68,24 +65,7 @@ class WindWebApplication implements IWindApplication {
 	 * @param WindModelAndView $mav
 	 */
 	protected function processDispatch($request, $response, $mav) {
-		WindDispatcher::getInstance($mav)->dispatch($request, $response);
-	}
-	
-	/**
-	 * 获得一个路由实例
-	 * @param WSystemConfig $configObj
-	 * @return WRouter
-	 */
-	public function &createRouter() {
-		$parserConfig = C::getRouterParsers(C::getRouter('parser'));
-		$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
-		list(, $className, , $parserPath) = L::getRealPath($parserPath, true);
-		L::import($parserPath);
-		if (!class_exists($className)) {
-			throw new WindException('The router ' . $className . ' is not exists.');
-		}
-		$router = new $className($parserConfig);
-		return $router;
+		WindDispatcher::getInstance($mav)->setMav($mav)->dispatch($request, $response);
 	}
 	
 	public function destory() {}

@@ -43,7 +43,7 @@ class WindUrlBasedRouter extends WindRouter {
 		$this->action = $request->getGet($keys[0], $this->action);
 		$this->controller = $request->getGet($keys[1], $this->controller);
 		$this->module = $request->getGet($keys[2], $this->module);
-		$response->setRouter($this);
+		$response->setDispatcher($this);
 	}
 
 }

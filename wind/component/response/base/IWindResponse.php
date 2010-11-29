@@ -11,5 +11,5 @@ interface IWindResponse {
 	/**
 	 * 设置路由信息
 	 */
-	public function getRouter();
+	public function getDispatcher();
 }

@@ -24,13 +24,15 @@ class WindHttpResponse implements IWindResponse {
 	
 	private $_body = array();
 	
+	private $_data = array();
+	
 	private $_headers = array();
 	
 	private $_isRedirect = false;
 	
 	private $_status = '';
 	
-	private $_router = null;
+	private $_dispatcher = null;
 	
 	private static $_instance = null;
 	
@@ -489,15 +491,69 @@ class WindHttpResponse implements IWindResponse {
 		return self::$_instance;
 	}
 	
-	public function setRouter(&$router = null) {
-		$this->_router = $router;
+	public function setDispatcher(&$dispatcher = null) {
+		$this->_dispatcher = $dispatcher;
 	}
 	
 	/**
-	 * @return WindRouter
+	 * @return WindDispatcher
 	 */
-	public function getRouter() {
-		return $this->_router;
+	public function getDispatcher() {
+		return $this->_dispatcher;
+	}
+	
+	/**
+	 * @return the $_data
+	 */
+	public function getData() {
+		return $this->_data;
+	}
+	
+	/**
+	 * @param $_data the $data to set
+	 * @author Qiong Wu
+	 */
+	public function setData($data, $key = '') {
+		if (is_array($data))
+			$this->setDataWithArray($data, $key);
+		elseif (is_object($data))
+			$this->setDataWithObject($data, $key);
+		else
+			$this->setDataWithSimple($data, $key);
+	}
+	
+	/**
+	 * @param $model
+	 * @param string $key
+	 */
+	private function setDataWithSimple($data, $key = '') {
+		if (!$key) return;
+		$this->_data[$key] = $data;
+	}
+	
+	/**
+	 * @param object $model
+	 * @param string $key
+	 */
+	private function setDataWithObject($data, $key = '') {
+		if (!is_object($data)) return;
+		if ($key && is_string($key))
+			$this->_data[$key] = $this->_data;
+		else
+			$this->_data += get_object_vars($data);
+	}
+	
+	/**
+	 * 设置视图变量信息
+	 * 
+	 * @param array $model
+	 */
+	private function setDataWithArray($data, $key = '') {
+		if (!is_array($data)) return;
+		if ($key && is_string($key))
+			$this->_data[$key] = $data;
+		else
+			$this->_data += $data;
 	}
 
 }

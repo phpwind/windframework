@@ -83,11 +83,11 @@ abstract class WindRouter {
 	 * 获得业务对象
 	 */
 	public function getController() {
-		return $this->controller . 'Controller';
+		return $this->controller;
 	}
 	
 	/**
-	 * 获得一组应用入口目录名
+	 * 获得一组应用入口
 	 */
 	public function getModule() {
 		return $this->module;

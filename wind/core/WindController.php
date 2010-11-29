@@ -14,24 +14,5 @@ L::import('WIND:core.base.WindBaseAction');
  * @package 
  */
 class WindController extends WindBaseAction {
-	
-	/**
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	public function __construct(WindHttpRequest $request, WindHttpResponse $response) {
-		parent::__construct();
-		$this->request = $request;
-		$this->response = $response;
-		$this->setDefaultViewHandle();
-	}
-	
 	public function run() {}
-	
-	private function setDefaultViewHandle() {
-		$view = $this->response->getRouter()->getController() . '_' . $this->response->getRouter()->getAction();
-		$this->setDefaultViewTemplate($view);
-	}
-
 }

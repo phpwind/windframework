@@ -5,7 +5,16 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
+
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
 class WindErrorMessage extends WindMessage {
+	private $template = '';
+	private $errorAction = 'WIND:core.base.WindErrorAction';
 	private static $instance = null;
 	private function __construct() {}
 	
@@ -27,6 +36,23 @@ class WindErrorMessage extends WindMessage {
 	 */
 	public function getError($key = '') {
 		return parent::getMessage($key);
+	}
+	
+	/**
+	 * 设置错误输出模板
+	 * 
+	 * @param string $template
+	 */
+	public function setTemplate($template = '') {
+		$this->template = $template;
+	}
+	
+	/**
+	 * 设置错误处理操作
+	 * 
+	 */
+	public function setErrorAction($action = '') {
+		$this->errorAction = $action;
 	}
 	
 	/**

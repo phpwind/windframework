@@ -1,11 +1,10 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-9
+ * @author Qiong Wu <papa0924@gmail.com> 2010-11-29
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 L::import('WIND:core.base.WindBaseAction');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,12 +12,10 @@ L::import('WIND:core.base.WindBaseAction');
  * @version $Id$ 
  * @package 
  */
-class WindAction extends WindBaseAction {
+class WindErrorAction extends WindBaseAction {
+	private $template = '';
 	
-	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	public function run($request, $response) {}
-
+	public function run() {
+		echo "error action";
+	}
 }

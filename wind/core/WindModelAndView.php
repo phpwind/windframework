@@ -13,26 +13,33 @@
  * @package 
  */
 class WindModelAndView {
+	/* 模板视图信息 */
 	private $viewName = '';
 	private $path = '';
+	
+	/* 页面重定向请求信息 */
 	private $isRedirect = false;
 	private $redirect = '';
-	private $model = array();
+	
+	/* 操作处理请求 */
+	private $action = '';
+	
+	/**
+	 * 视图预处理类
+	 * @var WindView
+	 */
 	private $view = null;
 	
+	/* 布局信息 */
 	private $layoutMapping = array();
 	private $layout = null;
 	
 	/**
-	 * @param string $name //name of this forward
-	 * @param string $path //path to which control should be forwarded or redirected
-	 * @param boolean $redirect //should we do a redirect
+	 * @param WindHttpRequest $request //path to which control should be forwarded or redirected
+	 * @param WindHttpResponse $response //should we do a redirect
 	 * @param string $module //module prefix
 	 */
-	public function __construct($viewName = '', $redirect = '') {
-		$this->setViewName($viewName);
-		$this->setRedirect($redirect);
-	}
+	public function __construct() {}
 	
 	/**
 	 * 接收一个layout对象初始化ModelAndView
@@ -54,62 +61,6 @@ class WindModelAndView {
 	
 	public function getLayoutMapping() {
 		return $this->layoutMapping;
-	}
-	
-	/**
-	 * 返回全局数据对象
-	 * @return array
-	 */
-	public function getModel() {
-		return $this->model;
-	}
-	
-	/**
-	 * 设置变量信息
-	 * 
-	 * @param object|array|string $model
-	 */
-	public function setModel($model, $key = '') {
-		if (is_array($model))
-			$this->setModelWithArray($model, $key);
-		elseif (is_object($model))
-			$this->setModelWithObject($model, $key);
-		else
-			$this->setModelWithSimple($model, $key);
-	}
-	
-	/**
-	 * @param $model
-	 * @param string $key
-	 */
-	public function setModelWithSimple($model, $key = '') {
-		if (!$key) return;
-		$this->model[$key] = $model;
-	}
-	
-	/**
-	 * @param object $model
-	 * @param string $key
-	 */
-	public function setModelWithObject($model, $key = '') {
-		if (!is_object($model)) return;
-		if ($key && is_string($key))
-			$this->model[$key] = $this->model;
-		else
-			$this->model += get_object_vars($model);
-	}
-	
-	/**
-	 * 设置视图变量信息
-	 * 
-	 * @param array $model
-	 */
-	public function setModelWithArray($model, $key = '') {
-		if (!is_array($model)) return;
-		if ($key && is_string($key))
-			$this->model[$key] = $model;
-		else
-			$this->model += $model;
 	}
 	
 	/**
@@ -196,6 +147,21 @@ class WindModelAndView {
 	 */
 	public function getPath() {
 		return $this->path;
+	}
+	
+	/**
+	 * @return the $action
+	 */
+	public function getAction() {
+		return $this->action;
+	}
+	
+	/**
+	 * @param $action the $action to set
+	 * @author Qiong Wu
+	 */
+	public function setAction($action) {
+		$this->action = $action;
 	}
 
 }

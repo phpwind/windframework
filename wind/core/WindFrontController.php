@@ -27,14 +27,14 @@ class WindFrontController extends WindServlet {
 	
 	protected function __construct() {
 		parent::__construct();
-		$this->_initConfig();
+		$this->initConfig();
 	}
 	
 	public function run() {
 		$this->beforProcess();
 		$filters = C::getConfig(IWindConfig::FILTERS);
 		if (!empty($filters)) {
-			$this->_initFilter();
+			$this->initFilter();
 		} else
 			parent::run();
 		$this->afterProcess();
@@ -45,13 +45,12 @@ class WindFrontController extends WindServlet {
 	}
 	
 	function process($request, $response) {
+		$this->initDispatchWithRouter($request, $response);
 		/* 初始化一个应用服务器 TODO重构此代码 */
 		L::import('WIND:core.WindWebApplication');
 		$applicationController = new WindWebApplication();
 		$applicationController->init();
-		
 		$applicationController->processRequest($request, $response);
-		
 		$applicationController->destory();
 	}
 	
@@ -71,7 +70,7 @@ class WindFrontController extends WindServlet {
 	/**
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
-	private function _initFilter() {
+	private function initFilter() {
 		L::import('WIND:component.filter.WindFilterFactory');
 		WindFilterFactory::getFactory()->setExecute(array(get_class($this), 'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create();
@@ -83,11 +82,22 @@ class WindFrontController extends WindServlet {
 	 * 
 	 * @param array $config
 	 */
-	private function _initConfig() {
+	private function initConfig() {
 		L::import('WIND:component.config.WindConfigParser');
 		$configParser = new WindConfigParser();
 		$appConfig = $configParser->parser($this->request);
 		C::init($appConfig);
+	}
+	
+	/**
+	 * 初始化页面分发器
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	protected function initDispatchWithRouter($request, $response) {
+		$router = WindRouterFactory::getFactory()->create();
+		$router->doParser($request, $response);
+		$response->setDispatcher(WindDispatcher::getInstance()->setRouter($router));
 	}
 	
 	/**

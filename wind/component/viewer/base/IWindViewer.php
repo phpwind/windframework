@@ -32,8 +32,15 @@ interface IWindViewer {
 	
 	/**
 	 * 获得一个视图信息，并初始化解析器
+	 * 
 	 * @param WindView $view
 	 */
 	public function initWithView($view);
+	
+	/**
+	 * 获得一个Action操作句柄
+	 * 
+	 */
+	public function doAction($actionHandle = '');
 
 }

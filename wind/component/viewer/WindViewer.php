@@ -154,4 +154,12 @@ class WindViewer implements IWindViewer {
 	public function getView() {
 		return $this->view;
 	}
+	
+	/**
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '') {
+		if ($this->view instanceof WindView) $this->getView()->doAction($actionHandle);
+	}
+
 }

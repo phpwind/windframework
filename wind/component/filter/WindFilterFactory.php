@@ -6,8 +6,7 @@
  * @license 
  */
 
-L::import('WIND:utility.factory.IWindFactory');
-
+L::import('WIND:component.factory.base.WindFactory');
 /**
  * 过滤器工场
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -15,15 +14,13 @@ L::import('WIND:utility.factory.IWindFactory');
  * @version $Id$ 
  * @package
  */
-class WindFilterFactory implements IWindFactory {
+class WindFilterFactory extends WindFactory {
 	private $index = 0;
 	private $filters = array();
 	private $state = false;
 	
 	private $callBack = null;
 	private $args = array();
-	
-	private static $instance = null;
 	
 	/**
 	 * 创建一个Filter
@@ -168,10 +165,6 @@ class WindFilterFactory implements IWindFactory {
 	 * @return WindFilterFactory
 	 */
 	static function getFactory() {
-		if (self::$instance === null) {
-			$class = __CLASS__;
-			self::$instance = new $class();
-		}
-		return self::$instance;
+		return parent::getFactory(__CLASS__);
 	}
 }

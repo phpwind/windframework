@@ -48,7 +48,8 @@ class WindView {
 	public function setViewWithObject(&$mav) {
 		if ($mav instanceof WindModelAndView) {
 			$this->mav = $mav;
-			$this->templateName = $this->mav->getViewName();
+			$this->templateName = $this->getMav()->getViewName();
+			if ($this->getMav()->getPath()) $this->templatePath = $this->getMav()->getPath();
 		}
 	}
 	
@@ -181,5 +182,16 @@ class WindView {
 	public function getMav() {
 		return $this->mav;
 	}
-
+	
+	/**
+	 * 初始化一个操作句柄
+	 * 
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '') {
+		if ($this->getMav() instanceof WindModelAndView) {
+			$this->getMav()->setAction($actionHandle);
+		}
+	}
+	
 }
