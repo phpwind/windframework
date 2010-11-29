@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.db.base.WindSqlBuilder');
 /**
  * mysql常用sql语句组装器
  * the last known user to change this file in the repository  <$LastChangedBy$>
