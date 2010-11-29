@@ -22,6 +22,7 @@ class WindModelAndView {
 	
 	/* 操作处理请求 */
 	private $action = '';
+	private $actionPath = '';
 	
 	/**
 	 * 视图预处理类
@@ -152,5 +153,21 @@ class WindModelAndView {
 	public function setAction($action) {
 		$this->action = $action;
 	}
+	
+	/**
+	 * @return the $actionPath
+	 */
+	public function getActionPath() {
+		return $this->actionPath;
+	}
+
+	/**
+	 * @param $actionPath the $actionPath to set
+	 * @author Qiong Wu
+	 */
+	public function setActionPath($actionPath) {
+		$this->actionPath = $actionPath;
+	}
+
 
 }

@@ -67,7 +67,7 @@ class WindDispatcher {
 	private function _dispatchWithAction($action, $request, $response) {
 		if (!$action) throw new WindException('action handled is empty.');
 		$this->action = $action;
-		$this->path = $this->getMav()->getPath();
+		$this->path = $this->getMav()->getActionPath();
 		WindFrontController::getInstance()->getApplicationHandle()->processRequest($request, $response);
 	}
 	
@@ -81,7 +81,7 @@ class WindDispatcher {
 		while ($mav = array_pop($this->mavs)) {
 			$viewer = $mav->getView()->createViewerResolver();
 			$viewer->windAssign($response->getData());
-			$response->setBody($viewer->windFetch());
+			$response->setBody($viewer->windFetch(), $mav->getViewName());
 		}
 	}
 	

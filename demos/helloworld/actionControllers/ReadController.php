@@ -5,10 +5,12 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class OtherAction extends WindBaseAction {
+
+class ReadController extends WindBaseAction {
 	
 	public function run() {
-		$this->setViewData(array('test1'=>'asdfasdfsafd'));
-		$this->setTemplate('header');
+		$this->getModelAndView()->setActionPath('otherControllers.OtherAction');
+		$this->getModelAndView()->setAction('run');
+		$this->setTemplate('read');
 	}
 }
