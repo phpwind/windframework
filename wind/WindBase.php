@@ -120,7 +120,7 @@ class W {
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
 				$pack = L::getInstance('WindPack');
-				$pack->packCompress(array(WIND_PATH.'core'), $packfile);
+				$pack->packCompress(array(WIND_PATH . 'core'), $packfile);
 			}
 			if (is_file($packfile)) {
 				@include $packfile;
@@ -182,7 +182,7 @@ class W {
 	}
 	
 	static public function exceptionHandle($e) {
-		$trace = in_array('WindException',class_parents($e)) ? $e->getStackTrace() : $e->getTrace();
+		$trace = in_array('WindException', class_parents($e)) ? $e->getStackTrace() : $e->getTrace();
 		$message = W::debug("{$e}", $trace);
 		W::recordLog($message, 'TRACE', 'log');
 		die($message);
@@ -242,7 +242,7 @@ class L {
 	static public function import($filePath) {
 		if (!$filePath) return null;
 		if (is_file($filePath)) {
-			L::_include($filePath);
+			if (!in_array($filePath, L::getImports())) L::_include($filePath);
 			return $filePath;
 		}
 		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);
@@ -475,6 +475,14 @@ class C {
 	 */
 	static public function getRouterParsers($name = '') {
 		return self::getConfig(IWindConfig::ROUTER_PARSERS, $name);
+	}
+	
+	/**
+	 * @param string $name
+	 * @return Ambigous <string, multitype:, unknown>
+	 */
+	static public function getApplications($name = '') {
+		return self::getConfig(IWindConfig::APPLICATIONS, $name);
 	}
 }
 

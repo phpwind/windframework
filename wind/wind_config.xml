@@ -5,6 +5,12 @@
 		<rootPath></rootPath>
 		<configPath></configPath>
 	</app>
+	<applications>
+		<application name='default'>
+			<name>default</name>
+			<class>WIND:core.WindWebApplication</class>
+		</application>
+	</applications>
 	<modules>
 		<module name='default'>
 			<name>default</name>

@@ -5,9 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class HeaderAction extends WindBaseAction {
+class OtherAction extends WindBaseAction {
 	
 	public function run() {
-		echo 'header';
+		echo "other action";
 	}
 }

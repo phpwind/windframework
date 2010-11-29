@@ -18,7 +18,6 @@ class WindModelAndView {
 	private $path = '';
 	
 	/* 页面重定向请求信息 */
-	private $isRedirect = false;
 	private $redirect = '';
 	
 	/* 操作处理请求 */
@@ -63,14 +62,6 @@ class WindModelAndView {
 		return $this->layoutMapping;
 	}
 	
-	/**
-	 * 返回是否为重定向链接
-	 * 
-	 * @return string
-	 */
-	public function isRedirect() {
-		return $this->isRedirect;
-	}
 	
 	/**
 	 * 设置视图的重定向信息
@@ -80,7 +71,6 @@ class WindModelAndView {
 	public function setRedirect($redirect) {
 		if (!$redirect) return;
 		$this->redirect = $redirect;
-		$this->isRedirect = true;
 	}
 	
 	public function getRedirect() {
@@ -136,7 +126,6 @@ class WindModelAndView {
 	 * @param string $path
 	 */
 	public function setPath($path) {
-		if ($path) return;
 		$this->path = $path;
 	}
 	

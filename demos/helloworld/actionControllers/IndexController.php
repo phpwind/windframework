@@ -16,7 +16,9 @@ class IndexController extends WindController {
 	
 	public function run() {
 		echo "mmmmm";
-		$this->setViewData(array('test'=>'xxxxxxxxxx'));
+		$this->setViewData(array('test' => 'xxxxxxxxxx'));
+		$this->getModelAndView()->setPath('otherControllers.OtherAction');
+		$this->getModelAndView()->setAction('run');
 	}
 
 }

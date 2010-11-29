@@ -383,10 +383,11 @@ class WindHttpResponse implements IWindResponse {
 	public function sendRedirect($location, $status = 302) {
 		if (!is_int($status) || $status < 300 || $status > 399) return;
 		
-		$this->setHeader('Location', $location, true);
+		$this->addHeader('Location', $location, true);
 		$this->setStatus($status);
 		$this->_isRedirect = true;
 		$this->sendHeaders();
+		exit();
 	}
 	
 	/**
@@ -394,7 +395,6 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function sendResponse() {
 		$this->sendHeaders();
-		
 		$this->sendBody();
 	}
 	

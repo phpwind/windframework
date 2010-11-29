@@ -9,8 +9,8 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
-
+	const PARSERARRAY = 'app, applications, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
+	
 	/**
 	 * 应用配置信息
 	 */
@@ -18,7 +18,11 @@ interface IWindConfig {
 	const APP_NAME = 'name';
 	const APP_ROOTPATH = 'rootPath';
 	const APP_CONFIG = 'configPath';
-
+	
+	const APPLICATIONS = 'applications';
+	const APPLICATIONS_NAME = 'name';
+	const APPLICATIONS_CLASS = 'class';
+	
 	/**
 	 * 模快設置
 	 */
@@ -31,7 +35,7 @@ interface IWindConfig {
 	const FILTERS = 'filters';
 	const FILTER_NAME = 'filterName';
 	const FILTER_PATH = 'filterPath';
-
+	
 	/**
 	 * 模板相关配置信息
 	 * 1.模板文件存放路径
@@ -49,18 +53,18 @@ interface IWindConfig {
 	const TEMPLATE_ISCACHE = 'isCache';
 	const TEMPLATE_CACHE_DIR = 'cacheDir';
 	const TEMPLATE_COMPILER_DIR = 'compileDir';
-
-    /**
-     * 模板引擎配置信息
-     */
+	
+	/**
+	 * 模板引擎配置信息
+	 */
 	const VIEWER_RESOLVERS = 'viewerResolvers';
-
+	
 	/**
 	 * 路由策略配置
 	 */
 	const ROUTER = 'router';
 	const ROUTER_PARSER = 'parser';
-
+	
 	/**
 	 * 路由解析器配置
 	 */

@@ -17,6 +17,7 @@ class WindDispatcher {
 	private $controller = 'index';
 	private $module = 'apps';
 	
+	private $path = '';
 	private $mav = null;
 	private $router = null;
 	
@@ -35,10 +36,12 @@ class WindDispatcher {
 	 */
 	public function dispatch($request, $response) {
 		if ($this->getMav() === null) throw new WindException('dispatch error.');
-		if ($this->getMav()->isRedirect())
-			$this->_dispatchWithRedirect($request, $response);
-		elseif ($this->getMav()->getAction())
-			$this->_dispatchWithAction($request, $response);
+		if (($redirect = $this->getMav()->getRedirect()) !== '')
+			$this->_dispatchWithRedirect($redirect, $request, $response);
+		
+		elseif (($action = $this->getMav()->getAction()) !== '')
+			$this->_dispatchWithAction($action, $request, $response);
+		
 		else
 			$this->_dispatchWithTemplate($request, $response);
 		return;
@@ -50,18 +53,21 @@ class WindDispatcher {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithRedirect($request, $response) {
-		$response->sendRedirect($this->getMav()->getRedirect());
+	private function _dispatchWithRedirect($redirect, $request, $response) {
+		$response->sendRedirect($redirect);
 	}
 	
 	/**
 	 * 请求分发一个操作请求
-	 * 
+	 * @param String $action
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithAction($request, $response) {
-
+	private function _dispatchWithAction($action, $request, $response) {
+		if (!$action) throw new WindException('action handled is empty.');
+		$this->action = $action;
+		$this->path = $this->getMav()->getPath();
+		WindFrontController::getInstance()->getApplicationHandle()->processRequest($request, $response);
 	}
 	
 	/**
@@ -90,9 +96,9 @@ class WindDispatcher {
 	 * @author Qiong Wu
 	 */
 	public function setMav($mav) {
-		if ($mav instanceof WindModelAndView)
+		if ($mav instanceof WindModelAndView) {
 			$this->mav = $mav;
-		else
+		} else
 			throw new WindException('The type of object error.');
 		
 		return $this;
@@ -116,30 +122,33 @@ class WindDispatcher {
 	 * 返回处理操作句柄
 	 * @return array($className,$method)
 	 */
-	public function getActionHandle() {
-		$moduleConfig = C::getModules($this->module);
-		$module = $moduleConfig[IWindConfig::MODULE_PATH];
-		$className = $this->controller . 'Controller';
+	public function getActionHandle($path = '') {
+		if (!$path) $path = $this->path;
+		if ($path == '') {
+			$moduleConfig = C::getModules($this->module);
+			$path = $moduleConfig[IWindConfig::MODULE_PATH] . '.' . $this->controller . 'Controller';
+		}
 		$method = $this->action;
-		L::import($module . '.' . $className);
-		if (!class_exists($className)) {
-			$module .= $module . '.' . $className;
-			$className = $this->getAction();
-			L::import($module . '.' . $className);
-			if (!class_exists($className)) return array(null, null);
+		list(, $className, , $realPath) = L::getRealPath($path, true);
+		if (!$realPath) {
+			$path .= $this->action;
+			list(, $className, , $realPath) = L::getRealPath($path, true);
 			$method = 'run';
 		}
-		if (!in_array($method, get_class_methods($className))) return array(null, null);
+		L::import($realPath);
+		if (!class_exists($className) || !in_array($method, get_class_methods($className))) {
+			return array(null, null);
+		}
 		return array($className, $method);
 	}
 	
 	/**
 	 * @return WindDispatcher
 	 */
-	static public function getInstance($mav = null) {
+	static public function getInstance() {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class($mav);
+			self::$instance = new $class();
 		}
 		return self::$instance;
 	}

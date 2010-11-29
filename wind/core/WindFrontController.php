@@ -23,6 +23,7 @@ L::import('WIND:component.exception.WindException');
  * @package 
  */
 class WindFrontController extends WindServlet {
+	private $applications = array();
 	private static $instance = null;
 	
 	protected function __construct() {
@@ -44,11 +45,9 @@ class WindFrontController extends WindServlet {
 
 	}
 	
-	function process($request, $response) {
-		$this->initDispatchWithRouter($request, $response);
-		/* 初始化一个应用服务器 TODO重构此代码 */
-		L::import('WIND:core.WindWebApplication');
-		$applicationController = new WindWebApplication();
+	public function process($request, $response) {
+		$this->initDispatch($request, $response);
+		$applicationController = $this->getApplicationHandle();
 		$applicationController->init();
 		$applicationController->processRequest($request, $response);
 		$applicationController->destory();
@@ -94,10 +93,25 @@ class WindFrontController extends WindServlet {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function initDispatchWithRouter($request, $response) {
+	protected function initDispatch($request, $response) {
+		if ($response->getDispatcher() && $response->getDispatcher()->getAction()) return;
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($request, $response);
 		$response->setDispatcher(WindDispatcher::getInstance()->setRouter($router));
+	}
+	
+	/**
+	 * @param string $key
+	 * @return WindWebApplication
+	 */
+	public function &getApplicationHandle($key = 'default') {
+		if (!isset($this->applications[$key])) {
+			$application = C::getApplications($key);
+			list(, $className, , $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
+			L::import($realpath);
+			$this->applications[$key] = &new $className();
+		}
+		return $this->applications[$key];
 	}
 	
 	/**
