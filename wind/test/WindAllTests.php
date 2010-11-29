@@ -1,7 +1,6 @@
 <?php
 require_once 'BaseTestSetting.php';
-require_once R_P . '/Test/base/WindBaseAllTests.php';
-require_once R_P . '/Test/core/WindCoreAllTests.php';
+require_once R_P . '/test/component/db/WindDBAllTests.php';
 
 class WindAllTests extends PHPUnit_Framework_TestSuite {
     public function __construct() {
@@ -10,8 +9,7 @@ class WindAllTests extends PHPUnit_Framework_TestSuite {
     
     public static function suite() { 
 		$suite = new self();
-		$suite->addTest(WindBaseAllTests::suite()); 
-		$suite->addTest(WindCoreAllTests::suite()); 
+		$suite->addTest(WindDBAllTests::suite()); 
  		return $suite;
     }
 }
