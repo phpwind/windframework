@@ -17,6 +17,7 @@ L::import('WIND:component.router.WindRouterFactory');
  * @package 
  */
 class WindWebApplication implements IWindApplication {
+	protected $process = '';
 	
 	/**
 	 * 初始化配置信息
@@ -50,11 +51,25 @@ class WindWebApplication implements IWindApplication {
 	 */
 	protected function getActionHandle($request, $response) {
 		list($className, $method) = WindDispatcher::getInstance()->getActionHandle();
+		$this->checkReprocess($className . '_' . $method);
 		if ($className === null || $method === null) {
 			throw new WindException('can\'t create action handle.');
 		}
 		$action = new $className($request, $response);
 		return array($action, $method);
+	}
+	
+	/**
+	 * 判断是否是重复提交，再一次请求中，不允许连续重复请求两次获两次以上某个操作
+	 * @param string $key
+	 */
+	protected function checkReprocess($key = '') {
+		if ($this->process && $this->process === $key) {
+			//TODO
+			echo 'Duplicate request \'' . $key . '\'';
+			exit();
+		}
+		$this->process = $key;
 	}
 	
 	/**
@@ -68,5 +83,7 @@ class WindWebApplication implements IWindApplication {
 		WindDispatcher::getInstance()->setMav($mav)->dispatch();
 	}
 	
-	public function destory() {}
+	public function destory() {
+		WindDispatcher::getInstance()->clear();
+	}
 }

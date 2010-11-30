@@ -24,11 +24,12 @@ class WindDispatcher {
 	private $response = null;
 	
 	private static $instance = null;
+	private $actionHandle = '';
 	
 	/**
 	 * @param WindModelAndView $mav
 	 */
-	public function __construct($request, $response) {
+	private function __construct($request, $response) {
 		$this->request = $request;
 		$this->response = $response;
 	}
@@ -196,5 +197,8 @@ class WindDispatcher {
 	public function getModule() {
 		return $this->module;
 	}
-
+	
+	static public function clear() {
+		self::$instance = null;
+	}
 }

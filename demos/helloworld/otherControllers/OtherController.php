@@ -9,6 +9,6 @@ class OtherController extends WindBaseAction {
 	
 	public function run() {
 		$this->setViewData(array('test1'=>'asdfasdfsafd'));
-		$this->setTemplate('header');
+		$this->setTemplate('read');
 	}
 }
