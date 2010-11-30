@@ -21,6 +21,9 @@
 			<path>otherControllers</path>
 		</module>
 	</modules>
+	<errorMessage>
+		<errorAction>WIND:core.WindErrorAction</errorAction>
+	</errorMessage>
 	<filters>
 		<filter></filter>
 	</filters>

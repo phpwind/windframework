@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, applications, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
+	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
 	
 	/**
 	 * 应用配置信息
@@ -22,6 +22,9 @@ interface IWindConfig {
 	const APPLICATIONS = 'applications';
 	const APPLICATIONS_NAME = 'name';
 	const APPLICATIONS_CLASS = 'class';
+	
+	const ERRORMESSAGE = 'errorMessage';
+	const ERRORMESSAGE_ERRORACTION = 'errorAction';
 	
 	/**
 	 * 模快設置

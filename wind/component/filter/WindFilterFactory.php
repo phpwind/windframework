@@ -60,10 +60,10 @@ class WindFilterFactory extends WindFactory {
 		if ($this->callBack === null) $this->callBack = array('WFrontController', 'process');
 		if (is_array($this->callBack)) {
 			list($className, $action) = $this->callBack;
-			if (!class_exists($className, true)) throw new WException($className . ' is not exists!');
-			if (!in_array($action, get_class_methods($className))) throw new WException('method ' . $action . ' is not exists in ' . $className . '!');
+			if (!class_exists($className, true)) throw new WindException($className . ' is not exists!');
+			if (!in_array($action, get_class_methods($className))) throw new WindException('method ' . $action . ' is not exists in ' . $className . '!');
 		} elseif (is_string($this->callBack))
-			if (!function_exists($this->callBack)) throw new WException($this->callBack . ' is not exists!');
+			if (!function_exists($this->callBack)) throw new WindException($this->callBack . ' is not exists!');
 		
 		call_user_func_array($this->callBack, (array) $this->args);
 	}

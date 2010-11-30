@@ -112,9 +112,6 @@ class WindDispatcher {
 		$this->action = $mav->getAction();
 		$path = $this->getMav()->getActionPath();
 		if (!$path) return;
-		if (($pos = strpos($path, ':')) !== false) {
-			$path = substr($path, $pos + 1);
-		}
 		if (($pos = strrpos($path, '.')) !== false) {
 			$this->controller = substr($path, $pos + 1);
 			$this->module = substr($path, 0, $pos);
@@ -143,17 +140,14 @@ class WindDispatcher {
 		$moduleConfig = C::getModules($this->module);
 		$module = $moduleConfig ? $moduleConfig[IWindConfig::MODULE_PATH] : $this->module;
 		$path = $module . '.' . $this->controller;
-		if (!preg_match("/Controller$/i", $path)) {
-			$path .= 'Controller';
-		}
 		$method = $this->action;
-		list(, $className, , $realPath) = L::getRealPath($path, true);
+		list($className, $realPath) = $this->matchActionHandle($path);
+		if (!$realPath) {
+			list($className, $realPath) = $this->matchActionHandle($path, 'Controller');
+		}
 		if (!$realPath) {
 			$path .= $this->action;
-			if (!preg_match("/Action$/i", $path)) {
-				$path .= 'Action';
-			}
-			list(, $className, , $realPath) = L::getRealPath($path, true);
+			list($className, $realPath) = $this->matchActionHandle($path, 'Action');
 			$method = 'run';
 		}
 		L::import($realPath);
@@ -161,6 +155,14 @@ class WindDispatcher {
 			return array(null, null);
 		}
 		return array($className, $method);
+	}
+	
+	private function matchActionHandle($path, $match = '') {
+		if ($match && !preg_match("/" . $match . "$/i", $path)) {
+			$path .= $match;
+		}
+		list(, $className, , $realPath) = L::getRealPath($path, true);
+		return array($className, $realPath);
 	}
 	
 	/**
