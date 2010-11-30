@@ -5,7 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
+defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
 /**
  * 调试工具
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -122,15 +123,15 @@ class WindDebug {
 		$separate = "<br/>";
 		$trace = implode("{$separate}", self::trace($trace));
 		$debug .= "{$message}{$separate}";
-		$debug .= "系统运行时间:{$runtime}s{$separate}";
-		$debug .= "系统运行所耗内存:{$useMem}byte{$separate}";
-		$debug .= "系统堆栈情况:{$separate}{$trace}{$separate}";
+		$debug .= "Runtime:{$runtime}s{$separate}";
+		$debug .= "Memory consumption:{$useMem}byte{$separate}";
+		$debug .= "Stack conditions:{$separate}{$trace}{$separate}";
 		if ($begin && $end) {
 			$PointUseTime = self::getExecTimeOfp2p($begin, $end);
 			$PointUseMem = self::getMemUsageOfp2p($begin, $end);
-			$debug .= "调试点{$begin}与{$end}之间的系统运行情况:{$separate}";
-			$debug .= "调试点之间系统运行时间:{$PointUseTime}s{$separate}";
-			$debug .= "调试点之间系统运行所耗内存:{$PointUseMem}byte{$separate}";
+			$debug .= "Between points {$begin} and {$end} debugging system conditions:{$separate}";
+			$debug .= "Runtime:{$PointUseTime}s{$separate}";
+			$debug .= "Memory consumption:{$PointUseMem}byte{$separate}";
 		}
 		return $debug;
 	}
