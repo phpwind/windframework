@@ -101,23 +101,7 @@ class WindPack{
 	public function getPackList(){
 		return $this->packList;
 	}
-	
-	public function formatPackList($comment = false,$pack = array(),$samekey = ''){
-		$sep = $comment ? "\r\n*" : "\r\n";
-		$format = '';
-		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
-		foreach($pack as $key=>$value){
-			if(is_array($value)){
-				$format .= $this->formatPackList($comment,$value,$key);
-			}else{
-				$key = $samekey ? $samekey : $key;
-				$format .= $key.'=>'.$value.$sep;
-			}
-		}
-		return $format;
-		
-	}
-	
+
 	public function convertPackList($pack = array(),$samekey = ''){
 		static $list = array();
 		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
@@ -190,17 +174,6 @@ class WindPack{
 		}
 		return $content;
 	}
-	
-	/**
-	 * 向打包文件里面添加注释
-	 * @param string $content
-	 * @param string $suffix
-	 * @return string
-	 */
-	public function getPackComment($content,$suffix){
-		return $this->getCommentBySuffix($this->formatPackList(true),$suffix,'Your pack list').$content;
-	}
-	
 	/**
 	 * 将指定的数组转化形字符串格式
 	 * @param array $pack
@@ -221,6 +194,12 @@ class WindPack{
 		}
 		return empty($pack) ? 'array('.$str.')' : $str;
 	}
+	
+	/**
+	 * @param unknown_type $content
+	 * @param unknown_type $sep
+	 * @return string
+	 */
 	public function getPackImport($content = '',$sep = "\r\n"){
 		$packlist = $this->getPackListAsString();
 		$sep =  isset($sep) ? $sep : "\r\n";
@@ -231,25 +210,27 @@ class WindPack{
 	 * 从各个目录中取得对应的每个文件的内容 
 	 * @param boolean $iformat 是否格式化内容。$iformat = true表示格式化内容，效率高，iformat = false表示得到易于阅读的内容，但 效率低
 	 * @param mixed $dir 目录名
+	 * @param string $absolutePath 绝对路径名
 	 * @param array $ndir 不须要打包的文件夹
 	 * @param array $suffix 不须要打包的文件类型
 	 * @param array $nfile 不须要打包的文件
 	 * @return array
 	 */
-	public function readContentFromDir($iformat = false,$dir = array(),$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+	public function readContentFromDir($iformat = false,$dir = array(),$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		static $content = array();
 		$dir = is_array($dir) ? $dir : array($dir);
 		foreach($dir as $_dir){
+			$_dir = is_dir($absolutePath)  ? $this->realDir($absolutePath).$_dir : $_dir;
 			if($this->isDir($_dir)){
 				$handle = dir($_dir);
 				while(false != ($tmp = $handle->read())){
 					$name = $this->realDir($_dir).$tmp;
 					if($this->isDir($name) && !in_array($tmp,$ndir)){
-						$this->readContentFromDir($iformat,$name,$ndir,$suffix,$nfile);
+						$this->readContentFromDir($iformat,$name,$absolutePath,$ndir,$suffix,$nfile);
 					}
 					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix) && !in_array($file = $this->getFileName($name),$nfile)){
 						$content[] = $iformat ? $this->stripWhiteSpace($name) : $this->readContentFromFile($name);
-						$this->setPackList($file,$this->getRealName($name));
+						$this->setPackList($file,$name);
 					}
 				}
 				$handle->close();
@@ -314,12 +295,12 @@ class WindPack{
 	 * @param array $suffix 不永许打包的文件类型
 	 * @return string
 	 */
-	public function pack($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+	public function pack($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		if(empty($dst)){
 			return false;
 		}
 		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir(false,$dir,$ndir,$suffix,$nfile))){
+		if(!($content = $this->readContentFromDir(false,$dir,$absolutePath,$ndir,$suffix,$nfile))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
@@ -343,12 +324,12 @@ class WindPack{
 	 * @param array $suffix 不永许打包的文件类型
 	 * @return string
 	 */
-	public function packCompress($dir,$dst,$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+	public function packCompress($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		if(empty($dst)){
 			return false;
 		}
 		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir(true,$dir,$ndir,$suffix,$nfile))){
+		if(!($content = $this->readContentFromDir(true,$dir,$absolutePath,$ndir,$suffix,$nfile))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
@@ -361,12 +342,7 @@ class WindPack{
 		$this->writeContentToFile($dst,$content);
 		return true;
 	}
-	
-	function strInContent($content,$findStr){
-		return strstr($content,$findStr);
-	}
-	
-	
+
 	public function getFileSuffix($filename){
 		return substr($filename,strrpos($filename,'.')+1);
 	}
@@ -375,9 +351,5 @@ class WindPack{
 		$filename = substr($path, strrpos($path,DIRECTORY_SEPARATOR)+1);
 		return  $ifsuffix ? $filename : substr($filename,0,strrpos($filename,'.'));
 	}
-	
-	private function getRealName($name){
-		return WIND_PATH.$name;
-	}
-	
+
 }

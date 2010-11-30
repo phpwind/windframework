@@ -21,7 +21,7 @@
 !defined('LOG_DISPLAY_TYPE') && define('LOG_DISPLAY_TYPE', 'log');
 
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
-
+W::init();
 /*define('LOG_RECORD', true);
 define('DEBUG', true);*/
 
@@ -126,7 +126,7 @@ class W {
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
 				$pack = L::getInstance('WindPack');
-				$pack->packCompress(array(WIND_PATH . 'core'), $packfile);
+				$pack->packCompress(array(WIND_PATH.'core'),$packfile);
 			}
 			if (is_file($packfile)) {
 				@include $packfile;
@@ -489,13 +489,5 @@ class C {
 	 */
 	static public function getApplications($name = '') {
 		return self::getConfig(IWindConfig::APPLICATIONS, $name);
-	}
-	
-	/**
-	 * @param string $name
-	 * @return Ambigous <string, multitype:, unknown>
-	 */
-	static public function getErrorMessage($name=''){
-		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
 	}
 }
