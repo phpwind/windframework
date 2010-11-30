@@ -20,7 +20,7 @@ class WindRouterFactory extends WindFactory {
 	 * (non-PHPdoc)
 	 * @see wind/component/factory/base/WindFactory#create()
 	 */
-	public function &create() {
+	public function create() {
 		if ($this->router === null) {
 			$parserConfig = C::getRouterParsers(C::getRouter('parser'));
 			$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
