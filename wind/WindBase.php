@@ -490,4 +490,12 @@ class C {
 	static public function getApplications($name = '') {
 		return self::getConfig(IWindConfig::APPLICATIONS, $name);
 	}
+	
+	/**
+	 * @param string $name
+	 * @return Ambigous <string, multitype:, unknown>
+	 */
+	static public function getErrorMessage($name=''){
+		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
+	}
 }
