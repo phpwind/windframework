@@ -25,7 +25,10 @@
 		<errorAction>WIND:core.WindErrorAction</errorAction>
 	</errorMessage>
 	<filters>
-		<filter></filter>
+		<filter name="WindFormFilter">
+		   <filterName>WindFormFilter</filterName> 
+		   <filterPath>WIND:component.form.WindFormFilter</filterPath> 
+		</filter>
 	</filters>
 	<template>
 		<path>template</path>
