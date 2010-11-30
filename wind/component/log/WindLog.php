@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-defined('LOG_PATH') or define('LOG_PATH','./log/');
-defined('LOG_DISPLAY_TYPE') or define('LOG_DISPLAY_TYPE', 'log');
+defined ( 'LOG_PATH' ) or define ( 'LOG_PATH', './log/' );
+defined ( 'LOG_DISPLAY_TYPE' ) or define ( 'LOG_DISPLAY_TYPE', 'log' );
 /**
  * 日志记录
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -55,21 +55,21 @@ class WindLog {
 	 * @param string $header 其它信息
 	 */
 	public static function flush($type = 'file', $dst = '', $header = '') {
-		if (empty ( self::$logs )) {
-			return false;
+		if (self::$logs) {
+			$type = in_array ( $type, self::$msgType ) ? $type : 'file';
+			$dst = empty ( $dst ) ? self::getFileName () : $dst;
+			error_log ( join ( "", self::$logs ), self::$msgType [$type], $dst, $header );
+			self::$logs = array ();
 		}
-		$type = in_array ( $type, self::$msgType ) ? $type : 'file';
-		$dst = empty ( $dst ) ? self::getFileName () : $dst;
-		error_log ( join ( "", self::$logs ), self::$msgType [$type], $dst, $header );
-		self::$logs = array ();
 	}
 	
 	/*
 	 * 清空日志文件
 	 */
 	public static function clearFiles($time = 0) {
-		if (! is_int ( $time ) || 0 > intval ( $time ) || ! is_dir ( LOG_PATH ))
+		if (! is_int ( $time ) || 0 > intval ( $time ) || ! is_dir ( LOG_PATH )){
 			return false;
+		}
 		$dir = dir ( LOG_PATH );
 		while ( false != ($file = $dir->read ()) ) {
 			$file = LOG_PATH . $file;
@@ -84,10 +84,10 @@ class WindLog {
 	 */
 	private static function getFileName() {
 		self::createFolder ( LOG_PATH );
-		$size = 1024*50;
+		$size = 1024 * 50;
 		$filename = LOG_PATH . date ( "Y_m_d" ) . '.' . LOG_DISPLAY_TYPE;
 		if (is_file ( $filename ) && $size < filesize ( $filename )) {
-			for($i = 100;$counter = 100 - $i,$i >= 0; $i--) {
+			for($i = 100; $counter = 100 - $i, $i >= 0; $i --) {
 				$filename = LOG_PATH . date ( "Y_m_d_{$counter}" ) . '.' . LOG_DISPLAY_TYPE;
 				if (! is_file ( $filename ) || (is_file ( $filename ) && $size > filesize ( $filename )))
 					break;
@@ -97,7 +97,7 @@ class WindLog {
 	}
 	
 	private static function createFolder($path) {
-		!is_dir ( $path )  && mkdir ( $path ,0777,true);
+		! is_dir ( $path ) && mkdir ( $path, 0777, true );
 	}
 	
 	/**
