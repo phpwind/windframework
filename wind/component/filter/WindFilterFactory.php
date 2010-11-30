@@ -57,17 +57,11 @@ class WindFilterFactory extends WindFactory {
 	 * 执行完过滤器后执行该方法的回调
 	 */
 	public function execute() {
-		if ($this->callBack === null) $this->callBack = array('WindFrontController', 'process');
-		if (is_array($this->callBack)) {
-			list($className, $action) = $this->callBack;
-			//if (!class_exists($className, true)) throw new WindException($className . ' is not exists!');
-			if (!in_array($action, get_class_methods($className))) throw new WindException('method ' . $action . ' is not exists in ' . $className . '!');
-		} elseif (is_string($this->callBack))
+		if ($this->callBack === null) return;
+		if (is_string($this->callBack))
 			if (!function_exists($this->callBack)) throw new WindException($this->callBack . ' is not exists!');
 
 		call_user_func_array($this->callBack, (array) $this->args);
-		/*list($class, $method) = $this->callBack;
-		$class::$method($this->args);*/
 	}
 
 	/**
