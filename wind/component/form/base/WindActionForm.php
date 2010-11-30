@@ -5,24 +5,17 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-W::import('WIND:utilities.container.WindModule');
+L::import('WIND:component.container.WindModule');
 
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * the last known user to change this file in the repository  <$LastChangedBy: xiaoxia.xuxx $>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
+ * @version $Id: WindActionForm.php 314 2010-11-26 09:24:29Z xiaoxia.xuxx $ 
  * @package 
  */
 abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
 	
-	/**
-	 * @param WHttpRequest $request
-	 * @param WHttpResponse $response
-	 */
-	public function __construct($request, $response) {
-		$this->_setProperties($request);
-	}
 	
 	/**
 	 * 验证方法，调用该方法完成所有验证操作
@@ -37,24 +30,20 @@ abstract class WindActionForm extends WindModule {
 		}
 	}
 	
-	private function _addError() {
+	public function addError() {
 		
 	}
 	
 	/**
 	 * 设置属性值
-	 * 在继承WindActionForm类的actionForm中，所有需要设置的属性应该显示的声明其setter函数用来进行属性设置
-	 * @param WHttpRequest $request
+	 * @param array $_params
 	 */
-	private function _setProperties($request) {
-	   $_params = array();
-	   if ($request->isGet()) $_params = $request->getGet();
-	   elseif ($request->isPost()) $_params = $request->getPost();
+	public function setProperties($_params) {
 	   if (!$_params) return false;
 	   foreach ($_params as $_key => $_value) {
-	   	  //是否设置了setter方法，表单中的空间名和form中的属性名一一对应
 	   	   $this->$_key = $_value;
 	   }
+	   return true;
 	}
 	
 	/**
@@ -64,5 +53,4 @@ abstract class WindActionForm extends WindModule {
 	public function getIsValidation() {
 		return $this->_isValidate;
 	}
-
 }
