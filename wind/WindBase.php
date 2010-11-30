@@ -21,7 +21,7 @@
 !defined('LOG_DISPLAY_TYPE') && define('LOG_DISPLAY_TYPE', 'log');
 
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
-W::init();
+
 /*define('LOG_RECORD', true);
 define('DEBUG', true);*/
 
