@@ -6,7 +6,7 @@
  * @license 
  */
 
-class IndexRunForm extends WActionForm {
+class IndexRunForm extends WindActionForm {
 	private $userId;
 	private $userName;
 	

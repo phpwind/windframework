@@ -15,8 +15,6 @@
 class IndexController extends WindController {
 
 	public function run() {
-		$userForm = WindFormFactory::getInstance()->getFormHandle();
-		echo $userForm;
 		echo "mmmmm";
 		$this->setViewData(array('test'=>'xxxxxxxxxx'));
 //		$this->getModelAndView()->setAction('run','otherControllers.otherController');

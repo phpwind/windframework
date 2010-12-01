@@ -7,10 +7,7 @@
  */
 
 class Run extends WindAction {
-	
 	public function run($request, $response) {
 		echo "hello world!!!";
-		
 	}
-
 }
