@@ -16,6 +16,7 @@ L::import('WIND:component.message.WindMessage');
 class WindErrorMessage extends WindMessage {
 	private $errorAction = '';
 	private static $instance = null;
+	
 	private function __construct() {}
 	
 	private $mav = null;

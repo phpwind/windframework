@@ -50,6 +50,7 @@ class WindFrontController extends WindServlet {
 	}
 	
 	protected function afterProcess() {
+		
 		restore_exception_handler();
 	}
 	
