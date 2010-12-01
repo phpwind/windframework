@@ -67,24 +67,23 @@ class WindConfigParser implements IWindConfig {
 	
 	/**
 	 * 返回是否需要执行解析过程
-	 * 如果compile文件夹未被定义或不可写则返回false
-	 * 如果config.php文件不存在则返回false
-	 * 如果当前app信息不存在则返回false
-	 * 如果当前app的配置文件不存在则返回false
+	 * 
+	 * 如果是debug模式，则返回false,进行每次都进行解析
+	 * 如果不是debug模式，则先判断是否设置了缓存模式
+	 *    如果没有设置缓存则返回false,进行解析，
+	 * 如果设置了缓存模式，则判断该应用是否已经被解析
+	 *    如果当前访问应用没有被解析过，则返回false,进行解析
+	 * 如果当前应用解析过，则判断解析出来的文件是否存在
+	 *    如果该解析出来的文件不存在，则返回false,执行解析
+	 * 否则返回true,直接读取缓存
+	 * 
+	 * @return boolean false:需要进行解析， true：不需要进行解析，直接读取缓存文件
 	 */
 	private function isCompiled() {
+		if (IS_DEBUG) return false;
 		if (!W::ifCompile()) return false;
 		if (!($app = W::getApps())) return false;
 		if (!is_file($app[IWindConfig::APP_CONFIG])) return false;
-		$this->userAppConfigPath = $this->fetchConfigExit($app[IWindConfig::APP_ROOTPATH]);
-		$configLastT = $this->userAppConfigPath ? filemtime($this->userAppConfigPath) : 0;
-		$defaultConfig = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
-		if (!is_file($defaultConfig)) {
-			throw new WindException('default config file ' . $defaultConfig . ' is not exists.');
-		}
-		$defaultConfigLastT = filemtime($defaultConfig);
-		$cacheLastT = filemtime($app[IWindConfig::APP_CONFIG]);
-		if ($configLastT >= $cacheLastT || $defaultConfigLastT >= $cacheLastT) return false;
 		return true;
 	}
 	
