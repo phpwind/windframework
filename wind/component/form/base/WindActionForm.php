@@ -18,14 +18,15 @@ abstract class WindActionForm extends WindModule {
 	
 	/**
 	 * 验证方法，调用该方法完成所有验证操作
-	 * 执行在继承WindActionForm类的actionForm中，所有以validate结尾的函数
+	 * get_class_methods只能返回public类型的函数
+	 * 
+	 * 执行，用户的继承WindActionForm类的actionForm中，所有以validate结尾的函数
 	 */
 	public function validation() {
-		$object = new ReflectionClass(get_class($this));
-		$validationMethods = $object->getMethods(ReflectionMethod::IS_PUBLIC);
-		foreach ($validationMethods as $_value) {
-			if (strtolower(substr($_value->name, -8)) == 'validate')
-				call_user_func(array($this, $_value->name));
+		$methods = get_class_methods($this);
+		foreach ($methods as $_value) {
+			if (strtolower(substr($_value, -8)) == 'validate')
+				call_user_func(array($this, $_value));
 		}
 	}
 	
