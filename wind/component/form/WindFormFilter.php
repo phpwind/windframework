@@ -48,7 +48,6 @@ class WindFormFilter extends WindFilter {
 	    $formObject->setProperties($request->getGet());
 	    $formObject->setProperties($request->getPost());
 	    $this->validation($formObject);
-	    $formObject->save();
 	}
 	/**
 	 * 执行用户定义form中的验证操作
@@ -75,7 +74,7 @@ class WindFormFilter extends WindFilter {
 	    if (!class_exists($formName)) {
 	    	throw new WindException('Class \'' . $formName . '\' is not exists!');
 	    }
-	    $formObject = new $formName();
+	    $formObject = L::getInstance($formName);
 	    if (!$formObject instanceof WindActionForm) {
 	    	throw new WindException('The class \'' . $formName . '\' must extend WindActionForm!');
 	    }
