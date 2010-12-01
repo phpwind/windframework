@@ -125,9 +125,8 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 连接数据库
-	 * @param array $config 数据库配置
 	 */
-	protected abstract function connect($config);
+	protected abstract function connect();
 	/**
 	 * 执行相关sql语句操作
 	 * @param string $sql sql语句

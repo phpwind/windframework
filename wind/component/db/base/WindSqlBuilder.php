@@ -140,7 +140,11 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getInsertSql($option) {
-		return sprintf ( "INSERT%s%sVALUES%s", $this->buildTable ( $option ['table'] ), $this->buildField ( $option ['field'] ), $this->buildData ( $option ['data'] ) );
+		return sprintf ( "INSERT%s%sVALUES%s", 
+			$this->buildTable ( $option ['table'] ), 
+			$this->buildField ( $option ['field'] ), 
+			$this->buildData ( $option ['data'] ) 
+		);
 	}
 	/**
 	 * ½âÎö¸üÐÂQLÓï¾ä
@@ -148,7 +152,13 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getUpdateSql($option) {
-		return sprintf ( "UPDATE%sSET%s%s%s%s", $this->buildTable ( $option ['table'] ), $this->buildSet ( $option ['set'] ), $this->buildWhere ( $option ['where'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'] ) );
+		return sprintf ( "UPDATE%sSET%s%s%s%s", 
+			$this->buildTable ( $option ['table'] ), 
+			$this->buildSet ( $option ['set'] ), 
+			$this->buildWhere ( $option ['where'] ), 
+			$this->buildOrder ( $option ['order'] ), 
+			$this->buildLimit ( $option ['limit'] ) 
+		);
 	}
 	/**
 	 * ½âÎöÉ¾³ýSQLÓï¾ä
@@ -156,7 +166,12 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getDeleteSql($option) {
-		return sprintf ( "DELETE FROM%s%s%s%s", $this->buildTable ( $option ['table'] ), $this->buildWhere ( $option ['where'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'] ) );
+		return sprintf ( "DELETE FROM%s%s%s%s", 
+			$this->buildTable ( $option ['table'] ), 
+			$this->buildWhere ( $option ['where'] ), 
+			$this->buildOrder ( $option ['order'] ), 
+			$this->buildLimit ( $option ['limit'] ) 
+		);
 	}
 	/**
 	 * ½âÎö²éÑ¯SQLÓï¾ä
@@ -164,7 +179,17 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getSelectSql($option) {
-		return sprintf ( "SELECT%s%sFROM%s%s%s%s%s%s%s", $this->buildDistinct ( $option ['distinct'] ), $this->buildField ( $option ['field'] ), $this->buildTable ( $option ['table'] ), $this->buildJoin ($option ['join']), $this->buildWhere ( $option ['where'] ), $this->buildGroup ( $option ['group'] ), $this->buildHaving ( $option ['having'] ), $this->buildOrder ( $option ['order'] ), $this->buildLimit ( $option ['limit'], $option ['offset'] ) );
+		return sprintf ( "SELECT%s%sFROM%s%s%s%s%s%s%s", 
+			$this->buildDistinct ( $option ['distinct'] ), 
+			$this->buildField ( $option ['field'] ), 
+			$this->buildTable ( $option ['table'] ), 
+			$this->buildJoin ($option ['join']), 
+			$this->buildWhere ( $option ['where'] ), 
+			$this->buildGroup ( $option ['group'] ), 
+			$this->buildHaving ( $option ['having'] ), 
+			$this->buildOrder ( $option ['order'] ), 
+			$this->buildLimit ( $option ['limit'], $option ['offset'] ) 
+			);
 	}
 	
 	/**
@@ -173,7 +198,11 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getReplaceSql($option){
-		return sprintf ( "REPLACE%s%sSET%s", $this->buildTable ( $option ['table'] ), $this->buildField ( $option ['field'] ), $this->buildData ( $option ['data'] ) );
+		return sprintf ( "REPLACE%s%sSET%s", 
+			$this->buildTable ( $option ['table'] ), 
+			$this->buildField ( $option ['field'] ), 
+			$this->buildData ( $option ['data'] ) 
+		);
 	}
 	
 	public function getAffectedSql($ifquery){
