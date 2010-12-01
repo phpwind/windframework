@@ -121,7 +121,7 @@ class W {
 	 * ×Ô¶¯¼ÓÔØ
 	 */
 	static private function _initLoad() {
-		if (self::ifCompile() && !IS_DEBUG) {
+		if (self::ifCompile() && IS_DEBUG) {
 			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
@@ -282,6 +282,7 @@ class L {
 	 * @retur Object
 	 */
 	static public function &getInstance($className, $args = array()) {
+		$className = strtolower($className);
 		if (!key_exists($className, L::$_instances)) L::_createInstance($className, $args);
 		return L::$_instances[$className];
 	}
