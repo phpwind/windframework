@@ -15,7 +15,7 @@ L::import('WIND:component.container.WindModule');
  */
 abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
-	
+	protected static $instance = null;
 	
 	/**
 	 * 验证方法，调用该方法完成所有验证操作
@@ -52,5 +52,11 @@ abstract class WindActionForm extends WindModule {
 	 */
 	public function getIsValidation() {
 		return $this->_isValidate;
+	}
+	
+	public function getInstance() {
+		if (self::$instance) return self::$instance;
+		self::$instance = new get_class($this);
+		return self::$instance;
 	}
 }
