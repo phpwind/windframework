@@ -15,15 +15,7 @@
 
 !defined('VERSION') && define('VERSION', '1.0.2');
 
-!defined('RUNTIME_START') && define('RUNTIME_START', microtime(true));
-!defined('USEMEM_START') && define('USEMEM_START', memory_get_usage());
-!defined('LOG_PATH') && define('LOG_PATH', WIND_PATH . 'log' . D_S);
-!defined('LOG_DISPLAY_TYPE') && define('LOG_DISPLAY_TYPE', 'log');
-
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
-
-/*define('LOG_RECORD', true);
-define('DEBUG', true);*/
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -37,6 +29,7 @@ class W {
 	static public function init() {
 		self::_initConfig();
 		self::_initBaseLib();
+		self::_initErrorHandle();
 	}
 	
 	/**
@@ -108,7 +101,7 @@ class W {
 	 * ×Ô¶¯¼ÓÔØ
 	 */
 	static private function _initLoad() {
-		if (self::ifCompile() && IS_DEBUG) {
+		if (self::ifCompile() && !IS_DEBUG) {
 			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
 			if (!is_file($packfile)) {
 				L::import('WIND:utility.WindPack');
@@ -142,6 +135,12 @@ class W {
 			W::setApps($appName, $appConfig);
 		}
 	}
+
+	static private function _initErrorHandle() {
+		set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+		set_error_handler(array('WindErrorHandle', 'errorHandle'));
+	}
+	
 }
 
 /**
@@ -151,7 +150,7 @@ class W {
  * @version $Id$
  * @package
  */
-class L {
+final class L {
 	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_instances = array();
@@ -373,7 +372,7 @@ class L {
  * @version $Id$ 
  * @package 
  */
-class C {
+final class C {
 	private static $config = array();
 	private static $c;
 	/**
