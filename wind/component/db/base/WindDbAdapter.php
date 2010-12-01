@@ -15,10 +15,6 @@ L::import('WIND:component.exception.WindSqlExceptiion');
 abstract class WindDbAdapter {
 	
 	/**
-	 * @var resource 当前查询句柄
-	 */
-	protected $query = '';
-	/**
 	 * @var string 前次执行的sqly语句
 	 */
 	protected $last_sql = '';
@@ -30,15 +26,7 @@ abstract class WindDbAdapter {
 	 * @var int 前句执行sql时的错误代码
 	 */
 	protected $last_errcode = 0;
-	/**
-	 * @var int 是否连接
-	 */
-	protected $isConntected = 0;
-	
-	/**
-	 * @var string | int 当前数据库连接所指向数据库配置的key
-	 */
-	protected $key = '';
+
 	/**
 	 * @var string 数据库字符集
 	 */
@@ -51,11 +39,7 @@ abstract class WindDbAdapter {
 	 * @var boolean 是否永久连接
 	 */
 	protected $pconnect = false;
-	/**
-	 * @var int 是否切换过数据库
-	 */
-	protected $switch = 0;
-	
+
 	/**
 	 * @var array 框架支持的数据库种类
 	 */
@@ -67,31 +51,34 @@ abstract class WindDbAdapter {
 	/**
 	 * @var int 是否启用事务
 	 */
-	public $enableSavePoint = 0;
+	protected $enableSavePoint = 0;
 	/**
 	 * @var array 事务回滚点
 	 */
 	protected $savepoint = array ();
+	/**
+	 * @var resoruce 数据库连接
+	 */
+	protected  $connection = null;
 	
 	/**
-	 * @var array 记录向数据库写入次数
+	 * @var WindSqlBuilder sql语句生成器
 	 */
-	protected  $writeTimes = array();
+	protected $sqlBuilder = null;
+	
 	/**
-	 * @var array 记录从数据库读入次数
+	 * @var resource 当前查询句柄
 	 */
-	protected  $readTimes = array();
-	/**
-	 * @var array 数据库连接池
-	 */
-	protected  $linked = array ();
+	protected $query = null;
 	/**
 	 * @var array 数据库连接配置
 	 */
-	public static $config = array ();
+	protected  $config = array ();
+	
+	
 	public function __construct($config) {
 		$this->parseConfig ( $config );
-		$this->patchConnect ();
+		$this->connect();
 		$this->getSqlBuilderFactory();
 	}
 	
@@ -104,18 +91,9 @@ abstract class WindDbAdapter {
 	 * 							'optype'=>'master','pconnect'=>1,'force'=>1);
 	 * @return array 返回解析后的数据库配置
 	 */
-	final private function parseConfig($config) {
-		$db_config = array ();
-		if (empty ( $config ) || ! is_array ( $config )) {
-			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
-		}
-		foreach ( $config as $key => $value ) {
-			if (is_array ( $value ))
-				$db_config [$key] = $value;
-			if (is_string ( $value ))
-				$db_config [$key] = $this->parseDsn ( $value );
-		}
-		return $this->config = $db_config;
+	final protected function parseConfig($config) {
+		$config = is_array($config) ? $config : $this->parseDSN($config);
+		return $this->checkConfig($config);
 	}
 	/**
 	 * 以DSN格式解析数数库配置，其中(主从optype,永久连接pconnect,强制新连接force)可选
@@ -131,44 +109,31 @@ abstract class WindDbAdapter {
 		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6],'charset'=>$config [7], 'force' => $config [8],'pconnect'=>$config [9],'optype'=>$config [10] );
 	}
 	
-	final private function formatConfig($config,$key){
-		if (! is_array ( $config ) || empty ( $config )) {
+	final private function checkConfig($config){
+		if (empty ( $config ) || ! is_array ( $config ) || !is_string($config)) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
-		if (! isset ( $key )) {
-			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
+		if(empty($config['dbtype']) || empty($config['dbhost']) || empty($config['dbname']) || empty($config['dbuser'])  || empty($config['dbpass'])){
+			throw new WindSqlException (WindSqlException::DB_CONFIG_ERROR);
 		}
 		$config ['dbhost'] = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
 		$config ['pconnect'] = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
 		$config ['force'] = $config ['force'] ? $config ['force'] : $this->force;
 		$config ['charset'] = $config ['charset'] ? $config ['charset'] : $this->charset;
-		return $config;
-	}
-	
-	/**
-	 * 连接数据库,构造连接池
-	 */
-	final protected function patchConnect() {
-		foreach ( $this->config as $key => $value ) {
-			$value = $this->formatConfig($value,$key);
-			$this->connect ( $value, $key );
-		}
+		return $this->config = $config;
 	}
 	
 	/**
 	 * 连接数据库
 	 * @param array $config 数据库配置
-	 * @param string $key 数据库连接标识
 	 */
-	public abstract function connect($config, $key);
+	protected abstract function connect($config);
 	/**
 	 * 执行相关sql语句操作
 	 * @param string $sql sql语句
-	 * @param string|int|resource $key 数据库连接标识
-	 * @param string optype 主从数据库(master/slave);
 	 * @return boolean;
 	 */
-	public abstract function query($sql,$key='',$optype = '');
+	public abstract function query($sql);
 	/**
 	 * @param int $fetch_type 取得结果集
 	 */
@@ -197,117 +162,64 @@ abstract class WindDbAdapter {
 	 * 数据库操作操作处理
 	 */
 	protected abstract function error();
-
-	/**
-	 * 执行数据库读取
-	 * @param string $sql sql语句
-	 * @param string|int|resource $key 数据库连接标识
-	 * @return boolean;
-	 */
-	final public function read($sql, $key = '') {
-		$this->query ( $sql, $key ,'slave');
-		if (isset ( $this->readTimes [$this->key] )) {
-			$this->readTimes [$this->key] ++;
-		} else {
-			$this->readTimes [$this->key] = 1;
-		}
-	}
-	
-	/**
-	 * 执行数据库写入
-	 * @param string $sql sql语句
-	 * @param string|int|resource $key 数据库连接标识
-	 * @return boolean;
-	 */
-	final public function write($sql, $key = '') {
-		$this->query( $sql, $key ,'master');
-		if (isset ( $this->writeTimes [$this->key] )) {
-			$this->writeTimes [$this->key] ++;
-		} else {
-			$this->writeTimes [$this->key] = 1;
-		}
-	}
-	
-	/**
-	 * 切换数据库连接
-	 * @param string $key 数据库连接标识
-	 */
-	final public function changeConn($key) {
-		$this->checkKey($key);
-		$this->getSqlBuilderFactory($key);
-		$this->key = $key;
-		$this->switch = 1;
-	}
-	/**
-	 *释放切换连接 
-	 */
-	public function freeChange(){
-		$this->switch = 0;
-	}
-
-	
-	
 	/**
 	 * sqlbuilder Factory
 	 * @return WSqlBuilder 返回sql语句生成器
 	 */
-	final public function getSqlBuilderFactory($key = '') {
-		$name = 'Wind'.$this->dbMap[$this->getSchema($key)].'Builder';
-		L::import('WIND:component.db.'.$name);
-		return  L::getInstance($name);
+	final public function getSqlBuilderFactory() {
+		if(empty($this->sqlBuilder)){
+			$name = 'Wind'.$this->dbMap[$this->getSchema()].'Builder';
+			L::import('WIND:component.db.'.$name);
+			$this->sqlBuilder = L::getInstance($name);
+		}
+		return $this->sqlBuilder;
 	}
 
 	/**
 	 * 执行添加数据操作 (insert)
-	 * @param string | array $option 查询条件
-	 * @param string | int $key 数据库连接标识
+	 * @param string | array $sql 查询条件
+
 	 * @return boolean
 	 */
-	final public  function insert($option,$key = ''){
-		$this->getExecDbLink('master',$key);
-		return $this->write($this->getSqlBuilderFactory($this->key)->getInsertSql($option),$this->key);
+	final public  function insert($sql){
+		return $this->query($this->sqlBuilder->getInsertSql($sql));
 	}
 	
 	/**
 	 * 执行更新数据操作
-	 * @param string | array $option 查询条件
-	 * @param string | int $key 数据库连接标识
+	 * @param string | array $sql 查询条件
+
 	 * @return boolean
 	 */
-	final public  function update($option,$key = ''){
-		$this->getExecDbLink('master',$key);
-		return $this->write($this->getSqlBuilderFactory($this->key)->getUpdateSql($option),$this->key);
+	final public  function update($sql){
+		return $this->query($this->sqlBuilder->getUpdateSql($sql));
 	}
 	/**
 	 * 执行查询数据操作
-	 * @param string | array $option 查询条件
-	 * @param string | int $key 数据库连接标识
+	 * @param string | array $sql 查询条件
+
 	 * @return boolean
 	 */
-	final public function select($option,$key = ''){
-		$this->getExecDbLink('slave',$key);
-		return $this->read($this->getSqlBuilderFactory($this->key)->getSelectSql($option),$this->key);
+	final public function select($sql){
+		$sql = is_string($sql) ? $sql : $this->sqlBuilder->getSelectSql($sql);
+		return $this->query($sql);
 	}
 	/**
 	 * 执行删除数据操作
-	 * @param string | array $option 查询条件
-	 * @param string | int $key 数据库连接标识
+	 * @param string | array $sql 查询条件
 	 * @return boolean
 	 */
-	final public  function delete($option,$key = ''){
-		$this->getExecDbLink('master',$key);
-		return $this->write($this->getSqlBuilderFactory($this->key)->getDeleteSql($option),$this->key);
+	final public  function delete($sql){
+		return $this->query($this->sqlBuilder->getDeleteSql($sql));
 	}
 	
 	/**
 	 * 执行新增数据操作(replace)
-	 * @param string | array $option 查询条件
-	 * @param string | int $key 数据库连接标识
+	 * @param string | array $sql 查询条件
 	 * @return boolean
 	 */
-	final public function replace($option,$key = ''){
-		$this->getExecDbLink('master',$key);
-		return $this->write($this->getSqlBuilderFactory($this->key)->getReplaceSql($option),$this->key);
+	final public function replace($sql){
+		return $this->query($this->sqlBuilder->getReplaceSql($sql));
 	}
 	
 	/**
@@ -316,36 +228,38 @@ abstract class WindDbAdapter {
 	 * @param string|int 数据库连接标识
 	 * @return int
 	 */
-	final public  function getAffectedRows($ifquery = false,$key = ''){
-		$this->getExecDbLink('slave',$key);
-		return $this->read($this->getSqlBuilderFactory($this->key)->getAffectedSql($ifquery),$this->key);
+	final public  function getAffectedRows($ifquery = false){
+		return $this->query($this->sqlBuilder->getAffectedSql($ifquery));
 	}
 	/**
 	 * 取得最后插入ID
 	 * @param string|int 数据库连接标识
 	 * @return int
 	 */
-	final public  function getInsertId($key = ''){
-		$this->getExecDbLink('slave',$key);
-		return $this->read($this->getSqlBuilderFactory($this->key)->getLastInsertIdSql(),$this->key);
+	final public  function getInsertId(){
+		return $this->query($this->sqlBuilder->getLastInsertIdSql());
 	}
 	
 	/**
 	 *取得数据库元数据表
 	 */
-	public  function getMetaTables($schema = '',$key = ''){
-		$this->getExecDbLink('slave',$key);
-		$schema = $schema ? $schema : $this->config[$this->key]['dbname'];
-		return $this->read($this->getSqlBuilderFactory($this->key)->getMetaTableSql($schema),$this->key);
+	public  function getMetaTables($schema = ''){
+		return $this->query($this->sqlBuilder->getMetaTableSql($schema));
 	}
 	/**
 	 *取得数据表元数据列 
 	 */
-	public  function getMetaColumns($table,$key = ''){
-		$this->getExecDbLink('slave',$key);
-		return $this->read($this->getSqlBuilderFactory($this->key)->getMetaColumnSql($table),$this->key);
+	public  function getMetaColumns($table){
+		return $this->query($this->sqlBuilder->getMetaColumnSql($table));
 	}
-
+	
+	public function getConnection(){
+		return $this->connection;
+	}
+	
+	public function getConfig(){
+		return $this->config;
+	}
 
 	/**
 	 * 返回上一条sqly语句
@@ -354,132 +268,20 @@ abstract class WindDbAdapter {
 	final public function getLastSql() {
 		return $this->last_sql;
 	}
-	/**
-	 * @param string | int $key 数据库连接标识
-	 * @return number 写数据库次数
-	 */
-	final public function getWriteTimes($key = '') {
-		if(($key = $this->checkKey($key))){
-			return $this->writeTimes[$key];
-		}
-		$writes = 0;
-		foreach($this->writeTimes as $value){
-			$writes += $value;
-		}
-		return $writes;
+
+	final public function getSchema(){
+		return  $this->config['dbname'];
 	}
 	
-	/**
-	 * @param string | int $key 数据库连接标识
-	 * @return number 读数据库次数
-	 */
-	final public function getReadTimes($key='') {
-		if(($key = $this->checkKey($key))){
-			return $this->readTimes[$key];
-		}
-		$reads = 0;
-		foreach($this->readTimes as $value){
-			$reads += $value;
-		}
-		return $reads;
+	final public function getDbDriver(){
+		return  $this->config['dbtype'];
 	}
-	
-	/**
-	 * @param string | int $key 数据库连接标识
-	 * @return number 读写数据库次数
-	 */
-	final public function getQueryTimes($key = '') {
-		return $this->getReadTimes($key) + $this->getWriteTimes($key);
-	}
-	
-	/**
-	 * 返回数据库连接
-	 * @param string | int $key 数据库标识
-	 * @return resource 返回数据库连接
-	 */
-	final protected function getLinked($key = '') {
-		return $this->linked [$key];
-	}
-	
-	/**
-	 * 查看是是否要主从数据库设置，并按主从配置返回数据库配置信息
-	 * @return array
-	 */
-	final protected function getMasterSlave() {
-		$array = array ();
-		foreach ( $this->config as $key => $value ) {
-			if (in_array ( $value ['optype'], array ('master', 'slave' ) )) {
-				$array [$value ['optype']] [$key] = $value;
-			}
-		}
-		return $array;
-	}
-	
-	/**
-	 * 取得当前数据库连接
-	 * @param string $optype 数据库主从配置(master/slave);
-	 * @param string | int $key 数据库连接标识
-	 * @return string|int 返回真正的执行数据库连接标识
-	 */
-	final protected function getExecDbLink($optype = '',$key='') {
-		if (empty ( $this->switch )) {
-			$masterSlave = $this->getMasterSlave ();
-			$config = (empty ( $masterSlave ) || empty ( $optype )) ? $this->config : $masterSlave [$optype];
-		  	$this->key = $key ? $key : $this->getConfigKeyByPostion ( $config, mt_rand ( 0, count ( $config ) - 1 ) );
-		  	$this->checkKey($this->key);
-		}
+
+	public function __destruct(){
+		is_resource($this->connection) && $this->dispose();
 	}
 	
 	
-	
-	
-	/**
-	 *根据config的pos返回key
-	 * @param array $config 数据库配置
-	 * @param int $pos config的位置
-	 * @return string 返回config的key
-	 */
-	final private function getConfigKeyByPostion($config, $pos = 0) {
-		$i = 0;
-		foreach ( ( array ) $config as $key => $value ) {
-			if ($pos === $i)
-				return $key;
-			$i ++;
-		}
-		return '';
-	}
-	
-	/**
-	 * @param string $sql
-	 */
-	final protected function logSql($sql = ''){
-		$sql = $sql ? $sql : $this->last_sql;
-		W::recordLog($sql,'DB','log');
-	}
-	
-	/**
-	 * 检查$linked中连接的合法性
-	 * @param string|int|resource $key config的key或者连接资源
-	 * @return string|resource
-	 */
-	final protected function checkKey($key = ''){
-		if(!in_array($key,array_keys($this->linked)) || !is_resource($this->linked[$key])){
-			throw new WindSqlException(WindSqlException::DB_LINK_EXIST);
-		}
-		return $key;
-	}
-	
-	final public function getSchema($key = ''){
-		return $key ? $this->config[$key]['dbtype'] : $this->config[$this->key]['dbtype'];
-	}
-	
-	final protected function keyEqual($key){
-		return $this->key === $key;
-	}
-	
-	final protected function schemaEqual($key){
-		return $this->config[$this->key]['dbtype'] === $this->config[$key]['dbtype'];
-	}
 	
 	
 

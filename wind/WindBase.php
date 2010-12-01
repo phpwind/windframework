@@ -37,7 +37,6 @@ class W {
 	static public function init() {
 		self::_initConfig();
 		self::_initBaseLib();
-		self::_initLog();
 	}
 	
 	/**
@@ -142,44 +141,6 @@ class W {
 		foreach ($sysConfig as $appName => $appConfig) {
 			W::setApps($appName, $appConfig);
 		}
-	}
-	
-	/**
-	 * 初始化系统日志，调试系统
-	 */
-	static private function _initLog() {
-		set_exception_handler(array('W', 'exceptionHandle'));
-		defined('LOG_RECORD') && L::import('utility.WLog');
-		defined('DEBUG') && L::import('utility.WDebug');
-	}
-	
-	/**
-	 * 异常、调试及其它信息记录到日志
-	 * @param $message
-	 * @param $trace
-	 */
-	static public function recordLog($message, $type = 'INFO', $ifrecord = 'add') { //TODO 重构
-		if (defined('LOG_RECORD')) {
-			$message = str_replace('<br/>', "\r\n", $message);
-			$ifrecord == 'add' ? WindLog::add($message, strtoupper($type)) : WindLog::log($message, strtoupper($type));
-		}
-	}
-	
-	/**
-	 * 对于输出信息是否debug处理
-	 * @param $message
-	 * @param $trace
-	 */
-	static public function debug($message, $trace = array()) {
-		//TODO 重构
-		return defined('DEBUG') ? WindDebug::debug($message, $trace) : $message;
-	}
-	
-	static public function exceptionHandle($e) {
-		$trace = in_array('WindException', class_parents($e)) ? $e->getStackTrace() : $e->getTrace();
-		$message = W::debug("{$e}", $trace);
-		W::recordLog($message, 'TRACE', 'log');
-		die($message);
 	}
 }
 
