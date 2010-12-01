@@ -6,7 +6,7 @@
  * @license
  */
 
-header("Content-type: text/html; charset=gbk");
+header("Content-type: text/html; charset=utf8");
 define('R_P', dirname(__FILE__) . '/');
 /* 框架文件路径 */
 define('FREAMWORK_PATH', R_P . '/../../wind/');
