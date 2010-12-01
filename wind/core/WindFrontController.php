@@ -10,12 +10,12 @@ L::import('WIND:core.base.WindServlet');
 L::import('WIND:component.exception.WindException');
 /**
  * 
- * ³éÏóµÄÇ°¶Ë¿ØÖÆÆ÷½Ó¿Ú£¬Í¨¹ı¼¯³É¸Ã½Ó¿Ú¿ÉÒÔÊµÏÖÒÔÏÂÖ°Ôğ
+ * æŠ½è±¡çš„å‰ç«¯æ§åˆ¶å™¨æ¥å£ï¼Œé€šè¿‡é›†æˆè¯¥æ¥å£å¯ä»¥å®ç°ä»¥ä¸‹èŒè´£
  * 
- * Ö°Ôğ¶¨Òå£º
- * ½ÓÊÜ¿Í»§ÇëÇó
- * ´¦ÀíÇëÇó
- * Ïò¿Í»§¶Ë·¢ËÍÏìÓ¦
+ * èŒè´£å®šä¹‰ï¼š
+ * æ¥å—å®¢æˆ·è¯·æ±‚
+ * å¤„ç†è¯·æ±‚
+ * å‘å®¢æˆ·ç«¯å‘é€å“åº”
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -63,7 +63,7 @@ class WindFrontController extends WindServlet {
 	}
 	
 	/**
-	 * ³õÊ¼»¯¹ıÂËÆ÷£¬²¢½«³ÌĞòÖ´ĞĞ¾ä±úÖ¸ÏòÒ»¸ö¹ıÂËÆ÷Èë¿Ú
+	 * åˆå§‹åŒ–è¿‡æ»¤å™¨ï¼Œå¹¶å°†ç¨‹åºæ‰§è¡Œå¥æŸ„æŒ‡å‘ä¸€ä¸ªè¿‡æ»¤å™¨å…¥å£
 	 */
 	private function initFilter() {
 		$filters = C::getConfig(IWindConfig::FILTERS);
@@ -79,7 +79,7 @@ class WindFrontController extends WindServlet {
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÏµÍ³ÅäÖÃĞÅÏ¢
+	 * åˆå§‹åŒ–ç³»ç»Ÿé…ç½®ä¿¡æ¯
 	 * 
 	 * @param array $config
 	 */
@@ -91,7 +91,7 @@ class WindFrontController extends WindServlet {
 	}
 	
 	/**
-	 * ³õÊ¼»¯Ò³Ãæ·Ö·¢Æ÷
+	 * åˆå§‹åŒ–é¡µé¢åˆ†å‘å™¨
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */

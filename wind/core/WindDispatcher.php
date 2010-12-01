@@ -35,7 +35,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ÇëÇó·Ö·¢´¦Àí
+	 * è¯·æ±‚åˆ†å‘å¤„ç†
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -54,7 +54,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ÇëÇó·Ö·¢Ò»¸öÖØ¶¨ÏòÇëÇó
+	 * è¯·æ±‚åˆ†å‘ä¸€ä¸ªé‡å®šå‘è¯·æ±‚
 	 * 
 	 */
 	private function _dispatchWithRedirect($redirect) {
@@ -62,7 +62,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ÇëÇó·Ö·¢Ò»¸ö²Ù×÷ÇëÇó
+	 * è¯·æ±‚åˆ†å‘ä¸€ä¸ªæ“ä½œè¯·æ±‚
 	 * @param String $action
 	 */
 	private function _dispatchWithAction($action) {
@@ -70,7 +70,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ÇëÇó·Ö·¢Ò»¸öÄ£°åÇëÇó
+	 * è¯·æ±‚åˆ†å‘ä¸€ä¸ªæ¨¡æ¿è¯·æ±‚
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -83,7 +83,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ·µ»ØÒ»¸öModelAndView¶ÔÏó
+	 * è¿”å›ä¸€ä¸ªModelAndViewå¯¹è±¡
 	 * @return WindModelAndView $mav
 	 */
 	public function getMav() {
@@ -134,7 +134,7 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * ·µ»Ø´¦Àí²Ù×÷¾ä±ú
+	 * è¿”å›å¤„ç†æ“ä½œå¥æŸ„
 	 * @return array($className,$method)
 	 */
 	public function getActionHandle() {

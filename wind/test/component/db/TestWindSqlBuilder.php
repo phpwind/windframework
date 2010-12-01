@@ -32,36 +32,36 @@ class TestWindSqlBuilder extends PHPUnit_Framework_TestCase {
 	 * 
 	 */
 	public function testgetDimension() {
-		#ÑéÖ¤¿ÕÊý×é£¬ÆÚÍûµÃµ½0£¬½á¹ûÕýÈ·
+		#éªŒè¯ç©ºæ•°ç»„ï¼ŒæœŸæœ›å¾—åˆ°0ï¼Œç»“æžœæ­£ç¡®
 		$testVar1 = array();
 		$this->assertEquals(0, WindSqlBuilder::getDimension($testVar1));
-		#ÑéÖ¤Ò»Î¬Êý×é
+		#éªŒè¯ä¸€ç»´æ•°ç»„
 		$testVar2 = array('xxx', 'xx1');
 		$this->assertEquals(1, WindSqlBuilder::getDimension($testVar2));
-		#ÑéÖ¤µÚÒ»¸öÔªËØÊÇÊý×é£¬µÚ¶þ¸öÔªËØ²»ÊÇÊý×é
+		#éªŒè¯ç¬¬ä¸€ä¸ªå…ƒç´ æ˜¯æ•°ç»„ï¼Œç¬¬äºŒä¸ªå…ƒç´ ä¸æ˜¯æ•°ç»„
 		$testVar3 = array(array('xxx'), 'xxx');
 		$this->assertEquals(2, WindSqlBuilder::getDimension($testVar3));
-		#ÑéÖ¤µÚÒ»¸öÔªËØ²»ÊÇÊý×é£¬µÚ¶þ¸öÔªËØÊÇÊý×é
+		#éªŒè¯ç¬¬ä¸€ä¸ªå…ƒç´ ä¸æ˜¯æ•°ç»„ï¼Œç¬¬äºŒä¸ªå…ƒç´ æ˜¯æ•°ç»„
 		$testVar4 = array('xxx', array('xxx'));
 		$this->assertEquals(1, WindSqlBuilder::getDimension($testVar4));
-		#ÑéÖ¤¶þÎ¬Êý×é
+		#éªŒè¯äºŒç»´æ•°ç»„
 		$testVar5 = array(array(111), array('xxx'));
 		$this->assertEquals(2, WindSqlBuilder::getDimension($testVar5));
-		#ÑéÖ¤×Ö·û´®
+		#éªŒè¯å­—ç¬¦ä¸²
 		$testVar6 = 'xxx';
 		$this->assertEquals(0, WindSqlBuilder::getDimension($testVar6));
-		#ÑéÖ¤¶ÔÏó
+		#éªŒè¯å¯¹è±¡
 		$testVar7 = new self();
 		$this->assertEquals(0, WindSqlBuilder::getDimension($testVar7));
 	}
 	public function testsqlFillSpace() {
-		#ÑéÖ¤×Ö·û´®
+		#éªŒè¯å­—ç¬¦ä¸²
 		$testVar1 = 'xxx';
 		$this->assertEquals(' xxx ', WindSqlBuilder::sqlFillSpace($testVar1));
-		#ÑéÖ¤Êý×é----ÑéÖ¤Ê§°Ü----·½·¨Ã»ÓÐÅÐ¶Ï¹ýÀàÐÍ---ÊÇ·ñÐèÒª
+		#éªŒè¯æ•°ç»„----éªŒè¯å¤±è´¥----æ–¹æ³•æ²¡æœ‰åˆ¤æ–­è¿‡ç±»åž‹---æ˜¯å¦éœ€è¦
 		$testVar2 = array('xxx');
 		$this->assertEquals($testVar2, WindSqlBuilder::sqlFillSpace($testVar2));
-		#ÑéÖ¤¶ÔÏó----ÑéÖ¤Ê§°Ü----·½·¨Ã»ÓÐÅÐ¶Ï¹ýÀàÐÍ---ÊÇ·ñÐèÒª
+		#éªŒè¯å¯¹è±¡----éªŒè¯å¤±è´¥----æ–¹æ³•æ²¡æœ‰åˆ¤æ–­è¿‡ç±»åž‹---æ˜¯å¦éœ€è¦
 		$testVar3 = new self();
 		$this->assertEquals($testVar2, WindSqlBuilder::sqlFillSpace($testVar3));
 	}

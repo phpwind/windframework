@@ -18,24 +18,24 @@ L::import('WIND:component.response.WindHttpResponse');
 class WindHttpRequest implements IWindRequest {
 	
 	/**
-	 * ·ÃÎÊµÄ¶Ë¿ÚºÅ
+	 * è®¿é—®çš„ç«¯å£å·
 	 * @var int
 	 */
 	private $_port = null;
 	/**
-	 * ¿Í»§¶ËIP
+	 * å®¢æˆ·ç«¯IP
 	 * @var string
 	 */
 	private $_clientIp = null;
 	
 	/**
-	 * ÓïÑÔĞÅÏ¢
+	 * è¯­è¨€ä¿¡æ¯
 	 * @var string
 	 */
 	private $_language = null;
 	
 	/**
-	 * Â·¾¶ĞÅÏ¢
+	 * è·¯å¾„ä¿¡æ¯
 	 * @var string
 	 */
 	private $_pathInfo = null;
@@ -51,7 +51,7 @@ class WindHttpRequest implements IWindRequest {
 	private $_requestUri = null;
 	
 	/**
-	 * »ù´¡Â·¾¶ĞÅÏ¢
+	 * åŸºç¡€è·¯å¾„ä¿¡æ¯
 	 * @var string
 	 */
 	private $_baseUrl = null;
@@ -60,13 +60,13 @@ class WindHttpRequest implements IWindRequest {
 	private static $_instance = null;
 	
 	/**
-	 * ÇëÇó²ÎÊıĞÅÏ¢
+	 * è¯·æ±‚å‚æ•°ä¿¡æ¯
 	 * @var array
 	 */
 	private $_params = array();
 	
 	/**
-	 * ·µ»ØÇëÇó¶ÔÏóµÄµ¥ÀıÊµÀı
+	 * è¿”å›è¯·æ±‚å¯¹è±¡çš„å•ä¾‹å®ä¾‹
 	 * 
 	 * @return WindHttpRequest
 	 */
@@ -79,7 +79,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ¸ù¾İÃû³Æ»ñµÃ·şÎñÆ÷ºÍÖ´ĞĞ»·¾³ĞÅÏ¢,Èç¹ûÃû³Æ²»´æÔÚÔò·µ»ØNULL
+	 * æ ¹æ®åç§°è·å¾—æœåŠ¡å™¨å’Œæ‰§è¡Œç¯å¢ƒä¿¡æ¯,å¦‚æœåç§°ä¸å­˜åœ¨åˆ™è¿”å›NULL
 	 * 
 	 * @param string|null $name
 	 */
@@ -101,7 +101,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ´ÓqueryÖĞÈ¡Öµ
+	 * ä»queryä¸­å–å€¼
 	 * 
 	 * @param string $name
 	 * @param string $default
@@ -112,7 +112,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃpostÖµ
+	 * è·å¾—postå€¼
 	 * 
 	 * @param string $name
 	 * @param string $defaultValue
@@ -124,7 +124,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃgetÖµ
+	 * è·å¾—getå€¼
 	 * 
 	 * @param string $name
 	 * @param string $defaultValue
@@ -136,7 +136,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØcookieµÄÖµ£¬Èç¹û$name=nullÔò·µ»ØËùÓĞCookieÖµ
+	 * è¿”å›cookieçš„å€¼ï¼Œå¦‚æœ$name=nullåˆ™è¿”å›æ‰€æœ‰Cookieå€¼
 	 * 
 	 * @param string $key
 	 * @param string $defaultValue
@@ -148,7 +148,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØsessionµÄÖµ£¬Èç¹û$name=nullÔò·µ»ØËùÓĞCookieÖµ
+	 * è¿”å›sessionçš„å€¼ï¼Œå¦‚æœ$name=nullåˆ™è¿”å›æ‰€æœ‰Cookieå€¼
 	 * 
 	 * @param string $key
 	 * @param string $defaultValue
@@ -160,7 +160,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØServerµÄÖµ£¬Èç¹û$nameÎª¿ÕÔò·µ»ØËùÓĞServerµÄÖµ
+	 * è¿”å›Serverçš„å€¼ï¼Œå¦‚æœ$nameä¸ºç©ºåˆ™è¿”å›æ‰€æœ‰Serverçš„å€¼
 	 * 
 	 * @param string $name
 	 * @param string $defaultValue
@@ -172,7 +172,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØenvÖĞµÄÖµ£¬Èç¹û$nameÎªnullÔò·µ»ØËùÓĞenvµÄÖµ
+	 * è¿”å›envä¸­çš„å€¼ï¼Œå¦‚æœ$nameä¸ºnullåˆ™è¿”å›æ‰€æœ‰envçš„å€¼
 	 * 
 	 * @param string|null $name
 	 * @param string $defaultValue
@@ -184,7 +184,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñÈ¡Ğ­ÒéÃû³Æ
+	 * è·å–åè®®åç§°
 	 * 
 	 * @return string
 	 */
@@ -193,7 +193,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØÇëÇóÒ³ÃæÊ±Í¨ĞÅĞ­ÒéµÄÃû³ÆºÍ°æ±¾
+	 * è¿”å›è¯·æ±‚é¡µé¢æ—¶é€šä¿¡åè®®çš„åç§°å’Œç‰ˆæœ¬
 	 * @return string
 	 */
 	public function getProtocol() {
@@ -201,7 +201,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø·ÃÎÊIP
+	 * è¿”å›è®¿é—®IP
 	 * 
 	 * @return string|0.0.0.0
 	 */
@@ -211,14 +211,14 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃÇëÇóµÄ·½·¨
+	 * è·å¾—è¯·æ±‚çš„æ–¹æ³•
 	 */
 	public function getRequestMethod() {
 		return $this->getServer('REQUEST_METHOD', 'POST');
 	}
 	
 	/**
-	 * ·µ»Ø¸ÃÇëÇóÊÇ·ñÎªajaxÇëÇó
+	 * è¿”å›è¯¥è¯·æ±‚æ˜¯å¦ä¸ºajaxè¯·æ±‚
 	 * @return Boolean
 	 */
 	public function getIsAjaxRequest() {
@@ -235,7 +235,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØÇëÇóÊÇ·ñÎªGETÇëÇóÀàĞÍ
+	 * è¿”å›è¯·æ±‚æ˜¯å¦ä¸ºGETè¯·æ±‚ç±»å‹
 	 * @return boolean 
 	 */
 	public function isGet() {
@@ -243,7 +243,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØÇëÇóÊÇ·ñÎªPOSTÇëÇóÀàĞÍ
+	 * è¿”å›è¯·æ±‚æ˜¯å¦ä¸ºPOSTè¯·æ±‚ç±»å‹
 	 * @return boolean
 	 */
 	public function isPost() {
@@ -251,7 +251,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØÇëÇóÊÇ·ñÎªPUTÇëÇóÀàĞÍ
+	 * è¿”å›è¯·æ±‚æ˜¯å¦ä¸ºPUTè¯·æ±‚ç±»å‹
 	 * @return boolean
 	 */
 	public function isPut() {
@@ -259,7 +259,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØÇëÇóÊÇ·ñÎªDELETEÇëÇóÀàĞÍ
+	 * è¿”å›è¯·æ±‚æ˜¯å¦ä¸ºDELETEè¯·æ±‚ç±»å‹
 	 * @return boolean
 	 */
 	public function isDelete() {
@@ -267,8 +267,8 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÇëÇóµÄ×ÊÔ´±êÊ¶·û
-	 * ÕâÀïµÄuriÊÇÈ¥³ıĞ­ÒéÃû¡¢Ö÷»úÃûµÄ
+	 * åˆå§‹åŒ–è¯·æ±‚çš„èµ„æºæ ‡è¯†ç¬¦
+	 * è¿™é‡Œçš„uriæ˜¯å»é™¤åè®®åã€ä¸»æœºåçš„
 	 * 
 	 * @return string
 	 */
@@ -278,7 +278,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Øµ±Ç°Ö´ĞĞ½Å±¾µÄ¾ø¶ÔÂ·¾¶
+	 * è¿”å›å½“å‰æ‰§è¡Œè„šæœ¬çš„ç»å¯¹è·¯å¾„
 	 * 
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
@@ -293,8 +293,8 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñÈ¡HttpÍ·ĞÅÏ¢
-	 * @param string $header Í·²¿Ãû³Æ
+	 * è·å–Httpå¤´ä¿¡æ¯
+	 * @param string $header å¤´éƒ¨åç§°
 	 */
 	public function getHeader($header) {
 		$temp = strtoupper(str_replace('-', '_', $header));
@@ -308,7 +308,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø°üº¬ÓÉ¿Í»§¶ËÌá¹©µÄ¡¢¸úÔÚÕæÊµ½Å±¾Ãû³ÆÖ®ºó²¢ÇÒÔÚ²éÑ¯Óï¾ä£¨query string£©Ö®Ç°µÄÂ·¾¶ĞÅÏ¢
+	 * è¿”å›åŒ…å«ç”±å®¢æˆ·ç«¯æä¾›çš„ã€è·Ÿåœ¨çœŸå®è„šæœ¬åç§°ä¹‹åå¹¶ä¸”åœ¨æŸ¥è¯¢è¯­å¥ï¼ˆquery stringï¼‰ä¹‹å‰çš„è·¯å¾„ä¿¡æ¯
 	 * 
 	 * @throws WindException
 	 * @return string
@@ -319,7 +319,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñÈ¡»ù´¡URL,ÕâÀïÊÇÈ¥³ıÁË½Å±¾ÎÄ¼şÒÔ¼°·ÃÎÊ²ÎÊıĞÅÏ¢µÄURLµØÖ·ĞÅÏ¢
+	 * è·å–åŸºç¡€URL,è¿™é‡Œæ˜¯å»é™¤äº†è„šæœ¬æ–‡ä»¶ä»¥åŠè®¿é—®å‚æ•°ä¿¡æ¯çš„URLåœ°å€ä¿¡æ¯
 	 * 
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
@@ -339,7 +339,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃÖ÷»úĞÅÏ¢£¬°üº¬Ğ­ÒéĞÅÏ¢£¬Ö÷»úÃû£¬·ÃÎÊ¶Ë¿ÚĞÅÏ¢
+	 * è·å¾—ä¸»æœºä¿¡æ¯ï¼ŒåŒ…å«åè®®ä¿¡æ¯ï¼Œä¸»æœºåï¼Œè®¿é—®ç«¯å£ä¿¡æ¯
 	 * 
 	 * @return string
 	 */
@@ -349,9 +349,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Øµ±Ç°ÔËĞĞ½Å±¾ËùÔÚµÄ·şÎñÆ÷µÄÖ÷»úÃû¡£
-	 * Èç¹û½Å±¾ÔËĞĞÓÚĞéÄâÖ÷»úÖĞ
-	 * ¸ÃÃû³ÆÊÇÓÉÄÇ¸öĞéÄâÖ÷»úËùÉèÖÃµÄÖµ¾ö¶¨
+	 * è¿”å›å½“å‰è¿è¡Œè„šæœ¬æ‰€åœ¨çš„æœåŠ¡å™¨çš„ä¸»æœºåã€‚
+	 * å¦‚æœè„šæœ¬è¿è¡Œäºè™šæ‹Ÿä¸»æœºä¸­
+	 * è¯¥åç§°æ˜¯ç”±é‚£ä¸ªè™šæ‹Ÿä¸»æœºæ‰€è®¾ç½®çš„å€¼å†³å®š
 	 * 
 	 * @return string|''
 	 */
@@ -360,9 +360,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø·şÎñ¶Ë¿ÚºÅ
-	 * httpsÁ´½ÓµÄÄ¬ÈÏ¶Ë¿ÚºÅÎª443
-	 * httpÁ´½ÓµÄÄ¬ÈÏ¶Ë¿ÚºÅÎª80
+	 * è¿”å›æœåŠ¡ç«¯å£å·
+	 * httpsé“¾æ¥çš„é»˜è®¤ç«¯å£å·ä¸º443
+	 * httpé“¾æ¥çš„é»˜è®¤ç«¯å£å·ä¸º80
 	 * 
 	 * @return int
 	 */
@@ -375,9 +375,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ÉèÖÃ·şÎñ¶Ë¿ÚºÅ
-	 * httpsÁ´½ÓµÄÄ¬ÈÏ¶Ë¿ÚºÅÎª443
-	 * httpÁ´½ÓµÄÄ¬ÈÏ¶Ë¿ÚºÅÎª80
+	 * è®¾ç½®æœåŠ¡ç«¯å£å·
+	 * httpsé“¾æ¥çš„é»˜è®¤ç«¯å£å·ä¸º443
+	 * httpé“¾æ¥çš„é»˜è®¤ç«¯å£å·ä¸º80
 	 * 
 	 * @param int $port
 	 */
@@ -386,8 +386,8 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Øä¯ÀÀµ±Ç°Ò³ÃæµÄÓÃ»§µÄÖ÷»úÃû
-	 * DNS ·´Ïò½âÎö²»ÒÀÀµÓÚÓÃ»§µÄ REMOTE_ADDR
+	 * è¿”å›æµè§ˆå½“å‰é¡µé¢çš„ç”¨æˆ·çš„ä¸»æœºå
+	 * DNS åå‘è§£æä¸ä¾èµ–äºç”¨æˆ·çš„ REMOTE_ADDR
 	 * 
 	 * @return string|null
 	 */
@@ -396,7 +396,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Øä¯ÀÀÆ÷·¢ËÍRefererÇëÇóÍ·£¬¿ÉÒÔÈÃ·şÎñÆ÷ÁË½âºÍ×·×Ù·¢³ö±¾´ÎÇëÇóµÄÆğÔ´URLµØÖ·
+	 * è¿”å›æµè§ˆå™¨å‘é€Refererè¯·æ±‚å¤´ï¼Œå¯ä»¥è®©æœåŠ¡å™¨äº†è§£å’Œè¿½è¸ªå‘å‡ºæœ¬æ¬¡è¯·æ±‚çš„èµ·æºURLåœ°å€
 	 * 
 	 * @return string|null 
 	 */
@@ -405,7 +405,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃÓÃ»§»úÆ÷ÉÏÁ¬½Óµ½ Web ·şÎñÆ÷ËùÊ¹ÓÃµÄ¶Ë¿ÚºÅ
+	 * è·å¾—ç”¨æˆ·æœºå™¨ä¸Šè¿æ¥åˆ° Web æœåŠ¡å™¨æ‰€ä½¿ç”¨çš„ç«¯å£å·
 	 * 
 	 * @return number|null
 	 */
@@ -414,9 +414,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»ØUser-AgentÍ·×Ö¶ÎÓÃÓÚÖ¸¶¨ä¯ÀÀÆ÷»òÕßÆäËû¿Í»§¶Ë³ÌĞòµÄÀàĞÍºÍÃû×Ö
-	 * Èç¹û¿Í»§»úÊÇÒ»ÖÖÎŞÏßÊÖ³ÖÖÕ¶Ë£¬¾Í·µ»ØÒ»¸öWMLÎÄ¼ş£»Èç¹û·¢ÏÖ¿Í»§¶ËÊÇÒ»ÖÖÆÕÍ¨ä¯ÀÀÆ÷£¬
-	 * Ôò·µ»ØÍ¨³£µÄHTMLÎÄ¼ş
+	 * è¿”å›User-Agentå¤´å­—æ®µç”¨äºæŒ‡å®šæµè§ˆå™¨æˆ–è€…å…¶ä»–å®¢æˆ·ç«¯ç¨‹åºçš„ç±»å‹å’Œåå­—
+	 * å¦‚æœå®¢æˆ·æœºæ˜¯ä¸€ç§æ— çº¿æ‰‹æŒç»ˆç«¯ï¼Œå°±è¿”å›ä¸€ä¸ªWMLæ–‡ä»¶ï¼›å¦‚æœå‘ç°å®¢æˆ·ç«¯æ˜¯ä¸€ç§æ™®é€šæµè§ˆå™¨ï¼Œ
+	 * åˆ™è¿”å›é€šå¸¸çš„HTMLæ–‡ä»¶
 	 * 
 	 * @return string
 	 */
@@ -425,8 +425,8 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Øµ±Ç°ÇëÇóÍ·ÖĞ Accept: ÏîµÄÄÚÈİ£¬
-	 * AcceptÍ·×Ö¶ÎÓÃÓÚÖ¸³ö¿Í»§¶Ë³ÌĞòÄÜ¹»´¦ÀíµÄMIMEÀàĞÍ£¬ÀıÈç text/html,image/*
+	 * è¿”å›å½“å‰è¯·æ±‚å¤´ä¸­ Accept: é¡¹çš„å†…å®¹ï¼Œ
+	 * Acceptå¤´å­—æ®µç”¨äºæŒ‡å‡ºå®¢æˆ·ç«¯ç¨‹åºèƒ½å¤Ÿå¤„ç†çš„MIMEç±»å‹ï¼Œä¾‹å¦‚ text/html,image/*
 	 * 
 	 * @return string|''
 	 */
@@ -435,7 +435,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø¿Í»§¶Ë³ÌĞò¿ÉÒÔÄÜ¹»½øĞĞ½âÂëµÄÊı¾İ±àÂë·½Ê½£¬ÕâÀïµÄ±àÂë·½Ê½Í¨³£Ö¸Ä³ÖÖÑ¹Ëõ·½Ê½
+	 * è¿”å›å®¢æˆ·ç«¯ç¨‹åºå¯ä»¥èƒ½å¤Ÿè¿›è¡Œè§£ç çš„æ•°æ®ç¼–ç æ–¹å¼ï¼Œè¿™é‡Œçš„ç¼–ç æ–¹å¼é€šå¸¸æŒ‡æŸç§å‹ç¼©æ–¹å¼
 	 * 
 	 * @return string|''
 	 */
@@ -444,7 +444,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø¿Í»§¶Ë³ÌĞòÆÚÍû·şÎñÆ÷·µ»ØÄÄ¸ö¹ú¼ÒµÄÓïÑÔÎÄµµ 
+	 * è¿”å›å®¢æˆ·ç«¯ç¨‹åºæœŸæœ›æœåŠ¡å™¨è¿”å›å“ªä¸ªå›½å®¶çš„è¯­è¨€æ–‡æ¡£ 
 	 * Accept-Language: en-us,zh-cn
 	 * 
 	 * @return string
@@ -458,7 +458,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃ·µ»ØĞÅÏ¢
+	 * è·å¾—è¿”å›ä¿¡æ¯
 	 * @return WindHttpResponse
 	 */
 	public function getResponse() {
@@ -466,7 +466,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø·ÃÎÊµÄIPµØÖ·
+	 * è¿”å›è®¿é—®çš„IPåœ°å€
 	 * 
 	 * Example:
 	 * $this->_clientIp = 127.0.0.1
@@ -495,8 +495,8 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÇëÇóµÄ×ÊÔ´±êÊ¶·û
-	 * ÕâÀïµÄuriÊÇÈ¥³ıĞ­ÒéÃû¡¢Ö÷»úÃûµÄ
+	 * åˆå§‹åŒ–è¯·æ±‚çš„èµ„æºæ ‡è¯†ç¬¦
+	 * è¿™é‡Œçš„uriæ˜¯å»é™¤åè®®åã€ä¸»æœºåçš„
 	 * 
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
@@ -521,7 +521,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ³õÊ¼»¯µ±Ç°Ö´ĞĞ½Å±¾µÄ¾ø¶ÔÂ·¾¶
+	 * åˆå§‹åŒ–å½“å‰æ‰§è¡Œè„šæœ¬çš„ç»å¯¹è·¯å¾„
 	 * 
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
@@ -549,7 +549,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * »ñµÃÖ÷»úĞÅÏ¢£¬°üº¬Ğ­ÒéĞÅÏ¢£¬Ö÷»úÃû£¬·ÃÎÊ¶Ë¿ÚĞÅÏ¢
+	 * è·å¾—ä¸»æœºä¿¡æ¯ï¼ŒåŒ…å«åè®®ä¿¡æ¯ï¼Œä¸»æœºåï¼Œè®¿é—®ç«¯å£ä¿¡æ¯
 	 * 
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
@@ -572,7 +572,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
-	 * ·µ»Ø°üº¬ÓÉ¿Í»§¶ËÌá¹©µÄ¡¢¸úÔÚÕæÊµ½Å±¾Ãû³ÆÖ®ºó²¢ÇÒÔÚ²éÑ¯Óï¾ä£¨query string£©Ö®Ç°µÄÂ·¾¶ĞÅÏ¢
+	 * è¿”å›åŒ…å«ç”±å®¢æˆ·ç«¯æä¾›çš„ã€è·Ÿåœ¨çœŸå®è„šæœ¬åç§°ä¹‹åå¹¶ä¸”åœ¨æŸ¥è¯¢è¯­å¥ï¼ˆquery stringï¼‰ä¹‹å‰çš„è·¯å¾„ä¿¡æ¯
 	 * 
 	 * @throws WindException
 	 * @return

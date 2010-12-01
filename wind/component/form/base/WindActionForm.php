@@ -17,10 +17,10 @@ abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
 	
 	/**
-	 * ÑéÖ¤·½·¨£¬µ÷ÓÃ¸Ã·½·¨Íê³ÉËùÓĞÑéÖ¤²Ù×÷
-	 * get_class_methodsÖ»ÄÜ·µ»ØpublicÀàĞÍµÄº¯Êı
+	 * éªŒè¯æ–¹æ³•ï¼Œè°ƒç”¨è¯¥æ–¹æ³•å®Œæˆæ‰€æœ‰éªŒè¯æ“ä½œ
+	 * get_class_methodsåªèƒ½è¿”å›publicç±»å‹çš„å‡½æ•°
 	 * 
-	 * Ö´ĞĞ£¬ÓÃ»§µÄ¼Ì³ĞWindActionFormÀàµÄactionFormÖĞ£¬ËùÓĞÒÔvalidate½áÎ²µÄº¯Êı
+	 * æ‰§è¡Œï¼Œç”¨æˆ·çš„ç»§æ‰¿WindActionFormç±»çš„actionFormä¸­ï¼Œæ‰€æœ‰ä»¥validateç»“å°¾çš„å‡½æ•°
 	 */
 	public function validation() {
 		$methods = get_class_methods($this);
@@ -35,7 +35,7 @@ abstract class WindActionForm extends WindModule {
 	}
 	
 	/**
-	 * ÉèÖÃÊôĞÔÖµ
+	 * è®¾ç½®å±æ€§å€¼
 	 * @param array $_params
 	 */
 	public function setProperties($_params) {
@@ -47,7 +47,7 @@ abstract class WindActionForm extends WindModule {
 	}
 	
 	/**
-	 * ÊÇ·ñ¿ªÆôÑéÖ¤
+	 * æ˜¯å¦å¼€å¯éªŒè¯
 	 * @return string
 	 */
 	public function getIsValidation() {

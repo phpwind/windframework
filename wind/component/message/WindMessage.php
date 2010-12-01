@@ -11,7 +11,7 @@ class WindMessage {
 	private $message = array();
 	
 	/**
-	 * 添加一条message信息
+	 * 娣诲姞涓�鏉essage淇℃伅
 	 * 
 	 * @param string $message
 	 * @param string $key
@@ -31,7 +31,7 @@ class WindMessage {
 	}
 	
 	/**
-	 * 获得一条message信息
+	 * 鑾峰緱涓�鏉essage淇℃伅
 	 * 
 	 * @param string $key
 	 * @return string|array
@@ -41,7 +41,7 @@ class WindMessage {
 	}
 	
 	/**
-	 * 以数组的方式返回message信息
+	 * 浠ユ暟缁勭殑鏂瑰紡杩斿洖message淇℃伅
 	 * 
 	 * @param string $key
 	 * @return array
@@ -51,7 +51,7 @@ class WindMessage {
 	}
 	
 	/**
-	 * 以字符串格式返回message
+	 * 浠ュ瓧绗︿覆鏍煎紡杩斿洖message
 	 * @return string
 	 */
 	public function getMessageWithString($key = '') {
@@ -60,7 +60,7 @@ class WindMessage {
 	}
 	
 	/**
-	 * 清理message
+	 * 娓呯悊message
 	 * 
 	 * @param string $key
 	 */

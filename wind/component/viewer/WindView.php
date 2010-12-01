@@ -7,9 +7,9 @@
  */
 
 /**
- * ´¦ÀíÊÓÍ¼ÇëÇóµÄ×¼±¸¹¤×÷£¬²¢½«ÊÓÍ¼ÇëÇóÌá½»¸øÄ³Ò»¸ö¾ßÌåµÄÊÓÍ¼½âÎöÆ÷
- * Èç¹ûÊÓÍ¼ÇëÇóÊÇÒ»¸öÖØ¶¨ÏòÇëÇó£¬»òÕßÊÇÇëÇóÁíÒ»¸ö²Ù×÷
- * Ôò·µ»ØÒ»¸öforward¶ÔÏó
+ * å¤„ç†è§†å›¾è¯·æ±‚çš„å‡†å¤‡å·¥ä½œï¼Œå¹¶å°†è§†å›¾è¯·æ±‚æäº¤ç»™æŸä¸€ä¸ªå…·ä½“çš„è§†å›¾è§£æžå™¨
+ * å¦‚æžœè§†å›¾è¯·æ±‚æ˜¯ä¸€ä¸ªé‡å®šå‘è¯·æ±‚ï¼Œæˆ–è€…æ˜¯è¯·æ±‚å¦ä¸€ä¸ªæ“ä½œ
+ * åˆ™è¿”å›žä¸€ä¸ªforwardå¯¹è±¡
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -42,7 +42,7 @@ class WindView {
 	}
 	
 	/**
-	 * Í¨¹ýmodelandviewÊÓÍ¼ÐÅÏ¢ÉèÖÃview
+	 * é€šè¿‡modelandviewè§†å›¾ä¿¡æ¯è®¾ç½®view
 	 * @param WindModelAndView $mav
 	 */
 	public function setViewWithObject(&$mav) {
@@ -54,7 +54,7 @@ class WindView {
 	}
 	
 	/**
-	 * ·µ»ØÊÓÍ¼½âÎöÆ÷¶ÔÏó
+	 * è¿”å›žè§†å›¾è§£æžå™¨å¯¹è±¡
 	 * 
 	 * @return WindViewer
 	 */
@@ -71,7 +71,7 @@ class WindView {
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÅäÖÃÎÄ¼þ£¬»ñµÃÄ£°åÂ·¾¶ÐÅÏ¢
+	 * åˆå§‹åŒ–é…ç½®æ–‡ä»¶ï¼ŒèŽ·å¾—æ¨¡æ¿è·¯å¾„ä¿¡æ¯
 	 */
 	private function initConfig() {
 		$this->templatePath = C::getTemplate(IWindConfig::TEMPLATE_PATH);
@@ -184,7 +184,7 @@ class WindView {
 	}
 	
 	/**
-	 * ³õÊ¼»¯Ò»¸ö²Ù×÷¾ä±ú
+	 * åˆå§‹åŒ–ä¸€ä¸ªæ“ä½œå¥æŸ„
 	 * 
 	 * @param string $actionHandle
 	 */

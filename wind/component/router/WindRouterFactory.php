@@ -16,7 +16,7 @@ class WindRouterFactory extends WindFactory {
 	private $router = null;
 	
 	/* 
-	 * ·µ»ØrouterÊµÀý
+	 * è¿”å›žrouterå®žä¾‹
 	 * (non-PHPdoc)
 	 * @see wind/component/factory/base/WindFactory#create()
 	 */

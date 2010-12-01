@@ -7,7 +7,7 @@
  */
 
 /**
- * Òì³£´¦Àí»úÖÆ
+ * å¼‚å¸¸å¤„ç†æœºåˆ¶
  * 
  * the last known user to change this file in the repository  <$LastChangedBy: weihu $>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -18,11 +18,11 @@ class WindException extends Exception {
 	private $innerException = null;
 	
 	/**
-	 * Òì³£¹¹Ôìº¯Êı
+	 * å¼‚å¸¸æ„é€ å‡½æ•°
 	 * 
-	 * @param $message		     Òì³£ĞÅÏ¢
-	 * @param $code			     Òì³£´úºÅ
-	 * @param $innerException ÄÚ²¿Òì³£
+	 * @param $message		     å¼‚å¸¸ä¿¡æ¯
+	 * @param $code			     å¼‚å¸¸ä»£å·
+	 * @param $innerException å†…éƒ¨å¼‚å¸¸
 	 */
 	public function __construct($message = '', $code = 0, Exception $innerException = null) {
 		$message = $this->buildMessage($message, $code);
@@ -31,14 +31,14 @@ class WindException extends Exception {
 	}
 	
 	/**
-	 * È¡µÃÄÚ²¿Òì³£
+	 * å–å¾—å†…éƒ¨å¼‚å¸¸
 	 */
 	public function getInnerException() {
 		return $this->innerException;
 	}
 	
 	/**
-	 * È¡µÃÒì³£¶ÑÕ»ĞÅÏ¢
+	 * å–å¾—å¼‚å¸¸å †æ ˆä¿¡æ¯
 	 */
 	public function getStackTrace() {
 		if ($this->innerException) {

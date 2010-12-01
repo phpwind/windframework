@@ -20,7 +20,7 @@ class WindWebApplication implements IWindApplication {
 	protected $process = '';
 	
 	/**
-	 * ³õÊ¼»¯ÅäÖÃĞÅÏ¢
+	 * åˆå§‹åŒ–é…ç½®ä¿¡æ¯
 	 * @param WSystemConfig $configObj
 	 */
 	public function init() {}
@@ -31,19 +31,19 @@ class WindWebApplication implements IWindApplication {
 	 * @param WSystemConfig $configObj
 	 */
 	public function processRequest($request, $response) {
-		/* »ñµÃ²Ù×÷¾ä±ú */
+		/* è·å¾—æ“ä½œå¥æŸ„ */
 		list($action, $method) = $this->getActionHandle($request, $response);
 		$action->beforeAction();
 		$action->$method($request, $response);
 		$action->afterAction();
 		
-		/* »ñµÃÇëÇóÌø×ªĞÅÏ¢ */
+		/* è·å¾—è¯·æ±‚è·³è½¬ä¿¡æ¯ */
 		$mav = $action->getModelAndView();
 		$this->processDispatch($request, $response, $mav);
 	}
 	
 	/**
-	 * ·µ»ØactionÀà
+	 * è¿”å›actionç±»
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -60,7 +60,7 @@ class WindWebApplication implements IWindApplication {
 	}
 	
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇÖØ¸´Ìá½»£¬ÔÙÒ»´ÎÇëÇóÖĞ£¬²»ÔÊĞíÁ¬ĞøÖØ¸´ÇëÇóÁ½´Î»ñÁ½´ÎÒÔÉÏÄ³¸ö²Ù×÷
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯é‡å¤æäº¤ï¼Œå†ä¸€æ¬¡è¯·æ±‚ä¸­ï¼Œä¸å…è®¸è¿ç»­é‡å¤è¯·æ±‚ä¸¤æ¬¡è·ä¸¤æ¬¡ä»¥ä¸ŠæŸä¸ªæ“ä½œ
 	 * @param string $key
 	 */
 	protected function checkReprocess($key = '') {
@@ -73,7 +73,7 @@ class WindWebApplication implements IWindApplication {
 	}
 	
 	/**
-	 * ´¦ÀíÒ³ÃæÊä³öÓëÖØ¶¨Ïò
+	 * å¤„ç†é¡µé¢è¾“å‡ºä¸é‡å®šå‘
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response

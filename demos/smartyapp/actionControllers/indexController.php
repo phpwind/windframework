@@ -14,14 +14,14 @@ class IndexController extends WindController {
 		$this->getModelAndView()->setViewName('body');
 		$this->getModelAndView()->setModel(array('test' => 'hello World!'));
 		/*$view->windAssign('content', 'Hello World!');
-		$view->windAssign('name', '¡¾ÈµÇÅ¡¿Ð¡×é');
-		$view->windAssign('title', 'SmartyÒýÈëÖ®ºóµÄ²âÊÔ');
+		$view->windAssign('name', 'ã€é¹Šæ¡¥ã€‘å°ç»„');
+		$view->windAssign('title', 'Smartyå¼•å…¥ä¹‹åŽçš„æµ‹è¯•');
 		$view->windAssign('count', '8888888');*/
 	}
 	
 	public function show() {	/*$this->setForward('foot.phtml');
 		$this->setView('content', 'welcome');
-		$this->setView('name', '¡¾ÈµÇÅ¡¿Ð¡×é');
+		$this->setView('name', 'ã€é¹Šæ¡¥ã€‘å°ç»„');
 		$this->setView('count', '1000');*/
 	}
 }

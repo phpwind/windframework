@@ -8,9 +8,9 @@
 L::import("WIND:component.filter.base.WindFilter");
 
 /**
- * form×é¼şµÄÒ»¸ö²å¼şÒıÈëÊµÏÖ
- * ÓÃ»§ĞèÒªÅäÖÃform×é¼şµÄÊ±ºò£¬Ö»ÒªÔÚÅäÖÃÎÄ¼şÖĞ<filters>µÄÅäÖÃÏîÖĞÅäÖÃ¸Ãformfilter¼´¿É×Ô¶¯Ê¹ÓÃÓÃ»§¶¨ÒåµÄform
- * ÅäÖÃÎÄ¼şÖĞµÄÅäÖÃÈçÏÂ£º
+ * formç»„ä»¶çš„ä¸€ä¸ªæ’ä»¶å¼•å…¥å®ç°
+ * ç”¨æˆ·éœ€è¦é…ç½®formç»„ä»¶çš„æ—¶å€™ï¼Œåªè¦åœ¨é…ç½®æ–‡ä»¶ä¸­<filters>çš„é…ç½®é¡¹ä¸­é…ç½®è¯¥formfilterå³å¯è‡ªåŠ¨ä½¿ç”¨ç”¨æˆ·å®šä¹‰çš„form
+ * é…ç½®æ–‡ä»¶ä¸­çš„é…ç½®å¦‚ä¸‹ï¼š
  * <filters>
  *		<filter name="WindFormFilter">
  *		   <filterName>WindFormFilter</filterName> 
@@ -18,8 +18,8 @@ L::import("WIND:component.filter.base.WindFilter");
  *		</filter>
  *	</filters>
  *
- *form×é¼ş£¬½«»á¶Ô´ÓÇëÇó±äÁ¿ÖĞ£¬ÊôÓÚÓÃ»§ÉèÖÃµÄformName¶ÔÓ¦µÄformÀàÖĞÉèÖÃµÄ±äÁ¿½øĞĞÒ»¸ö¸³Öµ¡£
- *Èç¹ûÓÃ»§Ò²¶¨ÒåÁËÏà¹ØµÄÑéÖ¤²Ù×÷£¬ÔòÒ²»áÖ´ĞĞÑéÖ¤²Ù×÷¡£
+ *formç»„ä»¶ï¼Œå°†ä¼šå¯¹ä»è¯·æ±‚å˜é‡ä¸­ï¼Œå±äºç”¨æˆ·è®¾ç½®çš„formNameå¯¹åº”çš„formç±»ä¸­è®¾ç½®çš„å˜é‡è¿›è¡Œä¸€ä¸ªèµ‹å€¼ã€‚
+ *å¦‚æœç”¨æˆ·ä¹Ÿå®šä¹‰äº†ç›¸å…³çš„éªŒè¯æ“ä½œï¼Œåˆ™ä¹Ÿä¼šæ‰§è¡ŒéªŒè¯æ“ä½œã€‚
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
@@ -28,7 +28,7 @@ L::import("WIND:component.filter.base.WindFilter");
  */
 class WindFormFilter extends WindFilter {
 	/**
-	 * ½ÓÊÜÓÃ»§ĞèÒªÊ¹ÓÃformµÄÃû×Ö£¬Ìá¹©¸øÓÃ»§µÄÉèÖÃÊ¶±ğ×Ö´®
+	 * æ¥å—ç”¨æˆ·éœ€è¦ä½¿ç”¨formçš„åå­—ï¼Œæä¾›ç»™ç”¨æˆ·çš„è®¾ç½®è¯†åˆ«å­—ä¸²
 	 * @var string
 	 */
 	const FORMNAME = 'formName';
@@ -36,9 +36,9 @@ class WindFormFilter extends WindFilter {
 	public function doAfterProcess($request, $response) {
 	}
 	/**
-	 * Ö´ĞĞÇ°ÖÃ²Ù×÷
+	 * æ‰§è¡Œå‰ç½®æ“ä½œ
 	 * 
-	 * ÔÚÖ´ĞĞÓÃ»§actionÇ°½øĞĞÖ´ĞĞÓÃ»§µÄform²Ù×÷£¨´´½¨form, ¸øform¸³Öµ£¬Ö´ĞĞformµÄÑéÖ¤£¬±£´æ¸Ãform¶ÔÏó£©
+	 * åœ¨æ‰§è¡Œç”¨æˆ·actionå‰è¿›è¡Œæ‰§è¡Œç”¨æˆ·çš„formæ“ä½œï¼ˆåˆ›å»ºform, ç»™formèµ‹å€¼ï¼Œæ‰§è¡Œformçš„éªŒè¯ï¼Œä¿å­˜è¯¥formå¯¹è±¡ï¼‰
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
@@ -50,8 +50,8 @@ class WindFormFilter extends WindFilter {
 	    $this->validation($formObject);
 	}
 	/**
-	 * Ö´ĞĞÓÃ»§¶¨ÒåformÖĞµÄÑéÖ¤²Ù×÷
-	 * Èç¹ûÓĞ´íÎóĞÅÏ¢×é×°´íÎóĞÅÏ¢Êä³ö
+	 * æ‰§è¡Œç”¨æˆ·å®šä¹‰formä¸­çš„éªŒè¯æ“ä½œ
+	 * å¦‚æœæœ‰é”™è¯¯ä¿¡æ¯ç»„è£…é”™è¯¯ä¿¡æ¯è¾“å‡º
 	 * @param WindActionForm $formObject
 	 */
 	private function validation($formObject) {
@@ -60,9 +60,9 @@ class WindFormFilter extends WindFilter {
 	}
 	
 	/**
-	 * »ñµÃ¶ÔÓ¦formµÄ¾ä±ú
-	 * ¸ù¾İÓÃ»§¶¨ÒåµÄformNameÀ´´´½¨form,
-	 * ¶¨ÒåÓÃ»§¶¨ÒåµÄform
+	 * è·å¾—å¯¹åº”formçš„å¥æŸ„
+	 * æ ¹æ®ç”¨æˆ·å®šä¹‰çš„formNameæ¥åˆ›å»ºform,
+	 * å®šä¹‰ç”¨æˆ·å®šä¹‰çš„form
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */

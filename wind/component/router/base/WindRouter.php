@@ -7,9 +7,9 @@
  */
 
 /**
- * Â·ÓÉ½âÎöÆ÷½Ó¿Ú
- * Ö°Ôğ: Â·ÓÉ½âÎö, ·µ»ØÂ·ÓÉ¶ÔÏó
- * ÊµÏÖÂ·ÓÉ½âÎöÆ÷±ØĞëÊµÏÖ¸Ã½Ó¿ÚµÄdoParser()·½·¨
+ * è·¯ç”±è§£æå™¨æ¥å£
+ * èŒè´£: è·¯ç”±è§£æ, è¿”å›è·¯ç”±å¯¹è±¡
+ * å®ç°è·¯ç”±è§£æå™¨å¿…é¡»å®ç°è¯¥æ¥å£çš„doParser()æ–¹æ³•
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -34,7 +34,7 @@ abstract class WindRouter {
 	}
 	
 	/**
-	 * ³õÊ¼»¯Â·ÓÉÅäÖÃ
+	 * åˆå§‹åŒ–è·¯ç”±é…ç½®
 	 * 
 	 * @param WSystemConfig $configObj
 	 */
@@ -43,14 +43,14 @@ abstract class WindRouter {
 	}
 	
 	/**
-	 * Í¨¹ıÊµÏÖ¸Ã½Ó¿ÚÊµÏÖÂ·ÓÉ½âÎö
+	 * é€šè¿‡å®ç°è¯¥æ¥å£å®ç°è·¯ç”±è§£æ
 	 * 
 	 * @return WRouterContext
 	 */
 	abstract function doParser($request, $response);
 	
 	/**
-	 * »ñµÃÇëÇó´¦ÀíÀà,·µ»ØÒ»¸öÊı×é£¬array('$className','$method')
+	 * è·å¾—è¯·æ±‚å¤„ç†ç±»,è¿”å›ä¸€ä¸ªæ•°ç»„ï¼Œarray('$className','$method')
 	 * 
 	 * @return array
 	 */
@@ -73,21 +73,21 @@ abstract class WindRouter {
 	}
 	
 	/**
-	 * »ñµÃÒµÎñ²Ù×÷
+	 * è·å¾—ä¸šåŠ¡æ“ä½œ
 	 */
 	public function getAction() {
 		return $this->action;
 	}
 	
 	/**
-	 * »ñµÃÒµÎñ¶ÔÏó
+	 * è·å¾—ä¸šåŠ¡å¯¹è±¡
 	 */
 	public function getController() {
 		return $this->controller;
 	}
 	
 	/**
-	 * »ñµÃÒ»×éÓ¦ÓÃÈë¿Ú
+	 * è·å¾—ä¸€ç»„åº”ç”¨å…¥å£
 	 */
 	public function getModule() {
 		return $this->module;

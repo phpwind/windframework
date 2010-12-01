@@ -70,7 +70,7 @@ class WindSmarty extends Smarty implements WindViewerImpl {
 	}
 	
 	/**
-	 * 获得模板文件
+	 * 鑾峰緱妯℃澘鏂囦欢
 	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
@@ -85,7 +85,7 @@ class WindSmarty extends Smarty implements WindViewerImpl {
 	}
 	
 	/**
-	 * 根据模板名称获得模板文件
+	 * 鏍规嵁妯℃澘鍚嶇О鑾峰緱妯℃澘鏂囦欢
 	 * 
 	 * @param string $viewName
 	 * @return array()

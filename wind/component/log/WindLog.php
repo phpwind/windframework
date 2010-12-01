@@ -8,26 +8,26 @@
 defined ( 'LOG_PATH' ) or define ( 'LOG_PATH', './log/' );
 defined ( 'LOG_DISPLAY_TYPE' ) or define ( 'LOG_DISPLAY_TYPE', 'log' );
 /**
- * ÈÕÖ¾¼ÇÂ¼
+ * æ—¥å¿—è®°å½•
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package
  */
 class WindLog {
-	/*´íÎóÀàĞÍ*/
+	/*é”™è¯¯ç±»å‹*/
 	const ERROR = 'error';
 	const TRACE = 'trace';
 	const INFO = 'info';
 	const DB = 'db';
-	/*Ğ´ÈëÈÕÖ¾Àà±ğ*/
+	/*å†™å…¥æ—¥å¿—ç±»åˆ«*/
 	private static $msgType = array ('system' => 0, 'email' => 1, 'tcp' => 2, 'file' => 3 );
 	
 	private static $logs = array ();
 	/**
-	 * ¼ÇÂ¼ÈÕÖ¾ĞÅÏ¢£¬µ«²»Ğ´ÈëÎÄ¼ş
-	 * @param string $msg	     ÈÕÖ¾ĞÅÏ¢
-	 * @param const  $logType ÈÕÖ¾Àà±ğ
+	 * è®°å½•æ—¥å¿—ä¿¡æ¯ï¼Œä½†ä¸å†™å…¥æ–‡ä»¶
+	 * @param string $msg	     æ—¥å¿—ä¿¡æ¯
+	 * @param const  $logType æ—¥å¿—ç±»åˆ«
 	 */
 	public static function add($msg, $logType = self::INFO) {
 		self::$logs [] = self::build ( $msg, $logType );
@@ -35,12 +35,12 @@ class WindLog {
 	}
 	
 	/**
-	 * Ö±½«½«ÈÕÖ¾Ğ´ÈëÎÄ¼ş
-	 * @param $msg 		ÈÕÖ¾ĞÅÏ¢
-	 * @param $logType	ÈÕÖ¾Àà±ğ
-	 * @param $type		¼ÇÂ¼Àà±ğ
-	 * @param $dst		ÈÕÖ¾±»¼ÇÂ¼ÓÚºÎ´¦
-	 * @param $header	ÆäËüĞÅÏ¢
+	 * ç›´å°†å°†æ—¥å¿—å†™å…¥æ–‡ä»¶
+	 * @param $msg 		æ—¥å¿—ä¿¡æ¯
+	 * @param $logType	æ—¥å¿—ç±»åˆ«
+	 * @param $type		è®°å½•ç±»åˆ«
+	 * @param $dst		æ—¥å¿—è¢«è®°å½•äºä½•å¤„
+	 * @param $header	å…¶å®ƒä¿¡æ¯
 	 */
 	public static function log($msg, $logType = self::INFO, $type = 'file', $dst = '', $header = '') {
 		$type = in_array ( $type, self::$msgType ) ? $type : 'file';
@@ -49,10 +49,10 @@ class WindLog {
 	}
 	
 	/**
-	 * ½«¼ÇÂ¼µÄÈÕÖ¾ÁĞ±íĞÅÏ¢Ğ´ÈëÎÄ¼ş
-	 * @param string $type ÈÕÖ¾Àà±ğ
-	 * @param string $dst  ÈÕÖ¾±»¼ÇÂ¼ÓÚºÎ´¦
-	 * @param string $header ÆäËüĞÅÏ¢
+	 * å°†è®°å½•çš„æ—¥å¿—åˆ—è¡¨ä¿¡æ¯å†™å…¥æ–‡ä»¶
+	 * @param string $type æ—¥å¿—ç±»åˆ«
+	 * @param string $dst  æ—¥å¿—è¢«è®°å½•äºä½•å¤„
+	 * @param string $header å…¶å®ƒä¿¡æ¯
 	 */
 	public static function flush($type = 'file', $dst = '', $header = '') {
 		if (self::$logs) {
@@ -64,7 +64,7 @@ class WindLog {
 	}
 	
 	/*
-	 * Çå¿ÕÈÕÖ¾ÎÄ¼ş
+	 * æ¸…ç©ºæ—¥å¿—æ–‡ä»¶
 	 */
 	public static function clearFiles($time = 0) {
 		if (! is_int ( $time ) || 0 > intval ( $time ) || ! is_dir ( LOG_PATH )){
@@ -80,7 +80,7 @@ class WindLog {
 	}
 	
 	/**
-	 * È¡µÃÈÕÖ¾ÎÄ¼şÃû
+	 * å–å¾—æ—¥å¿—æ–‡ä»¶å
 	 */
 	private static function getFileName() {
 		self::createFolder ( LOG_PATH );
@@ -101,9 +101,9 @@ class WindLog {
 	}
 	
 	/**
-	 * ×é×°ÈÕÖ¾ĞÅÏ¢
-	 * @param string $msg	     ÈÕÖ¾ĞÅÏ¢
-	 * @param const  $logType ÈÕÖ¾Àà±ğ
+	 * ç»„è£…æ—¥å¿—ä¿¡æ¯
+	 * @param string $msg	     æ—¥å¿—ä¿¡æ¯
+	 * @param const  $logType æ—¥å¿—ç±»åˆ«
 	 * @return string
 	 */
 	private static function build($msg, $logType = self::INFO) {
@@ -123,12 +123,12 @@ class WindLog {
 	
 	private static function buildHtm($msg, $logType = self::INFO) {
 		$msg = stripslashes ( str_replace ( array ("\r\n", "\r", "\n\r", "\n" ), "<br/>", $msg ) );
-		return '<span>¡¾<strong>' . strtoupper ( $logType ) . '</strong>¡¿' . self::info () . "<br/>The Detail Message:" . $msg . "</span><br/><br/>";
+		return '<span>ã€<strong>' . strtoupper ( $logType ) . '</strong>ã€‘' . self::info () . "<br/>The Detail Message:" . $msg . "</span><br/><br/>";
 	}
 	
 	private static function buildLog($msg, $logType = self::INFO) {
 		$msg = stripslashes ( str_replace ( "<br/>", "\r\n", $msg ) );
-		return '¡¾' . strtoupper ( $logType ) . '¡¿' . self::info () . "\r\nThe Detail Message:" . $msg . "\r\n\r\n";
+		return 'ã€' . strtoupper ( $logType ) . 'ã€‘' . self::info () . "\r\nThe Detail Message:" . $msg . "\r\n\r\n";
 	}
 
 }

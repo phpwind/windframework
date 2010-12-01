@@ -14,7 +14,7 @@ require_once (F_P . '/wind.php');
 
 echo '<pre/>';
 /**
- * mysql 连接使用
+ * mysql 杩炴帴浣跨敤
  */
 
 
@@ -31,32 +31,32 @@ $option ['where'] = array ('a =223 and b=33' );
 $option ['where'] = array('a = :a AND B=:b',array(':a'=>'sss',':b'=>'sss'));
 $option ['field'] = array ('a.uid' => 'ids', 'a.username' );
 $option ['join'] = array ('pw_posts' => array ('left', 'a.uid=b.authorid', 'b' ) );
-//不指定db连接
+//涓嶆寚瀹歞b杩炴帴
 //$mysql->select ( $option );
-//指定db连接
+//鎸囧畾db杩炴帴
 $mysql->select ( $option,'phpwind' );
 $result = $mysql->getAllResult ();
 //$mysql->getAffectedRows ( true );
 //$mysql->getMetaColumns ( 'pw_members' );
 //$result = $mysql->getAllResult ();
-//更新数据
+//鏇存柊鏁版嵁
 $option ['set'] = array ('username' => "test" );
 $option ['table'] = 'pw_members';
 $option ['where'] = array ('lt' => array ('uid', 1 ) );
 $mysql->update ( $option, 'phpwind' );
-//新增数据
+//鏂板鏁版嵁
 $option ['where'] = array ('eq' => array ('uid', 1 ) );
 $option ['data'] = array ("asfafafafaf" );
 $option ['table'] = 'pw_members';
 $option ['field'] = array ('username' );
 $mysql->insert ( $option, 'phpwind' );
-//删除数据
+//鍒犻櫎鏁版嵁
 $option ['table'] = 'pw_members';
 $option ['where'] = array ('eq' => array ('uid', 22 ) );
 $mysql->delete ( $option, 'phpwind' );
 print_r($result);
 
-//sql server连接使用
+//sql server杩炴帴浣跨敤
  
 $dsn = array(
 'test'=>"mssql:://username:password@localhost:port/dbname/optype/pconect/force",

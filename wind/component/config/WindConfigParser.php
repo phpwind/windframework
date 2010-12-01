@@ -8,11 +8,11 @@
 L::import("WIND:component.config.base.IWindConfig");
 L::import('WIND:utility.Common');
 /**
- * ÅäÖÃÎÄ¼þ½âÎöÀà
- * ÅäÖÃÎÄ¼þ¸ñÊ½ÔÊÐíÓÐ3ÖÐ¸ñÊ½£ºxml,properties,ini
+ * é…ç½®æ–‡ä»¶è§£æžç±»
+ * é…ç½®æ–‡ä»¶æ ¼å¼å…è®¸æœ‰3ä¸­æ ¼å¼ï¼šxml,properties,ini
  * 
- * ÅäÖÃÄ¬ÈÏ·ÅÔÚÓ¦ÓÃ³ÌÐò¸úÂ·¾¶ÏÂÃæ£¬½âÎöÉú³ÉµÄÅäÖÃ»º´æÎÄ¼þÄ¬ÈÏ·ÅÔÚ¡®COMPILE_PATH¡¯ÏÂÃæ
- * Èç¹û¡®$userAppConfig¡¯ÎÄ¼þÖÐÓÐ¶¨ÒåÁË½âÎöÉú³ÉµÄÅäÖÃÎÄ¼þ´æ·ÅÂ·¾¶Ôò·ÅÖÃÔÚ¸ÃÂ·¾¶ÏÂÃæ
+ * é…ç½®é»˜è®¤æ”¾åœ¨åº”ç”¨ç¨‹åºè·Ÿè·¯å¾„ä¸‹é¢ï¼Œè§£æžç”Ÿæˆçš„é…ç½®ç¼“å­˜æ–‡ä»¶é»˜è®¤æ”¾åœ¨â€˜COMPILE_PATHâ€™ä¸‹é¢
+ * å¦‚æžœâ€˜$userAppConfigâ€™æ–‡ä»¶ä¸­æœ‰å®šä¹‰äº†è§£æžç”Ÿæˆçš„é…ç½®æ–‡ä»¶å­˜æ”¾è·¯å¾„åˆ™æ”¾ç½®åœ¨è¯¥è·¯å¾„ä¸‹é¢
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
@@ -40,8 +40,8 @@ class WindConfigParser implements IWindConfig {
 	private $currentApp = '';
 	
 	/**
-	 * ³õÊ¼»¯
-	 * @param String $outputEncoding	//±àÂëÐÅÏ¢
+	 * åˆå§‹åŒ–
+	 * @param String $outputEncoding	//ç¼–ç ä¿¡æ¯
 	 */
 	public function __construct($outputEncoding = 'gbk') {
 		$this->currentApp = W::getCurrentApp();
@@ -49,7 +49,7 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÅäÖÃÎÄ¼þ½âÎöÆ÷
+	 * åˆå§‹åŒ–é…ç½®æ–‡ä»¶è§£æžå™¨
 	 * @access private
 	 * @param string $parser
 	 */
@@ -66,18 +66,18 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * ·µ»ØÊÇ·ñÐèÒªÖ´ÐÐ½âÎö¹ý³Ì
+	 * è¿”å›žæ˜¯å¦éœ€è¦æ‰§è¡Œè§£æžè¿‡ç¨‹
 	 * 
-	 * Èç¹ûÊÇdebugÄ£Ê½£¬Ôò·µ»Øfalse,½øÐÐÃ¿´Î¶¼½øÐÐ½âÎö
-	 * Èç¹û²»ÊÇdebugÄ£Ê½£¬ÔòÏÈÅÐ¶ÏÊÇ·ñÉèÖÃÁË»º´æÄ£Ê½
-	 *    Èç¹ûÃ»ÓÐÉèÖÃ»º´æÔò·µ»Øfalse,½øÐÐ½âÎö£¬
-	 * Èç¹ûÉèÖÃÁË»º´æÄ£Ê½£¬ÔòÅÐ¶Ï¸ÃÓ¦ÓÃÊÇ·ñÒÑ¾­±»½âÎö
-	 *    Èç¹ûµ±Ç°·ÃÎÊÓ¦ÓÃÃ»ÓÐ±»½âÎö¹ý£¬Ôò·µ»Øfalse,½øÐÐ½âÎö
-	 * Èç¹ûµ±Ç°Ó¦ÓÃ½âÎö¹ý£¬ÔòÅÐ¶Ï½âÎö³öÀ´µÄÎÄ¼þÊÇ·ñ´æÔÚ
-	 *    Èç¹û¸Ã½âÎö³öÀ´µÄÎÄ¼þ²»´æÔÚ£¬Ôò·µ»Øfalse,Ö´ÐÐ½âÎö
-	 * ·ñÔò·µ»Øtrue,Ö±½Ó¶ÁÈ¡»º´æ
+	 * å¦‚æžœæ˜¯debugæ¨¡å¼ï¼Œåˆ™è¿”å›žfalse,è¿›è¡Œæ¯æ¬¡éƒ½è¿›è¡Œè§£æž
+	 * å¦‚æžœä¸æ˜¯debugæ¨¡å¼ï¼Œåˆ™å…ˆåˆ¤æ–­æ˜¯å¦è®¾ç½®äº†ç¼“å­˜æ¨¡å¼
+	 *    å¦‚æžœæ²¡æœ‰è®¾ç½®ç¼“å­˜åˆ™è¿”å›žfalse,è¿›è¡Œè§£æžï¼Œ
+	 * å¦‚æžœè®¾ç½®äº†ç¼“å­˜æ¨¡å¼ï¼Œåˆ™åˆ¤æ–­è¯¥åº”ç”¨æ˜¯å¦å·²ç»è¢«è§£æž
+	 *    å¦‚æžœå½“å‰è®¿é—®åº”ç”¨æ²¡æœ‰è¢«è§£æžè¿‡ï¼Œåˆ™è¿”å›žfalse,è¿›è¡Œè§£æž
+	 * å¦‚æžœå½“å‰åº”ç”¨è§£æžè¿‡ï¼Œåˆ™åˆ¤æ–­è§£æžå‡ºæ¥çš„æ–‡ä»¶æ˜¯å¦å­˜åœ¨
+	 *    å¦‚æžœè¯¥è§£æžå‡ºæ¥çš„æ–‡ä»¶ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›žfalse,æ‰§è¡Œè§£æž
+	 * å¦åˆ™è¿”å›žtrue,ç›´æŽ¥è¯»å–ç¼“å­˜
 	 * 
-	 * @return boolean false:ÐèÒª½øÐÐ½âÎö£¬ true£º²»ÐèÒª½øÐÐ½âÎö£¬Ö±½Ó¶ÁÈ¡»º´æÎÄ¼þ
+	 * @return boolean false:éœ€è¦è¿›è¡Œè§£æžï¼Œ trueï¼šä¸éœ€è¦è¿›è¡Œè§£æžï¼Œç›´æŽ¥è¯»å–ç¼“å­˜æ–‡ä»¶
 	 */
 	private function isCompiled() {
 		if (IS_DEBUG) return false;
@@ -146,8 +146,8 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * ½ÓÊÕÒ»¸öÅäÖÃÎÄ¼þÂ·¾¶£¬¸ù¾ÝÂ·¾¶ÐÅÏ¢³õÊ¼»¯ÅäÖÃ½âÎöÆ÷£¬²¢½âÎö¸ÃÅäÖÃ
-	 * ÒÔÊý×é¸ñÊ½·µ»ØÅäÖÃ½âÎö½á¹û
+	 * æŽ¥æ”¶ä¸€ä¸ªé…ç½®æ–‡ä»¶è·¯å¾„ï¼Œæ ¹æ®è·¯å¾„ä¿¡æ¯åˆå§‹åŒ–é…ç½®è§£æžå™¨ï¼Œå¹¶è§£æžè¯¥é…ç½®
+	 * ä»¥æ•°ç»„æ ¼å¼è¿”å›žé…ç½®è§£æžç»“æžœ
 	 * 
 	 * @param string $configFile
 	 * @return array
@@ -163,14 +163,14 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * ´¦ÀíÅäÖÃÎÄ¼þ
-	 * ¸ù¾ÝÔÚIWindConfigÖÐµÄÉèÖÃ¶ÔÏà¹ØÅäÖÃÏî½øÐÐºÏ²¢/¸²¸Ç
-	 * Èç¹ûÓ¦ÓÃÅäÖÃÖÐÃ»ÓÐÅäÖÃÏà¹ØÑ¡Ïî£¬ÔòÊ¹ÓÃÄ¬ÈÏÅäÖÃÖÐµÄÑ¡Ïî
-	 * Èç¹ûÊÇÐèÒªºÏ²¢µÄÏî£¬Ôò½«È±Ê¡ÏîºÍÓÃ»§ÅäÖÃÏî½øÐÐºÏ²¢
+	 * å¤„ç†é…ç½®æ–‡ä»¶
+	 * æ ¹æ®åœ¨IWindConfigä¸­çš„è®¾ç½®å¯¹ç›¸å…³é…ç½®é¡¹è¿›è¡Œåˆå¹¶/è¦†ç›–
+	 * å¦‚æžœåº”ç”¨é…ç½®ä¸­æ²¡æœ‰é…ç½®ç›¸å…³é€‰é¡¹ï¼Œåˆ™ä½¿ç”¨é»˜è®¤é…ç½®ä¸­çš„é€‰é¡¹
+	 * å¦‚æžœæ˜¯éœ€è¦åˆå¹¶çš„é¡¹ï¼Œåˆ™å°†ç¼ºçœé¡¹å’Œç”¨æˆ·é…ç½®é¡¹è¿›è¡Œåˆå¹¶
 	 * 
-	 * @param array $defaultConfig Ä¬ÈÏµÄÅäÖÃÎÄ¼þ
-	 * @param array $appConfig Ó¦ÓÃµÄÅäÖÃÎÄ¼þ
-	 * @return array ·µ»Ø´¦ÀíºóµÄÅäÖÃÎÄ¼þ
+	 * @param array $defaultConfig é»˜è®¤çš„é…ç½®æ–‡ä»¶
+	 * @param array $appConfig åº”ç”¨çš„é…ç½®æ–‡ä»¶
+	 * @return array è¿”å›žå¤„ç†åŽçš„é…ç½®æ–‡ä»¶
 	 */
 	private function mergeConfig($defaultConfig, $appConfig) {
 		if (!$appConfig) return $defaultConfig;
@@ -194,11 +194,11 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * ½«È«¾ÖÄÚÈÝ´ÓÊý×éÖÐÕÒ³ö£¬²¢Ìí¼Óµ½»º´æÎÄ¼þÖÐ
-	 * ½«¸ÃÓ¦ÓÃµÄÏà¹ØÅäÖÃmergeµ½È«¾ÖÓ¦ÓÐÅäÖÃÖÐ
-	 * µ±Ç°Ó¦ÓÃ£ºÈç¹ûÃ»ÓÐÅäÖÃÓ¦ÓÃµÄÃû×Ö£¬Ôò½«µ±Ç°·ÃÎÊµÄ×îºóÒ»¸öÎ»ÖÃÉèÖÃÎªÓ¦ÓÃÃû³Æ
-	 * ·ñÔòÊ¹ÓÃÅäÖÃÖÐÅäÖÃºÃµÄÓ¦ÓÃÃû×Ö¡£
-	 * Ìí¼Ó»º´æ
+	 * å°†å…¨å±€å†…å®¹ä»Žæ•°ç»„ä¸­æ‰¾å‡ºï¼Œå¹¶æ·»åŠ åˆ°ç¼“å­˜æ–‡ä»¶ä¸­
+	 * å°†è¯¥åº”ç”¨çš„ç›¸å…³é…ç½®mergeåˆ°å…¨å±€åº”æœ‰é…ç½®ä¸­
+	 * å½“å‰åº”ç”¨ï¼šå¦‚æžœæ²¡æœ‰é…ç½®åº”ç”¨çš„åå­—ï¼Œåˆ™å°†å½“å‰è®¿é—®çš„æœ€åŽä¸€ä¸ªä½ç½®è®¾ç½®ä¸ºåº”ç”¨åç§°
+	 * å¦åˆ™ä½¿ç”¨é…ç½®ä¸­é…ç½®å¥½çš„åº”ç”¨åå­—ã€‚
+	 * æ·»åŠ ç¼“å­˜
 	 * @param array $config
 	 */
 	private function updateGlobalCache($config) {
@@ -222,9 +222,9 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * Í¨¹ýÃüÃû¿Õ¼ä·µ»ØÕæÊµÂ·¾¶
-	 * @param string $rootPath Â·¾¶
-	 * @param string $oPath ÐèÒª²éÕÒµÄÎÄ¼þÂ·¾¶
+	 * é€šè¿‡å‘½åç©ºé—´è¿”å›žçœŸå®žè·¯å¾„
+	 * @param string $rootPath è·¯å¾„
+	 * @param string $oPath éœ€è¦æŸ¥æ‰¾çš„æ–‡ä»¶è·¯å¾„
 	 */
 	private function getRealPath($rootPath, $oPath) {
 		if (strpos(':', $oPath) === false) {
@@ -235,9 +235,9 @@ class WindConfigParser implements IWindConfig {
 	}
 	
 	/**
-	 * »ñµÃµ±Ç°Ó¦ÓÃµÄÃû×Ö£¬½âÎöÂ·¾¶µÄ×îºóÒ»¸öÎÄ¼þ¼Ð
+	 * èŽ·å¾—å½“å‰åº”ç”¨çš„åå­—ï¼Œè§£æžè·¯å¾„çš„æœ€åŽä¸€ä¸ªæ–‡ä»¶å¤¹
 	 * 
-	 * @return string ·µ»Ø·ûºÏµÄÏî
+	 * @return string è¿”å›žç¬¦åˆçš„é¡¹
 	 */
 	private function getAppName($rootPath) {
 		if ($this->currentApp != '') return $this->currentApp;

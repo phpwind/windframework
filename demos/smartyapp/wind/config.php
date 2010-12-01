@@ -12,7 +12,7 @@ $config = array(
 		'engine' => 'smarty',
 		'viewPath' => R_P . '/templates',
 		'tpl' => 'index',
-		'cacheDir' =>  R_P . '/cache',//ģ���ļ��Ļ���·�� 
-		'compileDir' => R_P . '/compile',//ģ�����·��
+		'cacheDir' =>  R_P . '/cache',//模板文件的缓存路径 
+		'compileDir' => R_P . '/compile',//模板编译路径
 	),
 );

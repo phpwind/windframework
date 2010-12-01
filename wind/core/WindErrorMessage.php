@@ -22,7 +22,7 @@ class WindErrorMessage extends WindMessage {
 	private $mav = null;
 	
 	/**
-	 * Ìí¼Ó´íÎóĞÅÏ¢
+	 * æ·»åŠ é”™è¯¯ä¿¡æ¯
 	 * 
 	 * @param string $message
 	 * @param string $key
@@ -32,7 +32,7 @@ class WindErrorMessage extends WindMessage {
 	}
 	
 	/**
-	 * ·µ»Ø´íÎóĞÅÏ¢
+	 * è¿”å›é”™è¯¯ä¿¡æ¯
 	 * 
 	 * @param string $key
 	 * @return Ambigous <string, multitype:>
@@ -42,7 +42,7 @@ class WindErrorMessage extends WindMessage {
 	}
 	
 	/**
-	 * ÉèÖÃ´íÎó´¦Àí²Ù×÷
+	 * è®¾ç½®é”™è¯¯å¤„ç†æ“ä½œ
 	 * 
 	 */
 	public function setErrorAction($action = '') {
@@ -50,14 +50,14 @@ class WindErrorMessage extends WindMessage {
 	}
 	
 	/**
-	 * ÏòÖ¸¶¨µÄÄ£°åÒ³Êä³öError
+	 * å‘æŒ‡å®šçš„æ¨¡æ¿é¡µè¾“å‡ºError
 	 */
 	public function showError() {
 		$this->sendError();
 	}
 	
 	/**
-	 * ÖØ¶¨Ïò´íÎó´¦Àí
+	 * é‡å®šå‘é”™è¯¯å¤„ç†
 	 */
 	public function sendError() {
 		if ($this->errorAction === '') {

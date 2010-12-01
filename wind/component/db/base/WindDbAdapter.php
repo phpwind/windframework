@@ -15,63 +15,63 @@ L::import('WIND:component.exception.WindSqlExceptiion');
 abstract class WindDbAdapter {
 	
 	/**
-	 * @var string Ç°´ÎÖ´ĞĞµÄsqlyÓï¾ä
+	 * @var string å‰æ¬¡æ‰§è¡Œçš„sqlyè¯­å¥
 	 */
 	protected $last_sql = '';
 	/**
-	 * @var string Ç°¾äÖ´ĞĞsqlÊ±µÄ´íÎó×Ö·û´®
+	 * @var string å‰å¥æ‰§è¡Œsqlæ—¶çš„é”™è¯¯å­—ç¬¦ä¸²
 	 */
 	protected $last_errstr = '';
 	/**
-	 * @var int Ç°¾äÖ´ĞĞsqlÊ±µÄ´íÎó´úÂë
+	 * @var int å‰å¥æ‰§è¡Œsqlæ—¶çš„é”™è¯¯ä»£ç 
 	 */
 	protected $last_errcode = 0;
 
 	/**
-	 * @var string Êı¾İ¿â×Ö·û¼¯
+	 * @var string æ•°æ®åº“å­—ç¬¦é›†
 	 */
 	protected $charset = 'gbk';
 	/**
-	 * @var boolean ÊÇ·ñÇ¿ÖÆÁ¬½Ó
+	 * @var boolean æ˜¯å¦å¼ºåˆ¶è¿æ¥
 	 */
 	protected $force = false;
 	/**
-	 * @var boolean ÊÇ·ñÓÀ¾ÃÁ¬½Ó
+	 * @var boolean æ˜¯å¦æ°¸ä¹…è¿æ¥
 	 */
 	protected $pconnect = false;
 
 	/**
-	 * @var array ¿ò¼ÜÖ§³ÖµÄÊı¾İ¿âÖÖÀà
+	 * @var array æ¡†æ¶æ”¯æŒçš„æ•°æ®åº“ç§ç±»
 	 */
 	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocsql' => 'OcSql' );
 	/**
-	 * @var int ÊÂÎñ¼ÇÊıÆ÷
+	 * @var int äº‹åŠ¡è®°æ•°å™¨
 	 */
 	protected $transCounter = 0;
 	/**
-	 * @var int ÊÇ·ñÆôÓÃÊÂÎñ
+	 * @var int æ˜¯å¦å¯ç”¨äº‹åŠ¡
 	 */
 	protected $enableSavePoint = 0;
 	/**
-	 * @var array ÊÂÎñ»Ø¹öµã
+	 * @var array äº‹åŠ¡å›æ»šç‚¹
 	 */
 	protected $savepoint = array ();
 	/**
-	 * @var resoruce Êı¾İ¿âÁ¬½Ó
+	 * @var resoruce æ•°æ®åº“è¿æ¥
 	 */
 	protected  $connection = null;
 	
 	/**
-	 * @var WindSqlBuilder sqlÓï¾äÉú³ÉÆ÷
+	 * @var WindSqlBuilder sqlè¯­å¥ç”Ÿæˆå™¨
 	 */
 	protected $sqlBuilder = null;
 	
 	/**
-	 * @var resource µ±Ç°²éÑ¯¾ä±ú
+	 * @var resource å½“å‰æŸ¥è¯¢å¥æŸ„
 	 */
 	protected $query = null;
 	/**
-	 * @var array Êı¾İ¿âÁ¬½ÓÅäÖÃ
+	 * @var array æ•°æ®åº“è¿æ¥é…ç½®
 	 */
 	protected  $config = array ();
 	
@@ -83,22 +83,22 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * ½âÎöÊıÊı¿âÅäÖÃ
-	 * @param array $config Êı¾İ¿âÅäÖÃ£¬±ØĞëÊÇ»ùÓÚ¼üÖµµÄ¶şÎ¬Êı×é»ò±ØĞëÊÇ»ùÓÚ¼üÖµDNS¸ñÊ½µÄÒ»Î¬Êı×é
-	 * @example DSN¸ñÊ½array('phpwind'=>'mysql:://username:password@localhost:port/dbname/optype/pconnect/force');
-	 * 			arrays¸ñÊ½array('phpwind'=>array('dbtype'=>'mysql','dbname'=>'root','dbpass'=>'123456',
+	 * è§£ææ•°æ•°åº“é…ç½®
+	 * @param array $config æ•°æ®åº“é…ç½®ï¼Œå¿…é¡»æ˜¯åŸºäºé”®å€¼çš„äºŒç»´æ•°ç»„æˆ–å¿…é¡»æ˜¯åŸºäºé”®å€¼DNSæ ¼å¼çš„ä¸€ç»´æ•°ç»„
+	 * @example DSNæ ¼å¼array('phpwind'=>'mysql:://username:password@localhost:port/dbname/optype/pconnect/force');
+	 * 			arraysæ ¼å¼array('phpwind'=>array('dbtype'=>'mysql','dbname'=>'root','dbpass'=>'123456',
 	 * 							'dbuser'=>'root','dbhost'=>'locahost','dbport'=>3306,
 	 * 							'optype'=>'master','pconnect'=>1,'force'=>1);
-	 * @return array ·µ»Ø½âÎöºóµÄÊı¾İ¿âÅäÖÃ
+	 * @return array è¿”å›è§£æåçš„æ•°æ®åº“é…ç½®
 	 */
 	final protected function parseConfig($config) {
 		$config = is_array($config) ? $config : $this->parseDSN($config);
 		return $this->checkConfig($config);
 	}
 	/**
-	 * ÒÔDSN¸ñÊ½½âÎöÊıÊı¿âÅäÖÃ£¬ÆäÖĞ(Ö÷´Óoptype,ÓÀ¾ÃÁ¬½Ópconnect,Ç¿ÖÆĞÂÁ¬½Óforce)¿ÉÑ¡
+	 * ä»¥DSNæ ¼å¼è§£ææ•°æ•°åº“é…ç½®ï¼Œå…¶ä¸­(ä¸»ä»optype,æ°¸ä¹…è¿æ¥pconnect,å¼ºåˆ¶æ–°è¿æ¥force)å¯é€‰
 	 * @example mysql:://username:password@localhost:port/dbname/force/pconect/optype/
-	 * @param unknown_type $dsn Êı¾İ¿âÁ¬½Ó¸ñÊ½
+	 * @param unknown_type $dsn æ•°æ®åº“è¿æ¥æ ¼å¼
 	 * @return array 
 	 */
 	final public function parseDSN($dsn) {
@@ -124,46 +124,46 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * Á¬½ÓÊı¾İ¿â
+	 * è¿æ¥æ•°æ®åº“
 	 */
 	protected abstract function connect();
 	/**
-	 * Ö´ĞĞÏà¹ØsqlÓï¾ä²Ù×÷
-	 * @param string $sql sqlÓï¾ä
+	 * æ‰§è¡Œç›¸å…³sqlè¯­å¥æ“ä½œ
+	 * @param string $sql sqlè¯­å¥
 	 * @return boolean;
 	 */
 	public abstract function query($sql);
 	/**
-	 * @param int $fetch_type È¡µÃ½á¹û¼¯
+	 * @param int $fetch_type å–å¾—ç»“æœé›†
 	 */
 	public abstract function getAllResult($fetch_type = MYSQL_ASSOC);
 	/**
-	 * ±£´æÊÂÎñµã
+	 * ä¿å­˜äº‹åŠ¡ç‚¹
 	 */
 	//public abstract function savePoint();
 	/**
-	 * ¿ªÊ¼ÊÂÎñµã
+	 * å¼€å§‹äº‹åŠ¡ç‚¹
 	 */
 	public abstract function beginTrans();
 	/**
-	 * »Ø¹öÊÂÎñ
+	 * å›æ»šäº‹åŠ¡
 	 */
 	//public abstract function rollbackTrans();
 	/**
-	 * ¹Ø±ÕÊı¾İ¿â
+	 * å…³é—­æ•°æ®åº“
 	 */
 	public abstract function close();
 	/**
-	 * ÊÍ·ÅÊı¾İ¿âÁ¬½Ó×ÊÔ´
+	 * é‡Šæ”¾æ•°æ®åº“è¿æ¥èµ„æº
 	 */
 	public abstract function dispose();
 	/**
-	 * Êı¾İ¿â²Ù×÷²Ù×÷´¦Àí
+	 * æ•°æ®åº“æ“ä½œæ“ä½œå¤„ç†
 	 */
 	protected abstract function error();
 	/**
 	 * sqlbuilder Factory
-	 * @return WSqlBuilder ·µ»ØsqlÓï¾äÉú³ÉÆ÷
+	 * @return WSqlBuilder è¿”å›sqlè¯­å¥ç”Ÿæˆå™¨
 	 */
 	final public function getSqlBuilderFactory() {
 		if(empty($this->sqlBuilder)){
@@ -175,8 +175,8 @@ abstract class WindDbAdapter {
 	}
 
 	/**
-	 * Ö´ĞĞÌí¼ÓÊı¾İ²Ù×÷ (insert)
-	 * @param string | array $sql ²éÑ¯Ìõ¼ş
+	 * æ‰§è¡Œæ·»åŠ æ•°æ®æ“ä½œ (insert)
+	 * @param string | array $sql æŸ¥è¯¢æ¡ä»¶
 
 	 * @return boolean
 	 */
@@ -185,8 +185,8 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * Ö´ĞĞ¸üĞÂÊı¾İ²Ù×÷
-	 * @param string | array $sql ²éÑ¯Ìõ¼ş
+	 * æ‰§è¡Œæ›´æ–°æ•°æ®æ“ä½œ
+	 * @param string | array $sql æŸ¥è¯¢æ¡ä»¶
 
 	 * @return boolean
 	 */
@@ -194,8 +194,8 @@ abstract class WindDbAdapter {
 		return $this->query($this->sqlBuilder->getUpdateSql($sql));
 	}
 	/**
-	 * Ö´ĞĞ²éÑ¯Êı¾İ²Ù×÷
-	 * @param string | array $sql ²éÑ¯Ìõ¼ş
+	 * æ‰§è¡ŒæŸ¥è¯¢æ•°æ®æ“ä½œ
+	 * @param string | array $sql æŸ¥è¯¢æ¡ä»¶
 
 	 * @return boolean
 	 */
@@ -204,8 +204,8 @@ abstract class WindDbAdapter {
 		return $this->query($sql);
 	}
 	/**
-	 * Ö´ĞĞÉ¾³ıÊı¾İ²Ù×÷
-	 * @param string | array $sql ²éÑ¯Ìõ¼ş
+	 * æ‰§è¡Œåˆ é™¤æ•°æ®æ“ä½œ
+	 * @param string | array $sql æŸ¥è¯¢æ¡ä»¶
 	 * @return boolean
 	 */
 	final public  function delete($sql){
@@ -213,8 +213,8 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * Ö´ĞĞĞÂÔöÊı¾İ²Ù×÷(replace)
-	 * @param string | array $sql ²éÑ¯Ìõ¼ş
+	 * æ‰§è¡Œæ–°å¢æ•°æ®æ“ä½œ(replace)
+	 * @param string | array $sql æŸ¥è¯¢æ¡ä»¶
 	 * @return boolean
 	 */
 	final public function replace($sql){
@@ -222,17 +222,17 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * È¡µÃÊÜÓ°ÏìµÄÊı¾İĞĞÊı
-	 * @param ÊÇ·ñÊÇ²éÑ¯
-	 * @param string|int Êı¾İ¿âÁ¬½Ó±êÊ¶
+	 * å–å¾—å—å½±å“çš„æ•°æ®è¡Œæ•°
+	 * @param æ˜¯å¦æ˜¯æŸ¥è¯¢
+	 * @param string|int æ•°æ®åº“è¿æ¥æ ‡è¯†
 	 * @return int
 	 */
 	final public  function getAffectedRows($ifquery = false){
 		return $this->query($this->sqlBuilder->getAffectedSql($ifquery));
 	}
 	/**
-	 * È¡µÃ×îºó²åÈëID
-	 * @param string|int Êı¾İ¿âÁ¬½Ó±êÊ¶
+	 * å–å¾—æœ€åæ’å…¥ID
+	 * @param string|int æ•°æ®åº“è¿æ¥æ ‡è¯†
 	 * @return int
 	 */
 	final public  function getInsertId(){
@@ -240,13 +240,13 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 *È¡µÃÊı¾İ¿âÔªÊı¾İ±í
+	 *å–å¾—æ•°æ®åº“å…ƒæ•°æ®è¡¨
 	 */
 	public  function getMetaTables($schema = ''){
 		return $this->query($this->sqlBuilder->getMetaTableSql($schema));
 	}
 	/**
-	 *È¡µÃÊı¾İ±íÔªÊı¾İÁĞ 
+	 *å–å¾—æ•°æ®è¡¨å…ƒæ•°æ®åˆ— 
 	 */
 	public  function getMetaColumns($table){
 		return $this->query($this->sqlBuilder->getMetaColumnSql($table));
@@ -261,7 +261,7 @@ abstract class WindDbAdapter {
 	}
 
 	/**
-	 * ·µ»ØÉÏÒ»ÌõsqlyÓï¾ä
+	 * è¿”å›ä¸Šä¸€æ¡sqlyè¯­å¥
 	 * @return string
 	 */
 	final public function getLastSql() {

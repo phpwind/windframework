@@ -7,7 +7,7 @@
  */
 
 /**
- * ÅäÖÃĞÅÏ¢½âÎö
+ * é…ç½®ä¿¡æ¯è§£æ
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -18,7 +18,7 @@ class WindSystemConfig {
 	private static $instance = null;
 	
 	/**
-	 * ³õÊ¼»¯ÅäÖÃÎÄ¼ş¶ÔÏó
+	 * åˆå§‹åŒ–é…ç½®æ–‡ä»¶å¯¹è±¡
 	 * @param array $configSystem
 	 */
 	public function __construct($configSystem) {
@@ -27,7 +27,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * ¸ù¾İÅäÖÃÃûÈ¡µÃÏàÓ¦µÄÅäÖÃ
+	 * æ ¹æ®é…ç½®åå–å¾—ç›¸åº”çš„é…ç½®
 	 * @param string $configName
 	 * @return string
 	 */
@@ -36,7 +36,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * ¸ù¾İÅäÖÃÃûµÄÂ·¾¶È¡µÃÏàÓ¦µÄÅäÖÃĞÅÏ¢
+	 * æ ¹æ®é…ç½®åçš„è·¯å¾„å–å¾—ç›¸åº”çš„é…ç½®ä¿¡æ¯
 	 * 
 	 * $var = array(
 	 * 'templates' => array(
@@ -45,9 +45,9 @@ class WindSystemConfig {
 	 * 'templateCache'  => '/cache';
 	 * )
 	 * ))
-	 * Èç¹ûÏë»ñµÃtemplateDirÏÂµÄÖµ£¬
-	 * ÔòÈçÏÂµ÷ÓÃ-WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
-	 * Èç¹û¸ÃÂ·¾¶ÖĞÄ³Ò»¸ö½Úµã²»´æÔÚ£¬Ôò·µ»Ø''
+	 * å¦‚æœæƒ³è·å¾—templateDirä¸‹çš„å€¼ï¼Œ
+	 * åˆ™å¦‚ä¸‹è°ƒç”¨-WindSystemConfig::getConfigPath('templates', 'template', 'templateDir')
+	 * å¦‚æœè¯¥è·¯å¾„ä¸­æŸä¸€ä¸ªèŠ‚ç‚¹ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›''
 	 * @param mixed
 	 * @return mixed
 	 */
@@ -62,7 +62,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * ·µ»Ø¹ıÂËÆ÷
+	 * è¿”å›è¿‡æ»¤å™¨
 	 * @param string $name
 	 */
 	public function getFiltersConfig($name = '') {
@@ -75,7 +75,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * ·µ»ØÓ¦ÓÃÅäÖÃĞÅÏ¢£¬Ã»ÓĞÈÎºÎÓ¦ÓÃÅäÖÃĞÅÏ¢Ôò·µ»Ø''
+	 * è¿”å›åº”ç”¨é…ç½®ä¿¡æ¯ï¼Œæ²¡æœ‰ä»»ä½•åº”ç”¨é…ç½®ä¿¡æ¯åˆ™è¿”å›''
 	 * @param string $name
 	 * @return string
 	 */
@@ -87,7 +87,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * »ñµÃÂ·ÓÉÅäÖÃĞÅÏ¢
+	 * è·å¾—è·¯ç”±é…ç½®ä¿¡æ¯
 	 * 
 	 * @param string $name
 	 * @return string|null|array
@@ -100,7 +100,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * »ñµÃÂ·ÓÉ½âÎö¹æÔòÅäÖÃ
+	 * è·å¾—è·¯ç”±è§£æè§„åˆ™é…ç½®
 	 * 
 	 * @param string $name
 	 * @return array|null
@@ -114,7 +114,7 @@ class WindSystemConfig {
 	}
 	
 	/**
-	 * ·µ»ØÂ·ÓÉ½âÎöÆ÷ÅäÖÃ
+	 * è¿”å›è·¯ç”±è§£æå™¨é…ç½®
 	 * 
 	 * @return string
 	 */

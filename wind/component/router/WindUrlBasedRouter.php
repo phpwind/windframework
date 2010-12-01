@@ -9,10 +9,10 @@
 L::import('WIND:component.router.base.WindRouter');
 L::import('WIND:component.exception.WindException');
 /**
- * »ùÓÚURLµÄÂ·ÓÉ½âÎöÆ÷.
- * ¸Ã½âÎöÆ÷Í¨¹ı·ÃÎÊÒ»¸öHttpÇëÇóµÄRequest¶ÔÏóÀ´»ñµÃURLµÄ²ÎÊıĞÅÏ¢
- * ²¢½«Æä²ÎÊı¸ù¾İÒÑ¶¨ÒåµÄÂ·ÓÉ¹æÔò½øĞĞ½âÎö.
- * Í¨¹ı¸Ã·½·¨µÄgetActionHandle·½·¨·µ»ØÒ»¸ö£¬²Ù×÷´¦ÀíµÄ¾ä±úĞÅÏ¢
+ * åŸºäºURLçš„è·¯ç”±è§£æå™¨.
+ * è¯¥è§£æå™¨é€šè¿‡è®¿é—®ä¸€ä¸ªHttpè¯·æ±‚çš„Requestå¯¹è±¡æ¥è·å¾—URLçš„å‚æ•°ä¿¡æ¯
+ * å¹¶å°†å…¶å‚æ•°æ ¹æ®å·²å®šä¹‰çš„è·¯ç”±è§„åˆ™è¿›è¡Œè§£æ.
+ * é€šè¿‡è¯¥æ–¹æ³•çš„getActionHandleæ–¹æ³•è¿”å›ä¸€ä¸ªï¼Œæ“ä½œå¤„ç†çš„å¥æŸ„ä¿¡æ¯
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -22,10 +22,10 @@ L::import('WIND:component.exception.WindException');
  */
 class WindUrlBasedRouter extends WindRouter {
 	/**
-	 * µ÷ÓÃ¸Ã·½·¨ÊµÏÖÂ·ÓÉ½âÎö
-	 * »ñµÃµ½ request µÄ¾²Ì¬¶ÔÏó£¬µÃµ½requestµÄURLĞÅÏ¢
-	 * »ñµÃ config µÄ¾²Ì¬¶ÔÏó£¬µÃµ½URLµÄ¸ñÊ½ĞÅÏ¢
-	 * ½âÎöURL£¬²¢Éù³ÆRouterContext¶ÔÏó
+	 * è°ƒç”¨è¯¥æ–¹æ³•å®ç°è·¯ç”±è§£æ
+	 * è·å¾—åˆ° request çš„é™æ€å¯¹è±¡ï¼Œå¾—åˆ°requestçš„URLä¿¡æ¯
+	 * è·å¾— config çš„é™æ€å¯¹è±¡ï¼Œå¾—åˆ°URLçš„æ ¼å¼ä¿¡æ¯
+	 * è§£æURLï¼Œå¹¶å£°ç§°RouterContextå¯¹è±¡
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */

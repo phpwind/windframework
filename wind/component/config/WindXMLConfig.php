@@ -10,7 +10,7 @@ L::import('WIND:component.config.base.IWindParser');
 L::import('WIND:utility.xml.xml');
 
 /**
- * xml¸ñÊ½ÅäÖÃÎÄ¼şµÄ½âÎöÀà
+ * xmlæ ¼å¼é…ç½®æ–‡ä»¶çš„è§£æç±»
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
@@ -23,7 +23,7 @@ class WindXMLConfig extends XML implements IWindParser {
     private $isCheck;
     private $GAM;
 	/**
-	 * ¹¹Ôìº¯Êı£¬ÉèÖÃÊä³ö±àÂë¼°±äÁ¿³õÊ¼»¯
+	 * æ„é€ å‡½æ•°ï¼Œè®¾ç½®è¾“å‡ºç¼–ç åŠå˜é‡åˆå§‹åŒ–
 	 * @param string $data
 	 * @param string $encoding
 	 */
@@ -33,7 +33,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
 	/**
-	 * ¼ÓÔØĞèÒª½âÎöµÄÎÄ¼ş
+	 * åŠ è½½éœ€è¦è§£æçš„æ–‡ä»¶
 	 * @param unknown_type $filename
 	 */
 	public function loadFile($filename) {
@@ -41,10 +41,10 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 
 	/**
-	 * ÄÚÈİ½âÎö
+	 * å†…å®¹è§£æ
 	 *
-	 * ÄÚÈİµÄ½âÎöÒÀÀµÓÚÅäÖÃÎÄ¼şÖĞÅäÖÃÏîµÄ¸ñÊ½½øĞĞ£¬Ã¿¸öÅäÖÃÏî¶ÔÓ¦µÄÔÚIWindConfigÖĞ¶¼±ØĞëÓĞ¶ÔÓ¦µÄ³£Á¿ÉùÃ÷
-	 * ¶ÔÓ¦µÄ½âÎö¸ñÊ½µ÷ÓÃ¶ÔÓ¦µÄ½âÎöº¯Êı¡£
+	 * å†…å®¹çš„è§£æä¾èµ–äºé…ç½®æ–‡ä»¶ä¸­é…ç½®é¡¹çš„æ ¼å¼è¿›è¡Œï¼Œæ¯ä¸ªé…ç½®é¡¹å¯¹åº”çš„åœ¨IWindConfigä¸­éƒ½å¿…é¡»æœ‰å¯¹åº”çš„å¸¸é‡å£°æ˜
+	 * å¯¹åº”çš„è§£ææ ¼å¼è°ƒç”¨å¯¹åº”çš„è§£æå‡½æ•°ã€‚
 	 *
 	 * @return boolean
 	 */
@@ -67,7 +67,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 
 	/**
-	 * ¸ù¾İ±êÇ©µÄĞÎÊ½½øĞĞ·Ö·¢
+	 * æ ¹æ®æ ‡ç­¾çš„å½¢å¼è¿›è¡Œåˆ†å‘
 	 *
 	 * @param SimpleXMLElement $element
 	 * @return array
@@ -88,9 +88,9 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 
 	/**
-	 * µÃµ½ÈçÏÂ¹æÔòµÄ±êÇ©ÄÚÈİ£º
+	 * å¾—åˆ°å¦‚ä¸‹è§„åˆ™çš„æ ‡ç­¾å†…å®¹ï¼š
 	 * <tag>value</tag>
-	 * ²¢ÇÒ·µ»ØĞÎÊ½Îªarray(tag, value)
+	 * å¹¶ä¸”è¿”å›å½¢å¼ä¸ºarray(tag, value)
 	 *
 	 * @param SimpleXMLElement $element
 	 * @return array
@@ -101,12 +101,12 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 
 	/**
-	 * »ñµÃº¬ÓĞ×Ó±êÇ©µÄ±êÇ©ÄÚÈİ£º
+	 * è·å¾—å«æœ‰å­æ ‡ç­¾çš„æ ‡ç­¾å†…å®¹ï¼š
 	 * <AA>
 	 *    <BB>Bvalue</BB>
 	 *    <CC>Cvalue</CC>
 	 * </AA>
-	 * ·µ»Ø½á¹ûarray(AA, array(BB => Bvalue, CC => Cvalue))
+	 * è¿”å›ç»“æœarray(AA, array(BB => Bvalue, CC => Cvalue))
 	 *
 	 * @param SimpleXMLElement $element
 	 * @param array
@@ -129,7 +129,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
     
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÎª¿Õ£¬Èç¹ûÎª¿Õ·µ»Øtrue,·ñÔò·µ»Øfalse
+	 * åˆ¤æ–­æ˜¯å¦ä¸ºç©ºï¼Œå¦‚æœä¸ºç©ºè¿”å›true,å¦åˆ™è¿”å›false
 	 * @param mixed $value
 	 * @return mixed boolean | 
 	 */
@@ -143,13 +143,13 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
 	/**
-	 * »ñµÃº¬ÓĞ×Ó±êÇ©µÄ±êÇ©ÄÚÈİ£º
+	 * è·å¾—å«æœ‰å­æ ‡ç­¾çš„æ ‡ç­¾å†…å®¹ï¼š
 	 * <AA>
 	 *    <BB name='key1' value='key1Value' attri3='attribute1'/>
 	 *    <BB value='key2Value' attri3='attribute2'/>
 	 * </AA>
-	 * Èç¹ûº¬ÓĞÊôĞÔname£¬Ôò½«¸Ãname×÷Îªkey
-	 * ·µ»Ø½á¹ûarray(AA, array(key1 => array(tagName = BB, name => key1, value=>key1Value, attri3 => attribute1),
+	 * å¦‚æœå«æœ‰å±æ€§nameï¼Œåˆ™å°†è¯¥nameä½œä¸ºkey
+	 * è¿”å›ç»“æœarray(AA, array(key1 => array(tagName = BB, name => key1, value=>key1Value, attri3 => attribute1),
 	 * 						  BB => array(tagName => BB, value=>key2Value, attri3 => attribute2)
 	 * 					))
 	 *
@@ -166,7 +166,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
 	/**
-	 * ÉèÖÃÈ«¾ÖµÄ±êÇ©ºÍĞèÒªºÏ²¢µÄ±êÇ©
+	 * è®¾ç½®å…¨å±€çš„æ ‡ç­¾å’Œéœ€è¦åˆå¹¶çš„æ ‡ç­¾
 	 * 
 	 * @param array $attributes
 	 * @return boolean; 
@@ -182,12 +182,12 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
 	/**
-	 * »ñµÃº¬ÓĞÊôĞÔºÍ×Ó±êÇ©µÄ±êÇ©ÄÚÈİ£¬¹æÔòÈçÏÂ<pre/>:
+	 * è·å¾—å«æœ‰å±æ€§å’Œå­æ ‡ç­¾çš„æ ‡ç­¾å†…å®¹ï¼Œè§„åˆ™å¦‚ä¸‹<pre/>:
 	 * <bbbb name='aaa1' attrib1='dddd'>
   	 * 	  <filterName>windFilter1</filterName>
   	 *	  <filterPath>/filter1</filterPath>
   	 * </bbbb>
-	 * ¸Ã·½·¨¶ÔÉÏÊöµÄÕâÖÖÇéĞÎ£¬¸ù¾İĞèÇó»á½âÎö³ö×îºóµÄ½á¹ûÊÇ£º
+	 * è¯¥æ–¹æ³•å¯¹ä¸Šè¿°çš„è¿™ç§æƒ…å½¢ï¼Œæ ¹æ®éœ€æ±‚ä¼šè§£æå‡ºæœ€åçš„ç»“æœæ˜¯ï¼š
 	 * return array(aaa1,
 	 *       	       array(name => aaa1,
 	 *       				 attrib1 => dddd,
@@ -208,9 +208,9 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
     /*
-	 * ·µ»Ø½âÎöµÄ½á¹û
-	 * @param boolean $isCheck ÊÇ·ñĞèÒª¼ì²éÅäÖÃ
-	 * @return array ·µ»Ø½âÎöºóµÄÊı¾İĞÅÏ¢
+	 * è¿”å›è§£æçš„ç»“æœ
+	 * @param boolean $isCheck æ˜¯å¦éœ€è¦æ£€æŸ¥é…ç½®
+	 * @return array è¿”å›è§£æåçš„æ•°æ®ä¿¡æ¯
 	 */
 	public function getResult() {
 		if (!$this->xmlArray) $this->parser();
@@ -219,7 +219,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	
     
 	/**
-	 * ·µ»ØĞèÒªÉèÖÃÈ«¾ÖµÄ±êÇ©
+	 * è¿”å›éœ€è¦è®¾ç½®å…¨å±€çš„æ ‡ç­¾
 	 * 
 	 * @return array; 
 	 */

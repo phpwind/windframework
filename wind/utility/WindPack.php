@@ -7,7 +7,7 @@
  */
 
 /**
- * ³ÌĞò´ò°ü¹¤¾ß
+ * ç¨‹åºæ‰“åŒ…å·¥å…·
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -17,16 +17,16 @@ class WindPack{
 	
 	private $packList = array();
 	/**
-	 * È¥³ıÖ¸¶¨ÎÄ¼şµÄ×¢ÊÍ¼°¿Õ°×
-	 * @param string $filename ÎÄ¼şÃû
+	 * å»é™¤æŒ‡å®šæ–‡ä»¶çš„æ³¨é‡ŠåŠç©ºç™½
+	 * @param string $filename æ–‡ä»¶å
 	 */
 	public function  stripWhiteSpace($filename){
 		return php_strip_whitespace($filename);
 	}
 	/**
-	 * È¥³ı×¢ÊÍ
-	 * @param string $content ÒªÈ¥³ıµÄÄÚÈİ
-	 * @param string $replace ÒªÌæ»»µÄÎÄ±¾
+	 * å»é™¤æ³¨é‡Š
+	 * @param string $content è¦å»é™¤çš„å†…å®¹
+	 * @param string $replace è¦æ›¿æ¢çš„æ–‡æœ¬
 	 * @return string
 	 */
 	public function stripComment($content,$replace = ''){
@@ -34,9 +34,9 @@ class WindPack{
 	}
 	
 	/**
-	 * È¥³ı»»ĞĞ
-	 * @param string $content ÒªÈ¥³ıµÄÄÚÈİ
-	 * @param string $replace ÒªÌæ»»µÄÎÄ±¾
+	 * å»é™¤æ¢è¡Œ
+	 * @param string $content è¦å»é™¤çš„å†…å®¹
+	 * @param string $replace è¦æ›¿æ¢çš„æ–‡æœ¬
 	 * @return string
 	 */
 	public function stripNR($content,$replace = "\n"){
@@ -44,9 +44,9 @@ class WindPack{
 	}
 	
 	/**
-	 * È¥³ı¿Õ¸ñ·û
-	 * @param string $content ÒªÈ¥³ıµÄÄÚÈİ
-	 * @param string $replace ÒªÌæ»»µÄÎÄ±¾
+	 * å»é™¤ç©ºæ ¼ç¬¦
+	 * @param string $content è¦å»é™¤çš„å†…å®¹
+	 * @param string $replace è¦æ›¿æ¢çš„æ–‡æœ¬
 	 * @return string
 	 */
 	public function stripSpace($content,$replace = ' '){
@@ -54,7 +54,7 @@ class WindPack{
 	}
 
 	/**
-	 * È¥³ıphp±êÊ¶
+	 * å»é™¤phpæ ‡è¯†
 	 * @param string $content
 	 * @param string $replace
 	 * @return string
@@ -64,7 +64,7 @@ class WindPack{
 	}
 	
 	/**
-	 * ¸ù¾İÖ¸¶¨¹æÔòÌæ»»Ö¸¶¨ÄÚÈİÖĞÏàÓ¦µÄÄÚÈİ
+	 * æ ¹æ®æŒ‡å®šè§„åˆ™æ›¿æ¢æŒ‡å®šå†…å®¹ä¸­ç›¸åº”çš„å†…å®¹
 	 * @param string $content
 	 * @param string $rule
 	 * @param string $replace
@@ -75,7 +75,7 @@ class WindPack{
 	}
 	
 	/**
-	 * È¥³ı¶àÓàµÄÎÄ¼şµ¼ÈëĞÅÏ¢
+	 * å»é™¤å¤šä½™çš„æ–‡ä»¶å¯¼å…¥ä¿¡æ¯
 	 * @param string $content
 	 * @param string $replace
 	 * @return string
@@ -95,7 +95,7 @@ class WindPack{
 	}
 	
 	/**
-	 * È¡µÃ±»´ò°üµÄÎÄ¼şÁĞ±í
+	 * å–å¾—è¢«æ‰“åŒ…çš„æ–‡ä»¶åˆ—è¡¨
 	 * @return array:
 	 */
 	public function getPackList(){
@@ -116,8 +116,8 @@ class WindPack{
 		return $list;
 	}
 	/**
-	 *´ÓÎÄ¼ş¶ÁÈ¡ÄÚÈİ
-	 * @param string $filename ÎÄ¼şÃû
+	 *ä»æ–‡ä»¶è¯»å–å†…å®¹
+	 * @param string $filename æ–‡ä»¶å
 	 * @return string
 	 */
 	public function readContentFromFile($filename){
@@ -136,9 +136,9 @@ class WindPack{
 	}
 	
 	/**
-	 * ½«ÄÚÈİ´ò°üµÄÎÄ¼ş
-	 * @param string $filename ÎÄ¼şÄÚÈİ
-	 * @param string $content  Òª´ò°üµÄÖ¸¶¨ÎÄ¼şµÄÄÚÈİ
+	 * å°†å†…å®¹æ‰“åŒ…çš„æ–‡ä»¶
+	 * @param string $filename æ–‡ä»¶å†…å®¹
+	 * @param string $content  è¦æ‰“åŒ…çš„æŒ‡å®šæ–‡ä»¶çš„å†…å®¹
 	 * @return string
 	 */
 	public function writeContentToFile($filename,$content){
@@ -148,9 +148,9 @@ class WindPack{
 		return true;
 	}
 	/**
-	 * ¸ù¾İÎÄ¼şºó×ºµÃÈ¡¶ÔÓ¦µÄmimeÄÚÈİ
-	 * @param string $content Òª´ò°üµÄÄÚÈİÄÚÈİ
-	 * @param string $suffix ÎÄ¼şºó×ºÀàĞÍ
+	 * æ ¹æ®æ–‡ä»¶åç¼€å¾—å–å¯¹åº”çš„mimeå†…å®¹
+	 * @param string $content è¦æ‰“åŒ…çš„å†…å®¹å†…å®¹
+	 * @param string $suffix æ–‡ä»¶åç¼€ç±»å‹
 	 * @return string
 	 */
 	public function getContentBySuffix($content,$suffix){
@@ -175,7 +175,7 @@ class WindPack{
 		return $content;
 	}
 	/**
-	 * ½«Ö¸¶¨µÄÊı×é×ª»¯ĞÎ×Ö·û´®¸ñÊ½
+	 * å°†æŒ‡å®šçš„æ•°ç»„è½¬åŒ–å½¢å­—ç¬¦ä¸²æ ¼å¼
 	 * @param array $pack
 	 * @return string
 	 */
@@ -207,13 +207,13 @@ class WindPack{
 	}
 	
 	/**
-	 * ´Ó¸÷¸öÄ¿Â¼ÖĞÈ¡µÃ¶ÔÓ¦µÄÃ¿¸öÎÄ¼şµÄÄÚÈİ 
-	 * @param boolean $iformat ÊÇ·ñ¸ñÊ½»¯ÄÚÈİ¡£$iformat = true±íÊ¾¸ñÊ½»¯ÄÚÈİ£¬Ğ§ÂÊ¸ß£¬iformat = false±íÊ¾µÃµ½Ò×ÓÚÔÄ¶ÁµÄÄÚÈİ£¬µ« Ğ§ÂÊµÍ
-	 * @param mixed $dir Ä¿Â¼Ãû
-	 * @param string $absolutePath ¾ø¶ÔÂ·¾¶Ãû
-	 * @param array $ndir ²»ĞëÒª´ò°üµÄÎÄ¼ş¼Ğ
-	 * @param array $suffix ²»ĞëÒª´ò°üµÄÎÄ¼şÀàĞÍ
-	 * @param array $nfile ²»ĞëÒª´ò°üµÄÎÄ¼ş
+	 * ä»å„ä¸ªç›®å½•ä¸­å–å¾—å¯¹åº”çš„æ¯ä¸ªæ–‡ä»¶çš„å†…å®¹ 
+	 * @param boolean $iformat æ˜¯å¦æ ¼å¼åŒ–å†…å®¹ã€‚$iformat = trueè¡¨ç¤ºæ ¼å¼åŒ–å†…å®¹ï¼Œæ•ˆç‡é«˜ï¼Œiformat = falseè¡¨ç¤ºå¾—åˆ°æ˜“äºé˜…è¯»çš„å†…å®¹ï¼Œä½† æ•ˆç‡ä½
+	 * @param mixed $dir ç›®å½•å
+	 * @param string $absolutePath ç»å¯¹è·¯å¾„å
+	 * @param array $ndir ä¸é¡»è¦æ‰“åŒ…çš„æ–‡ä»¶å¤¹
+	 * @param array $suffix ä¸é¡»è¦æ‰“åŒ…çš„æ–‡ä»¶ç±»å‹
+	 * @param array $nfile ä¸é¡»è¦æ‰“åŒ…çš„æ–‡ä»¶
 	 * @return array
 	 */
 	public function readContentFromDir($iformat = false,$dir = array(),$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
@@ -240,7 +240,7 @@ class WindPack{
 	}
 	
 	/**
-	 * Ìí¼Ó±»´ò°üµÄÎÄ¼şµ½ÁĞ±í
+	 * æ·»åŠ è¢«æ‰“åŒ…çš„æ–‡ä»¶åˆ°åˆ—è¡¨
 	 * @param  string $key
 	 * @param  string $value
 	 */
@@ -258,8 +258,8 @@ class WindPack{
 	}
 	
 	/**
-	 * È¡µÃÕæÊµµÄÄ¿Â¼
-	 * @param string $path Â·¾¶Ãû
+	 * å–å¾—çœŸå®çš„ç›®å½•
+	 * @param string $path è·¯å¾„å
 	 * @return string
 	 */
 	public function realDir($path){
@@ -270,8 +270,8 @@ class WindPack{
 	}
 	
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇÒ»¸öÎÄ¼ş
-	 * @param string $filename ÎÄ¼şÃû
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ªæ–‡ä»¶
+	 * @param string $filename æ–‡ä»¶å
 	 * @return boolean
 	 */
 	public function isFile($filename){
@@ -279,8 +279,8 @@ class WindPack{
 	}
 	
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇÒ»¸öÄ¿Â¼
-	 * @param string $dir Ä¿Â¼Ãû
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ªç›®å½•
+	 * @param string $dir ç›®å½•å
 	 * @return boolean
 	 */
 	public function isDir($dir){
@@ -288,11 +288,11 @@ class WindPack{
 	}
 	
 	/**
-	 * ½«Ö¸¶¨ÎÄ¼şÀàĞÍÇÒÖ¸¶¨ÎÄ¼ş¼ĞÏÂµÄËùÖ¸¶¨ÎÄ¼ş´ò°ü³ÉÒ»¸öÒ×ÔÄ¶ÁµÄÎÄ¼ş,
-	 * @param mixed $dir Òª´ò°üµÄÄ¿Â¼
-	 * @param sgring $dst ÎÄ¼şÃû
-	 * @param array $ndir ²»ĞëÒª´ò°üµÄÄ¿Â¼
-	 * @param array $suffix ²»ÓÀĞí´ò°üµÄÎÄ¼şÀàĞÍ
+	 * å°†æŒ‡å®šæ–‡ä»¶ç±»å‹ä¸”æŒ‡å®šæ–‡ä»¶å¤¹ä¸‹çš„æ‰€æŒ‡å®šæ–‡ä»¶æ‰“åŒ…æˆä¸€ä¸ªæ˜“é˜…è¯»çš„æ–‡ä»¶,
+	 * @param mixed $dir è¦æ‰“åŒ…çš„ç›®å½•
+	 * @param sgring $dst æ–‡ä»¶å
+	 * @param array $ndir ä¸é¡»è¦æ‰“åŒ…çš„ç›®å½•
+	 * @param array $suffix ä¸æ°¸è®¸æ‰“åŒ…çš„æ–‡ä»¶ç±»å‹
 	 * @return string
 	 */
 	public function pack($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
@@ -317,11 +317,11 @@ class WindPack{
 	}
 	
 	/**
-	 * ½«Ö¸¶¨ÎÄ¼şÀàĞÍÇÒÖ¸¶¨ÎÄ¼ş¼ĞÏÂµÄËùÖ¸¶¨ÎÄ¼ş´ò°ü³ÉÒ»¸öÑ¹ËõµÄÎÄ¼ş,Ğ§ÂÊ¸ß£¬µ«²»Ò×ÔÄ¶Á
-	 * @param mixed $dir Òª´ò°üµÄÄ¿Â¼
-	 * @param sgring $dst ÎÄ¼şÃû
-	 * @param array $ndir ²»ĞëÒª´ò°üµÄÄ¿Â¼
-	 * @param array $suffix ²»ÓÀĞí´ò°üµÄÎÄ¼şÀàĞÍ
+	 * å°†æŒ‡å®šæ–‡ä»¶ç±»å‹ä¸”æŒ‡å®šæ–‡ä»¶å¤¹ä¸‹çš„æ‰€æŒ‡å®šæ–‡ä»¶æ‰“åŒ…æˆä¸€ä¸ªå‹ç¼©çš„æ–‡ä»¶,æ•ˆç‡é«˜ï¼Œä½†ä¸æ˜“é˜…è¯»
+	 * @param mixed $dir è¦æ‰“åŒ…çš„ç›®å½•
+	 * @param sgring $dst æ–‡ä»¶å
+	 * @param array $ndir ä¸é¡»è¦æ‰“åŒ…çš„ç›®å½•
+	 * @param array $suffix ä¸æ°¸è®¸æ‰“åŒ…çš„æ–‡ä»¶ç±»å‹
 	 * @return string
 	 */
 	public function packCompress($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){

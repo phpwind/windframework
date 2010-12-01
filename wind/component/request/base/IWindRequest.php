@@ -7,8 +7,8 @@
  */
 
 /**
- * 处理请求抽象基类
- * 如http请求
+ * 澶勭悊璇锋眰鎶借薄鍩虹被
+ * 濡俬ttp璇锋眰
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 

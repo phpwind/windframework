@@ -15,90 +15,90 @@
 abstract class WindSqlBuilder {
 	
 	/**
-	 * @var array ÔËËã±í´ïÊ½
+	 * @var array è¿ç®—è¡¨è¾¾å¼
 	 */
 	protected $compare = array ('gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'eq' => '=', 'neq' => '!=', 'in' => 'IN', 'notin' => 'NOT IN', 'notlike' => 'NOT LIKE', 'like' => 'LIKE' );
 	/**
-	 * @var array Âß¼­ÔËËã·û
+	 * @var array é€»è¾‘è¿ç®—ç¬¦
 	 */
 	protected $logic = array ('and' => 'AND', 'or' => 'OR', 'xor' => 'XOR' );
 	/**
-	 * @var array ·Ö×éÌõ¼ş
+	 * @var array åˆ†ç»„æ¡ä»¶
 	 */
 	protected $group = array ('lg' => '(', 'rg' => ')' );
 	
 	/**
-	 * ±í½âÎö
+	 * è¡¨è§£æ
 	 * @example array('tablename'=>'alais') or array('tablename'),tablename as alais
-	 * @param array|string $table ±í
+	 * @param array|string $table è¡¨
 	 * @return string;
 	 */
 	public abstract function buildTable($table = array());
 	/**
-	 * ÊÇ·ñ²éÕÒÏàÍ¬µÄÁĞ
+	 * æ˜¯å¦æŸ¥æ‰¾ç›¸åŒçš„åˆ—
 	 * @param boolean $distinct
 	 * @return string
 	 */
 	public abstract function buildDistinct($distinct = false);
 	/**
-	 * ½âÎö±íµÄÁĞÃû
+	 * è§£æè¡¨çš„åˆ—å
    	 * @example array('filedname'=>'alais') or array('filedname'),filedname as alais
-	 * @param array|string $field ²éÑ¯µÄ×Ö¶Î
+	 * @param array|string $field æŸ¥è¯¢çš„å­—æ®µ
 	 * @return string
 	 */
 	public abstract function buildField($field = array());
 	/**
-	 * ½âÎöÁ¬½Ó²éÑ¯
+	 * è§£æè¿æ¥æŸ¥è¯¢
 	 * @example array('tablename'=>array(jointype,onwhere,alias)) or array('left join tablename as a on a.id=b.id') 
 	 * 			'left join tablename as a on a.id=b.id'
-	 * @param string|array $join Á¬½ÓÌõ¼ş
+	 * @param string|array $join è¿æ¥æ¡ä»¶
 	 * @return string
 	 */
 	public abstract function buildJoin($join = array());
 	/**
-	 * ½âÎö²éÑ¯Ìõ¼ş
+	 * è§£ææŸ¥è¯¢æ¡ä»¶
 	 * @example array('lg','gt'=>('age',2),and,'lt'=>array('age',23),'gt',or,like=>array('name','suqian%')) or 
 	 * 			( age > 2 and age < 23) or name like 'suqian%'
-	 * @param array $where ²éÑ¯Ìõ¼ş
+	 * @param array $where æŸ¥è¯¢æ¡ä»¶
 	 * @return string
 	 */
 	public abstract function buildWhere($where = array());
 	/**
-	 * ½âÎö·Ö×é
+	 * è§£æåˆ†ç»„
 	 * @example array('field1','field2') or 'group by field1,field2'
-	 * @param string|array $group ·Ö×éÌõ¼ş
+	 * @param string|array $group åˆ†ç»„æ¡ä»¶
 	 * @return string
 	 */
 	public abstract function buildGroup($group = array());
 	/**
-	 * ½âÎöÅÅĞò
+	 * è§£ææ’åº
 	 * @example array('field1'=>'desc','field2'=>'asc') or 'order by field1 desc,field2 asc'
-	 * @param array|string $order ÅÅĞòÌõ¼ş
+	 * @param array|string $order æ’åºæ¡ä»¶
 	 * @return string
 	 */
 	public abstract function buildOrder($order = array());
 	/**
-	 * ½âÎö¶Ô·Ö×éµÄ¹ıÂËÓï¾ä
+	 * è§£æå¯¹åˆ†ç»„çš„è¿‡æ»¤è¯­å¥
 	 * @param string $having
 	 * @return string
 	 */
 	public abstract function buildHaving($having = '');
 	/**
-	 * ½âÎö²éÑ¯limitÓï¾ä
-	 * @param int $limit  È¡µÃÌõÊı
-	 * @param int $offset Æ«ÒÆÁ¿
+	 * è§£ææŸ¥è¯¢limitè¯­å¥
+	 * @param int $limit  å–å¾—æ¡æ•°
+	 * @param int $offset åç§»é‡
 	 * @return string
 	 */
 	public abstract function buildLimit($limit = 0, $offset = 0);
 	/**
-	 * ½âÎö¸üĞÂÊı¾İ
+	 * è§£ææ›´æ–°æ•°æ®
 	 * @example array('field'=>'value');
 	 * @param array $data 
 	 * @return string
 	 */
 	public abstract function buildSet($data);
 	/**
-	 * ½âÎöÌí¼ÓÊı¾İ
+	 * è§£ææ·»åŠ æ•°æ®
 	 * @example array('field1','field2') or array(array('field1','field2'),array('field1','field2'))
 	 * @param array $setData
 	 * @return string
@@ -106,36 +106,36 @@ abstract class WindSqlBuilder {
 	public abstract function buildData($setData);
 	
 	/**
-	 *·µ»ØÓ°ÏìĞĞÊıµÄsqlÓï¾ä
-	 *@param $ifquery ÊÇ·ñÊÇselect Óï¾ä
+	 *è¿”å›å½±å“è¡Œæ•°çš„sqlè¯­å¥
+	 *@param $ifquery æ˜¯å¦æ˜¯select è¯­å¥
 	 *@return string 
 	 */
 	public abstract function buildAffected($ifquery);
 	
 	/**
-	 *·µ»ØÈ¡µÃ×îºóĞÂÔöµÄsqlÓï¾ä
+	 *è¿”å›å–å¾—æœ€åæ–°å¢çš„sqlè¯­å¥
 	 *@return string 
 	 */
 	public abstract function buildLastInsertId();
 	
 	/**
-	 * ¶Ô×Ö·û´®×ªÒå
+	 * å¯¹å­—ç¬¦ä¸²è½¬ä¹‰
 	 * @param string $value
 	 * @return string
 	 */
 	public abstract function escapeString($value);
 	
 	/**
-	 * @param strint $schema Êı¾İ¿âÃû
+	 * @param strint $schema æ•°æ®åº“å
 	 */
 	public abstract function getMetaTableSql($schema);
 	
 	/**
-	 * @param string $table  ±íÃû
+	 * @param string $table  è¡¨å
 	 */
 	public abstract function getMetaColumnSql($table);
 	/**
-	 * ½âÎöĞÂÔöSQLÓï¾ä
+	 * è§£ææ–°å¢SQLè¯­å¥
 	 * @param array $option
 	 * @return string
 	 */
@@ -147,7 +147,7 @@ abstract class WindSqlBuilder {
 		);
 	}
 	/**
-	 * ½âÎö¸üĞÂQLÓï¾ä
+	 * è§£ææ›´æ–°QLè¯­å¥
 	 * @param array $option
 	 * @return string
 	 */
@@ -161,7 +161,7 @@ abstract class WindSqlBuilder {
 		);
 	}
 	/**
-	 * ½âÎöÉ¾³ıSQLÓï¾ä
+	 * è§£æåˆ é™¤SQLè¯­å¥
 	 * @param array $option
 	 * @return string
 	 */
@@ -174,7 +174,7 @@ abstract class WindSqlBuilder {
 		);
 	}
 	/**
-	 * ½âÎö²éÑ¯SQLÓï¾ä
+	 * è§£ææŸ¥è¯¢SQLè¯­å¥
 	 * @param array $option
 	 * @return string
 	 */
@@ -193,7 +193,7 @@ abstract class WindSqlBuilder {
 	}
 	
 	/**
-	 * ½âÎöreplace SQLÓï¾ä
+	 * è§£æreplace SQLè¯­å¥
 	 * @param array $option
 	 * @return string
 	 */
@@ -214,7 +214,7 @@ abstract class WindSqlBuilder {
 	}
 	
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇ¶şÎ¬Êı×é
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯äºŒç»´æ•°ç»„
 	 * @param array $array
 	 * @return number
 	 */
@@ -227,8 +227,8 @@ abstract class WindSqlBuilder {
 	}
 	
 	/**
-	 * Òª½âÎöµÄÒ»Î¬Êı×é£¬µ¥ÌõÌí¼ÓÊı¾İ
-	 * @param array $data Òª½âÎöµÄÊı¾İ
+	 * è¦è§£æçš„ä¸€ç»´æ•°ç»„ï¼Œå•æ¡æ·»åŠ æ•°æ®
+	 * @param array $data è¦è§£æçš„æ•°æ®
 	 * @return string
 	 */
 	public function buildSingleData($data) {
@@ -239,8 +239,8 @@ abstract class WindSqlBuilder {
 	}
 	
 	/**
-	 * ½âÎö¶şÎ¬Êı×é£¬ÅúÁ¿Ìí¼Ó
-	 * @param array $multiData Òª½âÎöµÄÊı¾İ
+	 * è§£æäºŒç»´æ•°ç»„ï¼Œæ‰¹é‡æ·»åŠ 
+	 * @param array $multiData è¦è§£æçš„æ•°æ®
 	 * @return string
 	 */
 	public function buildMultiData($multiData) {
@@ -252,8 +252,8 @@ abstract class WindSqlBuilder {
 	}
 	
 	/**
-	 * ÔÚ×Ö·û´®Í·Î²Ìí¼Ó¿Õ¸ñ»ò¿Õ°××Ö·û
-	 * @param string $value  ×Ö·û´®
+	 * åœ¨å­—ç¬¦ä¸²å¤´å°¾æ·»åŠ ç©ºæ ¼æˆ–ç©ºç™½å­—ç¬¦
+	 * @param string $value  å­—ç¬¦ä¸²
 	 * @return string
 	 */
 	public function sqlFillSpace($value) {

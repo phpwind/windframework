@@ -8,9 +8,9 @@
 
 header("Content-type: text/html; charset=gbk");
 define('R_P', dirname(__FILE__) . '/');
-/* 框架文件路径 */
+/* 妗嗘灦鏂囦欢璺緞 */
 define('FREAMWORK_PATH', R_P . '/../../wind/');
-/* 缓存文件路径 */
+/* 缂撳瓨鏂囦欢璺緞 */
 define('COMPILE_PATH', R_P . 'compile/');
 require_once (FREAMWORK_PATH . '/wind.php');
 

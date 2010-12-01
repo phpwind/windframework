@@ -17,7 +17,7 @@ abstract class WindBaseAction {
 	private $request;
 	private $response;
 	/**
-	 * 页面跳转信息model and view对象
+	 * 椤甸潰璺宠浆淇℃伅model and view瀵硅薄
 	 * 
 	 * @var $mav WindModelAndView
 	 */
@@ -39,7 +39,7 @@ abstract class WindBaseAction {
 	public function afterAction() {}
 	
 	/**
-	 * 设置默认模板
+	 * 璁剧疆榛樿妯℃澘
 	 */
 	public function setDefaultViewTemplate($default = '') {
 		if (!$default && $this->response) {
@@ -49,7 +49,7 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 设置模板数据
+	 * 璁剧疆妯℃澘鏁版嵁
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
@@ -58,7 +58,7 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 设置页面模板
+	 * 璁剧疆椤甸潰妯℃澘
 	 * @param string $template
 	 */
 	public function setTemplate($template = '') {
@@ -66,7 +66,7 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 设置页面布局
+	 * 璁剧疆椤甸潰甯冨眬
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout = '') {
@@ -74,7 +74,7 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 添加错误信息
+	 * 娣诲姞閿欒淇℃伅
 	 * 
 	 * @param string $message
 	 * @param string $key

@@ -7,10 +7,10 @@
  */
 
 /**
- * ¹ıÂËÆ÷Àà³éÏóÀà
+ * è¿‡æ»¤å™¨ç±»æŠ½è±¡ç±»
  *
- * ÓÃ»§ÒªÌí¼Ó×Ô¼ºµÄ¹ıÂËÆ÷Àà£¬Ôò±ØĞë¼Ì³Ğ¸Ã³éÏóÀà,²¢ÇÒÓÃ»§Í¨¹ıÊµÏÖ£º
- * doPreProcessingºÍdoPostProcessingÀ´¼ÓÈë¹ıÂËÁ´ÖĞ¡£
+ * ç”¨æˆ·è¦æ·»åŠ è‡ªå·±çš„è¿‡æ»¤å™¨ç±»ï¼Œåˆ™å¿…é¡»ç»§æ‰¿è¯¥æŠ½è±¡ç±»,å¹¶ä¸”ç”¨æˆ·é€šè¿‡å®ç°ï¼š
+ * doPreProcessingå’ŒdoPostProcessingæ¥åŠ å…¥è¿‡æ»¤é“¾ä¸­ã€‚
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
  * @version $Id$
@@ -18,12 +18,12 @@
  */
 abstract class WindFilter {
 	/**
-	 * ±£´æ¸Ã¹ıÂËÆ÷µÄÅäÖÃĞÅÏ¢
+	 * ä¿å­˜è¯¥è¿‡æ»¤å™¨çš„é…ç½®ä¿¡æ¯
 	 * @var mixed $filterName
 	 */
 	protected $filterConfig = '';
 	/**
-	 * ³õÊ¼»¯¹ıÂËÆ÷£¬ÉèÖÃ¸Ã¹ıÂËÆ÷µÄÅäÖÃĞÅÏ¢
+	 * åˆå§‹åŒ–è¿‡æ»¤å™¨ï¼Œè®¾ç½®è¯¥è¿‡æ»¤å™¨çš„é…ç½®ä¿¡æ¯
 	 * @param WSystemConfig $configObj
 	 */
 	public function init($configObj = null) {}
@@ -45,22 +45,22 @@ abstract class WindFilter {
 	}
 	
 	/**
-	 * »ñµÃ¹ıÂËÆ÷ÅäÖÃĞÅÏ¢
+	 * è·å¾—è¿‡æ»¤å™¨é…ç½®ä¿¡æ¯
 	 * @return mixed
 	 */
 	public function getFilterConfig() {
 		return $this->filterConfig;
 	}
 	/**
-	 * ÓÃ»§ĞèÒªÊµÏÖ
-	 * Ô¤²Ù×÷£¬ÓÉÓÃ»§µÄÊµÏÖÀ´¾ö¶¨ÓÃ»§µÄ¸Ã²Ù×÷ÊÇÔ¤²Ù×÷»¹ÊÇºóÖÃ²Ù×÷
+	 * ç”¨æˆ·éœ€è¦å®ç°
+	 * é¢„æ“ä½œï¼Œç”±ç”¨æˆ·çš„å®ç°æ¥å†³å®šç”¨æˆ·çš„è¯¥æ“ä½œæ˜¯é¢„æ“ä½œè¿˜æ˜¯åç½®æ“ä½œ
 	 * @param WHttpRequest $httpRequest
 	 */
 	abstract protected function doBeforeProcess($request, $response);
 	
 	/**
-	 * ÓÃ»§ĞèÒªÊµÏÖ
-	 * ºóÖÃ²Ù×÷
+	 * ç”¨æˆ·éœ€è¦å®ç°
+	 * åç½®æ“ä½œ
 	 * @param WHttpRequest $httpRequest
 	 */
 	abstract protected function doAfterProcess($request, $response);

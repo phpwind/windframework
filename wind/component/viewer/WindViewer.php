@@ -9,11 +9,11 @@
 L::register('viewer', dirname(__FILE__));
 L::import('viewer:base.IWindViewer');
 /**
- * Ä¬ÈÏÊÓÍ¼ÒıÇæ
- * »ùÓÚURLµÄÊÓÍ¼ÒıÇæ£¬ÊÓÍ¼ÃûºÍÄ£°åÃû³Æ±£³ÖÒ»ÖÂ
+ * é»˜è®¤è§†å›¾å¼•æ“
+ * åŸºäºURLçš„è§†å›¾å¼•æ“ï¼Œè§†å›¾åå’Œæ¨¡æ¿åç§°ä¿æŒä¸€è‡´
  * 
- * ¸ÃÊÓÍ¼Àà½ÓÊÕÒ»¸ömodelAndView¶ÔÏó£¬Í¨¹ı½âÎö¸Ã¶ÔÏó»ñµÃÒ»¸öÂß¼­ÊÓÍ¼Ãû³Æ
- * ²¢½«¸ÃÂß¼­ÊÓÍ¼Ãû³Æ£¬Ó³Éäµ½¾ßÌåµÄÊÓÍ¼×ÊÔ´¡£
+ * è¯¥è§†å›¾ç±»æ¥æ”¶ä¸€ä¸ªmodelAndViewå¯¹è±¡ï¼Œé€šè¿‡è§£æè¯¥å¯¹è±¡è·å¾—ä¸€ä¸ªé€»è¾‘è§†å›¾åç§°
+ * å¹¶å°†è¯¥é€»è¾‘è§†å›¾åç§°ï¼Œæ˜ å°„åˆ°å…·ä½“çš„è§†å›¾èµ„æºã€‚
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -31,13 +31,13 @@ class WindViewer implements IWindViewer {
 	protected $layoutMapping = array();
 	
 	/**
-	 * ÊÓÍ¼±äÁ¿ĞÅÏ¢
+	 * è§†å›¾å˜é‡ä¿¡æ¯
 	 * @var $vars
 	 */
 	protected $vars = array();
 	
 	/**
-	 * »ñÈ¡Ä£°åĞÅÏ¢
+	 * è·å–æ¨¡æ¿ä¿¡æ¯
 	 */
 	public function windFetch($template = '') {
 		if ($this->vars) extract($this->vars, EXTR_REFS);
@@ -58,7 +58,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * ÉèÖÃÄ£°å±äÁ¿ĞÅÏ¢
+	 * è®¾ç½®æ¨¡æ¿å˜é‡ä¿¡æ¯
 	 * 
 	 * @param object|array|string $vars
 	 * @param string $key
@@ -73,7 +73,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * ÉèÖÃÄ£°å±äÁ¿
+	 * è®¾ç½®æ¨¡æ¿å˜é‡
 	 * 
 	 * @param $vars
 	 * @param string $key
@@ -83,7 +83,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * ÉèÖÃÄ£°å±äÁ¿
+	 * è®¾ç½®æ¨¡æ¿å˜é‡
 	 * 
 	 * @param object $vars
 	 * @param string $key
@@ -95,7 +95,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * ÉèÖÃÄ£°å±äÁ¿
+	 * è®¾ç½®æ¨¡æ¿å˜é‡
 	 * 
 	 * @param array $vars
 	 * @param string $key
@@ -109,7 +109,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * Èç¹û´æÔÚ²¼¾ÖÎÄ¼şÔò½âÎö²¼¾ÖĞÅÏ¢
+	 * å¦‚æœå­˜åœ¨å¸ƒå±€æ–‡ä»¶åˆ™è§£æå¸ƒå±€ä¿¡æ¯
 	 * @return array()
 	 */
 	public function parserLayout() {
@@ -118,8 +118,8 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * Ä£°åÂ·¾¶½âÎö
-	 * ¸ù¾İÄ£°åµÄÂß¼­Ãû³Æ£¬·µ»ØÄ£°åµÄ¾ø¶ÔÂ·¾¶ĞÅÏ¢
+	 * æ¨¡æ¿è·¯å¾„è§£æ
+	 * æ ¹æ®æ¨¡æ¿çš„é€»è¾‘åç§°ï¼Œè¿”å›æ¨¡æ¿çš„ç»å¯¹è·¯å¾„ä¿¡æ¯
 	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
@@ -135,7 +135,7 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼ĞÅÏ¢
+	 * è®¾ç½®è§†å›¾ä¿¡æ¯
 	 * 
 	 * @param WindView $view
 	 */

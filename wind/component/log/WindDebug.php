@@ -8,7 +8,7 @@
 defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
 defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
 /**
- * µ÷ÊÔ¹¤¾ß
+ * è°ƒè¯•å·¥å…·
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -25,8 +25,8 @@ class WindDebug {
 		return true;
 	}
 	/**
-	 * ÉèÖÃµ÷ÊÔµã
-	 * @param string $point µ÷ÊÔµã
+	 * è®¾ç½®è°ƒè¯•ç‚¹
+	 * @param string $point è°ƒè¯•ç‚¹
 	 */
 	public static function removeBreakPoint($point = '') {
 		if ($point) {
@@ -38,7 +38,7 @@ class WindDebug {
 	}
 	
 	/**
-	 * È¡µÃÏµÍ³ÔËĞĞËùºÄÄÚ´æ
+	 * å–å¾—ç³»ç»Ÿè¿è¡Œæ‰€è€—å†…å­˜
 	 */
 	public static function getMemUsage() {
 		$useMem = memory_get_usage() - USEMEM_START;
@@ -46,7 +46,7 @@ class WindDebug {
 	}
 	
 	/**
-	 * È¡µÃÏµÍ³ÔËĞĞËùºÄÊ±¼ä
+	 * å–å¾—ç³»ç»Ÿè¿è¡Œæ‰€è€—æ—¶é—´
 	 */
 	public static function getExecTime() {
 		$useTime = microtime(true) - RUNTIME_START;
@@ -54,7 +54,7 @@ class WindDebug {
 	}
 	
 	/**
-	 * »ñÈ¡µ÷ÊÔµã
+	 * è·å–è°ƒè¯•ç‚¹
 	 * @param $point
 	 * @param $label
 	 */
@@ -65,9 +65,9 @@ class WindDebug {
 	}
 	
 	/**
-	 * µ÷ÊÔµãÖ®¼äÏµÍ³ÔËĞĞËùºÄÄÚ´æ
-	 * @param string $beginPoint ¿ªÊ¼µ÷ÊÔµã
-	 * @param string $endPoint   ½áÊøµ÷ÊÔµã
+	 * è°ƒè¯•ç‚¹ä¹‹é—´ç³»ç»Ÿè¿è¡Œæ‰€è€—å†…å­˜
+	 * @param string $beginPoint å¼€å§‹è°ƒè¯•ç‚¹
+	 * @param string $endPoint   ç»“æŸè°ƒè¯•ç‚¹
 	 * @return float 
 	 */
 	public static function getMemUsageOfp2p($beginPoint, $endPoint = '') {
@@ -79,9 +79,9 @@ class WindDebug {
 	}
 	
 	/**
-	 * µ÷ÊÔµãÖ®¼äµÄÏµÍ³ÔËĞĞËùºÄÊ±¼ä
-	 * @param string $beginPoint ¿ªÊ¼µ÷ÊÔµã
-	 * @param string $endPoint   ½áÊøµ÷ÊÔµã
+	 * è°ƒè¯•ç‚¹ä¹‹é—´çš„ç³»ç»Ÿè¿è¡Œæ‰€è€—æ—¶é—´
+	 * @param string $beginPoint å¼€å§‹è°ƒè¯•ç‚¹
+	 * @param string $endPoint   ç»“æŸè°ƒè¯•ç‚¹
 	 * @return float 
 	 */
 	public static function getExecTimeOfp2p($beginPoint, $endPoint = '') {
@@ -93,8 +93,8 @@ class WindDebug {
 	}
 	
 	/**
-	 * ¶ÑÕ»Çé¿ö
-	 * @param array $trace ¶ÑÕ»ÒıÓÃ£¬ÈçÒì³£
+	 * å †æ ˆæƒ…å†µ
+	 * @param array $trace å †æ ˆå¼•ç”¨ï¼Œå¦‚å¼‚å¸¸
 	 * @return array 
 	 */
 	public static function trace($trace = array()) {
@@ -111,7 +111,7 @@ class WindDebug {
 		return $traceInfo;
 	}
 	/**
-	 * »ñÈ¡ÏµÍ³Ëù¼ÓÔØµÄÎÄ¼ş
+	 * è·å–ç³»ç»Ÿæ‰€åŠ è½½çš„æ–‡ä»¶
 	 */
 	public static function loadFiles() {
 		return get_included_files();

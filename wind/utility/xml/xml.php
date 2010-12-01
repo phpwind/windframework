@@ -7,7 +7,7 @@
  */
 
 /**
- * xml½âÎöµÄ¹¤¾ß
+ * xmlè§£æçš„å·¥å…·
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
@@ -16,26 +16,26 @@
  */
 class XML {
 	/**
-	 *  ĞèÒª½âÎöµÄÊı¾İ
+	 *  éœ€è¦è§£æçš„æ•°æ®
 	 *  
 	 * @var string
 	 */
 	protected $XMLData; 
 	/**
-	 * ½¨Á¢½âÎöµÄ¶ÔÏó
+	 * å»ºç«‹è§£æçš„å¯¹è±¡
 	 * 
 	 * @var SimpleXMLElement
 	 */
 	protected $object;
 	/**
-	 * ½âÎöÊä³öµÄ±àÂë
+	 * è§£æè¾“å‡ºçš„ç¼–ç 
 	 * 
 	 * @var string
 	 */
 	protected $outputEncoding;
 	
 	/**
-	 * ¹¹Ôìº¯Êı,³õÊ¼»¯¶ÔÏó
+	 * æ„é€ å‡½æ•°,åˆå§‹åŒ–å¯¹è±¡
 	 * 
 	 * @param string $data
 	 * @param string $encoding
@@ -46,7 +46,7 @@ class XML {
 	}
 	
 	/**
-	 * ÉèÖÃĞèÒª½âÎöµÄxmlÄÚÈİ
+	 * è®¾ç½®éœ€è¦è§£æçš„xmlå†…å®¹
 	 * 
 	 * @param string $data
 	 */
@@ -55,11 +55,11 @@ class XML {
 		if ($this->isXMLFile($data)) {
 			$this->XMLData = trim($data);
 		} else {
-			throw new Exception('ÊäÈë²ÎÊı²»ÊÇÓĞĞ§µÄxml¸ñÊ½');
+			throw new Exception('è¾“å…¥å‚æ•°ä¸æ˜¯æœ‰æ•ˆçš„xmlæ ¼å¼');
 		}
 	}
 	/**
-	 * ÉèÖÃ½âÎöÊä³öµÄ±àÂë
+	 * è®¾ç½®è§£æè¾“å‡ºçš„ç¼–ç 
 	 * 
 	 * @param string $encoding
 	 */
@@ -68,7 +68,7 @@ class XML {
 	}
 	
 	/**
-	 * ¸ù¾İÖ¸¶¨ÎÄ¼şÂ·¾¶¶ÁÈ¡XMLÊı¾İ
+	 * æ ¹æ®æŒ‡å®šæ–‡ä»¶è·¯å¾„è¯»å–XMLæ•°æ®
 	 *
 	 * @param string $filePath
 	 */
@@ -79,7 +79,7 @@ class XML {
 	}
 	
 	/**
-	 * ÊÇ·ñÎªxml¸ñÊ½ÎÄ¼ş
+	 * æ˜¯å¦ä¸ºxmlæ ¼å¼æ–‡ä»¶
 	 * 
 	 * @access private
 	 * @return boolean
@@ -92,7 +92,7 @@ class XML {
 	}
 	
 	/**
-	 * ¸ù¾İÖ¸¶¨URL¶ÁÈ¡XMLÊı¾İ
+	 * æ ¹æ®æŒ‡å®šURLè¯»å–XMLæ•°æ®
 	 *
 	 * @param string $url
 	 */
@@ -101,14 +101,14 @@ class XML {
 	}
 	
 	/**
-	 * ´´½¨½âÎö¶ÔÏó
+	 * åˆ›å»ºè§£æå¯¹è±¡
 	 */
 	public function ceateParser() {
    		$this->object = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
 	}
 	
 	/**
-	 * ·µ»Ø½âÎö¶ÔÏó
+	 * è¿”å›è§£æå¯¹è±¡
 	 * 
 	 * @return SimpleXMLElement
 	 */
@@ -117,20 +117,20 @@ class XML {
 	}
 	
 	/**
-	 * ¸ù¾İ±êÇ©µÄÂ·¾¶»ñµÃ¸Ã±êÇ©µÄ¶ÔÏó
+	 * æ ¹æ®æ ‡ç­¾çš„è·¯å¾„è·å¾—è¯¥æ ‡ç­¾çš„å¯¹è±¡
 	 * 
-	 * ÈçÏÂ¸ñÊ½<pre/>:
+	 * å¦‚ä¸‹æ ¼å¼<pre/>:
 	 * <WIND>
 	 *    <app>
 	 *       <appName>Test</appName>
 	 *    </app>
 	 * </WIND>
-	 * 1£º²ÉÓÃÏà¶ÔÂ·¾¶µ÷ÓÃ£º
-	 * 		ÈçÒª»ñµÃappÏÂµÄÄÚÈİÔòÈç´Ëµ÷ÓÃ£º  $xmlObject->getElementByXPath('app');
-	 * 		ÈçÒª»ñµÃappÏÂµÄappNameµÄÄÚÈİÔòÈç´Ëµ÷ÓÃ£º$xmlObject->getElementByXPath('app/appName');
-	 * 2£º²ÉÓÃÍêÈ«Â·¾¶µ÷ÓÃ£º
-	 * 		ÈçÒª»ñµÃappÏÂµÄÄÚÈİÔòÈç´Ëµ÷ÓÃ£º  $xmlObject->getElementByXPath('/WIND/app');
-	 * 		ÈçÒª»ñµÃappÏÂµÄappNameµÄÄÚÈİÔòÈç´Ëµ÷ÓÃ£º$xmlObject->getElementByXPath('/WIND/app/appName');
+	 * 1ï¼šé‡‡ç”¨ç›¸å¯¹è·¯å¾„è°ƒç”¨ï¼š
+	 * 		å¦‚è¦è·å¾—appä¸‹çš„å†…å®¹åˆ™å¦‚æ­¤è°ƒç”¨ï¼š  $xmlObject->getElementByXPath('app');
+	 * 		å¦‚è¦è·å¾—appä¸‹çš„appNameçš„å†…å®¹åˆ™å¦‚æ­¤è°ƒç”¨ï¼š$xmlObject->getElementByXPath('app/appName');
+	 * 2ï¼šé‡‡ç”¨å®Œå…¨è·¯å¾„è°ƒç”¨ï¼š
+	 * 		å¦‚è¦è·å¾—appä¸‹çš„å†…å®¹åˆ™å¦‚æ­¤è°ƒç”¨ï¼š  $xmlObject->getElementByXPath('/WIND/app');
+	 * 		å¦‚è¦è·å¾—appä¸‹çš„appNameçš„å†…å®¹åˆ™å¦‚æ­¤è°ƒç”¨ï¼š$xmlObject->getElementByXPath('/WIND/app/appName');
 	 * 
 	 * @param string $tagPath
 	 * @return array SimpleXMLElement objects 
@@ -140,12 +140,12 @@ class XML {
 	}
 	
 	/**
-	 * ÊäÈëÍ¨¹ıgetElementByXPath»ñµÃµÄ¶ÔÏó¼¯ºÏ,½âÎöÊä³ö¶ÔÓ¦µÄÊı×é
+	 * è¾“å…¥é€šè¿‡getElementByXPathè·å¾—çš„å¯¹è±¡é›†åˆ,è§£æè¾“å‡ºå¯¹åº”çš„æ•°ç»„
 	 * 
-	 * Ã¿¸öÔªËØ¶¼ÓĞ¸ñÊ½
-	 * $array = array('tagName' => '¸Ã±êÇ©µÄÃû×Ö',
-	 * 				  'value' => '¶ÔÓ¦±êÇ©µÄÄÚÈİ',
-	 * 				  'attributes' => array('±êÇ©ÊôĞÔµÄÃû³Æ' => '¸ÃÊôĞÔ¶ÔÓ¦µÄÖµ', ...),
+	 * æ¯ä¸ªå…ƒç´ éƒ½æœ‰æ ¼å¼
+	 * $array = array('tagName' => 'è¯¥æ ‡ç­¾çš„åå­—',
+	 * 				  'value' => 'å¯¹åº”æ ‡ç­¾çš„å†…å®¹',
+	 * 				  'attributes' => array('æ ‡ç­¾å±æ€§çš„åç§°' => 'è¯¥å±æ€§å¯¹åº”çš„å€¼', ...),
 	 *                'children' => array(child1, child2,....);
 	 * 
 	 * 
@@ -162,12 +162,12 @@ class XML {
     }
     
     /**
-	 * ½«ÊäÈëSimpleXMLElement¶ÔÏó,½âÎöÊä³ö¶ÔÓ¦µÄÄÚÈİ¼°Æä×Ó±êÇ©
+	 * å°†è¾“å…¥SimpleXMLElementå¯¹è±¡,è§£æè¾“å‡ºå¯¹åº”çš„å†…å®¹åŠå…¶å­æ ‡ç­¾
 	 * 
-	 * Ã¿¸öÔªËØ¶¼ÓĞ¸ñÊ½
-	 * $array = array('tagName' => '¸Ã±êÇ©µÄÃû×Ö',
-	 * 				  'value' => '¶ÔÓ¦±êÇ©µÄÄÚÈİ',
-	 * 				  'attributes' => array('±êÇ©ÊôĞÔµÄÃû³Æ' => '¸ÃÊôĞÔ¶ÔÓ¦µÄÖµ', ...),
+	 * æ¯ä¸ªå…ƒç´ éƒ½æœ‰æ ¼å¼
+	 * $array = array('tagName' => 'è¯¥æ ‡ç­¾çš„åå­—',
+	 * 				  'value' => 'å¯¹åº”æ ‡ç­¾çš„å†…å®¹',
+	 * 				  'attributes' => array('æ ‡ç­¾å±æ€§çš„åç§°' => 'è¯¥å±æ€§å¯¹åº”çš„å€¼', ...),
 	 *                'children' => array(child1, child2,....);
 	 * 
 	 * @param SimpleXMLElement object   $element
@@ -183,13 +183,13 @@ class XML {
 	}
 	
 	/**
-	 * »ñµÃµ±Ç°¶ÔÏóµÄÄÚÈİ
-	 * ½«ÊäÈëSimpleXMLElement¶ÔÏó,½âÎöÊä³öÆä¶ÔÓ¦µÄÄÚÈİ£¨²»°üº¬×Ó±êÇ©£©
+	 * è·å¾—å½“å‰å¯¹è±¡çš„å†…å®¹
+	 * å°†è¾“å…¥SimpleXMLElementå¯¹è±¡,è§£æè¾“å‡ºå…¶å¯¹åº”çš„å†…å®¹ï¼ˆä¸åŒ…å«å­æ ‡ç­¾ï¼‰
 	 * 
-	 * Ã¿¸öÔªËØ¶¼ÓĞ¸ñÊ½
-	 * $array = array('tagName' => '¸Ã±êÇ©µÄÃû×Ö',
-	 * 				  'value' => '¶ÔÓ¦±êÇ©µÄÄÚÈİ',
-	 * 				  'attributes' => array('±êÇ©ÊôĞÔµÄÃû³Æ' => '¸ÃÊôĞÔ¶ÔÓ¦µÄÖµ', ...),
+	 * æ¯ä¸ªå…ƒç´ éƒ½æœ‰æ ¼å¼
+	 * $array = array('tagName' => 'è¯¥æ ‡ç­¾çš„åå­—',
+	 * 				  'value' => 'å¯¹åº”æ ‡ç­¾çš„å†…å®¹',
+	 * 				  'attributes' => array('æ ‡ç­¾å±æ€§çš„åç§°' => 'è¯¥å±æ€§å¯¹åº”çš„å€¼', ...),
 	 * 			)
 	 * 
 	 * @param SimpleXMLElement object   $element
@@ -204,7 +204,7 @@ class XML {
 	}
 	
 	/**
-	 * »ñµÃ¸Ã±êÇ©µÄÄÚÈİ
+	 * è·å¾—è¯¥æ ‡ç­¾çš„å†…å®¹
 	 * @param SimpleXMLElement $element
 	 * @return string
 	 */
@@ -214,7 +214,7 @@ class XML {
 	}
 	
 	/**
-	 * »ñµÃ¸Ã±êÇ©µÄÄÚÈİ
+	 * è·å¾—è¯¥æ ‡ç­¾çš„å†…å®¹
 	 * @param SimpleXMLElement $element
 	 * @return string
 	 */
@@ -223,7 +223,7 @@ class XML {
 	}
 	
 	/**
-	 * ÅĞ¶Ï¸ÃÔªËØÊÇ·ñÓĞÊôĞÔ
+	 * åˆ¤æ–­è¯¥å…ƒç´ æ˜¯å¦æœ‰å±æ€§
 	 * 
 	 * @param SimpleXMLElement $element
 	 * @return boolean
@@ -234,13 +234,13 @@ class XML {
 	}
 	
 	/**
-	 * ·µ»Ø½ÚµãµÄÊôĞÔ
-	 * Ê¹ÓÃXML::getAttributes($element);
-	 * ·µ»ØµÄ¸ñÊ½Îª£º
-	 * $array = array('ÊôĞÔÃû×Ö' => 'ÊôĞÔÖµ', ... );
+	 * è¿”å›èŠ‚ç‚¹çš„å±æ€§
+	 * ä½¿ç”¨XML::getAttributes($element);
+	 * è¿”å›çš„æ ¼å¼ä¸ºï¼š
+	 * $array = array('å±æ€§åå­—' => 'å±æ€§å€¼', ... );
 	 * 
 	 * @param SimpleXMLElement $element
-	 * @return array  ·µ»Ø¸Ã½ÚµãµÄÊôĞÔ
+	 * @return array  è¿”å›è¯¥èŠ‚ç‚¹çš„å±æ€§
 	 */
 	public function getAttributes($element) {
 		$_attributes = array();
@@ -253,7 +253,7 @@ class XML {
 	}
 	
 	/**
-	 * ÅĞ¶Ï¸ÃÔªËØÊÇ·ñÓĞ×Ó±êÇ©
+	 * åˆ¤æ–­è¯¥å…ƒç´ æ˜¯å¦æœ‰å­æ ‡ç­¾
 	 * 
 	 * @param SimpleXMLElement $element
 	 * @return boolean
@@ -264,7 +264,7 @@ class XML {
 	}
 	
 	/**
-	 * »ñµÃÖ¸¶¨±êÇ©ÏÂµÄËùÓĞ×Ó±êÇ©
+	 * è·å¾—æŒ‡å®šæ ‡ç­¾ä¸‹çš„æ‰€æœ‰å­æ ‡ç­¾
 	 * 
 	 * @param SimpleXMLElement $element
 	 * @return array 
@@ -280,7 +280,7 @@ class XML {
 	}
 	
 	/**
-	 * ¸øÊä³ö½á¹û½øĞĞ×ªÂë£¨¸ù¾İÉèÖÃµÄÊä³ö±àÂë½øĞĞ×ª»»£©
+	 * ç»™è¾“å‡ºç»“æœè¿›è¡Œè½¬ç ï¼ˆæ ¹æ®è®¾ç½®çš„è¾“å‡ºç¼–ç è¿›è¡Œè½¬æ¢ï¼‰
 	 * 
 	 * @access private
 	 * @param string $param
@@ -291,7 +291,7 @@ class XML {
 	}
 		
 	/**
-	 * ½«ÊäÈëµÄÄÚÈİ½øĞĞ×ªÂëÊä³ö
+	 * å°†è¾“å…¥çš„å†…å®¹è¿›è¡Œè½¬ç è¾“å‡º
 	 * 
 	 * @param string $data
 	 * @param string $from_encoding
@@ -311,7 +311,7 @@ class XML {
 	}
 	
 	/**
-	 * ´Ó¸ø¶¨µÄÒ»¸öÍøÖ·ÖĞ»ñµÃxmlÄÚÈİ
+	 * ä»ç»™å®šçš„ä¸€ä¸ªç½‘å€ä¸­è·å¾—xmlå†…å®¹
 	 * 
 	 * @access private
 	 * @param string $host

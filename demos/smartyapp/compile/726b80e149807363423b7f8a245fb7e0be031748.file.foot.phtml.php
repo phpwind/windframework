@@ -17,6 +17,6 @@ $_smarty_tpl->decodeProperties(array (
   'has_nocache_code' => false,
 )); /*/%%SmartyHeaderCode%%*/?>
 <hr></hr>
-<P>ÄúÊÇ½ñÌìµÚ<?php echo $_smarty_tpl->getVariable('count')->value;?>
-¸ö·ÃÎÊÕß</P>
+<P>æ‚¨æ˜¯ä»Šå¤©ç¬¬<?php echo $_smarty_tpl->getVariable('count')->value;?>
+ä¸ªè®¿é—®è€…</P>
 </html>

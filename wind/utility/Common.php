@@ -9,10 +9,10 @@
 class Common {
 
 	/**
-	 * ±äÁ¿µ¼³öÎª×Ö·û´®
+	 * å˜é‡å¯¼å‡ºä¸ºå­—ç¬¦ä¸²
 	 *
-	 * @param mixed $input ±äÁ¿
-	 * @param string $indent Ëõ½ø
+	 * @param mixed $input å˜é‡
+	 * @param string $indent ç¼©è¿›
 	 * @return string
 	 */
 	public function varExport($input, $indent = '') {
@@ -40,15 +40,15 @@ class Common {
 	}
 	
 	/**
-	 * Ğ´ÎÄ¼ş
+	 * å†™æ–‡ä»¶
 	 *
-	 * @param string $fileName ÎÄ¼ş¾ø¶ÔÂ·¾¶
-	 * @param string $data Êı¾İ
-	 * @param string $method ¶ÁĞ´Ä£Ê½
-	 * @param bool $ifLock ÊÇ·ñËøÎÄ¼ş
-	 * @param bool $ifCheckPath ÊÇ·ñ¼ì²éÎÄ¼şÃûÖĞµÄ¡°..¡±
-	 * @param bool $ifChmod ÊÇ·ñ½«ÎÄ¼şÊôĞÔ¸ÄÎª¿É¶ÁĞ´
-	 * @return bool ÊÇ·ñĞ´Èë³É¹¦
+	 * @param string $fileName æ–‡ä»¶ç»å¯¹è·¯å¾„
+	 * @param string $data æ•°æ®
+	 * @param string $method è¯»å†™æ¨¡å¼
+	 * @param bool $ifLock æ˜¯å¦é”æ–‡ä»¶
+	 * @param bool $ifCheckPath æ˜¯å¦æ£€æŸ¥æ–‡ä»¶åä¸­çš„â€œ..â€
+	 * @param bool $ifChmod æ˜¯å¦å°†æ–‡ä»¶å±æ€§æ”¹ä¸ºå¯è¯»å†™
+	 * @return bool æ˜¯å¦å†™å…¥æˆåŠŸ
 	 */
 	public function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
 		$tmpname = strtolower($fileName);

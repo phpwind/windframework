@@ -7,8 +7,8 @@
  */
 
 /**
- * ÊÓÍ¼ÒıÇæ»ùÀà
- * Í¨¹ı¼Ì³Ğ¸Ã·½·¨¿ÉÒÔÊµÏÖ¶ÔÊÓÍ¼Ä£°åµÄµ÷ÓÃ½âÎö
+ * è§†å›¾å¼•æ“åŸºç±»
+ * é€šè¿‡ç»§æ‰¿è¯¥æ–¹æ³•å¯ä»¥å®ç°å¯¹è§†å›¾æ¨¡æ¿çš„è°ƒç”¨è§£æ
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -18,7 +18,7 @@
 interface IWindViewer {
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼±äÁ¿ĞÅÏ¢
+	 * è®¾ç½®è§†å›¾å˜é‡ä¿¡æ¯
 	 * 
 	 * @param array $vars
 	 * @param string $key
@@ -26,19 +26,19 @@ interface IWindViewer {
 	public function windAssign($vars, $key = '');
 	
 	/**
-	 * »ñÈ¡Ä£°åÄÚÈİÓë±äÁ¿ĞÅÏ¢
+	 * è·å–æ¨¡æ¿å†…å®¹ä¸å˜é‡ä¿¡æ¯
 	 */
 	public function windFetch($template = '');
 	
 	/**
-	 * »ñµÃÒ»¸öÊÓÍ¼ĞÅÏ¢£¬²¢³õÊ¼»¯½âÎöÆ÷
+	 * è·å¾—ä¸€ä¸ªè§†å›¾ä¿¡æ¯ï¼Œå¹¶åˆå§‹åŒ–è§£æå™¨
 	 * 
 	 * @param WindView $view
 	 */
 	public function initWithView($view);
 	
 	/**
-	 * »ñµÃÒ»¸öAction²Ù×÷¾ä±ú
+	 * è·å¾—ä¸€ä¸ªActionæ“ä½œå¥æŸ„
 	 * 
 	 */
 	public function doAction($actionHandle = '');

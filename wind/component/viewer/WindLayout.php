@@ -7,8 +7,8 @@
  */
 
 /**
- * ���ֶ���
- * ͨ������һ�����ֶ��󣬻��߲��������ļ����������ò��ֱ�����ʵ��ҳ�沼��
+ * 布局对象，
+ * 通过加载一个布局对象，或者布局配置文件，或者设置布局变量来实现页面布局
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -17,16 +17,16 @@
  */
 class WindLayout {
 	/**
-	 * ������Ϣ
+	 * 布局信息
 	 * @var $_segments
 	 */
 	private $segments = array();
 	private $layout = '';
 	
 	/**
-	 * ����layout�����ļ�
-	 * ����Ϊһ�������ļ����߼����ƣ��磺layout.mainLayout
-	 * ��������ģ��·������Ѱ��layoutĿ¼�µ�mainLayout�����ļ�����׺����ģ��ĺ�׺������һ��
+	 * 设置layout布局文件
+	 * 可以为一个布局文件的逻辑名称，如：layout.mainLayout
+	 * 则程序会在模板路径下面寻找layout目录下的mainLayout布局文件，后缀名和模板的后缀名保持一致
 	 * 
 	 * @param string $layout
 	 */
@@ -35,9 +35,9 @@ class WindLayout {
 	}
 	
 	/**
-	 * ����ģ���ļ������ļ�
-	 * ����Ϊһ�������ļ����߼����ƣ��磺segments.header
-	 * ��������ģ��·������Ѱ��segmentsĿ¼�µ�header�����ļ�����׺����ģ��ĺ�׺������һ��
+	 * 设置模板文件包含文件
+	 * 可以为一个布局文件的逻辑名称，如：segments.header
+	 * 则程序会在模板路径下面寻找segments目录下的header布局文件，后缀名和模板的后缀名保持一致
 	 * 
 	 * @param string $fileName
 	 */
@@ -54,7 +54,7 @@ class WindLayout {
 	}
 	
 	/**
-	 * ����layout�����ļ�
+	 * 解析layout布局文件
 	 */
 	public function parserLayout($dirName = '', $ext = '') {
 		if ($this->layout) {

@@ -19,7 +19,7 @@ $_smarty_tpl->decodeProperties(array (
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
-  <title>²âÊÔDemo:<?php echo $_smarty_tpl->getVariable('title')->value;?>
+  <title>æµ‹è¯•Demo:<?php echo $_smarty_tpl->getVariable('title')->value;?>
 </title>
   <meta name="Generator" content="EditPlus">
   <meta name="Author" content="">

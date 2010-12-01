@@ -7,7 +7,7 @@
  */
 
 /**
- * 配置文件解析类的接口
+ * 閰嶇疆鏂囦欢瑙ｆ瀽绫荤殑鎺ュ彛
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>

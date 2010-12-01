@@ -13,24 +13,24 @@
  * @package 
  */
 class WindModelAndView {
-	/* Ä£°åÊÓÍ¼ĞÅÏ¢ */
+	/* æ¨¡æ¿è§†å›¾ä¿¡æ¯ */
 	private $viewName = '';
 	private $path = '';
 	
-	/* Ò³ÃæÖØ¶¨ÏòÇëÇóĞÅÏ¢ */
+	/* é¡µé¢é‡å®šå‘è¯·æ±‚ä¿¡æ¯ */
 	private $redirect = '';
 	
-	/* ²Ù×÷´¦ÀíÇëÇó */
+	/* æ“ä½œå¤„ç†è¯·æ±‚ */
 	private $action = '';
 	private $actionPath = '';
 	
 	/**
-	 * ÊÓÍ¼Ô¤´¦ÀíÀà
+	 * è§†å›¾é¢„å¤„ç†ç±»
 	 * @var WindView
 	 */
 	private $view = null;
 	
-	/* ²¼¾ÖĞÅÏ¢ */
+	/* å¸ƒå±€ä¿¡æ¯ */
 	private $layoutMapping = array();
 	private $layout = null;
 	
@@ -42,7 +42,7 @@ class WindModelAndView {
 	public function __construct() {}
 	
 	/**
-	 * ½ÓÊÕÒ»¸ölayout¶ÔÏó³õÊ¼»¯ModelAndView
+	 * æ¥æ”¶ä¸€ä¸ªlayoutå¯¹è±¡åˆå§‹åŒ–ModelAndView
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout) {
@@ -64,7 +64,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼µÄÖØ¶¨ÏòĞÅÏ¢
+	 * è®¾ç½®è§†å›¾çš„é‡å®šå‘ä¿¡æ¯
 	 * 
 	 * @param string $redirect
 	 */
@@ -78,7 +78,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼µÄÂß¼­Ãû³Æ
+	 * è®¾ç½®è§†å›¾çš„é€»è¾‘åç§°
 	 * 
 	 * @param string $name
 	 */
@@ -89,7 +89,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ·µ»ØÊÓÍ¼µÄÂß¼­Ãû³Æ
+	 * è¿”å›è§†å›¾çš„é€»è¾‘åç§°
 	 * 
 	 * @return string
 	 */
@@ -98,7 +98,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ÉèÖÃview¶ÔÏó
+	 * è®¾ç½®viewå¯¹è±¡
 	 * 
 	 * @param WindView $view
 	 */
@@ -107,7 +107,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ·µ»ØWindView¶ÔÏó
+	 * è¿”å›WindViewå¯¹è±¡
 	 * 
 	 * @return WindView
 	 */
@@ -121,7 +121,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼µÄÂ·¾¶ĞÅÏ¢
+	 * è®¾ç½®è§†å›¾çš„è·¯å¾„ä¿¡æ¯
 	 * 
 	 * @param string $path
 	 */
@@ -130,7 +130,7 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * ·µ»ØÊÓÍ¼µÄÂ·¾¶ĞÅÏ¢
+	 * è¿”å›è§†å›¾çš„è·¯å¾„ä¿¡æ¯
 	 * 
 	 * @return string
 	 */

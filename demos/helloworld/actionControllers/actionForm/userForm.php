@@ -22,9 +22,9 @@ class UserForm extends WindActionForm {
 	
 	public function __tostring() {
 		echo '<br/>';
-		echo 'ÄúµÄÓÃ»§ÃûÎª£º' . $this->username . '<br/>';
-		echo 'ÄúµÄÃÜÂëÎª£º' . $this->password . '<br/>';
-		echo 'ÄúµÄÉúÈÕÎª£º' . $this->birth . '<br/>';
+		echo 'æ‚¨çš„ç”¨æˆ·åä¸ºï¼š' . $this->username . '<br/>';
+		echo 'æ‚¨çš„å¯†ç ä¸ºï¼š' . $this->password . '<br/>';
+		echo 'æ‚¨çš„ç”Ÿæ—¥ä¸ºï¼š' . $this->birth . '<br/>';
 		return '';
 	}
 }

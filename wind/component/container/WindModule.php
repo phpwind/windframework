@@ -7,9 +7,9 @@
  */
 
 /**
- * ËùÓĞmoduleµÄ»ù´¡³éÏóÀà
- * Ö÷ÒªÊµÏÖ__get(), __set()µÈ·½·¨
- * Í¨¹ı¼Ì³Ğ¸ÃÀà
+ * æ‰€æœ‰moduleçš„åŸºç¡€æŠ½è±¡ç±»
+ * ä¸»è¦å®ç°__get(), __set()ç­‰æ–¹æ³•
+ * é€šè¿‡ç»§æ‰¿è¯¥ç±»
  * 
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -42,7 +42,7 @@ abstract class WindModule {
 	}
 	
 	/**
-	 * ÑéÖ¤ÊôĞÔÎÄ¼şÊÇ·ñ´æÔÚ
+	 * éªŒè¯å±æ€§æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 	 * @param string $propertyName
 	 */
 	protected function _validateProperties($propertyName) {

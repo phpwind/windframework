@@ -8,7 +8,7 @@
 //error_reporting(E_ERROR | E_PARSE);
 
 
-/* Â·¾¶Ïà¹ØÅäÖÃĞÅÏ¢  */
+/* è·¯å¾„ç›¸å…³é…ç½®ä¿¡æ¯  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
@@ -33,8 +33,8 @@ class W {
 	}
 	
 	/**
-	 * ³õÊ¼»¯¿ò¼ÜÉÏÏÂÎÄ
-	 * 1. ²ßÂÔ¼ÓÔØ¿ò¼Ü±ØĞëµÄ»ù´¡Àà¿â
+	 * åˆå§‹åŒ–æ¡†æ¶ä¸Šä¸‹æ–‡
+	 * 1. ç­–ç•¥åŠ è½½æ¡†æ¶å¿…é¡»çš„åŸºç¡€ç±»åº“
 	 */
 	static public function application($current) {
 		self::init();
@@ -43,7 +43,7 @@ class W {
 	}
 	
 	/**
-	 * »ñµÃÓ¦ÓÃÏà¹ØÅäÖÃĞÅÏ¢
+	 * è·å¾—åº”ç”¨ç›¸å…³é…ç½®ä¿¡æ¯
 	 *
 	 * @param string $name
 	 * @return array
@@ -70,7 +70,7 @@ class W {
 	}
 	
 	/**
-	 * ÉèÖÃµ±Ç°Ó¦ÓÃµÄÃû³Æ
+	 * è®¾ç½®å½“å‰åº”ç”¨çš„åç§°
 	 * 
 	 * @param string $name
 	 */
@@ -79,7 +79,7 @@ class W {
 	}
 	
 	/**
-	 * »ñµÃµ±Ç°Ó¦ÓÃÃû×Ö
+	 * è·å¾—å½“å‰åº”ç”¨åå­—
 	 * @return string $name
 	 */
 	static public function getCurrentApp() {
@@ -87,8 +87,8 @@ class W {
 	}
 	
 	/**
-	 * ×Ô¶¯¼ÓÔØ¿ò¼Üµ×²ãÀà¿â
-	 * °üÀ¨»ù´¡µÄ³éÏóÀàºÍ½Ó¿Ú
+	 * è‡ªåŠ¨åŠ è½½æ¡†æ¶åº•å±‚ç±»åº“
+	 * åŒ…æ‹¬åŸºç¡€çš„æŠ½è±¡ç±»å’Œæ¥å£
 	 */
 	static private function _initBaseLib() {
 		if (false === self::_initLoad()) {
@@ -98,7 +98,7 @@ class W {
 	}
 	
 	/**
-	 * ×Ô¶¯¼ÓÔØ
+	 * è‡ªåŠ¨åŠ è½½
 	 */
 	static private function _initLoad() {
 		if (self::ifCompile() && !IS_DEBUG) {
@@ -117,7 +117,7 @@ class W {
 	}
 	
 	/**
-	 * ÊÇ·ñÖ§³ÖÔ¤±àÒë
+	 * æ˜¯å¦æ”¯æŒé¢„ç¼–è¯‘
 	 * @return string
 	 */
 	static public function ifCompile() {
@@ -125,7 +125,7 @@ class W {
 	}
 	
 	/**
-	 * ½âÎöÅäÖÃÎÄ¼ş
+	 * è§£æé…ç½®æ–‡ä»¶
 	 */
 	static private function _initConfig() {
 		W::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
@@ -144,7 +144,7 @@ class W {
 }
 
 /**
- * ÎÄ¼ş¼ÓÔØÀà
+ * æ–‡ä»¶åŠ è½½ç±»
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -161,7 +161,7 @@ final class L {
 	}
 	
 	/**
-	 * ½«Â·¾¶ĞÅÏ¢×¢²áµ½ÃüÃû¿Õ¼ä
+	 * å°†è·¯å¾„ä¿¡æ¯æ³¨å†Œåˆ°å‘½åç©ºé—´
 	 *
 	 * @param string $name
 	 * @param string $path
@@ -184,17 +184,17 @@ final class L {
 	}
 	
 	/**
-	 * ¼ÓÔØÒ»¸öÀà»òÕß¼ÓÔØÒ»¸ö°ü
-	 * Èç¹û¼ÓÔØµÄ°üÖĞÓĞ×ÓÎÄ¼ş¼Ğ²»½øĞĞÑ­»·¼ÓÔØ
-	 * ²ÎÊı¸ñÊ½ËµÃ÷£º'WIND:core.base.WFrontController'
-	 * WIND ×¢²áµÄÓ¦ÓÃÃû³Æ£¬Ó¦ÓÃÃû³ÆÓëÂ·¾¶ĞÅÏ¢ÓÃ¡®:¡¯ºÅ·Ö¸ô
-	 * core.base.WFrontController Ïà¶ÔµÄÂ·¾¶ĞÅÏ¢
-	 * Èç¹û²»ÌîĞ´Ó¦ÓÃÃû³Æ £¬ÀıÈç¡®core.base.WFrontController¡¯£¬ÄÇÃ´¼ÓÔØÂ·¾¶ÔòÏà¶ÔÓÚÄ¬ÈÏµÄÓ¦ÓÃÂ·¾¶
+	 * åŠ è½½ä¸€ä¸ªç±»æˆ–è€…åŠ è½½ä¸€ä¸ªåŒ…
+	 * å¦‚æœåŠ è½½çš„åŒ…ä¸­æœ‰å­æ–‡ä»¶å¤¹ä¸è¿›è¡Œå¾ªç¯åŠ è½½
+	 * å‚æ•°æ ¼å¼è¯´æ˜ï¼š'WIND:core.base.WFrontController'
+	 * WIND æ³¨å†Œçš„åº”ç”¨åç§°ï¼Œåº”ç”¨åç§°ä¸è·¯å¾„ä¿¡æ¯ç”¨â€˜:â€™å·åˆ†éš”
+	 * core.base.WFrontController ç›¸å¯¹çš„è·¯å¾„ä¿¡æ¯
+	 * å¦‚æœä¸å¡«å†™åº”ç”¨åç§° ï¼Œä¾‹å¦‚â€˜core.base.WFrontControllerâ€™ï¼Œé‚£ä¹ˆåŠ è½½è·¯å¾„åˆ™ç›¸å¯¹äºé»˜è®¤çš„åº”ç”¨è·¯å¾„
 	 *
-	 * ¼ÓÔØÒ»¸öÀàµÄ²ÎÊı·½Ê½£º'WIND:core.base.WFrontController'
-	 * ¼ÓÔØÒ»¸ö°üµÄ²ÎÊı·½Ê½£º'WIND:core.base.*'
+	 * åŠ è½½ä¸€ä¸ªç±»çš„å‚æ•°æ–¹å¼ï¼š'WIND:core.base.WFrontController'
+	 * åŠ è½½ä¸€ä¸ªåŒ…çš„å‚æ•°æ–¹å¼ï¼š'WIND:core.base.*'
 	 *
-	 * @param string $filePath //ÎÄ¼şÂ·¾¶ĞÅÏ¢
+	 * @param string $filePath //æ–‡ä»¶è·¯å¾„ä¿¡æ¯
 	 * @author Qiong Wu
 	 * @return
 	 */
@@ -225,11 +225,11 @@ final class L {
 	}
 	
 	/**
-	 * »ñµÃÒ»¸öÀàµÄ¾²Ì¬µ¥Àı¶ÔÏó
-	 * È«¾ÖµÄ¾²Ì¬µ¥Àı¶ÔÏóÒÔÊı×éµÄĞÎÊ½±£´æÔÚ < self::$_instances >ÖĞ£¬Ë÷ÒıÎªÀàÃû³Æ
-	 * ÀàÃû³Æ±ØĞëºÍÎÄ¼şÃû³ÆÏàÍ¬£¬·ñÔò½«Å×³öÒì³£
-	 * Ö§³Ö¹¹Ôìº¯Êı²ÎÊı
-	 * ·µ»ØÒ»¸ö¶ÔÏóµÄÒıÓÃ
+	 * è·å¾—ä¸€ä¸ªç±»çš„é™æ€å•ä¾‹å¯¹è±¡
+	 * å…¨å±€çš„é™æ€å•ä¾‹å¯¹è±¡ä»¥æ•°ç»„çš„å½¢å¼ä¿å­˜åœ¨ < self::$_instances >ä¸­ï¼Œç´¢å¼•ä¸ºç±»åç§°
+	 * ç±»åç§°å¿…é¡»å’Œæ–‡ä»¶åç§°ç›¸åŒï¼Œå¦åˆ™å°†æŠ›å‡ºå¼‚å¸¸
+	 * æ”¯æŒæ„é€ å‡½æ•°å‚æ•°
+	 * è¿”å›ä¸€ä¸ªå¯¹è±¡çš„å¼•ç”¨
 	 *
 	 * @param string $className
 	 * @retur Object
@@ -241,7 +241,7 @@ final class L {
 	}
 	
 	/**
-	 * ÇåÀíÈ«¾Ö±äÁ¿
+	 * æ¸…ç†å…¨å±€å˜é‡
 	 * 
 	 * @param string $className
 	 */
@@ -253,11 +253,11 @@ final class L {
 	}
 	
 	/**
-	 * ½âÎöÂ·¾¶ĞÅÏ¢£¬²¢·µ»ØÂ·¾¶µÄÏêÇé
-	 * ·µ»Øarray('isPackage','fileName','extension','realPath')
-	 * @param string $filePath Â·¾¶ĞÅÏ¢
-	 * @param boolean $info ÊÇ·ñ·µ»ØÂ·¾¶ÏêÇé
-	 * @param string $ext À©Õ¹Ãû,Èç¹û²»Ìî¸ÃÖµ£¬Ôò×Ô¶¯ÔÚÔÊĞíµÄÀ©Õ¹ÃûÁĞ±íÖĞÆ¥Åä
+	 * è§£æè·¯å¾„ä¿¡æ¯ï¼Œå¹¶è¿”å›è·¯å¾„çš„è¯¦æƒ…
+	 * è¿”å›array('isPackage','fileName','extension','realPath')
+	 * @param string $filePath è·¯å¾„ä¿¡æ¯
+	 * @param boolean $info æ˜¯å¦è¿”å›è·¯å¾„è¯¦æƒ…
+	 * @param string $ext æ‰©å±•å,å¦‚æœä¸å¡«è¯¥å€¼ï¼Œåˆ™è‡ªåŠ¨åœ¨å…è®¸çš„æ‰©å±•ååˆ—è¡¨ä¸­åŒ¹é…
 	 * @return string|array
 	 */
 	static public function getRealPath($filePath, $info = false, $ext = '', $dir = '') {
@@ -304,11 +304,11 @@ final class L {
 	}
 	
 	/**
-	 * ¸ù¾İÀàÃû³Æ´´½¨ÀàµÄµ¥Àı¶ÔÏó£¬²¢±£´æµ½¾²Ì¬¶ÔÏóÖĞ
-	 * Í¬Ê±µ÷ÓÃÇåÀíµ¥Àı¶ÔÏóµÄ²ßÂÔ
+	 * æ ¹æ®ç±»åç§°åˆ›å»ºç±»çš„å•ä¾‹å¯¹è±¡ï¼Œå¹¶ä¿å­˜åˆ°é™æ€å¯¹è±¡ä¸­
+	 * åŒæ—¶è°ƒç”¨æ¸…ç†å•ä¾‹å¯¹è±¡çš„ç­–ç•¥
 	 *
-	 * @param string $className ÀàÃû³Æ
-	 * @param array $args ²ÎÊıÊı×é
+	 * @param string $className ç±»åç§°
+	 * @param array $args å‚æ•°æ•°ç»„
 	 * @return void|string
 	 */
 	static private function _createInstance($className, $args) {
@@ -320,10 +320,10 @@ final class L {
 	}
 	
 	/**
-	 * È«¾Ö°üº¬ÎÄ¼şµÄÎ¨Ò»Èë¿Ú
+	 * å…¨å±€åŒ…å«æ–‡ä»¶çš„å”¯ä¸€å…¥å£
 	 *
-	 * @param string $className ÀàÃû³Æ/ÎÄ¼şÃû
-	 * @param string $classPath ÀàÂ·¾¶/ÎÄ¼şÂ·¾¶
+	 * @param string $className ç±»åç§°/æ–‡ä»¶å
+	 * @param string $classPath ç±»è·¯å¾„/æ–‡ä»¶è·¯å¾„
 	 * @return string
 	 */
 	static private function _include($realPath, $fileName = '') {
@@ -343,7 +343,7 @@ final class L {
 	}
 	
 	/**
-	 * »ñµÃËùÓĞÖ§³ÖµÄÀ©Õ¹Ãû
+	 * è·å¾—æ‰€æœ‰æ”¯æŒçš„æ‰©å±•å
 	 *
 	 * @return array
 	 */
@@ -352,7 +352,7 @@ final class L {
 	}
 	
 	/**
-	 * »ñµÃ¸úÂ·¾¶ĞÅÏ¢
+	 * è·å¾—è·Ÿè·¯å¾„ä¿¡æ¯
 	 * @return string
 	 */
 	static private function _getAppRootPath($namespace = '') {
@@ -365,7 +365,7 @@ final class L {
 }
 
 /**
- * È«ÎÄÅäÖÃ·ÃÎÊ
+ * å…¨æ–‡é…ç½®è®¿é—®
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -376,7 +376,7 @@ final class C {
 	private static $config = array();
 	private static $c;
 	/**
-	 * ³õÊ¼»¯ÅäÖÃÎÄ¼ş¶ÔÏó
+	 * åˆå§‹åŒ–é…ç½®æ–‡ä»¶å¯¹è±¡
 	 * @param array $configSystem
 	 */
 	static public function init($configSystem) {
@@ -388,7 +388,7 @@ final class C {
 	}
 	
 	/**
-	 * ¸ù¾İÅäÖÃÃûÈ¡µÃÏàÓ¦µÄÅäÖÃ
+	 * æ ¹æ®é…ç½®åå–å¾—ç›¸åº”çš„é…ç½®
 	 * @param string $configName
 	 * @param string $subConfigName
 	 * @return string

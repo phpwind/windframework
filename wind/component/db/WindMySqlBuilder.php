@@ -7,7 +7,7 @@
  */
 L::import('WIND:component.db.base.WindSqlBuilder');
 /**
- * mysql³£ÓÃsqlÓï¾ä×é×°Æ÷
+ * mysqlå¸¸ç”¨sqlè¯­å¥ç»„è£…å™¨
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -216,10 +216,10 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	}
 	
 	/**
-	 * È¡µÃ±ğÃû±êÊ¶
-	 * @param string $name Ô´Ãû³Æ
-	 * @param string $as   ±ğÃû±êÊ¶
-	 * @param string $alias ±ğÃû
+	 * å–å¾—åˆ«åæ ‡è¯†
+	 * @param string $name æºåç§°
+	 * @param string $as   åˆ«åæ ‡è¯†
+	 * @param string $alias åˆ«å
 	 * @return string
 	 */
 	private function getAlias($name, $as = ' ', $alias = '') {
@@ -227,11 +227,11 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	}
 	
 	/**
-	 * ½âÎö²éÑ¯±í´ïÊ½
-	 * @param string $field  ÁĞÃû
-	 * @param stirng $value ÁĞÖµ
-	 * @param string $compare ±í´ïÊ½
-	 * @param mixed  $ifconvert ·ñÒª¶Ô$value½øĞĞ×ª»»
+	 * è§£ææŸ¥è¯¢è¡¨è¾¾å¼
+	 * @param string $field  åˆ—å
+	 * @param stirng $value åˆ—å€¼
+	 * @param string $compare è¡¨è¾¾å¼
+	 * @param mixed  $ifconvert å¦è¦å¯¹$valueè¿›è¡Œè½¬æ¢
 	 * @return string
 	 */
 	private function buildCompare($field, $value, $compare,$ifconvert = true) {
@@ -253,7 +253,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	}
 
 		/**
-	 * ¼ì²éÊÇ·ñÊÇºÏ·¨µÄ²éÑ¯Ìõ¼ş
+	 * æ£€æŸ¥æ˜¯å¦æ˜¯åˆæ³•çš„æŸ¥è¯¢æ¡ä»¶
 	 * @param array $where
 	 * @return array  
 	 */

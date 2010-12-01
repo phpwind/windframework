@@ -8,7 +8,7 @@
 
 L::import('WIND:component.factory.base.WindFactory');
 /**
- * ¹ıÂËÆ÷¹¤³¡
+ * è¿‡æ»¤å™¨å·¥åœº
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -23,7 +23,7 @@ class WindFilterFactory extends WindFactory {
 	private $args = array();
 	
 	/**
-	 * ´´½¨Ò»¸öFilter
+	 * åˆ›å»ºä¸€ä¸ªFilter
 	 *
 	 * @param WSystemConfig $config
 	 * @return WFilter
@@ -37,7 +37,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ´´½¨Ò»¸öfilter
+	 * åˆ›å»ºä¸€ä¸ªfilter
 	 *
 	 * @return WFilter
 	 */
@@ -52,7 +52,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * Ö´ĞĞÍê¹ıÂËÆ÷ºóÖ´ĞĞ¸Ã·½·¨µÄ»Øµ÷
+	 * æ‰§è¡Œå®Œè¿‡æ»¤å™¨åæ‰§è¡Œè¯¥æ–¹æ³•çš„å›è°ƒ
 	 */
 	public function execute() {
 		$this->state = true;
@@ -62,7 +62,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ÉèÖÃ»Øµ÷·½·¨£¬Ö´ĞĞÍê±ÏËùÓĞ¹ıÂËÆ÷ºó½«»Øµ÷¸Ã·½·¨
+	 * è®¾ç½®å›è°ƒæ–¹æ³•ï¼Œæ‰§è¡Œå®Œæ¯•æ‰€æœ‰è¿‡æ»¤å™¨åå°†å›è°ƒè¯¥æ–¹æ³•
 	 *
 	 * @param array $callback
 	 * @param array $args
@@ -77,8 +77,8 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ÔÚfilterÁ´ÖĞ¶¯Ì¬µÄÉ¾³ıÒ»¸öfilter
-	 * Ë¼Â·£º¼ÇÂ¼É¾³ıµÄÎ»ÖÃ£¬²¢ÇÒ´Ó±»É¾³ıµÄÔªËØ¿ªÊ¼£¬ËùÓĞºóÃæµÄÔªËØ¶¼ÍùÇ°ÒÆ£¬ÒÆÍêÖ®ºó½«×îºóÒ»¸öÔªËØÉ¾³ı
+	 * åœ¨filteré“¾ä¸­åŠ¨æ€çš„åˆ é™¤ä¸€ä¸ªfilter
+	 * æ€è·¯ï¼šè®°å½•åˆ é™¤çš„ä½ç½®ï¼Œå¹¶ä¸”ä»è¢«åˆ é™¤çš„å…ƒç´ å¼€å§‹ï¼Œæ‰€æœ‰åé¢çš„å…ƒç´ éƒ½å¾€å‰ç§»ï¼Œç§»å®Œä¹‹åå°†æœ€åä¸€ä¸ªå…ƒç´ åˆ é™¤
 	 *
 	 * @param string $filterName
 	 */
@@ -94,10 +94,10 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ÔÚfilterÁ´ÖĞ¶¯Ì¬µÄÌí¼ÓÒ»¸öfilter
-	 * µ±beforÎª¿ÕÊ±£¬Ìí¼Óµ½³ÌĞò½áÎ²´¦
-	 * Èç¹ûbeforÓĞÖµ£¬Ôò±éÀúÊı×é£¬ÕÒµ½beforµÄÎ»ÖÃ£¬½«ĞÂµÄ¹ıÂËÆ÷Ìí¼Óµ½beforºóÃæ£¬
-	 * ²¢½«ËùÓĞÔ­beforÎ»ÖÃºóµÄ¹ıÂËÆ÷ÍùºóÒÆÒ»Î»
+	 * åœ¨filteré“¾ä¸­åŠ¨æ€çš„æ·»åŠ ä¸€ä¸ªfilter
+	 * å½“beforä¸ºç©ºæ—¶ï¼Œæ·»åŠ åˆ°ç¨‹åºç»“å°¾å¤„
+	 * å¦‚æœbeforæœ‰å€¼ï¼Œåˆ™éå†æ•°ç»„ï¼Œæ‰¾åˆ°beforçš„ä½ç½®ï¼Œå°†æ–°çš„è¿‡æ»¤å™¨æ·»åŠ åˆ°beforåé¢ï¼Œ
+	 * å¹¶å°†æ‰€æœ‰åŸbeforä½ç½®åçš„è¿‡æ»¤å™¨å¾€åç§»ä¸€ä½
 	 *
 	 * @param string $filterName
 	 * @param string $path
@@ -124,7 +124,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * »ñµÃµ±Ç°¹ıÂËÆ÷×´Ì¬£¬ÊÇ·ñÒÑ¾­±»³õÊ¼»¯ÁË
+	 * è·å¾—å½“å‰è¿‡æ»¤å™¨çŠ¶æ€ï¼Œæ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–äº†
 	 *
 	 * @return boolean
 	 */
@@ -133,7 +133,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ³õÊ¼»¯Ò»¸ö¹ıÂËÆ÷
+	 * åˆå§‹åŒ–ä¸€ä¸ªè¿‡æ»¤å™¨
 	 *
 	 * @param WSystemConfig $config
 	 */
@@ -153,7 +153,7 @@ class WindFilterFactory extends WindFactory {
 	}
 	
 	/**
-	 * ´´½¨Ò»¸ö¹¤³§
+	 * åˆ›å»ºä¸€ä¸ªå·¥å‚
 	 *
 	 * @return WindFilterFactory
 	 */

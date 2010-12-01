@@ -9,11 +9,11 @@ L::import('WIND:component.response.base.IWindResponse');
 L::import('WIND:component.exception.WindException');
 
 /**
- * 1xx£ºĞÅÏ¢£¬ÇëÇóÊÕµ½£¬¼ÌĞø´¦Àí
- * 2xx£º³É¹¦£¬ĞĞÎª±»³É¹¦µØ½ÓÊÜ¡¢Àí½âºÍ²ÉÄÉ
- * 3xx£ºÖØ¶¨Ïò£¬ÎªÁËÍê³ÉÇëÇó£¬±ØĞë½øÒ»²½Ö´ĞĞµÄ¶¯×÷
- * 4xx£º¿Í»§¶Ë´íÎó£¬ÇëÇó°üº¬Óï·¨´íÎó»òÕßÇëÇóÎŞ·¨ÊµÏÖ
- * 5xx£º·şÎñÆ÷´íÎó£¬·şÎñÆ÷²»ÄÜÊµÏÖÒ»ÖÖÃ÷ÏÔÎŞĞ§µÄÇëÇó
+ * 1xxï¼šä¿¡æ¯ï¼Œè¯·æ±‚æ”¶åˆ°ï¼Œç»§ç»­å¤„ç†
+ * 2xxï¼šæˆåŠŸï¼Œè¡Œä¸ºè¢«æˆåŠŸåœ°æ¥å—ã€ç†è§£å’Œé‡‡çº³
+ * 3xxï¼šé‡å®šå‘ï¼Œä¸ºäº†å®Œæˆè¯·æ±‚ï¼Œå¿…é¡»è¿›ä¸€æ­¥æ‰§è¡Œçš„åŠ¨ä½œ
+ * 4xxï¼šå®¢æˆ·ç«¯é”™è¯¯ï¼Œè¯·æ±‚åŒ…å«è¯­æ³•é”™è¯¯æˆ–è€…è¯·æ±‚æ— æ³•å®ç°
+ * 5xxï¼šæœåŠ¡å™¨é”™è¯¯ï¼ŒæœåŠ¡å™¨ä¸èƒ½å®ç°ä¸€ç§æ˜æ˜¾æ— æ•ˆçš„è¯·æ±‚
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -305,10 +305,10 @@ class WindHttpResponse implements IWindResponse {
 	const SC_HTTP_VERSION_NOT_SUPPORTED = 505;
 	
 	/**
-	 * ÉèÖÃÏìÓ¦Í·ĞÅÏ¢£¬Èç¹ûÒÑ¾­ÉèÖÃ¹ıÍ¬ÃûµÄÏìÓ¦Í·£¬¸Ã·½·¨½«ÓÃĞÄµÄÉèÖÃÈ¡´úÔ­À´µÄÍ·×Ö¶Î
+	 * è®¾ç½®å“åº”å¤´ä¿¡æ¯ï¼Œå¦‚æœå·²ç»è®¾ç½®è¿‡åŒåçš„å“åº”å¤´ï¼Œè¯¥æ–¹æ³•å°†ç”¨å¿ƒçš„è®¾ç½®å–ä»£åŸæ¥çš„å¤´å­—æ®µ
 	 * 
-	 * @param string $name ÏìÓ¦Í·µÄÃû³Æ
-	 * @param string $value ÏìÓ¦Í·µÄ×Ö¶ÎÈ¡Öµ
+	 * @param string $name å“åº”å¤´çš„åç§°
+	 * @param string $value å“åº”å¤´çš„å­—æ®µå–å€¼
 	 */
 	public function setHeader($name, $value, $replace = false) {
 		$name = $this->_normalizeHeader($name);
@@ -319,10 +319,10 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÉèÖÃÏìÓ¦Í·ĞÅÏ¢£¬Èç¹ûÒÑ¾­ÉèÖÃ¹ıÍ¬ÃûµÄÏìÓ¦Í·£¬¸Ã·½·¨½«Ôö¼ÓÒ»¸öÍ¬ÃûµÄÏìÓ¦Í·
+	 * è®¾ç½®å“åº”å¤´ä¿¡æ¯ï¼Œå¦‚æœå·²ç»è®¾ç½®è¿‡åŒåçš„å“åº”å¤´ï¼Œè¯¥æ–¹æ³•å°†å¢åŠ ä¸€ä¸ªåŒåçš„å“åº”å¤´
 	 * 
-	 * @param string $name ÏìÓ¦Í·µÄÃû³Æ
-	 * @param string $value ÏìÓ¦Í·µÄ×Ö¶ÎÈ¡Öµ
+	 * @param string $name å“åº”å¤´çš„åç§°
+	 * @param string $value å“åº”å¤´çš„å­—æ®µå–å€¼
 	 */
 	public function addHeader($name, $value, $replace = false) {
 		$name = $this->_normalizeHeader($name);
@@ -330,7 +330,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÉèÖÃÏìÓ¦Í·×´Ì¬Âë
+	 * è®¾ç½®å“åº”å¤´çŠ¶æ€ç 
 	 * 
 	 * @param int $status
 	 * @param string $message
@@ -342,7 +342,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÉèÖÃÏàÓ¦ÄÚÈİ
+	 * è®¾ç½®ç›¸åº”å†…å®¹
 	 * 
 	 * @param string $content
 	 * @param string $name
@@ -354,7 +354,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * Ìí¼ÓcookieĞÅÏ¢
+	 * æ·»åŠ cookieä¿¡æ¯
 	 * 
 	 * @param Cookie $cookie
 	 */
@@ -363,7 +363,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ·¢ËÍÒ»¸ö´íÎóµÄÏìÓ¦ĞÅÏ¢
+	 * å‘é€ä¸€ä¸ªé”™è¯¯çš„å“åº”ä¿¡æ¯
 	 * 
 	 * @param int $status
 	 * @param string $message
@@ -376,7 +376,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÖØ¶¨ÏòÒ»¸öÏìÓ¦ĞÅÏ¢
+	 * é‡å®šå‘ä¸€ä¸ªå“åº”ä¿¡æ¯
 	 * 
 	 * @param string $location
 	 */
@@ -391,7 +391,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ·¢ËÍÏìÓ¦ĞÅÏ¢
+	 * å‘é€å“åº”ä¿¡æ¯
 	 */
 	public function sendResponse() {
 		$this->sendHeaders();
@@ -399,7 +399,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ·¢ËÍÏìÓ¦Í·²¿ĞÅÏ¢
+	 * å‘é€å“åº”å¤´éƒ¨ä¿¡æ¯
 	 */
 	public function sendHeaders() {
 		if ($this->isSendedHeader()) return;
@@ -410,7 +410,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ·¢ËÍÏìÓ¦ÄÚÈİ
+	 * å‘é€å“åº”å†…å®¹
 	 */
 	public function sendBody() {
 		foreach ($this->_body as $content) {
@@ -419,9 +419,9 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * »ñÈ¡ÄÚÈİ
+	 * è·å–å†…å®¹
 	 * 
-	 * @param string $spec ÄÚÈİµÄÃû³Æ
+	 * @param string $spec å†…å®¹çš„åç§°
 	 * @return string|null
 	 */
 	public function getBody($name = false) {
@@ -441,7 +441,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÊÇ·ñÒÑ¾­·¢ËÍÁËÏìÓ¦Í·²¿
+	 * æ˜¯å¦å·²ç»å‘é€äº†å“åº”å¤´éƒ¨
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
@@ -451,7 +451,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * »ñÈ¡ÏìÓ¦Í·ĞÅÏ¢
+	 * è·å–å“åº”å¤´ä¿¡æ¯
 	 * 
 	 * @return array
 	 */
@@ -460,14 +460,14 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * Çå³ıÏìÓ¦Í·ĞÅÏ¢
+	 * æ¸…é™¤å“åº”å¤´ä¿¡æ¯
 	 */
 	public function clearHeaders() {
 		$this->_headers = array();
 	}
 	
 	/**
-	 * ¸ñÊ½»¯ÏìÓ¦Í·ĞÅÏ¢
+	 * æ ¼å¼åŒ–å“åº”å¤´ä¿¡æ¯
 	 * 
 	 * @param string $name
 	 * @return string
@@ -480,7 +480,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ·µ»ØÒ»¸öWhttpResponseµ¥Àı¶ÔÏó
+	 * è¿”å›ä¸€ä¸ªWhttpResponseå•ä¾‹å¯¹è±¡
 	 * @return WindHttpResponse
 	 */
 	static function &getInstance() {
@@ -544,7 +544,7 @@ class WindHttpResponse implements IWindResponse {
 	}
 	
 	/**
-	 * ÉèÖÃÊÓÍ¼±äÁ¿ĞÅÏ¢
+	 * è®¾ç½®è§†å›¾å˜é‡ä¿¡æ¯
 	 * 
 	 * @param array $model
 	 */

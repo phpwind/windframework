@@ -97,8 +97,8 @@ class WindMySql extends WindDbAdapter {
 		$this->connection = null;
 	}
 	/**
-	 * È¡µÃmysql°æ±¾ºÅ
-	 * @param string|int|resource $key Êı¾İ¿âÁ¬½Ó±êÊ¶
+	 * å–å¾—mysqlç‰ˆæœ¬å·
+	 * @param string|int|resource $key æ•°æ®åº“è¿æ¥æ ‡è¯†
 	 * @return string
 	 */
 	public function getVersion() {
@@ -106,8 +106,8 @@ class WindMySql extends WindDbAdapter {
 	}
 	
 	/**
-	 * @param string $charset ×Ö·û¼¯
-	 * @param string | int $key Êı¾İ¿âÁ¬½Ó±êÊ¶
+	 * @param string $charset å­—ç¬¦é›†
+	 * @param string | int $key æ•°æ®åº“è¿æ¥æ ‡è¯†
 	 * @return boolean
 	 */
 	public function setCharSet($charset) {
@@ -119,10 +119,10 @@ class WindMySql extends WindDbAdapter {
 	}
 	
 	/**
-	 * ÇĞ»»Êı¾İ¿â
+	 * åˆ‡æ¢æ•°æ®åº“
 	 * @see wind/base/WDbAdapter#changeDB()
-	 * @param string $databse ÒªÇĞ»»µÄÊı¾İ¿â
-	 * @param string|int|resource $key Êı¾İ¿âÁ¬½Ó±êÊ¶
+	 * @param string $databse è¦åˆ‡æ¢çš„æ•°æ®åº“
+	 * @param string|int|resource $key æ•°æ®åº“è¿æ¥æ ‡è¯†
 	 * @return boolean
 	 */
 	public function changeDB($database) {

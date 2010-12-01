@@ -9,7 +9,7 @@
 interface IWindResponse {
 	
 	/**
-	 * 设置路由信息
+	 * 璁剧疆璺敱淇℃伅
 	 */
 	public function getDispatcher();
 }

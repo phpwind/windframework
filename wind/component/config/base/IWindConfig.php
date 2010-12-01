@@ -7,12 +7,12 @@
  */
 interface IWindConfig {
 	/**
-	 * ÓÃÓÚÖ¸¶¨ÔÚ³ÌÐò½âÎöÖÐÐèÒª½âÎöÒ»¼¶±êÇ©
+	 * ç”¨äºŽæŒ‡å®šåœ¨ç¨‹åºè§£æžä¸­éœ€è¦è§£æžä¸€çº§æ ‡ç­¾
 	 */
 	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
 	
 	/**
-	 * Ó¦ÓÃÅäÖÃÐÅÏ¢
+	 * åº”ç”¨é…ç½®ä¿¡æ¯
 	 */
 	const APP = 'app';
 	const APP_NAME = 'name';
@@ -27,26 +27,26 @@ interface IWindConfig {
 	const ERRORMESSAGE_ERRORACTION = 'errorAction';
 	
 	/**
-	 * Ä£¿ìÔOÖÃ
+	 * æ¨¡å¿«è¨­ç½®
 	 */
 	const MODULES = 'modules';
 	const MODULE_NAME = 'name';
 	const MODULE_PATH = 'path';
 	/**
-	 * ¹ýÂËÆ÷Á´
+	 * è¿‡æ»¤å™¨é“¾
 	 */
 	const FILTERS = 'filters';
 	const FILTER_NAME = 'filterName';
 	const FILTER_PATH = 'filterPath';
 	
 	/**
-	 * Ä£°åÏà¹ØÅäÖÃÐÅÏ¢
-	 * 1.Ä£°åÎÄ¼þ´æ·ÅÂ·¾¶
-	 * 2.Ä¬ÈÏµÄÄ£°åÎÄ¼þÃû³Æ
-	 * 3.Ä£°åÎÄ¼þºó×ºÃû
-	 * 4.ÊÓÍ¼½âÎöÆ÷
-	 * 5.Ä£°åÎÄ¼þµÄ»º´æÂ·¾¶
-	 * 6.Ä£°å±àÒëÂ·¾¶
+	 * æ¨¡æ¿ç›¸å…³é…ç½®ä¿¡æ¯
+	 * 1.æ¨¡æ¿æ–‡ä»¶å­˜æ”¾è·¯å¾„
+	 * 2.é»˜è®¤çš„æ¨¡æ¿æ–‡ä»¶åç§°
+	 * 3.æ¨¡æ¿æ–‡ä»¶åŽç¼€å
+	 * 4.è§†å›¾è§£æžå™¨
+	 * 5.æ¨¡æ¿æ–‡ä»¶çš„ç¼“å­˜è·¯å¾„
+	 * 6.æ¨¡æ¿ç¼–è¯‘è·¯å¾„
 	 */
 	const TEMPLATE = 'template';
 	const TEMPLATE_PATH = 'path';
@@ -58,33 +58,33 @@ interface IWindConfig {
 	const TEMPLATE_COMPILER_DIR = 'compileDir';
 	
 	/**
-	 * Ä£°åÒýÇæÅäÖÃÐÅÏ¢
+	 * æ¨¡æ¿å¼•æ“Žé…ç½®ä¿¡æ¯
 	 */
 	const VIEWER_RESOLVERS = 'viewerResolvers';
 	
 	/**
-	 * Â·ÓÉ²ßÂÔÅäÖÃ
+	 * è·¯ç”±ç­–ç•¥é…ç½®
 	 */
 	const ROUTER = 'router';
 	const ROUTER_PARSER = 'parser';
 	
 	/**
-	 * Â·ÓÉ½âÎöÆ÷ÅäÖÃ
+	 * è·¯ç”±è§£æžå™¨é…ç½®
 	 */
 	const ROUTER_PARSERS = 'routerParsers';
 	const ROUTER_PARSERS_RULE = 'rule';
 	const ROUTER_PARSERS_PATH = 'path';
 	
 	/**
-	 * µ÷ÊÔºÍÈÕÖ¾¿ØÖÆ
+	 * è°ƒè¯•å’Œæ—¥å¿—æŽ§åˆ¶
 	 */
 	const DEBUG = 'debug';
 	const LOG = 'log';
 	/**
-	 * ¶¨ÒåÔÊÐíÓµÓÐµÄÊôÐÔ
-	 * name: ¿ÉÒÔ¶¨ÒåÒ»Ð©ÁÐµÄitemÖÐÃ¿Ò»¸öitemµÄÃû×ÖÒÔÇø·ÖÃ¿Ò»¸ö
-	 * isGlobal: Èç¹ûÌí¼ÓÉÏ¸ÃÊôÐÔ£¬Ôò¸Ã±êÇ©½«ÔÚ½âÎöÍê³ÉÖ®ºó±»Ìá³ö·ÅÖÃÔÚÈ«¾Ö»º´æÖÐ -----Ö»×÷ÓÃÓÚÒ»¼¶±êÇ©
-	 * isMerge: Èç¹ûÌí¼ÓÉÏ¸ÃÊôÐÔ£¬Ôò¸Ã±êÇ©½«±»ÔÚ½âÎöºó½øÐÐºÏ²¢ -----Ö»×÷ÓÃÓÚÒ»¼¶±êÇ©
+	 * å®šä¹‰å…è®¸æ‹¥æœ‰çš„å±žæ€§
+	 * name: å¯ä»¥å®šä¹‰ä¸€äº›åˆ—çš„itemä¸­æ¯ä¸€ä¸ªitemçš„åå­—ä»¥åŒºåˆ†æ¯ä¸€ä¸ª
+	 * isGlobal: å¦‚æžœæ·»åŠ ä¸Šè¯¥å±žæ€§ï¼Œåˆ™è¯¥æ ‡ç­¾å°†åœ¨è§£æžå®Œæˆä¹‹åŽè¢«æå‡ºæ”¾ç½®åœ¨å…¨å±€ç¼“å­˜ä¸­ -----åªä½œç”¨äºŽä¸€çº§æ ‡ç­¾
+	 * isMerge: å¦‚æžœæ·»åŠ ä¸Šè¯¥å±žæ€§ï¼Œåˆ™è¯¥æ ‡ç­¾å°†è¢«åœ¨è§£æžåŽè¿›è¡Œåˆå¹¶ -----åªä½œç”¨äºŽä¸€çº§æ ‡ç­¾
 	 */
 	const ATTRNAME = 'name';
 	const ISGLOBAL = 'isGlobal';
