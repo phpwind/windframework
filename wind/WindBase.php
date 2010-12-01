@@ -46,7 +46,7 @@ class W {
 	 */
 	static public function application($current) {
 		self::init();
-		W::setCurrentApp('TEST');
+		W::setCurrentApp($current);
 		return WindFrontController::getInstance();
 	}
 	
