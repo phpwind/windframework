@@ -212,9 +212,14 @@ class L {
 		}
 	}
 	
+	/**
+	 * @param array $class
+	 */
 	static public function setImports($class = array()) {
 		foreach ($class as $key => $value) {
-			self::$_imports[$key] = isset(self::$_imports[$key]) ? self::$_imports[$key] : $value;
+			if (!self::isImported()) {
+				self::$_imports[$key] = $value;
+			}
 		}
 	}
 	
@@ -273,6 +278,18 @@ class L {
 		$className = strtolower($className);
 		if (!key_exists($className, L::$_instances)) L::_createInstance($className, $args);
 		return L::$_instances[$className];
+	}
+	
+	/**
+	 * 清理全局变量
+	 * 
+	 * @param string $className
+	 */
+	static public function unsetInstance($className = '') {
+		if ($className)
+			unset(L::$_instances[$className]);
+		else
+			L::$_instances = array();
 	}
 	
 	/**
@@ -352,10 +369,17 @@ class L {
 	static private function _include($realPath, $fileName = '') {
 		if (empty($realPath)) return;
 		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
-		if (in_array($realPath, self::$_imports)) return $realPath;
+		if (self::isImported($fileName)) return $realPath;
 		include $realPath;
-		self::$_imports[] = $realPath;
+		$fileName && self::$_imports[$fileName] = $realPath;
 		return $realPath;
+	}
+	
+	/**
+	 * @param string $key
+	 */
+	private static function isImported($key) {
+		return isset(self::$_imports[$key]);
 	}
 	
 	/**
