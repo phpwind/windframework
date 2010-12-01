@@ -27,7 +27,7 @@
 	<filters>
 		<filter name="WindFormFilter">
 		   <filterName>WindFormFilter</filterName> 
-		   <filterPath>WIND:component.form.WindFormFilter</filterPath> 
+		   <filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
 	<template>

@@ -16,7 +16,7 @@ class IndexController extends WindController {
 
 	public function run() {
 		echo "mmmmm";
-		$this->setViewData(array('test'=>'xxxxxxxxxx'));
+		//$this->setViewData(array('test'=>'xxxxxxxxxx'));
 //		$this->getModelAndView()->setAction('run','otherControllers.otherController');
 		//WindErrorMessage::getInstance()->showError();
 //		$this->setViewData(array('test' => 'xxxxxxxxxx'));

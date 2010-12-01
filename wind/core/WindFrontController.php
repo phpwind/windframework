@@ -33,20 +33,16 @@ class WindFrontController extends WindServlet {
 	
 	public function run() {
 		$this->beforProcess();
-		$filters = C::getConfig(IWindConfig::FILTERS);
-		if (!empty($filters)) {
-			$this->initFilter();
-		} else
-			parent::run();
+		parent::run();
 		$this->afterProcess();
 	}
 	
 	protected function beforProcess() {
-
+		$this->initDispatch();
 	}
 	
 	public function process($request, $response) {
-		$this->initDispatch($request, $response);
+		if ($this->initFilter()) return;
 		$applicationController = $this->getApplicationHandle();
 		$applicationController->init();
 		$applicationController->processRequest($request, $response);
@@ -54,7 +50,6 @@ class WindFrontController extends WindServlet {
 	}
 	
 	protected function afterProcess() {
-		if (defined('LOG_RECORD')) WindLog::flush();
 		restore_exception_handler();
 	}
 	
@@ -70,10 +65,16 @@ class WindFrontController extends WindServlet {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function initFilter() {
+		$filters = C::getConfig(IWindConfig::FILTERS);
+		if (empty($filters)) return;
 		L::import('WIND:component.filter.WindFilterFactory');
 		WindFilterFactory::getFactory()->setExecute(array($this, 'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create();
-		if (is_object($filter)) $filter->doFilter($this->request, $this->response);
+		if ($filter instanceof WindFilter) {
+			$filter->doFilter($this->request, $this->response);
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -93,11 +94,11 @@ class WindFrontController extends WindServlet {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function initDispatch($request, $response) {
-		if ($response->getDispatcher() && $response->getDispatcher()->getAction()) return;
+	protected function initDispatch() {
+		if ($this->response->getDispatcher() && $this->response->getDispatcher()->getAction()) return;
 		$router = WindRouterFactory::getFactory()->create();
-		$router->doParser($request, $response);
-		$response->setDispatcher(WindDispatcher::getInstance($request, $response)->initWithRouter($router));
+		$router->doParser($this->request, $this->response);
+		$this->response->setDispatcher(WindDispatcher::getInstance($this->request, $this->response)->initWithRouter($router));
 	}
 	
 	/**

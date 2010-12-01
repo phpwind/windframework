@@ -45,7 +45,7 @@ abstract class WindModule {
 	 * 验证属性文件是否存在
 	 * @param string $propertyName
 	 */
-	private function _validateProperties($propertyName) {
+	protected function _validateProperties($propertyName) {
 		return $propertyName && array_key_exists($propertyName, get_class_vars(get_class($this)));
 	}
 }

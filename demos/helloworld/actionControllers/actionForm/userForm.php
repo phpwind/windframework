@@ -6,16 +6,18 @@
  * @license 
  */
 L::import('WIND:component.form.base.WindActionForm');
-class userForm extends WindActionForm {
+
+class UserForm extends WindActionForm {
 	protected $_isValidate = true;
-	private $username = 'xxx123';
+	protected $username = 'xxx123';
 	protected $password = 'xxx123';
 	protected $birth = '1987-1-1';
 	
-	public function namevalidate() {
-		if (strlen($this->username) < 5 ) {
-			$this->username = 'xxxxxx';
+	public function usernameValidate() {
+		if (strlen($this->username) < 5) {
+			$this->addError('');
 		}
+		return true;
 	}
 	
 	public function __tostring() {

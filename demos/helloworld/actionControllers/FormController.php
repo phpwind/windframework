@@ -5,10 +5,12 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
+L::import('actionControllers.actionForm.MemberForm');
 
 class FormController extends WindController {
 	public function run() {
-		$userForm = userForm::getInstance();
+		$userForm = L::getInstance('UserForm');
+		print_r($userForm);
 		echo $userForm;
 		echo "mmmmm";
 	}

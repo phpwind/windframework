@@ -18,10 +18,10 @@ class WindFilterFactory extends WindFactory {
 	private $index = 0;
 	private $filters = array();
 	private $state = false;
-
+	
 	private $callBack = null;
 	private $args = array();
-
+	
 	/**
 	 * 创建一个Filter
 	 *
@@ -29,22 +29,20 @@ class WindFilterFactory extends WindFactory {
 	 * @return WFilter
 	 */
 	public function create() {
+		if ($this->state === true) return null;
 		if (empty($this->filters)) {
 			$this->_initFilters();
 		}
 		return $this->createFilter();
 	}
-
+	
 	/**
 	 * 创建一个filter
 	 *
 	 * @return WFilter
 	 */
 	public function createFilter() {
-		if ((int) $this->index >= count($this->filters)) {
-			$this->state = true;
-			return null;
-		}
+		if ((int) $this->index >= count($this->filters)) return null;
 		list($filterName, $path) = $this->filters[$this->index++];
 		L::import($path);
 		if ($filterName && class_exists($filterName) && in_array('WindFilter', class_parents($filterName))) {
@@ -52,18 +50,17 @@ class WindFilterFactory extends WindFactory {
 		}
 		$this->createFilter();
 	}
-
+	
 	/**
 	 * 执行完过滤器后执行该方法的回调
 	 */
 	public function execute() {
+		$this->state = true;
 		if ($this->callBack === null) return;
-		if (is_string($this->callBack))
-			if (!function_exists($this->callBack)) throw new WindException($this->callBack . ' is not exists!');
-
+		if (is_string($this->callBack)) if (!function_exists($this->callBack)) throw new WindException($this->callBack . ' is not exists!');
 		call_user_func_array($this->callBack, (array) $this->args);
 	}
-
+	
 	/**
 	 * 设置回调方法，执行完毕所有过滤器后将回调该方法
 	 *
@@ -78,7 +75,7 @@ class WindFilterFactory extends WindFactory {
 		}
 		$this->callBack = $callback;
 	}
-
+	
 	/**
 	 * 在filter链中动态的删除一个filter
 	 * 思路：记录删除的位置，并且从被删除的元素开始，所有后面的元素都往前移，移完之后将最后一个元素删除
@@ -95,7 +92,7 @@ class WindFilterFactory extends WindFactory {
 			array_pop($this->filters);
 		}
 	}
-
+	
 	/**
 	 * 在filter链中动态的添加一个filter
 	 * 当befor为空时，添加到程序结尾处
@@ -125,7 +122,7 @@ class WindFilterFactory extends WindFactory {
 		}
 		$this->filters[$addIndex] = array($filterName, $path);
 	}
-
+	
 	/**
 	 * 获得当前过滤器状态，是否已经被初始化了
 	 *
@@ -134,7 +131,7 @@ class WindFilterFactory extends WindFactory {
 	public function getState() {
 		return $this->state;
 	}
-
+	
 	/**
 	 * 初始化一个过滤器
 	 *
@@ -154,7 +151,7 @@ class WindFilterFactory extends WindFactory {
 			$this->filters[] = array($filterName, $path, $name);
 		}
 	}
-
+	
 	/**
 	 * 创建一个工厂
 	 *
