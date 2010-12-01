@@ -9,29 +9,26 @@ L::import("WIND:component.filter.base.WindFilter");
 
 class WindFormFilter extends WindFilter {
 	const FORMHANDLE = 'FormHandle';
-	
-	private function setForm($request, $response) {
+
+	public function doBeforeProcess($request, $response) {
 		if (!$request instanceof IWindRequest) return false;
 		$_params = array();
 	    if ($request->isGet()) $_params = $request->getGet();
 	    elseif ($request->isPost()) $_params = $request->getPost();
 	    if (!isset($_params[self::FORMHANDLE]) || $_params[self::FORMHANDLE] == '') 
 	   		return false;
-	    $formHandle = $_params[self::FORMHANDLE] . 'Form';
-	    var_dump($response);
-		L::import("actionControllers.actionForm.userForm");//////
+	    $formHandle = $_params[self::FORMHANDLE];
+	    $module = C::getConfig('modules', $response->getDispatcher()->getModule());
+		L::import($module['path'] . ".actionForm." . $formHandle);
 	    if (!class_exists($formHandle)) return false;
-	  //  $formObject = $formHandle::getInstance();
-	    var_dump($formObject);
+	    /**************************************************/
+	    $formObject = new $formHandle();
 	    if (!$formObject instanceof WindActionForm) return false;
 	    $formObject->setProperties($_params);
 	    ($formObject->getIsValidation()) &&  $formObject->validation();
-	    $this->formObject = $formObject;
+	    $formObject->setInstance($formObject);
 	}
 	
-	public function doBeforeProcess($request, $response) {
-		$this->setForm($request, $response);
-	}
 	public function doAfterProcess($request, $response) {
 		
 	}

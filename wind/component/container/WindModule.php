@@ -48,5 +48,4 @@ abstract class WindModule {
 	private function _validateProperties($propertyName) {
 		return $propertyName && array_key_exists($propertyName, get_class_vars(get_class($this)));
 	}
-
 }
