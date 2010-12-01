@@ -51,24 +51,6 @@ class W {
 	}
 	
 	/**
-	 * 返回系统配置信息
-	 *
-	 * @return array
-	 */
-	static public function getSystemConfig() {
-		if (W::$_systemConfig === null) {
-			$cahceConfig = CONFIG_CACHE_PATH . '/config.php';
-			if (!file_exists($cahceConfig)) {
-				throw new Exception('System config file ' . $cahceConfig . ' is not exists!');
-			}
-			@include $cahceConfig;
-			$vars = get_defined_vars();
-			W::$_systemConfig = (array) array_pop($vars);
-		}
-		return W::$_systemConfig;
-	}
-	
-	/**
 	 * 获得应用相关配置信息
 	 *
 	 * @param string $name
@@ -95,6 +77,11 @@ class W {
 		L::register($name, $value['rootPath']);
 	}
 	
+	/**
+	 * 设置当前应用的名称
+	 * 
+	 * @param string $name
+	 */
 	static public function setCurrentApp($name) {
 		if ($name) self::$_current = $name;
 	}
@@ -106,6 +93,7 @@ class W {
 	static public function getCurrentApp() {
 		return self::$_current;
 	}
+	
 	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
