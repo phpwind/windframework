@@ -129,7 +129,9 @@ abstract class WindDbAdapter {
 	/**
 	 * @param int $fetch_type 取得结果集
 	 */
-	public abstract function getAllResult($fetch_type = MYSQL_ASSOC);
+	public abstract function getAllRow($fetch_type = MYSQL_ASSOC);
+	
+	public abstract function getRow($fetch_type = MYSQL_ASSOC);
 	/**
 	 * 开始事务点
 	 */
@@ -213,6 +215,9 @@ abstract class WindDbAdapter {
 		return $this->query($sql);
 	}
 	
+	public function escapeString($value) {
+		return " '" . $value . "' ";
+	}
 	
 	public function getConnection(){
 		return $this->connection;

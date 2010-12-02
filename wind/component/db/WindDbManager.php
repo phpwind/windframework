@@ -20,11 +20,44 @@ final class WindDbManager{
 	private  static $dbManager = null;
 	
 	private function __construct($config = array()){
-		self::$config = $config ? $config : $this->getDbConfig();	
+		self::$config = $config ? $config : $this->getDbConfig();
 	}
 	
 	private function getDbConfig(){
-		
+		$dbConfig = C::getDbConfig();
+		$dbDriver = C::getDbDriver();$dbConfig = array(
+		'phpwind' => array(
+			'dbtype' => 'mysql',
+			'dbhost' => 'localhost',
+			'dbuser' => 'root',
+			'dbpass' => 'suqian0512h',
+			'dbport' => '3306',
+			'dbname' => 'phpwind',
+		),
+		'user' => array(
+			'dbtype' => 'mssql',
+			'dbhost' => 'localhost',
+			'dbuser' => 'sa',
+			'dbpass' => '151@suqian',
+			'dbname' => 'phpwind',
+		),
+	);
+	$dbDriver =  array(
+		'mysql' => array(
+			'path' => 'WIND:component.db.WindMySql',
+			'className' => 'WindMySql',
+		),
+		'mssql' => array(
+			'path' => 'WIND:component.db.WindMsSql',
+			'className' => 'WindMsSql',
+		),
+	);
+		foreach($dbConfig as $key=>$value){
+			if(in_array($value['dbtype'],array_keys($dbDriver))){
+				$dbConfig[$key] = array_merge($dbConfig[$key],$dbDriver[$value['dbtype']]);
+			}
+		}
+		return $dbConfig;
 	}
 	
 	

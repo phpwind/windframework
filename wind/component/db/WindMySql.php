@@ -48,7 +48,7 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
 		$this->query('SHOW TABLES FROM '.$schema);
-		return $this->getAllResult();
+		return $this->getAllRow();
 	}
 	
 	public function getMetaColumns($table){
@@ -56,13 +56,13 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$this->query('SHOW COLUMNS FROM '.$table);
-		return $this->getAllResult();
+		return $this->getAllRow();
 	}
 	
 	/* (non-PHPdoc)
-	 * @see wind/base/WDbAdapter#getAllResult()
+	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllResult($fetch_type = MYSQL_ASSOC) {
+	public function getAllRow($fetch_type = MYSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
 			throw new WindSqlException ( WindSqlException::DB_QUERY_LINK_EMPTY );
 		}
@@ -74,6 +74,10 @@ class WindMySql extends WindDbAdapter {
 			$result [] = $record;
 		}
 		return $result;
+	}
+	
+	public function getRow($fetch_type = MYSQL_ASSOC){
+		return mysql_fetch_array ( $this->query, $fetch_type );
 	}
 	
 	public function beginTrans() {
@@ -120,6 +124,7 @@ class WindMySql extends WindDbAdapter {
 	public function dispose() {
 		$this->close($this->connection);
 		$this->connection = null;
+		$this->query = null;
 	}
 	/**
 	 * 取得mysql版本号

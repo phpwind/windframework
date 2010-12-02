@@ -13,41 +13,66 @@ L::import('WIND:component.db.base.WindDbAdapter');
  * @package 
  */
 class WindMsSql extends WindDbAdapter {
-	public function connect($config, $key) {
-		$this->key = $key;
-		if (! ($this->linked[$key] = $this->getLinked ( $key ))) {
-			$this->linked[$key] =  $config['pconnect'] ? mssql_pconnect ( $config['host'], $config ['dbuser'], $config ['dbpass'] ) : mssql_connect ( $config['host'], $config ['dbuser'], $config ['dbpass'], $config['force'] );
-			if ($config ['dbname'] && is_resource ($this->linked[$key])) {
-				$this->changeDB ( $config ['dbname'], $key);
-			}
-			if (!isset ( $this->config [$key] )) {
-				$this->config [$key] = $config;
-			}
+/* (non-PHPdoc)
+	 * @see wind/base/WDbAdapter#connect()
+	 */
+	protected function connect() {
+		if (!is_resource ( $this->connection )) {
+			$this->connection = $this->config ['pconnect'] ? mssql_pconnect ( $this->config ['host'], $this->config ['dbuser'], $this->config ['dbpass'] ) : mssql_connect ( $this->config ['host'], $this->config ['dbuser'], $this->config ['dbpass'], $this->config ['force'] );
+			$this->changeDB ( $this->config ['dbname'] );
 		}
-		return $this->linked[$key];
+		return $this->connection;
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#query()
 	 */
-	public function query($sql, $key = '', $optype = '') {
-		$this->getExecDbLink ( $optype, $key );
-		$this->query = mssql_query ( $sql, $this->linked [$this->key] );
-		$this->last_sql = $sql;
-		$this->error ();
-		$this->logSql ();
+	public function query($sql) {
+		$this->query = mssql_query ( $sql, $this->connection );
+		$this->error ($sql);
 		return true;
 	}
 	
+	public function getAffectedRows(){
+		$this->query('SELECT @@ROWCOUNT AS affectedRow');
+		$row = $this->getRow();
+		return (int)$row['affectedRow'];
+	}
+	
+	public function getLastInsertId(){
+		$this->query('SELECT @@IDENTITY as insertId');
+		$row = $this->getRow();
+		return (int)$row['insertId'];
+	}
+	
+	public function getMetaTables($schema = ''){
+		$schema = $schema ? $schema : $this->getSchema();
+		if(empty($schema)){
+			throw new WindSqlException (WindSqlException::DB_EMPTY);
+		}
+		$this->query("SELECT name,object_id FROM {$schema}.sys.all_objects WHERE type = 'U'");
+		return $this->getAllRow();
+	}
+	
+	public function getMetaColumns($table){
+		if(empty($table)){
+			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
+		}
+		$this->query('SELECT b.name Field,b.max_length,b.precision,b.scale,b.is_nullable,b.is_identity FROM sys.objects a 
+					  INNER JOIN sys.all_columns b ON a.object_id = b.object_id 
+					  INNER JOIN sys.types c ON b.system_type_id = c.system_type_id where a.name =  '.$this->escapeString($table));
+		return $this->getAllRow();
+	}
+	
 	/* (non-PHPdoc)
-	 * @see wind/base/WDbAdapter#getAllResult()
+	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllResult($fetch_type = MYSQL_ASSOC) {
+	public function getAllRow($fetch_type = MSSQL_ASSOC) {
 		if (! is_resource ( $this->query )) {
-			throw new WindSqlException (WindSqlException::DB_QUERY_LINK_EMPTY);
+			throw new WindSqlException ( WindSqlException::DB_QUERY_LINK_EMPTY );
 		}
 		if (! in_array ( $fetch_type, array (1, 2, 3 ) )) {
-			throw new WindSqlException (WindSqlException::DB_QUERY_FETCH_ERROR);
+			throw new WindSqlException ( WindSqlException::DB_QUERY_FETCH_ERROR );
 		}
 		$result = array ();
 		while ( ($record = mssql_fetch_array ( $this->query, $fetch_type )) ) {
@@ -55,42 +80,37 @@ class WindMsSql extends WindDbAdapter {
 		}
 		return $result;
 	}
-
 	
-	public function beginTrans($key = '') {
-
+	public function getRow($fetch_type = MSSQL_ASSOC){
+		return mssql_fetch_array($this->query,MSSQL_ASSOC);
 	}
 	
-	public function commitTrans($key = '') {
-
+	public function beginTrans() {
+	
+	}
+	
+	public function commitTrans() {
+	
 	}
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#close()
 	 */
 	public function close() {
-		foreach ( $this->linked as $key => $value ) {
-			mssql_close ( $value );
+		if($this->connection){
+			mssql_close ( $this->connection );
 		}
 	}
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#dispose()
 	 */
 	public function dispose() {
-		foreach ( $this->linked as $key => $value ) {
-			mssql_close ( $value );
-			unset ( $this->linked [$key] );
-		}
-		$this->linking = null;
+		$this->close($this->connection);
+		$this->connection = null;
+		$this->query = null;
 	}
-	/**
-	 * 取得mysql版本号
-	 * @param string|int|resource $key 数据库连接标识
-	 * @return string
-	 */
-	public function getVersion($key = '') {
 	
-	}
 
+	
 	/**
 	 * 切换数据库
 	 * @see wind/base/WDbAdapter#changeDB()
@@ -98,14 +118,14 @@ class WindMsSql extends WindDbAdapter {
 	 * @param string|int|resource $key 数据库连接标识
 	 * @return boolean
 	 */
-	public function changeDB($database, $key = '') {
-		return $this->read ( "USE $database", $key );
+	public function changeDB($database) {
+		return mssql_select_db($database,$this->connection);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#error()
 	 */
-	protected function error() {
-	
+	protected function error($sql) {
+		return true;
 	}
 }

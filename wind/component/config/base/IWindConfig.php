@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, debug, log';
+	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, dbConfig, dbDriver';
 	
 	/**
 	 * 应用配置信息
@@ -76,10 +76,10 @@ interface IWindConfig {
 	const ROUTER_PARSERS_PATH = 'path';
 	
 	/**
-	 * 调试和日志控制
+	 * @var 数据库配置
 	 */
-	const DEBUG = 'debug';
-	const LOG = 'log';
+	const DBCONFIG = 'dbConfig';
+	const DBDRIVER = 'dbDriver';
 	/**
 	 * 定义允许拥有的属性
 	 * name: 可以定义一些列的item中每一个item的名字以区分每一个
@@ -89,4 +89,6 @@ interface IWindConfig {
 	const ATTRNAME = 'name';
 	const ISGLOBAL = 'isGlobal';
 	const ISMERGE = 'isMerge';
+	
+	
 }

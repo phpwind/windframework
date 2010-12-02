@@ -471,4 +471,20 @@ final class C {
 	static public function getErrorMessage($name = '') {
 		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
 	}
+	
+	/**
+	 * @param unknown_type $name
+	 * @return Ambigous <string, multitype:, unknown>
+	 */
+	static public function getDbConfig($name = ''){
+		return self::getConfig(IWindConfig::DBCONFIG, $name);
+	}
+	
+	/**
+	 * @param unknown_type $name
+	 * @return Ambigous <string, multitype:, unknown>
+	 */
+	static public function getDbDriver($name = ''){
+		return self::getConfig(IWindConfig::DBDRIVER, $name);
+	}
 }
