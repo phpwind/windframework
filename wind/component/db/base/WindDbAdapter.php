@@ -103,7 +103,7 @@ abstract class WindDbAdapter {
 	}
 	
 	final private function checkConfig($config){
-		if (empty ( $config ) || ! is_array ( $config ) || !is_string($config)) {
+		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
 		if(empty($config['dbtype']) || empty($config['dbhost']) || empty($config['dbname']) || empty($config['dbuser'])  || empty($config['dbpass'])){
@@ -159,7 +159,7 @@ abstract class WindDbAdapter {
 	/**
 	 *取得数据表元数据列 
 	 */
-	public  function getMetaColumns($table);
+	public abstract function getMetaColumns($table);
 	/**
 	 * 释放数据库连接资源
 	 */
@@ -167,7 +167,7 @@ abstract class WindDbAdapter {
 	/**
 	 * 数据库操作操作处理
 	 */
-	protected abstract function error();
+	protected abstract function error($sql);
 	/**
 	 * 执行添加数据操作 (insert)
 	 * @param string | array $sql 查询条件

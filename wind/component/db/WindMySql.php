@@ -30,7 +30,7 @@ class WindMySql extends WindDbAdapter {
 	 */
 	public function query($sql) {
 		$this->query = mysql_query ( $sql, $this->connection );
-		$this->error ();
+		$this->error ($sql);
 		return true;
 	}
 	
