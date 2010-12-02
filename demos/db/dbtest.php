@@ -16,30 +16,37 @@ echo '<pre/>';
 /**
  * mysql 连接使用
  */
-
+require '../../wind/component/db/base/WindDbAdapter.php';
+require '../../wind/component/exception/WindException.php';
+require '../../wind/component/exception/WindSqlException.php';
 
 require '../../wind/component/db/WindMySql.php';
-require '../../wind/component/db/WindMsSql.php';
+require '../../wind/component/db/WindDbManager.php';
 
-$phpwind = array ('charset' => 'gb2312', 'dbtype' => 'mysql', 'dbname' => 'phpwind_8', 'dbuser' => 'root', 'dbpass' => 'suqian0512h', 'dbhost' => 'localhost', 'dbport' => 3306 );
-$phpwind_beta = array ('charset' => 'gb2312', 'dbtype' => 'mysql', 'dbname' => 'phpwind_8beta', 'dbuser' => 'root', 'dbpass' => 'suqian0512h', 'dbhost' => 'localhost', 'dbport' => '3306', 'force' => 1 );
-$config = array ('phpwind' => $phpwind, 'beta' => $phpwind_beta );
-$mysql = new WindMySql ( $config );
 
+
+$phpwind = array ('charset' => 'gb2312', 'dbtype' => 'mysql', 'dbname' => 'phpwind_8', 'dbuser' => 'root', 'dbpass' => 'suqian0512h', 'dbhost' => 'localhost', 'dbport' => 3306,'className' =>'WindMySql' );
+$phpwind_beta = array ('charset' => 'gb2312', 'dbtype' => 'mysql', 'dbname' => 'phpwind_8beta', 'dbuser' => 'root', 'dbpass' => 'suqian0512h', 'dbhost' => 'localhost', 'dbport' => '3306', 'force' => 1, 'className' =>'WindMySql');
+$dsn ="mssql://username:password@localhost:3306/dbname/gbk/1/1/";
+$config = array ('phpwind' => $phpwind, 'beta' => $phpwind_beta,'tt'=>$config );
+$manager = WindDbManager::getInstance ( $config );
+$db = $manager->dbDriverFactory ();
 $option ['table'] = 'pw_members a';
 $option ['where'] = array ('a =223 and b=33' );
 $option ['where'] = array('a = :a AND B=:b',array(':a'=>'sss',':b'=>'sss'));
 $option ['field'] = array ('a.uid' => 'ids', 'a.username' );
 $option ['join'] = array ('pw_posts' => array ('left', 'a.uid=b.authorid', 'b' ) );
 //不指定db连接
-//$mysql->select ( $option );
+$db->select ("SELECT * from pw_members");
 //指定db连接
-$mysql->select ( $option,'phpwind' );
-$result = $mysql->getAllResult ();
+
+$result = $db->getAllResult ();
+print_r($result);
 //$mysql->getAffectedRows ( true );
 //$mysql->getMetaColumns ( 'pw_members' );
 //$result = $mysql->getAllResult ();
 //更新数据
+/*
 $option ['set'] = array ('username' => "test" );
 $option ['table'] = 'pw_members';
 $option ['where'] = array ('lt' => array ('uid', 1 ) );
@@ -63,7 +70,7 @@ $dsn = array(
 );
 $phpwind_beta = array ('charset' => 'gb2312', 'dbtype' => 'mssql', 'dbname' => 'phpwind', 'dbuser' => 'sa', 'dbpass' => '151@suqian', 'dbhost' => 'localhost', 'dbport' => '', 'force' => 1 );
 $config = array ('betat' => $phpwind_beta );
-$mssql = new WindMsSql ( $config );
+//$mssql = new WindMsSql ( $config );
 /**
 $option ['table'] = 'pw_members a';
 $option ['where'] = array ('lt' => array ('a.uid', 10 ) );
