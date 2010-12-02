@@ -57,4 +57,33 @@
 			<path>WIND:component.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
+	
+	<dbConfig>
+		<phpwind>
+			<dbtype>mysql</dbtype>
+			<dbhost>localhost</dbhost>
+			<dbuser>root</dbuser>
+			<dbpass>suqian0512h</dbpass>
+			<dbport>3306</dbport>
+			<dbname>phpwind</dbname>
+		</phpwind>
+		<user>
+			<dbtype>mssql</dbtype>
+			<dbhost>localhost</dbhost>
+			<dbuser>sa</dbuser>
+			<dbpass>suqian0512h</dbpass>
+			<dbport>3306</dbport>
+			<dbname>user</dbname>
+		</user>
+	</dbConfig>
+	<dbDriver>
+		<mysql>
+			<path>WIND:component.db.WindMySql</path>
+			<className>WindMySql</className>
+		</mysql>
+		<mssql>
+			<path>WIND:component.db.WindMsSql</path>
+			<className>WindMsSql</className>
+		</mssql>
+	</dbDriver>
 </WIND>

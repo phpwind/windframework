@@ -60,12 +60,6 @@ abstract class WindDbAdapter {
 	 * @var resoruce 数据库连接
 	 */
 	protected  $connection = null;
-	
-	/**
-	 * @var WindSqlBuilder sql语句生成器
-	 */
-	protected $sqlBuilder = null;
-	
 	/**
 	 * @var resource 当前查询句柄
 	 */
@@ -79,7 +73,6 @@ abstract class WindDbAdapter {
 	public function __construct($config) {
 		$this->parseConfig ( $config );
 		$this->connect();
-		$this->getSqlBuilderFactory();
 	}
 	
 	/**
@@ -138,21 +131,35 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function getAllResult($fetch_type = MYSQL_ASSOC);
 	/**
-	 * 保存事务点
-	 */
-	//public abstract function savePoint();
-	/**
 	 * 开始事务点
 	 */
 	public abstract function beginTrans();
 	/**
-	 * 回滚事务
+	 * 提交事务
 	 */
-	//public abstract function rollbackTrans();
+	public abstract function commitTrans();
 	/**
 	 * 关闭数据库
 	 */
 	public abstract function close();
+	/**
+	 * 取得影响行数
+	 */
+	public abstract function getAffectedRows();
+	/**
+	 * 
+	 */
+	public abstract function getLastInsertId();
+	
+	/**
+	 * @param unknown_type $schema
+	 */
+	public abstract function getMetaTables($schema = '');
+	
+	/**
+	 *取得数据表元数据列 
+	 */
+	public  function getMetaColumns($table);
 	/**
 	 * 释放数据库连接资源
 	 */
@@ -162,26 +169,12 @@ abstract class WindDbAdapter {
 	 */
 	protected abstract function error();
 	/**
-	 * sqlbuilder Factory
-	 * @return WSqlBuilder 返回sql语句生成器
-	 */
-	final public function getSqlBuilderFactory() {
-		if(empty($this->sqlBuilder)){
-			$name = 'Wind'.$this->dbMap[$this->getSchema()].'Builder';
-			L::import('WIND:component.db.'.$name);
-			$this->sqlBuilder = L::getInstance($name);
-		}
-		return $this->sqlBuilder;
-	}
-
-	/**
 	 * 执行添加数据操作 (insert)
 	 * @param string | array $sql 查询条件
-
 	 * @return boolean
 	 */
 	final public  function insert($sql){
-		return $this->query($this->sqlBuilder->getInsertSql($sql));
+		return $this->query($sql);
 	}
 	
 	/**
@@ -191,7 +184,7 @@ abstract class WindDbAdapter {
 	 * @return boolean
 	 */
 	final public  function update($sql){
-		return $this->query($this->sqlBuilder->getUpdateSql($sql));
+		return $this->query($sql);
 	}
 	/**
 	 * 执行查询数据操作
@@ -200,7 +193,6 @@ abstract class WindDbAdapter {
 	 * @return boolean
 	 */
 	final public function select($sql){
-		$sql = is_string($sql) ? $sql : $this->sqlBuilder->getSelectSql($sql);
 		return $this->query($sql);
 	}
 	/**
@@ -209,7 +201,7 @@ abstract class WindDbAdapter {
 	 * @return boolean
 	 */
 	final public  function delete($sql){
-		return $this->query($this->sqlBuilder->getDeleteSql($sql));
+		return $this->query($sql);
 	}
 	
 	/**
@@ -217,40 +209,10 @@ abstract class WindDbAdapter {
 	 * @param string | array $sql 查询条件
 	 * @return boolean
 	 */
-	final public function replace($sql){
-		return $this->query($this->sqlBuilder->getReplaceSql($sql));
+	final public function replace(){
+		return $this->query($sql);
 	}
 	
-	/**
-	 * 取得受影响的数据行数
-	 * @param 是否是查询
-	 * @param string|int 数据库连接标识
-	 * @return int
-	 */
-	final public  function getAffectedRows($ifquery = false){
-		return $this->query($this->sqlBuilder->getAffectedSql($ifquery));
-	}
-	/**
-	 * 取得最后插入ID
-	 * @param string|int 数据库连接标识
-	 * @return int
-	 */
-	final public  function getInsertId(){
-		return $this->query($this->sqlBuilder->getLastInsertIdSql());
-	}
-	
-	/**
-	 *取得数据库元数据表
-	 */
-	public  function getMetaTables($schema = ''){
-		return $this->query($this->sqlBuilder->getMetaTableSql($schema));
-	}
-	/**
-	 *取得数据表元数据列 
-	 */
-	public  function getMetaColumns($table){
-		return $this->query($this->sqlBuilder->getMetaColumnSql($table));
-	}
 	
 	public function getConnection(){
 		return $this->connection;
@@ -279,9 +241,4 @@ abstract class WindDbAdapter {
 	public function __destruct(){
 		is_resource($this->connection) && $this->dispose();
 	}
-	
-	
-	
-	
-
 }

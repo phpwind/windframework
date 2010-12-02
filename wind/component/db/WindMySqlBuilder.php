@@ -153,7 +153,25 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		if (empty ( $data ) || ! is_array ( $data )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_INSERT_DATA);
 		}
-		return $this->getDimension ( $data ) == 1 ? $this->buildSingleData ( $data ) : $this->buildMultiData ( $data );
+		if($this->getDimension ( $data ) == 1){
+			return $this->buildSingleData ( $data );
+		}
+		if($this->getDimension ( $data ) >= 2){
+			$key = array_keys($data);
+			if(is_string($key[0])){
+				$rows = count($data[$key[0]]);
+				$tmp_data = array();
+				for($i=0;$i<$rows;$i++){
+					foreach($data as $key=>$value){
+						$tmp_data[$i][] = $value[$i];
+						unset($data[$key][$i]);
+					}
+				}
+			}
+			$data = $tmp_data ? $tmp_data : $data;
+			return $this->buildMultiData ( $data );
+		}
+		return array();
 	}
 	
 	/* (non-PHPdoc)
@@ -297,7 +315,11 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	}
 	
 	private function formatWhere($where,&$_where=array()){
-		$this->checkWhere ( $where );
+		static $ifcheck = false;
+		if(false === $ifcheck){
+			$this->checkWhere ( $where );
+			$ifcheck = true;
+		}
 		foreach ( $where as $key => $value ) {
 			if (is_int ( $key ) && is_string($value)) {
 					if (in_array ( $value, array_keys ( $this->logic ) )) {

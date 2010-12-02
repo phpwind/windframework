@@ -139,11 +139,11 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public function getInsertSql($option) {
+	public function getInsertSql($table,$data) {
 		return sprintf ( "INSERT%s%sVALUES%s", 
-			$this->buildTable ( $option ['table'] ), 
-			$this->buildField ( $option ['field'] ), 
-			$this->buildData ( $option ['data'] ) 
+			$this->buildTable ($table), 
+			$this->buildField ( array_keys($data)), 
+			$this->buildData ( $data ) 
 		);
 	}
 	/**
@@ -197,11 +197,11 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public function getReplaceSql($option){
+	public function getReplaceSql($table,$data){
 		return sprintf ( "REPLACE%s%sSET%s", 
-			$this->buildTable ( $option ['table'] ), 
-			$this->buildField ( $option ['field'] ), 
-			$this->buildData ( $option ['data'] ) 
+			$this->buildTable ( $table ), 
+			$this->buildField (array_keys($data)), 
+			$this->buildData ($data) 
 		);
 	}
 	

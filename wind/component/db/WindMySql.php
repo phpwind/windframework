@@ -34,6 +34,31 @@ class WindMySql extends WindDbAdapter {
 		return true;
 	}
 	
+	public function getAffectedRows(){
+		return mysql_affected_rows($this->connection);
+	}
+	
+	public function getLastInsertId(){
+		return mysql_insert_id($this->connection);
+	}
+	
+	public function getMetaTables($schema = ''){
+		$schema = $schema ? $schema : $this->getSchema();
+		if(empty($schema)){
+			throw new WindSqlException (WindSqlException::DB_EMPTY);
+		}
+		$this->query('SHOW TABLES FROM '.$schema);
+		return $this->getAllResult();
+	}
+	
+	public function getMetaColumns($table){
+		if(empty($table)){
+			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
+		}
+		$this->query('SHOW COLUMNS FROM '.$table);
+		return $this->getAllResult();
+	}
+	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllResult()
 	 */
@@ -104,7 +129,6 @@ class WindMySql extends WindDbAdapter {
 	public function getVersion() {
 		return mysql_get_server_info ( $this->connection);
 	}
-	
 	/**
 	 * @param string $charset 字符集
 	 * @param string | int $key 数据库连接标识
@@ -113,7 +137,7 @@ class WindMySql extends WindDbAdapter {
 	public function setCharSet($charset) {
 		$version = ( int ) substr ( $this->getVersion (), 0, 1 );
 		if ($version > 4) {
-			$this->read ( "SET NAMES '" . $charset . "'");
+			$this->query ( "SET NAMES '" . $charset . "'");
 		}
 		return true;
 	}
@@ -126,7 +150,7 @@ class WindMySql extends WindDbAdapter {
 	 * @return boolean
 	 */
 	public function changeDB($database) {
-		return $this->read ( "USE $database");
+		return mysql_select_db($database,$this->connection);
 	}
 	
 	/* (non-PHPdoc)
