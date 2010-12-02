@@ -18,4 +18,22 @@ $_GET['c'] = 'error';
 /*$_GET['formName'] = 'userForm';
 $_POST['username'] = 'asssss';*/
 
+
+require '../../wind/component/db/base/WindDbAdapter.php';
+require '../../wind/component/exception/WindException.php';
+require '../../wind/component/exception/WindSqlException.php';
+
+require '../../wind/component/db/WindMySql.php';
+require '../../wind/component/db/WindMsSql.php';
+require '../../wind/component/db/WindDbManager.php';
+
+require '../../wind/component/config/base/IWindConfig.php';
+
+
+$manager = WindDbManager::getInstance ( $config );
+$db = $manager->dbDriverFactory ();
+$db->query("select * from pw_members");
+print_r($db->getLastInsertId());
+
 W::application('TEST')->run();
+
