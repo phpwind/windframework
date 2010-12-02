@@ -15,11 +15,20 @@ L::import('WIND:component.container.WindModule');
  */
 abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
+	protected $_error = array();
+
+	
+	/**
+	 * 是否开启验证
+	 * @return string
+	 */
+	public function getIsValidation() {
+		return $this->_isValidate;
+	}
 	
 	/**
 	 * 验证方法，调用该方法完成所有验证操作
-	 * get_class_methods只能返回public类型的函数
-	 * 
+	 * get_class_methods对于继承中的只返回public类型的函数
 	 * 执行，用户的继承WindActionForm类的actionForm中，所有以validate结尾的函数
 	 */
 	public function validation() {
@@ -29,11 +38,27 @@ abstract class WindActionForm extends WindModule {
 				call_user_func(array($this, $_value));
 		}
 	}
-	
-	public function addError() {
-		
+	/**
+	 * 添加验证中产生的错误信息
+	 * @param string $message
+	 */
+	public function addError($message) {
+		$this->_error[] = $message;
+		return false;
 	}
-	
+	/**
+	 * 是否有错误需要显示
+	 * @return boolean 
+	 */
+	public function showError() {
+		return count($this->_error) > 0;
+	}
+	/**
+	 * 获得错误信息
+	 */
+	public function getError() {
+		return $this->_error;
+	}
 	/**
 	 * 设置属性值
 	 * @param array $_params
@@ -44,13 +69,5 @@ abstract class WindActionForm extends WindModule {
 	   	   $this->$_key = $_value;
 	   }
 	   return true;
-	}
-	
-	/**
-	 * 是否开启验证
-	 * @return string
-	 */
-	public function getIsValidation() {
-		return $this->_isValidate;
 	}
 }

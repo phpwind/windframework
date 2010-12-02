@@ -56,7 +56,10 @@ class WindFormFilter extends WindFilter {
 	 */
 	private function validation($formObject) {
 		//TODO
-	    ($formObject->getIsValidation()) &&  $formObject->validation();
+	    if (!$formObject->getIsValidation()) return false;
+	    $formObject->validation();
+	    if (!$formObject->showError()) return false;
+	    print_r($formObject->getError());
 	}
 	
 	/**
