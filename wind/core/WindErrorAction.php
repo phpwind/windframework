@@ -13,8 +13,7 @@ L::import('WIND:core.base.WindBaseAction');
  * @package 
  */
 class WindErrorAction extends WindBaseAction {
-	private $template = '';
-	
+
 	public function run() {
 		echo "error action";
 	}

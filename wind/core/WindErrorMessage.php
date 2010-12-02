@@ -50,13 +50,6 @@ class WindErrorMessage extends WindMessage {
 	}
 	
 	/**
-	 * 向指定的模板页输出Error
-	 */
-	public function showError() {
-		$this->sendError();
-	}
-	
-	/**
 	 * 重定向错误处理
 	 */
 	public function sendError() {
@@ -68,6 +61,7 @@ class WindErrorMessage extends WindMessage {
 			$this->mav->setAction('run', $this->errorAction);
 		}
 		WindDispatcher::getInstance()->setMav($this->mav)->dispatch();
+		exit();
 	}
 	
 	/**

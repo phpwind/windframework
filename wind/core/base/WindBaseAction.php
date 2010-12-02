@@ -22,21 +22,32 @@ abstract class WindBaseAction {
 	 * @var $mav WindModelAndView
 	 */
 	protected $mav = null;
+	protected $error = null;
 	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function __construct(WindHttpRequest $request, WindHttpResponse $response) {
+	public function __construct($request, $response) {
 		$this->mav = new WindModelAndView();
 		$this->request = $request;
 		$this->response = $response;
 		$this->setDefaultViewTemplate();
+		$this->error = WindErrorMessage::getInstance();
 	}
 	
 	public function beforeAction() {}
 	abstract public function run();
 	public function afterAction() {}
+	
+	/**
+	 * 设置模板数据
+	 * @param string|array|object $data
+	 * @param string $key
+	 */
+	public function setViewData($data, $key = '') {
+		$this->response->setData($data, $key);
+	}
 	
 	/**
 	 * 设置默认模板
@@ -46,15 +57,6 @@ abstract class WindBaseAction {
 			$default = $this->response->getDispatcher()->getController() . '_' . $this->response->getDispatcher()->getAction();
 		}
 		$this->mav->setViewName($default);
-	}
-	
-	/**
-	 * 设置模板数据
-	 * @param string|array|object $data
-	 * @param string $key
-	 */
-	public function setViewData($data, $key = '') {
-		$this->response->setData($data, $key);
 	}
 	
 	/**
@@ -70,7 +72,9 @@ abstract class WindBaseAction {
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout = '') {
-		if ($layout instanceof WindLayout) $this->getModelAndView()->setLayout($layout);
+		if ($layout instanceof WindLayout) {
+			$this->getModelAndView()->setLayout($layout);
+		}
 	}
 	
 	/**
@@ -80,15 +84,24 @@ abstract class WindBaseAction {
 	 * @param string $key
 	 */
 	public function addError($message, $key = '') {
-		WindErrorMessage::getInstance()->addError($message, $key);
+		$this->error->addError($message, $key);
+	}
+	
+	/**
+	 * 添加错误处理Action
+	 */
+	public function addErrorAction($errorAction) {
+		$this->error->setErrorAction($errorAction);
 	}
 	
 	/**
 	 * @param string $message
 	 * @param string $key
 	 */
-	public function showError($message = '', $key = '') {
+	public function sendError($message = '', $key = '', $errorAction = '') {
 		$this->addError($message, $key);
+		$this->addErrorAction($errorAction);
+		$this->error->sendError();
 	}
 	
 	/**

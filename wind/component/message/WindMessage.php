@@ -24,9 +24,9 @@ class WindMessage {
 			}
 		} else {
 			if ($key)
-				$message[$key] = $message;
+				$this->message[$key] = $message;
 			else
-				$message[] = $message;
+				$this->message[] = $message;
 		}
 	}
 	
