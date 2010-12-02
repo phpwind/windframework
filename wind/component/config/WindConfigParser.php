@@ -95,21 +95,23 @@ class WindConfigParser implements IWindConfig {
 		foreach ($this->configExt as $ext) {
 			if (is_file($rootPath . D_S . $this->userAppConfig . '.' . $ext)) {
 				$this->parserEngine = $ext;
-				return realpath($rootPath . D_S . $this->userAppConfig . '.' . $ext);
+				$this->userAppConfigPath = realpath($rootPath . D_S . $this->userAppConfig . '.' . $ext);
+				return true;
 			}
 		}
-		return '';
+		return false;
 	}
 	
 	/**
 	 * @param WindHttpRequest $request
 	 */
 	public function parser($request) {
-		$rootPath = dirname($request->getServer('SCRIPT_FILENAME'));
 		if ($this->isCompiled()) {
 			$app = W::getApps();
 			return @include $app[IWindConfig::APP_CONFIG];
 		}
+		$rootPath = dirname($request->getServer('SCRIPT_FILENAME'));
+		$this->fetchConfigExit($rootPath);
 		$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
 		list($defaultConfig, $this->defaultGAM) = $this->executeParser(realpath($defaultConfigPath));
 		list($userConfig, $this->userGAM) = $this->executeParser($this->userAppConfigPath);
