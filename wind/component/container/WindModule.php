@@ -46,6 +46,6 @@ abstract class WindModule {
 	 * @param string $propertyName
 	 */
 	protected function _validateProperties($propertyName) {
-		return $propertyName && array_key_exists($propertyName, get_class_vars(get_class($this)));
+		return $propertyName && array_key_exists($propertyName, get_object_vars($this));
 	}
 }
