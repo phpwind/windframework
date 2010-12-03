@@ -191,7 +191,7 @@ class WindView {
 	public function doAction($actionHandle = '', $path = '') {
 		if ($this->getMav() instanceof WindModelAndView) {
 			$this->getMav()->setAction($actionHandle, $path);
-			WindDispatcher::getInstance()->setMav($this->getMav())->dispatch();
+			WindDispatcher::getInstance()->initWithMav($this->getMav())->dispatch();
 		}
 	}
 

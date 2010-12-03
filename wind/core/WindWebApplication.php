@@ -80,7 +80,7 @@ class WindWebApplication implements IWindApplication {
 	 * @param WindModelAndView $mav
 	 */
 	protected function processDispatch($request, $response, $mav) {
-		WindDispatcher::getInstance()->setMav($mav)->dispatch();
+		WindDispatcher::getInstance()->initWithMav($mav)->dispatch();
 	}
 	
 	public function destory() {

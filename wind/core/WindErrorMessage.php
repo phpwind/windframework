@@ -60,7 +60,7 @@ class WindErrorMessage extends WindMessage {
 			$this->mav = new WindModelAndView();
 			$this->mav->setAction('run', $this->errorAction);
 		}
-		WindDispatcher::getInstance()->setMav($this->mav)->dispatch();
+		WindDispatcher::getInstance()->initWithMav($this->mav)->dispatch();
 		exit();
 	}
 	

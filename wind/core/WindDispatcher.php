@@ -18,7 +18,6 @@ class WindDispatcher {
 	private $module = 'apps';
 	
 	private $mav = null;
-	private $mavs = array();
 	
 	private $request = null;
 	private $response = null;
@@ -91,33 +90,20 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * @param WindModelAndView $mav the $mav to set
-	 * @return WindDispatcher
-	 * @author Qiong Wu
-	 */
-	public function setMav($mav) {
-		if ($mav instanceof WindModelAndView) {
-			$this->mavs[] = $mav;
-			$this->initWithModelAndView($mav);
-		} else
-			throw new WindException('The type of object error.');
-		
-		return $this;
-	}
-	
-	/**
 	 * @param WindModelAndView $mav
 	 */
-	private function initWithModelAndView($mav) {
-		$this->mav = $mav;
-		$this->action = $mav->getAction();
-		$path = $this->getMav()->getActionPath();
-		if (!$path) return;
+	public function &initWithMav($mav) {
+		$dispatcher = clone $this;
+		if (!($mav instanceof WindModelAndView)) throw new WindException('object type error.');
+		$dispatcher->mav = $mav;
+		$dispatcher->action = $mav->getAction();
+		$path = $mav->getActionPath();
 		if (($pos = strrpos($path, '.')) !== false) {
-			$this->controller = substr($path, $pos + 1);
-			$this->module = substr($path, 0, $pos);
+			$dispatcher->controller = substr($path, $pos + 1);
+			$dispatcher->module = substr($path, 0, $pos);
 		} else
-			$this->controller = $path;
+			$dispatcher->controller = $path;
+		return $dispatcher;
 	}
 	
 	/**
@@ -169,7 +155,7 @@ class WindDispatcher {
 	/**
 	 * @return WindDispatcher
 	 */
-	static public function getInstance($request = null, $response = null) {
+	static public function &getInstance($request = null, $response = null) {
 		if (self::$instance === null) {
 			$class = __CLASS__;
 			self::$instance = new $class($request, $response);
