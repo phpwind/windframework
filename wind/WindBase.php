@@ -135,12 +135,12 @@ class W {
 			W::setApps($appName, $appConfig);
 		}
 	}
-
+	
 	static private function _initErrorHandle() {
 		set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
 		set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
-	
+
 }
 
 /**
@@ -199,15 +199,13 @@ final class L {
 	 * @return
 	 */
 	static public function import($filePath) {
-		if (!$filePath) return null;
-		if (is_file($filePath)) {
-			if (!in_array($filePath, L::getImports())) L::_include($filePath);
+		if (!$filePath || key_exists($filePath, L::$_imports) || in_array($filePath, L::$_imports)) {
 			return $filePath;
 		}
 		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);
 		$fileNames = array();
 		if (!$isPackage) {
-			L::_include($realPath, $fileName);
+			L::_include($realPath, $filePath, $fileName, $isPackage);
 			return $realPath;
 		}
 		if (!$dh = opendir($realPath)) throw new Exception('the file ' . $realPath . ' open failed!');
@@ -219,7 +217,7 @@ final class L {
 		}
 		closedir($dh);
 		foreach ($fileNames as $var) {
-			L::_include($realPath . D_S . $var[0] . '.' . $var[1], $var[0]);
+			L::_include($realPath . D_S . $var[0] . '.' . $var[1], $filePath, $var[0], $isPackage);
 		}
 		return $realPath;
 	}
@@ -271,9 +269,12 @@ final class L {
 			$pathinfo = pathinfo($filePath);
 			$filePath = $pathinfo['dirname'];
 			$ext = $pathinfo['extension'];
-			$fileName = basename($filePath, '.' . $ext);
+			$fileName = $pathinfo['filename'];
 			$isPackage = false;
-		} elseif (!is_file($filePath) && !is_dir($filePath)) {
+		} else {
+			if (key_exists($filePath, L::$_imports)) {
+				return L::getRealPath(L::$_imports[$filePath], $info, $ext, $dir);
+			}
 			if (($pos = strrpos($filePath, '.')) === false) {
 				$fileName = $filePath;
 			} else {
@@ -322,24 +323,30 @@ final class L {
 	/**
 	 * 全局包含文件的唯一入口
 	 *
-	 * @param string $className 类名称/文件名
-	 * @param string $classPath 类路径/文件路径
+	 * @param string $realPath 绝对路径名
+	 * @param string $filePath 输入的路径名
+	 * @param string $fileName 文件名称
 	 * @return string
 	 */
-	static private function _include($realPath, $fileName = '') {
+	static private function _include($realPath, $filePath, $fileName, $ispackage = false) {
 		if (empty($realPath)) return;
 		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
-		if (self::isImported($fileName)) return $realPath;
+		if (in_array($realPath, L::$_imports)) return $realPath;
 		include $realPath;
-		$fileName && self::$_imports[$fileName] = $realPath;
+		
+		if ($ispackage) {
+			$filePath = str_replace('*', $fileName, $filePath);
+			self::$_imports[$filePath] = $realPath;
+		} else
+			self::$_imports[$filePath] = $realPath;
 		return $realPath;
 	}
 	
 	/**
 	 * @param string $key
 	 */
-	private static function isImported($key) {
-		return isset(self::$_imports[$key]);
+	private static function isImported($realPath) {
+		return in_array($realPath);
 	}
 	
 	/**
@@ -476,7 +483,7 @@ final class C {
 	 * @param unknown_type $name
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
-	static public function getDbConfig($name = ''){
+	static public function getDbConfig($name = '') {
 		return self::getConfig(IWindConfig::DBCONFIG, $name);
 	}
 	
@@ -484,7 +491,7 @@ final class C {
 	 * @param unknown_type $name
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
-	static public function getDbDriver($name = ''){
+	static public function getDbDriver($name = '') {
 		return self::getConfig(IWindConfig::DBDRIVER, $name);
 	}
 }
