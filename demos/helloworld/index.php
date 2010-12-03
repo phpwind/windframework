@@ -19,4 +19,4 @@ require_once (FREAMWORK_PATH . '/wind.php');
 $_POST['username'] = 'asssss';*/
 
 W::application('TEST')->run();
-
+//print_r(L::getImports());

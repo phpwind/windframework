@@ -6,8 +6,8 @@
  * @license 
  */
 
-class Run extends WindAction {
-	public function run($request, $response) {
+class Run extends WindBaseAction {
+	public function run() {
 		echo "hello world!!!";
 	}
 }
