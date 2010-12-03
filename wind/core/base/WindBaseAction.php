@@ -110,5 +110,21 @@ abstract class WindBaseAction {
 	public function getModelAndView() {
 		return $this->mav;
 	}
-
+	
+	public function getParaments($param) {
+		if (!$param) return '';
+		if (is_string($param)) {
+			return  ($this->request->getGet($param) != null) ? $this->request->getGet($param) : $this->request->getPost($param, '');
+		}
+		if (!is_array($param)) return '';
+		$result = array();
+		foreach ($param as $key) {
+			if ($key == 'GLOBALS') continue;
+			$result[$key] = ($this->request->getGet($key) != null) ? $this->request->getGet($key) : $this->request->getPost($key);
+			if ($result[$key] == null) {
+				unset($result[$key]);
+			}
+		}
+		return $result;
+	}
 }
