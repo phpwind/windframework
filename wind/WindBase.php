@@ -6,16 +6,14 @@
  * @license
  */
 //error_reporting(E_ERROR | E_PARSE);
-
+!defined('VERSION') && define('VERSION', '1.0.2');
+!defined('IS_DEBUG') && define('IS_DEBUG', true);
 
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-
-!defined('VERSION') && define('VERSION', '1.0.2');
-
-!defined('IS_DEBUG') && define('IS_DEBUG', true);
+!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'preload_' . VERSION . '.php');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -91,29 +89,24 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	static private function _initBaseLib() {
-		if (false === self::_initLoad()) {
-			L::import('WIND:core.base.*');
-			L::import('WIND:core.*');
-		}
+		if (is_file(COMPILE_IMPORT_PATH) && !IS_DEBUG) {
+			return include COMPILE_IMPORT_PATH;
+		} else
+			self::_initLoad();
 	}
 	
 	/**
-	 * 自动加载
+	 * 加载框架核心文件
+	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
 	 */
 	static private function _initLoad() {
+		L::import('WIND:core.base.*');
+		L::import('WIND:core.*');
 		if (self::ifCompile() && !IS_DEBUG) {
-			$packfile = COMPILE_PATH . 'preload_' . VERSION . '.php';
-			if (!is_file($packfile)) {
-				L::import('WIND:utility.WindPack');
-				$pack = L::getInstance('WindPack');
-				$pack->packCompress(array(WIND_PATH . 'core'), $packfile);
-			}
-			if (is_file($packfile)) {
-				@include $packfile;
-				return true;
-			}
+			L::import('WIND:utility.WindPack');
+			$pack = L::getInstance('WindPack');
+			$pack->packCompress(L::getImports());
 		}
-		return false;
 	}
 	
 	/**
@@ -332,7 +325,6 @@ final class L {
 	 * @return string
 	 */
 	static private function _include($realPath, $filePath, $fileName, $ispackage = false) {
-		if (!$realPath) echo $fileName . '====' . $filePath . '<br>';
 		if (!file_exists($realPath)) return;
 		if (in_array($realPath, L::$_imports)) return $realPath;
 		include $realPath;
