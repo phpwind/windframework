@@ -1,0 +1,22 @@
+<?php $this->doAction('getHeader');?>
+<div id="mainContent">
+<p><center>用户表单测试</center></p>
+<p>
+<?php if (!$userInfo) { ?>
+<form action="index.php?c=index&a=getForm" method="post"> 
+请输入用户名<input type="text" value="" name="username"/><br/>
+请输入密码<input type="password" value="" name="password"/><br/>
+<?php if ($isUse === 'y') { ?>
+<input type="hidden" name="formName" value="UserForm"/>
+<?php }?>
+<input type="submit" value="测试" name="submit"/>
+</form>
+<?php } else { ?>
+您输入的用户名为: <?php echo $userInfo->username;?><br/>
+您输入的密码为:<?php echo $userInfo->password;?><br/>
+<?php echo $notice;?>
+<?php }?>
+</p>
+
+</div>
+<?php //$this->doAction('getFooter');?>

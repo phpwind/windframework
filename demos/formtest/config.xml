@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<app isGlobal='true'>
+		<name>FormTest</name>
+		<rootPath></rootPath>
+		<configPath>FormTest:compile</configPath>
+	</app>
+	<modules>
+		<module name='default'>
+			<name>default</name>
+			<path>controllers</path>
+		</module>
+	</modules>
+	<template>
+		<path>templates</path>
+		<name>index</name>
+		<ext>html</ext>
+		<resolver>default</resolver>
+		<isCache>false</isCache>
+		<cacheDir>cache</cacheDir>
+		<compileDir>compile</compileDir>
+	</template>
+</WIND>

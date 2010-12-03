@@ -1,0 +1,38 @@
+<?php $this->doAction('getHeader');?>
+
+<div id="mainContent">
+	<h2>本测试Demo包含：</h2>
+	<p>
+	  1、form表单提交：<br/>
+      <b>案例1：为form提交表单设置一个WindActionForm子类，用来保存该提交的表单</b>
+	   <p><li>步骤一：在配置文件中的配置项filters中配置了WindFormFilter，
+		    <textarea rows="5" cols="90" readonly><filters>
+    <filter name="WindFormFilter">
+    	<filterName>WindFormFilter</filterName>
+    	<filterPath>WIND:component.form.WindFormFilter</filterPath>
+	</filter>
+</filters></textarea></li>
+        <li>步骤二：在controllers/actionForm中建立一个WindActionForm类的子类UserForm。<br/>
+            <span id="notice">注意:</span>类属性名字和表单中的提交名字必须保存一致。
+                                                     同时被继承的属性$_isValidate设置为true则自动执行验证方法，默认为false（验证方法为：访问权限为public，并且以validate结尾）</li>
+	    <li>步骤三：并创建一个该对应表单，同时设置该表单需要填充到UserForm中，即formName设置为UserForm随同表单一同递交。</li>
+	    <li>步骤四：在处理表单的action中通过L::getInstance('UserForm');来获得表单中的内容进行操作</li>
+	    <p>代码
+	      <textarea rows="5" cols="90" readonly><form action="index.php?c=index&a=getForm">
+请输入用户名<input type="text" value="" name="username"/>
+请输入密码<input type="password" value="" name="password"/>
+<!--//此处为注册该表单得处理类 -->
+<input type="hidden" name="formName" value="UserForm"/>
+<input type="submit" value="测试" name="submit"/></form>
+	     </textarea></p>
+        <li><a href="?c=index&a=showForm">去测试</a></li></p>
+     <b>案例2：不设置form表单的处理类UserForm</b>   
+        <p>该情况下用户无需配置，也无需设置formName的处理类。在处理的action中通过request来获得表单内容</p>
+     	还是使用上面一个表单<br/>（注意这次不用设置
+     	<textarea rows="1" cols="99" readonly><input type="hidden" name="formName" value="UserForm"/></textarea>）
+     	<a href="?c=index&a=showForm&none=y">去测试</a>
+     </p>
+</div>
+<!-- end #mainContent -->
+
+<?php //$this->doAction('getFooter');?>
