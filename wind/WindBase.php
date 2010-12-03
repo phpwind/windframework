@@ -105,7 +105,7 @@ class W {
 		if (self::ifCompile() && !IS_DEBUG) {
 			L::import('WIND:utility.WindPack');
 			$pack = L::getInstance('WindPack');
-			$pack->packCompress(L::getImports());
+			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH,WindPack::STRIP_PHP,true);
 		}
 	}
 	
