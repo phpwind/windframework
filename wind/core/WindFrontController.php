@@ -23,9 +23,8 @@ L::import('WIND:core.base.WindServlet');
  */
 class WindFrontController extends WindServlet {
 	private $applications = array();
-	private static $instance = null;
 	
-	protected function __construct() {
+	public function __construct() {
 		parent::__construct();
 		$this->initConfig();
 	}
@@ -49,7 +48,6 @@ class WindFrontController extends WindServlet {
 	}
 	
 	protected function afterProcess() {
-		
 		restore_exception_handler();
 	}
 	
@@ -99,7 +97,8 @@ class WindFrontController extends WindServlet {
 		L::import('WIND:component.router.WindRouterFactory');
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($this->request, $this->response);
-		$this->response->setDispatcher(WindDispatcher::getInstance($this->request, $this->response)->initWithRouter($router));
+		$dispatcher = WindDispatcher::getInstance($this->request, $this->response, $this);
+		$this->response->setDispatcher($dispatcher->initWithRouter($router));
 	}
 	
 	/**
@@ -115,15 +114,5 @@ class WindFrontController extends WindServlet {
 		}
 		return $this->applications[$key];
 	}
-	
-	/**
-	 * @return WindFrontController
-	 */
-	static public function &getInstance() {
-		if (self::$instance === null) {
-			$class = __CLASS__;
-			self::$instance = new $class();
-		}
-		return self::$instance;
-	}
+
 }

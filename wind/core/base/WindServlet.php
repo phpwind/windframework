@@ -24,7 +24,7 @@ abstract class WindServlet {
 	const METHOD_PUT = "PUT";
 	const METHOD_TRACE = "TRACE";
 	
-	protected function __construct() {
+	public function __construct() {
 		try {
 			L::import('WIND:component.request.WindHttpRequest');
 			$this->request = WindHttpRequest::getInstance();
