@@ -78,7 +78,8 @@ class WindDispatcher {
 	private function _dispatchWithTemplate() {
 		$viewer = $this->getMav()->getView()->createViewerResolver();
 		$viewer->windAssign($this->response->getData());
-		$this->response->setBody($viewer->windFetch(), $this->getMav()->getViewName());
+		$viewName = $this->getMav()->getViewName();
+		$this->response->setBody($viewer->windFetch(), $viewName);
 	}
 	
 	/**
