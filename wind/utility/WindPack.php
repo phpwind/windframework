@@ -14,14 +14,28 @@
  * @package 
  */
 class WindPack{
-	
+	const STRIP_SELF = 'stripWhiteSpaceBySelf';
+	const STRIP_PHP = 'stripWhiteSpaceByPhp';
+	const STRIP_TOKEN = 'stripWhiteSpaceByToken';
 	private $packList = array();
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
 	 */
-	public function  stripWhiteSpace($filename){
+	public function  stripWhiteSpaceByPhp($filename){
 		return php_strip_whitespace($filename);
+	}
+	
+	public function stripWhiteSpaceBySelf($filename,$compress = true){
+		$content = $this->getContentFromFile($filename);
+		$content = $this->stripComment($content,'');
+		$content = $this->stripSpace($content,' ');
+		$content = $this->stripNR($content,$compress ? '':"\n");
+		return $content;
+	}
+	
+	public function stripWhiteSpaceByToken(){
+		
 	}
 	/**
 	 * 去除注释
@@ -120,7 +134,7 @@ class WindPack{
 	 * @param string $filename 文件名
 	 * @return string
 	 */
-	public function readContentFromFile($filename){
+	public function getContentFromFile($filename){
 		if($this->isFile($filename)){
 			$fp = fopen($filename, "r");
 			while(!feof($fp)){
@@ -200,7 +214,7 @@ class WindPack{
 	 * @param unknown_type $sep
 	 * @return string
 	 */
-	public function getPackImport($content = '',$sep = "\r\n"){
+	public function setImports($content = '',$sep = "\r\n"){
 		$packlist = $this->getPackListAsString();
 		$sep =  isset($sep) ? $sep : "\r\n";
 		return "{$sep}L::setImports(".$packlist.");{$sep}".$content;
@@ -208,7 +222,7 @@ class WindPack{
 	
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
-	 * @param boolean $iformat 是否格式化内容。$iformat = true表示格式化内容，效率高，iformat = false表示得到易于阅读的内容，但 效率低
+	 * @param string $packMethod 打包方式
 	 * @param mixed $dir 目录名
 	 * @param string $absolutePath 绝对路径名
 	 * @param array $ndir 不须要打包的文件夹
@@ -216,8 +230,11 @@ class WindPack{
 	 * @param array $nfile 不须要打包的文件
 	 * @return array
 	 */
-	public function readContentFromDir($iformat = false,$dir = array(),$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+	public function readContentFromDir($packMethod = WindPack::STRIP_PHP,$dir = array(),$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
 		static $content = array();
+		if(empty($dir) || false === $this->isValidatePackMethod($packMethod)){
+			return false;
+		}
 		$dir = is_array($dir) ? $dir : array($dir);
 		foreach($dir as $_dir){
 			$_dir = is_dir($absolutePath)  ? $this->realDir($absolutePath).$_dir : $_dir;
@@ -226,10 +243,10 @@ class WindPack{
 				while(false != ($tmp = $handle->read())){
 					$name = $this->realDir($_dir).$tmp;
 					if($this->isDir($name) && !in_array($tmp,$ndir)){
-						$this->readContentFromDir($iformat,$name,$absolutePath,$ndir,$suffix,$nfile);
+						$this->readContentFromDir($packMethod,$name,$absolutePath,$ndir,$suffix,$nfile);
 					}
 					if($this->isFile($name) && !in_array($this->getFileSuffix($name),$suffix) && !in_array($file = $this->getFileName($name),$nfile)){
-						$content[] = $iformat ? $this->stripWhiteSpace($name) : $this->readContentFromFile($name);
+						$content[] = $this->$packMethod($name);
 						$this->setPackList($file,$name);
 					}
 				}
@@ -237,6 +254,32 @@ class WindPack{
 			}
 		}
 		return $content;
+	}
+	
+	/**
+	 * @param mixed $fileList
+	 * @param method $packMethod
+	 * @param string $absolutePath
+	 * @return array:
+	 */
+	public function readContentFromFile($fileList,$packMethod = WindPack::STRIP_PHP,$absolutePath=''){
+		if(empty($fileList) || false === $this->isValidatePackMethod($packMethod)){
+			return false;
+		}
+		$content = array();
+		$fileList = is_array($fileList) ? $fileList : array($fileList);
+		foreach($fileList as $key=>$value){
+			$file =  is_dir($absolutePath)  ? $this->realDir($absolutePath).$value : $value;
+			if(is_file($file)){
+				$content[] = $this->$packMethod($file);
+				$this->setPackList($key,$file);
+			}
+		}
+		return $content;
+	}
+	
+	private function isValidatePackMethod($packMethod){
+		return method_exists($this,$packMethod) && in_array($packMethod,array(WindPack::STRIP_PHP,WindPack::STRIP_SELF,WindPack::STRIP_TOKEN));
 	}
 	
 	/**
@@ -290,58 +333,61 @@ class WindPack{
 	/**
 	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
 	 * @param mixed $dir 要打包的目录
-	 * @param sgring $dst 文件名
+	 * @param string $dst 文件名
+	 * @param string $packMethod 打包方式
+	 * @param boolean $compress 是否压缩
+	 * @param string $absolutePath 文件路径
 	 * @param array $ndir 不须要打包的目录
 	 * @param array $suffix 不永许打包的文件类型
 	 * @return string
 	 */
-	public function pack($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
-		if(empty($dst)){
+	public function packFromDir($dir,$dst,$packMethod=WindPack::STRIP_PHP,$compress = true,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
+		if(empty($dst) || empty($dir)){
 			return false;
 		}
 		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir(false,$dir,$absolutePath,$ndir,$suffix,$nfile))){
+		if(!($content = $this->readContentFromDir($packMethod,$dir,$absolutePath,$ndir,$suffix,$nfile))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
-		$content = implode("\n\r",$content);
-		$content = $this->stripComment($content);
-		$content = $this->stripPhpIdentify($content);
-		$content = $this->stripNR($content);
-		$content = $this->stripSpace($content);
-		$content = $this->getPackImport($content);
-		$content = $this->stripImport($content);
+		$replace = $compress  ? ' ' : "\n";
+		$content = implode($replace,$content);
+		$content = $this->stripNR($content,$replace);
+		$content = $this->setImports($content,$replace);
+		$content = $this->stripPhpIdentify($content,'');
+		$content = $this->stripImport($content,'');
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
 		return true;
 	}
 	
 	/**
-	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个压缩的文件,效率高，但不易阅读
-	 * @param mixed $dir 要打包的目录
-	 * @param sgring $dst 文件名
-	 * @param array $ndir 不须要打包的目录
-	 * @param array $suffix 不永许打包的文件类型
-	 * @return string
+	 * @param mixed $fileList
+	 * @param string $dst
+	 * @param method $packMethod
+	 * @param boolean $compress
+	 * @param string $absolutePath
+	 * @return string|string
 	 */
-	public function packCompress($dir,$dst,$absolutePath='',$ndir = array('.','..','.svn'),$suffix = array(),$nfile = array()){
-		if(empty($dst)){
+	public function packFromFile($fileList,$dst,$packMethod=WindPack::STRIP_PHP,$compress=true,$absolutePath=''){
+		if(empty($dst) || empty($fileList)){
 			return false;
 		}
-		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if(!($content = $this->readContentFromDir(true,$dir,$absolutePath,$ndir,$suffix,$nfile))){
+		if(!($content = $this->readContentFromFile($fileList,$packMethod,$absolutePath))){
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
-		$content = implode('',$content);
-		$content = $this->stripNR($content,'');
-		$content = $this->stripPhpIdentify($content);
-		$content = $this->getPackImport($content,' ');
-		$content = $this->stripImport($content);
+		$replace = $compress  ? ' ' : "\n";
+		$content = implode($replace,$content);
+		$content = $this->stripNR($content,$replace);
+		$content = $this->setImports($content,$replace);
+		$content = $this->stripPhpIdentify($content,'');
+		$content = $this->stripImport($content,'');
 		$content = $this->getContentBySuffix($content,$fileSuffix);
 		$this->writeContentToFile($dst,$content);
 		return true;
 	}
+
 
 	public function getFileSuffix($filename){
 		return substr($filename,strrpos($filename,'.')+1);

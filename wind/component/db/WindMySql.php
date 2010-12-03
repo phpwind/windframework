@@ -170,6 +170,5 @@ class WindMySql extends WindDbAdapter {
 		}
 		return true;
 	}
-	
-	
+		
 }

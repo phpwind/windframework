@@ -107,7 +107,7 @@ abstract class WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
 		if(empty($config['dbtype']) || empty($config['dbhost']) || empty($config['dbname']) || empty($config['dbuser'])  || empty($config['dbpass'])){
-			throw new WindSqlException (WindSqlException::DB_CONFIG_ERROR);
+			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
 		$config ['dbhost'] = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
 		$config ['pconnect'] = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
@@ -244,6 +244,6 @@ abstract class WindDbAdapter {
 	}
 
 	public function __destruct(){
-		is_resource($this->connection) && $this->dispose();
+		$this->dispose();
 	}
 }

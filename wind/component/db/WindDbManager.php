@@ -7,6 +7,7 @@
  */
 
 /**
+ * 分步式数据库操作管理
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -37,7 +38,7 @@ final class WindDbManager{
 	
 	public function addDriverConfig($config,$identify = ''){
 		if($identify && empty(self::$config[$identify])){
-			throw new WindSqlException("");
+			throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
 		}
 		$identify ? self::$config[$identify] = $config : self::$config[] = $config;
 	}
@@ -51,7 +52,7 @@ final class WindDbManager{
 	 */
 	public  function dbDriverFactory($identify = '',$optype = ''){
 		if($identify && empty(self::$config[$identify])){
-			throw new WindSqlException("");
+			throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($optype);
 		if(empty(self::$linked[$identify])){

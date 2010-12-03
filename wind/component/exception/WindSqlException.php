@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.exception.WindException');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -32,4 +32,5 @@ class WindSqlException extends WindException {
 	const DB_QUERY_COMPARESS_EXIST = 'Comparison does not exist query';
 	const DB_TABLE_EMPTY='Table is  empty';
 	const DB_EMPTY='Database is  empty';
+	const DB_DRIVER_NOT_EXIST = 'The database driver does not exist';
 }
