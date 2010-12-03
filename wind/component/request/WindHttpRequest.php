@@ -119,7 +119,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null
 	 */
 	public function getPost($name = null, $defaultValue = null) {
-		if ($name) return $_POST;
+		if ($name == null) return $_POST;
 		return isset($_POST[$name]) ? $_POST[$name] : $defaultValue;
 	}
 	
