@@ -7,9 +7,6 @@
  */
 
 L::import('WIND:core.base.IWindApplication');
-L::import('WIND:component.exception.WindException');
-L::import('WIND:component.viewer.WindViewFactory');
-L::import('WIND:component.router.WindRouterFactory');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>

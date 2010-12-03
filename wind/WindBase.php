@@ -203,6 +203,9 @@ final class L {
 			return $filePath;
 		}
 		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);
+		if (!$realPath) {
+			throw new Exception('import file ' . $filePath . ' is not exist.');
+		}
 		$fileNames = array();
 		if (!$isPackage) {
 			L::_include($realPath, $filePath, $fileName, $isPackage);
@@ -329,8 +332,8 @@ final class L {
 	 * @return string
 	 */
 	static private function _include($realPath, $filePath, $fileName, $ispackage = false) {
-		if (empty($realPath)) return;
-		if (!file_exists($realPath)) throw new Exception('file ' . $realPath . ' is not exists');
+		if (!$realPath) echo $fileName . '====' . $filePath . '<br>';
+		if (!file_exists($realPath)) return;
 		if (in_array($realPath, L::$_imports)) return $realPath;
 		include $realPath;
 		

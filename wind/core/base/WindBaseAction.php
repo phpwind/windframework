@@ -6,7 +6,6 @@
  * @license 
  */
 
-L::import('WIND:core.WindModelAndView');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -29,6 +28,7 @@ abstract class WindBaseAction {
 	 * @param WindHttpResponse $response
 	 */
 	public function __construct($request, $response) {
+		L::import('WIND:core.WindModelAndView');
 		$this->mav = new WindModelAndView();
 		$this->request = $request;
 		$this->response = $response;

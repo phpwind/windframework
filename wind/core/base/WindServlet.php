@@ -5,9 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.exception.WindException');
-L::import('WIND:component.request.WindHttpRequest');
-L::import('WIND:component.request.WindHttpResponse');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -29,16 +26,17 @@ abstract class WindServlet {
 	
 	protected function __construct() {
 		try {
+			L::import('WIND:component.request.WindHttpRequest');
 			$this->request = WindHttpRequest::getInstance();
 			$this->response = $this->request->getResponse();
 		
 		} catch (Exception $exception) {
-			throw new WindException('init action servlet failed!!');
+			throw new Exception('init action servlet failed!!');
 		}
 	}
 	
 	public function run() {
-		if ($this->request === null || $this->response === null) throw new WindException('init action servlet failed!!');
+		if ($this->request === null || $this->response === null) throw new Exception('init action servlet failed!!');
 		$this->service($this->request, $this->response);
 		$this->response->sendResponse();
 	}
@@ -53,7 +51,7 @@ abstract class WindServlet {
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function service(WindHttpRequest $request, WindHttpResponse $response) {
 		$method = $request->getRequestMethod();
@@ -85,7 +83,7 @@ abstract class WindServlet {
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function doPost(WindHttpRequest $request, WindHttpResponse $response) {
 		$protocol = $request->getProtocol();
@@ -99,7 +97,7 @@ abstract class WindServlet {
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function doGet(WindHttpRequest $request, WindHttpResponse $response) {
 		$protocol = $request->getProtocol();
@@ -113,7 +111,7 @@ abstract class WindServlet {
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function doPut(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
@@ -122,7 +120,7 @@ abstract class WindServlet {
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function doDelete(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
@@ -147,7 +145,7 @@ abstract class WindServlet {
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @throws WindException
+	 * @throws Exception
 	 */
 	protected function doHead(WindHttpRequest $request, WindHttpResponse $response) {
 

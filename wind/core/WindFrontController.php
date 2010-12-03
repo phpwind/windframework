@@ -7,7 +7,6 @@
  */
 
 L::import('WIND:core.base.WindServlet');
-L::import('WIND:component.exception.WindException');
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -97,6 +96,7 @@ class WindFrontController extends WindServlet {
 	 */
 	protected function initDispatch() {
 		if ($this->response->getDispatcher() && $this->response->getDispatcher()->getAction()) return;
+		L::import('WIND:component.router.WindRouterFactory');
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($this->request, $this->response);
 		$this->response->setDispatcher(WindDispatcher::getInstance($this->request, $this->response)->initWithRouter($router));
