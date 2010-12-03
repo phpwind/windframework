@@ -160,6 +160,7 @@ final class L {
 	 * @param string $path
 	 */
 	static public function register($name, $path) {
+		$name = strtolower($name);
 		if (!isset(L::$_namespace[$name])) {
 			L::$_namespace[$name] = $path;
 		}
@@ -201,7 +202,7 @@ final class L {
 		}
 		$fileNames = array();
 		if (!$isPackage) {
-			L::_include($realPath, $filePath, $fileName, $isPackage);
+			L::windInclude($realPath, $filePath, $fileName, $isPackage);
 			return $realPath;
 		}
 		if (!$dh = opendir($realPath)) throw new Exception('the file ' . $realPath . ' open failed!');
@@ -213,7 +214,7 @@ final class L {
 		}
 		closedir($dh);
 		foreach ($fileNames as $var) {
-			L::_include($realPath . D_S . $var[0] . '.' . $var[1], $filePath, $var[0], $isPackage);
+			L::windInclude($realPath . D_S . $var[0] . '.' . $var[1], $filePath, $var[0], $isPackage);
 		}
 		return $realPath;
 	}
@@ -281,7 +282,7 @@ final class L {
 				$namespace = substr($filePath, 0, $pos);
 				$filePath = substr($filePath, $pos + 1);
 			}
-			if ($dir)
+			if ($dir !== '')
 				$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
 			else
 				$filePath = L::_getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
@@ -324,7 +325,7 @@ final class L {
 	 * @param string $fileName 文件名称
 	 * @return string
 	 */
-	static private function _include($realPath, $filePath, $fileName, $ispackage = false) {
+	static private function windInclude($realPath, $filePath, $fileName, $ispackage = false) {
 		if (!file_exists($realPath)) return;
 		if (in_array($realPath, L::$_imports)) return $realPath;
 		include $realPath;
@@ -341,7 +342,7 @@ final class L {
 	 * @param string $key
 	 */
 	private static function isImported($realPath) {
-		return in_array($realPath);
+		return key_exists($realPath, L::$_imports) || in_array($realPath, L::$_imports);
 	}
 	
 	/**
@@ -358,10 +359,11 @@ final class L {
 	 * @return string
 	 */
 	static private function _getAppRootPath($namespace = '') {
+		$namespace = strtolower($namespace);
 		if ($namespace && isset(L::$_namespace[$namespace])) {
 			return L::$_namespace[$namespace];
 		} else {
-			return W::getCurrentApp() ? L::$_namespace[W::getCurrentApp()] : '';
+			return W::getCurrentApp() ? L::$_namespace[strtolower(W::getCurrentApp())] : '';
 		}
 	}
 }

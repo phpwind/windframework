@@ -13,9 +13,9 @@
  * @package 
  */
 class WindDispatcher {
-	private $action = 'run';
-	private $controller = 'index';
-	private $module = 'apps';
+	private $action;
+	private $controller;
+	private $module;
 	
 	private $mav = null;
 	
@@ -23,7 +23,7 @@ class WindDispatcher {
 	private $response = null;
 	
 	private static $instance = null;
-	private $actionHandle = '';
+	private $actionHandle;
 	
 	/**
 	 * @param WindModelAndView $mav
@@ -41,10 +41,10 @@ class WindDispatcher {
 	 */
 	public function dispatch() {
 		if ($this->getMav() === null) throw new WindException('dispatch error.');
-		if (($redirect = $this->getMav()->getRedirect()) !== '')
+		if ($redirect = $this->getMav()->getRedirect())
 			$this->_dispatchWithRedirect($redirect);
 		
-		elseif (($action = $this->getMav()->getAction()) !== '')
+		elseif ($action = $this->getMav()->getAction())
 			$this->_dispatchWithAction($action);
 		
 		else
@@ -93,17 +93,16 @@ class WindDispatcher {
 	 * @param WindModelAndView $mav
 	 */
 	public function &initWithMav($mav) {
-		$dispatcher = clone $this;
 		if (!($mav instanceof WindModelAndView)) throw new WindException('object type error.');
-		$dispatcher->mav = $mav;
-		$dispatcher->action = $mav->getAction();
-		$path = $mav->getActionPath();
+		$this->mav = $mav;
+		if ($mav->getAction()) $this->action = $mav->getAction();
+		if (!($path = $mav->getActionPath())) return $this;
 		if (($pos = strrpos($path, '.')) !== false) {
-			$dispatcher->controller = substr($path, $pos + 1);
-			$dispatcher->module = substr($path, 0, $pos);
+			$this->controller = substr($path, $pos + 1);
+			$this->module = substr($path, 0, $pos);
 		} else
-			$dispatcher->controller = $path;
-		return $dispatcher;
+			$this->controller = $path;
+		return $this;
 	}
 	
 	/**

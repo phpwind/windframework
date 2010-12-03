@@ -14,15 +14,15 @@
  */
 class WindModelAndView {
 	/* 模板视图信息 */
-	private $viewName = '';
-	private $path = '';
+	private $viewName;
+	private $path;
 	
 	/* 页面重定向请求信息 */
-	private $redirect = '';
+	private $redirect;
 	
 	/* 操作处理请求 */
-	private $action = '';
-	private $actionPath = '';
+	private $action;
+	private $actionPath;
 	
 	/**
 	 * 视图预处理类
