@@ -17,14 +17,16 @@
  * @package 
  */
 class WindView {
-	private $templatePath = 'template';
-	private $templateName = 'index';
-	private $templateExt = 'htm';
+	private $templatePath;
+	private $templateName;
+	private $templateExt;
 	
-	private $templateCacheDir = '';
-	private $templateCompileDir = '';
+	private $templateCacheDir;
+	private $templateCompileDir;
 	
-	private $reolver = 'default';
+	private $isCache;
+	
+	private $reolver;
 	
 	/**
 	 * @var $this->mav WindModelAndView
@@ -78,6 +80,8 @@ class WindView {
 		$this->templateName = C::getTemplate(IWindConfig::TEMPLATE_NAME);
 		$this->templateCacheDir = C::getTemplate(IWindConfig::TEMPLATE_CACHE_DIR);
 		$this->templateCompileDir = C::getTemplate(IWindConfig::TEMPLATE_COMPILER_DIR);
+		$this->templateExt = C::getTemplate(IWindConfig::TEMPLATE_EXT);
+		$this->isCache = C::getTemplate(IWindConfig::TEMPLATE_ISCACHE);
 		$this->reolver = C::getTemplate(IWindConfig::TEMPLATE_RESOLVER);
 	}
 	
@@ -114,6 +118,13 @@ class WindView {
 	 */
 	public function getViewerResolvers() {
 		return $this->viewerResolvers;
+	}
+	
+	/**
+	 * @return the $isCache
+	 */
+	public function getIsCache() {
+		return $this->isCache;
 	}
 	
 	/**
