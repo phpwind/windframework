@@ -24,12 +24,6 @@ class WindModelAndView {
 	private $action;
 	private $actionPath;
 	
-	/**
-	 * 视图预处理类
-	 * @var WindView
-	 */
-	private $view = null;
-	
 	/* 布局信息 */
 	private $layoutMapping = array();
 	private $layout = null;
@@ -98,15 +92,6 @@ class WindModelAndView {
 	}
 	
 	/**
-	 * 设置view对象
-	 * 
-	 * @param WindView $view
-	 */
-	public function setView($view = null) {
-		$this->view = $view;
-	}
-	
-	/**
 	 * 返回WindView对象
 	 * 
 	 * @return WindView
@@ -114,8 +99,7 @@ class WindModelAndView {
 	public function getView() {
 		if ($this->view == null) {
 			L::import('WIND:component.viewer.WindView');
-			$this->view = new WindView();
-			$this->view->setViewWithObject($this);
+			$this->view = new WindView('', $this);
 		}
 		return $this->view;
 	}
@@ -151,7 +135,7 @@ class WindModelAndView {
 	 */
 	public function setAction($action, $path = '') {
 		$this->action = $action;
-		if ($path) $this->setActionPath($path);
+		if ($path) $this->actionPath = $path;
 	}
 	
 	/**
@@ -159,14 +143,6 @@ class WindModelAndView {
 	 */
 	public function getActionPath() {
 		return $this->actionPath;
-	}
-	
-	/**
-	 * @param $actionPath the $actionPath to set
-	 * @author Qiong Wu
-	 */
-	public function setActionPath($actionPath) {
-		$this->actionPath = $actionPath;
 	}
 
 }

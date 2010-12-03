@@ -18,6 +18,7 @@ class WindDispatcher {
 	private $module;
 	
 	private $mav = null;
+	private $immediately = false;
 	
 	private static $instance = null;
 	private $actionHandle;
@@ -43,13 +44,14 @@ class WindDispatcher {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function dispatch() {
+	public function dispatch($immediately = false) {
 		if ($this->getMav() === null) throw new WindException('dispatch error.');
 		if (($redirect = $this->getMav()->getRedirect()) !== null)
 			$this->_dispatchWithRedirect($redirect);
-		elseif (($action = $this->getMav()->getAction()) !== null)
+		elseif (($action = $this->getMav()->getAction()) !== null) {
 			$this->_dispatchWithAction($action);
-		else
+			$this->immediately = $immediately;
+		} else
 			$this->_dispatchWithTemplate();
 		return;
 	}
@@ -79,7 +81,10 @@ class WindDispatcher {
 		$viewer = $this->getMav()->getView()->createViewerResolver();
 		$viewer->windAssign($this->response->getData());
 		$viewName = $this->getMav()->getViewName();
-		$this->response->setBody($viewer->windFetch(), $viewName);
+		if ($this->immediately)
+			$viewer->immediatelyDisplay();
+		else
+			$this->response->setBody($viewer->windFetch(), $viewName);
 	}
 	
 	/**

@@ -25,7 +25,6 @@ class WindView {
 	private $templateCompileDir;
 	
 	private $isCache;
-	
 	private $reolver;
 	
 	/**
@@ -40,19 +39,7 @@ class WindView {
 	public function __construct($templateName = '', $mav = null) {
 		$this->initConfig();
 		if ($templateName) $this->templateName = $templateName;
-		$this->mav = $mav ? $mav : new WindModelAndView($templateName);
-	}
-	
-	/**
-	 * 通过modelandview视图信息设置view
-	 * @param WindModelAndView $mav
-	 */
-	public function setViewWithObject(&$mav) {
-		if ($mav instanceof WindModelAndView) {
-			$this->mav = $mav;
-			$this->templateName = $this->getMav()->getViewName();
-			if ($this->getMav()->getPath()) $this->templatePath = $this->getMav()->getPath();
-		}
+		$this->setViewWithMav($mav);
 	}
 	
 	/**
@@ -86,6 +73,31 @@ class WindView {
 	}
 	
 	/**
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '', $path = '') {
+		if ($this->getMav() instanceof WindModelAndView) {
+			$mav = clone $this->getMav();
+			$mav->setAction($actionHandle, $path);
+			WindDispatcher::getInstance()->initWithMav($mav)->dispatch(true);
+		}
+	}
+	
+	/**
+	 * 通过modelandview视图信息设置view
+	 * @param WindModelAndView $mav
+	 */
+	private function setViewWithMav($mav) {
+		if ($mav instanceof WindModelAndView) {
+			$this->mav = $mav;
+			$this->templateName = $this->getMav()->getViewName();
+			if ($this->getMav()->getPath()) {
+				$this->templatePath = $this->getMav()->getPath();
+			}
+		}
+	}
+	
+	/**
 	 * @return the $templatePath
 	 */
 	public function getTemplatePath() {
@@ -107,31 +119,10 @@ class WindView {
 	}
 	
 	/**
-	 * @return the $reolver
-	 */
-	public function getReolver() {
-		return $this->reolver;
-	}
-	
-	/**
-	 * @return the $viewerResolvers
-	 */
-	public function getViewerResolvers() {
-		return $this->viewerResolvers;
-	}
-	
-	/**
 	 * @return the $isCache
 	 */
 	public function getIsCache() {
 		return $this->isCache;
-	}
-	
-	/**
-	 * @return the $config
-	 */
-	public function getConfig() {
-		return $this->config;
 	}
 	
 	/**
@@ -157,6 +148,14 @@ class WindView {
 	public function setTemplateExt($templateExt) {
 		$this->templateExt = $templateExt;
 	}
+	
+	/**
+	 * @return WindModelAndView $mav
+	 */
+	public function getMav() {
+		return $this->mav;
+	}
+	
 	/**
 	 * @return the $templateCacheDir
 	 */
@@ -185,25 +184,6 @@ class WindView {
 	 */
 	public function setTemplateCompileDir($templateCompileDir) {
 		$this->templateCompileDir = $templateCompileDir;
-	}
-	
-	/**
-	 * @return WindModelAndView $mav
-	 */
-	public function getMav() {
-		return $this->mav;
-	}
-	
-	/**
-	 * 初始化一个操作句柄
-	 * 
-	 * @param string $actionHandle
-	 */
-	public function doAction($actionHandle = '', $path = '') {
-		if ($this->getMav() instanceof WindModelAndView) {
-			$this->getMav()->setAction($actionHandle, $path);
-			WindDispatcher::getInstance()->initWithMav($this->getMav())->dispatch();
-		}
 	}
 
 }

@@ -6,8 +6,7 @@
  * @license 
  */
 
-L::register('viewer', dirname(__FILE__));
-L::import('viewer:base.IWindViewer');
+L::import('WIND:component.viewer.base.IWindViewer');
 /**
  * 默认视图引擎
  * 基于URL的视图引擎，视图名和模板名称保持一致
@@ -35,6 +34,10 @@ class WindViewer implements IWindViewer {
 	 * @var $vars
 	 */
 	protected $vars = array();
+	
+	public function immediatelyDisplay($template = '') {
+		echo $this->windFetch($template = '');
+	}
 	
 	/**
 	 * 获取模板信息
@@ -159,7 +162,9 @@ class WindViewer implements IWindViewer {
 	 * @param string $actionHandle
 	 */
 	public function doAction($actionHandle = '', $path = '') {
-		if ($this->view instanceof WindView) $this->getView()->doAction($actionHandle, $path);
+		if ($this->view instanceof WindView) {
+			$this->getView()->doAction($actionHandle, $path);
+		}
 	}
 
 }
