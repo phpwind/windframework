@@ -79,7 +79,7 @@ abstract class WindSqlBuilder {
         self::CROSS,
     );
 	
-	protected $option = array();
+	protected $sql = array();
 	
 	/**
 	 * 表解析
@@ -190,7 +190,7 @@ abstract class WindSqlBuilder {
 	public abstract function getMetaColumnSql($table);
 	/**
 	 * 解析新增SQL语句
-	 * @param array $option
+	 * @param array $sql
 	 * @return string
 	 */
 	public abstract function distinct($flag = true);
@@ -211,56 +211,56 @@ abstract class WindSqlBuilder {
 	}
 	/**
 	 * 解析更新QL语句
-	 * @param array $option
+	 * @param array $sql
 	 * @return string
 	 */
-	public function getUpdateSql($option = array()) {
-		$option = $option ? $option : $this->option;
+	public function getUpdateSql($sql = array()) {
+		$sql = $sql ? $sql : $this->sql;
 		return sprintf ( self::SQL_UPDATE.'%s'.self::SQL_SET.'%s%s%s%s', 
-			$this->buildFrom ( $option [self::FROM] ), 
-			$this->buildSet ( $option [self::SET] ), 
-			$this->buildWhere ( $option [self::WHERE]), 
-			$this->buildOrder ( $option [self::ORDER] ), 
-			$this->buildLimit ( $option [self::LIMIT] ) 
+			$this->buildFrom ( $sql [self::FROM] ), 
+			$this->buildSet ( $sql [self::SET] ), 
+			$this->buildWhere ( $sql [self::WHERE]), 
+			$this->buildOrder ( $sql [self::ORDER] ), 
+			$this->buildLimit ( $sql [self::LIMIT] ) 
 		);
 	}
 	/**
 	 * 解析删除SQL语句
-	 * @param array $option
+	 * @param array $sql
 	 * @return string
 	 */
-	public function getDeleteSql($option = array()) {
-		$option = $option ? $option : $this->option;
+	public function getDeleteSql($sql = array()) {
+		$sql = $sql ? $sql : $this->sql;
 		return sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
-			$this->buildFrom ( $option [self::FROM] ), 
-			$this->buildWhere ( $option [self::WHERE] ), 
-			$this->buildOrder ( $option [self::ORDER] ), 
-			$this->buildLimit ( $option [self::LIMIT] ) 
+			$this->buildFrom ( $sql [self::FROM] ), 
+			$this->buildWhere ( $sql [self::WHERE] ), 
+			$this->buildOrder ( $sql [self::ORDER] ), 
+			$this->buildLimit ( $sql [self::LIMIT] ) 
 		);
 	}
 	/**
 	 * 解析查询SQL语句
-	 * @param array $option
+	 * @param array $sql
 	 * @return string
 	 */
-	public function getSelectSql($option = array()) {
-		$option = $option ? $option : $this->option;
+	public function getSelectSql($sql = array()) {
+		$sql = $sql ? $sql : $this->sql;
 		return sprintf ( self::SQL_SELECT.'%s%s'.self::SQL_FROM.'%s%s%s%s%s%s%s', 
-			$this->buildDistinct ( $option [self::DISTINCT] ), 
-			$this->buildField ( $option [self::FIELD] ), 
-			$this->buildFROM ( $option [self::FROM] ), 
-			$this->buildJoin ($option [self::JOIN]), 
-			$this->buildWhere ( $option [self::WHERE] ), 
-			$this->buildGroup ( $option [self::GROUP] ), 
-			$this->buildHaving ( $option [self::HAVING] ), 
-			$this->buildOrder ( $option [self::ORDER] ), 
-			$this->buildLimit ( $option [self::LIMIT], $option [self::OFFSET]) 
+			$this->buildDistinct ( $sql [self::DISTINCT] ), 
+			$this->buildField ( $sql [self::FIELD] ), 
+			$this->buildFROM ( $sql [self::FROM] ), 
+			$this->buildJoin ($sql [self::JOIN]), 
+			$this->buildWhere ( $sql [self::WHERE] ), 
+			$this->buildGroup ( $sql [self::GROUP] ), 
+			$this->buildHaving ( $sql [self::HAVING] ), 
+			$this->buildOrder ( $sql [self::ORDER] ), 
+			$this->buildLimit ( $sql [self::LIMIT], $sql [self::OFFSET]) 
 			);
 	}
 	
 	/**
 	 * 解析replace SQL语句
-	 * @param array $option
+	 * @param array $sql
 	 * @return string
 	 */
 	public function getReplaceSql($table,$data){

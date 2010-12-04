@@ -19,11 +19,38 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		$this->sql[self::DISTINCT] = self::SQL_DISTINCT;
 		return $this;
 	}
-	public  function filed($flag){
-		$this->sql[self::DISTINCT] = self::SQL_DISTINCT;
+	public  function filed($field){
+		if(empty($this->sql[self::FIELD]) || !is_array($this->sql[self::FIELD])){
+			$this->sql[self::FIELD] = array();
+		}
+		$params = func_num_args();
+		$field = $params >1 ? func_get_args() : func_get_arg(0);
+		$field = is_array($field) ? $field : array($field);
+		foreach($field as $key=>$value){
+			if(is_string($key)){
+				$this->sql[self::FIELD][$key] = $value;
+			}
+			if(is_int($key)){
+				$this->sql[self::FIELD][] = $value;
+			}
+		}
 		return $this;
 	}
-	public  function from(){
+	public  function from($table){
+		if(empty($this->sql[self::FROM]) || !is_array($this->sql[self::FROM])){
+			$this->sql[self::FROM] = array();
+		}
+		$params = func_num_args();
+		$table = $params >1 ? func_get_args() : func_get_arg(0);
+		$table = is_array($table) ? $table : array($table);
+		foreach($table as $key=>$value){
+			if(is_string($key)){
+				$this->sql[self::FROM][$key] = $value;
+			}
+			if(is_int($key)){
+				$this->sql[self::FROM][] = $value;
+			}
+		}
 		return $this;
 	}
 	public  function join(){
