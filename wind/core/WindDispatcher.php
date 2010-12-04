@@ -7,6 +7,8 @@
  */
 
 /**
+ * 请求转发及页面重定向
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -20,13 +22,11 @@ class WindDispatcher {
 	private $mav = null;
 	private $immediately = false;
 	
-	private static $instance = null;
-	private $actionHandle;
-	
 	private $request = null;
 	private $response = null;
 	private $frontController = null;
 	
+	private static $instance = null;
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -53,46 +53,8 @@ class WindDispatcher {
 			$this->immediately = $immediately;
 		} else
 			$this->_dispatchWithTemplate();
+		$this->clear();
 		return;
-	}
-	
-	/**
-	 * 请求分发一个重定向请求
-	 */
-	private function _dispatchWithRedirect($redirect) {
-		$this->response->sendRedirect($redirect);
-	}
-	
-	/**
-	 * 请求分发一个操作请求
-	 * @param String $action
-	 */
-	private function _dispatchWithAction($action) {
-		$this->frontController->getApplicationHandle()->processRequest($this->request, $this->response);
-	}
-	
-	/**
-	 * 请求分发一个模板请求
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	private function _dispatchWithTemplate() {
-		$viewer = $this->getMav()->getView()->createViewerResolver();
-		$viewer->windAssign($this->response->getData());
-		$viewName = $this->getMav()->getViewName();
-		if ($this->immediately)
-			$viewer->immediatelyDisplay();
-		else
-			$this->response->setBody($viewer->windFetch(), $viewName);
-	}
-	
-	/**
-	 * 返回一个ModelAndView对象
-	 * @return WindModelAndView $mav
-	 */
-	public function getMav() {
-		return $this->mav;
 	}
 	
 	/**
@@ -158,9 +120,45 @@ class WindDispatcher {
 	}
 	
 	/**
+	 * 请求分发一个重定向请求
+	 */
+	private function _dispatchWithRedirect($redirect) {
+		$this->response->sendRedirect($redirect);
+	}
+	
+	/**
+	 * 请求分发一个操作请求
+	 * @param String $action
+	 */
+	private function _dispatchWithAction($action) {
+		$this->frontController->getApplicationHandle()->processRequest($this->request, $this->response);
+	}
+	
+	/**
+	 * 请求分发一个模板请求
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	private function _dispatchWithTemplate() {
+		$viewer = $this->getMav()->getView()->createViewerResolver();
+		$viewer->windAssign($this->response->getData());
+		$viewName = $this->getMav()->getViewName();
+		if ($this->immediately)
+			$viewer->immediatelyDisplay();
+		else
+			$this->response->setBody($viewer->windFetch(), $viewName);
+	}
+	
+	private function clear() {
+		$this->mav = null;
+	}
+	
+	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 * @param WindFrontController $frontController
+	 * @return WindDispatcher
 	 */
 	static public function &getInstance($request = null, $response = null, $frontController = null) {
 		if (self::$instance === null) {
@@ -182,7 +180,15 @@ class WindDispatcher {
 		return $this->module;
 	}
 	
-	static public function clear() {
+	/**
+	 * 返回一个ModelAndView对象
+	 * @return WindModelAndView $mav
+	 */
+	public function getMav() {
+		return $this->mav;
+	}
+	
+	static public function distroy() {
 		self::$instance = null;
 	}
 }

@@ -8,7 +8,7 @@
 class OtherController extends WindController {
 	
 	public function header() {
-		$this->setViewData(array('test1'=>'asdfasdfsafd'));
+		$this->setOutput(array('test1'=>'asdfasdfsafd'));
 		$this->setTemplate('header');
 	}
 	

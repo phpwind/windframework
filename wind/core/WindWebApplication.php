@@ -35,8 +35,7 @@ class WindWebApplication implements IWindApplication {
 		$action->afterAction();
 		
 		/* 获得请求跳转信息 */
-		$mav = $action->getModelAndView();
-		$this->processDispatch($request, $response, $mav);
+		$this->processDispatch($request, $response, $action->getMav());
 	}
 	
 	/**
@@ -81,6 +80,6 @@ class WindWebApplication implements IWindApplication {
 	}
 	
 	public function destory() {
-		WindDispatcher::getInstance()->clear();
+		WindDispatcher::getInstance()->distroy();
 	}
 }

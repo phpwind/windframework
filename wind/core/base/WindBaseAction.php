@@ -5,21 +5,16 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:core.base.IWindAction');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindBaseAction {
-	private $request;
-	private $response;
-	/**
-	 * 页面跳转信息model and view对象
-	 * 
-	 * @var $mav WindModelAndView
-	 */
+abstract class WindBaseAction implements IWindAction {
+	protected $request;
+	protected $response;
 	protected $mav = null;
 	protected $error = null;
 	
@@ -32,10 +27,10 @@ abstract class WindBaseAction {
 	public function __construct($request, $response) {
 		L::import('WIND:core.WindModelAndView');
 		$this->mav = new WindModelAndView();
+		$this->mav->setViewName($response->getDispatcher()->getController() . '_' . $response->getDispatcher()->getAction());
+		$this->error = WindErrorMessage::getInstance();
 		$this->request = $request;
 		$this->response = $response;
-		$this->setDefaultViewTemplate();
-		$this->error = WindErrorMessage::getInstance();
 		$this->getInputParams();
 	}
 	
@@ -44,41 +39,35 @@ abstract class WindBaseAction {
 	public function afterAction() {}
 	
 	/**
+	 * 请求另一个操作处理
+	 * 
+	 * @param string $actionHandle
+	 * @param string $path
+	 */
+	public function setAction($actionHandle = '', $path = '') {
+		$this->getMav()->setAction($actionHandle, $path);
+	}
+	
+	/* 数据处理 */
+	
+	/**
 	 * 设置模板数据
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
-	public function setViewData($data, $key = '') {
+	public function setOutput($data, $key = '') {
 		$this->response->setData($data, $key);
 	}
 	
 	/**
-	 * 设置默认模板
+	 * 获得输入数据
+	 * @param string|array $input
 	 */
-	public function setDefaultViewTemplate($default = '') {
-		if (!$default && $this->response) {
-			$default = $this->response->getDispatcher()->getController() . '_' . $this->response->getDispatcher()->getAction();
-		}
-		$this->mav->setViewName($default);
+	public function getInput($input, $type) {
+
 	}
 	
-	/**
-	 * 设置页面模板
-	 * @param string $template
-	 */
-	public function setTemplate($template = '') {
-		if ($template) $this->getModelAndView()->setViewName($template);
-	}
-	
-	/**
-	 * 设置页面布局
-	 * @param WindLayout $layout
-	 */
-	public function setLayout($layout = '') {
-		if ($layout instanceof WindLayout) {
-			$this->getModelAndView()->setLayout($layout);
-		}
-	}
+	/* 错误处理 */
 	
 	/**
 	 * 添加错误信息
@@ -91,13 +80,6 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 添加错误处理Action
-	 */
-	public function addErrorAction($errorAction) {
-		$this->error->setErrorAction($errorAction);
-	}
-	
-	/**
 	 * @param string $message
 	 * @param string $key
 	 */
@@ -107,10 +89,30 @@ abstract class WindBaseAction {
 		$this->error->sendError();
 	}
 	
+	/* 模板处理 */
+	
+	/**
+	 * 设置页面模板
+	 * @param string $template
+	 */
+	public function setTemplate($template = '') {
+		if ($template) $this->getMav()->setViewName($template);
+	}
+	
+	/**
+	 * 设置页面布局
+	 * @param WindLayout $layout
+	 */
+	public function setLayout($layout = '') {
+		if ($layout instanceof WindLayout) {
+			$this->getMav()->setLayout($layout);
+		}
+	}
+	
 	/**
 	 * @return WindModelAndView $mav
 	 */
-	public function getModelAndView() {
+	public function getMav() {
 		return $this->mav;
 	}
 	

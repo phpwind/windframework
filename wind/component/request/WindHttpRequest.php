@@ -65,6 +65,10 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	private $_params = array();
 	
+	private function __construct() {
+		$this->normalizeRequest();
+	}
+	
 	/**
 	 * 返回请求对象的单例实例
 	 * 
@@ -76,6 +80,19 @@ class WindHttpRequest implements IWindRequest {
 			self::$_instance = new $class();
 		}
 		return self::$_instance;
+	}
+	
+	protected function normalizeRequest() {
+		if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+			if (isset($_GET)) $_GET = $this->stripSlashes($_GET);
+			if (isset($_POST)) $_POST = $this->stripSlashes($_POST);
+			if (isset($_REQUEST)) $_REQUEST = $this->stripSlashes($_REQUEST);
+			if (isset($_COOKIE)) $_COOKIE = $this->stripSlashes($_COOKIE);
+		}
+	}
+	
+	public function stripSlashes(&$data) {
+		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
 	}
 	
 	/**

@@ -11,8 +11,8 @@ class IndexController extends WindController {
 	protected $c;
 	public function run() {
 		echo "asdfasdf";
-		$this->getModelAndView()->setViewName('body');
-		$this->getModelAndView()->setModel(array('test' => 'hello World!'));
+		$this->getMav()->setViewName('body');
+		$this->getMav()->setModel(array('test' => 'hello World!'));
 		/*$view->windAssign('content', 'Hello World!');
 		$view->windAssign('name', '【鹊桥】小组');
 		$view->windAssign('title', 'Smarty引入之后的测试');

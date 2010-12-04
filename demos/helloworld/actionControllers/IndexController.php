@@ -13,14 +13,11 @@
  * @package
  */
 class IndexController extends WindController {
-
+	const AA= 'aaa';
 	public function run() {
+		echo IWindRequest::COOKIE;
+		echo self::AA;
 		echo "mmmmm";
-		//$this->setViewData(array('test'=>'xxxxxxxxxx'));
-//		$this->getModelAndView()->setAction('run','otherControllers.otherController');
-		//WindErrorMessage::getInstance()->showError();
-//		$this->setViewData(array('test' => 'xxxxxxxxxx'));
-		//this->getModelAndView()->setAction('run','otherControllers.otherController');
 	}
 
 }
