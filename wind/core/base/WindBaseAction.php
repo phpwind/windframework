@@ -55,16 +55,33 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
-	public function setOutput($data, $key = '') {
+	public function output($data, $key = '') {
 		$this->response->setData($data, $key);
 	}
 	
 	/**
 	 * 获得输入数据
-	 * @param string|array $input
+	 * 如果输入了回调方法则返回数组:
+	 * 第一个值：value
+	 * 第二个值：验证结果
+	 * @param string $name input name
+	 * @param string $type input type (GET POST COOKIE)
+	 * @param string $callback | validation for input
+	 * @return array | string
 	 */
-	public function getInput($input, $type) {
-
+	public function input($name, $type = '', $callback = null) {
+		$value = '';
+		switch ($type) {
+			case IWindRequest::TYPE_GET:
+				$value = $this->request->getGet($name);
+			case IWindRequest::TYPE_POST:
+				$value = $this->request->getPost($name);
+			case IWindRequest::TYPE_COOKIE:
+				$value = $this->request->getCookie($name);
+			default:
+				$value = $this->request->getAttribute($name);
+		}
+		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
 	}
 	
 	/* 错误处理 */
