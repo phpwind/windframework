@@ -15,7 +15,14 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  */
 class WindMySqlBuilder extends WindSqlBuilder {
 	
-	
+	public  function filed();
+	public  function from();
+	public  function join();
+	public  function where();
+	public  function order();
+	public  function group();
+	public  function having();
+	public  function limit();
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */

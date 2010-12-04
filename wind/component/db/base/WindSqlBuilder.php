@@ -21,7 +21,7 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var array 逻辑运算符
 	 */
-	protected static $logic = array ('and' => 'AND', 'or' => 'OR', 'xor' => 'XOR' );
+	protected static $logic = array ('and' => self::SQL_AND, 'or' => self::SQL_OR, 'xor' => self::SQL_XOR );
 	/**
 	 * @var array 分组条件
 	 */
@@ -62,9 +62,10 @@ abstract class WindSqlBuilder {
     const SQL_IN		 = 'IN ';
     const SQL_AS         = 'AS ';
     const SQL_OR         = 'OR ';
+    const SQL_XOR         = 'XOR ';
     const SQL_ON         = 'ON ';
     const SQL_SET		 = 'SET ';
-    const SQL_VALUES	 = 'SET ';
+    const SQL_VALUES	 = 'VALUES ';
     const SQL_LIMIT	     = 'LIMIT ';
     const SQL_OFFSET	 = 'OFFSET ';
     const SQL_ASC        = 'ASC ';
