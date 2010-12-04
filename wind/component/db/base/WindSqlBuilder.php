@@ -193,7 +193,7 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public abstract function distinct($bool = true);
+	public abstract function distinct($flag = true);
 	public abstract function filed();
 	public abstract function from();
 	public abstract function join();

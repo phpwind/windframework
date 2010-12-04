@@ -15,18 +15,39 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  */
 class WindMySqlBuilder extends WindSqlBuilder {
 	
-	public  function filed();
-	public  function from();
-	public  function join();
-	public  function where();
-	public  function order();
-	public  function group();
-	public  function having();
-	public  function limit();
+	public  function distinct($flag = true){
+		$this->sql[self::DISTINCT] = self::SQL_DISTINCT;
+		return $this;
+	}
+	public  function filed($flag){
+		$this->sql[self::DISTINCT] = self::SQL_DISTINCT;
+		return $this;
+	}
+	public  function from(){
+		return $this;
+	}
+	public  function join(){
+		return $this;
+	}
+	public  function where(){
+		return $this;
+	}
+	public  function order(){
+		return $this;
+	}
+	public  function group(){
+		return $this;
+	}
+	public  function having(){
+		return $this;
+	}
+	public  function limit(){
+		return $this;
+	}
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
-	public function buildTable($table = array()) {
+	public function buildFrom($table = array()) {
 		if (empty ( $table ) || (! is_string ( $table ) && ! is_array ( $table ))) {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
