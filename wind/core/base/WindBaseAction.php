@@ -23,6 +23,8 @@ abstract class WindBaseAction {
 	protected $mav = null;
 	protected $error = null;
 	
+	protected $input = null;
+	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -34,6 +36,7 @@ abstract class WindBaseAction {
 		$this->response = $response;
 		$this->setDefaultViewTemplate();
 		$this->error = WindErrorMessage::getInstance();
+		$this->getInputParams();
 	}
 	
 	public function beforeAction() {}
@@ -111,20 +114,13 @@ abstract class WindBaseAction {
 		return $this->mav;
 	}
 	
-	public function getParaments($param) {
-		if (!$param) return '';
-		if (is_string($param)) {
-			return  ($this->request->getGet($param) != null) ? $this->request->getGet($param) : $this->request->getPost($param, '');
+	private function getInputParams() {
+		$this->input = new stdClass();
+		foreach ($this->request->getGet() as $key => $value) {
+			$this->input->$key = $value;
 		}
-		if (!is_array($param)) return '';
-		$result = array();
-		foreach ($param as $key) {
-			if ($key == 'GLOBALS') continue;
-			$result[$key] = ($this->request->getGet($key) != null) ? $this->request->getGet($key) : $this->request->getPost($key);
-			if ($result[$key] == null) {
-				unset($result[$key]);
-			}
+		foreach ($this->request->getPost() as $key => $value) {
+			$this->input->$key = $value;
 		}
-		return $result;
 	}
 }
