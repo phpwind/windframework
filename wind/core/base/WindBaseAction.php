@@ -55,7 +55,7 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
-	public function output($data, $key = '') {
+	public function setOutput($data, $key = '') {
 		$this->response->setData($data, $key);
 	}
 	
@@ -69,7 +69,14 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $callback | validation for input
 	 * @return array | string
 	 */
-	public function input($name, $type = '', $callback = null) {
+	public function getInput($name, $type = '', $callback = null) {
+		if (is_array($name))
+			return $this->getInputWithArray($name, $type);
+		else
+			return $this->getInputWithString($name, $type, $callback);
+	}
+	
+	private function getInputWithString($name, $type = '', $callback = null) {
 		$value = '';
 		switch ($type) {
 			case IWindRequest::TYPE_GET:
@@ -82,6 +89,14 @@ abstract class WindBaseAction implements IWindAction {
 				$value = $this->request->getAttribute($name);
 		}
 		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
+	}
+	
+	private function getInputWithArray($name, $type = '') {
+		$result = array();
+		foreach ($name as $key => $value) {
+			$result[$name] = $this->getInputWithString($name, $type);
+		}
+		return $result;
 	}
 	
 	/* 错误处理 */
@@ -131,15 +146,5 @@ abstract class WindBaseAction implements IWindAction {
 	 */
 	public function getMav() {
 		return $this->mav;
-	}
-	
-	private function getInputParams() {
-		$this->input = new stdClass();
-		foreach ($this->request->getGet() as $key => $value) {
-			$this->input->$key = $value;
-		}
-		foreach ($this->request->getPost() as $key => $value) {
-			$this->input->$key = $value;
-		}
 	}
 }
