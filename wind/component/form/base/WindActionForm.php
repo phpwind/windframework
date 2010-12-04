@@ -16,7 +16,6 @@ L::import('WIND:component.container.WindModule');
 abstract class WindActionForm extends WindModule {
 	protected $_isValidate = false;
 	protected $_error = array();
-
 	
 	/**
 	 * 是否开启验证
@@ -34,10 +33,10 @@ abstract class WindActionForm extends WindModule {
 	public function validation() {
 		$methods = get_class_methods($this);
 		foreach ($methods as $_value) {
-			if (strtolower(substr($_value, -8)) == 'validate')
-				call_user_func(array($this, $_value));
+			if (strtolower(substr($_value, -8)) == 'validate') call_user_func(array($this, $_value));
 		}
 	}
+	
 	/**
 	 * 添加验证中产生的错误信息
 	 * @param string $message
@@ -46,6 +45,7 @@ abstract class WindActionForm extends WindModule {
 		$this->_error[] = $message;
 		return false;
 	}
+	
 	/**
 	 * 是否有错误需要显示
 	 * @return boolean 
@@ -53,21 +53,23 @@ abstract class WindActionForm extends WindModule {
 	public function showError() {
 		return count($this->_error) > 0;
 	}
+	
 	/**
 	 * 获得错误信息
 	 */
 	public function getError() {
 		return $this->_error;
 	}
+	
 	/**
 	 * 设置属性值
 	 * @param array $_params
 	 */
 	public function setProperties($_params) {
-	   if (!$_params) return false;
-	   foreach ($_params as $_key => $_value) {
-	   	   $this->$_key = $_value;
-	   }
-	   return true;
+		if (!$_params) return false;
+		foreach ($_params as $_key => $_value) {
+			$this->$_key = $_value;
+		}
+		return true;
 	}
 }
