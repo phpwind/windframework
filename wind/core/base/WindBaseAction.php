@@ -18,8 +18,6 @@ abstract class WindBaseAction implements IWindAction {
 	protected $mav = null;
 	protected $error = null;
 	
-	protected $input = null;
-	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -31,7 +29,6 @@ abstract class WindBaseAction implements IWindAction {
 		$this->error = WindErrorMessage::getInstance();
 		$this->request = $request;
 		$this->response = $response;
-		$this->getInputParams();
 	}
 	
 	public function beforeAction() {}
