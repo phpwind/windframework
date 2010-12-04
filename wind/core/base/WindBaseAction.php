@@ -91,8 +91,7 @@ abstract class WindBaseAction implements IWindAction {
 	private function getInputWithArray($name, $type = '') {
 		$result = array();
 		foreach ($name as $key => $value) {
-			$key = is_array($value) ? $key : $value;
-			$result[$key] = $this->getInput($value, $type);
+			$result[(is_array($value) ? $key : $value)] = $this->getInput($value, $type);
 		}
 		return $result;
 	}
