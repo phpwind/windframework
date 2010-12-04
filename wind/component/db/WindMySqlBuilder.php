@@ -100,17 +100,17 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			return '';
 		}
 		if (is_string ( $where )) {
-			return 'WHERE' . $this->sqlFillSpace($where);
+			return self::SQL_WHERE . $this->sqlFillSpace($where);
 		}
 		$_where = $this->formatWhere($where);
-		return $this->sqlFillSpace ('WHERE '.implode(' ',$_where)) ;
+		return $this->sqlFillSpace (self::SQL_WHERE.implode(' ',$_where)) ;
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildGroup()
 	 */
 	public function buildGroup($group = array()) {
-		return $this->sqlFillSpace ( $group ? 'GROUP BY ' . (is_array ( $group ) ? implode ( ',', $group ) : $group) . '' : '' );
+		return $this->sqlFillSpace ( $group ? self::SQL_GROUP . (is_array ( $group ) ? implode ( ',', $group ) : $group) . '' : '' );
 	}
 	
 	/* (non-PHPdoc)
@@ -125,14 +125,14 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		} else {
 			$orderby = $order;
 		}
-		return $this->sqlFillSpace ( $orderby ? 'ORDER BY ' . $orderby : '' );
+		return $this->sqlFillSpace ( $orderby ? self::SQL_ORDER . $orderby : '' );
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildHaving()
 	 */
 	public function buildHaving($having = '') {
-		return $this->sqlFillSpace ( $having ? 'HAVING ' . $having : '' );
+		return $this->sqlFillSpace ( $having ? self::SQL_HAVING . $having : '' );
 	}
 	
 	/* (non-PHPdoc)
@@ -142,7 +142,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		if(is_string($limit)){
 			return $this->sqlFillSpace($limit);
 		}
-		return $this->sqlFillSpace ( ($sql = $limit > 0 ? 'LIMIT ' . $limit : '') ? $offset > 0 ? $sql . ' OFFSET ' . $offset : $sql : '' );
+		return $this->sqlFillSpace ( ($sql = $limit > 0 ? self::SQL_LIMIT . $limit : '') ? $offset > 0 ? $sql . self::SQL_OFFSET . $offset : $sql : '' );
 	}
 	
 	
@@ -305,7 +305,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		if ($group % 2 === 1) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_GROUP_MATCH);
 		}
-		if ($logic && $condition && $condition - $logic != 1) {echo 33;
+		if ($logic && $condition && $condition - $logic != 1) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_LOGIC_MATCH);
 		}
 		if ($group && $condition === 0) {

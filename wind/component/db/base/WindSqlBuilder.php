@@ -17,15 +17,68 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var array 运算表达式
 	 */
-	protected $compare = array ('gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'eq' => '=', 'neq' => '!=', 'in' => 'IN', 'notin' => 'NOT IN', 'notlike' => 'NOT LIKE', 'like' => 'LIKE' );
+	protected static $compare = array ('gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'eq' => '=', 'neq' => '!=', 'in' => 'IN', 'notin' => 'NOT IN', 'notlike' => 'NOT LIKE', 'like' => 'LIKE' );
 	/**
 	 * @var array 逻辑运算符
 	 */
-	protected $logic = array ('and' => 'AND', 'or' => 'OR', 'xor' => 'XOR' );
+	protected static $logic = array ('and' => 'AND', 'or' => 'OR', 'xor' => 'XOR' );
 	/**
 	 * @var array 分组条件
 	 */
-	protected $group = array ('lg' => '(', 'rg' => ')' );
+	protected static $group = array ('lg' => '(', 'rg' => ')' );
+	
+    const DISTINCT = 'distinct';
+    const FIELD   = 'field';
+    const SET = 'set';
+    const FROM    = 'from';
+    const JOIN 	  = 'join';
+    const WHERE   = 'where';
+    const GROUP   = 'group';
+    const HAVING  = 'having';
+    const ORDER   = 'order';
+    const LIMIT   = 'limit';
+    const OFFSET   = 'offset';
+
+	const INNER     = 'INNER';
+    const LEFT     = 'LEFT';
+    const RIGHT     = 'RIGHTER';
+    const FULL      = 'FULL';
+    const CROSS    = 'CROSS';
+    
+    
+    const SQL_SELECT     = 'SELECT ';
+    const SQL_INSERT     = 'INSERT ';
+    const SQL_UPDATE     = 'UPDATE ';
+    const SQL_DELETE     = 'DELETE ';
+    const SQL_REPLACE	 = 'REPLACE ';
+    const SQL_FROM       = 'FROM ';
+    const SQL_JOIN       = 'JOIN ';
+    const SQL_WHERE      = 'WHERE ';
+    const SQL_DISTINCT   = 'DISTINCT ';
+    const SQL_GROUP   = 'GROUP BY ';
+    const SQL_ORDER   = 'ORDER BY ';
+    const SQL_HAVING     = 'HAVING ';
+    const SQL_AND        = 'AND ';
+    const SQL_IN		 = 'IN ';
+    const SQL_AS         = 'AS ';
+    const SQL_OR         = 'OR ';
+    const SQL_ON         = 'ON ';
+    const SQL_SET		 = 'SET ';
+    const SQL_VALUES	 = 'SET ';
+    const SQL_LIMIT	     = 'LIMIT ';
+    const SQL_OFFSET	 = 'OFFSET ';
+    const SQL_ASC        = 'ASC ';
+    const SQL_DESC       = 'DESC ';
+    
+    protected static $joinType = array(
+        self::INNER,
+        self::LEFT,
+        self::RIGHT,
+        self::FULL,
+        self::CROSS,
+    );
+	
+	protected $option = array();
 	
 	/**
 	 * 表解析
@@ -33,7 +86,7 @@ abstract class WindSqlBuilder {
 	 * @param array|string $table 表
 	 * @return string;
 	 */
-	public abstract function buildTable($table = array());
+	public abstract function buildFrom($table = array());
 	/**
 	 * 是否查找相同的列
 	 * @param boolean $distinct
@@ -139,9 +192,18 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
+	public abstract function distinct($bool = true);
+	public abstract function filed();
+	public abstract function from();
+	public abstract function join();
+	public abstract function where();
+	public abstract function order();
+	public abstract function group();
+	public abstract function having();
+	public abstract function limit();
 	public function getInsertSql($table,$data) {
-		return sprintf ( "INSERT%s%sVALUES%s", 
-			$this->buildTable ($table), 
+		return sprintf ( self::SQL_INSERT.'%s%s'.self::SQL_VALUES.'%s', 
+			$this->buildFrom ($table), 
 			$this->buildField ( array_keys($data)), 
 			$this->buildData ( $data ) 
 		);
@@ -151,13 +213,14 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public function getUpdateSql($option) {
-		return sprintf ( "UPDATE%sSET%s%s%s%s", 
-			$this->buildTable ( $option ['table'] ), 
-			$this->buildSet ( $option ['set'] ), 
-			$this->buildWhere ( $option ['where'] ), 
-			$this->buildOrder ( $option ['order'] ), 
-			$this->buildLimit ( $option ['limit'] ) 
+	public function getUpdateSql($option = array()) {
+		$option = $option ? $option : $this->option;
+		return sprintf ( self::SQL_UPDATE.'%s'.self::SQL_SET.'%s%s%s%s', 
+			$this->buildFrom ( $option [self::FROM] ), 
+			$this->buildSet ( $option [self::SET] ), 
+			$this->buildWhere ( $option [self::WHERE]), 
+			$this->buildOrder ( $option [self::ORDER] ), 
+			$this->buildLimit ( $option [self::LIMIT] ) 
 		);
 	}
 	/**
@@ -165,12 +228,13 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public function getDeleteSql($option) {
-		return sprintf ( "DELETE FROM%s%s%s%s", 
-			$this->buildTable ( $option ['table'] ), 
-			$this->buildWhere ( $option ['where'] ), 
-			$this->buildOrder ( $option ['order'] ), 
-			$this->buildLimit ( $option ['limit'] ) 
+	public function getDeleteSql($option = array()) {
+		$option = $option ? $option : $this->option;
+		return sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
+			$this->buildFrom ( $option [self::FROM] ), 
+			$this->buildWhere ( $option [self::WHERE] ), 
+			$this->buildOrder ( $option [self::ORDER] ), 
+			$this->buildLimit ( $option [self::LIMIT] ) 
 		);
 	}
 	/**
@@ -178,17 +242,18 @@ abstract class WindSqlBuilder {
 	 * @param array $option
 	 * @return string
 	 */
-	public function getSelectSql($option) {
-		return sprintf ( "SELECT%s%sFROM%s%s%s%s%s%s%s", 
-			$this->buildDistinct ( $option ['distinct'] ), 
-			$this->buildField ( $option ['field'] ), 
-			$this->buildTable ( $option ['table'] ), 
-			$this->buildJoin ($option ['join']), 
-			$this->buildWhere ( $option ['where'] ), 
-			$this->buildGroup ( $option ['group'] ), 
-			$this->buildHaving ( $option ['having'] ), 
-			$this->buildOrder ( $option ['order'] ), 
-			$this->buildLimit ( $option ['limit'], $option ['offset'] ) 
+	public function getSelectSql($option = array()) {
+		$option = $option ? $option : $this->option;
+		return sprintf ( self::SQL_SELECT.'%s%s'.self::SQL_FROM.'%s%s%s%s%s%s%s', 
+			$this->buildDistinct ( $option [self::DISTINCT] ), 
+			$this->buildField ( $option [self::FIELD] ), 
+			$this->buildFROM ( $option [self::FROM] ), 
+			$this->buildJoin ($option [self::JOIN]), 
+			$this->buildWhere ( $option [self::WHERE] ), 
+			$this->buildGroup ( $option [self::GROUP] ), 
+			$this->buildHaving ( $option [self::HAVING] ), 
+			$this->buildOrder ( $option [self::ORDER] ), 
+			$this->buildLimit ( $option [self::LIMIT], $option [self::OFFSET]) 
 			);
 	}
 	
@@ -198,7 +263,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getReplaceSql($table,$data){
-		return sprintf ( "REPLACE%s%sSET%s", 
+		return sprintf ( self::SQL_REPLACE.'%s%s'.self::SQL_SET.'%s', 
 			$this->buildTable ( $table ), 
 			$this->buildField (array_keys($data)), 
 			$this->buildData ($data) 
