@@ -49,17 +49,16 @@ class WindFormFilter extends WindFilter {
 	    $formObject->setProperties($request->getPost());
 	    $this->validation($formObject);
 	}
+	
 	/**
 	 * 执行用户定义form中的验证操作
-	 * 如果有错误信息组装错误信息输出
+	 * 如果有错误信息则发送错误信息
 	 * @param WindActionForm $formObject
 	 */
 	private function validation($formObject) {
-		//TODO
 	    if (!$formObject->getIsValidation()) return false;
 	    $formObject->validation();
-	    if (!$formObject->showError()) return false;
-	    print_r($formObject->getError());
+	    $formObject->sendError();
 	}
 	
 	/**
