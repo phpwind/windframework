@@ -126,7 +126,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			foreach($fields as $key=>$field){
 				$fields[$key] = (false === ($pos = strpos('.',$field))) ? $table_alias ? $table_alias.'.'.$field : $table.'.'.$field :$field;
 			}
-			$this->assembleSql($cols,self::FIELD);
+			$this->assembleSql($fields,self::FIELD);
 		}
 		return $this;
 	}
@@ -148,10 +148,17 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			$where = implode($logic,$where);
 		}
 		if($where && $value && is_string($where)){
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*=[\t ]*)(\?)/i',$where,$matches)){
+			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$where,$matches)){
 				$value = is_array($value) ? $value : array($value);
 				foreach($matches[1] as $key=>$match){
-					$where = str_replace($matches[0][$key],$match.$this->escapeString($value[$key]),$where);
+					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+						$value[$key] = is_array($value[$key]) ? $value[$key] : array($value[$key]);
+						array_walk ( $value[$key], array ($this, 'escapeString' ) );
+						$replace = $match.self::LG.implode ( ',', $value[$key] ).self::RG;
+					}else{
+						$replace = $match.$this->escapeString($value[$key]);
+					}
+					$where = str_replace($matches[0][$key],$replace,$where);
 				}
 			}
 		}
@@ -214,7 +221,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			if (is_array ( $config ) && is_string($table)) {
 				$table = $this->getAlias ( $table, $config [2],$config [3]);
 				$joinWhere = $config [1] ? self::SQL_ON . $config [1] : '';
-				$condition = self::$joinTypes[$config [0]] . self::SQL_JOIN . $table . $joinWhere;
+				$condition = self::$joinType[$config [0]] . self::SQL_JOIN . $table . $joinWhere;
 				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}
@@ -362,7 +369,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#escapeString()
 	 */
-	public function escapeString($value) {
+	public function escapeString(&$value,$key='') {
 		if(is_int($value)){
 			$value = (int)$value;
 		}elseif(is_string($value)){

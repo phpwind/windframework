@@ -288,7 +288,7 @@ abstract class WindSqlBuilder {
 	 * @param string $value
 	 * @return string
 	 */
-	public abstract function escapeString($value);
+	public abstract function escapeString(&$value,$key='');
 	
 	/**
 	 * @param strint $schema 数据库名
