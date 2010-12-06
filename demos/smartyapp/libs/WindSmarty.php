@@ -6,67 +6,50 @@
  * @license 
  */
 require_once ('Smarty.class.php');
-
-class WindSmarty extends Smarty implements WindViewerImpl {
+L::import('WIND:component.viewer.base.IWindViewer');
+class WindSmarty extends Smarty implements IWindViewer {
 	protected $template = '';
-	protected $templatePaty = '';
-	
 	protected $view = null;
+	protected $layout;
+	protected $templateExt;
 	
-	public function __construct($tpl = '') {
-		$this->tpl = $tpl;
+	public function __construct() {
 		$this->left_delimiter = '<!--{';
 		$this->right_delimiter = '}-->';
+	}
+
+	/**
+	 * 设置视图信息
+	 * 
+	 * @param WindView $view
+	 */
+	public function initWithView($view) {
+		$this->template = $view->getTemplateName();
+		$this->template_dir = $this->getRealPath($view->getTemplatePath());
+		$this->templateExt = $view->getTemplateExt();
+		$this->cache_dir = $this->getRealPath($view->getTemplateCacheDir());
+		$this->compile_dir = $this->getRealPath($view->getTemplateCompileDir());
+		$this->layout = $view->getMav()->getLayout();
+		$this->layoutMapping = $view->getMav()->getLayoutMapping();
+		$this->view = $view;
 	}
 	
 	public function setTpl($tpl = '') {
 		if ($tpl) $this->tpl = $tpl;
 	}
 	
-	public function setLayout($layout = '') {
-		if (!$layout) return;
-		$layout->setTpl($this->tpl);
-		$this->_layout = $layout;
-	}
-	
-	public function setCacheDir($cacheDir) {
-		if ($cacheDir)
-			$this->cache_dir = realpath($cacheDir . '/');
-		else
-			$this->cache_dir = 'cache/';
-	}
-	public function setCompileDir($compileDir) {
-		if ($compileDir)
-			$this->compile_dir = realpath($compileDir . '/');
-		else
-			$this->compile_dir = 'compile/';
-	}
-	public function setTemplateDir($templateDir) {
-		if ($templateDir)
-			$this->template_dir = realpath($templateDir . '/');
-		else
-			$this->template_dir = 'templates/';
-	}
-	
-	public function windAssign($var = '', $value = null) {
-		if (is_object($value)) {
-			$this->assignByRef($var, $value);
-		} else {
-			(is_object($var)) ? $this->assign(get_object_vars($var)) : $this->assign($var, $value);
+	public function windAssign($vars, $key = '') {
+		if (is_array($vars))
+			$this->assign($vars, $key);
+		elseif (is_object($vars) && is_string($key) && $key != '') {
+			$this->assignByRef($key, $vars);
 		}
 	}
 	
-	public function windFetch() {
-		return $this->fetch($this->template, null, null, null, false);
-	}
-	
-	/**
-	 * @param WindView $view
-	 */
-	public function initViewerResolverWithView($view) {
-		$this->templatePath = $view->getTemplatePath();
-		$this->template = $this->getViewTemplate($view->getTemplateName(), 'phtml');
-		$this->view = $view;
+	public function windFetch($templateName = '') {
+		if ($templateName != '') $templateName = $templateName . '.' . $this->templateExt;
+		else $templateName = $this->template . '.' . $this->templateExt;
+		return $this->fetch($templateName, null, null, null, false);
 	}
 	
 	/**
@@ -76,24 +59,16 @@ class WindSmarty extends Smarty implements WindViewerImpl {
 	 * @param string $templateExt
 	 * @return array()
 	 */
-	public function getViewTemplate($templateName = '', $templateExt = '') {
-		if (!$templateName) $templateName = $this->view->getTemplateName();
-		if (!$templateExt) $templateExt = $this->view->getTemplateExt();
-		$templatePath = $this->templatePath;
-		$templatePath = $this->_getViewTemplate($templateName, $templatePath, $templateExt);
-		return $templatePath;
-	}
-	
-	/**
-	 * 根据模板名称获得模板文件
-	 * 
-	 * @param string $viewName
-	 * @return array()
-	 */
-	private function _getViewTemplate($templateName, $templatePath, $templateExt = '') {
-		if (!$templateName) throw new WindException('template file is not exists.');
-		$filePath = $templatePath . '.' . $templateName;
-		return L::getRealPath($filePath, false, $templateExt);
+	public function getRealPath($path) {
+		return L::getRealPath($path . '.*');
 	}
 
+	/**
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '', $path = '') {
+		if ($this->view instanceof WindView) {
+			$this->view->doAction($actionHandle, $path);
+		}
+	}
 }
