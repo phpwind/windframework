@@ -25,14 +25,14 @@
 <input type="hidden" name="formName" value="UserForm"/>
 <input type="submit" value="测试" name="submit"/></form>
 	     </textarea></p>
-        <li><a href="?c=index&a=showForm">去测试</a></li></p>
+        <li><a href="?c=index&a=showForm&none=y">去测试</a></li></p>
      <b>案例2：不设置form表单的处理类UserForm</b>   
         <p>该情况下用户无需配置，也无需设置formName的处理类。在处理的action中通过request来获得表单内容</p>
      	还是使用上面一个表单<br/>（注意这次不用设置
      	<textarea rows="1" cols="99" readonly><input type="hidden" name="formName" value="UserForm"/></textarea>）
-     	<a href="?c=index&a=showForm&none=y">去测试</a>
+     	<a href="?c=index&a=showForm&none=n">去测试</a>
      </p>
 </div>
 <!-- end #mainContent -->
 
-<?php //$this->doAction('getFooter');?>
+<?php $this->doAction('getFooter');?>

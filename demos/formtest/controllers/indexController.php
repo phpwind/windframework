@@ -6,44 +6,40 @@
  * @license 
  */
 
+L::import('controllers.errorControllers');
 class indexController extends WindController {
 	public function run() {
 		//$this->mav->setAction('getHeader');
-		$this->setViewData('哈哈，我是一个全页面的变量！所以你在这里看到我了', 'global');
+		$this->setOutput('哈哈，我是一个全页面的变量！所以你在这里看到我了', 'global');
 		$this->setTemplate('index');
 	}
 	public function layout() {
-		$this->setViewData(array('name'=> 'layout'));
-		$this->setViewData('哈哈，我是一个全页面的变量！所以你在这里看到我了', 'global');
-		L::import("WIND:component.viewer.WindLayout");
-		$layout = new WindLayout();
-		$layout->setLayoutFile('layout');
-		$this->setLayOut($layout);
+		//TODO
 	}
 	public function showForm() {
-		$this->setViewData(array('isUse' => $this->getParaments('none')));
+		$this->setOutput('show', 'show');
+		$this->setOutput(array('isUse' => $this->getInput('none')));
 		$this->setTemplate('userForm');
 	}
 	public function getForm() {
-		if (!$this->getParaments('formName')) {
+		if (!$this->getInput('formName')) {
 			L::import('controllers.actionForm.UserForm');
 			$userInfo = L::getInstance('UserForm');
-			var_dump($this->getParaments(array('username', 'password')));
-			$userInfo->setProperties($this->getParaments(array('username', 'password')));
-			$this->setViewData(array('notice' => '你没有使用userForm'));
+			$userInfo->setProperties($this->getInput(array('username', 'password')));
+			$this->setOutput(array('notice' => '你没有使用userForm'));
 		} else {
 			$userInfo = L::getInstance('UserForm');
 		}
-		$this->setViewData($userInfo, 'userInfo');
+		$this->setOutput($userInfo, 'userInfo');
 		$this->setTemplate('userForm');
 	}
 	
 	public function getHeader() {
-		$this->setViewData(array('name'=> '亲爱的朋友'));
+		$this->setOutput(array('name'=> '亲爱的朋友'));
 		$this->setTemplate('header');
 	}
 	public function getFooter() {
-		$this->setViewData(array('footer'=> array('2010-2110', '@phpwind'),
+		$this->setOutput(array('footer'=> array('2010-2110', '@phpwind'),
 								'version' => 'WindFrameWorkV1.0'));
 		$this->setTemplate('footer');
 	}

@@ -2,11 +2,11 @@
 <div id="mainContent">
 <p><center>用户表单测试</center></p>
 <p>
-<?php if (!$userInfo) { ?>
+<?php if ($show) { ?>
 <form action="index.php?c=index&a=getForm" method="post"> 
-请输入用户名<input type="text" value="" name="username"/><br/>
-请输入密码<input type="password" value="" name="password"/><br/>
-<?php if ($isUse === 'y') { ?>
+请输入用户名<input type="text" value="" name="username"/><span style="color:red"><?php echo $usernameError;?></span><br/>
+请输入密码<input type="password" value="" name="password"/><span style="color:red"><?php echo $passwordError;?></span><br/>
+<?php if ($isUse != 'none') { ?>
 <input type="hidden" name="formName" value="UserForm"/>
 <?php }?>
 <input type="submit" value="测试" name="submit"/>
@@ -19,4 +19,4 @@
 </p>
 
 </div>
-<?php //$this->doAction('getFooter');?>
+<?php $this->doAction('getFooter');?>

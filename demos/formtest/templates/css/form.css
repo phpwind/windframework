@@ -10,7 +10,8 @@ body  {
 .twoColLiqRtHdr #container { 
 	width: 90%; 
 	background: #FFFFFF;
-	margin: 0 auto; 
+	margin: 0 auto;
+	margin-top:10px;
 	border: 1px solid #000000;
 	text-align: left; 
 } 
