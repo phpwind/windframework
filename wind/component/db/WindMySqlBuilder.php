@@ -16,61 +16,98 @@ L::import('WIND:component.db.base.WindSqlBuilder');
 class WindMySqlBuilder extends WindSqlBuilder {
 	
 	public  function distinct($flag = true){
-		$this->sql[self::DISTINCT] = self::SQL_DISTINCT;
+		$this->sql[self::DISTINCT] = $flag ? self::SQL_DISTINCT : '';
 		return $this;
 	}
 	public  function filed($field){
-		if(empty($this->sql[self::FIELD]) || !is_array($this->sql[self::FIELD])){
-			$this->sql[self::FIELD] = array();
-		}
 		$params = func_num_args();
 		$field = $params >1 ? func_get_args() : func_get_arg(0);
-		$field = is_array($field) ? $field : array($field);
-		foreach($field as $key=>$value){
-			if(is_string($key)){
-				$this->sql[self::FIELD][$key] = $value;
-			}
-			if(is_int($key)){
-				$this->sql[self::FIELD][] = $value;
-			}
-		}
-		return $this;
+		return $this->assemblySql($field,self::FIELD);
 	}
-	public  function from($table){
-		if(empty($this->sql[self::FROM]) || !is_array($this->sql[self::FROM])){
-			$this->sql[self::FROM] = array();
-		}
-		$params = func_num_args();
-		$table = $params >1 ? func_get_args() : func_get_arg(0);
-		$table = is_array($table) ? $table : array($table);
-		foreach($table as $key=>$value){
-			if(is_string($key)){
-				$this->sql[self::FROM][$key] = $value;
-			}
-			if(is_int($key)){
-				$this->sql[self::FROM][] = $value;
-			}
-		}
-		return $this;
+	public  function from($table,$table_alias='',$fields=''){
+		$fields && $this->assemblyFieldByTable($fields,$table,$table_alias);
+		return $this->assemblySql(array($table=>array($table_alias)),self::FROM);
 	}
-	public  function join(){
-		return $this;
+	
+	public function leftJoin($table,$joinWhere,$alias='',$cols='',$schema =''){
+		return $this->join(self::LEFT,$table,$joinWhere,$alias,$cols,$schema);
 	}
+	
+	public function rightJoin($table,$joinWhere,$alias='',$cols='',$schema =''){
+		return $this->join(self::RIGHT,$table,$joinWhere,$alias,$cols,$schema);
+	}
+	
+	public function innerJoin($table,$joinWhere,$alias='',$cols='',$schema =''){
+		return $this->join(self::INNER,$table,$joinWhere,$alias,$cols,$schema);
+	}
+	
+	public function crossJoin($table,$joinWhere,$alias='',$cols='',$schema =''){
+		return $this->join(self::CROSS,$table,$joinWhere,$alias,$cols,$schema);
+	}
+	
+	public function fullJoin($table,$joinWhere,$alias='',$cols=self::SQL_ALLFIELD,$schema =''){
+		return $this->join(self::FULL,$table,$joinWhere,$alias,$cols,$schema);
+	}
+	
 	public  function where(){
 		return $this;
 	}
-	public  function order(){
+	public  function order($order){
+		$params = func_num_args();
+		$order = $params >1 ? func_get_args() : func_get_arg(0);
+		$this->assemblySql($order,self::ORDER);
 		return $this;
 	}
-	public  function group(){
+	public  function group($group){
+		$params = func_num_args();
+		$group = $params >1 ? func_get_args() : func_get_arg(0);
+		$this->assemblySql($group,self::GROUP);
 		return $this;
 	}
 	public  function having(){
+		$this->assemblySql($limit,self::HAVING);
 		return $this;
 	}
-	public  function limit(){
+	public  function limit($limit,$offset = ''){
+		$this->assemblySql((int)$limit,self::LIMIT);
+		return $this->assemblySql((int)$offset,self::OFFSET);
+	}
+	
+	private function assemblySql($assembleValue,$assembleType){
+		if(empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
+			$this->sql[$assembleType] = array();
+		}
+		$assembleValue = is_array($assembleValue) ? $assembleValue : array($assembleValue);
+		foreach($assembleValue as $key=>$value){
+			if(is_string($key)){
+				$this->sql[$assembleType][$key] = $value;
+			}
+			if(is_int($key)){
+				$this->sql[$assembleType][] = $value;
+			}
+		}
 		return $this;
 	}
+	
+	private function assemblyFieldByTable($fields,$table,$table_alias=''){
+		if($fields && (is_string($fields) || is_array($fields))){
+			$fields = is_array($fields) ? $fields : explode(',',$fields);
+			foreach($fields as $key=>$field){
+				$fields[$key] = (false === ($pos = strpos('.',$field))) ? $table_alias ? $table_alias.'.'.$field : $table.'.'.$field :$field;
+			}
+			$this->assemblySql($cols,self::FIELD);
+		}
+		return $this;
+	}
+	
+	private  function join($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
+		if(!in_array($type,array_keys(self::$joinType))){
+			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
+		}
+		$fields && $this->assemblyFieldByTable($fields,$table,$table_alias);
+		return $this->assemblySql(array($table=>array($type,$joinWhere,$table_alias)),self::JOIN);
+	}
+	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
@@ -140,8 +177,8 @@ class WindMySqlBuilder extends WindSqlBuilder {
 			}
 			if (is_array ( $config ) && is_string($table)) {
 				$table = $this->getAlias ( $table, $as, $config [2] );
-				$joinWhere = $config [1] ? ' ON ' . $config [1] : '';
-				$condition = strtoupper($config [0]) . ' JOIN ' . $table . $joinWhere;
+				$joinWhere = $config [1] ? self::SQL_ON . $config [1] : '';
+				$condition = self::$joinTypes[$config [0]] . self::SQL_JOIN . $table . $joinWhere;
 				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}

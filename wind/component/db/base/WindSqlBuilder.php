@@ -38,12 +38,11 @@ abstract class WindSqlBuilder {
     const ORDER   = 'order';
     const LIMIT   = 'limit';
     const OFFSET   = 'offset';
-
-	const INNER     = 'INNER';
-    const LEFT     = 'LEFT';
-    const RIGHT     = 'RIGHTER';
-    const FULL      = 'FULL';
-    const CROSS    = 'CROSS';
+	const INNER    = 'inner';
+    const LEFT     = 'left';
+    const RIGHT     = 'right';
+    const FULL      = 'full';
+    const CROSS    = 'cross';
     
     
     const SQL_SELECT     = 'SELECT ';
@@ -52,6 +51,11 @@ abstract class WindSqlBuilder {
     const SQL_DELETE     = 'DELETE ';
     const SQL_REPLACE	 = 'REPLACE ';
     const SQL_FROM       = 'FROM ';
+    const SQL_INNER    = 'INNER ';
+    const SQL_LEFT     = 'LEFT ';
+    const SQL_RIGHT     = 'RIGTH ';
+    const SQL_FULL      = 'FULL ';
+    const SQL_CROSS    = 'CROSS ';
     const SQL_JOIN       = 'JOIN ';
     const SQL_WHERE      = 'WHERE ';
     const SQL_DISTINCT   = 'DISTINCT ';
@@ -70,13 +74,14 @@ abstract class WindSqlBuilder {
     const SQL_OFFSET	 = 'OFFSET ';
     const SQL_ASC        = 'ASC ';
     const SQL_DESC       = 'DESC ';
+    const SQL_ALLFIELD   = '*';
     
     protected static $joinType = array(
-        self::INNER,
-        self::LEFT,
-        self::RIGHT,
-        self::FULL,
-        self::CROSS,
+        self::INNER=>self::SQL_INNER,
+        self::LEFT=>self::SQL_LEFT,
+        self::RIGHT=>self::SQL_RIGHT,
+        self::FULL=>self::SQL_FULL,
+        self::CROSS=>self::SQL_CROSS,
     );
 	
 	protected $sql = array();
