@@ -52,15 +52,17 @@ class WindErrorMessage extends WindMessage {
 	 * 重定向错误处理
 	 */
 	public function sendError() {
+		print_r($this->getError());
 		if (count($this->getError()) == 0) return;
 		if ($this->errorAction === '') {
 			$this->errorAction = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
 		}
 		if ($this->forward === null) {
-			$this->forward = new WindModelAndView();
+			$this->forward = new WindForward();
 			$this->forward->setAction('run', $this->errorAction);
 		}
-		WindDispatcher::getInstance()->initWithMav($this->forward)->dispatch();
+		WindDispatcher::getInstance()->setForward($this->forward)->dispatch();
+		$this->clear();
 		exit();
 	}
 	

@@ -142,7 +142,7 @@ abstract class WindBaseAction implements IWindAction {
 	 * @return WindModelAndView $mav
 	 */
 	public function forward() {
-		$this->sendError();
+//		$this->sendError();
 		return $this->forward;
 	}
 }

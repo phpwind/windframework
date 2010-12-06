@@ -16,6 +16,7 @@ class WindErrorAction extends WindBaseAction {
 
 	public function run() {
 		echo "error action";
+		$this->setTemplate('error');
 	}
 	
 }
