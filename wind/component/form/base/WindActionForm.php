@@ -57,7 +57,6 @@ abstract class WindActionForm extends WindModule {
 		$this->error->setErrorAction($action);
 	}
 	public function sendError() {
-		//if ($this->error->getError())
 		$this->error->sendError();
 	}
 
