@@ -73,11 +73,9 @@ class WindView {
 	 * @param string $actionHandle
 	 */
 	public function doAction($actionHandle = '', $path = '') {
-		if ($this->getForward() instanceof WindModelAndView) {
-			$forward = clone $this->getForward();
-			$forward->setAction($actionHandle, $path);
-			WindDispatcher::getInstance()->setForward($forward)->dispatch(true);
-		}
+		$forward = clone $this->getForward();
+		$forward->setAction($actionHandle, $path);
+		WindDispatcher::getInstance()->setForward($forward)->dispatch(true);
 	}
 	
 	/**
@@ -85,12 +83,10 @@ class WindView {
 	 * @param WindForward $forward
 	 */
 	private function setViewWithForward($forward) {
-		if ($forward instanceof WindForward) {
-			$this->forward = $forward;
-			$this->templateName = $this->getForward()->getViewName();
-			if ($this->getForward()->getPath()) {
-				$this->templatePath = $this->getForward()->getPath();
-			}
+		$this->forward = $forward;
+		$this->templateName = $this->getForward()->getViewName();
+		if ($this->getForward()->getPath()) {
+			$this->templatePath = $this->getForward()->getPath();
 		}
 	}
 	
