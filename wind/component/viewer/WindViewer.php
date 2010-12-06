@@ -146,8 +146,8 @@ class WindViewer implements IWindViewer {
 		$this->template = $view->getTemplateName();
 		$this->templatePath = $view->getTemplatePath();
 		$this->templateExt = $view->getTemplateExt();
-		$this->layout = $view->getMav()->getLayout();
-		$this->layoutMapping = $view->getMav()->getLayoutMapping();
+		$this->layout = $view->getForward()->getLayout();
+		$this->layoutMapping = $view->getForward()->getLayoutMapping();
 		$this->view = $view;
 	}
 	

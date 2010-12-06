@@ -35,7 +35,7 @@ class WindWebApplication implements IWindApplication {
 		$action->afterAction();
 		
 		/* 获得请求跳转信息 */
-		$this->processDispatch($request, $response, $action->getMav());
+		$this->processDispatch($request, $response, $action->forward());
 	}
 	
 	/**
@@ -73,10 +73,10 @@ class WindWebApplication implements IWindApplication {
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
-	 * @param WindModelAndView $mav
+	 * @param WindModelAndView $forward
 	 */
-	protected function processDispatch($request, $response, $mav) {
-		WindDispatcher::getInstance()->initWithMav($mav)->dispatch();
+	protected function processDispatch($request, $response, $forward) {
+		WindDispatcher::getInstance()->setForward($forward)->dispatch();
 	}
 	
 	public function destory() {

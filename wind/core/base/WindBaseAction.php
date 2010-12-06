@@ -15,7 +15,7 @@ L::import('WIND:core.base.IWindAction');
 abstract class WindBaseAction implements IWindAction {
 	protected $request;
 	protected $response;
-	protected $mav = null;
+	protected $forward = null;
 	protected $error = null;
 	
 	/**
@@ -23,9 +23,9 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param WindHttpResponse $response
 	 */
 	public function __construct($request, $response) {
-		L::import('WIND:core.WindModelAndView');
-		$this->mav = new WindModelAndView();
-		$this->mav->setViewName($response->getDispatcher()->getController() . '_' . $response->getDispatcher()->getAction());
+		L::import('WIND:core.WindForward');
+		$this->forward = new WindForward();
+		$this->forward->setViewName($response->getDispatcher()->getController() . '_' . $response->getDispatcher()->getAction());
 		$this->error = WindErrorMessage::getInstance();
 		$this->request = $request;
 		$this->response = $response;
@@ -41,8 +41,8 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $actionHandle
 	 * @param string $path
 	 */
-	public function setAction($actionHandle = '', $path = '') {
-		$this->getMav()->setAction($actionHandle, $path);
+	public function forwardAction($actionHandle = '', $path = '') {
+		$this->forward->setAction($actionHandle, $path);
 	}
 	
 	/* 数据处理 */
@@ -114,7 +114,7 @@ abstract class WindBaseAction implements IWindAction {
 	 */
 	public function sendError($message = '', $key = '', $errorAction = '') {
 		$this->addError($message, $key);
-		$this->addErrorAction($errorAction);
+		$this->error->setErrorAction($errorAction);
 		$this->error->sendError();
 	}
 	
@@ -125,7 +125,7 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $template
 	 */
 	public function setTemplate($template = '') {
-		if ($template) $this->getMav()->setViewName($template);
+		if ($template) $this->forward->setViewName($template);
 	}
 	
 	/**
@@ -134,14 +134,15 @@ abstract class WindBaseAction implements IWindAction {
 	 */
 	public function setLayout($layout = '') {
 		if ($layout instanceof WindLayout) {
-			$this->getMav()->setLayout($layout);
+			$this->forward->setLayout($layout);
 		}
 	}
 	
 	/**
 	 * @return WindModelAndView $mav
 	 */
-	public function getMav() {
-		return $this->mav;
+	public function forward() {
+		$this->sendError();
+		return $this->forward;
 	}
 }

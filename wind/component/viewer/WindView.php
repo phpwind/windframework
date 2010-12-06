@@ -27,19 +27,16 @@ class WindView {
 	private $isCache;
 	private $reolver;
 	
-	/**
-	 * @var $this->mav WindModelAndView
-	 */
-	private $mav = null;
+	private $forward = null;
 	
 	/**
 	 * @param string $templateName
-	 * @param WindModelAndView $mav
+	 * @param WindForward $forward
 	 */
-	public function __construct($templateName = '', $mav = null) {
+	public function __construct($templateName = '', $forward = null) {
 		$this->initConfig();
 		if ($templateName) $this->templateName = $templateName;
-		$this->setViewWithMav($mav);
+		$this->setViewWithForward($forward);
 	}
 	
 	/**
@@ -76,23 +73,23 @@ class WindView {
 	 * @param string $actionHandle
 	 */
 	public function doAction($actionHandle = '', $path = '') {
-		if ($this->getMav() instanceof WindModelAndView) {
-			$mav = clone $this->getMav();
-			$mav->setAction($actionHandle, $path);
-			WindDispatcher::getInstance()->initWithMav($mav)->dispatch(true);
+		if ($this->getForward() instanceof WindModelAndView) {
+			$forward = clone $this->getForward();
+			$forward->setAction($actionHandle, $path);
+			WindDispatcher::getInstance()->setForward($forward)->dispatch(true);
 		}
 	}
 	
 	/**
-	 * 通过modelandview视图信息设置view
-	 * @param WindModelAndView $mav
+	 * 通过WindForward视图信息设置view
+	 * @param WindForward $forward
 	 */
-	private function setViewWithMav($mav) {
-		if ($mav instanceof WindModelAndView) {
-			$this->mav = $mav;
-			$this->templateName = $this->getMav()->getViewName();
-			if ($this->getMav()->getPath()) {
-				$this->templatePath = $this->getMav()->getPath();
+	private function setViewWithForward($forward) {
+		if ($forward instanceof WindForward) {
+			$this->forward = $forward;
+			$this->templateName = $this->getForward()->getViewName();
+			if ($this->getForward()->getPath()) {
+				$this->templatePath = $this->getForward()->getPath();
 			}
 		}
 	}
@@ -150,10 +147,10 @@ class WindView {
 	}
 	
 	/**
-	 * @return WindModelAndView $mav
+	 * @return WindForward
 	 */
-	public function getMav() {
-		return $this->mav;
+	public function getForward() {
+		return $this->forward;
 	}
 	
 	/**

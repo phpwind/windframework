@@ -13,7 +13,7 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  * @version $Id$ 
  * @package 
  */
-class WindMySqlBuilder extends WindSqlBuilder {
+class WindMySqlBuilder extends WindSqlBuilder { 
 	
 	public  function distinct($flag = true){
 		$this->sql[self::DISTINCT] = $flag ? self::SQL_DISTINCT : '';
@@ -100,7 +100,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this;
 	}
 	
-	private  function join($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
+	public abstract function join($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
 		if(!in_array($type,array_keys(self::$joinType))){
 			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
 		}

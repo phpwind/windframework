@@ -7,12 +7,13 @@
  */
 
 /**
+ * 操作转发类，将操作句柄转发给下一个操作或者转发给一个视图处理
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-class WindModelAndView {
+class WindForward {
 	/* 模板视图信息 */
 	private $viewName;
 	private $path;

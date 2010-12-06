@@ -19,7 +19,7 @@ class WindErrorMessage extends WindMessage {
 	
 	private function __construct() {}
 	
-	private $mav = null;
+	private $forward = null;
 	
 	/**
 	 * 添加错误信息
@@ -45,7 +45,7 @@ class WindErrorMessage extends WindMessage {
 	 * 设置错误处理操作
 	 */
 	public function setErrorAction($action = '') {
-		$this->errorAction = $action;
+		$action && $this->errorAction = $action;
 	}
 	
 	/**
@@ -56,11 +56,11 @@ class WindErrorMessage extends WindMessage {
 		if ($this->errorAction === '') {
 			$this->errorAction = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
 		}
-		if ($this->mav === null) {
-			$this->mav = new WindModelAndView();
-			$this->mav->setAction('run', $this->errorAction);
+		if ($this->forward === null) {
+			$this->forward = new WindModelAndView();
+			$this->forward->setAction('run', $this->errorAction);
 		}
-		WindDispatcher::getInstance()->initWithMav($this->mav)->dispatch();
+		WindDispatcher::getInstance()->initWithMav($this->forward)->dispatch();
 		exit();
 	}
 	

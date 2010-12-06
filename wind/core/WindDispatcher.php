@@ -19,7 +19,7 @@ class WindDispatcher {
 	private $controller;
 	private $module;
 	
-	private $mav = null;
+	private $forward = null;
 	private $immediately = false;
 	
 	private $request = null;
@@ -45,10 +45,10 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	public function dispatch($immediately = false) {
-		if ($this->getMav() === null) throw new WindException('dispatch error.');
-		if (($redirect = $this->getMav()->getRedirect()) !== null)
+		if ($this->getForward() === null) throw new WindException('dispatch error.');
+		if (($redirect = $this->getForward()->getRedirect()) !== null)
 			$this->_dispatchWithRedirect($redirect);
-		elseif (($action = $this->getMav()->getAction()) !== null) {
+		elseif (($action = $this->getForward()->getAction()) !== null) {
 			$this->_dispatchWithAction($action);
 			$this->immediately = $immediately;
 		} else
@@ -58,13 +58,12 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * @param WindModelAndView $mav
+	 * @param WindForward $forward
 	 */
-	public function initWithMav($mav) {
-		if (!($mav instanceof WindModelAndView)) throw new WindException('object type error.');
-		$this->mav = $mav;
-		if ($mav->getAction()) $this->action = $mav->getAction();
-		if (!($path = $mav->getActionPath())) return $this;
+	public function setForward($forward) {
+		$this->forward = $forward;
+		if ($forward->getAction()) $this->action = $forward->getAction();
+		if (!($path = $forward->getActionPath())) return $this;
 		if (($pos = strrpos($path, '.')) !== false) {
 			$this->controller = substr($path, $pos + 1);
 			$this->module = substr($path, 0, $pos);
@@ -141,9 +140,9 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	private function _dispatchWithTemplate() {
-		$viewer = $this->getMav()->getView()->createViewerResolver();
+		$viewer = $this->getForward()->getView()->createViewerResolver();
 		$viewer->windAssign($this->response->getData());
-		$viewName = $this->getMav()->getViewName();
+		$viewName = $this->getForward()->getViewName();
 		if ($this->immediately)
 			$viewer->immediatelyDisplay();
 		else
@@ -151,7 +150,7 @@ class WindDispatcher {
 	}
 	
 	private function clear() {
-		$this->mav = null;
+		$this->forward = null;
 	}
 	
 	/**
@@ -181,11 +180,11 @@ class WindDispatcher {
 	}
 	
 	/**
-	 * 返回一个ModelAndView对象
-	 * @return WindModelAndView $mav
+	 * 返回一个WindForward对象
+	 * @return WindForward
 	 */
-	public function getMav() {
-		return $this->mav;
+	public function getForward() {
+		return $this->forward;
 	}
 	
 	static public function distroy() {
