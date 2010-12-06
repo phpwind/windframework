@@ -25,7 +25,18 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var array 分组条件
 	 */
-	protected static $group = array ('lg' => '(', 'rg' => ')' );
+	protected static $group = array (self::LG => '(', self::RG => ')' );
+	
+	protected static $joinType = array(
+        self::INNER=>self::SQL_INNER,
+        self::LEFT=>self::SQL_LEFT,
+        self::RIGHT=>self::SQL_RIGHT,
+        self::FULL=>self::SQL_FULL,
+        self::CROSS=>self::SQL_CROSS,
+    );
+    
+    const LG = '(';
+    const RG = ')';
 	
     const DISTINCT = 'distinct';
     const FIELD   = 'field';
@@ -76,13 +87,7 @@ abstract class WindSqlBuilder {
     const SQL_DESC       = 'DESC ';
     const SQL_ALLFIELD   = '*';
     
-    protected static $joinType = array(
-        self::INNER=>self::SQL_INNER,
-        self::LEFT=>self::SQL_LEFT,
-        self::RIGHT=>self::SQL_RIGHT,
-        self::FULL=>self::SQL_FULL,
-        self::CROSS=>self::SQL_CROSS,
-    );
+   
 	
 	protected $sql = array();
 	
@@ -92,20 +97,20 @@ abstract class WindSqlBuilder {
 	 * @param array|string $table 表
 	 * @return string;
 	 */
-	public abstract function buildFrom($table = array());
+	protected abstract function buildFrom($table = array());
 	/**
 	 * 是否查找相同的列
 	 * @param boolean $distinct
 	 * @return string
 	 */
-	public abstract function buildDistinct($distinct = false);
+	protected abstract function buildDistinct($distinct = false);
 	/**
 	 * 解析表的列名
    	 * @example array('filedname'=>'alais') or array('filedname'),filedname as alais
 	 * @param array|string $field 查询的字段
 	 * @return string
 	 */
-	public abstract function buildField($field = array());
+	protected abstract function buildField($field = array());
 	/**
 	 * 解析连接查询
 	 * @example array('tablename'=>array(jointype,onwhere,alias)) or array('left join tablename as a on a.id=b.id') 
@@ -113,7 +118,7 @@ abstract class WindSqlBuilder {
 	 * @param string|array $join 连接条件
 	 * @return string
 	 */
-	public abstract function buildJoin($join = array());
+	protected abstract function buildJoin($join = array());
 	/**
 	 * 解析查询条件
 	 * @example array('lg','gt'=>('age',2),and,'lt'=>array('age',23),'gt',or,like=>array('name','suqian%')) or 
@@ -121,61 +126,61 @@ abstract class WindSqlBuilder {
 	 * @param array $where 查询条件
 	 * @return string
 	 */
-	public abstract function buildWhere($where = array());
+	protected abstract function buildWhere($where = array());
 	/**
 	 * 解析分组
 	 * @example array('field1','field2') or 'group by field1,field2'
 	 * @param string|array $group 分组条件
 	 * @return string
 	 */
-	public abstract function buildGroup($group = array());
+	protected abstract function buildGroup($group = array());
 	/**
 	 * 解析排序
 	 * @example array('field1'=>'desc','field2'=>'asc') or 'order by field1 desc,field2 asc'
 	 * @param array|string $order 排序条件
 	 * @return string
 	 */
-	public abstract function buildOrder($order = array());
+	protected abstract function buildOrder($order = array());
 	/**
 	 * 解析对分组的过滤语句
 	 * @param string $having
 	 * @return string
 	 */
-	public abstract function buildHaving($having = '');
+	protected abstract function buildHaving($having = '');
 	/**
 	 * 解析查询limit语句
 	 * @param int $limit  取得条数
 	 * @param int $offset 偏移量
 	 * @return string
 	 */
-	public abstract function buildLimit($limit = 0, $offset = 0);
+	protected abstract function buildLimit($limit = 0, $offset = 0);
 	/**
 	 * 解析更新数据
 	 * @example array('field'=>'value');
 	 * @param array $data 
 	 * @return string
 	 */
-	public abstract function buildSet($data);
+	protected abstract function buildSet($data);
 	/**
 	 * 解析添加数据
 	 * @example array('field1','field2') or array(array('field1','field2'),array('field1','field2'))
 	 * @param array $setData
 	 * @return string
 	 */
-	public abstract function buildData($setData);
+	protected abstract function buildData($setData);
 	
 	/**
 	 *返回影响行数的sql语句
 	 *@param $ifquery 是否是select 语句
 	 *@return string 
 	 */
-	public abstract function buildAffected($ifquery);
+	public abstract function getAffected($ifquery);
 	
 	/**
 	 *返回取得最后新增的sql语句
 	 *@return string 
 	 */
-	public abstract function buildLastInsertId();
+	public abstract function getLastInsertId();
 	
 	/**
 	 * 对字符串转义
@@ -193,20 +198,28 @@ abstract class WindSqlBuilder {
 	 * @param string $table  表名
 	 */
 	public abstract function getMetaColumnSql($table);
+	
+	public abstract function from($table,$table_alias='',$fields='');
+	public abstract function distinct($flag = true);
+	public abstract function filed($field);
+	public abstract function join($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function innerJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function leftJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function rightJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function fullJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function crossJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	public abstract function where($where,$value=array(),$group=false);
+	public abstract function orWhere($where,$value=array(),$group=false);
+	public abstract function group($group);
+	public abstract function having($having,$value=array(),$group=false);
+	public abstract function orHaving($having,$value=array(),$group=false);
+	public abstract function order($field,$type = true);
+	public abstract function limit($limit,$offset = '');
 	/**
 	 * 解析新增SQL语句
 	 * @param array $sql
 	 * @return string
 	 */
-	public abstract function distinct($flag = true);
-	public abstract function filed();
-	public abstract function from();
-	public abstract function join();
-	public abstract function where();
-	public abstract function order();
-	public abstract function group();
-	public abstract function having();
-	public abstract function limit();
 	public function getInsertSql($table,$data) {
 		return sprintf ( self::SQL_INSERT.'%s%s'.self::SQL_VALUES.'%s', 
 			$this->buildFrom ($table), 
