@@ -13,11 +13,7 @@
  * @package
  */
 class IndexController extends WindController {
-	const AA= 'aaa';
 	public function run() {
-		echo IWindRequest::COOKIE;
-		echo self::AA;
-		echo "mmmmm";
+		echo 'this is ' . __CLASS__;
 	}
-
 }
