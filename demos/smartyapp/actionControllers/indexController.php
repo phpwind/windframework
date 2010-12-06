@@ -10,18 +10,9 @@ class IndexController extends WindController {
 	public $b = 3;
 	protected $c;
 	public function run() {
-		echo "asdfasdf";
-		$this->getMav()->setViewName('body');
-		$this->getMav()->setModel(array('test' => 'hello World!'));
-		/*$view->windAssign('content', 'Hello World!');
-		$view->windAssign('name', '【鹊桥】小组');
-		$view->windAssign('title', 'Smarty引入之后的测试');
-		$view->windAssign('count', '8888888');*/
-	}
-	
-	public function show() {	/*$this->setForward('foot.phtml');
-		$this->setView('content', 'welcome');
-		$this->setView('name', '【鹊桥】小组');
-		$this->setView('count', '1000');*/
+		$this->setOutput(array('content' => 'hello world'));
+		$this->setOutput(array('name' => '��ȵ�š�', 'title' => 'SmartyDemo����', 
+								'count'=>'8888888'));
+		$this->setTemplate('body');
 	}
 }
