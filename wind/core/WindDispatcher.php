@@ -114,7 +114,7 @@ class WindDispatcher {
 		if ($match && !preg_match("/" . $match . "$/i", $path)) {
 			$path .= $match;
 		}
-		list(, $className, , $realPath) = L::getRealPath($path, true);
+		list($className, $realPath) = L::getRealPath($path, true);
 		return array($className, $realPath);
 	}
 	

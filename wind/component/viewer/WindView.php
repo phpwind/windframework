@@ -46,7 +46,7 @@ class WindView {
 	 */
 	public function &createViewerResolver() {
 		$viewerResolver = C::getViewerResolvers($this->reolver);
-		list(, $className, , $viewerResolver) = L::getRealPath($viewerResolver, true);
+		list($className, $viewerResolver) = L::getRealPath($viewerResolver, true);
 		L::import($viewerResolver);
 		if (!class_exists($className)) {
 			throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);

@@ -108,7 +108,7 @@ class WindFrontController extends WindServlet {
 	public function &getApplicationHandle($key = 'default') {
 		if (!isset($this->applications[$key])) {
 			$application = C::getApplications($key);
-			list(, $className, , $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
+			list($className, $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
 			L::import($realpath);
 			$this->applications[$key] = &new $className();
 		}

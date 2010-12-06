@@ -106,7 +106,7 @@ class W {
 		if (self::ifCompile() && !IS_DEBUG) {
 			L::import('WIND:utility.WindPack');
 			$pack = L::getInstance('WindPack');
-			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH,WindPack::STRIP_PHP,true);
+			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 		}
 	}
 	
@@ -197,7 +197,7 @@ final class L {
 		if (!$filePath || key_exists($filePath, L::$_imports) || in_array($filePath, L::$_imports)) {
 			return $filePath;
 		}
-		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);  //TODO
+		list($fileName, $realPath, $ext, $isPackage) = self::getRealPath($filePath, true); //TODO
 		if (!$realPath) {
 			throw new Exception('import file ' . $filePath . ' is not exist.');
 		}
@@ -298,7 +298,7 @@ final class L {
 			}
 		}
 		$realpath = !$isPackage ? $filePath . D_S . $fileName . '.' . $ext : $filePath;
-		if ($info) return array($isPackage, $fileName, $ext, realpath($realpath));
+		if ($info) return array($fileName, realpath($realpath), $ext, $isPackage);
 		return realpath($realpath);
 	}
 	
