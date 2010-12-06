@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
 	<app isGlobal='true'>
-		<name>FormTest</name>
+		<name>FormDemo</name>
 		<rootPath></rootPath>
 		<configPath>FormTest:compile</configPath>
 	</app>
