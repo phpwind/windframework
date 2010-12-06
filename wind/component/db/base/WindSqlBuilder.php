@@ -90,6 +90,107 @@ abstract class WindSqlBuilder {
    
 	
 	protected $sql = array();
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $table_alias
+	 * @param unknown_type $fields
+	 */
+	public abstract function from($table,$table_alias='',$fields='');
+	/**
+	 * @param unknown_type $flag
+	 */
+	public abstract function distinct($flag = true);
+	/**
+	 * @param unknown_type $field
+	 */
+	public abstract function field($field);
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function join($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function innerJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function leftJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function rightJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function fullJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 */
+	public abstract function crossJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
+	/**
+	 * @param unknown_type $where
+	 * @param unknown_type $value
+	 * @param unknown_type $group
+	 */
+	public abstract function where($where,$value=array(),$group=false);
+	/**
+	 * @param unknown_type $where
+	 * @param unknown_type $value
+	 * @param unknown_type $group
+	 */
+	public abstract function orWhere($where,$value=array(),$group=false);
+	/**
+	 * @param unknown_type $group
+	 */
+	public abstract function group($group);
+	/**
+	 * @param unknown_type $having
+	 * @param unknown_type $value
+	 * @param unknown_type $group
+	 */
+	public abstract function orHaving($having,$value=array(),$group=false);
+	/**
+	 * @param unknown_type $field
+	 * @param unknown_type $type
+	 */
+	public abstract function order($field,$type = true);
+	/**
+	 * @param unknown_type $limit
+	 * @param unknown_type $offset
+	 */
+	public abstract function limit($limit,$offset = '');
 	
 	/**
 	 * 表解析
@@ -97,20 +198,20 @@ abstract class WindSqlBuilder {
 	 * @param array|string $table 表
 	 * @return string;
 	 */
-	protected abstract function buildFrom($table = array());
+	protected abstract function buildFrom();
 	/**
 	 * 是否查找相同的列
 	 * @param boolean $distinct
 	 * @return string
 	 */
-	protected abstract function buildDistinct($distinct = false);
+	protected abstract function buildDistinct();
 	/**
 	 * 解析表的列名
    	 * @example array('filedname'=>'alais') or array('filedname'),filedname as alais
 	 * @param array|string $field 查询的字段
 	 * @return string
 	 */
-	protected abstract function buildField($field = array());
+	protected abstract function buildField();
 	/**
 	 * 解析连接查询
 	 * @example array('tablename'=>array(jointype,onwhere,alias)) or array('left join tablename as a on a.id=b.id') 
@@ -118,7 +219,7 @@ abstract class WindSqlBuilder {
 	 * @param string|array $join 连接条件
 	 * @return string
 	 */
-	protected abstract function buildJoin($join = array());
+	protected abstract function buildJoin();
 	/**
 	 * 解析查询条件
 	 * @example array('lg','gt'=>('age',2),and,'lt'=>array('age',23),'gt',or,like=>array('name','suqian%')) or 
@@ -126,34 +227,34 @@ abstract class WindSqlBuilder {
 	 * @param array $where 查询条件
 	 * @return string
 	 */
-	protected abstract function buildWhere($where = array());
+	protected abstract function buildWhere();
 	/**
 	 * 解析分组
 	 * @example array('field1','field2') or 'group by field1,field2'
 	 * @param string|array $group 分组条件
 	 * @return string
 	 */
-	protected abstract function buildGroup($group = array());
+	protected abstract function buildGroup();
 	/**
 	 * 解析排序
 	 * @example array('field1'=>'desc','field2'=>'asc') or 'order by field1 desc,field2 asc'
 	 * @param array|string $order 排序条件
 	 * @return string
 	 */
-	protected abstract function buildOrder($order = array());
+	protected abstract function buildOrder();
 	/**
 	 * 解析对分组的过滤语句
 	 * @param string $having
 	 * @return string
 	 */
-	protected abstract function buildHaving($having = '');
+	protected abstract function buildHaving();
 	/**
 	 * 解析查询limit语句
 	 * @param int $limit  取得条数
 	 * @param int $offset 偏移量
 	 * @return string
 	 */
-	protected abstract function buildLimit($limit = 0, $offset = 0);
+	protected abstract function buildLimit();
 	/**
 	 * 解析更新数据
 	 * @example array('field'=>'value');
@@ -198,23 +299,6 @@ abstract class WindSqlBuilder {
 	 * @param string $table  表名
 	 */
 	public abstract function getMetaColumnSql($table);
-	
-	public abstract function from($table,$table_alias='',$fields='');
-	public abstract function distinct($flag = true);
-	public abstract function filed($field);
-	public abstract function join($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function innerJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function leftJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function rightJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function fullJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function crossJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
-	public abstract function where($where,$value=array(),$group=false);
-	public abstract function orWhere($where,$value=array(),$group=false);
-	public abstract function group($group);
-	public abstract function having($having,$value=array(),$group=false);
-	public abstract function orHaving($having,$value=array(),$group=false);
-	public abstract function order($field,$type = true);
-	public abstract function limit($limit,$offset = '');
 	/**
 	 * 解析新增SQL语句
 	 * @param array $sql
@@ -235,11 +319,11 @@ abstract class WindSqlBuilder {
 	public function getUpdateSql($sql = array()) {
 		$sql = $sql ? $sql : $this->sql;
 		return sprintf ( self::SQL_UPDATE.'%s'.self::SQL_SET.'%s%s%s%s', 
-			$this->buildFrom ( $sql [self::FROM] ), 
-			$this->buildSet ( $sql [self::SET] ), 
-			$this->buildWhere ( $sql [self::WHERE]), 
-			$this->buildOrder ( $sql [self::ORDER] ), 
-			$this->buildLimit ( $sql [self::LIMIT] ) 
+			$this->buildFrom (), 
+			$this->buildSet (), 
+			$this->buildWhere (), 
+			$this->buildOrder (), 
+			$this->buildLimit () 
 		);
 	}
 	/**
@@ -250,10 +334,10 @@ abstract class WindSqlBuilder {
 	public function getDeleteSql($sql = array()) {
 		$sql = $sql ? $sql : $this->sql;
 		return sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
-			$this->buildFrom ( $sql [self::FROM] ), 
-			$this->buildWhere ( $sql [self::WHERE] ), 
-			$this->buildOrder ( $sql [self::ORDER] ), 
-			$this->buildLimit ( $sql [self::LIMIT] ) 
+			$this->buildFrom (), 
+			$this->buildWhere (), 
+			$this->buildOrder (), 
+			$this->buildLimit () 
 		);
 	}
 	/**
@@ -261,19 +345,20 @@ abstract class WindSqlBuilder {
 	 * @param array $sql
 	 * @return string
 	 */
-	public function getSelectSql($sql = array()) {
-		$sql = $sql ? $sql : $this->sql;
-		return sprintf ( self::SQL_SELECT.'%s%s'.self::SQL_FROM.'%s%s%s%s%s%s%s', 
-			$this->buildDistinct ( $sql [self::DISTINCT] ), 
-			$this->buildField ( $sql [self::FIELD] ), 
-			$this->buildFROM ( $sql [self::FROM] ), 
-			$this->buildJoin ($sql [self::JOIN]), 
-			$this->buildWhere ( $sql [self::WHERE] ), 
-			$this->buildGroup ( $sql [self::GROUP] ), 
-			$this->buildHaving ( $sql [self::HAVING] ), 
-			$this->buildOrder ( $sql [self::ORDER] ), 
-			$this->buildLimit ( $sql [self::LIMIT], $sql [self::OFFSET]) 
+	public function getSelectSql() {
+		$sql = sprintf ( self::SQL_SELECT.'%s%s'.self::SQL_FROM.'%s%s%s%s%s%s%s', 
+			$this->buildDistinct (), 
+			$this->buildField (), 
+			$this->buildFROM (), 
+			$this->buildJoin (), 
+			$this->buildWhere (), 
+			$this->buildGroup (), 
+			$this->buildHaving (), 
+			$this->buildOrder (), 
+			$this->buildLimit () 
 			);
+		$this->reset();
+		return $sql;
 	}
 	
 	/**
@@ -342,5 +427,13 @@ abstract class WindSqlBuilder {
 	 */
 	public function sqlFillSpace($value) {
 		return str_pad ( $value, strlen ( $value ) + 2, " ", STR_PAD_BOTH );
+	}
+	
+	public function reset($type=''){
+		if($type){
+			unset($this->sql[$type]); 
+		}else{
+			$this->sql = array();
+		}
 	}
 }
