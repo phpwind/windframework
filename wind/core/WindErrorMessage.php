@@ -52,7 +52,7 @@ class WindErrorMessage extends WindMessage {
 	 * 重定向错误处理
 	 */
 	public function sendError() {
-		if (empty($this->getError())) return;
+		if (count($this->getError()) == 0) return;
 		if ($this->errorAction === '') {
 			$this->errorAction = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
 		}
