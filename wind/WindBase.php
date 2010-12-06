@@ -102,6 +102,7 @@ class W {
 	static private function _initLoad() {
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.*');
+		L::import('WIND:component.message.WindErrorMessage');
 		if (self::ifCompile() && !IS_DEBUG) {
 			L::import('WIND:utility.WindPack');
 			$pack = L::getInstance('WindPack');
@@ -196,7 +197,7 @@ final class L {
 		if (!$filePath || key_exists($filePath, L::$_imports) || in_array($filePath, L::$_imports)) {
 			return $filePath;
 		}
-		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);
+		list($isPackage, $fileName, $ext, $realPath) = self::getRealPath($filePath, true);  //TODO
 		if (!$realPath) {
 			throw new Exception('import file ' . $filePath . ' is not exist.');
 		}

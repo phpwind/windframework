@@ -87,6 +87,7 @@ abstract class WindServlet {
 	 */
 	protected function doPost(WindHttpRequest $request, WindHttpResponse $response) {
 		$protocol = $request->getProtocol();
+		//TODO
 		$msg = "The method post is not supported.";
 		if (!$protocol || (strpos($protocol, '1.1')) !== false) {
 			$response->sendError(WindHttpResponse::SC_METHOD_NOT_ALLOWED, $msg);
@@ -101,6 +102,7 @@ abstract class WindServlet {
 	 */
 	protected function doGet(WindHttpRequest $request, WindHttpResponse $response) {
 		$protocol = $request->getProtocol();
+		//TODO
 		$msg = "The method get is not supported.";
 		if (!$protocol || (strpos($protocol, '1.1')) !== false) {
 			$response->sendError(WindHttpResponse::SC_METHOD_NOT_ALLOWED, $msg);

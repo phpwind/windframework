@@ -15,12 +15,15 @@ L::import('WIND:core.base.IWindApplication');
  */
 class WindWebApplication implements IWindApplication {
 	protected $process = '';
+	protected $dispatcher = null;
 	
 	/**
 	 * 初始化配置信息
 	 * @param WSystemConfig $configObj
 	 */
-	public function init() {}
+	public function init() {
+
+	}
 	
 	/**
 	 * @param WindHttpRequest $request
@@ -77,6 +80,19 @@ class WindWebApplication implements IWindApplication {
 	 */
 	protected function processDispatch($request, $response, $forward) {
 		WindDispatcher::getInstance()->setForward($forward)->dispatch();
+	}
+	
+	/**
+	 * 初始化页面分发器
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	protected function initDispatch() {
+		L::import('WIND:component.router.WindRouterFactory');
+		$router = WindRouterFactory::getFactory()->create();
+		$router->doParser($this->request, $this->response);
+		$dispatcher = WindDispatcher::getInstance($this->request, $this->response, $this);
+		$this->response->setDispatcher($dispatcher->initWithRouter($router));
 	}
 	
 	public function destory() {
