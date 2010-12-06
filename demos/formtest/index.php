@@ -13,6 +13,5 @@ define('FREAMWORK_PATH', R_P . '/../../wind/');
 define('COMPILE_PATH', R_P . 'compile/');
 require_once (FREAMWORK_PATH . '/wind.php');
 
-
 W::application('FormTEST')->run();
 

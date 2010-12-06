@@ -6,7 +6,7 @@
 <form action="index.php?c=index&a=getForm" method="post"> 
 请输入用户名<input type="text" value="" name="username"/><span style="color:red"><?php echo $usernameError;?></span><br/>
 请输入密码<input type="password" value="" name="password"/><span style="color:red"><?php echo $passwordError;?></span><br/>
-<?php if ($isUse != 'none') { ?>
+<?php if ($isUse != 'n') { ?>
 <input type="hidden" name="formName" value="UserForm"/>
 <?php }?>
 <input type="submit" value="测试" name="submit"/>
