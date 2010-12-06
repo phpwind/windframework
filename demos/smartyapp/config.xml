@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<app isGlobal='true'>
+		<name>smartyDemo</name>
+		<rootPath></rootPath>
+		<configPath>cache</configPath>
+	</app>
+	<modules>
+		<module name='default'>
+			<name>default</name>
+			<path>actionControllers</path>
+		</module>
+	</modules>
+	<template>
+		<path>template</path>
+		<name>index</name>
+		<ext>phtml</ext>
+		<resolver>smarty</resolver>
+		<isCache>false</isCache>
+		<cacheDir>cache</cacheDir>
+		<compileDir>compile</compileDir>
+	</template>
+</WIND>
