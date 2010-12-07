@@ -54,6 +54,7 @@ abstract class WindSqlBuilder {
     const RIGHT     = 'right';
     const FULL      = 'full';
     const CROSS    = 'cross';
+    const DATA	= 'data';
     
     
     const SQL_SELECT     = 'SELECT ';
@@ -182,9 +183,9 @@ abstract class WindSqlBuilder {
 	public abstract function where($where,$value=array(),$group=false);
 	/**
 	 * 或查询条件，支持占位符
-	 * @param string|array $where
-	 * @param string|array $value
-	 * @param boolean $group
+	 * @param string|array $where 查询条件
+	 * @param string|array $value 条件对应的值
+	 * @param boolean $group 是否启用分组
 	 * @return WindSqlBuilder
 	 */
 	public abstract function orWhere($where,$value=array(),$group=false);
@@ -203,9 +204,10 @@ abstract class WindSqlBuilder {
 	 */
 	public abstract function having($having,$value=array(),$group=false);
 	/**
-	 * @param unknown_type $having
-	 * @param unknown_type $value
-	 * @param unknown_type $group
+	 * 过滤分组
+	 * @param unknown_type $having 过滤条件
+	 * @param unknown_type $value  条件对应的值
+	 * @param unknown_type $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
 	public abstract function orHaving($having,$value=array(),$group=false);
@@ -226,81 +228,59 @@ abstract class WindSqlBuilder {
 	
 	/**
 	 * 表解析
-	 * @example array('tablename'=>'alais') or array('tablename'),tablename as alais
-	 * @param array|string $table 表
 	 * @return string;
 	 */
 	protected abstract function buildFrom();
 	/**
-	 * 是否查找相同的列
-	 * @param boolean $distinct
+	 * 解析是否有重复的值
 	 * @return string
 	 */
 	protected abstract function buildDistinct();
 	/**
-	 * 解析表的列名
-   	 * @example array('filedname'=>'alais') or array('filedname'),filedname as alais
-	 * @param array|string $field 查询的字段
+	 * 解析查询字段
 	 * @return string
 	 */
 	protected abstract function buildField();
 	/**
 	 * 解析连接查询
-	 * @example array('tablename'=>array(jointype,onwhere,alias)) or array('left join tablename as a on a.id=b.id') 
-	 * 			'left join tablename as a on a.id=b.id'
-	 * @param string|array $join 连接条件
 	 * @return string
 	 */
 	protected abstract function buildJoin();
 	/**
 	 * 解析查询条件
-	 * @example array('lg','gt'=>('age',2),and,'lt'=>array('age',23),'gt',or,like=>array('name','suqian%')) or 
-	 * 			( age > 2 and age < 23) or name like 'suqian%'
-	 * @param array $where 查询条件
 	 * @return string
 	 */
 	protected abstract function buildWhere();
 	/**
 	 * 解析分组
-	 * @example array('field1','field2') or 'group by field1,field2'
-	 * @param string|array $group 分组条件
 	 * @return string
 	 */
 	protected abstract function buildGroup();
 	/**
 	 * 解析排序
-	 * @example array('field1'=>'desc','field2'=>'asc') or 'order by field1 desc,field2 asc'
-	 * @param array|string $order 排序条件
 	 * @return string
 	 */
 	protected abstract function buildOrder();
 	/**
 	 * 解析对分组的过滤语句
-	 * @param string $having
 	 * @return string
 	 */
 	protected abstract function buildHaving();
 	/**
-	 * 解析查询limit语句
-	 * @param int $limit  取得条数
-	 * @param int $offset 偏移量
+	 * 解析分页查询
 	 * @return string
 	 */
 	protected abstract function buildLimit();
 	/**
 	 * 解析更新数据
-	 * @example array('field'=>'value');
-	 * @param array $data 
 	 * @return string
 	 */
-	protected abstract function buildSet($data);
+	protected abstract function buildSet();
 	/**
 	 * 解析添加数据
-	 * @example array('field1','field2') or array(array('field1','field2'),array('field1','field2'))
-	 * @param array $setData
 	 * @return string
 	 */
-	protected abstract function buildData($setData);
+	protected abstract function buildData();
 	
 	/**
 	 *返回影响行数的sql语句
@@ -336,41 +316,45 @@ abstract class WindSqlBuilder {
 	 * @param array $sql
 	 * @return string
 	 */
-	public function getInsertSql($table,$data) {
-		return sprintf ( self::SQL_INSERT.'%s%s'.self::SQL_VALUES.'%s', 
-			$this->buildFrom ($table), 
-			$this->buildField ( array_keys($data)), 
-			$this->buildData ( $data ) 
+	public function getInsertSql() {
+		$sql = sprintf ( self::SQL_INSERT.'%s(%s)'.self::SQL_VALUES.'%s', 
+			$this->buildFrom (), 
+			$this->buildField (), 
+			$this->buildData () 
 		);
+		$this->reset();
+		return $sql;
 	}
 	/**
 	 * 解析更新QL语句
 	 * @param array $sql
 	 * @return string
 	 */
-	public function getUpdateSql($sql = array()) {
-		$sql = $sql ? $sql : $this->sql;
-		return sprintf ( self::SQL_UPDATE.'%s'.self::SQL_SET.'%s%s%s%s', 
+	public function getUpdateSql() {
+		$sql = sprintf ( self::SQL_UPDATE.'%s'.self::SQL_SET.'%s%s%s%s', 
 			$this->buildFrom (), 
 			$this->buildSet (), 
 			$this->buildWhere (), 
 			$this->buildOrder (), 
 			$this->buildLimit () 
 		);
+		$this->reset();
+		return $sql;
 	}
 	/**
 	 * 解析删除SQL语句
 	 * @param array $sql
 	 * @return string
 	 */
-	public function getDeleteSql($sql = array()) {
-		$sql = $sql ? $sql : $this->sql;
-		return sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
+	public function getDeleteSql() {
+		$sql = sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
 			$this->buildFrom (), 
 			$this->buildWhere (), 
 			$this->buildOrder (), 
 			$this->buildLimit () 
 		);
+		$this->reset();
+		return $sql;
 	}
 	/**
 	 * 解析查询SQL语句
@@ -398,12 +382,14 @@ abstract class WindSqlBuilder {
 	 * @param array $sql
 	 * @return string
 	 */
-	public function getReplaceSql($table,$data){
-		return sprintf ( self::SQL_REPLACE.'%s%s'.self::SQL_SET.'%s', 
-			$this->buildTable ( $table ), 
-			$this->buildField (array_keys($data)), 
-			$this->buildData ($data) 
+	public function getReplaceSql(){
+		$sql = sprintf ( self::SQL_REPLACE.'%s%s'.self::SQL_SET.'%s', 
+			$this->buildFROM (), 
+			$this->buildField (), 
+			$this->buildData () 
 		);
+		$this->reset();
+		return $sql;
 	}
 	
 	public function getAffectedSql($ifquery){

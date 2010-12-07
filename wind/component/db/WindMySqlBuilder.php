@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindMySqlBuilder extends WindSqlBuilder { 
+final class WindMySqlBuilder extends WindSqlBuilder { 
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#from()
@@ -140,6 +140,17 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this->assembleSql((int)$offset,self::OFFSET);
 	}
 	
+	public function data($data){
+		$params = func_num_args();
+		$data = $params >1 ? func_get_args() : func_get_arg(0);
+		return $this->assembleSql($data,self::DATA);
+	}
+	
+	public function set($field,$value=array()){
+		$realSet = $this->parsePlaceHolder($field,$value,',');
+		return $this->assembleSql($realSet,self::SET);
+	}
+	
 	/**
 	 * @param unknown_type $assembleValue
 	 * @param unknown_type $assembleType
@@ -221,6 +232,31 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
 	}
 	
+	private function parsePlaceHolder($text,$replace=array(),$separators=','){
+		if($text && $replace && is_array($text)){
+			foreach($text as $key=>$_where){
+				$text[$key] = str_replace('?',$this->escapeString($replace[$key]),$_where);
+			}
+			$text = implode($separators ? $separators : ',',$text);
+		}
+		if($text && $replace && is_string($text)){
+			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
+				$replace = is_array($replace) ? $replace : array($replace);
+				foreach($matches[1] as $key=>$match){
+					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+						$replace[$key] = is_array($replace[$key]) ? $replace[$key] : array($replace[$key]);
+						array_walk ( $replace[$key], array ($this, 'escapeString' ) );
+						$_replace = $match.self::LG.implode ( ',', $replace[$key] ).self::RG;
+					}else{
+						$_replace = $match.$this->escapeString($replace[$key]);
+					}
+					$text = str_replace($matches[0][$key],$_replace,$text);
+				}
+			}
+		}
+		return $text;
+	}
+	
 	/**
 	 * @param unknown_type $where
 	 * @param unknown_type $value
@@ -228,29 +264,7 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	 * @return Ambigous <string, mixed>
 	 */
 	private function trueWhere($where,$value = array(),$logic = true){
-		if($where && $value && is_array($where)){
-			foreach($where as $key=>$_where){
-				$where[$key] = str_replace('?',$this->escapeString($value[$key]),$_where);
-			}
-			$logic = $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR);
-			$where = implode($logic,$where);
-		}
-		if($where && $value && is_string($where)){
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$where,$matches)){
-				$value = is_array($value) ? $value : array($value);
-				foreach($matches[1] as $key=>$match){
-					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
-						$value[$key] = is_array($value[$key]) ? $value[$key] : array($value[$key]);
-						array_walk ( $value[$key], array ($this, 'escapeString' ) );
-						$replace = $match.self::LG.implode ( ',', $value[$key] ).self::RG;
-					}else{
-						$replace = $match.$this->escapeString($value[$key]);
-					}
-					$where = str_replace($matches[0][$key],$replace,$where);
-				}
-			}
-		}
-		return $where;
+		return $this->parsePlaceHolder($where,$value, $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR));
 	}
 	
 	/* (non-PHPdoc)
@@ -377,26 +391,26 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildData()
 	 */
-	protected function buildData($data) {
-		if (empty ( $data ) || ! is_array ( $data )) {
+	protected function buildData() {
+		if (empty ( $this->sql[self::DATA] ) || ! is_array ( $this->sql[self::DATA] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_INSERT_DATA);
 		}
-		if($this->getDimension ( $data ) == 1){
-			return $this->buildSingleData ( $data );
+		if($this->getDimension ( $this->sql[self::DATA] ) == 1){
+			return $this->buildSingleData ( $this->sql[self::DATA] );
 		}
-		if($this->getDimension ( $data ) >= 2){
-			$key = array_keys($data);
+		if($this->getDimension ( $this->sql[self::DATA] ) >= 2){
+			$key = array_keys($this->sql[self::DATA]);
 			if(is_string($key[0])){
-				$rows = count($data[$key[0]]);
+				$rows = count($this->sql[self::DATA][$key[0]]);
 				$tmp_data = array();
 				for($i=0;$i<$rows;$i++){
-					foreach($data as $key=>$value){
+					foreach($this->sql[self::DATA] as $key=>$value){
 						$tmp_data[$i][] = $value[$i];
-						unset($data[$key][$i]);
+						unset($this->sql[self::DATA][$key][$i]);
 					}
 				}
 			}
-			$data = $tmp_data ? $tmp_data : $data;
+			$data = $tmp_data ? $tmp_data :  $this->sql[self::DATA];
 			return $this->buildMultiData ( $data );
 		}
 		return array();
@@ -405,17 +419,21 @@ class WindMySqlBuilder extends WindSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildSet()
 	 */
-	protected function buildSet($set) {
-		if (empty ( $set )) {
+	protected function buildSet() {
+		if (empty ( $this->sql[self::SET] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_UPDATE_DATA);
 		}
-		if (is_string ( $set )) {
-			return $set;
+		if (is_string ( $this->sql[self::SET] )) {
+			return $this->sql[self::SET];
 		}
-		foreach ( $set as $key => $value ) {
-			$data [] = $key . '=' . $this->escapeString ( $value );
+		foreach ( $this->sql[self::SET] as $key => $value ) {
+			if(is_string($key)){
+				$this->sql[self::SET][$key] = $key . '=' . $this->escapeString ( $value );
+			}else{
+				$this->sql[self::SET][$key] = $value;
+			}
 		}
-		return $this->sqlFillSpace ( implode ( ',', $data ) );
+		return $this->sqlFillSpace ( implode ( ',', $this->sql[self::SET] ) );
 	}
 	
 
