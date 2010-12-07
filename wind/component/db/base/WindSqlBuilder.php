@@ -227,6 +227,20 @@ abstract class WindSqlBuilder {
 	public abstract function limit($limit,$offset = '');
 	
 	/**
+	 * 解析insert值
+	 * @param string $data
+	 * @return WindSqlBuilder
+	 */
+	public abstract function data($data);
+	/**
+	 * 解析update值
+	 * @param string|array $field
+	 * @param string|array $value
+	 * @return WindSqlBuilder
+	 */
+	public abstract function set($field,$value=array());
+	
+	/**
 	 * 表解析
 	 * @return string;
 	 */
