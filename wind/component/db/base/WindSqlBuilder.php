@@ -91,104 +91,136 @@ abstract class WindSqlBuilder {
 	
 	protected $sql = array();
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $table_alias
-	 * @param unknown_type $fields
+	 * 要获取查询的表
+	 * @param string $table  表名
+	 * @param string $table_alias  表别名
+	 * @param string|array $fields 表字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
-	public abstract function from($table,$table_alias='',$fields='');
+	public abstract function from($table,$table_alias='',$fields='',$schema = '');
 	/**
-	 * @param unknown_type $flag
+	 * 是否包含重复的值
+	 * @param boolean $flag
+	 * @return WindSqlBuilder
 	 */
 	public abstract function distinct($flag = true);
 	/**
-	 * @param unknown_type $field
+	 * 要查询的字段
+	 * @param mixed $field
+	 * @return WindSqlBuilder
 	 */
 	public abstract function field($field);
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（内联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询内联表的字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
 	public abstract function join($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
-	 */
-	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（内联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询内联表的字段
+	 * @param string $schema 数据库
+	 * @see wind/component/db/base/WindSqlBuilder#join()
+	 * @return WindSqlBuilder
 	 */
 	public abstract function innerJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（左联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询左联表的字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
 	public abstract function leftJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（右联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询右联表的字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
 	public abstract function rightJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（全联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询全联表的字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
 	public abstract function fullJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 联表查询（交叉联接）
+	 * @param string $table 表名
+	 * @param string $joinWhere 联接条件
+	 * @param string $alias 表别名
+	 * @param string|array $fields 要查询交叉联表的字段
+	 * @param string $schema 数据库
+	 * @return WindSqlBuilder
 	 */
 	public abstract function crossJoin($table,$joinWhere,$alias='',$fields='',$schema ='');
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $value
-	 * @param unknown_type $group
+	 * 与查询条件，支持占位符
+	 * @param string|array $where 查询条件
+	 * @param string|array $value 条件对应的值
+	 * @param boolean $group  是否启用分组
+	 * @return WindSqlBuilder
 	 */
 	public abstract function where($where,$value=array(),$group=false);
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $value
-	 * @param unknown_type $group
+	 * 或查询条件，支持占位符
+	 * @param string|array $where
+	 * @param string|array $value
+	 * @param boolean $group
+	 * @return WindSqlBuilder
 	 */
 	public abstract function orWhere($where,$value=array(),$group=false);
 	/**
-	 * @param unknown_type $group
+	 * 查询分组
+	 * @param string|array $group 要分组的字段名
+	 * @return WindSqlBuilder
 	 */
 	public abstract function group($group);
+	/**
+	 * 过滤分组
+	 * @param string|array $having 过滤条件
+	 * @param string|array $value  条件对应的值
+	 * @param string|array $group  是否启用分组
+	 * @return WindSqlBuilder
+	 */
+	public abstract function having($having,$value=array(),$group=false);
 	/**
 	 * @param unknown_type $having
 	 * @param unknown_type $value
 	 * @param unknown_type $group
+	 * @return WindSqlBuilder
 	 */
 	public abstract function orHaving($having,$value=array(),$group=false);
 	/**
-	 * @param unknown_type $field
-	 * @param unknown_type $type
+	 * 对查询结果排序
+	 * @param string|array $field 排序的字段
+	 * @param boolean $type 升序还是倒序
+	 * @return boolean
 	 */
 	public abstract function order($field,$type = true);
 	/**
-	 * @param unknown_type $limit
-	 * @param unknown_type $offset
+	 * 分页查询
+	 * @param unknown_type $limit  偏移量
+	 * @param unknown_type $offset 起始值 
+	 * @return WindSqlBuilder
 	 */
 	public abstract function limit($limit,$offset = '');
 	

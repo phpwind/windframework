@@ -15,77 +15,136 @@
  */
 class WindMySqlBuilder extends WindSqlBuilder { 
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#from()
+	 */
 	public  function from($table,$table_alias='',$fields='',$schema = ''){
 		$fields && $this->assembleFieldByTable($fields,$table,$table_alias);
 		return $this->assembleSql(array($table=>array($table_alias,$schema)),self::FROM);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#distinct()
+	 */
 	public  function distinct($flag = true){
 		$this->sql[self::DISTINCT] = $flag ? self::SQL_DISTINCT : '';
 		return $this;
 	}
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#field()
+	 */
 	public  function field($field){
 		$params = func_num_args();
 		$field = $params >1 ? func_get_args() : func_get_arg(0);
 		return $this->assembleSql($field,self::FIELD);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#join()
+	 */
 	public function join($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::INNER,$table,$joinWhere,$alias,$fields,$schema);
 	}
 
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#leftJoin()
+	 */
 	public function leftJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::LEFT,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#rightJoin()
+	 */
 	public function rightJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::RIGHT,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#innerJoin()
+	 */
 	public function innerJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::INNER,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#crossJoin()
+	 */
 	public function crossJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::CROSS,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#fullJoin()
+	 */
 	public function fullJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
 		return $this->assembleJoin(self::FULL,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	/**
+	 * @param unknown_type $where
+	 * @param unknown_type $value
+	 * @param unknown_type $group
+	 * @return WindMySqlBuilder
+	 */
 	public function  Where($where,$value=array(),$group=false){
 		return $this->assembleWhere($where,self::WHERE,$value,true,$group);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#orWhere()
+	 */
 	public  function orWhere($where,$value=array(),$group=false){
 		return $this->assembleWhere($where,self::WHERE,$value,false,$group);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#group()
+	 */
 	public  function group($group){
 		$params = func_num_args();
 		$group = $params >1 ? func_get_args() : func_get_arg(0);
 		return $this->assembleSql($group,self::GROUP);
 	}
 	
+	/**
+	 * @param unknown_type $having
+	 * @param unknown_type $value
+	 * @param unknown_type $group
+	 * @return WindMySqlBuilder
+	 */
 	public  function having($having,$value=array(),$group=false){
 		return $this->assembleWhere($having,self::HAVING,$value,true,$group);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#orHaving()
+	 */
 	public function orHaving($having,$value=array(),$group=false){
 		return $this->assembleWhere($having,self::HAVING,$value,false,$group);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#order()
+	 */
 	public  function order($field,$type = true){
 		$field = is_array($field) ? $field : array($field=>$type);
 		return $this->assembleSql($field,self::ORDER);
 	}
 
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#limit()
+	 */
 	public  function limit($limit,$offset = ''){
 		$this->assembleSql((int)$limit,self::LIMIT);
 		return $this->assembleSql((int)$offset,self::OFFSET);
 	}
 	
+	/**
+	 * @param unknown_type $assembleValue
+	 * @param unknown_type $assembleType
+	 * @return WindMySqlBuilder
+	 */
 	private function assembleSql($assembleValue,$assembleType){
 		if(empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
 			$this->sql[$assembleType] = array();
@@ -102,6 +161,14 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this;
 	}
 	
+	/**
+	 * @param unknown_type $where
+	 * @param unknown_type $whereType
+	 * @param unknown_type $value
+	 * @param unknown_type $logic
+	 * @param unknown_type $group
+	 * @return WindMySqlBuilder
+	 */
 	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
 		$_where = '';
 		$where = $this->trueWhere($where,$value,$logic);
@@ -120,6 +187,12 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this->assembleSql($_where,$whereType);
 	}
 	
+	/**
+	 * @param unknown_type $fields
+	 * @param unknown_type $table
+	 * @param unknown_type $table_alias
+	 * @return WindMySqlBuilder
+	 */
 	private function assembleFieldByTable($fields,$table,$table_alias=''){
 		if($fields && (is_string($fields) || is_array($fields))){
 			$fields = is_array($fields) ? $fields : explode(',',$fields);
@@ -131,6 +204,15 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this;
 	}
 
+	/**
+	 * @param unknown_type $type
+	 * @param unknown_type $table
+	 * @param unknown_type $joinWhere
+	 * @param unknown_type $table_alias
+	 * @param unknown_type $fields
+	 * @param unknown_type $schema
+	 * @return WindMySqlBuilder
+	 */
 	private  function assembleJoin($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
 		if(!in_array($type,array_keys(self::$joinType))){
 			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
@@ -139,6 +221,12 @@ class WindMySqlBuilder extends WindSqlBuilder {
 		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
 	}
 	
+	/**
+	 * @param unknown_type $where
+	 * @param unknown_type $value
+	 * @param unknown_type $logic
+	 * @return Ambigous <string, mixed>
+	 */
 	private function trueWhere($where,$value = array(),$logic = true){
 		if($where && $value && is_array($where)){
 			foreach($where as $key=>$_where){
