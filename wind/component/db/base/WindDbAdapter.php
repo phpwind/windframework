@@ -69,6 +69,18 @@ abstract class WindDbAdapter {
 	 */
 	protected  $config = array ();
 	
+	const CONFIG_DRIVER_TYPE = 'dbtype';
+	const CONFIG_DRIVER_USER = 'dbuser';
+	const CONFIG_DRIVER_PASS = 'dbpass';
+	const CONFIG_DRIVER_HOST = 'dbhost';
+	const CONFIG_DRIVER_PORT = 'dbport';
+	const CONFIG_DRIVER_NAME = 'dbname';
+	const CONFIG_DRIVER_RWDB = 'optype';
+	const CONFIG_DRIVER_CHAR = 'charset';
+	const CONFIG_DRIVER_FORCE = 'force';
+	const CONFIG_DRIVER_PCONN = 'pconnect';
+
+	
 	
 	public function __construct($config) {
 		$this->parseConfig ( $config );
@@ -99,20 +111,31 @@ abstract class WindDbAdapter {
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
-		return array ('dbtype' => $config [1], 'dbuser' => $config [2], 'dbpass' => $config [3], 'dbhost' => $config [4], 'dbport' => $config [5], 'dbname' => $config [6],'charset'=>$config [7], 'force' => $config [8],'pconnect'=>$config [9],'optype'=>$config [10] );
+		return array (
+						self::CONFIG_DRIVER_TYPE => $config [1], 
+						self::CONFIG_DRIVER_USER => $config [2], 
+						self::CONFIG_DRIVER_PASS => $config [3], 
+						self::CONFIG_DRIVER_HOST => $config [4], 
+						self::CONFIG_DRIVER_PORT => $config [5], 
+						self::CONFIG_DRIVER_NAME => $config [6],
+						self::CONFIG_DRIVER_CHAR=>$config [7], 
+						self::CONFIG_DRIVER_FORCE => $config [8],
+						self::CONFIG_DRIVER_PCONN=>$config [9],
+						self::CONFIG_DRIVER_RWDB=>$config [10] 
+					);
 	}
 	
 	final private function checkConfig($config){
 		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
-		if(empty($config['dbtype']) || empty($config['dbhost']) || empty($config['dbname']) || empty($config['dbuser'])  || empty($config['dbpass'])){
+		if(empty($config[self::CONFIG_DRIVER_TYPE]) || empty($config[self::CONFIG_DRIVER_HOST]) || empty($config[self::CONFIG_DRIVER_NAME]) || empty($config[self::CONFIG_DRIVER_USER])  || empty($config[self::CONFIG_DRIVER_PASS])){
 			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
-		$config ['dbhost'] = $config ['dbport'] ? $config ['dbhost'] . ':' . $config ['dbport'] : $config ['dbhost'];
-		$config ['pconnect'] = $config ['pconnect'] ? $config ['pconnect'] : $this->pconnect;
-		$config ['force'] = $config ['force'] ? $config ['force'] : $this->force;
-		$config ['charset'] = $config ['charset'] ? $config ['charset'] : $this->charset;
+		$config [self::CONFIG_DRIVER_HOST] = $config [self::CONFIG_DRIVER_PORT] ? $config [self::CONFIG_DRIVER_HOST] . ':' . $config [self::CONFIG_DRIVER_PORT] : $config [self::CONFIG_DRIVER_HOST];
+		$config [self::CONFIG_DRIVER_PCONN] = $config [self::CONFIG_DRIVER_PCONN] ? $config [self::CONFIG_DRIVER_PCONN] : $this->pconnect;
+		$config [self::CONFIG_DRIVER_FORCE] = $config [self::CONFIG_DRIVER_FORCE] ? $config [self::CONFIG_DRIVER_FORCE] : $this->force;
+		$config [self::CONFIG_DRIVER_CHAR] = $config [self::CONFIG_DRIVER_CHAR] ? $config [self::CONFIG_DRIVER_CHAR] : $this->charset;
 		return $this->config = $config;
 	}
 	
@@ -238,11 +261,11 @@ abstract class WindDbAdapter {
 	}
 
 	final public function getSchema(){
-		return  $this->config['dbname'];
+		return  $this->config[self::CONFIG_DRIVER_NAME];
 	}
 	
 	final public function getDbDriver(){
-		return  $this->config['dbtype'];
+		return  $this->config[self::CONFIG_DRIVER_TYPE];
 	}
 
 	public function __destruct(){

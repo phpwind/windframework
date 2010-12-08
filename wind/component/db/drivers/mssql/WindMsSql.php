@@ -18,8 +18,9 @@ class WindMsSql extends WindDbAdapter {
 	 */
 	protected function connect() {
 		if (!is_resource ( $this->connection )) {
-			$this->connection = $this->config ['pconnect'] ? mssql_pconnect ( $this->config ['host'], $this->config ['dbuser'], $this->config ['dbpass'] ) : mssql_connect ( $this->config ['host'], $this->config ['dbuser'], $this->config ['dbpass'], $this->config ['force'] );
-			$this->changeDB ( $this->config ['dbname'] );
+			$this->connection = $this->config [self::CONFIG_DRIVER_PCONN] ? mssql_pconnect ( $this->config [self::CONFIG_DRIVER_HOST], $this->config [self::CONFIG_DRIVER_USER], $this->config [self::CONFIG_DRIVER_PASS] ) : mssql_connect ( $this->config [self::CONFIG_DRIVER_HOST], $this->config [self::CONFIG_DRIVER_USER], $this->config [self::CONFIG_DRIVER_PASS], $this->config [self::CONFIG_DRIVER_FORCE] );
+			$this->changeDB ( $this->config [self::CONFIG_DRIVER_NAME] );
+			$this->setCharSet ( $this->config [self::CONFIG_DRIVER_CHAR] );
 		}
 		return $this->connection;
 	}
