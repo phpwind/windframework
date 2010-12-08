@@ -18,8 +18,7 @@ L::import('WIND:utility.xml.xml');
  */
 class WindXMLConfig extends XML implements IWindParser {
 	private $xmlArray;
-    private $childConfig;
-    private $isCheck;
+    private $parseNodeList;
     private $GAM;
 	/**
 	 * 构造函数，设置输出编码及变量初始化
@@ -28,9 +27,18 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function __construct($encoding = 'gbk') {
 		$this->setOutputEncoding($encoding);
+		$this->parseNodesList = IWindConfig::PARSERARRAY;
 		$this->GAM = array();
 	}
-	
+	/**
+	 * 设置需要解析的一级节点
+	 * @param string $parseRoot
+	 */
+	public function setParseNodeList($nodeList) {
+		if (is_string($nodeList) && $nodeList != "") {
+			$this->parseNodeList = $nodeList;
+		}
+	}
 	/**
 	 * 加载需要解析的文件
 	 * @param unknown_type $filename
@@ -49,7 +57,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function parser() {
 		$this->ceateParser();
-		$parseArray = trim(IWindConfig::PARSERARRAY, ',');
+		$parseArray = trim($this->parseNodeList, ',');
 		$_parseTags = (strpos($parseArray, ',') === false) ? array($parseArray) : explode(',', $parseArray);
 		$_array = array();
 		foreach($_parseTags as $tag) {
@@ -208,7 +216,6 @@ class WindXMLConfig extends XML implements IWindParser {
 	
     /*
 	 * 返回解析的结果
-	 * @param boolean $isCheck 是否需要检查配置
 	 * @return array 返回解析后的数据信息
 	 */
 	public function getResult() {
