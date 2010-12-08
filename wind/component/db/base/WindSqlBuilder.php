@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.exception.WindSqlException');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -104,8 +104,8 @@ abstract class WindSqlBuilder {
 			$_this = get_class($this);
 			$_adapter = str_replace('Builder','',$_this);
 			$_driver = str_replace('Wind','',$_adapter);
-			if(!class_exists($_adapter)){
-				//L::import ( 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter);
+			if(!class_exists($_adapter,false)){
+				L::import ( 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter);
 			}
 			$this->adapter = new $_adapter($config);
 		}
@@ -416,7 +416,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getReplaceSql(){
-		$sql = sprintf ( self::SQL_REPLACE.'%s%s'.self::SQL_SET.'%s', 
+		$sql = sprintf ( self::SQL_REPLACE.'%s(%s)'.self::SQL_SET.'%s', 
 			$this->buildFROM (), 
 			$this->buildField (), 
 			$this->buildData () 
@@ -437,7 +437,7 @@ abstract class WindSqlBuilder {
 	 * 执行数据库delete操作
 	 * @return boolean
 	 */
-	public function detete(){
+	public function delete(){
 		$this->verifyAdapter();
 		$this->adapter->delete($this->getDeleteSql());
 		return $this;
