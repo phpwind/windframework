@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-if (!defined('R_P')) define('R_P', dirname(dirname(__FILE__)));
+!defined('R_P') && define('R_P', dirname(dirname(__FILE__)));
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Framework/IncompleteTestError.php';
 require_once 'PHPUnit/Framework/TestCase.php';
