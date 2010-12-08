@@ -50,14 +50,14 @@ final class WindConnManager{
 	 * @param unknown_type $optype
 	 * @return multitype:
 	 */
-	public  function dbDriverFactory($identify = '',$optype = ''){
+	public  function connDriverFactory($identify = '',$optype = ''){
 		if($identify && empty(self::$config[$identify])){
 			throw new WindSqlException(WindSqlException::DB_NOT_EXIST);
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($optype);
 		if(empty(self::$linked[$identify])){
 			$config = self::$config[$identify];
-			L::import(IWindDbConfig::CONFIG_PATH);
+			L::import($config[IWindDbConfig::CONFIG_PATH]);
 			self::$linked[$identify] = new $config[IWindDbConfig::CONFIG_CLASS]($config);
 		}
 		return $this->dbDriver = self::$linked[$identify];

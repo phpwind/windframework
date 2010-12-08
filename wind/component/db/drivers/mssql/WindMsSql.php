@@ -20,7 +20,6 @@ class WindMsSql extends WindDbAdapter {
 		if (!is_resource ( $this->connection )) {
 			$this->connection = $this->config [IWindDbConfig::CONFIG_PCONN] ? mssql_pconnect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS] ) : mssql_connect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS], $this->config [IWindDbConfig::CONFIG_FORCE] );
 			$this->changeDB ( $this->config [IWindDbConfig::CONFIG_NAME] );
-			$this->setCharSet ( $this->config [IWindDbConfig::CONFIG_CHAR] );
 		}
 		return $this->connection;
 	}
@@ -68,7 +67,7 @@ class WindMsSql extends WindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type = MSSQL_ASSOC) {
+	public function getAllRow($fetch_type) {
 		if (! is_resource ( $this->query )) {
 			throw new WindSqlException ( WindSqlException::DB_QUERY_LINK_EMPTY );
 		}
@@ -82,8 +81,8 @@ class WindMsSql extends WindDbAdapter {
 		return $result;
 	}
 	
-	public function getRow($fetch_type = MSSQL_ASSOC){
-		return mssql_fetch_array($this->query,MSSQL_ASSOC);
+	public function getRow($fetch_type){
+		return mssql_fetch_array($this->query,$fetch_type);
 	}
 	
 	public function beginTrans() {

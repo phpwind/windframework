@@ -62,6 +62,10 @@ abstract class WindDbAdapter {
 	 */
 	protected  $connection = null;
 	/**
+	 * @var WindSqlBuilder sql语句生成器
+	 */
+	protected  $sqlBuilder = null;
+	/**
 	 * @var resource 当前查询句柄
 	 */
 	protected $query = null;
@@ -162,7 +166,7 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function getAffectedRows();
 	/**
-	 * 
+	 * 取得最后新增自增ID
 	 */
 	public abstract function getLastInsertId();
 	
@@ -183,6 +187,17 @@ abstract class WindDbAdapter {
 	 * 数据库操作操作处理
 	 */
 	protected abstract function error($sql);
+	
+	final public  function getSqlBuilder(){
+		if(empty($this->sqlBuilder)){
+			$_currentAdapter = get_class($this);
+			$_builder = $_currentAdapter.'Builder';
+			$_driver = str_replace('Wind','',$_currentAdapter);
+			L::import ( "WIND:component.db.drivers.{$_driver}.{$_builder}" );
+			$this->sqlBuilder = L::getInstance($_builder,array($this));
+		}
+		return $this->sqlBuilder;
+	}
 	/**
 	 * 执行添加数据操作 (insert)
 	 * @param string | array $sql 查询条件

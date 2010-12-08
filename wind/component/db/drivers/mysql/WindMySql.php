@@ -21,6 +21,8 @@ class WindMySql extends WindDbAdapter {
 			$this->connection = $this->config [IWindDbConfig::CONFIG_PCONN] ? mysql_pconnect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS] ) : mysql_connect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS], $this->config [IWindDbConfig::CONFIG_FORCE] );
 			$this->changeDB ( $this->config [IWindDbConfig::CONFIG_NAME] );
 			$this->setCharSet ( $this->config [IWindDbConfig::CONFIG_CHAR] );
+		}else{
+			$this->changeDB ( $this->config [IWindDbConfig::CONFIG_NAME] );
 		}
 		return $this->connection;
 	}
