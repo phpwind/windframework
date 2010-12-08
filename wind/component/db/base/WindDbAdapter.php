@@ -127,7 +127,9 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function query($sql);
 	/**
-	 * @param int $fetch_type 取得结果集
+	 * 取得结果集
+	 * @param int $fetch_type 类型
+	 * @return array
 	 */
 	public abstract function getAllRow($fetch_type);
 	

@@ -410,43 +410,6 @@ abstract class WindSqlBuilder {
 		return $sql;
 	}
 	
-	
-	/**
-	 * @return boolean
-	 */
-	public function detete(){
-		return $this->adapter->delete($this->getSelectSql());
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function update(){
-		return $this->adapter->update($this->getUpdateSql());
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function select(){
-		return $this->adapter->select($this->getSelectSql());
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function insert(){
-		return $this->adapter->insert($this->getInsertSql());
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function replace(){
-		return $this->adapter->insert($this->getReplaceSql());
-	}
-	
-	
 	/**
 	 * 解析replace SQL语句
 	 * @param array $sql
@@ -468,6 +431,81 @@ abstract class WindSqlBuilder {
 	
 	public function getLastInsertIdSql(){
 		return sprintf ("SELECT%s",$this->buildLastInsertId());
+	}
+	
+	/**
+	 * 执行数据库delete操作
+	 * @return boolean
+	 */
+	public function detete(){
+		$this->verifyAdapter();
+		$this->adapter->delete($this->getDeleteSql());
+		return $this;
+	}
+	
+	/**
+	 * 执行数据库update操作
+	 * @return boolean
+	 */
+	public function update(){
+		$this->verifyAdapter();
+		$this->adapter->update($this->getUpdateSql());
+		return $this;
+	}
+	
+	/**
+	 * 执行数据库select操作
+	 * @return boolean
+	 */
+	public function select(){
+		$this->verifyAdapter();
+		$this->adapter->select($this->getSelectSql());
+		return $this;
+	}
+	
+	/**
+	 * 执行数据库insert操作
+	 * @return boolean
+	 */
+	public function insert(){
+		$this->verifyAdapter();
+		$this->adapter->insert($this->getInsertSql());
+		return $this;
+	}
+	
+	/**
+	 * 执行数据库replace操作
+	 * @return boolean
+	 */
+	public function replace(){
+		$this->verifyAdapter();
+		$this->adapter->insert($this->getReplaceSql());
+		return $this;
+	}
+	
+	/**
+	 * 取得结果集
+	 * @param int $fetch_type 类型
+	 * @return array
+	 */
+	public function getAllRow($fetch_type){
+		$this->verifyAdapter();
+		return $this->adapter->getAllRow($fetch_type);
+	}
+	
+	
+	public function getRow($fetch_type){
+		$this->verifyAdapter();
+		return $this->adapter->getRow($fetch_type);
+	}
+	
+	
+	
+	private function verifyAdapter(){
+		if(empty($this->adapter)){
+			throw new WindSqlException(WindSqlException::DB_ADAPTER_NOT_EXIST);
+		}
+		return true;
 	}
 	
 	/**

@@ -33,4 +33,5 @@ class WindSqlException extends WindException {
 	const DB_TABLE_EMPTY='Table is  empty';
 	const DB_EMPTY='Database is  empty';
 	const DB_DRIVER_NOT_EXIST = 'The database driver does not exist';
+	const DB_ADAPTER_NOT_EXIST ='The database adapter does not exist';
 }
