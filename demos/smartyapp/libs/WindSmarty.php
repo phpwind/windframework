@@ -19,7 +19,6 @@ class WindSmarty extends Smarty implements IWindViewer {
 	}
 
 	/**
-	 * 设置视图信息
 	 * 
 	 * @param WindView $view
 	 */
@@ -29,8 +28,8 @@ class WindSmarty extends Smarty implements IWindViewer {
 		$this->templateExt = $view->getTemplateExt();
 		$this->cache_dir = $this->getRealPath($view->getTemplateCacheDir());
 		$this->compile_dir = $this->getRealPath($view->getTemplateCompileDir());
-		$this->layout = $view->getMav()->getLayout();
-		$this->layoutMapping = $view->getMav()->getLayoutMapping();
+		$this->layout = $view->getForward()->getLayout();
+		$this->layoutMapping = $view->getForward()->getLayoutMapping();
 		$this->view = $view;
 	}
 	
@@ -53,7 +52,6 @@ class WindSmarty extends Smarty implements IWindViewer {
 	}
 	
 	/**
-	 * 获得模板文件
 	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
