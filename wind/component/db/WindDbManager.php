@@ -13,12 +13,15 @@
  * @version $Id$ 
  * @package 
  */
-final class WindDbManager{
+final class WindConnManager{
 	
 	private  static $config = array();
 	private  static $linked = array();
 	private  $dbDriver = null;
 	private  static $dbManager = null;
+	const CONFIG_DRIVER_NAME = 'className';
+   	const CONFIG_DRIVER_PATH = 'path';
+   	const CONFIG_DRIVER_TYPE = 'dbtype';
 	
 	private function __construct($config = array()){
 		self::$config = $config ? $config : $this->getDbConfig();
@@ -28,8 +31,8 @@ final class WindDbManager{
 		$dbConfig = C::getDbConfig();
 		$dbDriver = C::getDbDriver();
 		foreach($dbConfig as $key=>$value){
-			if(in_array($value['dbtype'],array_keys($dbDriver))){
-				$dbConfig[$key] = array_merge($dbConfig[$key],$dbDriver[$value['dbtype']]);
+			if(in_array($value[self::CONFIG_DRIVER_TYPE],array_keys($dbDriver))){
+				$dbConfig[$key] = array_merge($dbConfig[$key],$dbDriver[$value[self::CONFIG_DRIVER_TYPE]]);
 			}
 		}
 		return $dbConfig;
@@ -57,8 +60,8 @@ final class WindDbManager{
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($optype);
 		if(empty(self::$linked[$identify])){
 			$config = self::$config[$identify];
-			L::import($config['path']);
-			self::$linked[$identify] = new $config['className']($config);
+			L::import(self::CONFIG_DRIVER_PATH);
+			self::$linked[$identify] = new $config[self::CONFIG_DRIVER_NAME]($config);
 		}
 		return $this->dbDriver = self::$linked[$identify];
 	}

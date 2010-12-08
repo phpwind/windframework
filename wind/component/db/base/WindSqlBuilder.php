@@ -86,9 +86,11 @@ abstract class WindSqlBuilder {
     const SQL_OFFSET	 = 'OFFSET ';
     const SQL_ASC        = 'ASC ';
     const SQL_DESC       = 'DESC ';
-    const SQL_ALLFIELD   = '*';
+    const SQL_ALLFIELD   = '* ';
     
-   
+   	const CONFIG_DRIVER_NAME = 'className';
+   	const CONFIG_DRIVER_PATH = 'path';
+   	const CONFIG_DRIVER_TYPE = 'dbtype';
 	
 	/**
 	 * @var array sql语句组装器
@@ -100,14 +102,24 @@ abstract class WindSqlBuilder {
 	public $adapter = null;
 	
 	public function __construct($config = array()){
-		if($config){
+		if($config && is_array($config)){
 			$_this = get_class($this);
-			$_adapter = str_replace('Builder','',$_this);
+			$_adapter = $config[self::CONFIG_DRIVER_NAME] ? $config[self::CONFIG_DRIVER_NAME] : str_replace('Builder','',$_this);
 			$_driver = str_replace('Wind','',$_adapter);
+			$_path = $config[self::CONFIG_DRIVER_PATH] ? $config[self::CONFIG_DRIVER_PATH] : 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter;
 			if(!class_exists($_adapter,false)){
-				L::import ( 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter);
+				L::import ($_path);
+			}
+			if($config[self::CONFIG_DRIVER_TYPE] != strtolower($_driver)){
+				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
 			$this->adapter = new $_adapter($config);
+		}
+		if($config && is_object($config)){
+			if(str_replace('Builder','',get_class($this)) != get_class($config)){
+				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
+			}
+			$this->adapter = $config;
 		}
 	}
 	/**
