@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
 	<app>
-		<name>ddd</name>
+		<name>HelloWorld</name>
 		<rootPath></rootPath>
 		<configPath></configPath>
 	</app>

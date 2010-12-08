@@ -17,5 +17,5 @@ require_once (FREAMWORK_PATH . '/wind.php');
 /*$_GET['formName'] = 'userForm';
 $_POST['username'] = 'asssss';*/
 
-W::application('TEST')->run();
+W::application('HelloWorld')->run();
 //print_r(L::getImports());
