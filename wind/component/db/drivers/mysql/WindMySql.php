@@ -48,7 +48,7 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
 		$this->query('SHOW TABLES FROM '.$schema);
-		return $this->getAllRow();
+		return $this->getAllRow(MYSQL_ASSOC);
 	}
 	
 	public function getMetaColumns($table){
@@ -56,13 +56,13 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$this->query('SHOW COLUMNS FROM '.$table);
-		return $this->getAllRow();
+		return $this->getAllRow(MYSQL_ASSOC);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type = MYSQL_ASSOC) {
+	public function getAllRow($fetch_type) {
 		if (! is_resource ( $this->query )) {
 			throw new WindSqlException ( WindSqlException::DB_QUERY_LINK_EMPTY );
 		}
@@ -76,7 +76,7 @@ class WindMySql extends WindDbAdapter {
 		return $result;
 	}
 	
-	public function getRow($fetch_type = MYSQL_ASSOC){
+	public function getRow($fetch_type){
 		return mysql_fetch_array ( $this->query, $fetch_type );
 	}
 	

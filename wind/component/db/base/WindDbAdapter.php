@@ -129,9 +129,9 @@ abstract class WindDbAdapter {
 	/**
 	 * @param int $fetch_type 取得结果集
 	 */
-	public abstract function getAllRow($fetch_type = MYSQL_ASSOC);
+	public abstract function getAllRow($fetch_type);
 	
-	public abstract function getRow($fetch_type = MYSQL_ASSOC);
+	public abstract function getRow($fetch_type);
 	/**
 	 * 开始事务点
 	 */
