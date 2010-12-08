@@ -19,10 +19,7 @@ final class WindConnManager{
 	private  static $linked = array();
 	private  $dbDriver = null;
 	private  static $dbManager = null;
-	const CONFIG_DRIVER_NAME = 'className';
-   	const CONFIG_DRIVER_PATH = 'path';
-   	const CONFIG_DRIVER_TYPE = 'dbtype';
-	
+
 	private function __construct($config = array()){
 		self::$config = $config ? $config : $this->getDbConfig();
 	}
@@ -31,8 +28,8 @@ final class WindConnManager{
 		$dbConfig = C::getDbConfig();
 		$dbDriver = C::getDbDriver();
 		foreach($dbConfig as $key=>$value){
-			if(in_array($value[self::CONFIG_DRIVER_TYPE],array_keys($dbDriver))){
-				$dbConfig[$key] = array_merge($dbConfig[$key],$dbDriver[$value[self::CONFIG_DRIVER_TYPE]]);
+			if(in_array($value[IWindDbConfig::CONFIG_TYPE],array_keys($dbDriver))){
+				$dbConfig[$key] = array_merge($dbConfig[$key],$dbDriver[$value[IWindDbConfig::CONFIG_TYPE]]);
 			}
 		}
 		return $dbConfig;
@@ -41,7 +38,7 @@ final class WindConnManager{
 	
 	public function addDriverConfig($config,$identify = ''){
 		if($identify && empty(self::$config[$identify])){
-			throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
+			throw new WindSqlException(WindSqlException::DB_NOT_EXIST);
 		}
 		$identify ? self::$config[$identify] = $config : self::$config[] = $config;
 	}
@@ -55,13 +52,13 @@ final class WindConnManager{
 	 */
 	public  function dbDriverFactory($identify = '',$optype = ''){
 		if($identify && empty(self::$config[$identify])){
-			throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
+			throw new WindSqlException(WindSqlException::DB_NOT_EXIST);
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($optype);
 		if(empty(self::$linked[$identify])){
 			$config = self::$config[$identify];
-			L::import(self::CONFIG_DRIVER_PATH);
-			self::$linked[$identify] = new $config[self::CONFIG_DRIVER_NAME]($config);
+			L::import(IWindDbConfig::CONFIG_PATH);
+			self::$linked[$identify] = new $config[IWindDbConfig::CONFIG_CLASS]($config);
 		}
 		return $this->dbDriver = self::$linked[$identify];
 	}
@@ -79,8 +76,8 @@ final class WindConnManager{
 	private function getMasterSlave() {
 		$array = array ();
 		foreach ( self::$config as $key => $value ) {
-			if (in_array ( $value ['optype'], array ('master', 'slave' ) )) {
-				$array [$value ['optype']] [$key] = $value;
+			if (in_array ( $value [IWindDbConfig::CONFIG_RWDB], array (IWindDbConfig::CONFIG_MASTER, IWindDbConfig::CONFIG_SLAVE ) )) {
+				$array [$value [IWindDbConfig::CONFIG_RWDB]] [$key] = $value;
 			}
 		}
 		return $array;

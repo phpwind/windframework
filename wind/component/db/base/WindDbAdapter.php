@@ -6,6 +6,7 @@
  * @license 
  */
 L::import('WIND:component.exception.WindSqlException');
+L::import('WIND:component.db.base.IWindDbConfig');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -69,19 +70,6 @@ abstract class WindDbAdapter {
 	 */
 	protected  $config = array ();
 	
-	const CONFIG_DRIVER_TYPE = 'dbtype';
-	const CONFIG_DRIVER_USER = 'dbuser';
-	const CONFIG_DRIVER_PASS = 'dbpass';
-	const CONFIG_DRIVER_HOST = 'dbhost';
-	const CONFIG_DRIVER_PORT = 'dbport';
-	const CONFIG_DRIVER_NAME = 'dbname';
-	const CONFIG_DRIVER_RWDB = 'optype';
-	const CONFIG_DRIVER_CHAR = 'charset';
-	const CONFIG_DRIVER_FORCE = 'force';
-	const CONFIG_DRIVER_PCONN = 'pconnect';
-
-	
-	
 	public function __construct($config) {
 		$this->parseConfig ( $config );
 		$this->connect();
@@ -112,16 +100,16 @@ abstract class WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
 		return array (
-						self::CONFIG_DRIVER_TYPE => $config [1], 
-						self::CONFIG_DRIVER_USER => $config [2], 
-						self::CONFIG_DRIVER_PASS => $config [3], 
-						self::CONFIG_DRIVER_HOST => $config [4], 
-						self::CONFIG_DRIVER_PORT => $config [5], 
-						self::CONFIG_DRIVER_NAME => $config [6],
-						self::CONFIG_DRIVER_CHAR=>$config [7], 
-						self::CONFIG_DRIVER_FORCE => $config [8],
-						self::CONFIG_DRIVER_PCONN=>$config [9],
-						self::CONFIG_DRIVER_RWDB=>$config [10] 
+						IWindDbConfig::CONFIG_TYPE => $config [1], 
+						IWindDbConfig::CONFIG_USER => $config [2], 
+						IWindDbConfig::CONFIG_PASS => $config [3], 
+						IWindDbConfig::CONFIG_HOST => $config [4], 
+						IWindDbConfig::CONFIG_PORT => $config [5], 
+						IWindDbConfig::CONFIG_NAME => $config [6],
+						IWindDbConfig::CONFIG_CHAR=>$config [7], 
+						IWindDbConfig::CONFIG_FORCE => $config [8],
+						IWindDbConfig::CONFIG_PCONN=>$config [9],
+						IWindDbConfig::CONFIG_RWDB=>$config [10] 
 					);
 	}
 	
@@ -129,13 +117,13 @@ abstract class WindDbAdapter {
 		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
 		}
-		if(empty($config[self::CONFIG_DRIVER_TYPE]) || empty($config[self::CONFIG_DRIVER_HOST]) || empty($config[self::CONFIG_DRIVER_NAME]) || empty($config[self::CONFIG_DRIVER_USER])  || empty($config[self::CONFIG_DRIVER_PASS])){
+		if(empty($config[IWindDbConfig::CONFIG_TYPE]) || empty($config[IWindDbConfig::CONFIG_HOST]) || empty($config[IWindDbConfig::CONFIG_NAME]) || empty($config[IWindDbConfig::CONFIG_USER])  || empty($config[IWindDbConfig::CONFIG_PASS])){
 			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
 		}
-		$config [self::CONFIG_DRIVER_HOST] = $config [self::CONFIG_DRIVER_PORT] ? $config [self::CONFIG_DRIVER_HOST] . ':' . $config [self::CONFIG_DRIVER_PORT] : $config [self::CONFIG_DRIVER_HOST];
-		$config [self::CONFIG_DRIVER_PCONN] = $config [self::CONFIG_DRIVER_PCONN] ? $config [self::CONFIG_DRIVER_PCONN] : $this->pconnect;
-		$config [self::CONFIG_DRIVER_FORCE] = $config [self::CONFIG_DRIVER_FORCE] ? $config [self::CONFIG_DRIVER_FORCE] : $this->force;
-		$config [self::CONFIG_DRIVER_CHAR] = $config [self::CONFIG_DRIVER_CHAR] ? $config [self::CONFIG_DRIVER_CHAR] : $this->charset;
+		$config [IWindDbConfig::CONFIG_HOST] = $config [IWindDbConfig::CONFIG_PORT] ? $config [IWindDbConfig::CONFIG_HOST] . ':' . $config [IWindDbConfig::CONFIG_PORT] : $config [IWindDbConfig::CONFIG_HOST];
+		$config [IWindDbConfig::CONFIG_PCONN] = $config [IWindDbConfig::CONFIG_PCONN] ? $config [IWindDbConfig::CONFIG_PCONN] : $this->pconnect;
+		$config [IWindDbConfig::CONFIG_FORCE] = $config [IWindDbConfig::CONFIG_FORCE] ? $config [IWindDbConfig::CONFIG_FORCE] : $this->force;
+		$config [IWindDbConfig::CONFIG_CHAR] = $config [IWindDbConfig::CONFIG_CHAR] ? $config [IWindDbConfig::CONFIG_CHAR] : $this->charset;
 		return $this->config = $config;
 	}
 	
@@ -261,11 +249,11 @@ abstract class WindDbAdapter {
 	}
 
 	final public function getSchema(){
-		return  $this->config[self::CONFIG_DRIVER_NAME];
+		return  $this->config[IWindDbConfig::CONFIG_NAME];
 	}
 	
 	final public function getDbDriver(){
-		return  $this->config[self::CONFIG_DRIVER_TYPE];
+		return  $this->config[IWindDbConfig::CONFIG_TYPE];
 	}
 
 	public function __destruct(){

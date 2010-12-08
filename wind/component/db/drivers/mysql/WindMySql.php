@@ -18,9 +18,9 @@ class WindMySql extends WindDbAdapter {
 	 */
 	protected function connect() {
 		if (!is_resource ( $this->connection )) {
-			$this->connection = $this->config [self::CONFIG_DRIVER_PCONN] ? mysql_pconnect ( $this->config [self::CONFIG_DRIVER_HOST], $this->config [self::CONFIG_DRIVER_USER], $this->config [self::CONFIG_DRIVER_PASS] ) : mysql_connect ( $this->config [self::CONFIG_DRIVER_HOST], $this->config [self::CONFIG_DRIVER_USER], $this->config [self::CONFIG_DRIVER_PASS], $this->config [self::CONFIG_DRIVER_FORCE] );
-			$this->changeDB ( $this->config [self::CONFIG_DRIVER_NAME] );
-			$this->setCharSet ( $this->config [self::CONFIG_DRIVER_CHAR] );
+			$this->connection = $this->config [IWindDbConfig::CONFIG_PCONN] ? mysql_pconnect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS] ) : mysql_connect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS], $this->config [IWindDbConfig::CONFIG_FORCE] );
+			$this->changeDB ( $this->config [IWindDbConfig::CONFIG_NAME] );
+			$this->setCharSet ( $this->config [IWindDbConfig::CONFIG_CHAR] );
 		}
 		return $this->connection;
 	}
