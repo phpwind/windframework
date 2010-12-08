@@ -6,7 +6,7 @@
 		<configPath></configPath>
 	</app>
 	<modules>
-		<module>
+		<module name='default'>
 			<name>default</name>
 			<path>actionControllers</path>
 		</module>
