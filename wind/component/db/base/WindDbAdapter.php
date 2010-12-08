@@ -74,6 +74,10 @@ abstract class WindDbAdapter {
 	 */
 	protected  $config = array ();
 	
+	/**
+	 * 初始化配置
+	 * @param array $config
+	 */
 	public function __construct($config) {
 		$this->parseConfig ( $config );
 		$this->connect();
@@ -82,10 +86,6 @@ abstract class WindDbAdapter {
 	/**
 	 * 解析数数库配置
 	 * @param array $config 数据库配置，必须是基于键值的二维数组或必须是基于键值DNS格式的一维数组
-	 * @example DSN格式array('phpwind'=>'mysql:://username:password@localhost:port/dbname/optype/pconnect/force');
-	 * 			arrays格式array('phpwind'=>array('dbtype'=>'mysql','dbname'=>'root','dbpass'=>'123456',
-	 * 							'dbuser'=>'root','dbhost'=>'locahost','dbport'=>3306,
-	 * 							'optype'=>'master','pconnect'=>1,'force'=>1);
 	 * @return array 返回解析后的数据库配置
 	 */
 	final protected function parseConfig($config) {
@@ -94,8 +94,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 以DSN格式解析数数库配置，其中(主从optype,永久连接pconnect,强制新连接force)可选
-	 * @example mysql:://username:password@localhost:port/dbname/force/pconect/optype/
-	 * @param unknown_type $dsn 数据库连接格式
+	 * @param string $dsn 数据库连接格式
 	 * @return array 
 	 */
 	final public function parseDSN($dsn) {
@@ -117,6 +116,11 @@ abstract class WindDbAdapter {
 					);
 	}
 	
+	/**
+	 * 验证config操作
+	 * @param array $config
+	 * @return array
+	 */
 	final private function checkConfig($config){
 		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
 			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
@@ -188,6 +192,10 @@ abstract class WindDbAdapter {
 	 */
 	protected abstract function error($sql);
 	
+	/**
+	 * 返回sqlBuilder生成器
+	 * @return WindSqlBuilder
+	 */
 	final public  function getSqlBuilder(){
 		if(empty($this->sqlBuilder)){
 			$_currentAdapter = get_class($this);
@@ -209,7 +217,7 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 执行更新数据操作
-	 * @param string | array $sql 查询条件
+	 * @param string  $sql 查询条件
 
 	 * @return boolean
 	 */
@@ -218,7 +226,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 执行查询数据操作
-	 * @param string | array $sql 查询条件
+	 * @param string  $sql 查询条件
 
 	 * @return boolean
 	 */
@@ -227,7 +235,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 执行删除数据操作
-	 * @param string | array $sql 查询条件
+	 * @param string  $sql 查询条件
 	 * @return boolean
 	 */
 	final public  function delete($sql){
@@ -236,7 +244,7 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 执行新增数据操作(replace)
-	 * @param string | array $sql 查询条件
+	 * @param string  $sql 查询条件
 	 * @return boolean
 	 */
 	final public function replace(){
@@ -247,6 +255,10 @@ abstract class WindDbAdapter {
 		return " '" . $value . "' ";
 	}
 	
+	/**
+	 * 取得当前DB连接
+	 * @return resoruce
+	 */
 	public function getConnection(){
 		return $this->connection;
 	}
@@ -263,10 +275,18 @@ abstract class WindDbAdapter {
 		return $this->last_sql;
 	}
 
+	/**
+	 * 取得数据库
+	 * @return string:
+	 */
 	final public function getSchema(){
 		return  $this->config[IWindDbConfig::CONFIG_NAME];
 	}
 	
+	/**
+	 * 取得数据库驱动
+	 * @return string;
+	 */
 	final public function getDbDriver(){
 		return  $this->config[IWindDbConfig::CONFIG_TYPE];
 	}
