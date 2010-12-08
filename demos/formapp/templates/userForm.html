@@ -3,7 +3,7 @@
 <p><center>用户表单测试</center></p>
 <p>
 <?php if ($show) { ?>
-<form action="index.php?c=index&a=getForm" method="post"> 
+<form action="index.php?c=index&a=getForm" method="post">
 请输入用户名<input type="text" value="" name="username"/><span style="color:red"><?php echo $usernameError;?></span><br/>
 请输入密码<input type="password" value="" name="password"/><span style="color:red"><?php echo $passwordError;?></span><br/>
 <?php if ($isUse != 'n') { ?>
