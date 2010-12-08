@@ -42,7 +42,7 @@
 	'viewerResolvers' => array(
 		'default' => 'WIND:component.viewer.WindViewer',
 		'pw' => 'WIND:component.viewer.WindPWViewer',
-		'smarty' => 'libs.WSmarty',
+		'smarty' => 'libs.WindSmarty',
 	),
 	'router' => array(
 		'parser' => 'url',
@@ -77,11 +77,11 @@
 	),
 	'dbDriver' => array(
 		'mysql' => array(
-			'path' => 'WIND:component.db.WindMySql',
+			'path' => 'WIND:component.db.drivers.mysql.WindMySql',
 			'className' => 'WindMySql',
 		),
 		'mssql' => array(
-			'path' => 'WIND:component.db.WindMsSql',
+			'path' => 'WIND:component.db.drivers.mssql.WindMsSql',
 			'className' => 'WindMsSql',
 		),
 	),

@@ -6,6 +6,7 @@
  * @license 
  */
 L::import ( 'WIND:component.db.drivers.mysql.WindMySqlBuilder' );
+L::import ( 'WIND:component.db.WindConnManager' );
 class DbController extends WindController{
 	 protected $phpwind = array (	
 							'charset' => 'utf8', 
@@ -78,16 +79,61 @@ class DbController extends WindController{
 	
 	public function update(){
 		$mySqlBuilder = L::getInstance('WindMySqlBuilder',array($this->phpwind));
-		$mySqlBuilder->from('pw_posts')->set('subject=?,buy=?',array('suqian',3))->where('pid = 1')->update();
+		$mySqlBuilder->from('pw_posts')
+					 ->set('subject=?,buy=?',array('suqian',3))
+					 ->where('pid = 1')
+					 ->update();
 	}
 	
 	public function delete(){
 		$mySqlBuilder = L::getInstance('WindMySqlBuilder',array($this->phpwind));
-		$mySqlBuilder->from('pw_posts')->where('pid = 2')->delete();
+		$mySqlBuilder->from('pw_posts')
+					 ->where('pid = 2')
+					 ->delete();
 	}
 	
 	public function insert(){
 		$mySqlBuilder = L::getInstance('WindMySqlBuilder',array($this->phpwind));
-		$mySqlBuilder->from('pw_actions')->field('images','descrip','name')->data('a','b','c')->insert();
+		$mySqlBuilder->from('pw_actions')
+					 ->field('images','descrip','name')
+					 ->data('a','b','c')
+					 ->insert();
 	}
+	
+	public function distribute(){
+		$config = Array(
+		    'phpwind' => Array
+		        (
+		            'dbtype' => 'mysql',
+		            'dbhost' => 'localhost',
+		            'dbuser' => 'root',
+		            'dbpass' => 'suqian0512h',
+		            'dbport' => '3306',
+		            'dbname' => 'phpwind_8',
+		            'path' => 'WIND:component.db.drivers.mysql.WindMySql',
+		            'className' => 'WindMySql',
+		        ),
+		
+		    'user' => Array
+		        (
+		            'dbtype' => 'mssql',
+		            'dbhost' => 'localhost',
+		            'dbuser' => 'sa',
+		            'dbpass' => '151@suqian',
+		            'dbname' => 'phpwind',
+		            'path' => 'WIND:component.db.drivers.mssql.WindMsSql',
+		            'className' => 'WindMsSql'
+		        )
+
+		);
+		$manager = WindConnManager::getInstance($config);
+		$adapter = $manager->connDriverFactory();
+		$builder = $adapter->getSqlBuilder();
+		$result = $builder->from('pw_members','a','username')
+				->leftJoin('pw_posts','a.uid=b.authorid','b','authorid')
+				->select()->getAllRow(1);
+		echo '<pre/>';
+		print_r($result);
+	}
+
 }
