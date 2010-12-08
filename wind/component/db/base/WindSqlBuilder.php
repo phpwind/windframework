@@ -90,7 +90,26 @@ abstract class WindSqlBuilder {
     
    
 	
+	/**
+	 * @var array sql语句组装器
+	 */
 	protected $sql = array();
+	/**
+	 * @var WindDbAdapter db操作
+	 */
+	public $adapter = null;
+	
+	public function __construct($config = array()){
+		if($config){
+			$_this = get_class($this);
+			$_adapter = str_replace('Builder','',$_this);
+			$_driver = str_replace('Wind','',$_adapter);
+			if(!class_exists($_adapter)){
+				//L::import ( 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter);
+			}
+			$this->adapter = new $_adapter($config);
+		}
+	}
 	/**
 	 * 要获取查询的表
 	 * @param string $table  表名
@@ -390,6 +409,43 @@ abstract class WindSqlBuilder {
 		$this->reset();
 		return $sql;
 	}
+	
+	
+	/**
+	 * @return boolean
+	 */
+	public function detete(){
+		return $this->adapter->delete($this->getSelectSql());
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function update(){
+		return $this->adapter->update($this->getUpdateSql());
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function select(){
+		return $this->adapter->select($this->getSelectSql());
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function insert(){
+		return $this->adapter->insert($this->getInsertSql());
+	}
+	
+	/**
+	 * @return boolean
+	 */
+	public function replace(){
+		return $this->adapter->insert($this->getReplaceSql());
+	}
+	
 	
 	/**
 	 * 解析replace SQL语句

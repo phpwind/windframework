@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.exception.WindSqlExceptiion');
+//L::import('WIND:component.exception.WindSqlExceptiion');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -43,7 +43,7 @@ abstract class WindDbAdapter {
 	/**
 	 * @var array 框架支持的数据库种类
 	 */
-	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocsql' => 'OcSql' );
+	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocisql' => 'OciSql' );
 	/**
 	 * @var int 事务记数器
 	 */
