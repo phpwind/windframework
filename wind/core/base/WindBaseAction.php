@@ -77,11 +77,11 @@ abstract class WindBaseAction implements IWindAction {
 	private function getInputWithString($name, $type = '', $callback = null) {
 		$value = '';
 		switch ($type) {
-			case IWindRequest::TYPE_GET:
+			case IWindRequest::INPUT_TYPE_GET:
 				$value = $this->request->getGet($name);
-			case IWindRequest::TYPE_POST:
+			case IWindRequest::INPUT_TYPE_POST:
 				$value = $this->request->getPost($name);
-			case IWindRequest::TYPE_COOKIE:
+			case IWindRequest::INPUT_TYPE_COOKIE:
 				$value = $this->request->getCookie($name);
 			default:
 				$value = $this->request->getAttribute($name);

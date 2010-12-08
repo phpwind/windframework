@@ -44,7 +44,8 @@ class WindView {
 	 * 
 	 * @return WindViewer
 	 */
-	public function &createViewerResolver() {
+	public function createViewerResolver() {
+		//TODO 考虑多view  不需要重新create
 		$viewerResolver = C::getViewerResolvers($this->reolver);
 		list($className, $viewerResolver) = L::getRealPath($viewerResolver, true);
 		L::import($viewerResolver);

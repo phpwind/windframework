@@ -27,6 +27,7 @@ class WindDispatcher {
 	private $frontController = null;
 	
 	private static $instance = null;
+	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -130,6 +131,7 @@ class WindDispatcher {
 	 * @param String $action
 	 */
 	private function _dispatchWithAction($action) {
+		//TODO
 		$this->frontController->getApplicationHandle()->processRequest($this->request, $this->response);
 	}
 	
@@ -141,6 +143,7 @@ class WindDispatcher {
 	 */
 	private function _dispatchWithTemplate() {
 		$viewer = $this->getForward()->getView()->createViewerResolver();
+		//TODO
 		$viewer->windAssign($this->response->getData());
 		$viewName = $this->getForward()->getViewName();
 		if ($this->immediately)

@@ -58,6 +58,7 @@ class WindErrorMessage extends WindMessage {
 		}
 		if ($this->forward === null) {
 			$this->forward = new WindForward();
+			//TODO run
 			$this->forward->setAction('run', $this->errorAction);
 		}
 		WindDispatcher::getInstance()->setForward($this->forward)->dispatch();
@@ -69,6 +70,7 @@ class WindErrorMessage extends WindMessage {
 	 * @return WindErrorMessage
 	 */
 	static public function &getInstance() {
+		//TODO
 		if (self::$instance === null) {
 			$class = __CLASS__;
 			self::$instance = new $class();
