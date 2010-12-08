@@ -22,7 +22,7 @@ L::import('WIND:core.base.WindServlet');
  * @package 
  */
 class WindFrontController extends WindServlet {
-	private $applications = array();
+	private $application = null;
 	
 	public function __construct() {
 		parent::__construct();
@@ -105,14 +105,27 @@ class WindFrontController extends WindServlet {
 	 * @param string $key
 	 * @return WindWebApplication
 	 */
-	public function &getApplicationHandle($key = 'default') {
-		if (!isset($this->applications[$key])) {
+	public function &getApplicationHandle($key = 'web') {
+		if (!isset($this->application[$key])) {
 			$application = C::getApplications($key);
 			list($className, $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
 			L::import($realpath);
-			$this->applications[$key] = &new $className();
+			$this->application[$key] = &new $className();
 		}
-		return $this->applications[$key];
+		return $this->application[$key];
+	}
+	
+	/**
+	 * 初始化application应用
+	 */
+	public function initApplication() {
+		$requestType = $this->request->getRequestType();
+		if (!isset($this->application)) {
+			$application = C::getApplications($requestType);
+			list($className, $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
+			L::import($realpath);
+			$this->application = &new $className();
+		}
 	}
 
 }

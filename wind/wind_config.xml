@@ -6,9 +6,13 @@
 		<configPath></configPath>
 	</app>
 	<applications>
-		<application name='default'>
+		<application name='web'>
 			<name>default</name>
 			<class>WIND:core.WindWebApplication</class>
+		</application>
+		<application name='command'>
+			<name>default</name>
+			<class>WIND:core.WindCommandApplication</class>
 		</application>
 	</applications>
 	<modules>
@@ -26,8 +30,8 @@
 	</errorMessage>
 	<filters>
 		<filter name="WindFormFilter">
-		   <filterName>WindFormFilter</filterName> 
-		   <filterPath>WIND:component.form.WindFormFilter</filterPath>
+			<filterName>WindFormFilter</filterName>
+			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
 	<template>
@@ -57,7 +61,7 @@
 			<path>WIND:component.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
-	
+
 	<dbConfig>
 		<phpwind>
 			<dbtype>mysql</dbtype>

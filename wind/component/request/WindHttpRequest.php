@@ -235,6 +235,15 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	/**
+	 * 获得请求类型
+	 * 
+	 * @return string
+	 */
+	public function getRequestType() {
+		return IWindRequest::REQUEST_TYPE_WEB;
+	}
+	
+	/**
 	 * 返回该请求是否为ajax请求
 	 * @return Boolean
 	 */
