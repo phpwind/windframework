@@ -46,7 +46,7 @@
 	<viewerResolvers>
 		<default>WIND:component.viewer.WindViewer</default>
 		<pw>WIND:component.viewer.WindPWViewer</pw>
-		<smarty>libs.WSmarty</smarty>
+		<smarty>libs.WindSmarty</smarty>
 	</viewerResolvers>
 	<router>
 		<parser>url</parser>
