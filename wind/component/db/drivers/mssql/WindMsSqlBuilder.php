@@ -80,11 +80,9 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 		return $this->assembleJoin(self::FULL,$table,$joinWhere,$alias,$fields,$schema);
 	}
 	
+	
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $value
-	 * @param unknown_type $group
-	 * @return WindMySqlBuilder
+	 * @see wind/component/db/base/WindSqlBuilder#where()
 	 */
 	public function  Where($where,$value=array(),$group=false){
 		return $this->assembleWhere($where,self::WHERE,$value,true,$group);
@@ -108,10 +106,6 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	
 	/**
 	 * @see wind/component/db/base/WindSqlBuilder#having()
-	 * @param mixed $having
-	 * @param mixed $value
-	 * @param boolean $group
-	 * @return WindMySqlBuilder
 	 */
 	public  function having($having,$value=array(),$group=false){
 		return $this->assembleWhere($having,self::HAVING,$value,true,$group);
@@ -185,7 +179,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $whereType 类型（where or having）
 	 * @param mixed $value  值
 	 * @param mixed $logic  是否是逻辑条件
-	 * @param mixed $group  是否提供分组
+	 * @param mixed $group  是否启用分组
 	 * @return WindMySqlBuilder
 	 */
 	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){

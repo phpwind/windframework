@@ -83,10 +83,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	}
 	
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $value
-	 * @param unknown_type $group
-	 * @return WindMySqlBuilder
+	 *@see wind/component/db/base/WindSqlBuilder#where()
 	 */
 	public function  Where($where,$value=array(),$group=false){
 		return $this->assembleWhere($where,self::WHERE,$value,true,$group);
@@ -110,10 +107,6 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	
 	/**
 	 * @see wind/component/db/base/WindSqlBuilder#having()
-	 * @param mixed $having
-	 * @param mixed $value
-	 * @param boolean $group
-	 * @return WindMySqlBuilder
 	 */
 	public  function having($having,$value=array(),$group=false){
 		return $this->assembleWhere($having,self::HAVING,$value,true,$group);
