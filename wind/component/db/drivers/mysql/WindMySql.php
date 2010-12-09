@@ -17,7 +17,7 @@ class WindMySql extends WindDbAdapter {
 	 * @see wind/base/WDbAdapter#connect()
 	 */
 	protected function connect() {
-		if (!is_resource ( $this->connection )) {
+		if (!is_resource ( $this->connection ) || $this->config [IWindDbConfig::CONN_FORCE]) {
 			$this->connection = $this->config [IWindDbConfig::CONN_PCONN] ? mysql_pconnect ( $this->config [IWindDbConfig::CONN_HOST], $this->config [IWindDbConfig::CONN_USER], $this->config [IWindDbConfig::CONN_PASS] ) : mysql_connect ( $this->config [IWindDbConfig::CONN_HOST], $this->config [IWindDbConfig::CONN_USER], $this->config [IWindDbConfig::CONN_PASS], $this->config [IWindDbConfig::CONN_FORCE] );
 			$this->changeDB ( $this->config [IWindDbConfig::CONN_NAME] );
 			$this->setCharSet ( $this->config [IWindDbConfig::CONN_CHAR] );
