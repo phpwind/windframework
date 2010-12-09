@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+	<connections>
+		<connection name='phpwind_8'>
+			<driver>mysql</driver>
+			<type>master</type>
+			<host>localhost</host>
+			<user>root</user>
+			<password>suqian0512h</password>
+			<port>3306</port>
+			<name>phpwind_8</name>
+		</connection>
+		<connection name='phpwind_beta'>
+			<driver>mssql</driver>
+			<type>slave</type>
+			<host>localhost</host>
+			<user>root</user>
+			<password>suqian0512h</password>
+			<port>3306</port>
+			<name>phpwind_beta</name>
+		</connection>
+	</connections>
+	<drivers>
+		<driver name='mysql'>
+			<builder>mysql</builder>
+			<class>WIND:component.db.drivers.mysql.WindMySql</class>
+		</driver>
+		<driver name='mssql'>
+			<builder>mssql</builder>
+			<class>WIND:component.db.drivers.mssql.WindMsSql</class>
+		</driver>
+	</drivers>
+	<builders>
+		<builder name='mysql'>
+			<class>WIND:component.db.drivers.mysql.WindMySqlBuilder</class>
+		</builder>
+		<builder name='mssql'>
+			<class>WIND:component.db.drivers.mssql.WindMsSqlBuilder</class>
+		</builder>
+	</builders>
+</database>
