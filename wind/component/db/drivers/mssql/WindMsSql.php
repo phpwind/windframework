@@ -18,8 +18,8 @@ class WindMsSql extends WindDbAdapter {
 	 */
 	protected function connect() {
 		if (!is_resource ( $this->connection )) {
-			$this->connection = $this->config [IWindDbConfig::CONFIG_PCONN] ? mssql_pconnect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS] ) : mssql_connect ( $this->config [IWindDbConfig::CONFIG_HOST], $this->config [IWindDbConfig::CONFIG_USER], $this->config [IWindDbConfig::CONFIG_PASS], $this->config [IWindDbConfig::CONFIG_FORCE] );
-			$this->changeDB ( $this->config [IWindDbConfig::CONFIG_NAME] );
+			$this->connection = $this->config [IWindDbConfig::CONN_PCONN] ? mssql_pconnect ( $this->config [IWindDbConfig::CONN_HOST], $this->config [IWindDbConfig::CONN_USER], $this->config [IWindDbConfig::CONN_PASS] ) : mssql_connect ( $this->config [IWindDbConfig::CONN_HOST], $this->config [IWindDbConfig::CONN_USER], $this->config [IWindDbConfig::CONN_PASS], $this->config [IWindDbConfig::CONN_FORCE] );
+			$this->changeDB ( $this->config [IWindDbConfig::CONN_NAME] );
 		}
 		return $this->connection;
 	}

@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, dbConfig, dbDriver';
+	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, database, ';
 	
 	/**
 	 * 应用配置信息
@@ -78,8 +78,8 @@ interface IWindConfig {
 	/**
 	 * @var 数据库配置
 	 */
-	const DBCONFIG = 'dbConfig';
-	const DBDRIVER = 'dbDriver';
+	const DATABASE = 'database';
+	const DATABASE_PATH = 'path';
 	/**
 	 * 定义允许拥有的属性
 	 * name: 可以定义一些列的item中每一个item的名字以区分每一个

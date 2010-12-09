@@ -477,19 +477,26 @@ final class C {
 		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
 	}
 	
-	/**
-	 * @param unknown_type $name
-	 * @return Ambigous <string, multitype:, unknown>
-	 */
-	static public function getDbConfig($name = '') {
-		return self::getConfig(IWindConfig::DBCONFIG, $name);
-	}
 	
 	/**
 	 * @param unknown_type $name
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
-	static public function getDbDriver($name = '') {
-		return self::getConfig(IWindConfig::DBDRIVER, $name);
+	static public function getDataBase($name = '') {
+		return self::getConfig(IWindDbConfig::DATABASE, $name);
 	}
+	
+	static public function getDataBaseConnection($name = ''){
+		return ($drivers = self::getDataBase(IWindDbConfig::CONNECTIONS)) ? $name ? $drivers[$name] : $drivers : '';
+	}
+	static public function getDataBaseDriver($name=''){
+		return ($drivers = self::getDataBase(IWindDbConfig::DRIVERS)) ? $name ? $drivers[$name] : $drivers : '';
+	}
+	
+	static public function getDataBaseBuilDer($name = ''){
+		return ($drivers = self::getDataBase(IWindDbConfig::BUILDERS)) ? $name ? $drivers[$name] : $drivers : '';
+		
+	}
+	
+	
 }

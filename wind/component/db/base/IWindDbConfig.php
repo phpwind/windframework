@@ -14,18 +14,28 @@
  * @package 
  */
 interface IWindDbConfig{
-	const CONFIG_TYPE = 'dbtype';
-	const CONFIG_USER = 'dbuser';
-	const CONFIG_PASS = 'dbpass';
-	const CONFIG_HOST = 'dbhost';
-	const CONFIG_PORT = 'dbport';
-	const CONFIG_NAME = 'dbname';
-	const CONFIG_RWDB = 'optype';
-	const CONFIG_CHAR = 'charset';
-	const CONFIG_FORCE = 'force';
-	const CONFIG_PCONN = 'pconnect';
-	const CONFIG_MASTER = 'master';
-   	const CONFIG_SLAVE = 'slave';
-   	const CONFIG_PATH= 'path';
-   	const CONFIG_CLASS = 'className';
+	const DATABASE = 'database';
+	const PARSERARRAY = 'connections, drivers, builders ';
+	
+	const CONNECTIONS = 'connections';
+	const CONN_DRIVER = 'driver';
+	const CONN_TYPE = 'type';
+	const CONN_USER = 'user';
+	const CONN_PASS = 'password';
+	const CONN_HOST = 'host';
+	const CONN_PORT = 'port';
+	const CONN_NAME = 'name';
+	const CONN_CHAR = 'charset';
+	const CONN_FORCE = 'force';
+	const CONN_PCONN = 'pconnect';
+	const CONN_MASTER = 'master';
+   	const CONN_SLAVE = 'slave';
+   	
+   	const DRIVERS = 'drivers';
+   	const DRIVER_CLASS = 'class';
+   	const DRIVER_BUILDER = 'builder';
+   	
+   	const BUILDERS = 'builders';
+   	const BUILDER_CLASS= 'class';
+   	
 }

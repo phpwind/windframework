@@ -79,6 +79,7 @@ abstract class WindDbAdapter {
 	 * @param array $config
 	 */
 	public function __construct($config) {
+		$config = is_array($config) ? $config : C::getDatabaseConnection($config);
 		$this->parseConfig ( $config );
 		$this->connect();
 	}
@@ -100,19 +101,19 @@ abstract class WindDbAdapter {
 	final public function parseDSN($dsn) {
 		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(\w+)\/(\w+)\/(0|1)\/(0|1)\/(master|slave)?\/?$/', trim ( $dsn ), $config );
 		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
-			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
+			throw new WindSqlException (WindSqlException::DB_CONN_FORMAT);
 		}
 		return array (
-						IWindDbConfig::CONFIG_TYPE => $config [1], 
-						IWindDbConfig::CONFIG_USER => $config [2], 
-						IWindDbConfig::CONFIG_PASS => $config [3], 
-						IWindDbConfig::CONFIG_HOST => $config [4], 
-						IWindDbConfig::CONFIG_PORT => $config [5], 
-						IWindDbConfig::CONFIG_NAME => $config [6],
-						IWindDbConfig::CONFIG_CHAR=>$config [7], 
-						IWindDbConfig::CONFIG_FORCE => $config [8],
-						IWindDbConfig::CONFIG_PCONN=>$config [9],
-						IWindDbConfig::CONFIG_RWDB=>$config [10] 
+						IWindDbConfig::CONN_DRIVER => $config [1], 
+						IWindDbConfig::CONN_USER => $config [2], 
+						IWindDbConfig::CONN_PASS => $config [3], 
+						IWindDbConfig::CONN_HOST => $config [4], 
+						IWindDbConfig::CONN_PORT => $config [5], 
+						IWindDbConfig::CONN_NAME => $config [6],
+						IWindDbConfig::CONN_CHAR=>$config [7], 
+						IWindDbConfig::CONN_FORCE => $config [8],
+						IWindDbConfig::CONN_PCONN=>$config [9],
+						IWindDbConfig::CONN_TYPE=>$config [10] 
 					);
 	}
 	
@@ -123,15 +124,15 @@ abstract class WindDbAdapter {
 	 */
 	final private function checkConfig($config){
 		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
-			throw new WindSqlException (WindSqlException::DB_CONFIG_EMPTY);
+			throw new WindSqlException (WindSqlException::DB_CONN_EMPTY);
 		}
-		if(empty($config[IWindDbConfig::CONFIG_TYPE]) || empty($config[IWindDbConfig::CONFIG_HOST]) || empty($config[IWindDbConfig::CONFIG_NAME]) || empty($config[IWindDbConfig::CONFIG_USER])  || empty($config[IWindDbConfig::CONFIG_PASS])){
-			throw new WindSqlException (WindSqlException::DB_CONFIG_FORMAT);
+		if(empty($config[IWindDbConfig::CONN_DRIVER]) || empty($config[IWindDbConfig::CONN_HOST]) || empty($config[IWindDbConfig::CONN_NAME]) || empty($config[IWindDbConfig::CONN_USER])  || empty($config[IWindDbConfig::CONN_PASS])){
+			throw new WindSqlException (WindSqlException::DB_CONN_FORMAT);
 		}
-		$config [IWindDbConfig::CONFIG_HOST] = $config [IWindDbConfig::CONFIG_PORT] ? $config [IWindDbConfig::CONFIG_HOST] . ':' . $config [IWindDbConfig::CONFIG_PORT] : $config [IWindDbConfig::CONFIG_HOST];
-		$config [IWindDbConfig::CONFIG_PCONN] = $config [IWindDbConfig::CONFIG_PCONN] ? $config [IWindDbConfig::CONFIG_PCONN] : $this->pconnect;
-		$config [IWindDbConfig::CONFIG_FORCE] = $config [IWindDbConfig::CONFIG_FORCE] ? $config [IWindDbConfig::CONFIG_FORCE] : $this->force;
-		$config [IWindDbConfig::CONFIG_CHAR] = $config [IWindDbConfig::CONFIG_CHAR] ? $config [IWindDbConfig::CONFIG_CHAR] : $this->charset;
+		$config [IWindDbConfig::CONN_HOST] = $config [IWindDbConfig::CONN_PORT] ? $config [IWindDbConfig::CONN_HOST] . ':' . $config [IWindDbConfig::CONN_PORT] : $config [IWindDbConfig::CONN_HOST];
+		$config [IWindDbConfig::CONN_PCONN] = $config [IWindDbConfig::CONN_PCONN] ? $config [IWindDbConfig::CONN_PCONN] : $this->pconnect;
+		$config [IWindDbConfig::CONN_FORCE] = $config [IWindDbConfig::CONN_FORCE] ? $config [IWindDbConfig::CONN_FORCE] : $this->force;
+		$config [IWindDbConfig::CONN_CHAR] = $config [IWindDbConfig::CONN_CHAR] ? $config [IWindDbConfig::CONN_CHAR] : $this->charset;
 		return $this->config = $config;
 	}
 	
@@ -196,13 +197,16 @@ abstract class WindDbAdapter {
 	 * 返回sqlBuilder生成器
 	 * @return WindSqlBuilder
 	 */
-	final public  function getSqlBuilder(){
+	final public  function getSqlBuilder($builderConfig = array()){
 		if(empty($this->sqlBuilder)){
-			$_currentAdapter = get_class($this);
-			$_builder = $_currentAdapter.'Builder';
-			$_driver = str_replace('Wind','',$_currentAdapter);
-			L::import ( "WIND:component.db.drivers.{$_driver}.{$_builder}" );
-			$this->sqlBuilder = L::getInstance($_builder,array($this));
+			$builderConfig = $builderConfig ? $builderConfig : C::geDataBaseDriver($this->config[IWindDbConfig::CONN_DRIVER]);
+			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS]; 
+			if(empty($builderClass)){
+				throw new WindSqlException(WindSqlException::DB_BUILDER_NOT_EXIST);
+			}
+			L::import ($builderClass);
+			$class = substr ( $builderClass, strrpos ( $builderClass, DIRECTORY_SEPARATOR ) + 1 );
+			$this->sqlBuilder = new $class($this);
 		}
 		return $this->sqlBuilder;
 	}
@@ -280,15 +284,15 @@ abstract class WindDbAdapter {
 	 * @return string:
 	 */
 	final public function getSchema(){
-		return  $this->config[IWindDbConfig::CONFIG_NAME];
+		return  $this->config[IWindDbConfig::CONN_NAME];
 	}
 	
 	/**
 	 * 取得数据库驱动
 	 * @return string;
 	 */
-	final public function getDbDriver(){
-		return  $this->config[IWindDbConfig::CONFIG_TYPE];
+	final public function getDriver(){
+		return  $this->config[IWindDbConfig::CONN_DRIVER];
 	}
 
 	public function __destruct(){
