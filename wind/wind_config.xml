@@ -61,4 +61,9 @@
 			<path>WIND:component.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
+
+	<database>
+		<path></path>
+	</database>
+
 </WIND>
