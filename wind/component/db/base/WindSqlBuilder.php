@@ -96,21 +96,23 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var WindDbAdapter db操作
 	 */
-	public $connection = null; 
+	public $connection = null;
 	
-	public function __construct($config = array()){
-		if($config && is_array($config)){
-			$_this = get_class($this);
-			$_adapter = $config[IWindDbConfig::CONFIG_CLASS] ? $config[IWindDbConfig::CONFIG_CLASS] : str_replace('Builder','',$_this);
-			$_driver = str_replace('Wind','',$_adapter);
-			$_path = $config[IWindDbConfig::CONFIG_PATH] ? $config[IWindDbConfig::CONFIG_PATH] : 'WIND:component.db.drivers.'.strtolower($_driver).'.'.$_adapter;
-			if(!class_exists($_adapter,false)){
-				L::import ($_path);
+	public function __construct($config = array(),$driverConfig=array()){
+		if($config && (is_array($config) || is_string($config))){
+			$config = is_array($config) ? $config : C::getDatabaseConnection($config);
+			$driverConfig = $driverConfig ? $driverConfig : C::getDataBaseDriver($config[IWindDbConfig::CONN_DRIVER]);
+			$driverClass = $driverConfig[IWindDbConfig::DRIVER_CLASS]; 
+			if(empty($driverClass)){
+				throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
 			}
-			if($config[IWindDbConfig::CONFIG_TYPE] != strtolower($_driver)){
+			if(strtolower(str_replace('Builder','',get_class($this))) != strtolower($config[IWindDbConfig::CONN_DRIVER])){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
-			$this->connection = new $_adapter($config);
+			L::import ($driverClass);
+			$class = substr ( $driverClass, strrpos ( $driverClass, DIRECTORY_SEPARATOR ) + 1 );
+			$this->connection = new $class($config);
+
 		}
 		if($config && is_object($config)){
 			if(str_replace('Builder','',get_class($this)) != get_class($config)){
