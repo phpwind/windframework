@@ -96,7 +96,7 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var WindDbAdapter db操作
 	 */
-	public $adapter = null;
+	public $connection = null; 
 	
 	public function __construct($config = array()){
 		if($config && is_array($config)){
@@ -110,13 +110,13 @@ abstract class WindSqlBuilder {
 			if($config[IWindDbConfig::CONFIG_TYPE] != strtolower($_driver)){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
-			$this->adapter = new $_adapter($config);
+			$this->connection = new $_adapter($config);
 		}
 		if($config && is_object($config)){
 			if(str_replace('Builder','',get_class($this)) != get_class($config)){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
-			$this->adapter = $config;
+			$this->connection = $config;
 		}
 	}
 	/**
@@ -448,7 +448,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function delete(){
 		$this->verifyAdapter();
-		$this->adapter->delete($this->getDeleteSql());
+		$this->connection->delete($this->getDeleteSql());
 		return $this;
 	}
 	
@@ -458,7 +458,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function update(){
 		$this->verifyAdapter();
-		$this->adapter->update($this->getUpdateSql());
+		$this->connection->update($this->getUpdateSql());
 		return $this;
 	}
 	
@@ -468,7 +468,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function select(){
 		$this->verifyAdapter();
-		$this->adapter->select($this->getSelectSql());
+		$this->connection->select($this->getSelectSql());
 		return $this;
 	}
 	
@@ -478,7 +478,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function insert(){
 		$this->verifyAdapter();
-		$this->adapter->insert($this->getInsertSql());
+		$this->connection->insert($this->getInsertSql());
 		return $this;
 	}
 	
@@ -488,7 +488,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function replace(){
 		$this->verifyAdapter();
-		$this->adapter->insert($this->getReplaceSql());
+		$this->connection->insert($this->getReplaceSql());
 		return $this;
 	}
 	
@@ -499,19 +499,19 @@ abstract class WindSqlBuilder {
 	 */
 	public function getAllRow($fetch_type){
 		$this->verifyAdapter();
-		return $this->adapter->getAllRow($fetch_type);
+		return $this->connection->getAllRow($fetch_type);
 	}
 	
 	
 	public function getRow($fetch_type){
 		$this->verifyAdapter();
-		return $this->adapter->getRow($fetch_type);
+		return $this->connection->getRow($fetch_type);
 	}
 	
 	
 	
 	private function verifyAdapter(){
-		if(empty($this->adapter)){
+		if(empty($this->connection)){
 			throw new WindSqlException(WindSqlException::DB_ADAPTER_NOT_EXIST);
 		}
 		return true;
