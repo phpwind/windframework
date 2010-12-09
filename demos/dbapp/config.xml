@@ -11,4 +11,7 @@
 			<path>actionControllers</path>
 		</module>
 	</modules>
+	<databas name="database">
+		<config>db_config.ini</config>
+	</databas>
 </WIND>

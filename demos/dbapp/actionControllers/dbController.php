@@ -11,9 +11,9 @@ class DbController extends WindController{
 	 protected $phpwind = array (	
 							'charset' => 'utf8', 
 							'dbtype' => 'mysql', 
-							'dbname' => 'phpwind_8', 
+							'dbname' => 'yulingsp3', 
 							'dbuser' => 'root', 
-							'dbpass' => 'suqian0512h', 
+							'dbpass' => 'phpwind.net', 
 							'dbhost' => 'localhost',
 							'dbport' => 3306,
 							'className' =>'WindMySql' 
@@ -126,9 +126,14 @@ class DbController extends WindController{
 		        )
 
 		);
+		
 		$manager = WindConnManager::getInstance($config);
-		$adapter = $manager->connDriverFactory();
-		$builder = $adapter->getSqlBuilder();
+		$conn = $manager->getConnection($handle); //返回具体的connection
+		$conn = $manager->getConnection();   //返回master
+		$conn = $manager->getMaster();   //返回master
+		$conn = $manager->getSlave();  //随机返回slave
+		
+		$builder = $conn->getSqlBuilder();
 		$result = $builder->from('pw_members','a','username')
 				->leftJoin('pw_posts','a.uid=b.authorid','b','authorid')
 				->select()->getAllRow(1);
