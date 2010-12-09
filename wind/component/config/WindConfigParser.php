@@ -23,8 +23,8 @@ class WindConfigParser implements IWindConfig {
 	private $defaultPath = WIND_PATH;
 	private $defaultConfig = 'wind_config';
 	
-	private $userAppConfigPath;
-	private $userAppConfig = 'config';
+	private $configPath;
+	private $configName = 'config';
 	
 	private $globalAppsPath = COMPILE_PATH;
 	private $globalAppsConfig = 'config.php';
@@ -46,6 +46,13 @@ class WindConfigParser implements IWindConfig {
 	public function __construct($outputEncoding = 'gbk') {
 		$this->currentApp = W::getCurrentApp();
 		if ($outputEncoding) $this->encoding = $outputEncoding;
+	}
+	
+	/**
+	 * 设置用户配置信息的path
+	 */
+	public function setConfigName($configName) {
+		($configName != '') && $this->configName = $configName;
 	}
 	
 	/**
@@ -93,9 +100,9 @@ class WindConfigParser implements IWindConfig {
 	private function fetchConfigExit($rootPath) {
 		$rootPath = realpath($rootPath);
 		foreach ($this->configExt as $ext) {
-			if (is_file($rootPath . D_S . $this->userAppConfig . '.' . $ext)) {
+			if (is_file($rootPath . D_S . $this->configName . '.' . $ext)) {
 				$this->parserEngine = $ext;
-				$this->userAppConfigPath = realpath($rootPath . D_S . $this->userAppConfig . '.' . $ext);
+				$this->configPath = realpath($rootPath . D_S . $this->configName . '.' . $ext);
 				return true;
 			}
 		}
@@ -114,7 +121,7 @@ class WindConfigParser implements IWindConfig {
 		$this->fetchConfigExit($rootPath);
 		$defaultConfigPath = $this->defaultPath . D_S . $this->defaultConfig . '.' . $this->parserEngine;
 		list($defaultConfig, $this->defaultGAM) = $this->executeParser(realpath($defaultConfigPath));
-		list($userConfig, $this->userGAM) = $this->executeParser($this->userAppConfigPath);
+		list($userConfig, $this->userGAM) = $this->executeParser($this->configPath);
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
 		$userConfig[IWindConfig::APP] = $this->getAppInfo($rootPath, $userConfig);
 		
