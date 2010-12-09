@@ -5,16 +5,16 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-require_once 'TestWindSqlBuilder.php';
+require_once 'WindSqlBuilderTest.php';
 
-class WindDBAllTests extends PHPUnit_Framework_TestSuite {
+class AllDBTest extends BaseTestSuite {
 	public function __construct() {
-		$this->setName('WindDBAllTests');
+		$this->setName('AllDBTest');
 	}
 
     public static function suite() {
 		$suite = new self();
-		$suite->addTestSuite('TestWindSqlBuilder');
+		$suite->addTestSuite('WindSqlBuilderTest');
 		return $suite;
     }
 }

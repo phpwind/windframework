@@ -8,7 +8,8 @@
 !defined('R_P') && define('R_P', dirname(dirname(__FILE__)));
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once R_P . DIRECTORY_SEPARATOR . 'WindBase.php';
+require_once R_P .  DIRECTORY_SEPARATOR . 'wind/WindBase.php';
+
 
 
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
@@ -18,5 +19,5 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 }
 
 abstract class BaseTestSuite extends PHPUnit_Framework_TestSuite {
-	
+
 }
