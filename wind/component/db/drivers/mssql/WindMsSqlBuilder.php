@@ -12,143 +12,141 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  * @version $Id$ 
  * @package 
  */
-class WindMsSqlBuilder extends WindSqlBuilder{
-
+class WindMsSqlBuilder extends WindSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#from()
 	 */
-	public  function from($table,$table_alias='',$fields='',$schema = ''){
-		$fields && $this->assembleFieldByTable($fields,$table,$table_alias);
-		return $this->assembleSql(array($table=>array($table_alias,$schema)),self::FROM);
+	public function from($table, $table_alias = '', $fields = '', $schema = '') {
+		$fields && $this->assembleFieldByTable($fields, $table, $table_alias);
+		return $this->assembleSql(array($table => array($table_alias, $schema)), self::FROM);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#distinct()
 	 */
-	public  function distinct($flag = true){
+	public function distinct($flag = true) {
 		$this->sql[self::DISTINCT] = $flag ? self::SQL_DISTINCT : '';
 		return $this;
 	}
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#field()
 	 */
-	public  function field($field){
+	public function field($field) {
 		$params = func_num_args();
-		$field = $params >1 ? func_get_args() : func_get_arg(0);
-		return $this->assembleSql($field,self::FIELD);
+		$field = $params > 1 ? func_get_args() : func_get_arg(0);
+		return $this->assembleSql($field, self::FIELD);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#join()
 	 */
-	public function join($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::INNER,$table,$joinWhere,$alias,$fields,$schema);
+	public function join($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::INNER, $table, $joinWhere, $alias, $fields, $schema);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#leftJoin()
 	 */
-	public function leftJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::LEFT,$table,$joinWhere,$alias,$fields,$schema);
+	public function leftJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::LEFT, $table, $joinWhere, $alias, $fields, $schema);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#rightJoin()
 	 */
-	public function rightJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::RIGHT,$table,$joinWhere,$alias,$fields,$schema);
+	public function rightJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::RIGHT, $table, $joinWhere, $alias, $fields, $schema);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#innerJoin()
 	 */
-	public function innerJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::INNER,$table,$joinWhere,$alias,$fields,$schema);
+	public function innerJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::INNER, $table, $joinWhere, $alias, $fields, $schema);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#crossJoin()
 	 */
-	public function crossJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::CROSS,$table,$joinWhere,$alias,$fields,$schema);
+	public function crossJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::CROSS, $table, $joinWhere, $alias, $fields, $schema);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#fullJoin()
 	 */
-	public function fullJoin($table,$joinWhere,$alias='',$fields='',$schema =''){
-		return $this->assembleJoin(self::FULL,$table,$joinWhere,$alias,$fields,$schema);
+	public function fullJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
+		return $this->assembleJoin(self::FULL, $table, $joinWhere, $alias, $fields, $schema);
 	}
-	
 	
 	/**
 	 * @see wind/component/db/base/WindSqlBuilder#where()
 	 */
-	public function  Where($where,$value=array(),$group=false){
-		return $this->assembleWhere($where,self::WHERE,$value,true,$group);
+	public function where($where, $value = array(), $group = false) {
+		return $this->assembleWhere($where, self::WHERE, $value, true, $group);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#orWhere()
 	 */
-	public  function orWhere($where,$value=array(),$group=false){
-		return $this->assembleWhere($where,self::WHERE,$value,false,$group);
+	public function orWhere($where, $value = array(), $group = false) {
+		return $this->assembleWhere($where, self::WHERE, $value, false, $group);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#group()
 	 */
-	public  function group($group){
+	public function group($group) {
 		$params = func_num_args();
-		$group = $params >1 ? func_get_args() : func_get_arg(0);
-		return $this->assembleSql($group,self::GROUP);
+		$group = $params > 1 ? func_get_args() : func_get_arg(0);
+		return $this->assembleSql($group, self::GROUP);
 	}
 	
 	/**
 	 * @see wind/component/db/base/WindSqlBuilder#having()
 	 */
-	public  function having($having,$value=array(),$group=false){
-		return $this->assembleWhere($having,self::HAVING,$value,true,$group);
+	public function having($having, $value = array(), $group = false) {
+		return $this->assembleWhere($having, self::HAVING, $value, true, $group);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#orHaving()
 	 */
-	public function orHaving($having,$value=array(),$group=false){
-		return $this->assembleWhere($having,self::HAVING,$value,false,$group);
+	public function orHaving($having, $value = array(), $group = false) {
+		return $this->assembleWhere($having, self::HAVING, $value, false, $group);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#order()
 	 */
-	public  function order($field,$type = true){
-		$field = is_array($field) ? $field : array($field=>$type);
-		return $this->assembleSql($field,self::ORDER);
+	public function order($field, $type = true) {
+		$field = is_array($field) ? $field : array($field => $type);
+		return $this->assembleSql($field, self::ORDER);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#limit()
 	 */
-	public  function limit($limit,$offset = ''){
-		$this->assembleSql((int)$limit,self::LIMIT);
-		return $this->assembleSql((int)$offset,self::OFFSET);
+	public function limit($limit, $offset = '') {
+		$this->assembleSql((int) $limit, self::LIMIT);
+		return $this->assembleSql((int) $offset, self::OFFSET);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#data()
 	 */
-	public function data($data){
+	public function data($data) {
 		$params = func_num_args();
-		$data = $params >1 ? func_get_args() : func_get_arg(0);
-		return $this->assembleSql($data,self::DATA);
+		$data = $params > 1 ? func_get_args() : func_get_arg(0);
+		return $this->assembleSql($data, self::DATA);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#set()
 	 */
-	public function set($field,$value=array()){
-		$realSet = $this->parsePlaceHolder($field,$value,',');
-		return $this->assembleSql($realSet,self::SET);
+	public function set($field, $value = array()) {
+		$realSet = $this->parsePlaceHolder($field, $value, ',');
+		return $this->assembleSql($realSet, self::SET);
 	}
 	
 	/**
@@ -157,16 +155,16 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $assembleType  组装类型
 	 * @return WindMySqlBuilder
 	 */
-	private function assembleSql($assembleValue,$assembleType){
-		if(empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
+	private function assembleSql($assembleValue, $assembleType) {
+		if (empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])) {
 			$this->sql[$assembleType] = array();
 		}
 		$assembleValue = is_array($assembleValue) ? $assembleValue : array($assembleValue);
-		foreach($assembleValue as $key=>$value){
-			if(is_string($key)){
+		foreach ($assembleValue as $key => $value) {
+			if (is_string($key)) {
 				$this->sql[$assembleType][$key] = $value;
 			}
-			if(is_int($key)){
+			if (is_int($key)) {
 				$this->sql[$assembleType][] = $value;
 			}
 		}
@@ -182,22 +180,22 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $group  是否启用分组
 	 * @return WindMySqlBuilder
 	 */
-	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
+	private function assembleWhere($where, $whereType = self::WHERE, $value = array(), $logic = true, $group = false) {
 		$_where = '';
-		$where = $this->trueWhere($where,$value,$logic);
-		if($group && in_array($group,self::$group)){
+		$where = $this->trueWhere($where, $value, $logic);
+		if ($group && in_array($group, self::$group)) {
 			$_where = self::$group[$group];
 		}
-		if($this->sql[self::WHERE]){
-			if($logic){
-				$_where .= self::SQL_AND.$where;
-			}else{
-				$_where .= self::SQL_OR.$where;
+		if ($this->sql[self::WHERE]) {
+			if ($logic) {
+				$_where .= self::SQL_AND . $where;
+			} else {
+				$_where .= self::SQL_OR . $where;
 			}
-		}else{
+		} else {
 			$_where[] = $where;
 		}
-		return $this->assembleSql($_where,$whereType);
+		return $this->assembleSql($_where, $whereType);
 	}
 	
 	/**
@@ -207,17 +205,17 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $table_alias 表别名
 	 * @return WindMySqlBuilder
 	 */
-	private function assembleFieldByTable($fields,$table,$table_alias=''){
-		if($fields && (is_string($fields) || is_array($fields))){
-			$fields = is_array($fields) ? $fields : explode(',',$fields);
-			foreach($fields as $key=>$field){
-				$fields[$key] = (false === ($pos = strpos('.',$field))) ? $table_alias ? $table_alias.'.'.$field : $table.'.'.$field :$field;
+	private function assembleFieldByTable($fields, $table, $table_alias = '') {
+		if ($fields && (is_string($fields) || is_array($fields))) {
+			$fields = is_array($fields) ? $fields : explode(',', $fields);
+			foreach ($fields as $key => $field) {
+				$fields[$key] = (false === ($pos = strpos('.', $field))) ? $table_alias ? $table_alias . '.' . $field : $table . '.' . $field : $field;
 			}
-			$this->assembleSql($fields,self::FIELD);
+			$this->assembleSql($fields, self::FIELD);
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * 组装联接sql语句
 	 * @param mixed $type 联接类型
@@ -228,12 +226,12 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $schema 数据库
 	 * @return WindMySqlBuilder
 	 */
-	private  function assembleJoin($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
-		if(!in_array($type,array_keys(self::$joinType))){
+	private function assembleJoin($type, $table, $joinWhere, $table_alias = '', $fields = '', $schema = '') {
+		if (!in_array($type, array_keys(self::$joinType))) {
 			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
 		}
-		$fields && $this->assembleFieldByTable($fields,$table,$table_alias);
-		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
+		$fields && $this->assembleFieldByTable($fields, $table, $table_alias);
+		return $this->assembleSql(array($table => array($type, $joinWhere, $table_alias, $schema)), self::JOIN);
 	}
 	
 	/**
@@ -243,25 +241,25 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param mixed $separators 分隔符
 	 * @return mixed 返回解析后的文本
 	 */
-	private function parsePlaceHolder($text,$replace=array(),$separators=','){
-		if($text && $replace && is_array($text)){
-			foreach($text as $key=>$_where){
-				$text[$key] = str_replace('?',$this->escapeString($replace[$key]),$_where);
+	private function parsePlaceHolder($text, $replace = array(), $separators = ',') {
+		if ($text && $replace && is_array($text)) {
+			foreach ($text as $key => $_where) {
+				$text[$key] = str_replace('?', $this->escapeString($replace[$key]), $_where);
 			}
-			$text = implode($separators ? $separators : ',',$text);
+			$text = implode($separators ? $separators : ',', $text);
 		}
-		if($text && $replace && is_string($text)){
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
+		if ($text && $replace && is_string($text)) {
+			if (preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i', $text, $matches)) {
 				$replace = is_array($replace) ? $replace : array($replace);
-				foreach($matches[1] as $key=>$match){
-					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+				foreach ($matches[1] as $key => $match) {
+					if (in_array(strtoupper(trim($matches[2][$key])), array('IN', 'NOT IN'))) {
 						$replace[$key] = is_array($replace[$key]) ? $replace[$key] : array($replace[$key]);
-						array_walk ( $replace[$key], array ($this, 'escapeString' ) );
-						$_replace = $match.self::LG.implode ( ',', $replace[$key] ).self::RG;
-					}else{
-						$_replace = $match.$this->escapeString($replace[$key]);
+						array_walk($replace[$key], array($this, 'escapeString'));
+						$_replace = $match . self::LG . implode(',', $replace[$key]) . self::RG;
+					} else {
+						$_replace = $match . $this->escapeString($replace[$key]);
 					}
-					$text = str_replace($matches[0][$key],$_replace,$text);
+					$text = str_replace($matches[0][$key], $_replace, $text);
 				}
 			}
 		}
@@ -275,78 +273,77 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param boolean $logic 逻辑条件
 	 * @return mixed
 	 */
-	private function trueWhere($where,$value = array(),$logic = true){
-		return $this->parsePlaceHolder($where,$value, $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR));
+	private function trueWhere($where, $value = array(), $logic = true) {
+		return $this->parsePlaceHolder($where, $value, $this->sqlFillSpace($logic ? self::SQL_AND : self::SQL_OR));
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildTable()
 	 */
 	protected function buildFrom() {
-		if (empty ( $this->sql[self::FROM] ) &&   !is_array ( $table )) {
-			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
+		if (empty($this->sql[self::FROM]) && !is_array($table)) {
+			throw new WindSqlException(WindSqlException::DB_TABLE_EMPTY);
 		}
 		$tableList = '';
-		foreach ( $this->sql[self::FROM] as $key => $value ) {
-			$tableList .= $tableList ? ',' . $this->getAlias ( $key,$value[0],$value[1] ) : $this->getAlias ( $key,$value[0],$value[1] );
+		foreach ($this->sql[self::FROM] as $key => $value) {
+			$tableList .= $tableList ? ',' . $this->getAlias($key, $value[0], $value[1]) : $this->getAlias($key, $value[0], $value[1]);
 		}
-		return $this->sqlFillSpace ( $tableList );
+		return $this->sqlFillSpace($tableList);
 	}
-	
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildDistinct()
 	 */
 	protected function buildDistinct() {
-		return $this->sqlFillSpace ($this->sql[self::DISTINCT]);
+		return $this->sqlFillSpace($this->sql[self::DISTINCT]);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildField()
 	 */
 	protected function buildField() {
-		if (empty ( $this->sql[self::FIELD] ) &&   !is_array ( $this->sql[self::FIELD] )) {
-			throw new WindSqlException (WindSqlException::DB_QUERY_FIELD_FORMAT);
+		if (empty($this->sql[self::FIELD]) && !is_array($this->sql[self::FIELD])) {
+			throw new WindSqlException(WindSqlException::DB_QUERY_FIELD_FORMAT);
 		}
 		$fieldList = '';
-		foreach ( $this->sql[self::FIELD] as $key => $value ) {
-			if (is_int ( $key )) {
+		foreach ($this->sql[self::FIELD] as $key => $value) {
+			if (is_int($key)) {
 				$fieldList .= $fieldList ? ',' . $value : $value;
 			}
-			if (is_string ( $key )) {
-				$fieldList .= $fieldList ? ',' . $this->getAlias ( $key,$value ) : $this->getAlias ( $key,$value );
+			if (is_string($key)) {
+				$fieldList .= $fieldList ? ',' . $this->getAlias($key, $value) : $this->getAlias($key, $value);
 			}
 		}
-		return $this->sqlFillSpace ( $fieldList );
+		return $this->sqlFillSpace($fieldList);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildJoin()
 	 */
 	protected function buildJoin() {
-		if (empty ( $this->sql[self::JOIN] )) {
+		if (empty($this->sql[self::JOIN])) {
 			return '';
 		}
 		$joinContidion = '';
-		foreach ( $this->sql[self::JOIN] as $table => $config ) {
-			if (is_string ( $config ) && is_int($table)) {
-				throw new WindSqlException (WindSqlException::DB_QUERY_JOIN_FORMAT);
+		foreach ($this->sql[self::JOIN] as $table => $config) {
+			if (is_string($config) && is_int($table)) {
+				throw new WindSqlException(WindSqlException::DB_QUERY_JOIN_FORMAT);
 			}
-			if (is_array ( $config ) && is_string($table)) {
-				$table = $this->getAlias ( $table, $config [2],$config [3]);
-				$joinWhere = $config [1] ? self::SQL_ON . $config [1] : '';
-				$condition = self::$joinType[$config [0]] . self::SQL_JOIN . $table . $joinWhere;
+			if (is_array($config) && is_string($table)) {
+				$table = $this->getAlias($table, $config[2], $config[3]);
+				$joinWhere = $config[1] ? self::SQL_ON . $config[1] : '';
+				$condition = self::$joinType[$config[0]] . self::SQL_JOIN . $table . $joinWhere;
 				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}
-		return $this->sqlFillSpace ( $joinContidion );
+		return $this->sqlFillSpace($joinContidion);
 	}
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildWhere()
 	 */
 	protected function buildWhere() {
 		if ($this->sql[self::WHERE]) {
-			return $this->sqlFillSpace (self::SQL_WHERE.implode(' ',$this->sql[self::WHERE])) ;
+			return $this->sqlFillSpace(self::SQL_WHERE . implode(' ', $this->sql[self::WHERE]));
 		}
 		return '';
 	}
@@ -355,7 +352,7 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @see wind/base/WSqlBuilder#buildGroup()
 	 */
 	protected function buildGroup() {
-		return $this->sqlFillSpace ( $this->sql[self::GROUP] ? self::SQL_GROUP . (is_array ( $this->sql[self::GROUP] ) ? implode ( ',', $this->sql[self::GROUP] ) : $this->sql[self::GROUP]) . '' : '' );
+		return $this->sqlFillSpace($this->sql[self::GROUP] ? self::SQL_GROUP . (is_array($this->sql[self::GROUP]) ? implode(',', $this->sql[self::GROUP]) : $this->sql[self::GROUP]) . '' : '');
 	}
 	
 	/* (non-PHPdoc)
@@ -363,25 +360,25 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 */
 	protected function buildOrder() {
 		$orderby = '';
-		if(empty($this->sql[self::ORDER])){
+		if (empty($this->sql[self::ORDER])) {
 			return '';
 		}
-		if (is_array ( $this->sql[self::ORDER] )) {
-			foreach ( $this->sql[self::ORDER] as $key => $value ) {
-				$orderby .= ($orderby ? ',' : '') . (is_string ( $key ) ? $key . ' ' .( $value ? self::SQL_DESC:self::SQL_ASC) : $value);
+		if (is_array($this->sql[self::ORDER])) {
+			foreach ($this->sql[self::ORDER] as $key => $value) {
+				$orderby .= ($orderby ? ',' : '') . (is_string($key) ? $key . ' ' . ($value ? self::SQL_DESC : self::SQL_ASC) : $value);
 			}
 		} else {
 			$orderby = $this->sql[self::ORDER];
 		}
-		return $this->sqlFillSpace ( $orderby ? self::SQL_ORDER . $orderby : '' );
+		return $this->sqlFillSpace($orderby ? self::SQL_ORDER . $orderby : '');
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildHaving()
 	 */
 	protected function buildHaving() {
-		if($this->sql[self::HAVING]){
-			 return $this->sqlFillSpace (self::SQL_HAVING.implode(' ',$this->sql[self::HAVING])) ;
+		if ($this->sql[self::HAVING]) {
+			return $this->sqlFillSpace(self::SQL_HAVING . implode(' ', $this->sql[self::HAVING]));
 		}
 		return '';
 	}
@@ -390,40 +387,39 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @see wind/base/WSqlBuilder#buildLimit()
 	 */
 	protected function buildLimit() {
-		if(empty($this->sql[self::LIMIT])){
-			return ;
+		if (empty($this->sql[self::LIMIT])) {
+			return;
 		}
-		if(is_string($this->sql[self::LIMIT])){
+		if (is_string($this->sql[self::LIMIT])) {
 			return $this->sqlFillSpace($this->sql[self::LIMIT]);
 		}
-		return $this->sqlFillSpace ( ($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT] : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '' );
+		return $this->sqlFillSpace(($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT] : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '');
 	}
-	
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildData()
 	 */
 	protected function buildData() {
-		if (empty ( $this->sql[self::DATA] ) || ! is_array ( $this->sql[self::DATA] )) {
-			throw new WindSqlException (WindSqlException::DB_QUERY_INSERT_DATA);
+		if (empty($this->sql[self::DATA]) || !is_array($this->sql[self::DATA])) {
+			throw new WindSqlException(WindSqlException::DB_QUERY_INSERT_DATA);
 		}
-		if($this->getDimension ( $this->sql[self::DATA] ) == 1){
-			return $this->buildSingleData ( $this->sql[self::DATA] );
+		if ($this->getDimension($this->sql[self::DATA]) == 1) {
+			return $this->buildSingleData($this->sql[self::DATA]);
 		}
-		if($this->getDimension ( $this->sql[self::DATA] ) >= 2){
+		if ($this->getDimension($this->sql[self::DATA]) >= 2) {
 			$key = array_keys($this->sql[self::DATA]);
-			if(is_string($key[0])){
+			if (is_string($key[0])) {
 				$rows = count($this->sql[self::DATA][$key[0]]);
 				$tmp_data = array();
-				for($i=0;$i<$rows;$i++){
-					foreach($this->sql[self::DATA] as $key=>$value){
+				for ($i = 0; $i < $rows; $i++) {
+					foreach ($this->sql[self::DATA] as $key => $value) {
 						$tmp_data[$i][] = $value[$i];
 						unset($this->sql[self::DATA][$key][$i]);
 					}
 				}
 			}
-			$data = $tmp_data ? $tmp_data :  $this->sql[self::DATA];
-			return $this->buildMultiData ( $data );
+			$data = $tmp_data ? $tmp_data : $this->sql[self::DATA];
+			return $this->buildMultiData($data);
 		}
 		return array();
 	}
@@ -432,43 +428,42 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @see wind/base/WSqlBuilder#buildSet()
 	 */
 	protected function buildSet() {
-		if (empty ( $this->sql[self::SET] )) {
-			throw new WindSqlException (WindSqlException::DB_QUERY_UPDATE_DATA);
+		if (empty($this->sql[self::SET])) {
+			throw new WindSqlException(WindSqlException::DB_QUERY_UPDATE_DATA);
 		}
-		if (is_string ( $this->sql[self::SET] )) {
+		if (is_string($this->sql[self::SET])) {
 			return $this->sql[self::SET];
 		}
-		foreach ( $this->sql[self::SET] as $key => $value ) {
-			if(is_string($key)){
-				$this->sql[self::SET][$key] = $key . '=' . $this->escapeString ( $value );
-			}else{
+		foreach ($this->sql[self::SET] as $key => $value) {
+			if (is_string($key)) {
+				$this->sql[self::SET][$key] = $key . '=' . $this->escapeString($value);
+			} else {
 				$this->sql[self::SET][$key] = $value;
 			}
 		}
-		return $this->sqlFillSpace ( implode ( ',', $this->sql[self::SET] ) );
+		return $this->sqlFillSpace(implode(',', $this->sql[self::SET]));
 	}
-	
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildAffected()
 	 */
-	public function getAffected($ifquery){
+	public function getAffected($ifquery) {
 		return $this->sqlFillSpace('@@ROWCOUNT AS affectedRows');
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildLastInsertId()
 	 */
-	public function getLastInsertId(){
+	public function getLastInsertId() {
 		return $this->sqlFillSpace('@@IDENTITY as insertId');
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#getMetaTableSql()
 	 */
-	public function getMetaTableSql($schema){
-		if(empty($schema)){
-			throw new WindSqlException (WindSqlException::DB_EMPTY);
+	public function getMetaTableSql($schema) {
+		if (empty($schema)) {
+			throw new WindSqlException(WindSqlException::DB_EMPTY);
 		}
 		return $this->sqlFillSpace("SELECT name,object_id FROM sys.all_objects WHERE type = 'U'");
 	}
@@ -476,52 +471,31 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#getMetaColumnSql()
 	 */
-	public function getMetaColumnSql($table){
-		if(empty($table)){
-			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
+	public function getMetaColumnSql($table) {
+		if (empty($table)) {
+			throw new WindSqlException(WindSqlException::DB_TABLE_EMPTY);
 		}
-		$option['table'] = array(
-			'sys.objects'=>'a',
-			'sys.all_columns'=>'b',
-			'sys.types'=>'c'
-		);
-		$option['field'] = array(
-			'b.name'=>'Field',
-			'b.max_length',
-			'b.precision',
-			'b.scale',
-			'b.is_nullable',
-			'b.is_identity',
-			'c.name'=>'Type'
-		);
-		$option['where'] = array(
-			array(
-				'eq'=>array('a.object_id','b.object_id',true)
-			),
-			'and',
-			array(
-				'eq'=>array(' b.system_type_id','c.system_type_id',true)
-			),
-			'and',
-			'eq'=>array(
-			'a.name',$table
-			)
-		);
+		$option['table'] = array('sys.objects' => 'a', 'sys.all_columns' => 'b', 'sys.types' => 'c');
+		$option['field'] = array('b.name' => 'Field', 'b.max_length', 'b.precision', 'b.scale', 'b.is_nullable', 
+			'b.is_identity', 'c.name' => 'Type');
+		$option['where'] = array(array('eq' => array('a.object_id', 'b.object_id', true)), 'and', 
+			array('eq' => array(' b.system_type_id', 'c.system_type_id', true)), 'and', 
+			'eq' => array('a.name', $table));
 		return $this->getSelectSql($option);
-		
+	
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#escapeString()
 	 */
-	public function escapeString(&$value,$key='') {
-		if(is_int($value)){
-			$value = (int)$value;
-		}elseif(is_string($value)){
+	public function escapeString(&$value, $key = '') {
+		if (is_int($value)) {
+			$value = (int) $value;
+		} elseif (is_string($value)) {
 			$value = " '" . $value . "' ";
-		}elseif(is_float($value)){
-			$value = (float)$value;
-		}elseif(is_object($value)){
+		} elseif (is_float($value)) {
+			$value = (float) $value;
+		} elseif (is_object($value)) {
 			$value = serialize($value);
 		}
 		return $this->sqlFillSpace($value);
@@ -534,9 +508,9 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	 * @param string $schema 数据库名称
 	 * @return string
 	 */
-	private function getAlias($name,$alias = '',$schema='') {
-		$name = $alias ? $name.' ' .  self::SQL_AS . $alias : $name;
-		return $this->sqlFillSpace ($schema ? $schema.'.'.$name : $name);
+	private function getAlias($name, $alias = '', $schema = '') {
+		$name = $alias ? $name . ' ' . self::SQL_AS . $alias : $name;
+		return $this->sqlFillSpace($schema ? $schema . '.' . $name : $name);
 	}
-	
+
 }

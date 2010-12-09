@@ -85,7 +85,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	/**
 	 *@see wind/component/db/base/WindSqlBuilder#where()
 	 */
-	public function  Where($where,$value=array(),$group=false){
+	public function  where($where,$value=array(),$group=false){
 		return $this->assembleWhere($where,self::WHERE,$value,true,$group);
 	}
 	
