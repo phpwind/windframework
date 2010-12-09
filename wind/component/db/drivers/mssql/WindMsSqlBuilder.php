@@ -13,7 +13,8 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  * @package 
  */
 class WindMsSqlBuilder extends WindSqlBuilder{
-/* (non-PHPdoc)
+
+	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#from()
 	 */
 	public  function from($table,$table_alias='',$fields='',$schema = ''){
@@ -106,9 +107,10 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	}
 	
 	/**
-	 * @param unknown_type $having
-	 * @param unknown_type $value
-	 * @param unknown_type $group
+	 * @see wind/component/db/base/WindSqlBuilder#having()
+	 * @param mixed $having
+	 * @param mixed $value
+	 * @param boolean $group
 	 * @return WindMySqlBuilder
 	 */
 	public  function having($having,$value=array(),$group=false){
@@ -138,20 +140,27 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 		return $this->assembleSql((int)$offset,self::OFFSET);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#data()
+	 */
 	public function data($data){
 		$params = func_num_args();
 		$data = $params >1 ? func_get_args() : func_get_arg(0);
 		return $this->assembleSql($data,self::DATA);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindSqlBuilder#set()
+	 */
 	public function set($field,$value=array()){
 		$realSet = $this->parsePlaceHolder($field,$value,',');
 		return $this->assembleSql($realSet,self::SET);
 	}
 	
 	/**
-	 * @param unknown_type $assembleValue
-	 * @param unknown_type $assembleType
+	 * 组装sql语句
+	 * @param mixed $assembleValue 组装条件
+	 * @param mixed $assembleType  组装类型
 	 * @return WindMySqlBuilder
 	 */
 	private function assembleSql($assembleValue,$assembleType){
@@ -171,11 +180,12 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	}
 	
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $whereType
-	 * @param unknown_type $value
-	 * @param unknown_type $logic
-	 * @param unknown_type $group
+	 * 组装where语句
+	 * @param mixed $where 条件
+	 * @param mixed $whereType 类型（where or having）
+	 * @param mixed $value  值
+	 * @param mixed $logic  是否是逻辑条件
+	 * @param mixed $group  是否提供分组
 	 * @return WindMySqlBuilder
 	 */
 	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
@@ -197,9 +207,10 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	}
 	
 	/**
-	 * @param unknown_type $fields
-	 * @param unknown_type $table
-	 * @param unknown_type $table_alias
+	 * 组装要对指定表进行操作的字段
+	 * @param mixed $fields 表字段
+	 * @param mixed $table 表名
+	 * @param mixed $table_alias 表别名
 	 * @return WindMySqlBuilder
 	 */
 	private function assembleFieldByTable($fields,$table,$table_alias=''){
@@ -214,12 +225,13 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	}
 
 	/**
-	 * @param unknown_type $type
-	 * @param unknown_type $table
-	 * @param unknown_type $joinWhere
-	 * @param unknown_type $table_alias
-	 * @param unknown_type $fields
-	 * @param unknown_type $schema
+	 * 组装联接sql语句
+	 * @param mixed $type 联接类型
+	 * @param mixed $table 表名
+	 * @param mixed $joinWhere 联接接条件
+	 * @param mixed $table_alias 表别名
+	 * @param mixed $fields 字段
+	 * @param mixed $schema 数据库
 	 * @return WindMySqlBuilder
 	 */
 	private  function assembleJoin($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
@@ -230,6 +242,13 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
 	}
 	
+	/**
+	 * 解析占位符
+	 * @param mixed $text 包含占位符的文本
+	 * @param mixed $replace 将占位符替换成指定的值
+	 * @param mixed $separators 分隔符
+	 * @return mixed 返回解析后的文本
+	 */
 	private function parsePlaceHolder($text,$replace=array(),$separators=','){
 		if($text && $replace && is_array($text)){
 			foreach($text as $key=>$_where){
@@ -256,10 +275,11 @@ class WindMsSqlBuilder extends WindSqlBuilder{
 	}
 	
 	/**
-	 * @param unknown_type $where
-	 * @param unknown_type $value
-	 * @param unknown_type $logic
-	 * @return Ambigous <string, mixed>
+	 * 返回真实的where条件
+	 * @param mixed $where 包含占位符的where条件
+	 * @param mixed $value where条件中占位符对应的值
+	 * @param boolean $logic 逻辑条件
+	 * @return mixed
 	 */
 	private function trueWhere($where,$value = array(),$logic = true){
 		return $this->parsePlaceHolder($where,$value, $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR));

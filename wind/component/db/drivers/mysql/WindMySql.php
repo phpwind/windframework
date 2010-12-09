@@ -36,14 +36,23 @@ class WindMySql extends WindDbAdapter {
 		return true;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getAffectedRows()
+	 */
 	public function getAffectedRows(){
 		return mysql_affected_rows($this->connection);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getLastInsertId()
+	 */
 	public function getLastInsertId(){
 		return mysql_insert_id($this->connection);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getMetaTables()
+	 */
 	public function getMetaTables($schema = ''){
 		$schema = $schema ? $schema : $this->getSchema();
 		if(empty($schema)){
@@ -53,6 +62,9 @@ class WindMySql extends WindDbAdapter {
 		return $this->getAllRow(MYSQL_ASSOC);
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getMetaColumns()
+	 */
 	public function getMetaColumns($table){
 		if(empty($table)){
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
@@ -78,10 +90,16 @@ class WindMySql extends WindDbAdapter {
 		return $result;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getRow()
+	 */
 	public function getRow($fetch_type){
 		return mysql_fetch_array ( $this->query, $fetch_type );
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#beginTrans()
+	 */
 	public function beginTrans() {
 		if ($this->transCounter == 0) {
 			$this->query ( 'START TRANSACTION');
@@ -94,6 +112,9 @@ class WindMySql extends WindDbAdapter {
 		return true;
 	}
 	
+	/**
+	 *@see wind/component/db/base/WindDbAdapter#commitTrans() 
+	 */
 	public function commitTrans() {
 		if ($this->transCounter <= 0) {
 			throw new WindSqlException ( WindSqlException::DB_QUERY_TRAN_BEGIN );

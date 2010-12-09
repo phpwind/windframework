@@ -86,7 +86,7 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 解析数数库配置
-	 * @param array $config 数据库配置，必须是基于键值的二维数组或必须是基于键值DNS格式的一维数组
+	 * @param array $config 数据库配置
 	 * @return array 返回解析后的数据库配置
 	 */
 	final protected function parseConfig($config) {
@@ -94,7 +94,7 @@ abstract class WindDbAdapter {
 		return $this->checkConfig($config);
 	}
 	/**
-	 * 以DSN格式解析数数库配置，其中(主从optype,永久连接pconnect,强制新连接force)可选
+	 * 解析DSN格式数据库配置
 	 * @param string $dsn 数据库连接格式
 	 * @return array 
 	 */
@@ -119,7 +119,7 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 验证config操作
-	 * @param array $config
+	 * @param array $config 数据库配置
 	 * @return array
 	 */
 	final private function checkConfig($config){
@@ -147,12 +147,17 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function query($sql);
 	/**
-	 * 取得结果集
-	 * @param int $fetch_type 类型
+	 * 取得查询的所有结果集
+	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
 	public abstract function getAllRow($fetch_type);
 	
+	/**
+	 * 取得查询的单条结果集
+	 * @param int $fetch_type 提取结果集类型
+	 * @return array
+	 */
 	public abstract function getRow($fetch_type);
 	/**
 	 * 开始事务点
@@ -167,21 +172,22 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function close();
 	/**
-	 * 取得影响行数
+	 * 取得所执行的sql语句影响行数
 	 */
 	public abstract function getAffectedRows();
 	/**
-	 * 取得最后新增自增ID
+	 * 取得最后数据库操作的自增ID
 	 */
 	public abstract function getLastInsertId();
 	
 	/**
-	 * @param unknown_type $schema
+	 * 取得指定数据库的元数据表
+	 * @param string $schema 数据库
 	 */
 	public abstract function getMetaTables($schema = '');
 	
 	/**
-	 *取得数据表元数据列 
+	 *取得指定数据表的元数据列 
 	 */
 	public abstract function getMetaColumns($table);
 	/**
@@ -189,12 +195,14 @@ abstract class WindDbAdapter {
 	 */
 	public abstract function dispose();
 	/**
-	 * 数据库操作操作处理
+	 * 数据库操作操作错误处理
+	 * @param string $sql 执行的sql语句
 	 */
 	protected abstract function error($sql);
 	
 	/**
 	 * 返回sqlBuilder生成器
+	 * @param array builderConfig 生成器配置
 	 * @return WindSqlBuilder
 	 */
 	final public  function getSqlBuilder($builderConfig = array()){
@@ -213,7 +221,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 执行添加数据操作 (insert)
-	 * @param string | array $sql 查询条件
+	 * @param string  $sql 新增sql语句
 	 * @return boolean
 	 */
 	final public  function insert($sql){
@@ -222,8 +230,7 @@ abstract class WindDbAdapter {
 	
 	/**
 	 * 执行更新数据操作
-	 * @param string  $sql 查询条件
-
+	 * @param string  $sql 更新sql语句
 	 * @return boolean
 	 */
 	final public  function update($sql){
@@ -231,8 +238,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 执行查询数据操作
-	 * @param string  $sql 查询条件
-
+	 * @param string  $sql 查询sql语句
 	 * @return boolean
 	 */
 	final public function select($sql){
@@ -240,7 +246,7 @@ abstract class WindDbAdapter {
 	}
 	/**
 	 * 执行删除数据操作
-	 * @param string  $sql 查询条件
+	 * @param string  $sql 删除sql语句
 	 * @return boolean
 	 */
 	final public  function delete($sql){
@@ -248,26 +254,35 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * 执行新增数据操作(replace)
-	 * @param string  $sql 查询条件
+	 * 执行更新与添加数据操作
+	 * @param string  $sql 替换sql语句
 	 * @return boolean
 	 */
 	final public function replace(){
 		return $this->query($sql);
 	}
 	
+	/**
+	 * 字符处理
+	 * @param string $value
+	 * @return string
+	 */
 	public function escapeString($value) {
 		return " '" . $value . "' ";
 	}
 	
 	/**
-	 * 取得当前DB连接
+	 * 返回DataBase连接
 	 * @return resoruce
 	 */
 	public function getConnection(){
 		return $this->connection;
 	}
 	
+	/**
+	 * 返回数据库配置
+	 * @return array
+	 */
 	public function getConfig(){
 		return $this->config;
 	}

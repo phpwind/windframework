@@ -33,18 +33,27 @@ class WindMsSql extends WindDbAdapter {
 		return true;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getAffectedRows()
+	 */
 	public function getAffectedRows(){
 		$this->query('SELECT @@ROWCOUNT AS affectedRow');
 		$row = $this->getRow();
 		return (int)$row['affectedRow'];
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getLastInsertId()
+	 */
 	public function getLastInsertId(){
 		$this->query('SELECT @@IDENTITY as insertId');
 		$row = $this->getRow();
 		return (int)$row['insertId'];
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getMetaTables()
+	 */
 	public function getMetaTables($schema = ''){
 		$schema = $schema ? $schema : $this->getSchema();
 		if(empty($schema)){
@@ -54,6 +63,9 @@ class WindMsSql extends WindDbAdapter {
 		return $this->getAllRow();
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getMetaColumns()
+	 */
 	public function getMetaColumns($table){
 		if(empty($table)){
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
@@ -81,14 +93,23 @@ class WindMsSql extends WindDbAdapter {
 		return $result;
 	}
 	
+	/* (non-PHPdoc)
+	 * @see wind/component/db/base/WindDbAdapter#getRow()
+	 */
 	public function getRow($fetch_type){
 		return mssql_fetch_array($this->query,$fetch_type);
 	}
 	
+	/**
+	 *@see wind/component/db/base/WindDbAdapter#beginTrans()
+	 */
 	public function beginTrans() {
 	
 	}
 	
+	/**
+	 * @see wind/component/db/base/WindDbAdapter#commitTrans()
+	 */
 	public function commitTrans() {
 	
 	}

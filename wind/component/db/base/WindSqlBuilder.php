@@ -28,6 +28,9 @@ abstract class WindSqlBuilder {
 	 */
 	protected static $group = array (self::LG => '(', self::RG => ')' );
 	
+	/**
+	 * @var array 连接类型
+	 */
 	protected static $joinType = array(
         self::INNER=>self::SQL_INNER,
         self::LEFT=>self::SQL_LEFT,
@@ -347,12 +350,16 @@ abstract class WindSqlBuilder {
 	public abstract function escapeString(&$value,$key='');
 	
 	/**
+	 * 返回指定数据库下元数据表
 	 * @param strint $schema 数据库名
+	 * @return array
 	 */
 	public abstract function getMetaTableSql($schema);
 	
 	/**
+	 * 返回指定数据表下元数据列
 	 * @param string $table  表名
+	 * @return array
 	 */
 	public abstract function getMetaColumnSql($table);
 	/**
@@ -505,6 +512,11 @@ abstract class WindSqlBuilder {
 	}
 	
 	
+	/**
+	 * 取得一条结果集
+	 * @param int $fetch_type 类型
+	 * @return array
+	 */
 	public function getRow($fetch_type){
 		$this->verifyAdapter();
 		return $this->connection->getRow($fetch_type);
@@ -566,6 +578,10 @@ abstract class WindSqlBuilder {
 		return str_pad ( $value, strlen ( $value ) + 2, " ", STR_PAD_BOTH );
 	}
 	
+	/**
+	 * 重置sql语句组装条件
+	 * @param unknown_type $type
+	 */
 	public function reset($type=''){
 		if($type){
 			unset($this->sql[$type]); 
