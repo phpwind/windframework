@@ -15,7 +15,8 @@
 class WindSqlException extends WindException {
 	const DB_CONN_EMPTY = 'Database configuration is empty';
 	const DB_CONN_FORMAT = 'Database configuration format is incorrect';
-	const DB_LINK_EXIST = 'Then identify the database connection does not exist';
+	const DB_CONN_NOT_EXIST = 'Then identify the database connection does not exist';
+	const DB_CONN_EXIST = 'Then identify the database connection is aleady exist';
 	const DB_QUERY_EMPTY = 'Query is empty';
 	const DB_QUERY_LINK_EMPTY = 'Query link is not validate  resource';
 	const DB_QUERY_FIELD_EMPTY = 'Query field is empty';
@@ -33,8 +34,11 @@ class WindSqlException extends WindException {
 	const DB_TABLE_EMPTY = 'Table is  empty';
 	const DB_EMPTY = 'Database is  empty';
 	const DB_DRIVER_NOT_EXIST = 'The database driver does not exist';
+	const DB_DRIVER_EXIST = 'The database driver is aleady exist';
 	const DB_BUILDER_NOT_EXIST = 'The database builder does not exist';
+	const DB_BUILDER_EXIST = 'The database builder is aleady  exist';
 	const DB_ADAPTER_NOT_EXIST = 'The database adapter does not exist';
+	const DB_ADAPTER_EXIST = 'The database adapter is aleady exist';
 	const DB_DRIVER_BUILDER_NOT_MATCH = 'The database driver does not match with the builder';
 	const DB_JOIN_TYPE_ERROR = 'The database is wrong type of join query ';
 	const DB_CONNECT_NOT_EXIST = 'The database connect does not exist';

@@ -17,11 +17,18 @@ L::import('WIND:component.db.base.IWindDbConfig');
 class WindConnectionManager{
 	
 	private   $config = array();
+	private   $drivers = array();
+	private   $builders = array();
 	private   $linked = array();
 	private   $connection = null;
 
 	public function __construct($config = array()){
-		$this->config = $config ? $config : c::getDataBaseConnection();
+		if($config && ($config[IWindDbConfig::CONNECTIONS] || $config[IWindDbConfig::DRIVERS] || $config[IWindDbConfig::BUILDERS])){
+			throw new WindSqlException(WindSqlException::DB_CONN_FORMAT);
+		}
+		$this->config = $config[IWindDbConfig::CONNECTIONS] ? $config[IWindDbConfig::CONNECTIONS] : c::getDataBaseConnection();
+		$this->drivers = $config[IWindDbConfig::DRIVERS] ? $config[IWindDbConfig::DRIVERS]:C::getDataBaseDriver();
+		$this->builders = $config[IWindDbConfig::BUILDERS] ? $config[IWindDbConfig::BUILDERS]:C::getDataBaseBuilder();
 	}
 	
 	/**
@@ -31,9 +38,33 @@ class WindConnectionManager{
 	 */
 	public function registerConnectionConfig($config,$identify = ''){
 		if($identify && empty($this->config[$identify])){
-			throw new WindSqlException(WindSqlException::DB_CONNECT_NOT_EXIST);
+			throw new WindSqlException(WindSqlException::DB_CONN_EXIST);
 		}
 		$identify ? $this->config[$identify] = $config : $this->config[] = $config;
+	}
+	
+	/**
+	 * 添加数据库驱动
+	 * @param array $config 驱动配置
+	 * @param string $driver 驱动类型
+	 */
+	public function registerConnectionDriver($driver,$config){
+		if(empty($this->drivers[$driver])){
+			throw new WindSqlException(WindSqlException::DB_DRIVER_EXIST);
+		}
+		$this->drivers[$driver] = $config;
+	}
+	
+	/**
+	 * 添加sql语句生成器
+	 * @param array $config 生成器配置
+	 * @param string $builder 驱动类型
+	 */
+	public function registerConnectionBuilder($builder,$config){
+		if(empty($this->drivers[$builder])){
+			throw new WindSqlException(WindSqlException::DB_BUILDER_EXIST);
+		}
+		$this->builders[$builder] = $config;
 	}
 
 	
@@ -51,9 +82,10 @@ class WindConnectionManager{
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if(empty($this->linked[$identify])){
 			$config = $this->config[$identify];
-			$driverName = $config[IWindDbConfig::CONN_DRIVER];
-			$driver = C::getDataBaseDriver($driverName);
-			$driverPath = $driver[IWindDbConfig::DRIVER_CLASS];
+			$driverPath = $this->getDriver($config[IWindDbConfig::CONN_DRIVER],IWindDbConfig::DRIVER_CLASS);
+			if(empty($driverPath)){
+				throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
+			}
 			L::import($driverPath);
 			$class = substr ( $driverPath, strrpos ( $driverPath, '.' ) + 1 );
 			$this->linked[$identify] = new $class($config);
@@ -69,6 +101,7 @@ class WindConnectionManager{
 		return $this->getConnection('',IWindDbConfig::CONN_MASTER);
 	}
 	
+	
 	/**
 	 * 取得从服务器
 	 * @return Ambigous <resource, multitype:>
@@ -77,6 +110,28 @@ class WindConnectionManager{
 		return $this->getConnection('',IWindDbConfig::CONN_SLAVE);
 	}
 	
+	/**
+	 * 取得配置里面的驱动
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function getDriver($name = '',$subname=''){
+		return  $name ? $subname ? $this->drivers[$name][$subname] : $this->drivers[$name] : $this->drivers ;
+	}
+	
+	/**
+	 * 取得配置里面的生成器
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function getBuilder($name = '',$subname=''){
+		return  $name ? $subname ? $this->builders[$name][$subname] : $this->builders[$name] : $this->builders ;
+	}
+	/**
+	 * 随机取得数据库配置
+	 * @param string $type 是否是主从服务器
+	 * @return array
+	 */
 	private function getRandomDbDriverIdentify($type = ''){
 		$masterSlave = $this->getMasterSlave ();
 		$config = (empty ( $masterSlave ) || empty ( $type )) ? $this->config : $masterSlave [$type];
