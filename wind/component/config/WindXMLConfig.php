@@ -27,7 +27,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function __construct($encoding = 'gbk') {
 		$this->setOutputEncoding($encoding);
-		$this->parseNodesList = IWindConfig::PARSERARRAY;
+		$this->parseNodeList = IWindConfig::PARSERARRAY;
 		$this->GAM = array();
 	}
 	/**
