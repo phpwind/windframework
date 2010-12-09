@@ -65,7 +65,7 @@ class WindMessage {
 	 * @param string $key
 	 */
 	public function clear($key = '') {
-		if ($key)
+		if ($key !== '' && $key !== null)
 			unset($this->message[$key]);
 		else
 			$this->message = array();
