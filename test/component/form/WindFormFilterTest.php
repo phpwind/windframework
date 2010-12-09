@@ -6,7 +6,9 @@
  * @license 
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
+require_once(R_P . '/test/component/form/WindActionFormTest.php');
 require_once(WIND_PATH . '/component/form/WindFormFilter.php');
+
 require_once(WIND_PATH . '/component/request/WindHttpRequest.php');
 require_once(WIND_PATH . '/component/response/WindHttpResponse.php');
 
@@ -16,8 +18,6 @@ class WindFormFilterTest extends BaseTestCase {
 	private $response;
 	public function setUp() {
 		$this->obj = new WindFormFilter();
-		$this->request = new WindHttpRequest();
-		$this->response = new WindHttpResponse();
 	}
 	public function tearDown() {
 		$this->obj = null;
@@ -25,8 +25,37 @@ class WindFormFilterTest extends BaseTestCase {
 		$this->response = null;
 	}
 	public function testNullForm() {
-		$p = $this->obj->doBeforeProcess($this->request, $this->response);
+		$p = $this->obj->doBeforeProcess(WindHttpRequest::getInstance(), WindHttpResponse::getInstance());
 		$this->assertEquals(null, $p);
+	}
+	
+	public function testSetFormNoValidation() {
+		$_GET['name'] = 'phpwind';
+		$_GET['formName'] = 'UserForm';
+		$response = WindHttpResponse::getInstance();
+		$response->setDispatcher(WindDispatcher::getInstance());
+		$this->obj->doBeforeProcess(WindHttpRequest::getInstance(), $response);
+		$userForm = L::getInstance('UserForm');
+		$this->assertEquals('phpwind', $userForm->name);
+	}
+	
+	/**
+	 * sendError留待WindErrorMessage测试
+	 */
+	public function testSetFormWithValidation() {
+		$_GET['name'] = 'wind';
+		$_GET['formName'] = 'UserForm';
+		$_GET['_isValidate'] = true;
+		/*try {
+			$response = WindHttpResponse::getInstance();
+			$response->setDispatcher(WindDispatcher::getInstance());
+			$this->obj->doBeforeProcess(WindHttpRequest::getInstance(), $response);
+		} catch (exception $e) {
+			
+		}
+		$this->assertEquals('name too short', WindErrorMessage::getError('nameError'));
+		$userForm = L::getInstance('UserForm');
+		$this->assertEquals('wind', $userForm->name);*/
 	}
 }
 
