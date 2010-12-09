@@ -6,7 +6,7 @@
  * @license 
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-require_once(WIND_PATH . '/component/container/WindModule.php');
+L::import(WIND_PATH . '/component/container/WindModule.php');
 
 class WindModuleTest extends BaseTestCase {
 	private $obj;

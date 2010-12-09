@@ -6,7 +6,7 @@
  * @license 
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-require_once(WIND_PATH . '/component/message/WindMessage.php');
+L::import(WIND_PATH . '/component/message/WindMessage.php');
 
 class WindErrorMessageTest extends BaseTestCase {
 	public function setUp() {
@@ -21,6 +21,7 @@ class WindErrorMessageTest extends BaseTestCase {
 	
 	public function testGetAndAddError() {
 		$obj = WindErrorMessage::getInstance();
+		$obj->clear();
 		$obj->addError('nameError', 'name');
 		$this->assertEquals('nameError', $obj->getError('name'));
 		$obj->addError('', 'password');

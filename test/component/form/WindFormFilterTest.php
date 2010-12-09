@@ -6,11 +6,11 @@
  * @license 
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-require_once(R_P . '/test/component/form/WindActionFormTest.php');
-require_once(WIND_PATH . '/component/form/WindFormFilter.php');
+L::import(R_P . '/test/component/form/WindActionFormTest.php');
+L::import(WIND_PATH . '/component/form/WindFormFilter.php');
 
-require_once(WIND_PATH . '/component/request/WindHttpRequest.php');
-require_once(WIND_PATH . '/component/response/WindHttpResponse.php');
+L::import(WIND_PATH . '/component/request/WindHttpRequest.php');
+L::import(WIND_PATH . '/component/response/WindHttpResponse.php');
 
 class WindFormFilterTest extends BaseTestCase {
 	private $obj;
