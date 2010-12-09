@@ -106,11 +106,11 @@ abstract class WindSqlBuilder {
 			if(empty($driverClass)){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
 			}
-			if(strtolower(str_replace('Builder','',get_class($this))) != strtolower($config[IWindDbConfig::CONN_DRIVER])){
+			if(strtolower(str_replace(array('Wind','Builder'),'',get_class($this))) != strtolower($config[IWindDbConfig::CONN_DRIVER])){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
 			L::import ($driverClass);
-			$class = substr ( $driverClass, strrpos ( $driverClass, DIRECTORY_SEPARATOR ) + 1 );
+			$class = substr ( $driverClass, strrpos ( $driverClass, '.' ) + 1 );
 			$this->connection = new $class($config);
 
 		}

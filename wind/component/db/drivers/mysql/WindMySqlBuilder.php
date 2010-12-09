@@ -6,6 +6,7 @@
  * @license 
  */
 L::import('WIND:component.db.base.WindSqlBuilder');
+L::import ( 'WIND:component.db.WindConnectionManager' );
 /**
  * mysql常用sql语句组装器
  * the last known user to change this file in the repository  <$LastChangedBy$>

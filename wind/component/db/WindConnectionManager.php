@@ -31,7 +31,7 @@ class WindConnectionManager{
 	 */
 	public function registerConnectionConfig($config,$identify = ''){
 		if($identify && empty($this->config[$identify])){
-			throw new WindSqlException(WindSqlException::DB_NOT_EXIST);
+			throw new WindSqlException(WindSqlException::DB_CONNECT_NOT_EXIST);
 		}
 		$identify ? $this->config[$identify] = $config : $this->config[] = $config;
 	}
@@ -46,7 +46,7 @@ class WindConnectionManager{
 	 */
 	public  function getConnection($identify = '',$type = IWindDbConfig::CONN_MASTER){
 		if($identify && empty($this->config[$identify])){
-			throw new WindSqlException(WindSqlException::DB_NOT_EXIST);
+			throw new WindSqlException(WindSqlException::DB_CONNECT_NOT_EXIST);
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if(empty($this->linked[$identify])){
