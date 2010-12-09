@@ -12,27 +12,15 @@ body  {
 	background: #FFFFFF;
 	margin: 0 auto;
 	margin-top:10px;
-	border: 1px solid #000000;
+	border: 0px solid #000000;
 	text-align: left; 
 } 
 .twoColLiqRtHdr #header { 
-	background: #DDDDDD; 
 	padding: 0 10px;  
 } 
 .twoColLiqRtHdr #header h1 {
 	margin: 0; 
 	padding: 10px 0; 
-}
-
-.twoColLiqRtHdr #sidebar1 {
-	float: right; 
-	width: 24%; 
-	background: #EBEBEB; 
-	padding-top: 15px 0; 
-}
-.twoColLiqRtHdr #sidebar1 h3, .twoColLiqRtHdr #sidebar1 p {
-	margin-left: 10px; 
-	margin-right: 10px;
 }
 
 .twoColLiqRtHdr #mainContent { 
@@ -41,8 +29,8 @@ body  {
 
 .twoColLiqRtHdr #footer { 
 	padding: 0 10px; 
-	background:#DDDDDD; 
-} 
+}
+
 .twoColLiqRtHdr #footer p {
 	margin: 0;
 	padding: 10px 0; 
@@ -76,4 +64,9 @@ a:visited {
 a:hover {
 	color: #360;
 }
+
+#goTest {
+	margin-left:30px;
+}
+
 -->

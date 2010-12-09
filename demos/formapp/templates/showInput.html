@@ -1,0 +1,7 @@
+<?php $this->doAction('setHeader', 'controllers.indexController');?>
+<div id="mainContent">
+您输入的用户名为: <?php echo $userInfo->username;?><br/>
+您输入的密码为:<?php echo $userInfo->password;?><br/>
+<?php echo $notice;?>
+</div>
+<?php $this->doAction('setFooter', 'controllers.indexController');?>

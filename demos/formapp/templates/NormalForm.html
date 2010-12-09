@@ -1,0 +1,13 @@
+<?php $this->doAction('setHeader', 'controllers.indexController');?>
+<div id="mainContent">
+<p><center>用户表单测试</center></p>
+<p>
+<form action="index.php?c=NormalForm&a=postForm" method="post" name="NormalForm">
+请输入用户名<input type="text" value="" name="username"/><br/>
+请输入密码<input type="password" value="" name="password"/><br/>
+<input type="submit" value="测试" name="submit"/>
+</form>
+</p>
+
+</div>
+<?php $this->doAction('setFooter', 'controllers.indexController');?>

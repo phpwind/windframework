@@ -8,12 +8,13 @@
 
 class ErrorControllers extends WindErrorAction {
 	public function run() {
+		$this->setOutput(array('title' => '用户输入表单错误页面'));
+		echo $this->error->getError('username');
+		echo '<br/>';
+		echo $this->error->getError('password');
 		$this->setOutput(array('usernameError' => $this->error->getError('username'),
-		                       'passwordError' => $this->error->getError('password'),
-								'title' => ' -errorShow'));
+		                       'passwordError' => $this->error->getError('password')));
 		$this->setOutput(L::getInstance('UserForm'), 'userInfo');
-		$this->setOutput('show', 'show');
-		$this->setOutput('y', 'none');
 		$this->setTemplate('error');
 	}
 }

@@ -12,7 +12,7 @@ class UserForm extends WindActionForm {
 	protected $password;
 	public function __construct() {
 		parent::__construct();
-		$this->setErrorAction('controllers.errorControllers');
+		$this->setErrorAction('controllers.ErrorControllers');
 	}
 	/**
 	 * 验证函数
