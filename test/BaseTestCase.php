@@ -9,7 +9,7 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once R_P .  DIRECTORY_SEPARATOR . 'wind/WindBase.php';
-
+W::init();
 
 
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {

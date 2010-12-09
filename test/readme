@@ -15,20 +15,22 @@
 目录说明：
 单元测试的目录结构和框架的目录结构采用相同的结构，
 对应目录下的单元测试放在对应的测试目录中。
-每个目录下都需要建一个统一测试该目录下的所有测试类的测试类，名称以Wind+目录名+AllTests为类名及文件名
-并且该类继承PHPUnit_Framework_TestSuite类
+每个目录下都需要建一个统一测试该目录下的所有测试类的测试类，名称以All+目录名+Test为类名及文件名
+并且该类继承BaseTestSuite类
 
 
 ****************************************************************** 
 测试编写说明：
-引入文件：BaseTestSetting.php  //该文件中声明了一个常量R_P, 指定到框架根目录的
+引入文件：BaseTestCase.php  //该文件中声明了一个常量R_P, 指定到框架所在目录的
+同时申明了一个BaseTestCase 和BaseTestSuite类分别
+继承了PHPUnit_Framework_TestCase和PHPUnit_Framework_TestSuite
 ---------------------------------------------------------------------
 单元测试单个测试类编写:
 1、以类文件名字前加Test为测试类的类名及文件名。
        比如，我要测试WindMySqlBuilder这个类，则将名字取名为WindMySqlBuilderTest
-2、这个测试类需要继承PHPUnit_Framework_TestCase这个基类，
+2、这个测试类需要继承BaseTestCase这个基类，
 3、测试类中根据测试的需要加载自己的类文件，比如加载WindMySqlBuilder，而其
-       所需的基础文件已经在BaseTestSetting这个文件中加载，需要引入这个文件
+       所需的基础文件已经在BaseTestCase这个文件中加载，需要引入这个文件
 4、该测试类中如果有初始化的信息可以重写setup ，销毁调用tearDown
 5、对于需要测试的函数，需要使用test+方法名，添加测试方法
 6、测试的执行：点击页面右键->run as -> PHPUnit 
@@ -39,13 +41,13 @@
 
 ---------------------------------------------------------------------
 单元测试多个测试类同时测试编写---suite：
-1、继承PHPUnit_Framework_TestSuite
+1、继承PHPUnit_Framework_TestSuite 的子类BaseTestSuite
 2、重写静态方法suite，该方法在加载完需要测试的测试类后最终返回一个自身对象
 3、加载测试类：有两种方式：
    1): addTest();//这个需要加载的是PHPUnit_Framework_TestSuite的子类对象，所以如果要用该方法加载，需要用测试类创建该对象
    比如： addTest(new PHPUnit_Framework_TestSuite('TestWSqlBuilder'));
-                 同时该方法也用于在该suite集中增加另外一个suite集，比如我实现了一个suite是WindBaseAllTests
-      则： addTest(WindBaseAllTests::suite()); 
+                 同时该方法也用于在该suite集中增加另外一个suite集，比如我实现了一个suite是AllCoreTest
+      则： addTest(AllCoreTest::suite()); 
    2): addTestSuite();//这个需要加载只要测试类的名字就可以，该方法会自动创建对象
   比如： addTestSuite('TestWSqlBuilder');
 
