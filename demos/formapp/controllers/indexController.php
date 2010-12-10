@@ -7,7 +7,7 @@
  */
 
 L::import('controllers.errorControllers');
-class indexController extends WindController {
+class IndexController extends WindController {
 	public function run() {
 		$this->setOutput('欢迎进入Form组件的测试', 'title');
 		$this->setTemplate('index');
