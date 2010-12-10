@@ -137,7 +137,7 @@ class WindMySql extends WindDbAdapter {
 	 * @see wind/base/WDbAdapter#close()
 	 */
 	public function close() {
-		if($this->connection){
+		if(is_resource($this->connection)){
 			mysql_close ( $this->connection );
 		}
 	}

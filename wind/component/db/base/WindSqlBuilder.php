@@ -398,7 +398,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getDeleteSql() {
-		$sql = sprintf ( self::SQL_DELETE.' '.self::FROM.'%s%s%s%s', 
+		$sql = sprintf ( self::SQL_DELETE.' '.self::SQL_FROM.'%s%s%s%s', 
 			$this->buildFrom (), 
 			$this->buildWhere (), 
 			$this->buildOrder (), 
@@ -588,5 +588,9 @@ abstract class WindSqlBuilder {
 		}else{
 			$this->sql = array();
 		}
+	}
+	
+	public function getSql($type=''){
+		return $type ? $this->sql[$type] : $this->sql;
 	}
 }

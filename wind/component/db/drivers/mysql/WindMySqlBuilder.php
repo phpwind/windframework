@@ -6,7 +6,6 @@
  * @license 
  */
 L::import('WIND:component.db.base.WindSqlBuilder');
-L::import ( 'WIND:component.db.WindConnectionManager' );
 /**
  * mysql常用sql语句组装器
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -185,11 +184,14 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 */
 	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
 		$_where = '';
+		if(!in_array($whereType,array(self::WHERE,self::HAVING))){
+			throw new WindSqlException(WindSqlException::DB_WHERE_ERROR);
+		}
 		$where = $this->trueWhere($where,$value,$logic);
 		if($group && in_array($group,self::$group)){
 			$_where = self::$group[$group];
 		}
-		if($this->sql[self::WHERE]){
+		if($this->sql[$whereType]){
 			if($logic){
 				$_where .= self::SQL_AND.$where;
 			}else{
@@ -455,14 +457,14 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 */
 	public function getAffected($ifquery){
 		$rows = $ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()';
-		return $this->sqlFillSpace("$rows AS afftectedRows");
+		return "$rows AS afftectedRows";
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#buildLastInsertId()
 	 */
 	public function getLastInsertId(){
-		return $this->sqlFillSpace('LAST_INSERT_ID() AS insertId');
+		return 'LAST_INSERT_ID() AS insertId';
 	}
 	
 	/* (non-PHPdoc)
@@ -472,7 +474,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 		if(empty($schema)){
 			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
-		return $this->sqlFillSpace('SHOW TABLES FROM '.$schema);
+		return 'SHOW TABLES FROM '.$schema;
 	}
 	
 	/* (non-PHPdoc)
@@ -482,7 +484,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 		if(empty($table)){
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
-		return $this->sqlFillSpace('SHOW COLUMNS FROM '.$table);
+		return 'SHOW COLUMNS FROM '.$table;
 	}
 	
 	/* (non-PHPdoc)

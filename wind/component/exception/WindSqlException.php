@@ -32,6 +32,7 @@ class WindSqlException extends WindException {
 	const DB_QUERY_COMPARESS_ERROR = 'Query comparison is incorrect conversion or assembly';
 	const DB_QUERY_COMPARESS_EXIST = 'Comparison does not exist query';
 	const DB_TABLE_EMPTY = 'Table is  empty';
+	const DB_WHERE_ERROR = 'Query where is Error';
 	const DB_EMPTY = 'Database is  empty';
 	const DB_DRIVER_NOT_EXIST = 'The database driver does not exist';
 	const DB_DRIVER_EXIST = 'The database driver is aleady exist';
