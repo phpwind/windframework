@@ -51,7 +51,7 @@
 		'url' => array(
 			'rule' => array(
 				'a' => 'run',
-				'c' => 'index',
+				'c' => 'Index',
 				'm' => 'default',
 			),
 			'path' => 'WIND:component.router.WindUrlBasedRouter',
