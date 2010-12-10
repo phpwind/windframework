@@ -36,6 +36,7 @@ class WindView {
 	public function __construct($templateName = '', $forward = null) {
 		$this->initConfig();
 		if ($templateName) $this->templateName = $templateName;
+		echo $$this->templateName;
 		$this->setViewWithForward($forward);
 	}
 	
@@ -61,8 +62,8 @@ class WindView {
 	 * 初始化配置文件，获得模板路径信息
 	 */
 	private function initConfig() {
-		$this->templatePath = C::getTemplate(IWindConfig::TEMPLATE_PATH);
-		$this->templateName = C::getTemplate(IWindConfig::TEMPLATE_NAME);
+		$this->templatePath = C::getTemplate(IWindConfig::TEMPLATE_DIR);
+		$this->templateName = C::getTemplate(IWindConfig::TEMPLATE_DEFAULT);
 		$this->templateCacheDir = C::getTemplate(IWindConfig::TEMPLATE_CACHE_DIR);
 		$this->templateCompileDir = C::getTemplate(IWindConfig::TEMPLATE_COMPILER_DIR);
 		$this->templateExt = C::getTemplate(IWindConfig::TEMPLATE_EXT);
