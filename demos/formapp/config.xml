@@ -3,17 +3,21 @@
 	<app isGlobal='true'>
 		<name>FormDemo</name>
 		<rootPath></rootPath>
-		<configPath>FormTest:compile</configPath>
+		<configPath>FormDemo:compile</configPath>
 	</app>
 	<modules>
 		<module name='default'>
-			<name>default</name>
 			<path>controllers</path>
 		</module>
 	</modules>
+	<filters>
+		<filter name="WindFormFilter">
+			<filterPath>WIND:component.form.WindFormFilter</filterPath>
+		</filter>
+	</filters>
 	<template>
-		<path>templates</path>
-		<name>index</name>
+		<dir>templates</dir>
+		<default>index</default>
 		<ext>html</ext>
 		<resolver>default</resolver>
 		<isCache>false</isCache>

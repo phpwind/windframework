@@ -12,8 +12,8 @@
 		</module>
 	</modules>
 	<template>
-		<path>template</path>
-		<name>index</name>
+		<dir>template</dir>
+		<default>index</default>
 		<ext>phtml</ext>
 		<resolver>smarty</resolver>
 		<isCache>false</isCache>

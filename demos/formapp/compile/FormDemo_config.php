@@ -7,13 +7,17 @@
 	),
 	'modules' => array(
 		'default' => array(
-			'name' => 'default',
 			'path' => 'controllers',
 		),
 	),
+	'filters' => array(
+		'WindFormFilter' => array(
+			'filterPath' => 'WIND:component.form.WindFormFilter',
+		),
+	),
 	'template' => array(
-		'path' => 'templates',
-		'name' => 'index',
+		'dir' => 'templates',
+		'default' => 'index',
 		'ext' => 'html',
 		'resolver' => 'default',
 		'isCache' => 'false',
@@ -22,22 +26,14 @@
 	),
 	'applications' => array(
 		'web' => array(
-			'name' => 'default',
 			'class' => 'WIND:core.WindWebApplication',
 		),
 		'command' => array(
-			'name' => 'default',
 			'class' => 'WIND:core.WindCommandApplication',
 		),
 	),
 	'errorMessage' => array(
 		'errorAction' => 'WIND:core.WindErrorAction',
-	),
-	'filters' => array(
-		'WindFormFilter' => array(
-			'filterName' => 'WindFormFilter',
-			'filterPath' => 'WIND:component.form.WindFormFilter',
-		),
 	),
 	'viewerResolvers' => array(
 		'default' => 'WIND:component.viewer.WindViewer',
@@ -51,7 +47,7 @@
 		'url' => array(
 			'rule' => array(
 				'a' => 'run',
-				'c' => 'Index',
+				'c' => 'index',
 				'm' => 'default',
 			),
 			'path' => 'WIND:component.router.WindUrlBasedRouter',
