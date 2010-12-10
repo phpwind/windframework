@@ -27,7 +27,6 @@ class WindViewer implements IWindViewer {
 	
 	protected $view = null;
 	protected $layout = null;
-	protected $layoutMapping = array();
 	
 	/**
 	 * 视图变量信息
@@ -50,9 +49,6 @@ class WindViewer implements IWindViewer {
 			if ($template) include $template;
 		} else {
 			foreach ($segments as $value) {
-				if (isset($this->layoutMapping[$value])) {
-					$value = $this->layoutMapping[$value];
-				}
 				$template = $this->getViewTemplate($value);
 				if (is_file($template)) @include $template;
 			}
@@ -147,7 +143,6 @@ class WindViewer implements IWindViewer {
 		$this->templatePath = $view->getTemplatePath();
 		$this->templateExt = $view->getTemplateExt();
 		$this->layout = $view->getForward()->getLayout();
-		$this->layoutMapping = $view->getForward()->getLayoutMapping();
 		$this->view = $view;
 	}
 	

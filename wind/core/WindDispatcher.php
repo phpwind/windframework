@@ -50,8 +50,8 @@ class WindDispatcher {
 		if (($redirect = $this->getForward()->getRedirect()) !== null)
 			$this->_dispatchWithRedirect($redirect);
 		elseif (($action = $this->getForward()->getAction()) !== null) {
-			$this->_dispatchWithAction($action);
 			$this->immediately = $immediately;
+			$this->_dispatchWithAction($action);
 		} else
 			$this->_dispatchWithTemplate();
 		$this->clear();

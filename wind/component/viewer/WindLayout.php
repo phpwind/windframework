@@ -34,6 +34,10 @@ class WindLayout {
 		$this->layout = $layout;
 	}
 	
+	public function isContent($segments) {
+
+	}
+	
 	/**
 	 * 设置模板文件包含文件
 	 * 可以为一个布局文件的逻辑名称，如：segments.header
@@ -45,21 +49,22 @@ class WindLayout {
 		$this->setSegments($fileName);
 	}
 	
-	private function setSegments($segment) {
+	public function setSegments($segment) {
 		$this->segments[] = $segment;
 	}
 	
-	private function setContent($key = 'current') {
-		$this->setSegments('key_' . $key);
+	private function setContent() {
+		$this->setSegments($this->content);
 	}
 	
 	/**
 	 * 解析layout布局文件
 	 */
-	public function parserLayout($dirName = '', $ext = '') {
+	public function parserLayout($dirName = '', $ext = '', $content = '') {
 		if ($this->layout) {
 			$file = L::getRealPath($dirName . '.' . $this->layout, false, $ext);
 			if (!$file) throw new WindException('cant find layout file.');
+			$this->content = $content;
 			@include $file;
 		}
 		return $this->segments;
