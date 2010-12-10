@@ -189,7 +189,7 @@ class WindConfigParser implements IWindConfig {
 			if (in_array($key, $_merge) && isset($defaultConfig[$key])) {
 				!is_array($value) && $value = array($value);
 				!is_array($defaultConfig[$key]) && $defaultConfig[$key] = array($defaultConfig[$key]);
-				$appConfig[$key] = array_merge($value, $defaultConfig[$key]);
+				$appConfig[$key] = array_merge($defaultConfig[$key], $value);
 			}
 			(!isset($defaultConfig[$key])) && $hasInDefaultConfigKeys[] = $key;
 		}

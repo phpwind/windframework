@@ -20,7 +20,6 @@ interface IWindConfig {
 	const APP_CONFIG = 'configPath';
 	
 	const APPLICATIONS = 'applications';
-	const APPLICATIONS_NAME = 'name';
 	const APPLICATIONS_CLASS = 'class';
 	
 	const ERRORMESSAGE = 'errorMessage';
@@ -30,13 +29,11 @@ interface IWindConfig {
 	 * 模快設置
 	 */
 	const MODULES = 'modules';
-	const MODULE_NAME = 'name';
 	const MODULE_PATH = 'path';
 	/**
 	 * 过滤器链
 	 */
 	const FILTERS = 'filters';
-	const FILTER_NAME = 'filterName';
 	const FILTER_PATH = 'filterPath';
 	
 	/**
@@ -49,8 +46,8 @@ interface IWindConfig {
 	 * 6.模板编译路径
 	 */
 	const TEMPLATE = 'template';
-	const TEMPLATE_PATH = 'path';
-	const TEMPLATE_NAME = 'name';
+	const TEMPLATE_PATH = 'dir';
+	const TEMPLATE_NAME = 'default';
 	const TEMPLATE_EXT = 'ext';
 	const TEMPLATE_RESOLVER = 'resolver';
 	const TEMPLATE_ISCACHE = 'isCache';

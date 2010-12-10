@@ -142,7 +142,7 @@ class WindFilterFactory extends WindFactory {
 		$this->filters = array();
 		$filters = C::getConfig('filters');
 		foreach ((array) $filters as $key => $value) {
-			$name = $value[IWindConfig::FILTER_NAME];
+			$name = $key;
 			$path = $value[IWindConfig::FILTER_PATH];
 			if (($pos = strrpos($path, '.')) === false)
 				$filterName = $path;
