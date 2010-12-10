@@ -13,7 +13,14 @@
  * @package
  */
 class IndexController extends WindController {
+	
 	public function run() {
-		echo 'this is ' . __CLASS__;
+		$this->forwardAction('add','',true);
 	}
+	
+	public function add() {
+		echo 'hello i am add.';
+		$this->setTemplate('index_run');
+	}
+	
 }
