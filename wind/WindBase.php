@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license
  */
-//error_reporting(E_ERROR | E_PARSE);
 !defined('VERSION') && define('VERSION', '1.0.2');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
 

@@ -36,7 +36,6 @@ class WindView {
 	public function __construct($templateName = '', $forward = null) {
 		$this->initConfig();
 		if ($templateName) $this->templateName = $templateName;
-		echo $$this->templateName;
 		$this->setViewWithForward($forward);
 	}
 	

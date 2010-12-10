@@ -100,7 +100,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 
 	 * @param string|null $name
 	 */
-	public function getAttribute($name) {
+	public function getAttribute($name, $value = '') {
 		if (isset($_GET[$name]))
 			return $_GET[$name];
 		else if (isset($_POST[$name]))
@@ -114,7 +114,7 @@ class WindHttpRequest implements IWindRequest {
 		else if (isset($_SERVER[$name]))
 			return $_SERVER[$name];
 		else
-			return null;
+			return $value;
 	}
 	
 	/**
