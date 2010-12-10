@@ -55,7 +55,7 @@
 		<parser name='url'>
 			<rule>
 				<action name='a'>run</action>
-				<controller name='c'>index</controller>
+				<controller name='c'>Index</controller>
 				<module name='m'>default</module>
 			</rule>
 			<path>WIND:component.router.WindUrlBasedRouter</path>

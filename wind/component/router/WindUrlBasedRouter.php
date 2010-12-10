@@ -40,9 +40,9 @@ class WindUrlBasedRouter extends WindRouter {
 	private function _setValues($request, $response) {
 		$rule = $this->routerConfig[IWindConfig::ROUTER_PARSERS_RULE];
 		$keys = array_keys($rule);
-		$this->action = $request->getGet($keys[0], $this->action);
-		$this->controller = $request->getGet($keys[1], $this->controller);
-		$this->module = $request->getGet($keys[2], $this->module);
+		$this->action = $request->getGet($keys[0], $rule[$keys[0]]);
+		$this->controller = $request->getGet($keys[1], $rule[$keys[1]]);
+		$this->module = $request->getGet($keys[2], $rule[$keys[2]]);
 		$response->setDispatcher($this);
 	}
 

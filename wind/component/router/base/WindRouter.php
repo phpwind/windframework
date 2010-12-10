@@ -23,7 +23,7 @@ abstract class WindRouter {
 	protected $method = 'run';
 	
 	protected $action = 'run';
-	protected $controller = 'index';
+	protected $controller = 'Index';
 	protected $module = 'default';
 	
 	protected $modulePath = '';
