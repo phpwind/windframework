@@ -57,32 +57,52 @@
 			'path' => 'WIND:component.router.WindUrlBasedRouter',
 		),
 	),
-	'dbConfig' => array(
-		'phpwind' => array(
-			'dbtype' => 'mysql',
-			'dbhost' => 'localhost',
-			'dbuser' => 'root',
-			'dbpass' => 'suqian0512h',
-			'dbport' => '3306',
-			'dbname' => 'phpwind',
+	'database' => array(
+		'connections' => array(
+			'phpwind_8' => array(
+				'driver' => 'mysql',
+				'type' => 'master',
+				'host' => 'localhost',
+				'user' => 'root',
+				'password' => 'suqian0512h',
+				'port' => '3306',
+				'name' => 'phpwind_8',
+			),
+			'phpwind_beta' => array(
+				'driver' => 'mysql',
+				'type' => 'slave',
+				'host' => 'localhost',
+				'user' => 'root',
+				'password' => 'suqian0512h',
+				'port' => '3306',
+				'name' => 'phpwind_beta',
+			),
+			'user' => array(
+				'driver' => 'mssql',
+				'type' => 'slave',
+				'host' => 'localhost',
+				'user' => 'sa',
+				'password' => '151@suqian',
+				'name' => 'phpwind',
+			),
 		),
-		'user' => array(
-			'dbtype' => 'mssql',
-			'dbhost' => 'localhost',
-			'dbuser' => 'sa',
-			'dbpass' => 'suqian0512h',
-			'dbport' => '3306',
-			'dbname' => 'user',
+		'drivers' => array(
+			'mysql' => array(
+				'builder' => 'mysql',
+				'class' => 'WIND:component.db.drivers.mysql.WindMySql',
+			),
+			'mssql' => array(
+				'builder' => 'mssql',
+				'class' => 'WIND:component.db.drivers.mssql.WindMsSql',
+			),
 		),
-	),
-	'dbDriver' => array(
-		'mysql' => array(
-			'path' => 'WIND:component.db.WindMySql',
-			'className' => 'WindMySql',
-		),
-		'mssql' => array(
-			'path' => 'WIND:component.db.WindMsSql',
-			'className' => 'WindMsSql',
+		'builders' => array(
+			'mysql' => array(
+				'class' => 'WIND:component.db.drivers.mysql.WindMySqlBuilder',
+			),
+			'mssql' => array(
+				'class' => 'WIND:component.db.drivers.mssql.WindMsSqlBuilder',
+			),
 		),
 	),
 );

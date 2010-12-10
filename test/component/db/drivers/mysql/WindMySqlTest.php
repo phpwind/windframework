@@ -7,6 +7,7 @@
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySql.php');
+L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySqlBuilder.php');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -15,5 +16,22 @@ L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySql.php');
  * @package 
  */
 class WindMySqlTest extends  baseTestCase{
+	private $WindMySql = null;
 	
+	public function setUp() {
+		if($this->WindMySql == null){
+			$config = C::getDataBaseConnection('phpwind_8');
+			$this->WindMySql = new WindMySql($config);
+		}
+	}
+	
+	public function testGetSqlBuilder(){
+		$this->assertTrue($this->WindMySql instanceof WindMySqlBuilder);
+	}
+	
+	
+	
+	public function tearDown() {
+		$this->WindMySql = null;
+	}
 }
