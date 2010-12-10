@@ -7,21 +7,17 @@
 	</app>
 	<applications>
 		<application name='web'>
-			<name>default</name>
 			<class>WIND:core.WindWebApplication</class>
 		</application>
 		<application name='command'>
-			<name>default</name>
 			<class>WIND:core.WindCommandApplication</class>
 		</application>
 	</applications>
 	<modules>
 		<module name='default'>
-			<name>default</name>
 			<path>actionControllers</path>
 		</module>
 		<module name='other'>
-			<name>other</name>
 			<path>otherControllers</path>
 		</module>
 	</modules>
@@ -30,23 +26,24 @@
 	</errorMessage>
 	<filters>
 		<filter name="WindFormFilter">
-			<filterName>WindFormFilter</filterName>
 			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
-	<template>
-		<path>template</path>
-		<name>index</name>
-		<ext>htm</ext>
-		<resolver>default</resolver>
-		<isCache>false</isCache>
-		<cacheDir>cache</cacheDir>
-		<compileDir>compile</compileDir>
-	</template>
-	<viewerResolvers>
-		<default>WIND:component.viewer.WindViewer</default>
-		<pw>WIND:component.viewer.WindPWViewer</pw>
-		<smarty>libs.WindSmarty</smarty>
+	<templates>
+		<template name='default'>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+	<viewerResolvers isMerage='true'>
+		<resolver name='default'>WIND:component.viewer.WindViewer</resolver>
+		<resolver name='pw'>WIND:component.viewer.WindPWViewer</resolver>
+		<resolver name='smarty'>libs.WindSmarty</resolver>
 	</viewerResolvers>
 	<router>
 		<parser>url</parser>
@@ -55,15 +52,10 @@
 		<parser name='url'>
 			<rule>
 				<action name='a'>run</action>
-				<controller name='c'>Index</controller>
+				<controller name='c'>index</controller>
 				<module name='m'>default</module>
 			</rule>
 			<path>WIND:component.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
-
-	<database>
-		<path></path>
-	</database>
-
 </WIND>
