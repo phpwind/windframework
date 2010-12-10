@@ -14,6 +14,11 @@ class IndexController extends WindController {
 	}
 	public function setHeader() {
 		$this->setOutput(array('name'=> '亲爱的朋友'));
+		$demos = array('helloworld' => 'HelloWorld', 
+						'smartyapp' => 'Smarty模板引擎接入',
+						'dbapp' => '数据库demo',
+						'layoutApp' => 'LayOut使用demo');
+		$this->setOutput(array('demos' => $demos));
 		$this->setTemplate('header');
 	}
 	public function setFooter() {

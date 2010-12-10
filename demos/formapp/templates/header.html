@@ -14,8 +14,9 @@
 	<p>
 		<h3>WindFrameWork </h3>
 		<p><b>其他demo:</b><br/>
-		   1、<a href="../helloworld" target="_blank" title="我要测试">HelloWorld</a><br/>
-		   2、<a href="../smartyapp" target="_blank" title="我要测试">Smarty模板引擎接入</a><br/>
+		<?php foreach ( $demos as $path => $describe) { ?>
+		   <li><a href="../<?php echo $path;?>" target="_blank" title="我要测试"><?php echo $describe;?></a></li><br/>
+		<?php }?>
 		</p>
 		<p align="right"><a href="index.php"><<返回首页</a></p>
 	</p>
