@@ -46,8 +46,8 @@ interface IWindConfig {
 	 * 6.模板编译路径
 	 */
 	const TEMPLATE = 'template';
-	const TEMPLATE_PATH = 'dir';
-	const TEMPLATE_NAME = 'default';
+	const TEMPLATE_DIR = 'dir';
+	const TEMPLATE_DEFAULT = 'default';
 	const TEMPLATE_EXT = 'ext';
 	const TEMPLATE_RESOLVER = 'resolver';
 	const TEMPLATE_ISCACHE = 'isCache';
