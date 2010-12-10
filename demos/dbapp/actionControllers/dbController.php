@@ -133,6 +133,8 @@ class DbController extends WindController{
 		$conn = $manager->getMaster();   //返回master
 		$conn = $manager->getSlave();  //随机返回slave
 		
+		
+		
 		$builder = $conn->getSqlBuilder();
 		$result = $builder->from('pw_members','a','username')
 				->leftJoin('pw_posts','a.uid=b.authorid','b','authorid')
