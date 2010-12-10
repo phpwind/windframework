@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
+require_once('../../../../BaseTestCase.php');
 L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySql.php');
 L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySqlBuilder.php');
 
@@ -15,7 +15,7 @@ L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySqlBuilder.php');
  * @version $Id$ 
  * @package 
  */
-class WindMySqlTest extends  baseTestCase{
+class WindMySqlTest extends  BaseTestCase{
 	private $WindMySql = null;
 	
 	public function setUp() {
