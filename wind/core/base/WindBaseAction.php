@@ -24,12 +24,9 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param WindHttpResponse $response
 	 */
 	public function __construct($request, $response) {
-		L::import('WIND:core.WindForward');
-		$this->forward = new WindForward();
-		$this->forward->setViewName($response->getDispatcher()->getController() . '_' . $response->getDispatcher()->getAction());
-		$this->error = WindErrorMessage::getInstance();
 		$this->request = $request;
 		$this->response = $response;
+		$this->initAction();
 	}
 	
 	public function beforeAction() {}
@@ -42,8 +39,18 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $actionHandle
 	 * @param string $path
 	 */
-	public function forwardAction($actionHandle = '', $path = '') {
-		$this->forward->setAction($actionHandle, $path);
+	public function forwardAction($actionHandle = '', $path = '', $isRedirect = false) {
+		$this->forward->setAction($actionHandle, $path, $isRedirect);
+	}
+	
+	/**
+	 * 请求一个重定向Action
+	 * 
+	 * @param string $actionHandle
+	 * @param string $path
+	 */
+	public function forwardRedirectAction($actionHandle = '', $path = '') {
+		$this->forward->setAction($actionHandle, $path, true);
 	}
 	
 	/* 数据处理 */
@@ -72,29 +79,6 @@ abstract class WindBaseAction implements IWindAction {
 			return $this->getInputWithArray($name, $type);
 		else
 			return $this->getInputWithString($name, $type, $callback);
-	}
-	
-	private function getInputWithString($name, $type = '', $callback = null) {
-		$value = '';
-		switch ($type) {
-			case IWindRequest::INPUT_TYPE_GET:
-				$value = $this->request->getGet($name);
-			case IWindRequest::INPUT_TYPE_POST:
-				$value = $this->request->getPost($name);
-			case IWindRequest::INPUT_TYPE_COOKIE:
-				$value = $this->request->getCookie($name);
-			default:
-				$value = $this->request->getAttribute($name);
-		}
-		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
-	}
-	
-	private function getInputWithArray($name, $type = '') {
-		$result = array();
-		foreach ($name as $key => $value) {
-			$result[(is_array($value) ? $key : $value)] = $this->getInput($value, $type);
-		}
-		return $result;
 	}
 	
 	/* 错误处理 */
@@ -126,24 +110,51 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $template
 	 */
 	public function setTemplate($template = '') {
-		if ($template) $this->forward->setViewName($template);
+		if ($template) $this->forward->setTemplateName($template);
 	}
 	
 	/**
 	 * 设置页面布局
+	 * 
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout = '') {
-		if ($layout instanceof WindLayout) {
-			$this->forward->setLayout($layout);
-		}
+		$this->forward->setLayout($layout);
 	}
 	
 	/**
-	 * @return WindModelAndView $mav
+	 * @return WindForward
 	 */
 	public function forward() {
-//		$this->sendError();
 		return $this->forward;
+	}
+	
+	private function initAction() {
+		L::import('WIND:core.WindForward');
+		$this->forward = new WindForward();
+		$this->error = WindErrorMessage::getInstance();
+	}
+	
+	private function getInputWithString($name, $type = '', $callback = null) {
+		$value = '';
+		switch ($type) {
+			case IWindRequest::INPUT_TYPE_GET:
+				$value = $this->request->getGet($name);
+			case IWindRequest::INPUT_TYPE_POST:
+				$value = $this->request->getPost($name);
+			case IWindRequest::INPUT_TYPE_COOKIE:
+				$value = $this->request->getCookie($name);
+			default:
+				$value = $this->request->getAttribute($name);
+		}
+		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
+	}
+	
+	private function getInputWithArray($name, $type = '') {
+		$result = array();
+		foreach ($name as $key => $value) {
+			$result[(is_array($value) ? $key : $value)] = $this->getInput($value, $type);
+		}
+		return $result;
 	}
 }

@@ -140,7 +140,7 @@ class WindViewer implements IWindViewer {
 	 */
 	public function initWithView($view) {
 		$this->template = $view->getTemplateName();
-		$this->templatePath = $view->getTemplatePath();
+		$this->templatePath = $view->getTemplateDir();
 		$this->templateExt = $view->getTemplateExt();
 		$this->layout = $view->getForward()->getLayout();
 		$this->view = $view;

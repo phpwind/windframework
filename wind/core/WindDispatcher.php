@@ -25,7 +25,7 @@ class WindDispatcher {
 	private $request = null;
 	private $response = null;
 	private $frontController = null;
-	
+	private $router = null;
 	private static $instance = null;
 	
 	/**
@@ -46,16 +46,13 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	public function dispatch($immediately = false) {
-		if ($this->getForward() === null) throw new WindException('dispatch error.');
-		if (($redirect = $this->getForward()->getRedirect()) !== null)
-			$this->_dispatchWithRedirect($redirect);
+		if ($this->getForward()->isRedirect())
+			$this->dispatchWithRedirect();
 		elseif (($action = $this->getForward()->getAction()) !== null) {
 			$this->immediately = $immediately;
-			$this->_dispatchWithAction($action);
+			$this->dispatchWithAction($action);
 		} else
-			$this->_dispatchWithTemplate();
-		$this->clear();
-		return;
+			$this->dispatchWithTemplate();
 	}
 	
 	/**
@@ -63,8 +60,10 @@ class WindDispatcher {
 	 */
 	public function setForward($forward) {
 		$this->forward = $forward;
-		if ($forward->getAction()) $this->action = $forward->getAction();
-		if (!($path = $forward->getActionPath())) return $this;
+		if ($forward->getAction())
+			$this->action = $forward->getAction();
+		if (!($path = $forward->getActionPath()))
+			return $this;
 		if (($pos = strrpos($path, '.')) !== false) {
 			$this->controller = substr($path, $pos + 1);
 			$this->module = substr($path, 0, $pos);
@@ -78,11 +77,10 @@ class WindDispatcher {
 	 * @return WindDispatcher
 	 */
 	public function initWithRouter($router) {
-		if ($router instanceof WindRouter) {
-			$this->module = $router->getModule();
-			$this->controller = $router->getController();
-			$this->action = $router->getAction();
-		}
+		$this->module = $router->getModule();
+		$this->controller = $router->getController();
+		$this->action = $router->getAction();
+		$this->router = $router;
 		return $this;
 	}
 	
@@ -122,7 +120,10 @@ class WindDispatcher {
 	/**
 	 * 请求分发一个重定向请求
 	 */
-	private function _dispatchWithRedirect($redirect) {
+	private function dispatchWithRedirect() {
+		$redirect = $this->getForward()->getRedirect();
+		if ($redirect === '')
+			$redirect = $this->buildRedirect();
 		$this->response->sendRedirect($redirect);
 	}
 	
@@ -130,7 +131,7 @@ class WindDispatcher {
 	 * 请求分发一个操作请求
 	 * @param String $action
 	 */
-	private function _dispatchWithAction($action) {
+	private function dispatchWithAction($action) {
 		//TODO
 		$this->frontController->getApplicationHandle()->processRequest($this->request, $this->response);
 	}
@@ -141,19 +142,21 @@ class WindDispatcher {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	private function _dispatchWithTemplate() {
+	private function dispatchWithTemplate() {
 		$viewer = $this->getForward()->getView()->createViewerResolver();
 		//TODO
 		$viewer->windAssign($this->response->getData());
-		$viewName = $this->getForward()->getViewName();
+		$viewName = $this->getForward()->getTemplateName();
 		if ($this->immediately)
 			$viewer->immediatelyDisplay();
-		else
-			$this->response->setBody($viewer->windFetch(), $viewName);
+		else $this->response->setBody($viewer->windFetch(), $viewName);
 	}
 	
-	private function clear() {
-		$this->forward = null;
+	/**
+	 * 组装重定向URL
+	 */
+	private function buildRedirect() {
+		return $this->router->buildUrl($this->action, $this->controller, $this->module);
 	}
 	
 	/**

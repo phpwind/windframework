@@ -17,25 +17,16 @@
  * @package 
  */
 class WindView {
-	private $templatePath;
-	private $templateName;
-	private $templateExt;
-	
-	private $templateCacheDir;
-	private $templateCompileDir;
-	
-	private $isCache;
-	private $reolver;
-	
+	private $config = array();
 	private $forward = null;
+	private $viewResolver = null;
 	
 	/**
 	 * @param string $templateName
 	 * @param WindForward $forward
 	 */
-	public function __construct($templateName = '', $forward = null) {
-		$this->initConfig();
-		if ($templateName) $this->templateName = $templateName;
+	public function __construct($forward = null, $templateConfig = '') {
+		$this->parseConfig($templateConfig);
 		$this->setViewWithForward($forward);
 	}
 	
@@ -45,29 +36,32 @@ class WindView {
 	 * @return WindViewer
 	 */
 	public function createViewerResolver() {
-		//TODO 考虑多view  不需要重新create
-		$viewerResolver = C::getViewerResolvers($this->reolver);
-		list($className, $viewerResolver) = L::getRealPath($viewerResolver, true);
-		L::import($viewerResolver);
-		if (!class_exists($className)) {
-			throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
+		if ($this->viewResolver === null) {
+			$viewerResolver = C::getViewerResolvers($this->config[IWindConfig::TEMPLATE_RESOLVER]);
+			list($className, $viewerResolver) = L::getRealPath($viewerResolver, true);
+			L::import($viewerResolver);
+			if (!class_exists($className)) {
+				throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
+			}
+			$object = new $className();
+			$object->initWithView($this);
+			$this->viewResolver = &$object;
 		}
-		$object = new $className();
-		$object->initWithView($this);
-		return $object;
+		return $this->viewResolver;
 	}
 	
 	/**
 	 * 初始化配置文件，获得模板路径信息
 	 */
-	private function initConfig() {
-		$this->templatePath = C::getTemplate(IWindConfig::TEMPLATE_DIR);
-		$this->templateName = C::getTemplate(IWindConfig::TEMPLATE_DEFAULT);
-		$this->templateCacheDir = C::getTemplate(IWindConfig::TEMPLATE_CACHE_DIR);
-		$this->templateCompileDir = C::getTemplate(IWindConfig::TEMPLATE_COMPILER_DIR);
-		$this->templateExt = C::getTemplate(IWindConfig::TEMPLATE_EXT);
-		$this->isCache = C::getTemplate(IWindConfig::TEMPLATE_ISCACHE);
-		$this->reolver = C::getTemplate(IWindConfig::TEMPLATE_RESOLVER);
+	private function parseConfig($templateConfig) {
+		$configs = C::getTemplate();
+		if ($templateConfig) {
+			if (!isset($configs[$templateConfig]))
+				throw new WindException('the template config ' . $templateConfig . ' is not exists.');
+			$this->config = $configs[$templateConfig];
+		} elseif (count($configs) == 1)
+			$this->config = array_pop($configs);
+		else throw new WindException('parse template config error.');
 	}
 	
 	/**
@@ -84,63 +78,46 @@ class WindView {
 	 * @param WindForward $forward
 	 */
 	private function setViewWithForward($forward) {
+		if ($forward->getTemplateName())
+			$this->config[IWindConfig::TEMPLATE_DEFAULT] = $forward->getTemplateName();
+		if ($forward->getTemplatePath())
+			$this->config[IWindConfig::TEMPLATE_DIR] = $forward->getTemplatePath();
 		$this->forward = $forward;
-		$this->templateName = $this->getForward()->getViewName();
-		if ($this->getForward()->getPath()) {
-			$this->templatePath = $this->getForward()->getPath();
-		}
 	}
 	
 	/**
 	 * @return the $templatePath
 	 */
-	public function getTemplatePath() {
-		return $this->templatePath;
+	public function getTemplateDir() {
+		return $this->config[IWindConfig::TEMPLATE_DIR];
 	}
 	
 	/**
 	 * @return the $templateName
 	 */
 	public function getTemplateName() {
-		return $this->templateName;
+		return $this->config[IWindConfig::TEMPLATE_DEFAULT];
 	}
 	
 	/**
 	 * @return the $templateExt
 	 */
 	public function getTemplateExt() {
-		return $this->templateExt;
+		return $this->config[IWindConfig::TEMPLATE_EXT];
 	}
 	
 	/**
-	 * @return the $isCache
+	 * @return the $templateCacheDir
 	 */
-	public function getIsCache() {
-		return $this->isCache;
+	public function getTemplateCacheDir() {
+		return $this->config[IWindConfig::TEMPLATE_CACHE_DIR];
 	}
 	
 	/**
-	 * @param $templatePath the $templatePath to set
-	 * @author Qiong Wu
+	 * @return the $templateCompileDir
 	 */
-	public function setTemplatePath($templatePath) {
-		$this->templatePath = $templatePath;
-	}
-	
-	/**
-	 * @param $templateName the $templateName to set
-	 * @author Qiong Wu
-	 */
-	public function setTemplateName($templateName) {
-		$this->templateName = $templateName;
-	}
-	
-	/**
-	 * @param $templateExt the $templateExt to set
-	 * @author Qiong Wu
-	 */
-	public function setTemplateExt($templateExt) {
-		$this->templateExt = $templateExt;
+	public function getTemplateCompileDir() {
+		return $this->config[IWindConfig::TEMPLATE_COMPILER_DIR];
 	}
 	
 	/**
@@ -148,36 +125,6 @@ class WindView {
 	 */
 	public function getForward() {
 		return $this->forward;
-	}
-	
-	/**
-	 * @return the $templateCacheDir
-	 */
-	public function getTemplateCacheDir() {
-		return $this->templateCacheDir;
-	}
-	
-	/**
-	 * @return the $templateCompileDir
-	 */
-	public function getTemplateCompileDir() {
-		return $this->templateCompileDir;
-	}
-	
-	/**
-	 * @param $templateCacheDir the $templateCacheDir to set
-	 * @author Qiong Wu
-	 */
-	public function setTemplateCacheDir($templateCacheDir) {
-		$this->templateCacheDir = $templateCacheDir;
-	}
-	
-	/**
-	 * @param $templateCompileDir the $templateCompileDir to set
-	 * @author Qiong Wu
-	 */
-	public function setTemplateCompileDir($templateCompileDir) {
-		$this->templateCompileDir = $templateCompileDir;
 	}
 
 }

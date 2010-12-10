@@ -9,7 +9,7 @@ interface IWindConfig {
 	/**
 	 * 用于指定在程序解析中需要解析一级标签
 	 */
-	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, template, viewerResolvers, router, routerParsers, database, ';
+	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, templates, viewerResolvers, router, routerParsers, database, ';
 	
 	/**
 	 * 应用配置信息
@@ -45,7 +45,7 @@ interface IWindConfig {
 	 * 5.模板文件的缓存路径
 	 * 6.模板编译路径
 	 */
-	const TEMPLATE = 'template';
+	const TEMPLATE = 'templates';
 	const TEMPLATE_DIR = 'dir';
 	const TEMPLATE_DEFAULT = 'default';
 	const TEMPLATE_EXT = 'ext';

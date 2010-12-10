@@ -21,7 +21,8 @@ class WindLayout {
 	 * @var $_segments
 	 */
 	private $segments = array();
-	private $layout = '';
+	private $layoutFile = '';
+	private $content = '';
 	
 	/**
 	 * 设置layout布局文件
@@ -30,44 +31,37 @@ class WindLayout {
 	 * 
 	 * @param string $layout
 	 */
-	public function setLayoutFile($layout) {
-		$this->layout = $layout;
-	}
-	
-	public function isContent($segments) {
-
-	}
-	
-	/**
-	 * 设置模板文件包含文件
-	 * 可以为一个布局文件的逻辑名称，如：segments.header
-	 * 则程序会在模板路径下面寻找segments目录下的header布局文件，后缀名和模板的后缀名保持一致
-	 * 
-	 * @param string $fileName
-	 */
-	private function includeFile($fileName) {
-		$this->setSegments($fileName);
-	}
-	
-	public function setSegments($segment) {
-		$this->segments[] = $segment;
-	}
-	
-	private function setContent() {
-		$this->setSegments($this->content);
+	public function setLayoutFile($layoutFile) {
+		$this->layoutFile = $layoutFile;
 	}
 	
 	/**
 	 * 解析layout布局文件
 	 */
 	public function parserLayout($dirName = '', $ext = '', $content = '') {
-		if ($this->layout) {
-			$file = L::getRealPath($dirName . '.' . $this->layout, false, $ext);
-			if (!$file) throw new WindException('cant find layout file.');
+		if ($this->layoutFile) {
 			$this->content = $content;
+			if (!($file = L::getRealPath($dirName . '.' . $this->layoutFile, false, $ext))) {
+				throw new WindException('cant find layout file.');
+			}
 			@include $file;
 		}
 		return $this->segments;
 	}
-
+	
+	/**
+	 * 设置切片文件
+	 * @param string $segment
+	 */
+	private function setSegments($segment) {
+		if ($segment) $this->segments[] = $segment;
+	}
+	
+	/**
+	 * 设置当前内容模板
+	 */
+	private function setContent($content = '') {
+		if ($content == '') $content = $this->content;
+		$this->setSegments($this->content);
+	}
 }

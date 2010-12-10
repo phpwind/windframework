@@ -14,48 +14,59 @@
  * @package 
  */
 class WindForward {
-	/* 模板视图信息 */
-	private $viewName;
-	private $path;
 	
-	/* 页面重定向请求信息 */
-	private $redirect;
+	/* 模板视图信息 */
+	private $templateName; //模板名称
+	private $templatePath; //模板路径
+	private $templateConfig; //模板配置支持
+	
+
+	/* 布局信息 */
+	private $layout = null;
 	
 	/* 操作处理请求 */
 	private $action;
 	private $actionPath;
 	
-	/* 布局信息 */
-	private $layoutMapping = array();
-	private $layout = null;
+	/* 页面重定向请求信息 */
+	private $redirect = '';
+	private $isRedirect = false;
+	
+	/* 模板数据信息 */
+	private $data;
 	
 	/**
-	 * @param WindHttpRequest $request //path to which control should be forwarded or redirected
-	 * @param WindHttpResponse $response //should we do a redirect
-	 * @param string $module //module prefix
+	 * 设置视图的逻辑名称
+	 * 
+	 * @param string $name
 	 */
-	public function __construct() {}
+	public function setTemplateName($templateName) {
+		$this->templateName = $templateName;
+	}
 	
 	/**
-	 * 接收一个layout对象初始化ModelAndView
+	 * 设置视图的路径信息
+	 * 
+	 * @param string $path
+	 */
+	public function setTemplatePath($templatePath) {
+		$this->templatePath = $templatePath;
+	}
+	
+	/**
+	 * 设置模板配置
+	 * 
+	 * @param string $templateConfigName
+	 */
+	public function setTemplateConfig($templateConfigName) {
+		$this->templateConfig = $templateConfigName;
+	}
+	
+	/**
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout) {
-		if ($layout instanceof WindLayout) {
-			$this->layout = $layout;
-		} else
-			throw new WindException('object type error.');
-	}
-	
-	/**
-	 * @return WindLayout
-	 */
-	public function &getLayout() {
-		return $this->layout;
-	}
-	
-	public function getLayoutMapping() {
-		return $this->layoutMapping;
+		$this->layout = $layout;
 	}
 	
 	/**
@@ -64,23 +75,26 @@ class WindForward {
 	 * @param string $redirect
 	 */
 	public function setRedirect($redirect) {
-		if (!$redirect) return;
 		$this->redirect = $redirect;
-	}
-	
-	public function getRedirect() {
-		return $this->redirect;
+		$this->isRedirect = true;
 	}
 	
 	/**
-	 * 设置视图的逻辑名称
-	 * 
-	 * @param string $name
+	 * @param $action the $action to set
+	 * @author Qiong Wu
 	 */
-	public function setViewName($viewName, $key = 'current') {
-		if (!$viewName) return;
-		$this->layoutMapping['key_' . $key] = $viewName;
-		$this->viewName = $viewName;
+	public function setAction($action, $path = '', $isRedirect = false) {
+		$this->action = $action;
+		$this->isRedirect = $isRedirect;
+		$this->actionPath = $path;
+	}
+	
+	/**
+	 * 获得重定向链接
+	 * @return string
+	 */
+	public function getRedirect() {
+		return $this->redirect;
 	}
 	
 	/**
@@ -88,30 +102,19 @@ class WindForward {
 	 * 
 	 * @return string
 	 */
-	public function getViewName() {
-		return $this->viewName;
+	public function getTemplateName() {
+		return $this->templateName;
 	}
 	
 	/**
 	 * 返回WindView对象
-	 * 
 	 * @return WindView
 	 */
 	public function getView() {
-		if ($this->view == null) {
-			L::import('WIND:component.viewer.WindView');
-			$this->view = new WindView('', $this);
-		}
+		//TODO
+		L::import('WIND:component.viewer.WindView');
+		$this->view = new WindView($this, $this->templateConfig);
 		return $this->view;
-	}
-	
-	/**
-	 * 设置视图的路径信息
-	 * 
-	 * @param string $path
-	 */
-	public function setPath($path) {
-		$this->path = $path;
 	}
 	
 	/**
@@ -119,8 +122,8 @@ class WindForward {
 	 * 
 	 * @return string
 	 */
-	public function getPath() {
-		return $this->path;
+	public function getTemplatePath() {
+		return $this->templatePath;
 	}
 	
 	/**
@@ -131,19 +134,23 @@ class WindForward {
 	}
 	
 	/**
-	 * @param $action the $action to set
-	 * @author Qiong Wu
-	 */
-	public function setAction($action, $path = '') {
-		$this->action = $action;
-		if ($path) $this->actionPath = $path;
-	}
-	
-	/**
 	 * @return the $actionPath
 	 */
 	public function getActionPath() {
 		return $this->actionPath;
 	}
-
+	
+	/**
+	 * @return WindLayout
+	 */
+	public function getLayout() {
+		return $this->layout;
+	}
+	
+	/**
+	 * @return the $isRedirect
+	 */
+	public function isRedirect() {
+		return $this->isRedirect;
+	}
 }

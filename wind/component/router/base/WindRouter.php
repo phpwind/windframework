@@ -50,6 +50,14 @@ abstract class WindRouter {
 	abstract function doParser($request, $response);
 	
 	/**
+	 * 根据路由解析，组装URL
+	 * @param string $action
+	 * @param string $controller
+	 * @param string $module
+	 */
+	abstract public function buildUrl($action = '', $controller = '', $module = '');
+	
+	/**
 	 * 获得请求处理类,返回一个数组，array('$className','$method')
 	 * 
 	 * @return array
@@ -64,10 +72,12 @@ abstract class WindRouter {
 			$module .= $module . '.' . $className;
 			$className = $this->getAction();
 			L::import($module . '.' . $className);
-			if (!class_exists($className)) return array(null, null);
+			if (!class_exists($className))
+				return array(null, null);
 			$method = $this->method;
 		}
-		if (!in_array($method, get_class_methods($className))) return array(null, null);
+		if (!in_array($method, get_class_methods($className)))
+			return array(null, null);
 		$this->modulePath = $module;
 		return array($className, $method);
 	}

@@ -29,15 +29,17 @@
 			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
-	<template>
-		<dir>template</dir>
-		<default>index</default>
-		<ext>htm</ext>
-		<resolver>default</resolver>
-		<isCache>false</isCache>
-		<cacheDir>cache</cacheDir>
-		<compileDir>compile</compileDir>
-	</template>
+	<templates>
+		<template name='default'>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
 	<viewerResolvers isMerage='true'>
 		<resolver name='default'>WIND:component.viewer.WindViewer</resolver>
 		<resolver name='pw'>WIND:component.viewer.WindPWViewer</resolver>
