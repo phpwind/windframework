@@ -321,6 +321,40 @@ class WindMySqlBuilderTest extends BaseTestCase{
 		$this->assertEquals($sql,$this->WindMySqlBuilder->getMetaColumnSql('pw_members'));
 	}
 	
+	public function testSelect(){
+		$result=$this->WindMySqlBuilder->from('pw_members','a')
+							 ->from('pw_posts','b')
+							 ->where('a.uid=b.authorid')
+							 ->where('b.tid >= ? and b.pid < ? and uid IN ?',array(2,1000,array(1,2,3,4,5,6,7,8)))
+					 		 ->field('username','uid','b.subject')
+					 		 ->select()
+					 		 ->getAllRow(MYSQL_ASSOC);
+		$this->assertTrue(is_array($result));
+	}
+	
+	public function testUpdate(){
+		$builder = $this->WindMySqlBuilder->from('pw_posts')
+					 ->set('subject=?,buy=?',array('suqian',3))
+					 ->where('pid = 1')
+					 ->update();
+	    $this->assertTrue(($builder instanceof WindSqlBuilder));
+	}
+	
+	public function testDelete(){
+		$builder = $this->WindMySqlBuilder->from('pw_posts')
+					 ->where('pid = 2')
+					 ->delete();
+		$this->assertTrue(($builder instanceof WindSqlBuilder));
+	}
+	
+	public function testInsert(){
+		$builder = $this->WindMySqlBuilder->from('pw_actions')
+					 ->field('images','descrip','name')
+					 ->data('a','b','c')
+					 ->insert();
+		$this->assertTrue(($builder instanceof WindSqlBuilder));
+	}
+	
 	
 	private function _where($type,$where,$value,$group,$logic){
 		$method = $logic ? $type : 'or'.ucfirst($type);
