@@ -23,7 +23,7 @@ class WindConnectionManager{
 	private   $connection = null;
 
 	public function __construct($config = array()){
-		if($config && ($config[IWindDbConfig::CONNECTIONS] || $config[IWindDbConfig::DRIVERS] || $config[IWindDbConfig::BUILDERS])){
+		if($config && (!$config[IWindDbConfig::CONNECTIONS] || !$config[IWindDbConfig::DRIVERS] || !$config[IWindDbConfig::BUILDERS])){
 			throw new WindSqlException(WindSqlException::DB_CONN_FORMAT);
 		}
 		$this->config = $config[IWindDbConfig::CONNECTIONS] ? $config[IWindDbConfig::CONNECTIONS] : c::getDataBaseConnection();
@@ -36,11 +36,11 @@ class WindConnectionManager{
 	 * @param array $config
 	 * @param int|string $identify
 	 */
-	public function registerConnectionConfig($config,$identify = ''){
-		if($identify && empty($this->config[$identify])){
+	public function registerConnectionConfig($identify,$config){
+		if($this->config[$identify]){
 			throw new WindSqlException(WindSqlException::DB_CONN_EXIST);
 		}
-		$identify ? $this->config[$identify] = $config : $this->config[] = $config;
+		$this->config[$identify] = $config;
 	}
 	
 	/**
@@ -49,7 +49,7 @@ class WindConnectionManager{
 	 * @param string $driver 驱动类型
 	 */
 	public function registerConnectionDriver($driver,$config){
-		if(empty($this->drivers[$driver])){
+		if($this->drivers[$driver]){
 			throw new WindSqlException(WindSqlException::DB_DRIVER_EXIST);
 		}
 		$this->drivers[$driver] = $config;
@@ -61,7 +61,7 @@ class WindConnectionManager{
 	 * @param string $builder 驱动类型
 	 */
 	public function registerConnectionBuilder($builder,$config){
-		if(empty($this->drivers[$builder])){
+		if($this->drivers[$builder]){
 			throw new WindSqlException(WindSqlException::DB_BUILDER_EXIST);
 		}
 		$this->builders[$builder] = $config;
@@ -109,7 +109,14 @@ class WindConnectionManager{
 	public function getSlaveConnection(){
 		return $this->getConnection('',IWindDbConfig::CONN_SLAVE);
 	}
-	
+	/**
+	 * 取得配置里面的数据库信息
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function getConfig($name = '',$subname=''){
+		return  $name ? $subname ? $this->config[$name][$subname] : $this->config[$name] : $this->config ;
+	}
 	/**
 	 * 取得配置里面的驱动
 	 * @param string $name
