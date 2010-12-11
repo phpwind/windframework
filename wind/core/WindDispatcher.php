@@ -156,7 +156,7 @@ class WindDispatcher {
 	 * 组装重定向URL
 	 */
 	private function buildRedirect() {
-		return $this->router->buildUrl($this->action, $this->controller, $this->module);
+		return $this->router->buildUrl($this->action, $this->controller, $this->module, $this->forward->getRedirectArgs());
 	}
 	
 	/**

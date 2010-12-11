@@ -40,8 +40,9 @@ class WindUrlBasedRouter extends WindRouter {
 	 * @param string $action
 	 * @param string $controller
 	 * @param string $module
+	 * @param string $args 
 	 */
-	public function buildUrl($action = '', $controller = '', $module = '') {
+	public function buildUrl($action = '', $controller = '', $module = '', $args = '') {
 		$keys = array_keys($this->rule);
 		$baseUrl = $this->request->getBaseUrl(true);
 		$script = $this->request->getScript();
@@ -51,7 +52,7 @@ class WindUrlBasedRouter extends WindRouter {
 			$url .= '&' . $keys[1] . '=' . $controller;
 		if ($module && $module !== $this->rule[$keys[2]])
 			$url .= '&' . $keys[2] . '=' . $module;
-		$url = $baseUrl . '/' . $script . '?' . trim($url, '&');
+		$url = $baseUrl . '/' . $script . '?' . trim($url, '&') . '&' . $args;
 		return $url;
 	}
 	

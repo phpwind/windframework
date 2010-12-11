@@ -57,9 +57,19 @@ abstract class WindBaseAction implements IWindAction {
 	 * 
 	 * @param string $actionHandle
 	 * @param string $path
+	 * @param mixed string | array $args
 	 */
-	public function forwardRedirectAction($actionHandle = '', $path = '') {
-		$this->forward->setAction($actionHandle, $path, true);
+	public function forwardRedirectAction($actionHandle = '', $path = '', $args = '') {
+		if (is_string($args) && $args != '') {
+			$args = trim($args);
+		} elseif (is_array($args) && count($args) > 0) {
+			$_tmp = '&';
+			foreach ($args as $key => $value) {
+				$_tmp .= $key . '=' . urlencode(trim($value)) . '&';
+			}
+			$args = trim($_tmp, '&');
+		}
+		$this->forward->setAction($actionHandle, $path, true, $args);
 	}
 	
 	/* 数据处理 */
@@ -134,7 +144,7 @@ abstract class WindBaseAction implements IWindAction {
 	/**
 	 * @return WindForward
 	 */
-	public function forward() {
+	final public function forward() {
 		return $this->forward;
 	}
 	

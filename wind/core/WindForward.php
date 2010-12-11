@@ -31,6 +31,7 @@ class WindForward {
 	/* 页面重定向请求信息 */
 	private $redirect = '';
 	private $isRedirect = false;
+	private $redirectArgs = '';
 	
 	/* 模板数据信息 */
 	private $data;
@@ -40,6 +41,7 @@ class WindForward {
 	 * 
 	 * @param string $name
 	 */
+	
 	public function setTemplateName($templateName) {
 		$this->templateName = $templateName;
 	}
@@ -83,12 +85,20 @@ class WindForward {
 	 * @param $action the $action to set
 	 * @author Qiong Wu
 	 */
-	public function setAction($action, $path = '', $isRedirect = false) {
+	public function setAction($action, $path = '', $isRedirect = false, $args = '') {
 		$this->action = $action;
 		$this->isRedirect = $isRedirect;
 		$this->actionPath = $path;
+		$this->redirectArgs = $args;
 	}
 	
+	/**
+	 * @return the $redirectArgs
+	 */
+	public function getRedirectArgs() {
+		return $this->redirectArgs;
+	}
+
 	/**
 	 * 获得重定向链接
 	 * @return string
