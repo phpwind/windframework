@@ -40,7 +40,7 @@
 			<compileDir>compile</compileDir>
 		</template>
 	</templates>
-	<viewerResolvers isMerage='true'>
+	<viewerResolvers isMerge='true'>
 		<resolver name='default'>WIND:component.viewer.WindViewer</resolver>
 		<resolver name='pw'>WIND:component.viewer.WindPWViewer</resolver>
 		<resolver name='smarty'>libs.WindSmarty</resolver>
