@@ -109,14 +109,14 @@ class WindMsSqlBuilder extends WindSqlBuilder {
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindSqlBuilder#getMetaColumnSql()
 	 */
-	public function getMetaColumnSql($table,$schema ='',$version='') {
+	public function getMetaColumnSql($table) {
 		if (empty($table)) {
 			throw new WindSqlException(WindSqlException::DB_TABLE_EMPTY);
 		}
-		$sql = $this->from('sys.objects','a','',$schema)
+		$sql = $this->from('sys.objects','a')
 			 ->field('b.name Field,b.max_length,b.precision,b.scale,b.is_nullable,b.is_identity')
-			 ->innerJoin('sys.all_columns','a.object_id = b.object_id','b','',$schema)
-			 ->innerJoin('sys.types','b.system_type_id = c.system_type_id','c','',$schema)
+			 ->innerJoin('sys.all_columns','a.object_id = b.object_id','b')
+			 ->innerJoin('sys.types','b.system_type_id = c.system_type_id','c')
 			 ->where('a.name = ? ',$table);
 		return $sql;
 	
