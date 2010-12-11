@@ -10,6 +10,6 @@ class IndexController extends WindController {
 	public function run() {
 		echo "谢谢您请求我！";
 		$this->setOutput('我是在头部被请求的action中的变量！','arg2');
-		$this->setTemplate('layout_run');
+		$this->setTemplate('Layout_run');
 	}
 }
