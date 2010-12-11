@@ -294,7 +294,7 @@ class WindMySqlBuilderTest extends BaseTestCase{
 		$sql = "DELETE  FROM   pw_members AS a   WHERE a.uid =  11  ";
 		$deleteSql = $this->WindMySqlBuilder->from('pw_members','a')
 					 ->where('a.uid = ?',11)
-					 ->getDeleteSql();echo $deleteSql.'<br/>';
+					 ->getDeleteSql();
 		$this->assertEquals($sql,$deleteSql);
 	}
 	
