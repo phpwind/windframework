@@ -18,7 +18,7 @@ class IndexController extends WindController {
 						'smartyapp' => 'Smarty模板引擎接入',
 						'dbapp' => '数据库demo',
 						'layoutApp' => 'LayOut使用demo',
-						'templateApp' => '多模板应用demo');
+						'multiTemplateApp' => '多模板应用demo');
 		$this->setOutput(array('demos' => $demos));
 		$this->setTemplate('header');
 	}
