@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<app isGlobal='true'>
+		<name>Layout</name>
+		<rootPath></rootPath>
+		<configPath>Layout:cache</configPath>
+	</app>
+	<modules>
+		<module name='layout'>
+			<path>actionControllers</path>
+		</module>
+		<module name="other">
+			<path>otherControllers</path>
+		</module>
+	</modules>
+	<templates>
+		<template name='p'>
+			<dir>views</dir>
+			<default>run</default>
+			<ext>phtml</ext>
+			<resolver>my</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+	<viewerResolvers>
+		<my>WIND:component.viewer.WindViewer</my>
+	</viewerResolvers>
+	<routerParsers>
+		<parser name='url'>
+			<rule>
+				<action name='a'>run</action>
+				<controller name='c'>Layout</controller>
+				<module name='m'>layout</module>
+			</rule>
+			<path>WIND:component.router.WindUrlBasedRouter</path>
+		</parser>
+	</routerParsers>
+</WIND>
