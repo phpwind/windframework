@@ -15,4 +15,14 @@ class IndexController extends WindController {
 								'count'=>'8888888'));
 		$this->setTemplate('body');
 	}
+	
+	public function rediect() {
+		$this->forwardRedirectAction('showBody', '', array('arg1' => $this->getInput('p'), 'arg2' => '肖肖'));
+	}
+	
+	public function showBody() {
+		$this->setOutput(array('arg3' => '我是第二次forward中产生的CTO!'));
+		$this->setOutput($this->getInput(array('arg1', 'arg2')));
+		$this->setTemplate('forward');
+	}
 }

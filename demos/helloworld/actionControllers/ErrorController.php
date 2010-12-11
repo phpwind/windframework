@@ -9,7 +9,5 @@
 class ErrorController extends WindController {
 	public function run() {
 		echo 'error controller.<br>';
-		$this->addError('I am wrong.');
-		$this->sendError();
 	}
 }

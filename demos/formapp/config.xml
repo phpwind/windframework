@@ -9,6 +9,9 @@
 		<module name='default'>
 			<path>controllers</path>
 		</module>
+		<module name='other'>
+			<path>otherControllers</path>
+		</module>
 	</modules>
 	<filters>
 		<filter name="WindFormFilter">
