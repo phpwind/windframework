@@ -301,14 +301,14 @@ class WindMySqlBuilderTest extends BaseTestCase{
 	/**
 	 * @dataProvider providerAffected
 	 */
-	public function testGetAffected($ifquery){
-		$sql = ($ifquery ? 'FOUND_ROWS()':'ROW_COUNT()').' AS afftectedRows';
-		$this->assertEquals($sql,$this->WindMySqlBuilder->getAffected($ifquery));
+	public function testGetAffectedSql($ifquery){
+		$sql = 'SELECT '.($ifquery ? 'FOUND_ROWS()':'ROW_COUNT()').' AS afftectedRows';
+		$this->assertEquals($sql,$this->WindMySqlBuilder->getAffectedSql($ifquery));
 	}
 	
-	public function testGetLastInsertId(){
-		$sql = 'LAST_INSERT_ID() AS insertId';
-		$this->assertEquals($sql,$this->WindMySqlBuilder->getLastInsertId());
+	public function testGetLastInsertIdSql(){
+		$sql = 'SELECT LAST_INSERT_ID() AS insertId';
+		$this->assertEquals($sql,$this->WindMySqlBuilder->getLastInsertIdSql());
 	}
 	
 	public function testGetMetaTableSql(){
