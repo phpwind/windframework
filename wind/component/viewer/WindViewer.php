@@ -113,7 +113,7 @@ class WindViewer implements IWindViewer {
 	 */
 	public function parserLayout() {
 		if ($this->layout === null) return null;
-		return $this->layout->parserLayout($this->templatePath, $this->templateExt);
+		return $this->layout->parserLayout($this->templatePath, $this->templateExt, $this->template);
 	}
 	
 	/**
