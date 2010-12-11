@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<app isGlobal='true'>
+		<name>templateApp</name>
+		<rootPath></rootPath>
+		<configPath>templateApp:cache</configPath>
+	</app>
+	<modules>
+		<module name='module1'>
+			<path>module1Controllers</path>
+		</module>
+		<module name="module2">
+			<path>module2Controllers</path>
+		</module>
+	</modules>
+	<templates>
+		<template name='modle1'>
+			<dir>module1Controllers.modle1view</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+		
+		<template name='modle2'>
+			<dir>module2Controllers.modle2view</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+	<viewerResolvers>
+		<my>WIND:component.viewer.WindViewer</my>
+	</viewerResolvers>
+	<routerParsers>
+		<parser name='url'>
+			<rule>
+				<action name='a'>run</action>
+				<controller name='c'>Index</controller>
+				<module name='m'>module1</module>
+			</rule>
+			<path>WIND:component.router.WindUrlBasedRouter</path>
+		</parser>
+	</routerParsers>
+</WIND>
