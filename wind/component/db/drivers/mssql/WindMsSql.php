@@ -60,7 +60,7 @@ class WindMsSql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
 		$this->query("SELECT name,object_id FROM {$schema}.sys.all_objects WHERE type = 'U'");
-		return $this->getAllRow();
+		return $this->getAllRow(MSSQL_ASSOC);
 	}
 	
 	/* (non-PHPdoc)
@@ -73,7 +73,7 @@ class WindMsSql extends WindDbAdapter {
 		$this->query('SELECT b.name Field,b.max_length,b.precision,b.scale,b.is_nullable,b.is_identity FROM sys.objects a 
 					  INNER JOIN sys.all_columns b ON a.object_id = b.object_id 
 					  INNER JOIN sys.types c ON b.system_type_id = c.system_type_id where a.name =  '.$this->escapeString($table));
-		return $this->getAllRow();
+		return $this->getAllRow(MSSQL_ASSOC);
 	}
 	
 	/* (non-PHPdoc)
@@ -117,7 +117,7 @@ class WindMsSql extends WindDbAdapter {
 	 * @see wind/base/WDbAdapter#close()
 	 */
 	public function close() {
-		if($this->connection){
+		if(is_resource($this->connection)){
 			mssql_close ( $this->connection );
 		}
 	}
@@ -147,6 +147,7 @@ class WindMsSql extends WindDbAdapter {
 	 * @see wind/base/WDbAdapter#error()
 	 */
 	protected function error($sql) {
+		$this->last_sql = $sql;
 		return true;
 	}
 }
