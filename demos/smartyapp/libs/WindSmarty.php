@@ -24,12 +24,11 @@ class WindSmarty extends Smarty implements IWindViewer {
 	 */
 	public function initWithView($view) {
 		$this->template = $view->getTemplateName();
-		$this->template_dir = $this->getRealPath($view->getTemplatePath());
+		$this->template_dir = $this->getRealPath($view->getTemplateDir());
 		$this->templateExt = $view->getTemplateExt();
 		$this->cache_dir = $this->getRealPath($view->getTemplateCacheDir());
 		$this->compile_dir = $this->getRealPath($view->getTemplateCompileDir());
 		$this->layout = $view->getForward()->getLayout();
-		$this->layoutMapping = $view->getForward()->getLayoutMapping();
 		$this->view = $view;
 	}
 	

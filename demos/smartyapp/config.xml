@@ -11,13 +11,15 @@
 			<path>actionControllers</path>
 		</module>
 	</modules>
-	<template>
-		<dir>template</dir>
-		<default>index</default>
-		<ext>phtml</ext>
-		<resolver>smarty</resolver>
-		<isCache>false</isCache>
-		<cacheDir>cache</cacheDir>
-		<compileDir>compile</compileDir>
-	</template>
+	<templates>
+		<template>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>smarty</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
 </WIND>

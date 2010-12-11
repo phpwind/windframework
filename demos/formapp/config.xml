@@ -15,13 +15,15 @@
 			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
-	<template>
-		<dir>templates</dir>
-		<default>index</default>
-		<ext>html</ext>
-		<resolver>default</resolver>
-		<isCache>false</isCache>
-		<cacheDir>cache</cacheDir>
-		<compileDir>compile</compileDir>
-	</template>
+	<templates>
+		<template>
+			<dir>templates</dir>
+			<default>index</default>
+			<ext>html</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
 </WIND>
