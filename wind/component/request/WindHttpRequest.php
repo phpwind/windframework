@@ -307,7 +307,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 这里的uri是去除协议名、主机名的
 	 * Example:
 	 * http://www.phpwind.net/example/index.php?a=test
-	 * $this->_scriptUrl = /example/
+	 * $this->_requestUri = /example/index.php?a=test
 	 * 
 	 * @return string
 	 */
@@ -328,8 +328,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getScriptUrl() {
-		if (!$this->_scriptUrl)
-			$this->_initScriptUrl();
+		if (!$this->_scriptUrl) $this->_initScriptUrl();
 		return $this->_scriptUrl;
 	}
 	
@@ -337,7 +336,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回执行脚本
 	 */
 	public function getScript() {
-		return str_replace($this->getRequestUri(), '', $this->getScriptUrl());
+		return substr($this->getScriptUrl(), strrpos($this->getScriptUrl(), '/') + 1);
 	}
 	
 	/**
@@ -346,14 +345,11 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	public function getHeader($header) {
 		$temp = strtoupper(str_replace('-', '_', $header));
-		if (substr($temp, 0, 5) != 'HTTP_')
-			$temp = 'HTTP_' . $temp;
-		if (($header = $this->getServer($temp)) != null)
-			return $header;
+		if (substr($temp, 0, 5) != 'HTTP_') $temp = 'HTTP_' . $temp;
+		if (($header = $this->getServer($temp)) != null) return $header;
 		if (function_exists('apache_request_headers')) {
 			$headers = apache_request_headers();
-			if (!empty($headers[$header]))
-				return $headers[$header];
+			if (!empty($headers[$header])) return $headers[$header];
 		}
 		return false;
 	}
@@ -365,8 +361,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getPathInfo() {
-		if (!$this->_pathInfo)
-			$this->_initPathInfo();
+		if (!$this->_pathInfo) $this->_initPathInfo();
 		return $this->_pathInfo;
 	}
 	
@@ -397,8 +392,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getHostInfo() {
-		if ($this->_hostInfo === null)
-			$this->_initHostInfo();
+		if ($this->_hostInfo === null) $this->_initHostInfo();
 		return $this->_hostInfo;
 	}
 	
