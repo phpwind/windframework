@@ -626,7 +626,7 @@ abstract class WindSqlBuilder {
 	 *@param $ifquery 是否是select 语句
 	 *@return string 
 	 */
-	public abstract function getAffectedSql($ifquery);
+	public abstract function getAffectedSql($ifquery = true);
 	
 	/**
 	 *返回取得最后新增的sql语句
