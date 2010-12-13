@@ -5,13 +5,12 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
+require_once (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import(WIND_PATH . '/component/container/WindModule.php');
 
 class WindModuleTest extends BaseTestCase {
 	private $obj;
-	public function __construct() {
-	}
+	public function __construct() {}
 	public function setUp() {
 		$this->obj = new FormTest();
 	}

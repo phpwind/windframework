@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
+require_once (dirname(dirname(dirname(__FILE__))) . '/BaseTestCase.php');
 L::import(WIND_PATH . '/component/form/base/WindActionForm.php');
 
 class UserForm extends WindActionForm {
@@ -26,19 +26,19 @@ class UserForm extends WindActionForm {
 }
 
 class WindActionFormTest extends BaseTestCase {
-	private $obj ;
+	private $obj;
 	public function setUp() {
 		$this->obj = new UserForm();
 	}
 	public function tearDown() {
-		
+
 	}
 	public function testGetIsValidation() {
 		$this->assertFalse($this->obj->getIsValidation());
 	}
 	public function testSetProperties() {
-		$array = array('name' => 'phpwind', 'password' => 'phpwind.net', 'address' => 'china', 
-						'_isValidate' => true, 'site' => 'www.phpwind.net');
+		$array = array('name' => 'phpwind', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
+			'site' => 'www.phpwind.net');
 		$this->obj->setProperties($array);
 		$this->assertTrue($this->obj->getIsValidation());
 		$this->assertEquals('phpwind', $this->obj->name);
@@ -48,8 +48,8 @@ class WindActionFormTest extends BaseTestCase {
 	}
 	
 	public function testError() {
-		$array = array('name' => 'php', 'password' => 'phpwind.net', 'address' => 'china', 
-						'_isValidate' => true, 'site' => 'www.phpwind.net');
+		$array = array('name' => 'php', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
+			'site' => 'www.phpwind.net');
 		$this->obj->setProperties($array);
 		$this->obj->validation();
 		$error = WindErrorMessage::getInstance();

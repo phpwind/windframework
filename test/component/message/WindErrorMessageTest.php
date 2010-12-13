@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
+require_once (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import(WIND_PATH . '/component/message/WindMessage.php');
 
 /**
@@ -23,7 +23,7 @@ class WindErrorMessageTest extends BaseTestCase {
 		$this->errorMessage->clear();
 	}
 	public function tearDown() {
-		
+		$this->errorMessage = null;
 	}
 	/**
 	 * 测试获得实例
@@ -51,6 +51,7 @@ class WindErrorMessageTest extends BaseTestCase {
 	public function testSendErrorNoneAction() {
 		$this->assertEquals(null, $this->errorMessage->sendError());
 		$this->errorMessage->addError('nameError', 'name');
+		throw new PHPUnit_Framework_IncompleteTestError('No complete');
 		/*$obj->sendError();*/
 	//	$this->assertEquals(null, $obj->sendError());
 	}

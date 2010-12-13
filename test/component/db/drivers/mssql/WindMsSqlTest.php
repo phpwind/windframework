@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('../../../../BaseTestCase.php');
+require_once (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
 L::import(WIND_PATH . '/component/exception/WindException.php');
 L::import(WIND_PATH . '/component/db/drivers/mssql/WindMsSql.php');
 L::import(WIND_PATH . '/component/db/drivers/mssql/WindMsSqlBuilder.php');
@@ -15,7 +15,7 @@ L::import(WIND_PATH . '/component/db/drivers/mssql/WindMsSqlBuilder.php');
  * @version $Id$ 
  * @package 
  */
-class WindMsSqlTest extends BaseTestCase{
+class WindMsSqlTest extends BaseTestCase {
 	private $WindMsSql = null;
 	private $table = 'pw_actions';
 	private $selectSql = 'SELECT images,descrip,name FROM pw_actions';
@@ -24,82 +24,81 @@ class WindMsSqlTest extends BaseTestCase{
 	private $deleteSql = "DELETE FROM pw_actions WHERE id = 2";
 	private $config = array();
 	
-	public function __construct(){
+	public function __construct() {
 		parent::__construct();
 		$this->config = C::getDataBaseConnection('user');
 		$this->WindMsSql = new WindMsSql($this->config);
 	}
 	
-	
-	public function testGetSqlBuilder(){
+	public function testGetSqlBuilder() {
 		$this->assertTrue($this->WindMsSql->getSqlBuilder() instanceof WindMsSqlBuilder);
 	}
 	
-	public function testGetLastSql(){
+	public function testGetLastSql() {
 		$this->testQuery();
-		$this->assertEquals($this->selectSql,$this->WindMsSql->getLastSql());
+		$this->assertEquals($this->selectSql, $this->WindMsSql->getLastSql());
 	}
 	
-	public function testQuery(){
+	public function testQuery() {
 		$this->assertTrue($this->WindMsSql->query($this->selectSql));
 	}
 	
-	public function testGetAffectedRows(){
+	public function testGetAffectedRows() {
 		$this->assertTrue(is_int($this->WindMsSql->getAffectedRows()));
 	}
 	
-	public function testGetLastInsertId(){
+	public function testGetLastInsertId() {
 		$this->assertTrue(is_int($this->WindMsSql->getLastInsertId()));
 	}
 	
-	public function testGetMetaTables(){
+	public function testGetMetaTables() {
 		$this->assertTrue(is_array($this->WindMsSql->getMetaTables()));
 	}
 	
-	public function testGetMetaTablesBySchema(){
+	public function testGetMetaTablesBySchema() {
 		$this->assertTrue(is_array($this->WindMsSql->getMetaTables($this->config[IWindDbConfig::CONN_NAME])));
 	}
 	
-	public function testGetMetaColumns(){
+	public function testGetMetaColumns() {
 		$this->assertTrue(is_array($this->WindMsSql->getMetaColumns($this->table)));
 	}
 	
-	public function testGetAllRow(){
+	public function testGetAllRow() {
 		$this->testQuery();
 		$this->assertTrue(is_array($this->WindMsSql->getAllRow(MSSQL_ASSOC)));
 	}
 	
-	public function testGetRow(){
+	public function testGetRow() {
 		$this->testQuery();
 		$this->assertTrue(is_array($this->WindMsSql->getRow(MSSQL_ASSOC)));
 	}
 	
-	public function testInsert(){
+	public function testInsert() {
 		$this->assertTrue($this->WindMsSql->insert($this->insertSql));
 	}
 	
-	public function testUpdate(){
+	public function testUpdate() {
 		$this->assertTrue($this->WindMsSql->update($this->updateSql));
 	}
 	
-	public function testDelete(){
+	public function testDelete() {
 		$this->assertTrue($this->WindMsSql->update($this->deleteSql));
 	}
 	
-	public function testGetDriver(){
-		$this->assertEquals($this->config[IWindDbConfig::CONN_DRIVER],$this->WindMsSql->getDriver());
+	public function testGetDriver() {
+		$this->assertEquals($this->config[IWindDbConfig::CONN_DRIVER], $this->WindMsSql->getDriver());
 	}
 	
-	public function testGetSchema(){
-		$this->assertEquals($this->config[IWindDbConfig::CONN_NAME],$this->WindMsSql->getSchema());
+	public function testGetSchema() {
+		$this->assertEquals($this->config[IWindDbConfig::CONN_NAME], $this->WindMsSql->getSchema());
 	}
 	
-	public function testGetConfig(){
+	public function testGetConfig() {
 		$config = $this->WindMsSql->getConfig();
-		$this->assertEquals($this->config[IWindDbConfig::CONN_NAME],$config[IWindDbConfig::CONN_NAME]);
+		$this->assertEquals($this->config[IWindDbConfig::CONN_NAME], $config[IWindDbConfig::CONN_NAME]);
 	}
 	
-	public function testGetConnection(){
+	public function testGetConnection() {
 		$this->assertTrue(is_resource($this->WindMsSql->getConnection()));
 	}
 	/*
@@ -111,12 +110,7 @@ class WindMsSqlTest extends BaseTestCase{
 		$this->assertTrue($this->WindMsSql->commitTrans());
 	}*/
 	
-	
-	
-	
-	
-	
-	public function __destruct(){
+	public function __destruct() {
 		$this->WindMsSql = null;
 	}
 }
