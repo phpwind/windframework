@@ -18,5 +18,3 @@ require_once (FREAMWORK_PATH . '/wind.php');
 $_POST['username'] = 'asssss';*/
 
 W::application('HelloWorld')->run();
-
-print_r(L::getImports());

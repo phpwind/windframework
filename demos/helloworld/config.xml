@@ -10,5 +10,9 @@
 			<path>actionControllers</path>
 			<template>default</template>
 		</module>
+		<module name='other'>
+			<path>otherControllers</path>
+			<template>default</template>
+		</module>
 	</modules>
 </WIND>

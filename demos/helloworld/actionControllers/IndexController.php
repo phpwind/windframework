@@ -15,8 +15,7 @@
 class IndexController extends WindController {
 	
 	public function run() {
-		//$this->forwardAction('add','',true);
-		$this->setOutput('aaaaaaaaaa', 'test');
+		$this->setOutput('content vars.', 'test');
 		$this->setTemplate('index_run');
 	}
 	
