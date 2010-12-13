@@ -30,6 +30,7 @@ interface IWindConfig {
 	 */
 	const MODULES = 'modules';
 	const MODULE_PATH = 'path';
+	const MODULE_TEMPLATE = 'template';
 	/**
 	 * 过滤器链
 	 */
