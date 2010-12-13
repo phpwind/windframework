@@ -38,6 +38,7 @@ abstract class WindModule {
 	
 	public function isseted($propertyName) {
 		if (!$this->_validateProperties($propertyName)) return;
+		if (!isset($this->_trace['setted'])) return false;
 		return array_key_exists($propertyName, $this->_trace['setted']);
 	}
 	
