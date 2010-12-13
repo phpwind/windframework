@@ -7,8 +7,8 @@
 	</app>
 	<modules>
 		<module name='default'>
-			<name>default</name>
 			<path>actionControllers</path>
+			<template>default</template>
 		</module>
 	</modules>
 </WIND>

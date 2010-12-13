@@ -8,6 +8,7 @@
 	<modules>
 		<module name='layout'>
 			<path>actionControllers</path>
+			<template>p</template>
 		</module>
 		<module name="other">
 			<path>otherControllers</path>

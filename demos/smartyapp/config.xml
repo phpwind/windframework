@@ -7,7 +7,6 @@
 	</app>
 	<modules>
 		<module name='default'>
-			<name>default</name>
 			<path>actionControllers</path>
 		</module>
 	</modules>
