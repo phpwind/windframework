@@ -5,27 +5,25 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-L::import(R_P . '/test/component/container/WindModuleTest.php');
-L::import(R_P . '/test/component/form/WindFormFilterTest.php');
-L::import(R_P . '/test/component/message/WindErrorMessageTest.php');
-L::import(R_P . '/test/component/message/WindMessageTest.php');
-L::import(R_P . '/test/component/db/AllDBTest.php');
+include(R_P . '/test/component/container/WindModuleTest.php');
+include(R_P . '/test/component/form/WindFormFilterTest.php');
+include(R_P . '/test/component/message/WindErrorMessageTest.php');
+include(R_P . '/test/component/message/WindMessageTest.php');
 
-class AllComponentTest extends BaseTestSuite {
-	public function __construct() {
-    	$this->setName('AllComponentTest');
-    }
-    
+class AllComponentTest {
+	
+	public static function main() {
+		PHPUnit_TextUI_TestRunner::run(self::suite());
+	}
+	
     public static function suite() { 
-		$suite = new self();
+		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
 		$suite->addTestSuite('WindModuleTest'); 
-		$suite->addTestSuite('WindActionFormTest'); 
-		$suite->addTestSuite('WindFormFilterTest'); 
+		//$suite->addTestSuite('WindActionFormTest'); 
+		//$suite->addTestSuite('WindFormFilterTest'); 
 		
 		$suite->addTestSuite('WindMessageTest'); 
 		$suite->addTestSuite('WindErrorMessageTest'); 
-		//$suite->addTest(AllDBTest::suite());
  		return $suite;
     }
 }

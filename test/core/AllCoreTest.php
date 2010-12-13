@@ -6,9 +6,15 @@
  * @license 
  */
 
-require_once(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 
-
-class AllCoreTest extends BaseTestSuite {
+class AllCoreTest {
+	
+    public static function main() {
+		PHPUnit_TextUI_TestRunner::run(self::suite());
+	}
+	
+	public static function suite() { 
+	    $suite = new PHPUnit_Framework_TestSuite('AllCoreTest_Suite');
+	    return $suite;
+	}
 }
-

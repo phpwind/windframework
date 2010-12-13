@@ -6,8 +6,8 @@
  * @license 
  */
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-L::import(R_P . '/test/component/form/WindActionFormTest.php');
-L::import(WIND_PATH . '/component/form/WindFormFilter.php');
+include(R_P . '/test/component/form/WindActionFormTest.php');
+include(WIND_PATH . '/component/form/WindFormFilter.php');
 
 L::import(WIND_PATH . '/component/request/WindHttpRequest.php');
 L::import(WIND_PATH . '/component/response/WindHttpResponse.php');
@@ -46,6 +46,7 @@ class WindFormFilterTest extends BaseTestCase {
 		$_GET['name'] = 'wind';
 		$_GET['formName'] = 'UserForm';
 		$_GET['_isValidate'] = true;
+		throw new PHPUnit_Framework_IncompleteTestError('No complete');
 		/*try {
 			$response = WindHttpResponse::getInstance();
 			$response->setDispatcher(WindDispatcher::getInstance());

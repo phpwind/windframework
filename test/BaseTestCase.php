@@ -15,6 +15,3 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 
 }
 
-abstract class BaseTestSuite extends PHPUnit_Framework_TestSuite {
-
-}
