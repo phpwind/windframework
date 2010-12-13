@@ -47,7 +47,11 @@ abstract class WindBaseAction {
 	 * 
 	 * @param string $templateConfigName
 	 */
-	public function setTemplateConfig($templateConfigName) {
+	public function setTemplateConfig($templateConfigName = '') {
+		if ($templateConfigName === '') {
+			$_temps = C::getModules($this->response->getDispatcher()->getModule());
+			$templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
+		}
 		$this->forward->setTemplateConfig($templateConfigName);
 	}
 	
@@ -151,6 +155,7 @@ abstract class WindBaseAction {
 		L::import('WIND:core.WindForward');
 		$this->forward = new WindForward();
 		$this->error = WindErrorMessage::getInstance();
+		$this->setTemplateConfig();
 	}
 	
 	private function getInputWithString($name, $type = '', $callback = null) {

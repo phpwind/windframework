@@ -84,6 +84,7 @@ class WindView {
 			$this->config[IWindConfig::TEMPLATE_DIR] = $forward->getTemplatePath();
 		}
 		$this->forward = $forward;
+		return $this;
 	}
 	
 	/**

@@ -19,7 +19,6 @@ class WindForward {
 	private $templateName; //模板名称
 	private $templatePath; //模板路径
 	private $templateConfig; //模板配置支持
-	private $view; //视图操作对象
 	
 
 	/* 布局信息 */
@@ -44,15 +43,6 @@ class WindForward {
 		}
 		if (is_object($vars)) $vars = get_object_vars($vars);
 		if (is_array($vars)) $this->vars += $vars;
-	}
-	
-	/**
-	 * 初始化视图操作对象
-	 * 
-	 * @param WindView  $view
-	 */
-	public function setView($view) {
-		if ($view instanceof WindView) $this->view = $view;
 	}
 	
 	/**
@@ -136,19 +126,6 @@ class WindForward {
 	}
 	
 	/**
-	 * 返回WindView对象
-	 * @return WindView
-	 */
-	public function getView() {
-		if ($this->view === null) {
-			L::import('WIND:component.viewer.WindView');
-			$this->view = L::getInstance('windview', $this->templateConfig, $this->templateConfig);
-		}
-		$this->view->initViewWithForward($this);
-		return $this->view;
-	}
-	
-	/**
 	 * 返回视图的路径信息
 	 * 
 	 * @return string
@@ -183,6 +160,13 @@ class WindForward {
 	 */
 	public function isRedirect() {
 		return $this->isRedirect;
+	}
+	
+	/**
+	 * @return the $templateConfig
+	 */
+	public function getTemplateConfig() {
+		return $this->templateConfig;
 	}
 	
 	/**

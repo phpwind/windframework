@@ -21,6 +21,7 @@ class WindDispatcher {
 	
 	private $forward = null;
 	private $immediately = false;
+	private $views = array();
 	
 	private $request = null;
 	private $response = null;
@@ -59,13 +60,13 @@ class WindDispatcher {
 	 */
 	public function setForward($forward) {
 		$this->forward = $forward;
-		if ($forward->getAction()) $this->action = $forward->getAction();
+		$this->setAction($forward->getAction());
 		if (!($path = $forward->getActionPath())) return $this;
 		if (($pos = strrpos($path, '.')) !== false) {
-			$this->controller = substr($path, $pos + 1);
-			$this->module = substr($path, 0, $pos);
-		} else
-			$this->controller = $path;
+			$this->setModule(substr($path, 0, $pos));
+			$path = substr($path, $pos + 1);
+		}
+		$this->setController($path);
 		return $this;
 	}
 	
@@ -74,9 +75,9 @@ class WindDispatcher {
 	 * @return WindDispatcher
 	 */
 	public function initWithRouter($router) {
-		$this->module = $router->getModule();
-		$this->controller = $router->getController();
-		$this->action = $router->getAction();
+		$this->setModule($router->getModule());
+		$this->setController($router->getController());
+		$this->setAction($router->getAction());
 		$this->router = $router;
 		return $this;
 	}
@@ -87,23 +88,17 @@ class WindDispatcher {
 	 */
 	public function getActionHandle() {
 		$moduleConfig = C::getModules($this->module);
-		$module = $moduleConfig ? $moduleConfig[IWindConfig::MODULE_PATH] : $this->module;
-		$path = $module . '.' . $this->controller;
+		$module = $moduleConfig[IWindConfig::MODULE_PATH];
+		$path = $module . '.' . $this->controller . 'Controller';
 		$method = $this->action;
-		$className = $this->matchActionHandle($path);
-		if (!$className) $className = $this->matchActionHandle($path, 'Controller');
+		$className = L::import($path);
 		if (!$className) {
-			$path .= $this->action;
-			$className = $this->matchActionHandle($path, 'Action');
+			$path .= $this->action . 'Action';
+			$className = L::import($path);
 			$method = 'run';
 		}
 		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
 		return array($className, $method);
-	}
-	
-	private function matchActionHandle($path, $match = '') {
-		if ($match && !preg_match("/" . $match . "$/i", $path)) $path .= $match;
-		return L::import($path);
 	}
 	
 	/**
@@ -131,13 +126,13 @@ class WindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	private function dispatchWithTemplate() {
-		$viewer = $this->getForward()->getView()->createViewerResolver();
-		$viewer->windAssign($this->getForward()->getVars());
+		$viewResolver = $this->getView()->initViewWithForward($this->getForward())->createViewerResolver();
+		$viewResolver->windAssign($this->getForward()->getVars());
 		$viewName = $this->getForward()->getTemplateName();
 		if ($this->immediately) {
-			$viewer->immediatelyWindFetch();
+			$viewResolver->immediatelyWindFetch();
 		} else {
-			$this->response->setBody($viewer->windFetch(), $viewName);
+			$this->response->setBody($viewResolver->windFetch(), $viewName);
 		}
 	}
 	
@@ -148,14 +143,76 @@ class WindDispatcher {
 		return $this->router->buildUrl($this->action, $this->controller, $this->module, $this->forward->getRedirectArgs());
 	}
 	
+	/**
+	 * 获得windview对象
+	 * @return WindView
+	 */
+	private function getView() {
+		if (!($templateConfigName = $this->getForward()->getTemplateConfig())) {
+			$_temps = C::getModules($this->getModule());
+			$templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
+		}
+		if (!isset($this->views[$templateConfigName])) {
+			L::import('WIND:component.viewer.WindView');
+			$this->views[$templateConfigName] = new WindView($templateConfigName);
+		}
+		return $this->views[$templateConfigName];
+	}
+	
+	/**
+	 * 设置Controller
+	 * @param string $controller
+	 */
+	private function setController($controller) {
+		if (($pos = strrpos(strtolower($controller), 'controller')) !== false) $controller = substr($controller, 0, $pos);
+		$this->controller = $controller;
+	}
+	
+	/**
+	 * 设置Action
+	 * @param string $action
+	 */
+	private function setAction($action) {
+		if (($pos = strrpos(strtolower($action), 'action')) !== false) $action = substr($action, 0, $pos);
+		$this->action = $action;
+	}
+	
+	/**
+	 * 根据module的路径信息获取module名称
+	 * @param path
+	 * @param pos
+	 */
+	private function setModule($module) {
+		$modules = C::getModules();
+		if (key_exists($module, $modules)) {
+			$this->module = $module;
+			return;
+		}
+		foreach ($modules as $key => $value) {
+			if ($module == $value[IWindConfig::MODULE_PATH]) $this->module = $key;
+		}
+	}
+	
+	/**
+	 * 获得Action操作句柄
+	 * @return string
+	 */
 	public function getAction() {
 		return $this->action;
 	}
 	
+	/**
+	 * 获得Controller操作句柄
+	 * @return string
+	 */
 	public function getController() {
 		return $this->controller;
 	}
 	
+	/**
+	 * 获得Module操作句柄
+	 * @return string
+	 */
 	public function getModule() {
 		return $this->module;
 	}
@@ -167,5 +224,5 @@ class WindDispatcher {
 	public function getForward() {
 		return $this->forward;
 	}
-	
+
 }
