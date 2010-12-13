@@ -15,12 +15,14 @@
 class IndexController extends WindController {
 	
 	public function run() {
-		$this->forwardAction('add','',true);
+		//$this->forwardAction('add','',true);
+		$this->setOutput('aaaaaaaaaa', 'test');
+		$this->setTemplate('index_run');
 	}
 	
 	public function add() {
 		echo 'hello i am add.';
 		$this->setTemplate('index_run');
 	}
-	
+
 }
