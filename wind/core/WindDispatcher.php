@@ -106,7 +106,7 @@ class WindDispatcher {
 	 */
 	private function dispatchWithRedirect() {
 		$redirect = $this->getForward()->getRedirect();
-		if ($redirect === '') $redirect = $this->buildRedirect();
+		if ($redirect === '' || $redirect == null) $redirect = $this->buildRedirect();
 		$this->response->sendRedirect($redirect);
 	}
 	
