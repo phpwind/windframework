@@ -16,9 +16,11 @@
 	<modules>
 		<module name='default'>
 			<path>actionControllers</path>
+			<template>default</template>
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
+			<template>default</template>
 		</module>
 	</modules>
 	<errorMessage>
