@@ -59,9 +59,9 @@ class W {
 	 * @param array $value
 	 * @param boolean $default
 	 */
-	static public function setApps($name, $value, $current = false) {
-		if (empty($value) || !is_array($value)) return;
-		W::$_apps[$name] = $value;
+	static public function setApps($name, $value, $current = false) { 
+		if (empty($value) || !is_array($value)) return; 
+		W::$_apps[$name] = $value; 
 		if ($current) self::$_current = $name;
 		L::register($name, $value['rootPath']);
 	}
