@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.base.IWindAction');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,7 +12,7 @@ L::import('WIND:core.base.IWindAction');
  * @version $Id$ 
  * @package 
  */
-abstract class WindBaseAction implements IWindAction {
+abstract class WindBaseAction {
 	protected $request;
 	protected $response;
 	protected $forward = null;
@@ -26,7 +25,7 @@ abstract class WindBaseAction implements IWindAction {
 	public function __construct($request, $response) {
 		$this->request = $request;
 		$this->response = $response;
-		$this->initAction();
+		$this->initBaseAction();
 	}
 	
 	public function beforeAction() {}
@@ -80,7 +79,7 @@ abstract class WindBaseAction implements IWindAction {
 	 * @param string $key
 	 */
 	public function setOutput($data, $key = '') {
-		$this->response->setData($data, $key);
+		$this->forward()->setVars($data, $key);
 	}
 	
 	/**
@@ -148,7 +147,7 @@ abstract class WindBaseAction implements IWindAction {
 		return $this->forward;
 	}
 	
-	private function initAction() {
+	private function initBaseAction() {
 		L::import('WIND:core.WindForward');
 		$this->forward = new WindForward();
 		$this->error = WindErrorMessage::getInstance();

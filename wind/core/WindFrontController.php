@@ -97,7 +97,7 @@ class WindFrontController extends WindServlet {
 		L::import('WIND:component.router.WindRouterFactory');
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($this->request, $this->response);
-		$dispatcher = WindDispatcher::getInstance($this->request, $this->response, $this);
+		$dispatcher = L::getInstance('WindDispatcher', array($this->request, $this->response, $this));
 		$this->response->setDispatcher($dispatcher->initWithRouter($router));
 	}
 	
@@ -108,8 +108,7 @@ class WindFrontController extends WindServlet {
 	public function &getApplicationHandle($key = 'web') {
 		if (!isset($this->application[$key])) {
 			$application = C::getApplications($key);
-			list($className, $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
-			L::import($realpath);
+			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
 			$this->application[$key] = &new $className();
 		}
 		return $this->application[$key];
@@ -122,8 +121,7 @@ class WindFrontController extends WindServlet {
 		$requestType = $this->request->getRequestType();
 		if (!isset($this->application)) {
 			$application = C::getApplications($requestType);
-			list($className, $realpath) = L::getRealPath($application[IWindConfig::APPLICATIONS_CLASS], true);
-			L::import($realpath);
+			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
 			$this->application = &new $className();
 		}
 	}

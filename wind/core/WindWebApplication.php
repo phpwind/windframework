@@ -49,7 +49,7 @@ class WindWebApplication implements IWindApplication {
 	 * @return array(WindAction,string)
 	 */
 	protected function getActionHandle($request, $response) {
-		list($className, $method) = WindDispatcher::getInstance()->getActionHandle();
+		list($className, $method) = L::getInstance('WindDispatcher')->getActionHandle();
 		$this->checkReprocess($className . '_' . $method);
 		if ($className === null || $method === null) {
 			throw new WindException('can\'t create action handle.');
@@ -79,23 +79,8 @@ class WindWebApplication implements IWindApplication {
 	 * @param WindModelAndView $forward
 	 */
 	protected function processDispatch($request, $response, $forward) {
-		WindDispatcher::getInstance()->setForward($forward)->dispatch();
+		L::getInstance('WindDispatcher')->setForward($forward)->dispatch();
 	}
 	
-	/**
-	 * 初始化页面分发器
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	protected function initDispatch() {
-		L::import('WIND:component.router.WindRouterFactory');
-		$router = WindRouterFactory::getFactory()->create();
-		$router->doParser($this->request, $this->response);
-		$dispatcher = WindDispatcher::getInstance($this->request, $this->response, $this);
-		$this->response->setDispatcher($dispatcher->initWithRouter($router));
-	}
-	
-	public function destory() {
-		WindDispatcher::getInstance()->distroy();
-	}
+	public function destory() {}
 }

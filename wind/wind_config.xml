@@ -30,7 +30,16 @@
 		</filter>
 	</filters>
 	<templates>
-		<template name='default'>
+		<template name='wind'>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+		<template name='wind1'>
 			<dir>template</dir>
 			<default>index</default>
 			<ext>htm</ext>

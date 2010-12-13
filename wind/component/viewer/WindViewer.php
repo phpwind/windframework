@@ -21,32 +21,25 @@ L::import('WIND:component.viewer.base.IWindViewer');
  */
 class WindViewer implements IWindViewer {
 	
-	protected $template = '';
+	protected $templateName = '';
 	protected $templatePath = '';
 	protected $templateExt = '';
 	
 	protected $view = null;
 	protected $layout = null;
 	
-	/**
-	 * 视图变量信息
-	 * @var $vars
-	 */
-	protected $vars = array();
-	
-	public function immediatelyDisplay($template = '') {
-		echo $this->windFetch($template = '');
-	}
+	protected $var = array();
 	
 	/**
 	 * 获取模板信息
 	 */
 	public function windFetch($template = '') {
-		if ($this->vars) extract($this->vars, EXTR_REFS);
+		$varName = $this->getTemplateVarName();
+		@extract($this->var[$varName], EXTR_REFS);
 		ob_start();
 		if (($segments = $this->parserLayout()) == null) {
 			$template = $this->getViewTemplate($template);
-			if ($template) include $template;
+			if ($template) @include $template;
 		} else {
 			foreach ($segments as $value) {
 				$template = $this->getViewTemplate($value);
@@ -57,63 +50,93 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
+	 * 理解输出模板内容
+	 * 
+	 * @param string $template
+	 */
+	public function immediatelyWindFetch($template = '') {
+		echo $this->windFetch($template);
+	}
+	
+	/**
+	 * 以对象方式访问模板变量
+	 * @param string $templateName
+	 */
+	public function getVarWithObject($templateName = '') {
+		$varName = $templateName . 'Object';
+		if (!isset($this->$varName)) {
+			$this->$varName = new stdClass();
+			foreach ($this->$templateName as $key => $value) {
+				$this->$varName->$key = $value;
+			}
+		}
+		return $this->$varName;
+	}
+	
+	/**
+	 * 以数组方式获得模板变量
+	 * @param string $key
+	 * @param string $templateName
+	 * @return Ambigous <unknown, string>
+	 */
+	public function getVar($key = '', $templateName = '') {
+		if ($templateName === '') $templateName = $this->getTemplateVarName();
+		return $key === '' ? $this->var[$templateName] : $this->var[$templateName][$key];
+	}
+	
+	/**
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '', $path = '') {
+		if ($this->view === null) throw new WindException('excute doAction method failed.');
+		$this->view->doAction($actionHandle, $path);
+	}
+	
+	/**
 	 * 设置模板变量信息
 	 * 
 	 * @param object|array|string $vars
 	 * @param string $key
 	 */
 	public function windAssign($vars, $key = '') {
-		if (is_array($vars))
-			$this->windAssignWithArray($vars, $key);
-		elseif (is_object($vars))
-			$this->windAssignWithObject($vars, $key);
-		else
-			$this->windAssignWithSimple($vars, $key);
-	}
-	
-	/**
-	 * 设置模板变量
-	 * 
-	 * @param $vars
-	 * @param string $key
-	 */
-	public function windAssignWithSimple($vars, $key = '') {
-		if ($key) $this->vars[$key] = $vars;
-	}
-	
-	/**
-	 * 设置模板变量
-	 * 
-	 * @param object $vars
-	 * @param string $key
-	 */
-	public function windAssignWithObject($vars, $key = '') {
-		if (!is_object($vars)) return;
-		if ($key) $this->vars[$key] = $vars;
-		$this->vars += get_object_vars($vars);
-	}
-	
-	/**
-	 * 设置模板变量
-	 * 
-	 * @param array $vars
-	 * @param string $key
-	 */
-	public function windAssignWithArray($vars, $key = '') {
-		if (!is_array($vars)) return;
-		if ($key) $this->vars[$key] = $vars;
-		foreach ($vars as $key => $value) {
-			$this->vars[$key] = $value;
+		$varName = $this->getTemplateVarName();
+		$this->var[$varName] = array();
+		if ($key) {
+			$this->var[$varName][$key] = $vars;
+			return;
 		}
+		if (is_object($vars)) $vars = get_object_vars($vars);
+		if (is_array($vars)) $this->var[$varName] += $vars;
+	}
+	
+	/**
+	 * 获得模板变量名称
+	 */
+	private function getTemplateVarName() {
+		$varName = $this->templateName ? $this->templateName : 'default';
+		return $varName;
+	}
+	
+	/**
+	 * 设置视图信息
+	 * 
+	 * @param WindView $view
+	 */
+	public function initWithView($view) {
+		$this->templateName = $view->getTemplateName();
+		$this->templatePath = $view->getTemplateDir();
+		$this->templateExt = $view->getTemplateExt();
+		$this->layout = $view->getForward()->getLayout();
+		$this->view = $view;
 	}
 	
 	/**
 	 * 如果存在布局文件则解析布局信息
 	 * @return array()
 	 */
-	public function parserLayout() {
+	private function parserLayout() {
 		if ($this->layout === null) return null;
-		return $this->layout->parserLayout($this->templatePath, $this->templateExt, $this->template);
+		return $this->layout->parserLayout($this->templatePath, $this->templateExt, $this->templateName);
 	}
 	
 	/**
@@ -124,35 +147,13 @@ class WindViewer implements IWindViewer {
 	 * @param string $templateExt
 	 * @return string | false
 	 */
-	public function getViewTemplate($templateName = '', $templateExt = '') {
-		if (!$templateName) $templateName = $this->template;
+	private function getViewTemplate($templateName = '', $templateExt = '') {
+		if (!$templateName) $templateName = $this->templateName;
 		if (!$templateExt) $templateExt = $this->templateExt;
 		if (strrpos($templateName, ':') === false) {
 			$templateName = $this->templatePath . '.' . $templateName;
 		}
 		return L::getRealPath($templateName, false, $templateExt);
-	}
-	
-	/**
-	 * 设置视图信息
-	 * 
-	 * @param WindView $view
-	 */
-	public function initWithView($view) {
-		$this->template = $view->getTemplateName();
-		$this->templatePath = $view->getTemplateDir();
-		$this->templateExt = $view->getTemplateExt();
-		$this->layout = $view->getForward()->getLayout();
-		$this->view = $view;
-	}
-	
-	/**
-	 * @param string $actionHandle
-	 */
-	public function doAction($actionHandle = '', $path = '') {
-		if ($this->view instanceof WindView) {
-			$this->view->doAction($actionHandle, $path);
-		}
 	}
 
 }

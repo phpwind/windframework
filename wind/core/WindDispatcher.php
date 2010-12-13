@@ -26,14 +26,13 @@ class WindDispatcher {
 	private $response = null;
 	private $frontController = null;
 	private $router = null;
-	private static $instance = null;
 	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 * @param WindFrontController $frontController
 	 */
-	private function __construct($request, $response, $frontController) {
+	public function __construct($request, $response, $frontController) {
 		$this->request = $request;
 		$this->response = $response;
 		$this->frontController = $frontController;
@@ -60,10 +59,8 @@ class WindDispatcher {
 	 */
 	public function setForward($forward) {
 		$this->forward = $forward;
-		if ($forward->getAction())
-			$this->action = $forward->getAction();
-		if (!($path = $forward->getActionPath()))
-			return $this;
+		if ($forward->getAction()) $this->action = $forward->getAction();
+		if (!($path = $forward->getActionPath())) return $this;
 		if (($pos = strrpos($path, '.')) !== false) {
 			$this->controller = substr($path, $pos + 1);
 			$this->module = substr($path, 0, $pos);
@@ -93,28 +90,20 @@ class WindDispatcher {
 		$module = $moduleConfig ? $moduleConfig[IWindConfig::MODULE_PATH] : $this->module;
 		$path = $module . '.' . $this->controller;
 		$method = $this->action;
-		list($className, $realPath) = $this->matchActionHandle($path);
-		if (!$realPath) {
-			list($className, $realPath) = $this->matchActionHandle($path, 'Controller');
-		}
-		if (!$realPath) {
+		$className = $this->matchActionHandle($path);
+		if (!$className) $className = $this->matchActionHandle($path, 'Controller');
+		if (!$className) {
 			$path .= $this->action;
-			list($className, $realPath) = $this->matchActionHandle($path, 'Action');
+			$className = $this->matchActionHandle($path, 'Action');
 			$method = 'run';
 		}
-		L::import($realPath);
-		if (!class_exists($className) || !in_array($method, get_class_methods($className))) {
-			return array(null, null);
-		}
+		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
 		return array($className, $method);
 	}
 	
 	private function matchActionHandle($path, $match = '') {
-		if ($match && !preg_match("/" . $match . "$/i", $path)) {
-			$path .= $match;
-		}
-		list($className, $realPath) = L::getRealPath($path, true);
-		return array($className, $realPath);
+		if ($match && !preg_match("/" . $match . "$/i", $path)) $path .= $match;
+		return L::import($path);
 	}
 	
 	/**
@@ -122,8 +111,7 @@ class WindDispatcher {
 	 */
 	private function dispatchWithRedirect() {
 		$redirect = $this->getForward()->getRedirect();
-		if ($redirect === '')
-			$redirect = $this->buildRedirect();
+		if ($redirect === '') $redirect = $this->buildRedirect();
 		$this->response->sendRedirect($redirect);
 	}
 	
@@ -144,12 +132,13 @@ class WindDispatcher {
 	 */
 	private function dispatchWithTemplate() {
 		$viewer = $this->getForward()->getView()->createViewerResolver();
-		//TODO
-		$viewer->windAssign($this->response->getData());
+		$viewer->windAssign($this->getForward()->getVars());
 		$viewName = $this->getForward()->getTemplateName();
-		if ($this->immediately)
-			$viewer->immediatelyDisplay();
-		else $this->response->setBody($viewer->windFetch(), $viewName);
+		if ($this->immediately) {
+			$viewer->immediatelyWindFetch();
+		} else {
+			$this->response->setBody($viewer->windFetch(), $viewName);
+		}
 	}
 	
 	/**
@@ -157,20 +146,6 @@ class WindDispatcher {
 	 */
 	private function buildRedirect() {
 		return $this->router->buildUrl($this->action, $this->controller, $this->module, $this->forward->getRedirectArgs());
-	}
-	
-	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 * @param WindFrontController $frontController
-	 * @return WindDispatcher
-	 */
-	static public function &getInstance($request = null, $response = null, $frontController = null) {
-		if (self::$instance === null) {
-			$class = __CLASS__;
-			self::$instance = new $class($request, $response, $frontController);
-		}
-		return self::$instance;
 	}
 	
 	public function getAction() {
@@ -193,7 +168,4 @@ class WindDispatcher {
 		return $this->forward;
 	}
 	
-	static public function distroy() {
-		self::$instance = null;
-	}
 }

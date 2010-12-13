@@ -19,6 +19,7 @@ class WindForward {
 	private $templateName; //模板名称
 	private $templatePath; //模板路径
 	private $templateConfig; //模板配置支持
+	private $view; //视图操作对象
 	
 
 	/* 布局信息 */
@@ -29,12 +30,30 @@ class WindForward {
 	private $actionPath;
 	
 	/* 页面重定向请求信息 */
-	private $redirect = '';
+	private $redirect;
 	private $isRedirect = false;
-	private $redirectArgs = '';
+	private $redirectArgs;
 	
-	/* 模板数据信息 */
-	private $data;
+	/* 模板变量信息 */
+	private $vars = array();
+	
+	public function setVars($vars, $key = '') {
+		if ($key) {
+			$this->vars[$key] = $vars;
+			return;
+		}
+		if (is_object($vars)) $vars = get_object_vars($vars);
+		if (is_array($vars)) $this->vars += $vars;
+	}
+	
+	/**
+	 * 初始化视图操作对象
+	 * 
+	 * @param WindView  $view
+	 */
+	public function setView($view) {
+		if ($view instanceof WindView) $this->view = $view;
+	}
 	
 	/**
 	 * 设置视图的逻辑名称
@@ -98,7 +117,7 @@ class WindForward {
 	public function getRedirectArgs() {
 		return $this->redirectArgs;
 	}
-
+	
 	/**
 	 * 获得重定向链接
 	 * @return string
@@ -121,9 +140,11 @@ class WindForward {
 	 * @return WindView
 	 */
 	public function getView() {
-		//TODO
-		L::import('WIND:component.viewer.WindView');
-		$this->view = new WindView($this, $this->templateConfig);
+		if ($this->view === null) {
+			L::import('WIND:component.viewer.WindView');
+			$this->view = L::getInstance('windview', $this->templateConfig, $this->templateConfig);
+		}
+		$this->view->initViewWithForward($this);
 		return $this->view;
 	}
 	
@@ -162,5 +183,13 @@ class WindForward {
 	 */
 	public function isRedirect() {
 		return $this->isRedirect;
+	}
+	
+	/**
+	 * 获得操作输出数据变量
+	 * @return array
+	 */
+	public function getVars() {
+		return $this->vars;
 	}
 }

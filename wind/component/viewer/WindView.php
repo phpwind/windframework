@@ -18,6 +18,7 @@
  */
 class WindView {
 	private $config = array();
+	
 	private $forward = null;
 	private $viewResolver = null;
 	
@@ -25,9 +26,8 @@ class WindView {
 	 * @param string $templateName
 	 * @param WindForward $forward
 	 */
-	public function __construct($forward = null, $templateConfig = '') {
+	public function __construct($templateConfig = '') {
 		$this->parseConfig($templateConfig);
-		$this->setViewWithForward($forward);
 	}
 	
 	/**
@@ -38,15 +38,14 @@ class WindView {
 	public function createViewerResolver() {
 		if ($this->viewResolver === null) {
 			$viewerResolver = C::getViewerResolvers($this->config[IWindConfig::TEMPLATE_RESOLVER]);
-			list($className, $viewerResolver) = L::getRealPath($viewerResolver, true);
-			L::import($viewerResolver);
+			$className = L::import($viewerResolver);
 			if (!class_exists($className)) {
 				throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
 			}
 			$object = new $className();
-			$object->initWithView($this);
 			$this->viewResolver = &$object;
 		}
+		$this->viewResolver->initWithView($this);
 		return $this->viewResolver;
 	}
 	
@@ -56,12 +55,12 @@ class WindView {
 	private function parseConfig($templateConfig) {
 		$configs = C::getTemplate();
 		if ($templateConfig) {
-			if (!isset($configs[$templateConfig]))
-				throw new WindException('the template config ' . $templateConfig . ' is not exists.');
+			if (!isset($configs[$templateConfig])) throw new WindException('the template config ' . $templateConfig . ' is not exists.');
 			$this->config = $configs[$templateConfig];
-		} elseif (count($configs) == 1)
+		} elseif (count($configs) >= 1)
 			$this->config = array_pop($configs);
-		else throw new WindException('parse template config error.');
+		else
+			throw new WindException('parse template config error.');
 	}
 	
 	/**
@@ -70,18 +69,20 @@ class WindView {
 	public function doAction($actionHandle = '', $path = '') {
 		$forward = clone $this->getForward();
 		$forward->setAction($actionHandle, $path);
-		WindDispatcher::getInstance()->setForward($forward)->dispatch(true);
+		L::getInstance('WindDispatcher')->setForward($forward)->dispatch(true);
 	}
 	
 	/**
 	 * 通过WindForward视图信息设置view
 	 * @param WindForward $forward
 	 */
-	private function setViewWithForward($forward) {
-		if ($forward->getTemplateName())
+	public function initViewWithForward($forward) {
+		if ($forward->getTemplateName()) {
 			$this->config[IWindConfig::TEMPLATE_DEFAULT] = $forward->getTemplateName();
-		if ($forward->getTemplatePath())
+		}
+		if ($forward->getTemplatePath()) {
 			$this->config[IWindConfig::TEMPLATE_DIR] = $forward->getTemplatePath();
+		}
 		$this->forward = $forward;
 	}
 	

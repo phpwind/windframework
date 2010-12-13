@@ -24,9 +24,9 @@ class W {
 	private static $_systemConfig = null;
 	
 	static public function init() {
-		self::_initConfig();
-		self::_initBaseLib();
-		self::_initErrorHandle();
+		self::initConfig();
+		self::initBaseLib();
+		self::initErrorHandle();
 	}
 	
 	/**
@@ -59,8 +59,8 @@ class W {
 	 * @param array $value
 	 * @param boolean $default
 	 */
-	static public function setApps($name = '', $value = array(), $current = false) {
-		if (empty($value)) return;
+	static public function setApps($name, $value, $current = false) {
+		if (empty($value) || !is_array($value)) return;
 		W::$_apps[$name] = $value;
 		if ($current) self::$_current = $name;
 		L::register($name, $value['rootPath']);
@@ -84,21 +84,29 @@ class W {
 	}
 	
 	/**
+	 * 是否支持预编译
+	 * @return string
+	 */
+	static public function ifCompile() {
+		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH) ? true : false;
+	}
+	
+	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
 	 */
-	static private function _initBaseLib() {
+	static private function initBaseLib() {
 		if (is_file(COMPILE_IMPORT_PATH) && !IS_DEBUG) {
 			return include COMPILE_IMPORT_PATH;
 		} else
-			self::_initLoad();
+			self::initLoad();
 	}
 	
 	/**
 	 * 加载框架核心文件
 	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
 	 */
-	static private function _initLoad() {
+	static private function initLoad() {
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.*');
 		L::import('WIND:component.message.WindErrorMessage');
@@ -110,17 +118,9 @@ class W {
 	}
 	
 	/**
-	 * 是否支持预编译
-	 * @return string
-	 */
-	static public function ifCompile() {
-		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH) ? true : false;
-	}
-	
-	/**
 	 * 解析配置文件
 	 */
-	static private function _initConfig() {
+	static private function initConfig() {
 		W::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
 		$sysConfig = @include COMPILE_PATH . '/config.php';
@@ -129,7 +129,7 @@ class W {
 		}
 	}
 	
-	static private function _initErrorHandle() {
+	static private function initErrorHandle() {
 		set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
 		set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
@@ -143,7 +143,7 @@ class W {
  * @version $Id$
  * @package
  */
-final class L {
+class L {
 	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_instances = array();
@@ -170,7 +170,7 @@ final class L {
 	 * @param array $class
 	 */
 	static public function setImports($class = array()) {
-		foreach ($class as $key => $value) {
+		if (!is_array($class)) foreach ($class as $key => $value) {
 			if (!self::isImported()) {
 				self::$_imports[$key] = $value;
 			}
@@ -190,20 +190,19 @@ final class L {
 	 *
 	 * @param string $filePath //文件路径信息
 	 * @author Qiong Wu
-	 * @return
+	 * @return string|null
 	 */
 	static public function import($filePath) {
-		if (!$filePath || key_exists($filePath, L::$_imports) || in_array($filePath, L::$_imports)) {
-			return $filePath;
+		if (!$filePath) return false;
+		if (key_exists($filePath, L::$_imports)) {
+			return L::$_imports[$filePath];
 		}
-		list($fileName, $realPath, $ext, $isPackage) = self::getRealPath($filePath, true); //TODO
-		if (!$realPath) {
-			throw new Exception('import file ' . $filePath . ' is not exist.');
-		}
+		list($fileName, $realPath, $ext, $isPackage) = self::getRealPath($filePath, true);
+		if (!$realPath) return false;
 		$fileNames = array();
 		if (!$isPackage) {
 			L::windInclude($realPath, $filePath, $fileName, $isPackage);
-			return $realPath;
+			return $fileName;
 		}
 		if (!$dh = opendir($realPath)) throw new Exception('the file ' . $realPath . ' open failed!');
 		while (($file = readdir($dh)) !== false) {
@@ -216,7 +215,7 @@ final class L {
 		foreach ($fileNames as $var) {
 			L::windInclude($realPath . D_S . $var[0] . '.' . $var[1], $filePath, $var[0], $isPackage);
 		}
-		return $realPath;
+		return true;
 	}
 	
 	/**
@@ -229,10 +228,14 @@ final class L {
 	 * @param string $className
 	 * @retur Object
 	 */
-	static public function &getInstance($className, $args = array()) {
+	static public function getInstance($className, $args = array(), $nameSpace = '') {
 		$className = strtolower($className);
-		if (!key_exists($className, L::$_instances)) L::_createInstance($className, $args);
-		return L::$_instances[$className];
+		$app = W::getCurrentApp() ? W::getCurrentApp() : 'default';
+		$nameSpace = $nameSpace === '' ? $className : $className . '_' . $nameSpace;
+		if (!key_exists($nameSpace, L::$_instances[$app])) {
+			L::$_instances[$app][$nameSpace] = L::createInstance($className, $args);
+		}
+		return L::$_instances[$app][$nameSpace];
 	}
 	
 	/**
@@ -285,10 +288,10 @@ final class L {
 			if ($dir !== '')
 				$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
 			else
-				$filePath = L::_getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
+				$filePath = L::getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
 			$isPackage = $fileName === '*';
 			if (!$isPackage && !$ext) {
-				foreach ((array) L::_getExtension() as $key => $value) {
+				foreach ((array) L::getExtension() as $key => $value) {
 					if (file_exists($filePath . D_S . $fileName . '.' . $value)) {
 						$ext = $value;
 						break;
@@ -309,12 +312,12 @@ final class L {
 	 * @param array $args 参数数组
 	 * @return void|string
 	 */
-	static private function _createInstance($className, $args) {
+	static private function createInstance($className, $args) {
 		$class = new ReflectionClass($className);
 		if ($class->isAbstract() || $class->isInterface()) return;
 		if (!is_array($args)) $args = array($args);
 		$object = call_user_func_array(array($class, 'newInstance'), $args);
-		L::$_instances[$className] = & $object;
+		return $object;
 	}
 	
 	/**
@@ -326,15 +329,10 @@ final class L {
 	 * @return string
 	 */
 	static private function windInclude($realPath, $filePath, $fileName, $ispackage = false) {
-		if (!file_exists($realPath)) return;
 		if (in_array($realPath, L::$_imports)) return $realPath;
 		include $realPath;
-		
-		if ($ispackage) {
-			$filePath = str_replace('*', $fileName, $filePath);
-			self::$_imports[$filePath] = $realPath;
-		} else
-			self::$_imports[$filePath] = $realPath;
+		if ($ispackage) $filePath = str_replace('*', $fileName, $filePath);
+		self::$_imports[$filePath] = $fileName;
 		return $realPath;
 	}
 	
@@ -350,7 +348,7 @@ final class L {
 	 *
 	 * @return array
 	 */
-	static private function _getExtension() {
+	static private function getExtension() {
 		return L::$_extensions;
 	}
 	
@@ -358,7 +356,7 @@ final class L {
 	 * 获得跟路径信息
 	 * @return string
 	 */
-	static private function _getAppRootPath($namespace = '') {
+	static private function getAppRootPath($namespace = '') {
 		$namespace = strtolower($namespace);
 		if ($namespace && isset(L::$_namespace[$namespace])) {
 			return L::$_namespace[$namespace];
@@ -376,7 +374,7 @@ final class L {
  * @version $Id$ 
  * @package 
  */
-final class C {
+class C {
 	private static $config = array();
 	private static $c;
 	/**
@@ -476,7 +474,6 @@ final class C {
 		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
 	}
 	
-	
 	/**
 	 * @param unknown_type $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -485,17 +482,16 @@ final class C {
 		return self::getConfig(IWindDbConfig::DATABASE, $name);
 	}
 	
-	static public function getDataBaseConnection($name = ''){
+	static public function getDataBaseConnection($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::CONNECTIONS)) ? $name ? $drivers[$name] : $drivers : '';
 	}
-	static public function getDataBaseDriver($name=''){
+	static public function getDataBaseDriver($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::DRIVERS)) ? $name ? $drivers[$name] : $drivers : '';
 	}
 	
-	static public function getDataBaseBuilDer($name = ''){
+	static public function getDataBaseBuilDer($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::BUILDERS)) ? $name ? $drivers[$name] : $drivers : '';
-		
+	
 	}
-	
-	
+
 }
