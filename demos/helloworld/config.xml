@@ -9,10 +9,17 @@
 		<module name='default'>
 			<path>actionControllers</path>
 			<template>front</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+			<method>run</method>
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
 			<template>admin</template>
+			<suffix>controller</suffix>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+			<method>run</method>
 		</module>
 	</modules>
 	<templates>

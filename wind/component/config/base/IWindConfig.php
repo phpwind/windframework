@@ -18,8 +18,8 @@ interface IWindConfig {
 	const APPLICATIONS = 'applications';
 	const APPLICATIONS_CLASS = 'class';
 	
-	const ERRORMESSAGE = 'errorMessage';
-	const ERRORMESSAGE_ERRORACTION = 'errorAction';
+	const ERROR = 'error';
+	const ERROR_ERRORACTION = 'errorAction';
 	
 	/**
 	 * 模快設置
@@ -27,6 +27,9 @@ interface IWindConfig {
 	const MODULES = 'modules';
 	const MODULE_PATH = 'path';
 	const MODULE_TEMPLATE = 'template';
+	const MODULE_CONTROLLER_SUFFIX = 'controllerSuffix';
+	const MODULE_ACTION_SUFFIX = 'actionSuffix';
+	const MODULE_METHOD = 'mehtod';
 	/**
 	 * 过滤器链
 	 */

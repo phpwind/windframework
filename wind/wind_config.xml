@@ -17,15 +17,24 @@
 		<module name='default'>
 			<path>actionControllers</path>
 			<template>default</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+			<method>run</method>
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
 			<template>default</template>
+			<suffix>controller</suffix>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+			<method>run</method>
 		</module>
 	</modules>
-	<errorMessage>
-		<errorAction>WIND:core.WindErrorAction</errorAction>
-	</errorMessage>
+	<error>
+		<errorAction name='default'>WIND:core.WindErrorAction</errorAction>
+		<errorAction name='default1'>WIND:core.WindErrorAction</errorAction>
+		<errorAction name='default2'>WIND:core.WindErrorAction</errorAction>
+	</error>
 	<filters isMerge='true'>
 		<filter name="WindFormFilter">
 			<filterPath>WIND:component.form.WindFormFilter</filterPath>

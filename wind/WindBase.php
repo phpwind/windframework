@@ -459,7 +459,7 @@ class C {
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
 	static public function getErrorMessage($name = '') {
-		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
+		return self::getConfig(IWindConfig::ERROR, $name);
 	}
 	
 	/**

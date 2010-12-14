@@ -18,6 +18,7 @@ class WindDispatcher {
 	private $action;
 	private $controller;
 	private $module;
+	private $moduleConfig;
 	
 	private $forward = null;
 	private $immediately = false;
@@ -87,18 +88,23 @@ class WindDispatcher {
 	 * @return array($className,$method)
 	 */
 	public function getActionHandle() {
-		$moduleConfig = C::getModules($this->module);
-		$module = $moduleConfig[IWindConfig::MODULE_PATH];
-		$path = $module . '.' . $this->controller . 'Controller';
-		$method = $this->action;
+		$module = $this->moduleConfig[IWindConfig::MODULE_PATH];
+		$suffix = $this->moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX];
+		$path = $module . '.' . $this->controller . $suffix;
+		$method = $this->action ? $this->action : $this->moduleConfig[IWindConfig::MODULE_METHOD];
 		$className = L::import($path);
 		if (!$className) {
-			$path .= $this->action . 'Action';
+			$suffix = $this->moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX];
+			$path .= $this->action . $suffix;
 			$className = L::import($path);
-			$method = 'run';
+			$method = $this->moduleConfig[IWindConfig::MODULE_METHOD];
 		}
 		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
 		return array($className, $method);
+	}
+	
+	private function formatName() {
+
 	}
 	
 	/**
@@ -180,11 +186,12 @@ class WindDispatcher {
 		$modules = C::getModules();
 		if (key_exists($module, $modules)) {
 			$this->module = $module;
-			return;
+		} else {
+			foreach ($modules as $key => $value) {
+				if ($module == $value[IWindConfig::MODULE_PATH]) $this->module = $key;
+			}
 		}
-		foreach ($modules as $key => $value) {
-			if ($module == $value[IWindConfig::MODULE_PATH]) $this->module = $key;
-		}
+		$this->moduleConfig = $modules[$this->module];
 	}
 	
 	/**
