@@ -6,7 +6,7 @@
  * @license 
  */
 
-class ReadController extends WindBaseAction {
+class ReadController extends WindAction {
 	
 	public function run() {
 		echo 'hello ,i am read.';

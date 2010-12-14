@@ -132,8 +132,10 @@ class W {
 		}
 	}
 	
-	static private function initErrorHandle() {//set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
-//set_error_handler(array('WindErrorHandle', 'errorHandle'));
+	static private function initErrorHandle() {	
+
+	/*set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+		set_error_handler(array('WindErrorHandle', 'errorHandle'));*/
 	}
 
 }

@@ -6,7 +6,7 @@
  * @license 
  */
 
-class Run extends WindBaseAction {
+class Run extends WindAction {
 	public function run() {
 		echo "hello world!!!";
 	}
