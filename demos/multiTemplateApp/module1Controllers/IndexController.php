@@ -7,9 +7,6 @@
  */
 
 class IndexController extends WindController {
-	public function beforeAction() {
-		$this->setTemplateConfig('modle1');
-	}
 	public function run() {
 		echo '我在模板类型1的请求！';
 		$this->setOutput(array('test' => '我是模板1中的变量'));
