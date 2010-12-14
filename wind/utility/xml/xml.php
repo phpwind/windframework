@@ -16,11 +16,11 @@
  */
 class XML {
 	/**
-	 *  需要解析的数据
-	 *  
+	 * 需要解析的数据
+	 * 
 	 * @var string
 	 */
-	protected $XMLData; 
+	protected $XMLData;
 	/**
 	 * 建立解析的对象
 	 * 
@@ -104,7 +104,7 @@ class XML {
 	 * 创建解析对象
 	 */
 	public function ceateParser() {
-   		$this->object = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
+		$this->object = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
 	}
 	
 	/**
@@ -121,22 +121,22 @@ class XML {
 	 * 
 	 * 如下格式<pre/>:
 	 * <WIND>
-	 *    <app>
-	 *       <appName>Test</appName>
-	 *    </app>
+	 * <app>
+	 * <appName>Test</appName>
+	 * </app>
 	 * </WIND>
 	 * 1：采用相对路径调用：
-	 * 		如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('app');
-	 * 		如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('app/appName');
+	 * 如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('app');
+	 * 如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('app/appName');
 	 * 2：采用完全路径调用：
-	 * 		如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('/WIND/app');
-	 * 		如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('/WIND/app/appName');
+	 * 如要获得app下的内容则如此调用：  $xmlObject->getElementByXPath('/WIND/app');
+	 * 如要获得app下的appName的内容则如此调用：$xmlObject->getElementByXPath('/WIND/app/appName');
 	 * 
 	 * @param string $tagPath
 	 * @return array SimpleXMLElement objects 
 	 */
 	public function getElementByXPath($tagPath) {
-		if ($tagPath) return $this->object->xpath($tagPath);
+		if (trim($tagPath)) return $this->object->xpath($tagPath);
 	}
 	
 	/**
@@ -144,31 +144,31 @@ class XML {
 	 * 
 	 * 每个元素都有格式
 	 * $array = array('tagName' => '该标签的名字',
-	 * 				  'value' => '对应标签的内容',
-	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
-	 *                'children' => array(child1, child2,....);
+	 * 'value' => '对应标签的内容',
+	 * 'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 * 'children' => array(child1, child2,....);
 	 * 
 	 * 
 	 * @param array SimpleXMLElement objects   $elements
 	 * @return array
 	 */
-    public function getContentsList($elements) {
-    	(!is_array($elements)) && $elements = array($elements);
-    	$_result = array();
-    	foreach ($elements as $key => $element) {
-    		$_result[] = self::getTagContents($element);
-    	}
-    	return $_result;
-    }
-    
-    /**
+	public function getContentsList($elements) {
+		(!is_array($elements)) && $elements = array($elements);
+		$_result = array();
+		foreach ($elements as $key => $element) {
+			$_result[] = self::getTagContents($element);
+		}
+		return $_result;
+	}
+	
+	/**
 	 * 将输入SimpleXMLElement对象,解析输出对应的内容及其子标签
 	 * 
 	 * 每个元素都有格式
 	 * $array = array('tagName' => '该标签的名字',
-	 * 				  'value' => '对应标签的内容',
-	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
-	 *                'children' => array(child1, child2,....);
+	 * 'value' => '对应标签的内容',
+	 * 'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 * 'children' => array(child1, child2,....);
 	 * 
 	 * @param SimpleXMLElement object   $element
 	 * @return array
@@ -188,9 +188,9 @@ class XML {
 	 * 
 	 * 每个元素都有格式
 	 * $array = array('tagName' => '该标签的名字',
-	 * 				  'value' => '对应标签的内容',
-	 * 				  'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
-	 * 			)
+	 * 'value' => '对应标签的内容',
+	 * 'attributes' => array('标签属性的名称' => '该属性对应的值', ...),
+	 * )
 	 * 
 	 * @param SimpleXMLElement object   $element
 	 * @return array
@@ -289,7 +289,7 @@ class XML {
 	public function escape($param) {
 		return self::dataConvert(strval($param));
 	}
-		
+	
 	/**
 	 * 将输入的内容进行转码输出
 	 * 
@@ -327,20 +327,20 @@ class XML {
 		//Copyright (c) 2003-2103 phpwind
 		$parse = @parse_url($host);
 		if (empty($parse)) return false;
-		if ((int)$port > 0) {
+		if ((int) $port > 0) {
 			$parse['port'] = $port;
 		} elseif (!$parse['port']) {
 			$parse['port'] = '80';
 		}
 		$parse['host'] = str_replace(array('http:\/\/', 'https:\/\/'), array('', 'ssl:\/\/'), $parse['scheme'] . ":\/\/") . $parse['host'];
-		if (!$fp = @fsockopen($parse['host'],$parse['port'],$errnum,$errstr,$timeout)) return false;
+		if (!$fp = @fsockopen($parse['host'], $parse['port'], $errnum, $errstr, $timeout)) return false;
 		$method = strtoupper($method);
 		$wlength = $wdata = $responseText = '';
 		$parse['path'] = str_replace(array('\\', '\/\/'), '/', $parse['path']) . "?" . $parse['query'];
 		if ($method == 'GET') {
 			$separator = $parse['query'] ? '&' : '';
-			substr($data,0,1) == '&' && $data = substr($data,1);
-			$parse['path'] .= $separator.$data;
+			substr($data, 0, 1) == '&' && $data = substr($data, 1);
+			$parse['path'] .= $separator . $data;
 		} elseif ($method == 'POST') {
 			$wlength = "Content-length: " . strlen($data) . "\r\n";
 			$wdata = $data;

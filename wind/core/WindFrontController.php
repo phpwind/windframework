@@ -109,7 +109,7 @@ class WindFrontController extends WindServlet {
 		if (!isset($this->application[$key])) {
 			$application = C::getApplications($key);
 			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
-			$this->application[$key] = &new $className();
+			$this->application[$key] = new $className();
 		}
 		return $this->application[$key];
 	}
@@ -122,7 +122,7 @@ class WindFrontController extends WindServlet {
 		if (!isset($this->application)) {
 			$application = C::getApplications($requestType);
 			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
-			$this->application = &new $className();
+			$this->application = new $className();
 		}
 	}
 

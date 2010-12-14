@@ -18,8 +18,8 @@ L::import('WIND:utility.xml.xml');
  */
 class WindXMLConfig extends XML implements IWindParser {
 	private $xmlArray;
-    private $parseNodeList;
-    private $GAM;
+	private $parseNodeList;
+	private $GAM;
 	/**
 	 * 构造函数，设置输出编码及变量初始化
 	 * @param string $data
@@ -46,7 +46,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	public function loadFile($filename) {
 		$this->setXMLFile($filename);
 	}
-
+	
 	/**
 	 * 内容解析
 	 *
@@ -60,19 +60,18 @@ class WindXMLConfig extends XML implements IWindParser {
 		$parseArray = trim($this->parseNodeList, ',');
 		$_parseTags = (strpos($parseArray, ',') === false) ? array($parseArray) : explode(',', $parseArray);
 		$_array = array();
-		foreach($_parseTags as $tag) {
-			$elements = $this->getElementByXPath($tag);
+		foreach ($_parseTags as $tag) {
+			$elements = (array) $this->getElementByXPath($tag);
 			$this->isCheck = true;
-			foreach($elements as $element) {
+			foreach ($elements as $element) {
 				list($key, $value) = $this->getContent($element);
-				if (($value = $this->isEmpty($value)) !== true)
-					$_array[$key] = $value;
+				if (($value = $this->isEmpty($value)) !== true) $_array[$key] = $value;
 			}
 		}
 		$this->xmlArray = $_array;
 		return true;
 	}
-
+	
 	/**
 	 * 根据标签的形式进行分发
 	 *
@@ -93,7 +92,7 @@ class WindXMLConfig extends XML implements IWindParser {
 		}
 		return $this->getContentNone($element);
 	}
-
+	
 	/**
 	 * 得到如下规则的标签内容：
 	 * <tag>value</tag>
@@ -106,12 +105,12 @@ class WindXMLConfig extends XML implements IWindParser {
 		$tagName = $element->getName();
 		return array($tagName, trim(self::getValue($element)));
 	}
-
+	
 	/**
 	 * 获得含有子标签的标签内容：
 	 * <AA>
-	 *    <BB>Bvalue</BB>
-	 *    <CC>Cvalue</CC>
+	 * <BB>Bvalue</BB>
+	 * <CC>Cvalue</CC>
 	 * </AA>
 	 * 返回结果array(AA, array(BB => Bvalue, CC => Cvalue))
 	 *
@@ -124,17 +123,16 @@ class WindXMLConfig extends XML implements IWindParser {
 		$childArray = array();
 		foreach ($childs as $child) {
 			list($childTag, $childValue) = $this->getContent($child);
-			if (($value = $this->isEmpty($childValue)) !== true)
-					$childArray[$childTag] = $value;
+			if (($value = $this->isEmpty($childValue)) !== true) $childArray[$childTag] = $value;
 		}
 		if (count($childArray) == 0) {
-			(trim(self::getValue($element)) != '' ) && $childArray = trim(self::getValue($element));
+			(trim(self::getValue($element)) != '') && $childArray = trim(self::getValue($element));
 		} else {
-			(trim(self::getValue($element)) != '' ) && $childArray[] = trim(self::getValue($element));
-		}		
+			(trim(self::getValue($element)) != '') && $childArray[] = trim(self::getValue($element));
+		}
 		return array($tag, $childArray);
 	}
-    
+	
 	/**
 	 * 判断是否为空，如果为空返回true,否则返回false
 	 * @param mixed $value
@@ -152,13 +150,13 @@ class WindXMLConfig extends XML implements IWindParser {
 	/**
 	 * 获得含有子标签的标签内容：
 	 * <AA>
-	 *    <BB name='key1' value='key1Value' attri3='attribute1'/>
-	 *    <BB value='key2Value' attri3='attribute2'/>
+	 * <BB name='key1' value='key1Value' attri3='attribute1'/>
+	 * <BB value='key2Value' attri3='attribute2'/>
 	 * </AA>
 	 * 如果含有属性name，则将该name作为key
 	 * 返回结果array(AA, array(key1 => array(tagName = BB, name => key1, value=>key1Value, attri3 => attribute1),
-	 * 						  BB => array(tagName => BB, value=>key2Value, attri3 => attribute2)
-	 * 					))
+	 * BB => array(tagName => BB, value=>key2Value, attri3 => attribute2)
+	 * ))
 	 *
 	 * @param SimpleXMLElement $element
 	 * @param array
@@ -191,19 +189,19 @@ class WindXMLConfig extends XML implements IWindParser {
 	/**
 	 * 获得含有属性和子标签的标签内容，规则如下<pre/>:
 	 * <bbbb name='aaa1' attrib1='dddd'>
-  	 * 	  <filterName>windFilter1</filterName>
-  	 *	  <filterPath>/filter1</filterPath>
-  	 * </bbbb>
+	 * <filterName>windFilter1</filterName>
+	 * <filterPath>/filter1</filterPath>
+	 * </bbbb>
 	 * 该方法对上述的这种情形，根据需求会解析出最后的结果是：
 	 * return array(aaa1,
-	 *       	       array(name => aaa1,
-	 *       				 attrib1 => dddd,
-	 *      	       		 filterName => windFilter1,
-	 *      	       		 filterPath => /filter1,
-	 *      				 tagName = bbbb,
-	 *      			)
-	 *         )
-	 *         
+	 * array(name => aaa1,
+	 * attrib1 => dddd,
+	 * filterName => windFilter1,
+	 * filterPath => /filter1,
+	 * tagName = bbbb,
+	 * )
+	 * )
+	 * 
 	 * @access private
 	 * @param SimpleXMLElement $element
 	 * @return array
@@ -214,7 +212,7 @@ class WindXMLConfig extends XML implements IWindParser {
 		return array($tag, $childValue);
 	}
 	
-    /*
+	/*
 	 * 返回解析的结果
 	 * @return array 返回解析后的数据信息
 	 */
@@ -223,7 +221,6 @@ class WindXMLConfig extends XML implements IWindParser {
 		return $this->xmlArray;
 	}
 	
-    
 	/**
 	 * 返回需要设置全局的标签
 	 * 

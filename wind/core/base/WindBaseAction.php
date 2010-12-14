@@ -48,10 +48,6 @@ abstract class WindBaseAction {
 	 * @param string $templateConfigName
 	 */
 	public function setTemplateConfig($templateConfigName = '') {
-		if ($templateConfigName === '') {
-			$_temps = C::getModules($this->response->getDispatcher()->getModule());
-			$templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
-		}
 		$this->forward->setTemplateConfig($templateConfigName);
 	}
 	
@@ -63,15 +59,6 @@ abstract class WindBaseAction {
 	 * @param mixed string | array $args
 	 */
 	public function forwardRedirectAction($actionHandle = '', $path = '', $args = '') {
-		if (is_string($args) && $args != '') {
-			$args = trim($args);
-		} elseif (is_array($args) && count($args) > 0) {
-			$_tmp = '&';
-			foreach ($args as $key => $value) {
-				$_tmp .= $key . '=' . urlencode(trim($value)) . '&';
-			}
-			$args = trim($_tmp, '&');
-		}
 		$this->forward->setAction($actionHandle, $path, true, $args);
 	}
 	

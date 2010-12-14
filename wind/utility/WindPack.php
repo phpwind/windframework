@@ -17,37 +17,37 @@ class WindPack {
 	const STRIP_SELF = 'stripWhiteSpaceBySelf';
 	const STRIP_PHP = 'stripWhiteSpaceByPhp';
 	const STRIP_TOKEN = 'stripWhiteSpaceByToken';
-	private $packList = array ();
+	private $packList = array();
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
 	 */
 	public function stripWhiteSpaceByPhp($filename) {
-		return php_strip_whitespace ( $filename );
+		return php_strip_whitespace($filename);
 	}
 	
 	public function stripWhiteSpaceBySelf($filename, $compress = true) {
-		$content = $this->getContentFromFile ( $filename );
-		$content = $this->stripComment ( $content, '' );
-		$content = $this->stripSpace ( $content, ' ' );
-		$content = $this->stripNR ( $content, $compress ? '' : "\n" );
+		$content = $this->getContentFromFile($filename);
+		$content = $this->stripComment($content, '');
+		$content = $this->stripSpace($content, ' ');
+		$content = $this->stripNR($content, $compress ? '' : "\n");
 		return $content;
 	}
 	
 	public function stripWhiteSpaceByToken($filename) {
-		$content =  $this->getContentFromFile ( $filename );
+		$content = $this->getContentFromFile($filename);
 		$compressContent = '';
 		$lastToken = 0;
-		foreach ( token_get_all ( $content ) as $key => $token ) {
-			if (is_array ( $token )) {
-				if (in_array ( $token [0], array (T_COMMENT, T_WHITESPACE,T_DOC_COMMENT ) )) {
+		foreach (token_get_all($content) as $key => $token) {
+			if (is_array($token)) {
+				if (in_array($token[0], array(T_COMMENT, T_WHITESPACE, T_DOC_COMMENT))) {
 					continue;
 				}
-				$compressContent .= ' '.$token [1];
+				$compressContent .= ' ' . $token[1];
 			} else {
 				$compressContent .= $token;
 			}
-			$lastToken = $token [0];
+			$lastToken = $token[0];
 		}
 		return $compressContent;
 	}
@@ -58,7 +58,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripComment($content, $replace = '') {
-		return preg_replace ( '/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us', $replace, $content );
+		return preg_replace('/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us', $replace, $content);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripNR($content, $replace = "\n") {
-		return preg_replace ( "/[\n\r]+/", $replace, $content );
+		return preg_replace("/[\n\r]+/", $replace, $content);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripSpace($content, $replace = ' ') {
-		return preg_replace ( "/[ ]+/", $replace, $content );
+		return preg_replace("/[ ]+/", $replace, $content);
 	}
 	
 	/**
@@ -88,7 +88,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripPhpIdentify($content, $replace = '') {
-		return preg_replace ( "/(?:<\?(?:php)*)|(\?>)/i", $replace, $content );
+		return preg_replace("/(?:<\?(?:php)*)|(\?>)/i", $replace, $content);
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripStrByRule($content, $rule, $replace = '') {
-		return preg_replace ( "/$rule/", $replace, $content );
+		return preg_replace("/$rule/", $replace, $content);
 	}
 	
 	/**
@@ -109,13 +109,13 @@ class WindPack {
 	 * @return string
 	 */
 	public function stripImport($content, $replace = '') {
-		$str = preg_match_all ( '/L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$][\w\.:]+)[\"\'][\t ]*\)[\t ]*/', $content, $matchs );
-		if ($matchs [1]) {
-			foreach ( $matchs [1] as $key => $value ) {
-				$name = substr ( $value, strrpos ( $value, '.' ) + 1 );
-				if (preg_match ( "/(abstract[\t ]*|class|interface)[\t ]+$name/i", $content )) {
-					$strip = str_replace ( array ('(', ')' ), array ('\(', '\)' ), addslashes ( $matchs [0] [$key] ) ) . '[\t ]*;';
-					$content = $this->stripStrByRule ( $content, $strip, $replace );
+		$str = preg_match_all('/L[\t ]*::[\t ]*import[\t ]*\([\t ]*[\'\"]([^$][\w\.:]+)[\"\'][\t ]*\)[\t ]*/', $content, $matchs);
+		if ($matchs[1]) {
+			foreach ($matchs[1] as $key => $value) {
+				$name = substr($value, strrpos($value, '.') + 1);
+				if (preg_match("/(abstract[\t ]*|class|interface)[\t ]+$name/i", $content)) {
+					$strip = str_replace(array('(', ')'), array('\(', '\)'), addslashes($matchs[0][$key])) . '[\t ]*;';
+					$content = $this->stripStrByRule($content, $strip, $replace);
 				}
 			}
 		}
@@ -131,14 +131,14 @@ class WindPack {
 	}
 	
 	public function convertPackList($pack = array(), $samekey = '') {
-		static $list = array ();
-		$pack = $pack && is_array ( $pack ) ? $pack : $this->getPackList ();
-		foreach ( $pack as $key => $value ) {
-			if (is_array ( $value )) {
-				$this->convertPackList ( $value, $key );
+		static $list = array();
+		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
+		foreach ($pack as $key => $value) {
+			if (is_array($value)) {
+				$this->convertPackList($value, $key);
 			} else {
 				$key = $samekey ? $samekey : $key;
-				array_push ( $list, $key . '=' . $value );
+				array_push($list, $key . '=' . $value);
 			}
 		}
 		return $list;
@@ -149,15 +149,14 @@ class WindPack {
 	 * @return string
 	 */
 	public function getContentFromFile($filename) {
-		if ($this->isFile ( $filename )) {
-			$fp = fopen ( $filename, "r" );
-			while ( ! feof ( $fp ) ) {
-				$line = fgets ( $fp );
-				if (in_array ( strlen ( $line ), array (2, 3 ) ) && in_array ( ord ( $line ), array (9, 10, 13 ) ))
-					continue;
+		if ($this->isFile($filename)) {
+			$fp = fopen($filename, "r");
+			while (!feof($fp)) {
+				$line = fgets($fp);
+				if (in_array(strlen($line), array(2, 3)) && in_array(ord($line), array(9, 10, 13))) continue;
 				$content .= $line;
 			}
-			fclose ( $fp );
+			fclose($fp);
 			return $content;
 		}
 		return false;
@@ -170,9 +169,9 @@ class WindPack {
 	 * @return string
 	 */
 	public function writeContentToFile($filename, $content) {
-		$fp = fopen ( $filename, "w" );
-		fwrite ( $fp, $content );
-		fclose ( $fp );
+		$fp = fopen($filename, "w");
+		fwrite($fp, $content);
+		fclose($fp);
 		return true;
 	}
 	/**
@@ -183,9 +182,9 @@ class WindPack {
 	 */
 	public function getContentBySuffix($content, $suffix) {
 		switch ($suffix) {
-			case 'php' :
+			case 'php':
 				$content = '<?php' . $content . '?>';
-			default :
+			default:
 				;
 		}
 		return $content;
@@ -199,9 +198,9 @@ class WindPack {
 	 */
 	public function getCommentBySuffix($content, $suffix, $other = '') {
 		switch ($suffix) {
-			case 'php' :
+			case 'php':
 				$content = "\r\n/**$other\r\n*" . $content . "\r\n*/\r\n";
-			default :
+			default:
 				;
 		}
 		return $content;
@@ -213,18 +212,18 @@ class WindPack {
 	 */
 	public function getPackListAsString($pack = array()) {
 		$str = '';
-		$packs = $pack ? $pack : $this->getPackList ();
-		foreach ( $packs as $key => $value ) {
-			$str .= (is_string ( $key ) ? '"' . $key . '"' : $key) . '=>';
-			if (is_array ( $value )) {
+		$packs = $pack ? $pack : $this->getPackList();
+		foreach ($packs as $key => $value) {
+			$str .= (is_string($key) ? '"' . $key . '"' : $key) . '=>';
+			if (is_array($value)) {
 				$str .= 'array(';
-				$str .= $this->getPackListAsString ( $value );
+				$str .= $this->getPackListAsString($value);
 				$str .= ')';
 			} else {
-				$str .= (is_string ( $value ) ? '"' . $value . '"' : $value) . ',';
+				$str .= (is_string($value) ? '"' . $value . '"' : $value) . ',';
 			}
 		}
-		return empty ( $pack ) ? 'array(' . $str . ')' : $str;
+		return empty($pack) ? 'array(' . $str . ')' : $str;
 	}
 	
 	/**
@@ -233,8 +232,8 @@ class WindPack {
 	 * @return string
 	 */
 	public function setImports($content = '', $sep = "\r\n") {
-		$packlist = $this->getPackListAsString ();
-		$sep = isset ( $sep ) ? $sep : "\r\n";
+		$packlist = $this->getPackListAsString();
+		$sep = isset($sep) ? $sep : "\r\n";
 		return "{$sep}L::setImports(" . $packlist . ");{$sep}" . $content;
 	}
 	
@@ -249,26 +248,26 @@ class WindPack {
 	 * @return array
 	 */
 	public function readContentFromDir($packMethod = WindPack::STRIP_PHP, $dir = array(), $absolutePath = '', $ndir = array('.','..','.svn'), $suffix = array(), $nfile = array()) {
-		static $content = array ();
-		if (empty ( $dir ) || false === $this->isValidatePackMethod ( $packMethod )) {
+		static $content = array();
+		if (empty($dir) || false === $this->isValidatePackMethod($packMethod)) {
 			return false;
 		}
-		$dir = is_array ( $dir ) ? $dir : array ($dir );
-		foreach ( $dir as $_dir ) {
-			$_dir = is_dir ( $absolutePath ) ? $this->realDir ( $absolutePath ) . $_dir : $_dir;
-			if ($this->isDir ( $_dir )) {
-				$handle = dir ( $_dir );
-				while ( false != ($tmp = $handle->read ()) ) {
-					$name = $this->realDir ( $_dir ) . $tmp;
-					if ($this->isDir ( $name ) && ! in_array ( $tmp, $ndir )) {
-						$this->readContentFromDir ( $packMethod, $name, $absolutePath, $ndir, $suffix, $nfile );
+		$dir = is_array($dir) ? $dir : array($dir);
+		foreach ($dir as $_dir) {
+			$_dir = is_dir($absolutePath) ? $this->realDir($absolutePath) . $_dir : $_dir;
+			if ($this->isDir($_dir)) {
+				$handle = dir($_dir);
+				while (false != ($tmp = $handle->read())) {
+					$name = $this->realDir($_dir) . $tmp;
+					if ($this->isDir($name) && !in_array($tmp, $ndir)) {
+						$this->readContentFromDir($packMethod, $name, $absolutePath, $ndir, $suffix, $nfile);
 					}
-					if ($this->isFile ( $name ) && ! in_array ( $this->getFileSuffix ( $name ), $suffix ) && ! in_array ( $file = $this->getFileName ( $name ), $nfile )) {
-						$content [] = $this->$packMethod ( $name );
-						$this->setPackList ( $file, $name );
+					if ($this->isFile($name) && !in_array($this->getFileSuffix($name), $suffix) && !in_array($file = $this->getFileName($name), $nfile)) {
+						$content[] = $this->$packMethod($name);
+						$this->setPackList($file, $name);
 					}
 				}
-				$handle->close ();
+				$handle->close();
 			}
 		}
 		return $content;
@@ -281,23 +280,25 @@ class WindPack {
 	 * @return array:
 	 */
 	public function readContentFromFile($fileList, $packMethod = WindPack::STRIP_PHP, $absolutePath = '') {
-		if (empty ( $fileList ) || false === $this->isValidatePackMethod ( $packMethod )) {
+		if (empty($fileList) || false === $this->isValidatePackMethod($packMethod)) {
 			return false;
 		}
-		$content = array ();
-		$fileList = is_array ( $fileList ) ? $fileList : array ($fileList );
-		foreach ( $fileList as $key => $value ) {
-			$file = is_dir ( $absolutePath ) ? $this->realDir ( $absolutePath ) . $value : $value;
-			if (is_file ( $file )) {
-				$content [] = $this->$packMethod ( $file );
-				$this->setPackList ( $key, $file );
+		$content = array();
+		$fileList = is_array($fileList) ? $fileList : array($fileList);
+		foreach ($fileList as $key => $value) {
+			$temp = L::getRealPath($key);
+			$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $temp : $temp;
+			if (is_file($file)) {
+				$content[] = $this->$packMethod($file);
+				$this->setPackList($key, $value);
 			}
 		}
 		return $content;
 	}
 	
 	private function isValidatePackMethod($packMethod) {
-		return method_exists ( $this, $packMethod ) && in_array ( $packMethod, array (WindPack::STRIP_PHP, WindPack::STRIP_SELF, WindPack::STRIP_TOKEN ) );
+		return method_exists($this, $packMethod) && in_array($packMethod, array(WindPack::STRIP_PHP, 
+			WindPack::STRIP_SELF, WindPack::STRIP_TOKEN));
 	}
 	
 	/**
@@ -306,15 +307,15 @@ class WindPack {
 	 * @param  string $value
 	 */
 	private function setPackList($key, $value) {
-		if (isset ( $this->packList [$key] )) {
-			if (is_array ( $this->packList [$key] )) {
-				array_push ( $this->packList [$key], $value );
+		if (isset($this->packList[$key])) {
+			if (is_array($this->packList[$key])) {
+				array_push($this->packList[$key], $value);
 			} else {
-				$tmp_name = $this->packList [$key];
-				$this->packList [$key] = array ($tmp_name, $value );
+				$tmp_name = $this->packList[$key];
+				$this->packList[$key] = array($tmp_name, $value);
 			}
 		} else {
-			$this->packList [$key] = $value;
+			$this->packList[$key] = $value;
 		}
 	}
 	
@@ -324,7 +325,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function realDir($path) {
-		if (($pos = strrpos ( $path, DIRECTORY_SEPARATOR )) === strlen ( $path ) - 1) {
+		if (($pos = strrpos($path, DIRECTORY_SEPARATOR)) === strlen($path) - 1) {
 			return $path;
 		}
 		return $path . DIRECTORY_SEPARATOR;
@@ -336,7 +337,7 @@ class WindPack {
 	 * @return boolean
 	 */
 	public function isFile($filename) {
-		return is_file ( $filename );
+		return is_file($filename);
 	}
 	
 	/**
@@ -345,7 +346,7 @@ class WindPack {
 	 * @return boolean
 	 */
 	public function isDir($dir) {
-		return is_dir ( $dir );
+		return is_dir($dir);
 	}
 	
 	/**
@@ -360,22 +361,22 @@ class WindPack {
 	 * @return string
 	 */
 	public function packFromDir($dir, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '', $ndir = array('.','..','.svn'), $suffix = array(), $nfile = array()) {
-		if (empty ( $dst ) || empty ( $dir )) {
+		if (empty($dst) || empty($dir)) {
 			return false;
 		}
-		$suffix = is_array ( $suffix ) ? $suffix : array ($suffix );
-		if (! ($content = $this->readContentFromDir ( $packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile ))) {
+		$suffix = is_array($suffix) ? $suffix : array($suffix);
+		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
 			return false;
 		}
-		$fileSuffix = $this->getFileSuffix ( $dst );
+		$fileSuffix = $this->getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
-		$content = implode ( $replace, $content );
-		$content = $this->stripNR ( $content, $replace );
-		$content = $this->setImports ( $content, $replace );
-		$content = $this->stripPhpIdentify ( $content, '' );
-		$content = $this->stripImport ( $content, '' );
-		$content = $this->getContentBySuffix ( $content, $fileSuffix );
-		$this->writeContentToFile ( $dst, $content );
+		$content = implode($replace, $content);
+		$content = $this->stripNR($content, $replace);
+		$content = $this->setImports($content, $replace);
+		$content = $this->stripPhpIdentify($content, '');
+		$content = $this->stripImport($content, '');
+		$content = $this->getContentBySuffix($content, $fileSuffix);
+		$this->writeContentToFile($dst, $content);
 		return true;
 	}
 	
@@ -388,31 +389,31 @@ class WindPack {
 	 * @return string|string
 	 */
 	public function packFromFile($fileList, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '') {
-		if (empty ( $dst ) || empty ( $fileList )) {
+		if (empty($dst) || empty($fileList)) {
 			return false;
 		}
-		if (! ($content = $this->readContentFromFile ( $fileList, $packMethod, $absolutePath ))) {
+		if (!($content = $this->readContentFromFile($fileList, $packMethod, $absolutePath))) {
 			return false;
 		}
-		$fileSuffix = $this->getFileSuffix ( $dst );
+		$fileSuffix = $this->getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
-		$content = implode ( $replace, $content );
-		$content = $this->stripNR ( $content, $replace );
-		$content = $this->setImports ( $content, $replace );
-		$content = $this->stripPhpIdentify ( $content, '' );
-		$content = $this->stripImport ( $content, '' );
-		$content = $this->getContentBySuffix ( $content, $fileSuffix );
-		$this->writeContentToFile ( $dst, $content );
+		$content = implode($replace, $content);
+		$content = $this->stripNR($content, $replace);
+		$content = $this->setImports($content, $replace);
+		$content = $this->stripPhpIdentify($content, '');
+		$content = $this->stripImport($content, '');
+		$content = $this->getContentBySuffix($content, $fileSuffix);
+		$this->writeContentToFile($dst, $content);
 		return true;
 	}
-
+	
 	public function getFileSuffix($filename) {
-		return substr ( $filename, strrpos ( $filename, '.' ) + 1 );
+		return substr($filename, strrpos($filename, '.') + 1);
 	}
 	
 	public function getFileName($path, $ifsuffix = false) {
-		$filename = substr ( $path, strrpos ( $path, DIRECTORY_SEPARATOR ) + 1 );
-		return $ifsuffix ? $filename : substr ( $filename, 0, strrpos ( $filename, '.' ) );
+		$filename = substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1);
+		return $ifsuffix ? $filename : substr($filename, 0, strrpos($filename, '.'));
 	}
 
 }

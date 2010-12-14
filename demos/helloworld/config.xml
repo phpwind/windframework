@@ -8,11 +8,31 @@
 	<modules>
 		<module name='default'>
 			<path>actionControllers</path>
-			<template>default</template>
+			<template>front</template>
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
-			<template>default</template>
+			<template>admin</template>
 		</module>
 	</modules>
+	<templates>
+		<template name='front'>
+			<dir>front</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+		<template name='admin'>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
 </WIND>

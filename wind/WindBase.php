@@ -22,13 +22,13 @@ class W {
 	private static $_apps = array();
 	private static $_current = '';
 	private static $_systemConfig = null;
-
+	
 	static public function init() {
 		self::initConfig();
 		self::initBaseLib();
 		self::initErrorHandle();
 	}
-
+	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
@@ -38,7 +38,7 @@ class W {
 		self::setCurrentApp($current);
 		return new WindFrontController();
 	}
-
+	
 	/**
 	 * 获得应用相关配置信息
 	 *
@@ -53,7 +53,7 @@ class W {
 		else
 			return '';
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @param array $value
@@ -65,7 +65,7 @@ class W {
 		if ($current) self::$_current = $name;
 		L::register($name, $value['rootPath']);
 	}
-
+	
 	/**
 	 * 设置当前应用的名称
 	 *
@@ -74,7 +74,7 @@ class W {
 	static public function setCurrentApp($name) {
 		if ($name) self::$_current = $name;
 	}
-
+	
 	/**
 	 * 获得当前应用名字
 	 * @return string $name
@@ -82,26 +82,26 @@ class W {
 	static public function getCurrentApp() {
 		return self::$_current;
 	}
-
+	
 	/**
 	 * 是否支持预编译
 	 * @return string
 	 */
 	static public function ifCompile() {
-		return defined('COMPILE_PATH') && is_writable(COMPILE_PATH) ? true : false;
+		return defined('COMPILE_PATH') ? true : false;
 	}
-
+	
 	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
 	 */
 	static private function initBaseLib() {
-		if (is_file(COMPILE_IMPORT_PATH) && !IS_DEBUG) {
+		if (!IS_DEBUG && is_file(COMPILE_IMPORT_PATH)) {
 			return include COMPILE_IMPORT_PATH;
 		} else
 			self::initLoad();
 	}
-
+	
 	/**
 	 * 加载框架核心文件
 	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
@@ -116,22 +116,22 @@ class W {
 			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 		}
 	}
-
+	
 	/**
 	 * 解析配置文件
 	 */
 	static private function initConfig() {
 		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
-		$sysConfig = @include COMPILE_PATH . '/config.php';
+		$sysConfig = include COMPILE_PATH . '/config.php';
 		foreach ($sysConfig as $appName => $appConfig) {
 			self::setApps($appName, $appConfig);
 		}
 	}
-
+	
 	static private function initErrorHandle() {
-		set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
-		set_error_handler(array('WindErrorHandle', 'errorHandle'));
+		//set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+	//set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
 
 }
@@ -147,12 +147,12 @@ class L {
 	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_instances = array();
-	private static $_extensions = array('php', 'htm', 'class.php', 'db.php', 'phpx');
-
+	private static $_extensions = array('php');
+	
 	static public function getImports($key = '') {
 		return $key ? self::$_imports[$key] : self::$_imports;
 	}
-
+	
 	/**
 	 * 将路径信息注册到命名空间
 	 *
@@ -165,18 +165,16 @@ class L {
 			self::$_namespace[$name] = $path;
 		}
 	}
-
+	
 	/**
 	 * @param array $class
 	 */
 	static public function setImports($class = array()) {
-		if (!is_array($class)) foreach ($class as $key => $value) {
-			if (!self::isImported()) {
-				self::$_imports[$key] = $value;
-			}
+		foreach ((array) $class as $key => $value) {
+			if (!self::isImported($key)) self::$_imports[$key] = $value;
 		}
 	}
-
+	
 	/**
 	 * 加载一个类或者加载一个包
 	 * 如果加载的包中有子文件夹不进行循环加载
@@ -217,7 +215,7 @@ class L {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * 获得一个类的静态单例对象
 	 * 全局的静态单例对象以数组的形式保存在 < self::$_instances >中，索引为类名称
@@ -232,12 +230,13 @@ class L {
 		$className = strtolower($className);
 		$app = W::getCurrentApp() ? W::getCurrentApp() : 'default';
 		$nameSpace = $nameSpace === '' ? $className : $className . '_' . $nameSpace;
+		if (!isset(self::$_instances[$app])) self::$_instances[$app] = array();
 		if (!key_exists($nameSpace, self::$_instances[$app])) {
 			self::$_instances[$app][$nameSpace] = self::createInstance($className, $args);
 		}
 		return self::$_instances[$app][$nameSpace];
 	}
-
+	
 	/**
 	 * 清理全局变量
 	 *
@@ -249,7 +248,7 @@ class L {
 		else
 			self::$_instances = array();
 	}
-
+	
 	/**
 	 * 解析路径信息，并返回路径的详情
 	 * 返回array('isPackage','fileName','extension','realPath')
@@ -258,44 +257,29 @@ class L {
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
 	 * @return string|array
 	 */
-	static public function getRealPath($filePath, $info = false, $ext = '', $dir = '') {
+	static public function getRealPath($filePath, $info = false, $ext = 'php', $dir = '') {
 		$isPackage = false;
 		$fileName = $namespace = '';
-		if (is_dir($filePath)) {
-			if (!$info) return realpath($filePath);
-			$isPackage = true;
-		} elseif (is_file($filePath)) {
-			if (!$info) return realpath($filePath);
-			$pathinfo = pathinfo($filePath);
-			$filePath = $pathinfo['dirname'];
-			$ext = $pathinfo['extension'];
-			$fileName = $pathinfo['filename'];
-			$isPackage = false;
+		if (($pos = strrpos($filePath, '.')) === false) {
+			$fileName = $filePath;
 		} else {
-			if (key_exists($filePath, self::$_imports)) {
-				return self::getRealPath(self::$_imports[$filePath], $info, $ext, $dir);
-			}
-			if (($pos = strrpos($filePath, '.')) === false) {
-				$fileName = $filePath;
-			} else {
-				$fileName = substr($filePath, $pos + 1);
-				$filePath = substr($filePath, 0, $pos);
-			}
-			if (($pos = strpos($filePath, ':')) !== false) {
-				$namespace = substr($filePath, 0, $pos);
-				$filePath = substr($filePath, $pos + 1);
-			}
-			if ($dir !== '')
-				$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
-			else
-				$filePath = self::getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
-			$isPackage = $fileName === '*';
-			if (!$isPackage && !$ext) {
-				foreach ((array) self::getExtension() as $key => $value) {
-					if (file_exists($filePath . D_S . $fileName . '.' . $value)) {
-						$ext = $value;
-						break;
-					}
+			$fileName = substr($filePath, $pos + 1);
+			$filePath = substr($filePath, 0, $pos);
+		}
+		if (($pos = strpos($filePath, ':')) !== false) {
+			$namespace = substr($filePath, 0, $pos);
+			$filePath = substr($filePath, $pos + 1);
+		}
+		if ($dir !== '')
+			$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
+		else
+			$filePath = self::getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
+		$isPackage = $fileName === '*';
+		if (!$isPackage && !$ext) {
+			foreach ((array) self::getExtension() as $key => $value) {
+				if (file_exists($filePath . D_S . $fileName . '.' . $value)) {
+					$ext = $value;
+					break;
 				}
 			}
 		}
@@ -303,7 +287,7 @@ class L {
 		if ($info) return array($fileName, realpath($realpath), $ext, $isPackage);
 		return realpath($realpath);
 	}
-
+	
 	/**
 	 * 根据类名称创建类的单例对象，并保存到静态对象中
 	 * 同时调用清理单例对象的策略
@@ -319,7 +303,7 @@ class L {
 		$object = call_user_func_array(array($class, 'newInstance'), $args);
 		return $object;
 	}
-
+	
 	/**
 	 * 全局包含文件的唯一入口
 	 *
@@ -335,14 +319,14 @@ class L {
 		self::$_imports[$filePath] = $fileName;
 		return $realPath;
 	}
-
+	
 	/**
 	 * @param string $key
 	 */
-	private static function isImported($realPath) {
-		return key_exists($realPath, self::$_imports) || in_array($realPath, self::$_imports);
+	private static function isImported($path) {
+		return key_exists($path, self::$_imports) || in_array($path, self::$_imports);
 	}
-
+	
 	/**
 	 * 获得所有支持的扩展名
 	 *
@@ -351,7 +335,7 @@ class L {
 	static private function getExtension() {
 		return self::$_extensions;
 	}
-
+	
 	/**
 	 * 获得跟路径信息
 	 * @return string
@@ -388,7 +372,7 @@ class C {
 		self::$config = $configSystem;
 		self::$c = new C();
 	}
-
+	
 	/**
 	 * 根据配置名取得相应的配置
 	 * @param string $configName
@@ -402,14 +386,14 @@ class C {
 			$_config = self::$config[$configName];
 		}
 		if (!$subConfigName) return $_config;
-
+		
 		$_subConfig = array();
 		if (is_array($_config) && isset($_config[$subConfigName])) {
 			$_subConfig = $_config[$subConfigName];
 		}
 		return $_subConfig;
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -417,7 +401,7 @@ class C {
 	static public function getModules($name = '') {
 		return self::getConfig(IWindConfig::MODULES, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -425,7 +409,7 @@ class C {
 	static public function getTemplate($name = '') {
 		return self::getConfig(IWindConfig::TEMPLATE, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -433,7 +417,7 @@ class C {
 	static public function getFilters($name = '') {
 		return self::getConfig(IWindConfig::FILTERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -441,7 +425,7 @@ class C {
 	static public function getViewerResolvers($name = '') {
 		return self::getConfig(IWindConfig::VIEWER_RESOLVERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -449,7 +433,7 @@ class C {
 	static public function getRouter($name = '') {
 		return self::getConfig(IWindConfig::ROUTER, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -457,7 +441,7 @@ class C {
 	static public function getRouterParsers($name = '') {
 		return self::getConfig(IWindConfig::ROUTER_PARSERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -465,7 +449,7 @@ class C {
 	static public function getApplications($name = '') {
 		return self::getConfig(IWindConfig::APPLICATIONS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -473,7 +457,7 @@ class C {
 	static public function getErrorMessage($name = '') {
 		return self::getConfig(IWindConfig::ERRORMESSAGE, $name);
 	}
-
+	
 	/**
 	 * @param unknown_type $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -481,17 +465,17 @@ class C {
 	static public function getDataBase($name = '') {
 		return self::getConfig(IWindDbConfig::DATABASE, $name);
 	}
-
+	
 	static public function getDataBaseConnection($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::CONNECTIONS)) ? $name ? $drivers[$name] : $drivers : '';
 	}
 	static public function getDataBaseDriver($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::DRIVERS)) ? $name ? $drivers[$name] : $drivers : '';
 	}
-
+	
 	static public function getDataBaseBuilDer($name = '') {
 		return ($drivers = self::getDataBase(IWindDbConfig::BUILDERS)) ? $name ? $drivers[$name] : $drivers : '';
-
+	
 	}
 
 }
