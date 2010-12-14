@@ -14,11 +14,18 @@
  * @package 
  */
 class WindIniParser {
-	private $data = '';
+	private $data = array();
 	
 	public function __construct() {
 	
 	}
+	
+	/**
+	 * 解析数据
+	 * @param string $filename ini格式文件
+	 * @param string $process  处理指令
+	 * @return boolean
+	 */
 	public function parse($filename, $process = true) {
 		if (empty ( $filename )) {
 			return false;
@@ -28,6 +35,11 @@ class WindIniParser {
 		return true;
 	}
 	
+	/**
+	 * 构建数据
+	 * @param array $data
+	 * @return array
+	 */
 	public function buildData(&$data){
 		foreach($data as $key=>$value){
 			if(is_array($value)){
@@ -39,6 +51,13 @@ class WindIniParser {
 		return $data;
 	}
 	
+	/**
+	 * 将每行ini文件转换成数组
+	 * @param string $key ini文件中的键
+	 * @param string $value ini文件中的值
+	 * @param array $data
+	 * @return array
+	 */
 	public function toArray($key, $value, &$data = array()) {
 		if (strpos ( $key, '.' )) {
 			$start = substr ( $key, 0, strpos ( $key, '.' ) );
@@ -51,6 +70,12 @@ class WindIniParser {
 		return $data;
 	}
 	
+	/**
+	 * 解析ini格式文件成数组
+	 * @param array $original 原始数组
+	 * @param array $data 解析后的数组
+	 * @return array
+	 */
 	public function formatData(&$original, &$data = array()) {
 		foreach ( $original as $key => $value ) {
 			$tmp = $this->toArray ( $key, $value );
@@ -68,6 +93,10 @@ class WindIniParser {
 		return $data;
 	}
 	
+	/**
+	 * 返回格式化的数组
+	 * @return array
+	 */
 	public function getData() {
 		return $this->data;
 	}
