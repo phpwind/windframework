@@ -44,26 +44,6 @@ class WindXMLConfigTest extends BaseTestCase {
 	public function testParser() {
 		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
 	}
-	public function testSetParseNodeListWithTrue() {
-		$_tmp = array('info', 'school');
-		$this->xml->setParseNodeList($_tmp);
-		$this->resultValidator($this->xml->getResult(), 2, $_tmp);
-	}
-	public function testSetParseNodeListWithNotArray() {
-		$_tmp = '';
-		$this->xml->setParseNodeList($_tmp);
-		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
-	}
-	public function testSetParseNodeListWithNull() {
-		$_tmp = array();
-		$this->xml->setParseNodeList($_tmp);
-		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
-	}
-	public function testSetParseNodeListWithObject() {
-		$_tmp = $this;
-		$this->xml->setParseNodeList($_tmp);
-		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
-	}
 	public function testGetGlobal() {
 		$this->xml->parser();
 		$this->resultValidator($this->xml->getGAM('isGlobal'), 1, array('info'));
