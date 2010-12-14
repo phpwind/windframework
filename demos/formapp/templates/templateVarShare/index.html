@@ -1,0 +1,10 @@
+<?php $this->doAction('header', 'other.TemplateVarShareController');?>
+<body>
+<p>
+I am Body~~~<br/>
+echo 主action的变量：<?php echo $bodyArg;?><br/>
+echo header的变量:<?php echo $this->getVar('headerArg', 'header');?><br/>
+echo footer的变量: 不能获取<br/>
+</p>
+</body>
+<?php $this->doAction('footer', 'other.TemplateVarShareController');?>

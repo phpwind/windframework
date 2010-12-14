@@ -16,6 +16,7 @@ class IndexController extends WindController {
 		$this->setOutput(array('name'=> '亲爱的朋友'));
 		$demos = array('../helloworld' => 'HelloWorld', 
 						'index.php?m=other&c=Index&a=iforward' => 'forward应用',
+						'index.php?m=other&c=TemplateVarShare' => '模板变量的共享',
 						'../smartyapp' => 'Smarty模板引擎接入',
 						'../dbapp' => '数据库demo',
 						'../layoutApp' => 'LayOut使用demo',
