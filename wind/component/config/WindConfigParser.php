@@ -6,7 +6,7 @@
  * @license 
  */
 L::import("WIND:component.config.base.IWindConfig");
-L::import('WIND:utility.Common');
+L::import('WIND:component.Common');
 /**
  * 配置文件解析类
  * 配置文件格式允许有3中格式：xml,properties,ini

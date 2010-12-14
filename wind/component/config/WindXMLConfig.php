@@ -6,7 +6,7 @@
  * @license
  */
 L::import('WIND:component.config.base.IWindParser');
-L::import('WIND:utility.xml.xml');
+L::import('WIND:component.xml.xml');
 
 /**
  * xml格式配置文件的解析类
