@@ -52,9 +52,7 @@
 		</template>
 	</templates>
 	<viewerResolvers isMerge='true'>
-		<resolver name='default'>WIND:component.viewer.WindViewer</resolver>
-		<resolver name='pw'>WIND:component.viewer.WindPWViewer</resolver>
-		<resolver name='smarty'>libs.WindSmarty</resolver>
+		<resolver name='default'>WIND:core.viewer.WindViewer</resolver>
 	</viewerResolvers>
 	<router>
 		<parser>url</parser>

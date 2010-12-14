@@ -111,7 +111,6 @@ class W {
 		L::import('WIND:core.router.*');
 		L::import('WIND:core.exception.*');
 		L::import('WIND:core.filter.*');
-		L::import('WIND:core.router.*');
 		L::import('WIND:core.viewer.*');
 		L::import('WIND:core.*');
 		if (self::ifCompile() && !IS_DEBUG) {
@@ -316,7 +315,7 @@ class L {
 	 * @return string
 	 */
 	static private function windInclude($realPath, $filePath, $fileName, $ispackage = false) {
-		if (in_array($realPath, self::$_imports)) return $realPath;
+		if (in_array($fileName, self::$_imports)) return $realPath;
 		include $realPath;
 		if ($ispackage) $filePath = str_replace('*', $fileName, $filePath);
 		self::$_imports[$filePath] = $fileName;
