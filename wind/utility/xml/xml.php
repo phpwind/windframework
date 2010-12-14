@@ -40,7 +40,7 @@ class XML {
 	 * @param string $data
 	 * @param string $encoding
 	 */
-	public function __construct($data = '', $encoding = 'gbk') {
+	public function __construct($data = '', $encoding = 'UTF-8') {
 		$this->setXMLData($data);
 		$this->setOutputEncoding($encoding);
 	}
@@ -97,7 +97,7 @@ class XML {
 	 * @param string $url
 	 */
 	public function setXMLUrl($url) {
-		$this->setXMLData(XML::PostHost($url));
+		$this->setXMLData(self::PostHost($url));
 	}
 	
 	/**
@@ -243,9 +243,9 @@ class XML {
 	 * @return array  返回该节点的属性
 	 */
 	public function getAttributes($element) {
+		if (!$this->hasAttributes($element)) return array();
 		$_attributes = array();
 		$attributes = $element->attributes();
-		if (!$attributes) return $_attributes;
 		foreach ($attributes as $key => $value) {
 			$_attributes[$key] = self::escape($value);
 		}
@@ -270,9 +270,9 @@ class XML {
 	 * @return array 
 	 */
 	public function getChildren($element) {
+		if (!$this->hasChildren($element)) return array();
 		$_childs = array();
 		$childs = $element->children();
-		if (!$childs) return $_childs;
 		foreach ($childs as $key => $value) {
 			$_childs[] = self::getTagContents($value);
 		}
@@ -300,6 +300,7 @@ class XML {
 	 */
 	protected function dataConvert($data, $from_encoding = 'UTF-8', $to_encoding = '') {
 		if (!$to_encoding) $to_encoding = $this->outputEncoding;
+		if ($from_encoding == $to_encoding) return $data;
 		if (function_exists('mb_convert_encoding')) {
 			return mb_convert_encoding($data, $to_encoding, $from_encoding);
 		} else {

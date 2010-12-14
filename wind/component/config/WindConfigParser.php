@@ -43,7 +43,7 @@ class WindConfigParser implements IWindConfig {
 	 * 初始化
 	 * @param String $outputEncoding	//编码信息
 	 */
-	public function __construct($outputEncoding = 'gbk') {
+	public function __construct($outputEncoding = 'UTF-8') {
 		$this->currentApp = W::getCurrentApp();
 		if ($outputEncoding) $this->encoding = $outputEncoding;
 	}
