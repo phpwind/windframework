@@ -21,6 +21,29 @@ class WindRedirecter {
 		$this->urlArgs = $urlArgs;
 	}
 	
+	public function buildUrl($callback = array(), $args = array()) {
+		if (!$this->url && $callback) $this->url = call_user_func_array($callback, $args);
+		$this->buildUrlArgs();
+		if ($this->urlArgs) $this->url .= '&' . $this->urlArgs;
+		return $this->url;
+	}
+	
+	/**
+	 * 组装URL参数信息
+	 */
+	private function buildUrlArgs() {
+		if (!$this->urlArgs) return;
+		if (is_string($this->urlArgs)) {
+			$this->urlArgs = trim($this->urlArgs, ' &');
+		} elseif (is_array($this->urlArgs)) {
+			$_tmp = '';
+			foreach ($this->urlArgs as $key => $value) {
+				$_tmp .= $key . '=' . urlencode(trim($value)) . '&';
+			}
+			$this->urlArgs = trim($_tmp, '&');
+		}
+	}
+	
 	/**
 	 * 设置跳转链接
 	 * @param string $url
@@ -34,34 +57,6 @@ class WindRedirecter {
 	 * @param string $args
 	 */
 	public function setUrlArgs($args) {
-		if (is_string($args) && $args != '') {
-			$args = trim($args);
-		} elseif (is_array($args) && count($args) > 0) {
-			$_tmp = '&';
-			foreach ($args as $key => $value) {
-				$_tmp .= $key . '=' . urlencode(trim($value)) . '&';
-			}
-			$args = trim($_tmp, '&');
-		}
 		$this->urlArgs = $args;
 	}
-	
-	private function buildUrl($callback = '') {
-
-	}
-	
-	/**
-	 * @return the $redirect
-	 */
-	public function getUrl() {
-		return $this->url;
-	}
-	
-	/**
-	 * @return the $redirectArgs
-	 */
-	public function getUrlArgs() {
-		return $this->urlArgs;
-	}
-
 }

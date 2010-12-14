@@ -28,9 +28,6 @@ class WindForward {
 	private $actionPath;
 	
 	/* 页面重定向请求信息 */
-	private $redirect;
-	private $isRedirect = false;
-	private $redirectArgs;
 	private $redirecter = null;
 	
 	/* 模板变量信息 */
@@ -87,12 +84,11 @@ class WindForward {
 	 */
 	public function setRedirect($redirect = '', $args = '') {
 		$this->redirect = $redirect;
-		$this->isRedirect = true;
 		if ($this->redirecter === null) {
 			$this->redirecter = new WindRedirecter();
 		}
-		$this->redirecter->setRedirect;
-		$this->redirecter->setRedirectArgs($args);
+		$this->getRedirecter()->setUrl($redirect);
+		$this->getRedirecter()->setUrlArgs($args);
 	}
 	
 	/**
@@ -103,22 +99,6 @@ class WindForward {
 		$this->action = $action;
 		$this->actionPath = $path;
 		if ($isRedirect) $this->setRedirect('', $args);
-	}
-	
-	/**
-	 * 获得重定向参数信息
-	 * @return the $redirectArgs
-	 */
-	public function getRedirectArgs() {
-		return $this->redirectArgs;
-	}
-	
-	/**
-	 * 获得重定向链接
-	 * @return string
-	 */
-	public function getRedirect() {
-		return $this->redirect;
 	}
 	
 	/**
@@ -189,8 +169,7 @@ class WindForward {
 	 * @return WindRedirecter $redirecter
 	 */
 	public function getRedirecter() {
-		$redirecter = new WindRedirecter($this);
-		return $redirecter;
+		return $this->redirecter;
 	}
 
 }

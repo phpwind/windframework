@@ -42,17 +42,15 @@ class WindUrlBasedRouter extends WindRouter {
 	 * @param string $module
 	 * @param string $args 
 	 */
-	public function buildUrl($action = '', $controller = '', $module = '', $args = '') {
+	public function buildUrl($action = '', $controller = '', $module = '') {
 		$keys = array_keys($this->rule);
 		$baseUrl = $this->request->getBaseUrl(true);
 		$script = $this->request->getScript();
-		if ($action && $action !== $this->rule[$keys[0]])
-			$url .= '&' . $keys[0] . '=' . $action;
-		if ($controller && $controller !== $this->rule[$keys[1]])
-			$url .= '&' . $keys[1] . '=' . $controller;
-		if ($module && $module !== $this->rule[$keys[2]])
-			$url .= '&' . $keys[2] . '=' . $module;
-		$url = $baseUrl . '/' . $script . '?' . trim($url, '&') . '&' . $args;
+		$url = '';
+		if ($action && $action !== $this->rule[$keys[0]]) $url .= '&' . $keys[0] . '=' . $action;
+		if ($controller && $controller !== $this->rule[$keys[1]]) $url .= '&' . $keys[1] . '=' . $controller;
+		if ($module && $module !== $this->rule[$keys[2]]) $url .= '&' . $keys[2] . '=' . $module;
+		$url = $baseUrl . '/' . $script . '?' . trim($url, '&');
 		return $url;
 	}
 	

@@ -43,15 +43,6 @@ abstract class WindBaseAction {
 	}
 	
 	/**
-	 * 设置模板配置--提供多套模板路径机制
-	 * 
-	 * @param string $templateConfigName
-	 */
-	public function setTemplateConfig($templateConfigName = '') {
-		$this->forward->setTemplateConfig($templateConfigName);
-	}
-	
-	/**
 	 * 请求一个重定向Action
 	 * 
 	 * @param string $actionHandle
@@ -129,6 +120,15 @@ abstract class WindBaseAction {
 	 */
 	public function setLayout($layout = '') {
 		$this->forward->setLayout($layout);
+	}
+	
+	/**
+	 * 设置模板配置--提供多套模板路径机制
+	 * 
+	 * @param string $templateConfigName
+	 */
+	public function setTemplateConfig($templateConfigName = '') {
+		$this->forward->setTemplateConfig($templateConfigName);
 	}
 	
 	/**
