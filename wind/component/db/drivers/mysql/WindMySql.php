@@ -59,7 +59,7 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_EMPTY);
 		}
 		$this->query('SHOW TABLES FROM '.$schema);
-		return $this->getAllRow(MYSQL_ASSOC);
+		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
 	}
 	
 	/* (non-PHPdoc)
@@ -70,13 +70,13 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$this->query('SHOW COLUMNS FROM '.$table);
-		return $this->getAllRow(MYSQL_ASSOC);
+		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type) {
+	public function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
 		if (! is_resource ( $this->query )) {
 			throw new WindSqlException ( WindSqlException::DB_QUERY_LINK_EMPTY );
 		}
@@ -93,7 +93,7 @@ class WindMySql extends WindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindDbAdapter#getRow()
 	 */
-	public function getRow($fetch_type){
+	public function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC){
 		return mysql_fetch_array ( $this->query, $fetch_type );
 	}
 	

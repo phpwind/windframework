@@ -151,14 +151,14 @@ abstract class WindDbAdapter {
 	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
-	public abstract function getAllRow($fetch_type);
+	public abstract function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC);
 	
 	/**
 	 * 取得查询的单条结果集
 	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
-	public abstract function getRow($fetch_type);
+	public abstract function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC);
 	/**
 	 * 开始事务点
 	 */

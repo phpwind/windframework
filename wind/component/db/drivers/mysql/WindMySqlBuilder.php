@@ -55,7 +55,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getReplaceSql()
 	 */
 	public function getReplaceSql() {
-		$sql = sprintf ( self::SQL_REPLACE . '%s(%s)' . self::SQL_SET . '%s', $this->buildFROM (), $this->buildField (), $this->buildData () );
+		$sql = sprintf ( self::SQL_REPLACE . '%s(%s)' . self::SQL_VALUES . '%s', $this->buildFROM (), $this->buildField (), $this->buildData () );
 		$this->reset ();
 		return $sql;
 	}

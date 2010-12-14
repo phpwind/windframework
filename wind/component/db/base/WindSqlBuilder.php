@@ -307,6 +307,27 @@ abstract class WindSqlBuilder {
 	public function data($data){
 		$params = func_num_args();
 		$data = $params >1 ? func_get_args() : func_get_arg(0);
+		$key = array_keys ( $data );
+		if (is_string ( $key [0] )) {
+			$rows = count ( $data [$key [0]] );
+			$tmp_data = $field = array ();
+			for($i = 0; $i < $rows; $i ++) {
+				foreach ( $data as $key => $value ) {
+					$fvalues = array_values($field);
+					if(!in_array($key,$fvalues)){
+						$field [] = $key;
+					}
+					if(is_array($value)){
+						$tmp_data [$i] [] = $value [$i];
+						unset ( $data [$key] [$i] );
+					}else{
+						$tmp_data [] = $value;
+					}
+				}
+			}
+		};
+		$data = $tmp_data ? $tmp_data : $data;
+		$field && $this->field($field);
 		return $this->assembleSql($data,self::DATA);
 	}
 	/**
@@ -328,6 +349,9 @@ abstract class WindSqlBuilder {
 	 * @return WindMySqlBuilder
 	 */
 	private function assembleSql($assembleValue,$assembleType){
+		if(empty($assembleValue)){
+			return $this;
+		}
 		if(empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
 			$this->sql[$assembleType] = array();
 		}
@@ -457,7 +481,7 @@ abstract class WindSqlBuilder {
 	 * @return string;
 	 */
 	protected function buildFrom() {
-		if (empty ( $this->sql[self::FROM] ) &&   !is_array ( $table )) {
+		if (empty ( $this->sql[self::FROM] ) ||   !is_array ( $this->sql[self::FROM] )) {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$tableList = '';
@@ -478,7 +502,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildField() {
-		if (empty ( $this->sql[self::FIELD] ) &&   !is_array ( $this->sql[self::FIELD] )) {
+		if (empty ( $this->sql[self::FIELD] ) ||  !is_array ( $this->sql[self::FIELD] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_FIELD_FORMAT);
 		}
 		$fieldList = '';
@@ -497,7 +521,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildJoin() {
-		if (empty ( $this->sql[self::JOIN] )) {
+		if (empty ( $this->sql[self::JOIN] ) ||  !is_array ( $this->sql[self::JOIN] )) {
 			return '';
 		}
 		$joinContidion = '';
@@ -519,17 +543,16 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildWhere() {
-		if ($this->sql[self::WHERE]) {
-			return $this->sqlFillSpace (self::SQL_WHERE.implode(' ',$this->sql[self::WHERE])) ;
-		}
-		return '';
+		$where = is_array($this->sql[self::WHERE]) ? implode(' ',$this->sql[self::WHERE]) : $this->sql[self::WHERE];
+		return $where ? $this->sqlFillSpace (self::SQL_WHERE.$where) : '' ;
 	}
 	/**
 	 * 解析分组
 	 * @return string
 	 */
 	protected function buildGroup() {
-		return $this->sqlFillSpace ( $this->sql[self::GROUP] ? self::SQL_GROUP . (is_array ( $this->sql[self::GROUP] ) ? implode ( ',', $this->sql[self::GROUP] ) : $this->sql[self::GROUP]) . '' : '' );
+		$group = is_array ( $this->sql[self::GROUP] ) ? implode ( ',', $this->sql[self::GROUP] ) : $this->sql[self::GROUP];
+		return $group ? $this->sqlFillSpace (self::SQL_GROUP . $group) : '';
 	}
 	/**
 	 * 解析排序
@@ -537,9 +560,6 @@ abstract class WindSqlBuilder {
 	 */
 	protected function buildOrder() {
 		$orderby = '';
-		if(empty($this->sql[self::ORDER])){
-			return '';
-		}
 		if (is_array ( $this->sql[self::ORDER] )) {
 			foreach ( $this->sql[self::ORDER] as $key => $value ) {
 				$orderby .= ($orderby ? ',' : '') . (is_string ( $key ) ? $key . ' ' .( $value ? self::SQL_DESC:self::SQL_ASC) : $value);
@@ -547,17 +567,15 @@ abstract class WindSqlBuilder {
 		} else {
 			$orderby = $this->sql[self::ORDER];
 		}
-		return $this->sqlFillSpace ( $orderby ? self::SQL_ORDER . $orderby : '' );
+		return $orderby ? $this->sqlFillSpace (self::SQL_ORDER . $orderby) : '';
 	}
 	/**
 	 * 解析对分组的过滤语句
 	 * @return string
 	 */
 	protected function buildHaving() {
-		if($this->sql[self::HAVING]){
-			 return $this->sqlFillSpace (self::SQL_HAVING.implode(' ',$this->sql[self::HAVING])) ;
-		}
-		return '';
+		 $having = is_array($this->sql[self::HAVING]) ? implode(' ',$this->sql[self::HAVING]) : $this->sql[self::HAVING];
+		 return $having ? $this->sqlFillSpace (self::SQL_HAVING.$having) : '' ;
 	}
 	/**
 	 * 解析分页查询
@@ -570,7 +588,13 @@ abstract class WindSqlBuilder {
 		if(is_string($this->sql[self::LIMIT])){
 			return $this->sqlFillSpace($this->sql[self::LIMIT]);
 		}
-		return $this->sqlFillSpace ( ($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT] : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '' );
+		if(is_array($this->sql[self::LIMIT])){
+			$this->sql[self::LIMIT] = array_pop($this->sql[self::LIMIT]);
+		}
+		if(is_array($this->sql[self::OFFSET])){
+			$this->sql[self::OFFSET] = array_pop($this->sql[self::OFFSET]);
+		}
+		return $this->sqlFillSpace ( ($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT].' ' : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '' );
 	}
 	/**
 	 * 解析更新数据
@@ -604,19 +628,7 @@ abstract class WindSqlBuilder {
 			return $this->buildSingleData ( $this->sql[self::DATA] );
 		}
 		if($this->getDimension ( $this->sql[self::DATA] ) >= 2){
-			$key = array_keys($this->sql[self::DATA]);
-			if(is_string($key[0])){
-				$rows = count($this->sql[self::DATA][$key[0]]);
-				$tmp_data = array();
-				for($i=0;$i<$rows;$i++){
-					foreach($this->sql[self::DATA] as $key=>$value){
-						$tmp_data[$i][] = $value[$i];
-						unset($this->sql[self::DATA][$key][$i]);
-					}
-				}
-			}
-			$data = $tmp_data ? $tmp_data :  $this->sql[self::DATA];
-			return $this->buildMultiData ( $data );
+			return $this->buildMultiData ( $this->sql[self::DATA]  );
 		}
 		return array();
 	}
@@ -733,7 +745,7 @@ abstract class WindSqlBuilder {
 	 * @param int $fetch_type 类型
 	 * @return array
 	 */
-	public function getAllRow($fetch_type){
+	public function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC){
 		$this->verifyAdapter();
 		return $this->connection->getAllRow($fetch_type);
 	}
@@ -744,7 +756,7 @@ abstract class WindSqlBuilder {
 	 * @param int $fetch_type 类型
 	 * @return array
 	 */
-	public function getRow($fetch_type){
+	public function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC){
 		$this->verifyAdapter();
 		return $this->connection->getRow($fetch_type);
 	}
@@ -823,7 +835,7 @@ abstract class WindSqlBuilder {
 	public function buildMultiData($multiData) {
 		$iValue = '';
 		foreach ( $multiData as $data ) {
-			$iValue .= $this->buildSingleData ( $data );
+			$iValue .= $iValue ? ','.$this->buildSingleData ( $data ) : $this->buildSingleData ( $data );
 		}
 		return $iValue;
 	}

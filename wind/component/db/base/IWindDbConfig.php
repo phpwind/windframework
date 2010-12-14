@@ -15,6 +15,7 @@
  */
 interface IWindDbConfig{
 	const DATABASE = 'database';
+	const DISTRIBUTED = 'distributed';
 	const PARSERARRAY = 'connections, drivers, builders ';
 	
 	const CONNECTIONS = 'connections';
@@ -30,6 +31,7 @@ interface IWindDbConfig{
 	const CONN_PCONN = 'pconnect';
 	const CONN_MASTER = 'master';
    	const CONN_SLAVE = 'slave';
+   	const CONN_IDENTITY = 'identity';
    	
    	const DRIVERS = 'drivers';
    	const DRIVER_CLASS = 'class';
@@ -38,4 +40,11 @@ interface IWindDbConfig{
    	const BUILDERS = 'builders';
    	const BUILDER_CLASS= 'class';
    	
+	const TABLE_NAME = 'table_name';
+	const TABLE_ALIAS = 'table_alias';
+	
+	const RESULT_ASSOC = 1;
+	const RESULT_NUM = 2;
+	const RESULT_BOTH = 3;
+
 }
