@@ -6,10 +6,6 @@
  * @license
  */
 interface IWindConfig {
-	/**
-	 * 用于指定在程序解析中需要解析一级标签
-	 */
-	const PARSERARRAY = 'app, applications, errorMessage, modules, filters, templates, viewerResolvers, router, routerParsers, database, ';
 	
 	/**
 	 * 应用配置信息

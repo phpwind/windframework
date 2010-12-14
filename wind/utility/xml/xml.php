@@ -55,7 +55,7 @@ class XML {
 		if ($this->isXMLFile($data)) {
 			$this->XMLData = trim($data);
 		} else {
-			throw new Exception('输入参数不是有效的xml格式');
+			throw new Exception('The file which your put is not a well-format xml file!');
 		}
 	}
 	/**

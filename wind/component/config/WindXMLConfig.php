@@ -20,6 +20,7 @@ class WindXMLConfig extends XML implements IWindParser {
 	private $xmlArray;
 	private $parseNodeList;
 	private $GAM;
+	private $isCheck;
 	/**
 	 * 构造函数，设置输出编码及变量初始化
 	 * @param string $data
@@ -27,15 +28,15 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function __construct($encoding = 'UTF-8') {
 		$this->setOutputEncoding($encoding);
-		$this->parseNodeList = IWindConfig::PARSERARRAY;
 		$this->GAM = array();
+		$this->parseNodeList = array();
 	}
 	/**
 	 * 设置需要解析的一级节点
 	 * @param string $parseRoot
 	 */
 	public function setParseNodeList($nodeList) {
-		if (is_string($nodeList) && $nodeList != "") {
+		if (is_array($nodeList) && count($nodeList) > 0 ) {
 			$this->parseNodeList = $nodeList;
 		}
 	}
@@ -48,6 +49,17 @@ class WindXMLConfig extends XML implements IWindParser {
 	}
 	
 	/**
+	 * 解析获得根节点
+	 */
+	public function getRootNodeList() {
+		$children = $this->getXMLDocument()->children();
+		$this->parseNodeList = array();
+		foreach ($children as $node => $value) {
+			$this->parseNodeList[] = $node;
+		}
+	}
+	
+	/**
 	 * 内容解析
 	 *
 	 * 内容的解析依赖于配置文件中配置项的格式进行，每个配置项对应的在IWindConfig中都必须有对应的常量声明
@@ -57,10 +69,9 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function parser() {
 		$this->ceateParser();
-		$parseArray = trim($this->parseNodeList, ',');
-		$_parseTags = (strpos($parseArray, ',') === false) ? array($parseArray) : explode(',', $parseArray);
+		(!$this->parseNodeList) && $this->getRootNodeList();
 		$_array = array();
-		foreach ($_parseTags as $tag) {
+		foreach ($this->parseNodeList as $tag) {
 			$elements = (array) $this->getElementByXPath($tag);
 			$this->isCheck = true;
 			foreach ($elements as $element) {

@@ -19,7 +19,7 @@ L::import('WIND:utility.Common');
  * @version $Id$ 
  * @package
  */
-class WindConfigParser implements IWindConfig {
+class WindConfigParser {
 	private $defaultPath = WIND_PATH;
 	private $defaultConfig = 'wind_config';
 	
