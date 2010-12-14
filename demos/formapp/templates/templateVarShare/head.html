@@ -5,6 +5,7 @@
 </head>
 <body>
 I am Header~~~<br/>
-<?php echo $headerArg;?><br/>
-<?php echo $bodyArg;?><br/>
+头部变量：&nbsp;&nbsp;<?php echo $headerArg;?><br/>
+主Action变量：&nbsp;&nbsp;<?php echo $this->getVar('bodyArg', 'templateVarShare.index');?><br/>
+echo footer的变量: &nbsp;&nbsp;<?php echo $this->getVar('footerArg', 'templateVarShare.foot');?><br/>
 <hr/><br/><br/><br/><br/>

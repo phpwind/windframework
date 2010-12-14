@@ -8,6 +8,7 @@
 
 class TemplateVarShareController extends WindController {
 	public function run() {
+		echo 'I am body~~~<br/>';
 		$this->setOutput('测试模板变量域，我是主Action变量', 'bodyArg');
 		$this->setTemplate('templateVarShare.index');
 	}
@@ -19,7 +20,7 @@ class TemplateVarShareController extends WindController {
 	}
 	
 	public function footer() {
-		echo '<hr/>I am footer!!<br/>';
+		echo '<br/><hr/>I am footer!!';
 		$this->setOutput('我是尾部的变量', 'footerArg');
 		$this->setTemplate('templateVarShare.foot');
 	}
