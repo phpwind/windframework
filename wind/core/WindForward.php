@@ -83,12 +83,7 @@ class WindForward {
 	 * @param string $redirect
 	 */
 	public function setRedirect($redirect = '', $args = '') {
-		$this->redirect = $redirect;
-		if ($this->redirecter === null) {
-			$this->redirecter = new WindRedirecter();
-		}
-		$this->getRedirecter()->setUrl($redirect);
-		$this->getRedirecter()->setUrlArgs($args);
+		$this->redirecter = new WindRedirecter($redirect, $args);
 	}
 	
 	/**

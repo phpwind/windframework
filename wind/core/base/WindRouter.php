@@ -72,12 +72,10 @@ abstract class WindRouter {
 			$module .= $module . '.' . $className;
 			$className = $this->getAction();
 			L::import($module . '.' . $className);
-			if (!class_exists($className))
-				return array(null, null);
+			if (!class_exists($className)) return array(null, null);
 			$method = $this->method;
 		}
-		if (!in_array($method, get_class_methods($className)))
-			return array(null, null);
+		if (!in_array($method, get_class_methods($className))) return array(null, null);
 		$this->modulePath = $module;
 		return array($className, $method);
 	}

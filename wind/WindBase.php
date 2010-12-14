@@ -108,6 +108,7 @@ class W {
 	 */
 	static private function initLoad() {
 		L::import('WIND:core.base.*');
+		L::import('WIND:core.router.*');
 		L::import('WIND:core.*');
 		L::import('WIND:component.message.WindErrorMessage');
 		if (self::ifCompile() && !IS_DEBUG) {
@@ -129,9 +130,8 @@ class W {
 		}
 	}
 	
-	static private function initErrorHandle() {
-		//set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
-	//set_error_handler(array('WindErrorHandle', 'errorHandle'));
+	static private function initErrorHandle() {//set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+//set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
 
 }

@@ -94,7 +94,6 @@ class WindFrontController extends WindServlet {
 	 */
 	protected function initDispatch() {
 		if ($this->response->getDispatcher() && $this->response->getDispatcher()->getAction()) return;
-		L::import('WIND:component.router.WindRouterFactory');
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($this->request, $this->response);
 		$dispatcher = L::getInstance('WindDispatcher', array($this->request, $this->response, $this));
