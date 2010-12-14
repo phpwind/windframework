@@ -6,8 +6,7 @@
  * @license 
  */
 
-L::import('WIND:component.router.base.WindRouter');
-L::import('WIND:component.exception.WindException');
+L::import('WIND:core.router.WindRouter');
 /**
  * 基于URL的路由解析器.
  * 该解析器通过访问一个Http请求的Request对象来获得URL的参数信息

@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WindBaseAction {
+abstract class WindAction {
 	protected $request;
 	protected $response;
 	protected $forward = null;

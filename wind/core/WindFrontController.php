@@ -65,7 +65,6 @@ class WindFrontController extends WindServlet {
 	private function initFilter() {
 		$filters = C::getConfig(IWindConfig::FILTERS);
 		if (empty($filters)) return;
-		L::import('WIND:component.filter.WindFilterFactory');
 		WindFilterFactory::getFactory()->setExecute(array($this, 'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create();
 		if ($filter instanceof WindFilter) {

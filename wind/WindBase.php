@@ -110,6 +110,9 @@ class W {
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.router.*');
 		L::import('WIND:core.exception.*');
+		L::import('WIND:core.filter.*');
+		L::import('WIND:core.router.*');
+		L::import('WIND:core.viewer.*');
 		L::import('WIND:core.*');
 		if (self::ifCompile() && !IS_DEBUG) {
 			L::import('WIND:utility.WindPack');

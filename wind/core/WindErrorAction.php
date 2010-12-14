@@ -12,7 +12,7 @@ L::import('WIND:core.base.WindBaseAction');
  * @version $Id$ 
  * @package 
  */
-class WindErrorAction extends WindBaseAction {
+class WindErrorAction extends WindAction {
 
 	public function run() {
 		echo "error action";

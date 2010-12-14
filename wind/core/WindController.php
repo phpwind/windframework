@@ -13,6 +13,6 @@ L::import('WIND:core.base.WindBaseAction');
  * @version $Id$ 
  * @package 
  */
-class WindController extends WindBaseAction {
+class WindController extends WindAction {
 	public function run() {}
 }
