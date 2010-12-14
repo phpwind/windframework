@@ -18,7 +18,6 @@ L::import('WIND:utility.xml.xml');
  */
 class WindXMLConfig extends XML implements IWindParser {
 	private $xmlArray;
-	private $parseNodeList;
 	private $GAM;
 	private $isCheck;
 	/**
@@ -29,16 +28,6 @@ class WindXMLConfig extends XML implements IWindParser {
 	public function __construct($encoding = 'UTF-8') {
 		$this->setOutputEncoding($encoding);
 		$this->GAM = array();
-		$this->parseNodeList = array();
-	}
-	/**
-	 * 设置需要解析的一级节点
-	 * @param string $parseRoot
-	 */
-	public function setParseNodeList($nodeList) {
-		if (is_array($nodeList) && count($nodeList) > 0 ) {
-			$this->parseNodeList = $nodeList;
-		}
 	}
 	/**
 	 * 加载需要解析的文件
@@ -46,17 +35,6 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function loadFile($filename) {
 		$this->setXMLFile($filename);
-	}
-	
-	/**
-	 * 解析获得根节点
-	 */
-	public function getRootNodeList() {
-		$children = $this->getXMLDocument()->children();
-		$this->parseNodeList = array();
-		foreach ($children as $node => $value) {
-			$this->parseNodeList[] = $node;
-		}
 	}
 	
 	/**
@@ -69,10 +47,10 @@ class WindXMLConfig extends XML implements IWindParser {
 	 */
 	public function parser() {
 		$this->ceateParser();
-		(!$this->parseNodeList) && $this->getRootNodeList();
+		$children = $this->getXMLDocument()->children();
 		$_array = array();
-		foreach ($this->parseNodeList as $tag) {
-			$elements = (array) $this->getElementByXPath($tag);
+		foreach ($children as $node => $child) {
+			$elements = (array) $this->getElementByXPath($node);
 			$this->isCheck = true;
 			foreach ($elements as $element) {
 				list($key, $value) = $this->getContent($element);
