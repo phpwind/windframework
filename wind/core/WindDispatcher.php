@@ -150,7 +150,7 @@ class WindDispatcher {
 	private function getView() {
 		if (!($templateConfigName = $this->getForward()->getTemplateConfig())) {
 			$_temps = C::getModules($this->getModule());
-			$templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
+			isset($_temps[IWindConfig::MODULE_TEMPLATE]) && $templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
 		}
 		if (!isset($this->views[$templateConfigName])) {
 			L::import('WIND:component.viewer.WindView');
