@@ -6,7 +6,7 @@
  * @license 
  */
 require_once (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-L::import(WIND_PATH . '/component/message/WindMessage.php');
+L::import('WIND:component.message.WindMessage');
 
 /**
  * 测试WindErrorMessage

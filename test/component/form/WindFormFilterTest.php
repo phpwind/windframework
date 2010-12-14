@@ -7,10 +7,10 @@
  */
 require_once (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import(R_P . '/test/component/form/WindActionFormTest.php');
-L::import(WIND_PATH . '/component/form/WindFormFilter.php');
+L::import('WIND:component.form.WindFormFilter');
 
-L::import(WIND_PATH . '/component/request/WindHttpRequest.php');
-L::import(WIND_PATH . '/component/response/WindHttpResponse.php');
+L::import('WIND:component.request.WindHttpRequest');
+L::import('WIND:component.response.WindHttpResponse');
 
 class WindFormFilterTest extends BaseTestCase {
 	private $obj;

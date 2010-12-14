@@ -6,7 +6,7 @@
  * @license 
  */
 require_once (dirname(dirname(dirname(__FILE__))) . '/BaseTestCase.php');
-L::import(WIND_PATH . '/component/form/base/WindActionForm.php');
+L::import('WIND:component.form.base.WindActionForm');
 
 class UserForm extends WindActionForm {
 	protected $name;

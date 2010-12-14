@@ -5,9 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
-L::import(WIND_PATH . '/component/exception/WindException.php');
-L::import(WIND_PATH . '/component/db/drivers/mysql/WindMySql.php');
+include (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
+L::import('WIND:component.exception.WindException');
+L::import('WIND:component.db.drivers.mysql.WindMySql');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

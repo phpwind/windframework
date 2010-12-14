@@ -5,10 +5,10 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
-L::import(WIND_PATH . '/component/exception/WindException.php');
-L::import(WIND_PATH . '/component/db/drivers/mssql/WindMsSql.php');
-L::import(WIND_PATH . '/component/db/drivers/mssql/WindMsSqlBuilder.php');
+include (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
+L::import('WIND:component.exception.WindException');
+L::import('WIND:component.db.drivers.mssql.WindMsSql');
+L::import('WIND:component.db.drivers.mssql.WindMsSqlBuilder');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
