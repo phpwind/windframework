@@ -35,7 +35,7 @@
 				<controller name='c'>Layout</controller>
 				<module name='m'>layout</module>
 			</rule>
-			<path>WIND:component.router.WindUrlBasedRouter</path>
+			<path>WIND:core.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
 </WIND>
