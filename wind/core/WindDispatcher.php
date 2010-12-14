@@ -89,22 +89,17 @@ class WindDispatcher {
 	 */
 	public function getActionHandle() {
 		$module = $this->moduleConfig[IWindConfig::MODULE_PATH];
-		$suffix = $this->moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX];
-		$path = $module . '.' . $this->controller . $suffix;
+		$suffix = ucfirst($this->moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX]);
 		$method = $this->action ? $this->action : $this->moduleConfig[IWindConfig::MODULE_METHOD];
-		$className = L::import($path);
+		$path = $module . '.' . $this->controller . $suffix;
+		$className = L::import($module . '.' . ucfirst($this->controller) . $suffix);
 		if (!$className) {
-			$suffix = $this->moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX];
-			$path .= $this->action . $suffix;
-			$className = L::import($path);
+			$suffix = ucfirst($this->moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX]);
+			$className = L::import($path . ucfirst($this->action) . $suffix);
 			$method = $this->moduleConfig[IWindConfig::MODULE_METHOD];
 		}
 		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
 		return array($className, $method);
-	}
-	
-	private function formatName() {
-
 	}
 	
 	/**
