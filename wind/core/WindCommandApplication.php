@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.base.IWindApplication');
+L::import('WIND:core.base.WindApplication');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,29 +13,28 @@ L::import('WIND:core.base.IWindApplication');
  * @version $Id$ 
  * @package 
  */
-class WindCommandApplication implements IWindApplication {
+class WindCommandApplication extends WindApplication {
 	
 	/**
 	 * 
 	 */
 	public function init() {
-		
-	}
 
+	}
+	
 	/**
 	 * @param unknown_type $request
 	 * @param unknown_type $response
 	 */
 	public function processRequest($request, $response) {
-		
-	}
 
+	}
+	
 	/**
 	 * 
 	 */
 	public function destory() {
-		
-	}
 
+	}
 
 }
