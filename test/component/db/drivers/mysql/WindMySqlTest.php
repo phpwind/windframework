@@ -101,14 +101,13 @@ class WindMySqlTest extends BaseTestCase {
 	public function testGetConnection() {
 		$this->assertTrue(is_resource($this->WindMySql->getConnection()));
 	}
-	/*
-	public function testBeginTrans(){
+	
+	public function testTransAction(){
 		$this->assertTrue($this->WindMySql->beginTrans());
+		//$this->assertTrue($this->WindMySql->commitTrans());
 	}
 	
-	public function testCommitTrans(){
-		$this->assertTrue($this->WindMySql->commitTrans());
-	}*/
+	
 	
 	public function __destruct() {
 		$this->WindMySql = null;
