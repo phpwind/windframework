@@ -141,7 +141,7 @@ abstract class WindBaseAction {
 	private function initBaseAction() {
 		L::import('WIND:core.WindForward');
 		$this->forward = new WindForward();
-		$this->error = WindErrorMessage::getInstance();
+		//$this->error = WindErrorMessage::getInstance();
 		$this->setTemplateConfig();
 	}
 	

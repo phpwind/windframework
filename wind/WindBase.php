@@ -109,8 +109,8 @@ class W {
 	static private function initLoad() {
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.router.*');
+		L::import('WIND:core.exception.*');
 		L::import('WIND:core.*');
-		L::import('WIND:component.message.WindErrorMessage');
 		if (self::ifCompile() && !IS_DEBUG) {
 			L::import('WIND:utility.WindPack');
 			$pack = L::getInstance('WindPack');
