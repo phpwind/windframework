@@ -26,7 +26,6 @@ abstract class WindServlet {
 	
 	public function __construct() {
 		try {
-			L::import('WIND:component.request.WindHttpRequest');
 			$this->request = WindHttpRequest::getInstance();
 			$this->response = $this->request->getResponse();
 		

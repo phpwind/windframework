@@ -6,8 +6,6 @@
  * @license 
  */
 L::import('WIND:component.request.base.IWindRequest');
-L::import('WIND:component.exception.WindException');
-L::import('WIND:component.response.WindHttpResponse');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
