@@ -87,17 +87,6 @@ class WindFrontController extends WindServer {
 	}
 	
 	/**
-	 * 初始化Dispatcher
-	 */
-	protected function initDispatcher() {
-		if ($this->dispatcher instanceof WindDispatcher) return;
-		$router = WindRouterFactory::getFactory()->create();
-		$router->doParser($this->request, $this->response);
-		$this->dispatcher = new WindWebDispatcher($this->request, $this->response);
-		$this->dispatcher->initWithRouter($router);
-	}
-	
-	/**
 	 * @return WindWebApplication
 	 */
 	protected function createApplication() {
