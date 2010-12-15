@@ -696,8 +696,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function delete(){
 		$this->verifyAdapter();
-		$this->connection->delete($this->getDeleteSql());
-		return $this;
+		return $this->connection->delete($this->getDeleteSql());
 	}
 	
 	/**
@@ -706,8 +705,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function update(){
 		$this->verifyAdapter();
-		$this->connection->update($this->getUpdateSql());
-		return $this;
+		return $this->connection->update($this->getUpdateSql());
 	}
 	
 	/**
@@ -726,8 +724,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function insert(){
 		$this->verifyAdapter();
-		$this->connection->insert($this->getInsertSql());
-		return $this;
+		return $this->connection->insert($this->getInsertSql());
 	}
 	
 	/**
@@ -736,8 +733,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function replace(){
 		$this->verifyAdapter();
-		$this->connection->insert($this->getReplaceSql());
-		return $this;
+		return $this->connection->insert($this->getReplaceSql());
 	}
 	
 	/**
