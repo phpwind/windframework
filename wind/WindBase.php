@@ -21,20 +21,17 @@
 class W {
 	private static $_apps = array();
 	private static $_current = '';
-	private static $_systemConfig = null;
-	
-	static public function init($configPath = '') {
-		self::initConfig($configPath);
-		self::initBaseLib();
-		self::initErrorHandle();
-	}
 	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 */
-	static public function application($configPath = '') {
-		self::init($configPath);
+	static public function application($currentName, $configPath = '', $type = 'web') {
+		if (!$currentName) throw new Exception('please defined a application name.');
+		self::initBaseLib();
+		self::initErrorHandle();
+		$systemConfig = self::initConfig($currentName, $configPath);
+		$frontController = new WindFrontController($systemConfig, $type);
 		return new WindFrontController();
 	}
 	
@@ -122,9 +119,9 @@ class W {
 	/**
 	 * 初始化配置信息
 	 */
-	static private function initConfig($configPath = '') {
+	static private function initConfig($currentName, $configPath = '') {
 		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
-		$systemConfig = self::parseConfig($configPath);
+		$systemConfig = self::parseConfig($currentName, $configPath);
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
 		$sysConfig = include COMPILE_PATH . '/config.php';
 		foreach ($sysConfig as $appName => $appConfig) {
@@ -135,10 +132,10 @@ class W {
 	/**
 	 * 解析配置文件
 	 */
-	private static function parseConfig($configPath = '') {
+	private static function parseConfig($currentName, $configPath = '') {
 		L::import('WIND:component.config.WindConfigParser');
 		$configParser = new WindConfigParser();
-		return $configParser->parser($configPath);
+		return $configParser->parser($currentName, $configPath);
 	}
 	
 	static private function initErrorHandle() {	
