@@ -77,15 +77,4 @@ interface IWindConfig {
 	 */
 	const DATABASE = 'database';
 	const DATABASE_PATH = 'path';
-	/**
-	 * 定义允许拥有的属性
-	 * name: 可以定义一些列的item中每一个item的名字以区分每一个
-	 * isGlobal: 如果添加上该属性，则该标签将在解析完成之后被提出放置在全局缓存中 -----只作用于一级标签
-	 * isMerge: 如果添加上该属性，则该标签将被在解析后进行合并 -----只作用于一级标签
-	 */
-	const ATTRNAME = 'name';
-	const ISGLOBAL = 'isGlobal';
-	const ISMERGE = 'isMerge';
-	
-	
 }

@@ -26,7 +26,7 @@ class XML {
 	 * 
 	 * @var SimpleXMLElement
 	 */
-	protected $object;
+	protected $parse;
 	/**
 	 * 解析输出的编码
 	 * 
@@ -52,7 +52,7 @@ class XML {
 	 */
 	public function setXMLData($data) {
 		if (!$data) return false;
-		if ($this->isXMLFile($data)) {
+		if ($this->isXMLData($data)) {
 			$this->XMLData = trim($data);
 		} else {
 			throw new Exception('The file which your put is not a well-format xml file!');
@@ -72,10 +72,19 @@ class XML {
 	 *
 	 * @param string $filePath
 	 */
-	public function setXMLFile($filePath) {
-		$filePath = realpath($filePath);
-		if (!is_file($filePath) || strtolower(substr($filePath, -4)) != '.xml') throw new Exception("The file which your put is not a well-format xml file!");
+	public function getXMLFromFile($filePath) {
+		$filePath = trim($filePath);
+		if (!is_file($filePath) || (strtolower(strrchr($filePath, '.')) != '.xml')) throw new Exception("The file which your put is not a well-format xml file!");
 		$this->setXMLData(file_get_contents($filePath));
+	}
+
+	/**
+	 * 根据指定URL读取XML数据
+	 *
+	 * @param string $url
+	 */
+	public function getXMLFromUrl($url) {
+		//TODO
 	}
 	
 	/**
@@ -84,27 +93,18 @@ class XML {
 	 * @access private
 	 * @return boolean
 	 */
-	private function isXMLFile($data) {
-		if (strpos(strtolower($data), '<?xml') === false) {
+	private function isXMLData($data) {
+		if (strpos(strtolower(trim($data)), '<?xml') === false) {
 			return false;
 		}
 		return true;
 	}
 	
 	/**
-	 * 根据指定URL读取XML数据
-	 *
-	 * @param string $url
-	 */
-	public function setXMLUrl($url) {
-		$this->setXMLData(self::PostHost($url));
-	}
-	
-	/**
 	 * 创建解析对象
 	 */
 	public function ceateParser() {
-		$this->object = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
+		$this->parse = simplexml_import_dom(DOMDocument::loadXML($this->XMLData));
 	}
 	
 	/**
@@ -113,7 +113,7 @@ class XML {
 	 * @return SimpleXMLElement
 	 */
 	public function getXMLDocument() {
-		return $this->object;
+		return $this->parse;
 	}
 	
 	/**
@@ -136,7 +136,7 @@ class XML {
 	 * @return array SimpleXMLElement objects 
 	 */
 	public function getElementByXPath($tagPath) {
-		if (trim($tagPath)) return $this->object->xpath($tagPath);
+		if (trim($tagPath)) return $this->parse->xpath($tagPath);
 	}
 	
 	/**
@@ -149,16 +149,15 @@ class XML {
 	 * 'children' => array(child1, child2,....);
 	 * 
 	 * 
-	 * @param array SimpleXMLElement objects   $elements
+	 * @param SimpleXMLElement objects   $elements
 	 * @return array
 	 */
-	public function getContentsList($elements) {
-		(!is_array($elements)) && $elements = array($elements);
-		$_result = array();
+	public function parseElement($elements) {
+		$result = array();
 		foreach ($elements as $key => $element) {
-			$_result[] = self::getTagContents($element);
+			$result[] = $this->getTagContents($element);
 		}
-		return $_result;
+		return $result;
 	}
 	
 	/**
@@ -174,12 +173,13 @@ class XML {
 	 * @return array
 	 */
 	public function getTagContents($element) {
-		$_array = array();
-		$_array['tagName'] = $element->getName();
-		$_array['value'] = self::getValue($element);
-		$_array['attributes'] = self::getAttributes($element);
-		$_array['children'] = self::getChildren($element);
-		return $_array;
+		if (!($element instanceof SimpleXMLElement)) return '';
+		$result = array();
+		$result['tagName'] = $element->getName();
+		$result['value'] = $this->getValue($element);
+		$result['attributes'] = $this->getAttributes($element);
+		$result['children'] = $this->getChildren($element);
+		return $result;
 	}
 	
 	/**
@@ -196,11 +196,12 @@ class XML {
 	 * @return array
 	 */
 	public function getCurrent($element) {
-		$_array = array();
-		$_array['tagName'] = $element->getName();
-		$_array['value'] = self::getValue($element);
-		$_array['attributes'] = self::getAttributes($element);
-		return $_array;
+		if (!($element instanceof SimpleXMLElement)) return '';
+		$result = array();
+		$result['tagName'] = $element->getName();
+		$result['value'] = $this->getValue($element);
+		$result['attributes'] = $this->getAttributes($element);
+		return $result;
 	}
 	
 	/**
@@ -209,7 +210,8 @@ class XML {
 	 * @return string
 	 */
 	public function getValue($element) {
-		if ($element[0]) return self::escape($element[0]);
+		if (!($element instanceof SimpleXMLElement)) return '';
+		if (isset($element[0])) return $this->escape($element[0]);
 		return '';
 	}
 	
@@ -219,6 +221,7 @@ class XML {
 	 * @return string
 	 */
 	public function getTagName($element) {
+		if (!($element instanceof SimpleXMLElement)) return '';
 		return $element->getName();
 	}
 	
@@ -228,7 +231,8 @@ class XML {
 	 * @param SimpleXMLElement $element
 	 * @return boolean
 	 */
-	public function hasAttributes($element) {
+	public function haveAttributes($element) {
+		if (!($element instanceof SimpleXMLElement)) return '';
 		if ($element->attributes()) return true;
 		return false;
 	}
@@ -242,14 +246,14 @@ class XML {
 	 * @param SimpleXMLElement $element
 	 * @return array  返回该节点的属性
 	 */
-	public function getAttributes($element) {
-		if (!$this->hasAttributes($element)) return array();
-		$_attributes = array();
-		$attributes = $element->attributes();
-		foreach ($attributes as $key => $value) {
-			$_attributes[$key] = self::escape($value);
+	public function getAttributes($node) {
+		if (!($node instanceof SimpleXMLElement)) return array();
+		if (!($attributeList = $node->attributes())) return array();
+		$attributes = array();
+		foreach ($attributeList as $key => $value) {
+			$attributes[$key] = $this->escape($value);
 		}
-		return $_attributes;
+		return $attributes;
 	}
 	
 	/**
@@ -258,7 +262,8 @@ class XML {
 	 * @param SimpleXMLElement $element
 	 * @return boolean
 	 */
-	public function hasChildren($element) {
+	public function haveChildren($element) {
+		if (!($element instanceof SimpleXMLElement)) return '';
 		if ($element->children()) return true;
 		return false;
 	}
@@ -269,14 +274,14 @@ class XML {
 	 * @param SimpleXMLElement $element
 	 * @return array 
 	 */
-	public function getChildren($element) {
-		if (!$this->hasChildren($element)) return array();
-		$_childs = array();
-		$childs = $element->children();
-		foreach ($childs as $key => $value) {
-			$_childs[] = self::getTagContents($value);
+	public function getChildren($node) {
+		if (!($node instanceof SimpleXMLElement)) return array();
+		if (!($childList = $node->children())) return array();
+		$childs = array();
+		foreach ($childList as $key => $value) {
+			$childs[] = $this->getTagContents($value);
 		}
-		return $_childs;
+		return $childs;
 	}
 	
 	/**
@@ -287,7 +292,7 @@ class XML {
 	 * @return string
 	 */
 	public function escape($param) {
-		return self::dataConvert(strval($param));
+		return trim($this->dataConvert(strval($param)));
 	}
 	
 	/**
@@ -309,49 +314,5 @@ class XML {
 			return $chs->Convert($data);*/
 		}
 		return $data;
-	}
-	
-	/**
-	 * 从给定的一个网址中获得xml内容
-	 * 
-	 * @access private
-	 * @param string $host
-	 * @param string $data
-	 * @param string $method
-	 * @param string $showagent
-	 * @param string $port
-	 * @param integer $timeout
-	 * @return string 
-	 */
-	private function PostHost($host, $data = '', $method = 'GET', $showagent = null, $port = null, $timeout = 30) {
-		//Copyright (c) 2003-2103 phpwind
-		$parse = @parse_url($host);
-		if (empty($parse)) return false;
-		if ((int) $port > 0) {
-			$parse['port'] = $port;
-		} elseif (!$parse['port']) {
-			$parse['port'] = '80';
-		}
-		$parse['host'] = str_replace(array('http:\/\/', 'https:\/\/'), array('', 'ssl:\/\/'), $parse['scheme'] . ":\/\/") . $parse['host'];
-		if (!$fp = @fsockopen($parse['host'], $parse['port'], $errnum, $errstr, $timeout)) return false;
-		$method = strtoupper($method);
-		$wlength = $wdata = $responseText = '';
-		$parse['path'] = str_replace(array('\\', '\/\/'), '/', $parse['path']) . "?" . $parse['query'];
-		if ($method == 'GET') {
-			$separator = $parse['query'] ? '&' : '';
-			substr($data, 0, 1) == '&' && $data = substr($data, 1);
-			$parse['path'] .= $separator . $data;
-		} elseif ($method == 'POST') {
-			$wlength = "Content-length: " . strlen($data) . "\r\n";
-			$wdata = $data;
-		}
-		$write = "{$method} $parse[path] HTTP/1.0\r\nHost: $parse[host]\r\nContent-type: application/x-www-form-urlencoded\r\n{$wlength}Connection: close\r\n\r\n{$wdata}";
-		@fwrite($fp, $write);
-		while ($data = @fread($fp, 4096)) {
-			$responseText .= $data;
-		}
-		@fclose($fp);
-		empty($showagent) && $responseText = trim(stristr($responseText, "\r\n\r\n"), "\r\n");
-		return $responseText;
 	}
 }

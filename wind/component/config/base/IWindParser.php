@@ -16,7 +16,9 @@
  */
 interface IWindParser {
 	public function loadFile($fileName);
+	public function loadXMLString($string);
 	public function parser(); 
 	public function getResult();
-	public function getGAM();
+	public function getGlobalTags();
+	public function getMergeTags();
 }
