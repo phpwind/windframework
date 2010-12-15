@@ -9,10 +9,14 @@
 		<module name='module1'>
 			<path>module1Controllers</path>
 			<template>module1</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 		<module name="module2">
 			<path>module2Controllers</path>
 			<template>module2</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
 	<templates>
@@ -35,9 +39,6 @@
 			<compileDir>compile</compileDir>
 		</template>
 	</templates>
-	<viewerResolvers>
-		<my>WIND:component.viewer.WindViewer</my>
-	</viewerResolvers>
 	<routerParsers>
 		<parser name='url'>
 			<rule>
@@ -45,7 +46,7 @@
 				<controller name='c'>Index</controller>
 				<module name='m'>module1</module>
 			</rule>
-			<path>WIND:component.router.WindUrlBasedRouter</path>
+			<path>WIND:core.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
 </WIND>

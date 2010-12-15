@@ -9,9 +9,13 @@
 		<module name='layout'>
 			<path>actionControllers</path>
 			<template>p</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 		<module name="other">
 			<path>otherControllers</path>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
 	<templates>
@@ -26,7 +30,7 @@
 		</template>
 	</templates>
 	<viewerResolvers>
-		<my>WIND:component.viewer.WindViewer</my>
+		<my>WIND:core.viewer.WindViewer</my>
 	</viewerResolvers>
 	<routerParsers>
 		<parser name='url'>

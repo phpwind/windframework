@@ -8,6 +8,8 @@
 	<modules>
 		<module name='default'>
 			<path>actionControllers</path>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
 	<templates>
@@ -21,4 +23,7 @@
 			<compileDir>compile</compileDir>
 		</template>
 	</templates>
+	<viewerResolvers isMerge='true'>
+		<resolver name='smarty'>libs.WindSmarty</resolver>
+	</viewerResolvers>
 </WIND>

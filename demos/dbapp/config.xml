@@ -8,6 +8,8 @@
 	<modules>
 		<module name='default'>
 			<path>actionControllers</path>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
 
