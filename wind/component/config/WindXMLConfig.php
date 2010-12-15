@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-L::import('WIND:component.config.base.IWindParser');
 L::import('WIND:component.xml.xml');
 
 /**
@@ -16,7 +15,7 @@ L::import('WIND:component.xml.xml');
  * @version $Id$
  * @package
  */
-class WindXMLConfig extends XML implements IWindParser {
+class WindXMLConfig extends XML {
 	/**
 	 * 定义允许拥有的属性
 	 * name: 可以定义一些列的item中每一个item的名字以区分每一个
