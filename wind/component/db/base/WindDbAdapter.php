@@ -258,7 +258,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 替换sql语句
 	 * @return boolean
 	 */
-	final public function replace(){
+	final public function replace($sql){
 		return $this->query($sql);
 	}
 	

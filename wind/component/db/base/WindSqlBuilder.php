@@ -733,7 +733,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function replace(){
 		$this->verifyAdapter();
-		return $this->connection->insert($this->getReplaceSql());
+		return $this->connection->replace($this->getReplaceSql());
 	}
 	
 	/**
