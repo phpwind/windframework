@@ -13,7 +13,6 @@ include (R_P . '/test/component/db/drivers/mssql/WindMsSqlBuilderTest.php');
 include (R_P . '/test/component/db/drivers/mssql/WindMsSqlTest.php');
 
 class AllDBTest {
-	
 	public static function main() {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}

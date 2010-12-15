@@ -6,7 +6,7 @@
  * @license 
  */
 include (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
-L::import('WIND:component.exception.WindException');
+L::import('WIND:core.exception.WindException');
 L::import('WIND:component.db.drivers.mysql.WindMySqlBuilder');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

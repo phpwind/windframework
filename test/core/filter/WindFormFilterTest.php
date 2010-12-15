@@ -6,11 +6,27 @@
  * @license 
  */
 require_once (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
-L::import(R_P . '/test/component/form/WindActionFormTest.php');
-L::import('WIND:component.form.WindFormFilter');
+L::import('WIND:core.filter.WindFormFilter');
+L::import('WIND:core.WindHttpRequest');
+L::import('WIND:core.WindHttpResponse');
+L::import('WIND:core.WindActionForm');
 
-L::import('WIND:component.request.WindHttpRequest');
-L::import('WIND:component.response.WindHttpResponse');
+class UserFormTest extends WindActionForm {
+	protected $name;
+	protected $password;
+	protected $address = 'hangz';
+	protected $nick;
+	protected $_isValidate = false;
+	public function __construct() {
+		parent::__construct();
+		$this->setErrorAction('error');
+	}
+	public function nameValidate() {
+		if (strlen($this->name) < 6) {
+			$this->addError('name too short', 'nameError');
+		}
+	}
+}
 
 class WindFormFilterTest extends BaseTestCase {
 	private $obj;
@@ -31,11 +47,12 @@ class WindFormFilterTest extends BaseTestCase {
 	
 	public function testSetFormNoValidation() {
 		$_GET['name'] = 'phpwind';
-		$_GET['formName'] = 'UserForm';
+		$_GET['formName'] = 'UserFormTest';
+		throw new PHPUnit_Framework_IncompleteTestError('No complete');
 		$response = WindHttpResponse::getInstance();
 		$response->setDispatcher(WindDispatcher::getInstance());
 		$this->obj->doBeforeProcess(WindHttpRequest::getInstance(), $response);
-		$userForm = L::getInstance('UserForm');
+		$userForm = L::getInstance('UserFormTest');
 		$this->assertEquals('phpwind', $userForm->name);
 	}
 	
@@ -44,7 +61,7 @@ class WindFormFilterTest extends BaseTestCase {
 	 */
 	public function testSetFormWithValidation() {
 		$_GET['name'] = 'wind';
-		$_GET['formName'] = 'UserForm';
+		$_GET['formName'] = 'UserFormTest';
 		$_GET['_isValidate'] = true;
 		throw new PHPUnit_Framework_IncompleteTestError('No complete');
 		/*try {

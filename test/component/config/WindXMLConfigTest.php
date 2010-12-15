@@ -7,7 +7,6 @@
  */
 include (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import('WIND:component.config.WindXMLConfig');
-L::import("WIND:component.config.base.IWindConfig");
 
 class WindXMLConfigTest extends BaseTestCase {
 	private $xml;

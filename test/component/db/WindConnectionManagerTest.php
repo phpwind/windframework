@@ -6,8 +6,8 @@
  * @license 
  */
 include (dirname(dirname(dirname(__FILE__))) . '/BaseTestCase.php');
-L::import(WIND_PATH . '.component.exception.WindException');
-L::import(WIND_PATH . '.component.db.WindConnectionManager');
+L::import('WIND:core.exception.WindException');
+L::import('WIND:component.db.WindConnectionManager');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

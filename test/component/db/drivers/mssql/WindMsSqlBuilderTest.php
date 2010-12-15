@@ -6,8 +6,8 @@
  * @license 
  */
 include (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
-L::import(WIND_PATH . '.component.exception.WindException');
-L::import(WIND_PATH . '.component.db.drivers.mssql.WindMsSqlBuilder');
+L::import('WIND:core.exception.WindException');
+L::import('WIND:component.db.drivers.mssql.WindMsSqlBuilder');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>

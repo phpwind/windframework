@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once (dirname(dirname(dirname(__FILE__))) . '/BaseTestCase.php');
-L::import('WIND:component.form.base.WindActionForm');
+require_once (dirname(dirname(__FILE__)) . '/BaseTestCase.php');
+L::import('WIND:core.WindActionForm');
 
 class UserForm extends WindActionForm {
 	protected $name;

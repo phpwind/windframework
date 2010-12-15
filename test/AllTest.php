@@ -22,9 +22,8 @@ class AllTest {
 	private static function registerTest() {
 		$suite = new PHPUnit_Framework_TestSuite('AllTest_Suite');
 		$suite->addTest(AllComponentTest::suite());
-		//$suite->addTest(AllCoreTest::suite());
+		$suite->addTest(ALLCoreTest::suite());
  		return $suite;
 	}
 }
 
-//ALLTest::main();
