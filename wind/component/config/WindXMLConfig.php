@@ -66,15 +66,15 @@ class WindXMLConfig extends XML implements IWindParser {
 	public function parser() {
 		$this->ceateParser();
 		$children = $this->getXMLDocument()->children();
-		$_array = array();
+		$result = array();
 		foreach ($children as $node => $child) {
 			$elements = (array) $this->getElementByXPath($node);
 			foreach ($elements as $element) {
 				list($key, $value) = $this->getContents($element);
-				if (($value = $this->checkValue($value)) !== false) $_array[$key] = $value;
+				if (($value = $this->checkValue($value)) !== false) $result[$key] = $value;
 			}
 		}
-		$this->xmlArray = $_array;
+		$this->xmlArray = $result;
 		return true;
 	}
 	

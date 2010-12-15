@@ -120,7 +120,6 @@ class WindConfigParser {
 	 * @return mixed boolean |multitype:
 	 */
 	private function fetchConfigExt($rootPath) {
-		$rootPath = realpath($rootPath);
 		foreach ($this->configExt as $ext) {
 			if (is_file($rootPath . D_S . $this->configName . '.' . $ext)) {
 				$this->parserEngine = $ext;
@@ -181,18 +180,13 @@ class WindConfigParser {
 	 */
 	private function mergeConfig($defaultConfig, $appConfig, $mergeTags) {
 		if (!$appConfig) return $defaultConfig;
-		$hasInDefaultConfigKeys = array();
 		foreach ($appConfig as $key => $value) {
 			if (in_array($key, $mergeTags) && isset($defaultConfig[$key])) {
-				!is_array($value) && $value = array($value);
-				!is_array($defaultConfig[$key]) && $defaultConfig[$key] = array($defaultConfig[$key]);
-				$appConfig[$key] = array_merge($defaultConfig[$key], $value);
+				$appConfig[$key] = array_merge((array)$defaultConfig[$key], (array)$value);
 			}
-			(!isset($defaultConfig[$key])) && $hasInDefaultConfigKeys[] = $key;
 		}
 		$appConfigKeys = array_keys($appConfig);
-		$_notInAppConfig = array_diff(array_keys($defaultConfig), $hasInDefaultConfigKeys);
-		foreach ($_notInAppConfig as $key) {
+		foreach (array_keys($defaultConfig) as $key) {
 			if (in_array($key, $appConfigKeys)) continue;
 			$appConfig[$key] = $defaultConfig[$key];
 		}
