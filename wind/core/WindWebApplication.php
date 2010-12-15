@@ -88,7 +88,7 @@ class WindWebApplication extends WindApplication {
 		if ($this->dispatcher instanceof WindDispatcher) return;
 		$router = WindRouterFactory::getFactory()->create();
 		$router->doParser($request, $response);
-		$this->dispatcher = new WindDispatcher($request, $response, $this);
+		$this->dispatcher = new WindWebDispatcher($request, $response, $this);
 		$this->dispatcher->initWithRouter($router);
 	}
 	

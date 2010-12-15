@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.base.AbsWindDispatcher');
+L::import('WIND:core.base.WindDispatcher');
 /**
  * 请求转发及页面重定向
  * 
@@ -15,7 +15,7 @@ L::import('WIND:core.base.AbsWindDispatcher');
  * @version $Id$ 
  * @package 
  */
-class WindDispatcher extends AbsWindDispatcher {
+class WindWebDispatcher extends WindDispatcher {
 	private $views = array();
 	
 	/**

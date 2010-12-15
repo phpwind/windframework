@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-abstract class AbsWindDispatcher {
+abstract class WindDispatcher {
 	public $action;
 	public $controller;
 	public $module;
@@ -118,7 +118,7 @@ abstract class AbsWindDispatcher {
 	 * @param WindHttpResponse $response
 	 */
 	protected function dispatchWithTemplate() {
-		
+
 	}
 	
 	/**

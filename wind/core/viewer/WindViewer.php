@@ -110,24 +110,24 @@ class WindViewer implements IWindViewer {
 	}
 	
 	/**
-	 * 获得模板变量名称
-	 */
-	private function getTemplateVarName() {
-		$varName = $this->templateName ? $this->templateName : 'default';
-		return $varName;
-	}
-	
-	/**
 	 * 设置视图信息
 	 * 
 	 * @param WindView $view
 	 */
 	public function initWithView($view) {
-		$this->templateName = $view->getTemplateName();
-		$this->templatePath = $view->getTemplateDir();
-		$this->templateExt = $view->getTemplateExt();
-		$this->layout = $view->getForward()->getLayout();
+		$this->templateName = $view->templateDefault;
+		$this->templatePath = $view->templateDir;
+		$this->templateExt = $view->templateExt;
+		$this->layout = $view->layout;
 		$this->view = $view;
+	}
+	
+	/**
+	 * 获得模板变量名称
+	 */
+	private function getTemplateVarName() {
+		$varName = $this->templateName ? $this->templateName : 'default';
+		return $varName;
 	}
 	
 	/**

@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindRedirecter {
+class WindUrlManager {
 	private $url;
 	private $urlArgs;
 	

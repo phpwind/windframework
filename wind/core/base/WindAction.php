@@ -15,8 +15,8 @@
 abstract class WindAction {
 	protected $request;
 	protected $response;
-	protected $forward = null;
 	protected $error = null;
+	protected $forward = null;
 	
 	/**
 	 * @param WindHttpRequest $request
@@ -141,8 +141,6 @@ abstract class WindAction {
 	private function initBaseAction() {
 		L::import('WIND:core.WindForward');
 		$this->forward = new WindForward();
-		//$this->error = WindErrorMessage::getInstance();
-		$this->setTemplateConfig();
 	}
 	
 	private function getInputWithString($name, $type = '', $callback = null) {

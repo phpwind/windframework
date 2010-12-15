@@ -17,9 +17,14 @@
  * @package 
  */
 class WindView {
-	private $config = array();
+	public $templateDir;
+	public $templateDefault;
+	public $templateExt;
+	public $templateCacheDir;
+	public $templateCompileDir;
+	public $layout = null;
 	
-	private $forward = null;
+	private $config = array();
 	private $viewResolver = null;
 	
 	/**
@@ -50,7 +55,35 @@ class WindView {
 	}
 	
 	/**
+	 * 通过WindForward视图信息设置view
+	 * @param WindForward $forward
+	 */
+	public function initViewWithForward($forward) {
+		if ($forward->getTemplateName()) $this->templateDefault = $forward->getTemplateName();
+		if ($forward->getTemplatePath()) $this->templateDir = $forward->getTemplatePath();
+		$this->layout = $forward->getLayout();
+		return $this;
+	}
+	
+	/**
+	 * @param string $actionHandle
+	 */
+	public function doAction($actionHandle = '', $path = '') {
+		if (!($this->dispatcher instanceof WindDispatcher)) throw new WindException('do action error.');
+		$forward = new WindForward();
+		$forward->setAction($actionHandle, $path);
+		$this->dispatcher->setForward($forward)->dispatch(true);
+	}
+	
+	/**
 	 * 初始化配置文件，获得模板路径信息
+	 * <dir>template</dir>
+	 * <default>index</default>
+	 * <ext>htm</ext>
+	 * <resolver>default</resolver>
+	 * <isCache>false</isCache>
+	 * <cacheDir>cache</cacheDir>
+	 * <compileDir>compile</compileDir>
 	 */
 	private function parseConfig($templateConfig) {
 		$configs = C::getTemplate();
@@ -61,73 +94,10 @@ class WindView {
 			$this->config = array_pop($configs);
 		else
 			throw new WindException('parse template config error.');
-	}
-	
-	/**
-	 * @param string $actionHandle
-	 */
-	public function doAction($actionHandle = '', $path = '') {
-		if (!($this->dispatcher instanceof AbsWindDispatcher)) throw new WindException('do action error.');
-		$forward = clone $this->getForward();
-		$forward->setAction($actionHandle, $path);
-		$this->dispatcher->setForward($forward)->dispatch(true);
-	}
-	
-	/**
-	 * 通过WindForward视图信息设置view
-	 * @param WindForward $forward
-	 */
-	public function initViewWithForward($forward) {
-		if ($forward->getTemplateName()) {
-			$this->config[IWindConfig::TEMPLATE_DEFAULT] = $forward->getTemplateName();
+		foreach ($this->config as $key => $value) {
+			$property = 'template' . ucfirst($key);
+			$this->$property = $value;
 		}
-		if ($forward->getTemplatePath()) {
-			$this->config[IWindConfig::TEMPLATE_DIR] = $forward->getTemplatePath();
-		}
-		$this->forward = $forward;
-		return $this;
-	}
-	
-	/**
-	 * @return the $templatePath
-	 */
-	public function getTemplateDir() {
-		return $this->config[IWindConfig::TEMPLATE_DIR];
-	}
-	
-	/**
-	 * @return the $templateName
-	 */
-	public function getTemplateName() {
-		return $this->config[IWindConfig::TEMPLATE_DEFAULT];
-	}
-	
-	/**
-	 * @return the $templateExt
-	 */
-	public function getTemplateExt() {
-		return $this->config[IWindConfig::TEMPLATE_EXT];
-	}
-	
-	/**
-	 * @return the $templateCacheDir
-	 */
-	public function getTemplateCacheDir() {
-		return $this->config[IWindConfig::TEMPLATE_CACHE_DIR];
-	}
-	
-	/**
-	 * @return the $templateCompileDir
-	 */
-	public function getTemplateCompileDir() {
-		return $this->config[IWindConfig::TEMPLATE_COMPILER_DIR];
-	}
-	
-	/**
-	 * @return WindForward
-	 */
-	public function getForward() {
-		return $this->forward;
 	}
 
 }
