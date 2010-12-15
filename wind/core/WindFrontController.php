@@ -24,13 +24,13 @@ L::import('WIND:core.base.WindServer');
 class WindFrontController extends WindServer {
 	private $applicationType;
 	
-	public function __construct($systemConfig = array(), $type) {
+	public function __construct() {
 		parent::__construct();
-		$this->applicationType = $type;
 		$this->initConfig();
 	}
 	
-	public function run() {
+	public function run($applicationType = 'web') {
+		$this->applicationType = $applicationType;
 		$this->beforProcess();
 		parent::run();
 		$this->afterProcess();
