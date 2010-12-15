@@ -13,10 +13,11 @@
  * @package 
  */
 abstract class WindAction {
+	public $forward = null;
+	public $urlManager = null;
+	
 	protected $request;
 	protected $response;
-	protected $error = null;
-	protected $forward = null;
 	
 	/**
 	 * @param WindHttpRequest $request

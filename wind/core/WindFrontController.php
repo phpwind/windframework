@@ -23,7 +23,6 @@ L::import('WIND:core.base.WindServer');
  */
 class WindFrontController extends WindServer {
 	private $applicationType;
-	private $application;
 	
 	public function __construct() {
 		parent::__construct();
@@ -90,15 +89,12 @@ class WindFrontController extends WindServer {
 	 * @return WindWebApplication
 	 */
 	protected function createApplication() {
-		if ($this->application === null) {
-			$application = C::getApplications($this->applicationType);
-			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
-			if (!class_exists($className)) {
-				throw new WindException('create application failed. the class ' . $className . ' is not exist.');
-			}
-			$this->application = new $className();
+		$application = C::getApplications($this->applicationType);
+		$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
+		if (!class_exists($className)) {
+			throw new WindException('create application failed. the class ' . $className . ' is not exist.');
 		}
-		return $this->application;
+		return new $className();
 	}
 
 }

@@ -15,7 +15,6 @@ L::import('WIND:core.base.WindApplication');
  */
 class WindWebApplication extends WindApplication {
 	public $dispatcher = null;
-	
 	protected $process = '';
 	
 	/**
