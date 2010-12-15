@@ -23,18 +23,13 @@ L::import("WIND:core.exception.WindException");
  */
 class WindConfigParser {
 	private $defaultConfig = 'wind_config';
-	
-	private $configPath = '';
-	
 	private $globalAppsConfig = 'config.php';
 	
 	private $configParser = null;
 	private $parserEngine = 'xml';
-	private $configExt = array('xml', 'php', 'properpoties', 'ini');
+	private $configExt = array('xml', 'php', 'ini', 'properpoties');
 	
 	private $encoding = 'UTF-8';
-	
-	private $currentApp = '';
 	
 	/**
 	 * 初始化
@@ -47,33 +42,33 @@ class WindConfigParser {
 	/**
 	 * 1、缺省的配置文件，读取框架提供的php格式返回
 	 * 2、如果输入的配置文件格式没有提供支持，则抛出异常
-	 * @param string $configPath
+	 * 3、根据格式进行解析
+	 * @param string $currentAppName 当前应用的名字
+	 * @param string $configPath 当前应用配置文件地址
+	 * @return array 
 	 */
 	public function parser($currentAppName, $configPath = '') {
-		echo $configPath;
 		if ($this->isCompiled($currentAppName)) {
 			$app = W::getApps($currentAppName);
 			return @include $app[IWindConfig::APP_CONFIG];
 		}
-		$this->currentApp = trim($currentAppName);
 		$configPath = trim($configPath);
+		$userConfig = array();
 		if ($configPath === '') {
-			$config = @include(WIND_PATH . D_S . $this->defaultConfig . '.php');
+			$this->parserEngine = 'php';
 		} elseif (!$this->fetchConfigExt($configPath)) {
 			throw new WindException("The format of the config file doesn't sopported yet!");
 		} else {
-			$defaultConfigPath = WIND_PATH . D_S . $this->defaultConfig . '.' . $this->parserEngine;
-			list($defaultConfig, $globalTags, $mergeTags) = $this->executeParser($defaultConfigPath);
 			list($userConfig) = $this->executeParser($configPath);
 		}
+		$defaultConfigPath = WIND_PATH . D_S . $this->defaultConfig . '.' . $this->parserEngine;
+		list($defaultConfig, $globalTags, $mergeTags) = $this->executeParser($defaultConfigPath);
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig, $mergeTags);
-		$userConfig[IWindConfig::APP] = $this->getAppInfo($configPath, $userConfig);
 		
-		W::setApps($userConfig[IWindConfig::APP][IWindConfig::APP_NAME], $userConfig[IWindConfig::APP]);
-		W::setCurrentApp($userConfig[IWindConfig::APP][IWindConfig::APP_NAME]);
-		$this->updateGlobalCache($userConfig, $globalTags);
+		W::setCurrentApp($currentAppName);
+		$this->updateGlobalCache($currentAppName);
 		
-		Common::writeover($userConfig[IWindConfig::APP][IWindConfig::APP_CONFIG], "<?php\r\n return " . Common::varExport($userConfig) . ";\r\n?>");
+		Common::writeover(COMPILE_PATH . D_S . $currentAppName . '_config.php', "<?php\r\n return " . Common::varExport($userConfig) . ";\r\n?>");
 		return $userConfig;
 	}
 	
@@ -130,29 +125,7 @@ class WindConfigParser {
 		$ext = strtolower(trim(strrchr($configPath, '.'), '.'));
 		if (!in_array($ext, $this->configExt)) return false;
 		$this->parserEngine = $ext;
-		$this->configPath = $configPath;
 		return true;
-	}
-	
-	/**
-	 * @param rootPath
-	 * @param userConfig
-	 */
-	private function getAppInfo($rootPath, $userConfig) {
-		$app = isset($userConfig[IWindConfig::APP]) ? $userConfig[IWindConfig::APP] : array();
-		if (!isset($app[IWindConfig::APP_NAME]) || $app[IWindConfig::APP_NAME] == '' || $app[IWindConfig::APP_NAME] == 'default') {
-			$app[IWindConfig::APP_NAME] = $this->getAppName($rootPath);
-		}
-		if (!isset($app[IWindConfig::APP_ROOTPATH]) || $app[IWindConfig::APP_ROOTPATH] == '' || $app[IWindConfig::APP_ROOTPATH] == 'default') {
-			$app[IWindConfig::APP_ROOTPATH] = realpath($rootPath);
-		}
-		$_file = D_S . $app[IWindConfig::APP_NAME] . '_config.php';
-		if (!isset($app[IWindConfig::APP_CONFIG]) || $app[IWindConfig::APP_CONFIG] == '') {
-			$app[IWindConfig::APP_CONFIG] = COMPILE_PATH . $_file;
-		} else {
-			$app[IWindConfig::APP_CONFIG] = $this->getRealPath($app[IWindConfig::APP_ROOTPATH], $app[IWindConfig::APP_CONFIG]) . $_file;
-		}
-		return $app;
 	}
 	
 	/**
@@ -205,21 +178,15 @@ class WindConfigParser {
 	 * 添加缓存
 	 * @param array $config
 	 */
-	private function updateGlobalCache($config, $globalTags) {
-		if (count($globalTags) == 0) return false;
-		$globalArray = array();
-		foreach ($globalTags as $key) {
-			if (!isset($config[$key])) continue;
-			$temp = $config[$key];
-			if ($temp['name']) $key = $temp['name'];
-			$globalArray[$key] = $temp;
-		}
+	private function updateGlobalCache($currentAppName) {
+		if (trim($currentAppName) == '') return false;
 		$globalConfigPath = COMPILE_PATH . D_S . $this->globalAppsConfig;
 		$sysConfig = array();
 		if (is_file($globalConfigPath)) {
 			$sysConfig = @include ($globalConfigPath);
 		}
-		$sysConfig = array_merge($sysConfig, $globalArray);
+		$sysConfig[$currentAppName][IWindConfig::APP_NAME] = $currentAppName;
+		$sysConfig[$currentAppName][IWindConfig::APP_CONFIG] = realpath(COMPILE_PATH . D_S . $currentAppName . '_config.php');
 		Common::writeover($globalConfigPath, "<?php\r\n return " . Common::varExport($sysConfig) . ";\r\n?>");
 		return true;
 	}
@@ -235,17 +202,5 @@ class WindConfigParser {
 		} else {
 			return L::getRealPath($oPath . '.*');
 		}
-	}
-	
-	/**
-	 * 获得当前应用的名字，解析路径的最后一个文件夹
-	 * 
-	 * @return string 返回符合的项
-	 */
-	private function getAppName($rootPath) {
-		if ($this->currentApp != '') return $this->currentApp;
-		$path = rtrim(rtrim($rootPath, '\\'), '/');
-		$pos = (strrpos($path, '\\') === false) ? strrpos($path, '/') : strrpos($path, '\\');
-		return substr($path, -(strlen($path) - $pos - 1));
 	}
 }

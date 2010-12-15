@@ -79,10 +79,7 @@ class WindFrontController extends WindServer {
 	 * @param array $config
 	 */
 	private function initConfig() {
-		L::import('WIND:component.config.WindConfigParser');
-		$configParser = new WindConfigParser();
-		$appConfig = $configParser->parser($this->request);
-		C::init($appConfig);
+		
 	}
 	
 	/**
