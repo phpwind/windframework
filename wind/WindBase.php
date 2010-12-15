@@ -23,8 +23,8 @@ class W {
 	private static $_current = '';
 	private static $_systemConfig = null;
 	
-	static public function init() {
-		self::initConfig();
+	static public function init($configPath = '') {
+		self::initConfig($configPath);
 		self::initBaseLib();
 		self::initErrorHandle();
 	}
@@ -33,9 +33,8 @@ class W {
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 */
-	static public function application($current) {
-		self::init();
-		self::setCurrentApp($current);
+	static public function application($configPath = '') {
+		self::init($configPath);
 		return new WindFrontController();
 	}
 	
@@ -121,15 +120,25 @@ class W {
 	}
 	
 	/**
-	 * 解析配置文件
+	 * 初始化配置信息
 	 */
-	static private function initConfig() {
+	static private function initConfig($configPath = '') {
 		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
+		$systemConfig = self::parseConfig($configPath);
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
 		$sysConfig = include COMPILE_PATH . '/config.php';
 		foreach ($sysConfig as $appName => $appConfig) {
 			self::setApps($appName, $appConfig);
 		}
+	}
+	
+	/**
+	 * 解析配置文件
+	 */
+	private static function parseConfig($configPath = '') {
+		L::import('WIND:component.config.WindConfigParser');
+		$configParser = new WindConfigParser();
+		return $configParser->parser($configPath);
 	}
 	
 	static private function initErrorHandle() {	
