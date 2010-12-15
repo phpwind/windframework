@@ -31,7 +31,7 @@ class WindPropertiesParser {
 	 * @param boolean $build   是否按格式解析数据
 	 * @return array
 	 */
-	public function parse($filename, $process, $build = true) {
+	public function parse($filename, $process = true, $build = true) {
 		$data = $this->parse_properties_file ( $filename, $process );
 		return $build ? $this->buildData ( $data ) : $data;
 	}
