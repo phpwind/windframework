@@ -308,9 +308,9 @@ abstract class WindSqlBuilder {
 		$params = func_num_args();
 		$data = $params >1 ? func_get_args() : func_get_arg(0);
 		$key = array_keys ( $data );
+		$tmp_data = $field = array ();
 		if (is_string ( $key [0] )) {
 			$rows = count ( $data [$key [0]] );
-			$tmp_data = $field = array ();
 			for($i = 0; $i < $rows; $i ++) {
 				foreach ( $data as $key => $value ) {
 					$fvalues = array_values($field);
