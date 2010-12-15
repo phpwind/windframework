@@ -103,6 +103,7 @@ class W {
 	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
 	 */
 	static private function initLoad() {
+		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.router.*');
 		L::import('WIND:core.exception.*');
@@ -120,7 +121,6 @@ class W {
 	 * 初始化配置信息
 	 */
 	static private function initConfig($currentName, $configPath = '') {
-		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
 		$systemConfig = self::parseConfig($currentName, $configPath);
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
 		$sysConfig = include COMPILE_PATH . '/config.php';
