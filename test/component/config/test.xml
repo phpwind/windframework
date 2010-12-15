@@ -20,5 +20,5 @@
 	<jobs isMerge='true'>
 		<job name="php">PHP programmer</job>
 	</jobs>
-	<sex value="mel"/>
+	<sex />
 </root>

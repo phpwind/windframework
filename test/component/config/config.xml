@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <app>
+    	<name>test</name>
+    	<rootPath></rootPath>
+    	<configPath>WIND:compile</configPath>
+    </app>
+    <viewerResolvers>
+		<resolver name='pp'>WIND:core.viewer.WindViewer</resolver>
+	</viewerResolvers>
+</root>
