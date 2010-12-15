@@ -21,16 +21,11 @@ class WindRouterFactory extends WindFactory {
 	 * @see wind/component/factory/base/WindFactory#create()
 	 */
 	public function create() {
-		if ($this->router === null) {
-			$parserConfig = C::getRouterParsers(C::getRouter('parser'));
-			$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
-			$className = L::import($parserPath);
-			if (!class_exists($className)) {
-				throw new WindException('The router ' . $className . ' is not exists.');
-			}
-			$this->router = &new $className($parserConfig);
-		}
-		return $this->router;
+		$parserConfig = C::getRouterParsers(C::getRouter('parser'));
+		$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
+		$className = L::import($parserPath);
+		if (!class_exists($className)) throw new WindException('The router ' . $className . ' is not exists.');
+		return new $className($parserConfig);
 	}
 	
 	/**

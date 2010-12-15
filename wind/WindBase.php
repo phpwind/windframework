@@ -114,7 +114,7 @@ class W {
 		L::import('WIND:core.viewer.*');
 		L::import('WIND:core.*');
 		if (self::ifCompile() && !IS_DEBUG) {
-			L::import('WIND:utility.WindPack');
+			L::import('WIND:component.WindPack');
 			$pack = L::getInstance('WindPack');
 			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 		}

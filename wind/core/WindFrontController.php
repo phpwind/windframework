@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.base.WindServlet');
+L::import('WIND:core.base.WindServer');
 /**
  * 
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -21,30 +21,30 @@ L::import('WIND:core.base.WindServlet');
  * @version $Id$ 
  * @package 
  */
-class WindFrontController extends WindServlet {
-	private $application = null;
+class WindFrontController extends WindServer {
+	private $applicationType;
+	private $application;
 	
 	public function __construct() {
 		parent::__construct();
 		$this->initConfig();
 	}
 	
-	public function run() {
+	public function run($applicationType = 'web') {
+		$this->applicationType = $applicationType;
 		$this->beforProcess();
 		parent::run();
 		$this->afterProcess();
 	}
 	
-	protected function beforProcess() {
-		$this->initDispatch();
-	}
+	protected function beforProcess() {}
 	
 	public function process($request, $response) {
 		if ($this->initFilter()) return;
-		$applicationController = $this->getApplicationHandle();
-		$applicationController->init();
-		$applicationController->processRequest($request, $response);
-		$applicationController->destory();
+		$application = $this->createApplication();
+		$application->init();
+		$application->processRequest($request, $response);
+		$application->destory();
 	}
 	
 	protected function afterProcess() {
@@ -87,41 +87,18 @@ class WindFrontController extends WindServlet {
 	}
 	
 	/**
-	 * 初始化页面分发器
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	protected function initDispatch() {
-		if ($this->response->getDispatcher() && $this->response->getDispatcher()->getAction()) return;
-		$router = WindRouterFactory::getFactory()->create();
-		$router->doParser($this->request, $this->response);
-		$dispatcher = L::getInstance('WindDispatcher', array($this->request, $this->response, $this));
-		$this->response->setDispatcher($dispatcher->initWithRouter($router));
-	}
-	
-	/**
-	 * @param string $key
 	 * @return WindWebApplication
 	 */
-	public function &getApplicationHandle($key = 'web') {
-		if (!isset($this->application[$key])) {
-			$application = C::getApplications($key);
+	protected function createApplication() {
+		if ($this->application === null) {
+			$application = C::getApplications($this->applicationType);
 			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
-			$this->application[$key] = new $className();
-		}
-		return $this->application[$key];
-	}
-	
-	/**
-	 * 初始化application应用
-	 */
-	public function initApplication() {
-		$requestType = $this->request->getRequestType();
-		if (!isset($this->application)) {
-			$application = C::getApplications($requestType);
-			$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
+			if (!class_exists($className)) {
+				throw new WindException('create application failed. the class ' . $className . ' is not exist.');
+			}
 			$this->application = new $className();
 		}
+		return $this->application;
 	}
 
 }

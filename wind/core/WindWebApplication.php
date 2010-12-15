@@ -14,16 +14,15 @@ L::import('WIND:core.base.WindApplication');
  * @package 
  */
 class WindWebApplication extends WindApplication {
+	public $dispatcher = null;
+	
 	protected $process = '';
-	protected $dispatcher = null;
 	
 	/**
 	 * 初始化配置信息
 	 * @param WSystemConfig $configObj
 	 */
-	public function init() {
-
-	}
+	public function init() {}
 	
 	/**
 	 * @param WindHttpRequest $request
@@ -31,13 +30,13 @@ class WindWebApplication extends WindApplication {
 	 * @param WSystemConfig $configObj
 	 */
 	public function processRequest($request, $response) {
-		/* 获得操作句柄 */
-		list($action, $method) = $this->getActionHandle($request, $response);
+		$this->initDispatcher($request, $response);
+		list($className, $method) = $this->getActionHandle($request, $response);
+		$action = new $className($request, $response);
+		if (!($action instanceof WindAction)) throw new WindException('the type of action is error.');
 		$action->beforeAction();
-		$action->$method($request, $response);
+		$action->$method();
 		$action->afterAction();
-		
-		/* 获得请求跳转信息 */
 		$this->processDispatch($request, $response, $action->forward());
 	}
 	
@@ -48,14 +47,13 @@ class WindWebApplication extends WindApplication {
 	 * @param WindHttpResponse $response
 	 * @return array(WindAction,string)
 	 */
-	protected function getActionHandle($request, $response) {
-		list($className, $method) = L::getInstance('WindDispatcher')->getActionHandle();
-		$this->checkReprocess($className . '_' . $method);
+	protected function getActionHandle() {
+		list($className, $method) = $this->dispatcher->getActionHandle();
 		if ($className === null || $method === null) {
 			throw new WindException('can\'t create action handle.');
 		}
-		$action = new $className($request, $response);
-		return array($action, $method);
+		$this->checkReprocess($className . '_' . $method);
+		return array($className, $method);
 	}
 	
 	/**
@@ -64,9 +62,7 @@ class WindWebApplication extends WindApplication {
 	 */
 	protected function checkReprocess($key = '') {
 		if ($this->process && $this->process === $key) {
-			//TODO
-			echo 'Duplicate request \'' . $key . '\'';
-			exit();
+			throw new WindException('Duplicate request \'' . $key . '\'');
 		}
 		$this->process = $key;
 	}
@@ -79,7 +75,21 @@ class WindWebApplication extends WindApplication {
 	 * @param WindModelAndView $forward
 	 */
 	protected function processDispatch($request, $response, $forward) {
-		L::getInstance('WindDispatcher')->setForward($forward)->dispatch();
+		$this->dispatcher->setForward($forward)->dispatch();
+	}
+	
+	/**
+	 * 初始化Dispatcher
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 */
+	protected function initDispatcher($request, $response) {
+		if ($this->dispatcher instanceof WindDispatcher) return;
+		$router = WindRouterFactory::getFactory()->create();
+		$router->doParser($request, $response);
+		$this->dispatcher = new WindDispatcher($request, $response, $this);
+		$this->dispatcher->initWithRouter($router);
 	}
 	
 	public function destory() {}

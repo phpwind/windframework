@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WindServlet {
+abstract class WindServer {
 	protected $request = null;
 	protected $response = null;
 	

@@ -67,9 +67,10 @@ class WindView {
 	 * @param string $actionHandle
 	 */
 	public function doAction($actionHandle = '', $path = '') {
+		if (!($this->dispatcher instanceof AbsWindDispatcher)) throw new WindException('do action error.');
 		$forward = clone $this->getForward();
 		$forward->setAction($actionHandle, $path);
-		L::getInstance('WindDispatcher')->setForward($forward)->dispatch(true);
+		$this->dispatcher->setForward($forward)->dispatch(true);
 	}
 	
 	/**
