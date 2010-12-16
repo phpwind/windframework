@@ -15,6 +15,7 @@
 class IndexController extends WindController {
 	
 	public function run() {
+		echo 'sdfsdfwe';
 		$this->setOutput('content vars.', 'test');
 		$this->setTemplate('index_run');
 	}
