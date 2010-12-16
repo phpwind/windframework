@@ -13,4 +13,4 @@ define('C_P', R_P . '/wind/');
 //require_once (R_P . '/data/config.php');
 require_once (F_P . '/wind.php');
 
-W::application('SmartyDemo')->run();
+W::application('SmartyDemo', R_P . 'config.xml')->run();

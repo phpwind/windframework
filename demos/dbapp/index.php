@@ -13,4 +13,5 @@ define('FREAMWORK_PATH', R_P . '/../../wind/');
 /* 缓存文件路径 */
 define('COMPILE_PATH', R_P . 'compile/');
 require_once (FREAMWORK_PATH . '/wind.php');
-W::application('TEST')->run();
+
+W::application('TEST', R_P . 'config.xml')->run();

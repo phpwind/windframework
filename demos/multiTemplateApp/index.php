@@ -13,4 +13,4 @@ define('FREAMWORK_PATH', R_P . '/../../wind/');
 define('COMPILE_PATH', R_P . 'compile/');
 require_once (FREAMWORK_PATH . '/wind.php');
 
-W::application('temeplatesApp')->run();
+W::application('temeplatesApp', R_P . 'config.xml')->run();
