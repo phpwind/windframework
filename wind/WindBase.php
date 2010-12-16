@@ -122,6 +122,7 @@ class W {
 	 */
 	static private function initConfig($currentName, $configPath = '') {
 		$systemConfig = self::parseConfig($currentName, $configPath);
+		C::init($systemConfig);
 		if (!is_file(COMPILE_PATH . '/config.php')) return false;
 		$sysConfig = include COMPILE_PATH . '/config.php';
 		foreach ($sysConfig as $appName => $appConfig) {

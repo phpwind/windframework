@@ -18,21 +18,18 @@
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
-			<template>default</template>
-			<suffix>controller</suffix>
+			<template>wind</template>
 			<controllerSuffix>controller</controllerSuffix>
 			<actionSuffix>action</actionSuffix>
 			<method>run</method>
 		</module>
 	</modules>
-	<error>
+	<error isMerge='true'>
 		<errorAction name='default'>WIND:core.WindErrorAction</errorAction>
-		<errorAction name='default1'>WIND:core.WindErrorAction</errorAction>
-		<errorAction name='default2'>WIND:core.WindErrorAction</errorAction>
 	</error>
 	<filters isMerge='true'>
 		<filter name="WindFormFilter">
-			<filterPath>WIND:component.form.WindFormFilter</filterPath>
+			<filterPath>WIND:core.filter.WindFormFilter</filterPath>
 		</filter>
 	</filters>
 	<templates>

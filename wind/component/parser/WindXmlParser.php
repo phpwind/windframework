@@ -13,11 +13,12 @@
  * @version $Id$ 
  * @package 
  */
-class WindXmlParse{
+class WindXmlParser{
 	/**
 	 * @var string 节点名称
 	 */
 	const NAME = 'name';
+	
 	/**
 	 * @var Domdocument DOM解析器
 	 */
@@ -26,7 +27,7 @@ class WindXmlParse{
 	 * @param string $version xml版本
 	 * @param string $encode  xml编码
 	 */
-	public function __construct($version = '1.0',$encode = 'utf-8'){
+	public function __construct($version = '1.0', $encode = 'utf-8'){
 		$this->dom = new DOMDocument($version,$encode);
 	}
 	

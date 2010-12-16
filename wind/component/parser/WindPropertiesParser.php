@@ -21,7 +21,7 @@ class WindPropertiesParser {
 	private $separator = '.';
 	
 	public function __construct() {
-	
+
 	}
 	
 	/**
@@ -32,8 +32,8 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function parse($filename, $process = true, $build = true) {
-		$data = $this->parse_properties_file ( $filename, $process );
-		return $build ? $this->buildData ( $data ) : $data;
+		$data = $this->parse_properties_file($filename, $process);
+		return $build ? $this->buildData($data) : $data;
 	}
 	
 	/**
@@ -47,32 +47,36 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function parse_properties_file($filename, $process = true) {
-		if (! is_file ( $filename ) || !in_array(substr($filename,strrpos($filename,'.')+1),array('properties'))) {
-			return array ();
+		if (!is_file($filename) || !in_array(substr($filename, strrpos($filename, '.') + 1), array('properties'))) {
+			return array();
 		}
-		$fp = fopen ( $filename, 'r' );
-		$content = fread ( $fp, filesize ( $filename ) );
-		fclose ( $fp );
-		$content = explode ( "\n", $content );
-		$data = array ();
+		$fp = fopen($filename, 'r');
+		$content = fread($fp, filesize($filename));
+		fclose($fp);
+		$content = explode("\n", $content);
+		$data = array();
 		$last_process = $current_process = '';
-		foreach ( $content as $key => $value ) {
-			if (0 === strpos ( trim ( $value ), self::COMMENT ) || in_array ( trim ( $value ), array ('', "\t", "\n" ) )) {
+		foreach ($content as $key => $value) {
+			$value = str_replace(array("\n", "\r"), '', trim($value));
+			if (0 === strpos(trim($value), self::COMMENT) || in_array(trim($value), array('', "\t", "\n"))) {
 				continue;
 			}
-			$tmp = explode ( '=', $value );
-			if (0 === strpos ( trim ( $value ), self::LPROCESS ) && strlen ( $value ) - 2 === strrpos ( $value, self::RPROCESS )) {
+			$tmp = explode('=', $value);
+			if (0 === strpos(trim($value), self::LPROCESS) && strlen($value) - 2 === strrpos($value, self::RPROCESS)) {
 				if ($process) {
-					$current_process = $this->trimChar ( trim ( $value ), array (self::LPROCESS, self::RPROCESS ) );
-					$data [$current_process] = array ();
+					$current_process = $this->trimChar(trim($value), array(self::LPROCESS, self::RPROCESS));
+					$data[$current_process] = array();
 					$last_process = $current_process;
 				}
 				continue;
 			}
+			$tmp[0] = trim($tmp[0]);
+			$tmp[1] = trim($tmp[1]);
+			
 			if ($last_process) {
-				count ( $tmp ) > 1 ? $data [$last_process] [$tmp [0]] = $tmp [1] : $data [$last_process] [$tmp [0]] = '';
+				count($tmp) > 1 ? $data[$last_process][$tmp[0]] = $tmp[1] : $data[$last_process][$tmp[0]] = '';
 			} else {
-				count ( $tmp ) > 1 ? $data [$tmp [0]] = $tmp [1] : $data [$tmp [0]] = '';
+				count($tmp) > 1 ? $data[$tmp[0]] = $tmp[1] : $data[$tmp[0]] = '';
 			}
 		}
 		return $data;
@@ -85,11 +89,11 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function buildData(&$data) {
-		foreach ( $data as $key => $value ) {
-			if (is_array ( $value )) {
-				$data [$key] = $this->formatDataArray ( $value );
+		foreach ($data as $key => $value) {
+			if (is_array($value)) {
+				$data[$key] = $this->formatDataArray($value);
 			} else {
-				$this->fromatDataFromString ( $key, $value, $data );
+				$this->fromatDataFromString($key, $value, $data);
 			}
 		}
 		return $data;
@@ -103,13 +107,13 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function toArray($key, $value, &$data = array()) {
-		if (strpos ( $key, $this->separator )) {
-			$start = substr ( $key, 0, strpos ( $key, $this->separator ) );
-			$end = substr ( $key, strpos ( $key, $this->separator ) + 1 );
-			$data [$start] = array ();
-			$this->toArray ( $end, $value, $data [$start] );
+		if (strpos($key, $this->separator)) {
+			$start = substr($key, 0, strpos($key, $this->separator));
+			$end = substr($key, strpos($key, $this->separator) + 1);
+			$data[$start] = array();
+			$this->toArray($end, $value, $data[$start]);
 		} else {
-			$data [$key] = $value;
+			$data[$key] = $value;
 		}
 		return $data;
 	}
@@ -121,16 +125,16 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function formatDataArray(&$original, &$data = array()) {
-		foreach ( $original as $key => $value ) {
-			$tmp = $this->toArray ( $key, $value );
-			foreach ( $tmp as $tkey => $tValue ) {
-				if (is_array ( $tValue )) {
-					if (! isset ( $data [$tkey] )) {
-						$data [$tkey] = array ();
+		foreach ($original as $key => $value) {
+			$tmp = $this->toArray($key, $value);
+			foreach ($tmp as $tkey => $tValue) {
+				if (is_array($tValue)) {
+					if (!isset($data[$tkey])) {
+						$data[$tkey] = array();
 					}
-					$this->formatDataArray ( $tValue, &$data [$tkey] );
+					$this->formatDataArray($tValue, &$data[$tkey]);
 				} else {
-					$data [$tkey] = $tValue;
+					$data[$tkey] = $tValue;
 				}
 			}
 		}
@@ -145,21 +149,21 @@ class WindPropertiesParser {
 	 * return array
 	 */
 	public function fromatDataFromString($key, $value, &$data) {
-		$start = substr ( $key, 0, strpos ( $key, $this->separator ) );
-		$tmp = $this->toArray ( $key, $value );
-		if (! is_array ( $data [$start] ) && $tmp [$start]) {
-			$data [$start] = $tmp [$start];
+		$start = substr($key, 0, strpos($key, $this->separator));
+		$tmp = $this->toArray($key, $value);
+		if ((!isset($data[$start]) || !is_array($data[$start])) && $tmp[$start]) {
+			$data[$start] = $tmp[$start];
 		} else {
-			foreach ( $data as $d_key => $d_value ) {
-				if (! is_array ( $tmp [$d_key] )) {
+			foreach ($data as $d_key => $d_value) {
+				if (!isset($tmp[$d_key]) || !is_array($tmp[$d_key])) {
 					continue;
 				}
-				foreach ( $tmp [$d_key] as $a => $b ) {
-					$this->merge($a,$b,$data [$start]);
+				foreach ($tmp[$d_key] as $a => $b) {
+					$this->merge($a, $b, $data[$start]);
 				}
 			}
 		}
-		unset ( $data [$key] );
+		unset($data[$key]);
 		return $data;
 	}
 	
@@ -170,16 +174,16 @@ class WindPropertiesParser {
 	 * @param array $data
 	 * @return array
 	 */
-	private function merge($key,$value,&$data = array()){
-		if(is_array($value)){
+	private function merge($key, $value, &$data = array()) {
+		if (is_array($value)) {
 			$v_key = array_keys($value);
 			$c_key = $v_key[0];
-			if(is_array($value[$c_key])){
-				$this->merge($c_key,$value[$c_key],$data[$key]);
-			}else{
+			if (is_array($value[$c_key])) {
+				$this->merge($c_key, $value[$c_key], $data[$key]);
+			} else {
 				$data[$key][$c_key] = $value[$c_key];
 			}
-		}else{
+		} else {
 			$data[$key] = $value;
 		}
 		return $data;
@@ -192,9 +196,9 @@ class WindPropertiesParser {
 	 * @return string
 	 */
 	private function trimChar($str, $char = ' ') {
-		$char = is_array ( $char ) ? $char : array ($char );
-		foreach ( $char as $value ) {
-			$str = trim ( $str, $value );
+		$char = is_array($char) ? $char : array($char);
+		foreach ($char as $value) {
+			$str = trim($str, $value);
 		}
 		return $str;
 	}

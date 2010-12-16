@@ -47,14 +47,6 @@ class WindXMLConfig extends XML {
 	}
 	
 	/**
-	 * 根据读取的内容解析
-	 * @param unknown_type $filename
-	 */
-	public function loadXMLString($xmlString) {
-		$this->setXMLData(trim($xmlString));
-	}
-	
-	/**
 	 * 内容解析
 	 *
 	 * 内容的解析依赖于配置文件中配置项的格式进行，每个配置项对应的在IWindConfig中都必须有对应的常量声明
@@ -62,7 +54,8 @@ class WindXMLConfig extends XML {
 	 *
 	 * @return boolean
 	 */
-	public function parser() {
+	public function parser($filename) {
+		$this->getXMLFromFile($filename);
 		$this->ceateParser();
 		$children = $this->getXMLDocument()->children();
 		$result = array();
@@ -74,34 +67,7 @@ class WindXMLConfig extends XML {
 			}
 		}
 		$this->xmlArray = $result;
-		return true;
-	}
-	
-	/*
-	 * 返回解析的结果
-	 * @return array 返回解析后的数据信息
-	 */
-	public function getResult() {
-		if (!$this->xmlArray) $this->parser();
-		return $this->xmlArray;
-	}
-
-	/**
-	 * 返回需要设置全局的标签集
-	 * 
-	 * @return array; 
-	 */
-	public function getGlobalTags() {
-		return $this->globalTags;
-	}
-	
-	/**
-	 * 返回需要设置合并的标签集
-	 * 
-	 * @return array; 
-	 */
-	public function getMergeTags() {
-		return $this->mergeTags;
+		return $result;
 	}
 	
 	/**
@@ -132,8 +98,9 @@ class WindXMLConfig extends XML {
 		$hasAttr = $this->haveAttributes($node);
 		$hasChild = $this->haveChildren($node);
 		if ($hasAttr && $hasChild) {
-			list($tag) = $this->getAttributesList($node);
+			list($tag, $attributes) = $this->getAttributesList($node);
 			list(, $childValue) = $this->getChildrenList($node);
+			$childValue = (count($attributes) == 0) ? $childValue : array_merge($childValue, $attributes);
 			return array($tag, $childValue);
 		}
 		if ($hasChild) {
@@ -162,9 +129,12 @@ class WindXMLConfig extends XML {
 	private function getAttributesList($node) {
 		$tag = $node->getName();
 		$attributes = $this->getAttributes($node);
-		$attributes['tagName'] = $tag;
-		(isset($attributes[self::NAME])) && $tag = $attributes[self::NAME];
-		$this->setGlobalAndMergeTags($attributes);
+		//$attributes['tagName'] = $tag;
+		if (isset($attributes[self::NAME])) {
+			$tag = $attributes[self::NAME]; 
+			unset($attributes[self::NAME]);
+		}
+		//$this->setGlobalAndMergeTags($attributes);
 		return array($tag, $attributes);
 	}
 	
