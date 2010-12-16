@@ -89,7 +89,7 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function buildData(&$data) {
-		foreach ($data as $key => $value) {
+		foreach ((array)$data as $key => $value) {
 			if (is_array($value)) {
 				$data[$key] = $this->formatDataArray($value);
 			} else {
@@ -125,7 +125,7 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function formatDataArray(&$original, &$data = array()) {
-		foreach ($original as $key => $value) {
+		foreach ((array)$original as $key => $value) {
 			$tmp = $this->toArray($key, $value);
 			foreach ($tmp as $tkey => $tValue) {
 				if (is_array($tValue)) {
@@ -151,7 +151,7 @@ class WindPropertiesParser {
 	public function fromatDataFromString($key, $value, &$data) {
 		$start = substr($key, 0, strpos($key, $this->separator));
 		$tmp = $this->toArray($key, $value);
-		if ((!isset($data[$start]) || !is_array($data[$start])) && $tmp[$start]) {
+		if ((!isset($data[$start]) || !is_array($data[$start])) && isset($tmp[$start])) {
 			$data[$start] = $tmp[$start];
 		} else {
 			foreach ($data as $d_key => $d_value) {
