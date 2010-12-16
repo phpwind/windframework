@@ -15,7 +15,7 @@
  */
 class WindDateFormat{
 	
-/**
+	/**
 	 * @var int 填充展示
 	 */
 	const FILL = 0;
@@ -225,6 +225,14 @@ class WindDateFormat{
 	}
 	
 	/**
+	 * 设置默认时区
+	 * @param string $timezone 时间
+	 */
+	public static function setTimezone($timezone){
+		date_default_timezone_set ($timezone);
+	}
+	
+	/**
 	 * 获取日期的某部分
 	 * @param string $interval 字符串表达式 ,时间间隔类型
 	 * @param mixed $date 表示日期的文字
@@ -342,6 +350,22 @@ class WindDateFormat{
 	
 	public function toString($format = null){
 		return date($format ? $format : self::DEFAULT_FORMAT,$this->time);
+	}
+	
+	/**
+	 * 获取UTc日期格式
+	 * @return string
+	 */
+	public function toUTCString(){
+		$oldTimezone = date_default_timezone_get();
+		if('UTC' !== strtoupper($oldTimezone)){
+			self::setTimezone('UTC');
+		}
+		$date = $this->toString('D, d M y H:i:s e');
+		if('UTC' !== strtoupper($oldTimezone)){
+			self::setTimezone($oldTimezone);
+		}
+		return $date;
 	}
 }
 	
