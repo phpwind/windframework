@@ -54,8 +54,16 @@ class WindXmlParser{
 	 * @return array 返回解析后的值 
 	 */
 	public function buildData($node,$lastNodeName ,&$data = array(),&$lastData=array()){
-		if($node->hasChildNodes()){
 			foreach($node->childNodes as $node){
+				if($node->hasAttributes()){
+					$nodeName = ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
+					foreach($node->attributes as $attribute){
+						if(self::NAME != $attribute->nodeName){
+							$data[$nodeName][$attribute->nodeName] = $attribute->nodeValue;
+						}
+					}
+					
+				}
 				if(3 == $node->nodeType && trim($node->nodeValue)){
 					$lastData[$lastNodeName] = $node->nodeValue;
 				}
@@ -64,7 +72,7 @@ class WindXmlParser{
 					$this->buildData($node,$nodeName,$data[$nodeName],$data);
 				}
 			}
-		}
-		return $data;
+			return $data;
 	}	
 }
+?>
