@@ -23,12 +23,12 @@ class WindConnectionManager{
 	private   $connection = null;
 
 	public function __construct($config = array()){
-		if($config && (!$config[IWindDbConfig::CONNECTIONS] || !$config[IWindDbConfig::DRIVERS] || !$config[IWindDbConfig::BUILDERS])){
+		if($config && (!isset($config[IWindDbConfig::CONNECTIONS]) || !isset($config[IWindDbConfig::DRIVERS]) || !isset($config[IWindDbConfig::BUILDERS]))){
 			throw new WindSqlException(WindSqlException::DB_CONN_FORMAT);
 		}
-		$this->config = $config[IWindDbConfig::CONNECTIONS] ? $config[IWindDbConfig::CONNECTIONS] : c::getDataBaseConnection();
-		$this->drivers = $config[IWindDbConfig::DRIVERS] ? $config[IWindDbConfig::DRIVERS]:C::getDataBaseDriver();
-		$this->builders = $config[IWindDbConfig::BUILDERS] ? $config[IWindDbConfig::BUILDERS]:C::getDataBaseBuilder();
+		$this->config = isset($config[IWindDbConfig::CONNECTIONS]) ? $config[IWindDbConfig::CONNECTIONS] : c::getDataBaseConnection();
+		$this->drivers = isset($config[IWindDbConfig::DRIVERS]) ? $config[IWindDbConfig::DRIVERS]:C::getDataBaseDriver();
+		$this->builders = isset($config[IWindDbConfig::BUILDERS]) ? $config[IWindDbConfig::BUILDERS]:C::getDataBaseBuilder();
 	}
 	
 	/**
