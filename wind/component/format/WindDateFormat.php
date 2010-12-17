@@ -112,12 +112,12 @@ class WindDateFormat{
 	 * @param int $display 显示类型
 	 * @return string
 	 */
-	public function getMonth($display = WindDateTime::FILL){
+	public function getMonth($display = WindDateFormat::FILL){
 		$format  = 'n';
 		switch($display){
-			case WindDateTime::FILL:$format ='m';break;
-			case WindDateTime::DIGI:$format ='n';break;
-			case WindDateTime::TEXT:$format ='M';break;
+			case WindDateFormat::FILL:$format ='m';break;
+			case WindDateFormat::DIGIT:$format ='n';break;
+			case WindDateFormat::TEXT:$format ='M';break;
 			default:$format ='n'; break;
 			
 		}
@@ -129,12 +129,12 @@ class WindDateFormat{
 	 * @param string $display 显示类型
 	 * @return string
 	 */
-	public function getDay($display = WindDateTime::FILL){
+	public function getDay($display = WindDateFormat::FILL){
 		$format  = 'j';
 		switch($display){
-			case WindDateTime::FILL:$format ='d';break;
-			case WindDateTime::DIGI:$format ='j';break;
-			case WindDateTime::TEXT:$format ='D';break;
+			case WindDateFormat::FILL:$format ='d';break;
+			case WindDateFormat::DIGIT:$format ='j';break;
+			case WindDateFormat::TEXT:$format ='D';break;
 			default:$format ='j'; break;
 			
 		}
@@ -146,12 +146,12 @@ class WindDateFormat{
 	 * @param string $display 显示类型
 	 * @return string
 	 */
-	public function getWeek($display = WindDateTime::FILL){
+	public function getWeek($display = WindDateFormat::FILL){
 		$format  = 'jS';
 		switch($display){
-			case WindDateTime::FILL:$format ='jS';break;
-			case WindDateTime::DIGI:$format ='w';break;
-			case WindDateTime::TEXT:$format ='S';break;
+			case WindDateFormat::FILL:$format ='jS';break;
+			case WindDateFormat::DIGIT:$format ='w';break;
+			case WindDateFormat::TEXT:$format ='S';break;
 			default:$format ='N'; break;
 			
 		}
@@ -164,11 +164,11 @@ class WindDateFormat{
 	 * @param boolean $type 是否是24小时制
 	 * @return string
 	 */
-	public function getHours($display = WindDateTime::FILL,$type = true){
+	public function getHours($display = WindDateFormat::FILL,$type = true){
 		$format  = 'H';
 		switch($display){
-			case WindDateTime::FILL:$format = $type ? 'H' : 'h';break;
-			case WindDateTime::DIGI:$format =$type ? 'G' : 'g';break;
+			case WindDateFormat::FILL:$format = $type ? 'H' : 'h';break;
+			case WindDateFormat::DIGIT:$format =$type ? 'G' : 'g';break;
 			default:$format ='H'; break;
 			
 		}
