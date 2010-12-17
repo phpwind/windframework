@@ -23,12 +23,8 @@ class WindXMLConfig extends XML {
 	 * isMerge: 如果添加上该属性，则该标签将被在解析后进行合并 -----只作用于一级标签
 	 */
 	const NAME = 'name';
-	const ISGLOBAL = 'isGlobal';
-	const ISMERGE = 'isMerge';
 	
 	private $xmlArray;
-	private $globalTags = array();
-	private $mergeTags = array();
 	/**
 	 * 构造函数，设置输出编码及变量初始化
 	 * @param string $data
@@ -54,8 +50,8 @@ class WindXMLConfig extends XML {
 	 *
 	 * @return boolean
 	 */
-	public function parser($filename) {
-		$this->getXMLFromFile($filename);
+	public function parser($filename = '') {
+	    ($filename != '') && $this->getXMLFromFile($filename);
 		$this->ceateParser();
 		$children = $this->getXMLDocument()->children();
 		$result = array();
@@ -129,12 +125,10 @@ class WindXMLConfig extends XML {
 	private function getAttributesList($node) {
 		$tag = $node->getName();
 		$attributes = $this->getAttributes($node);
-		//$attributes['tagName'] = $tag;
 		if (isset($attributes[self::NAME])) {
 			$tag = $attributes[self::NAME]; 
 			unset($attributes[self::NAME]);
 		}
-		//$this->setGlobalAndMergeTags($attributes);
 		return array($tag, $attributes);
 	}
 	
@@ -161,21 +155,7 @@ class WindXMLConfig extends XML {
 		}
 		return array($tag, $childArray);
 	}
-	
-	/**
-	 * 设置全局的标签和需要合并的标签
-	 * 
-	 * @param array $attributes
-	 * @return boolean; 
-	 */
-	private function setGlobalAndMergeTags($attributes) {
-		$tag = $attributes['tagName'];
-		$name = isset($attributes[self::NAME]) ? $attributes[self::NAME] : $tag;
-		(isset($attributes[self::ISGLOBAL]) && $attributes[self::ISGLOBAL] == 'true') && $this->globalTags[$name] = $tag;
-		(isset($attributes[self::ISMERGE]) && $attributes[self::ISMERGE] == 'true') && $this->mergeTags[$name] = $tag;
-		return true;
-	}
-	
+
 	/**
 	 * 检查是否为空，如果为空返回false 否则返回格式化后的值
 	 * 
