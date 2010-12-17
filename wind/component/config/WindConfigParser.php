@@ -198,6 +198,13 @@ class WindConfigParser {
 				continue;
 			}
 		}
+
+		$defaultKeys = array_keys($defaultConfig);
+		$appConfigKeys = array_keys($appConfig);
+		if (!($difKeys = array_diff($appConfigKeys, $defaultKeys))) return $defaultConfig;
+		foreach($difKeys as $key) {
+			$defaultConfig[$key] = $appConfig[$key];
+		}
 		return $defaultConfig;
 	}
 	
