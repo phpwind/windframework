@@ -83,8 +83,9 @@ class WindConfigParser {
 		$userConfig = array();
 		if ($configPath === '') {
 			$this->parserEngine = 'php';
+		} else {
+			$this->fetchConfigExt($configPath);
 		}
-		$this->fetchConfigExt($configPath);
 		$userConfig = $this->executeParser($configPath);
 		$defaultConfig = $this->executeParser(WIND_PATH . D_S . $this->defaultConfig . '.' . $this->parserEngine);
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
@@ -164,7 +165,7 @@ class WindConfigParser {
 	 * @return array
 	 */
 	private function executeParser($configFile) {
-		if (!$configFile) return array(null, null);
+		if (!$configFile) return array();
 		if (strtoupper($this->parserEngine) == 'PHP') {
 			return include($configFile);
 		}
