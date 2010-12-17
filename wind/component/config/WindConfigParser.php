@@ -237,7 +237,7 @@ class WindConfigParser {
 		$mergeTags = array();
 		foreach ($params as $key => $value) {
 			if (is_array($value) && isset($value[self::ISMERGE])) {
-				($value[self::ISMERGE]) && $mergeTags[] = $key;
+				(in_array(strtolower(trim($value[self::ISMERGE])), array('true', '1'))) && $mergeTags[] = $key;
 				unset($params[$key][self::ISMERGE]);
 			}
 		}
