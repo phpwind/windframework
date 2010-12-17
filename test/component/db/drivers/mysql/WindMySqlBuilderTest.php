@@ -57,6 +57,17 @@ class WindMySqlBuilderTest extends BaseTestCase {
 		return array (array (true ), array (false ) );
 	}
 	
+	public static function providerPlaceHolder(){
+		return array(
+			array("id= 1 AND name= 'suqian'",array()),
+			array(array('id= 1',"name= 'suqian'"),array()),
+			array(array('id=?','name=?'),array(1,'suqian')),
+			array(array('id'=>1,'name'=>'suqian'),array()),
+			array('id=? AND name=?',array(1,'suqian')),
+			array('id=:id AND name=:name',array(':name'=>'suqian',':id'=>1,))
+		);
+	}
+	
 	public function setUp() {
 		$this->init ();
 	}
@@ -101,7 +112,7 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	 * @dataProvider provider
 	 */
 	public function testJoin($table, $joinWhere, $table_alias, $fields, $schema) {
-		$this->assertTrue ( $this->_join ( WindSqlBuilder::INNER, $table, $joinWhere, $table_alias, $fields, $schema ) );
+		$this->assertTrue ( $this->_join ('join', $table, $joinWhere, $table_alias, $fields, $schema ) );
 	}
 	
 	/**
@@ -218,32 +229,32 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	public function testGetSelectSql() {
 		$sql = "SELECT    a.username,b.title FROM   pw_members AS a   LEFT JOIN  pw_posts AS b ON a.uid=b.authorid  WHERE a.uid !=  1  OR a.group > 0  GROUP BY a.age  HAVING a.age !=  4   ORDER BY dateline DESC  ";
 		$assemblySql = $this->WindMySqlBuilder->from ( 'pw_members', 'a', 'username' )->leftJoin ( 'pw_posts', 'a.uid=b.authorid', 'b', 'title' )->where ( 'a.uid != ?', 1 )->orWhere ( 'a.group > 0' )->group ( 'a.age' )->having ( array ('a.age != ?' ), array (4 ) )->order ( 'dateline', true )->getSelectSql ();
-		$this->assertEquals ( $sql, $assemblySql );
+		$this->assertEquals ( $this->trimSpace($sql), $this->trimSpace($assemblySql) );
 	}
 	
 	public function testGetInsertSql() {
-		$sql = "INSERT   pw_members  ( name,age )VALUES  (  'a'  ,  'b'  )  (  'c'  ,  'd'  ) ";
+		$sql = "INSERT   pw_members  ( name,age )VALUES  (  'a'  ,  'b'  ) , (  'c'  ,  'd'  ) ";
 		$insertSql = $this->WindMySqlBuilder->from ( 'pw_members' )->field ( 'name', 'age' )->data ( array (array ('a', 'b' ), array ('c', 'd' ) ) )->getInsertSql ();
-		$this->assertEquals ( $sql, $insertSql );
+		$this->assertEquals ( $this->trimSpace($sql), $this->trimSpace($insertSql) );
 	
 	}
 	
 	public function testGetUpdateSql() {
 		$sql = "UPDATE   pw_members  SET  username=  'suqian'  ,age= 3   WHERE uid = 11 ";
 		$updateSql = $this->WindMySqlBuilder->from ( 'pw_members' )->set ( 'username=?,age=?', array ('suqian', 3 ) )->where ( 'uid = 11' )->getUpdateSql ();
-		$this->assertEquals ( $sql, $updateSql );
+		$this->assertEquals ( $this->trimSpace($sql), $this->trimSpace($updateSql) );
 	}
 	
 	public function testGetReplaceSql() {
-		$sql = "REPLACE   pw_members  ( name,age )SET  (  'a'  ,  'b'  )  (  'c'  ,  'd'  ) ";
+		$sql = "REPLACE   pw_members  ( name,age )VALUES  (  'a'  ,  'b'  ) , (  'c'  ,  'd'  ) ";
 		$replaceSql = $this->WindMySqlBuilder->from ( 'pw_members' )->field ( 'name', 'age' )->data ( array (array ('a', 'b' ), array ('c', 'd' ) ) )->getReplaceSql ();
-		$this->assertEquals ( $sql, $replaceSql );
+		$this->assertEquals ( $this->trimSpace($sql), $this->trimSpace($replaceSql) );
 	}
 	
 	public function testGetDeleteSql() {
 		$sql = "DELETE  FROM   pw_members AS a   WHERE a.uid =  11  ";
 		$deleteSql = $this->WindMySqlBuilder->from ( 'pw_members', 'a' )->where ( 'a.uid = ?', 11 )->getDeleteSql ();
-		$this->assertEquals ( $sql, $deleteSql );
+		$this->assertEquals ( $this->trimSpace($sql), $this->trimSpace($deleteSql) );
 	}
 	
 	/**
@@ -251,22 +262,26 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	 */
 	public function testGetAffectedSql($ifquery) {
 		$sql = 'SELECT ' . ($ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()') . ' AS afftectedRows';
-		$this->assertEquals ( $sql, $this->WindMySqlBuilder->getAffectedSql ( $ifquery ) );
+		$affectedSql = $this->WindMySqlBuilder->getAffectedSql ( $ifquery );
+		$this->assertEquals ($this->trimSpace( $sql), $this->trimSpace($affectedSql) );
 	}
 	
 	public function testGetLastInsertIdSql() {
 		$sql = 'SELECT LAST_INSERT_ID() AS insertId';
-		$this->assertEquals ( $sql, $this->WindMySqlBuilder->getLastInsertIdSql () );
+		$lastInsertSql = $this->WindMySqlBuilder->getLastInsertIdSql ();
+		$this->assertEquals ( $this->trimSpace( $sql),$this->trimSpace( $lastInsertSql)  );
 	}
 	
 	public function testGetMetaTableSql() {
 		$sql = 'SHOW TABLES FROM phpwind';
-		$this->assertEquals ( $sql, $this->WindMySqlBuilder->getMetaTableSql ( 'phpwind' ) );
+		$metaTableSql =  $this->WindMySqlBuilder->getMetaTableSql ( 'phpwind' );
+		$this->assertEquals ( $this->trimSpace( $sql),$this->trimSpace( $metaTableSql) );
 	}
 	
 	public function testGetMetaColumnSql() {
 		$sql = 'SHOW COLUMNS FROM pw_members';
-		$this->assertEquals ( $sql, $this->WindMySqlBuilder->getMetaColumnSql ( 'pw_members' ) );
+		$metaColumSql = $this->WindMySqlBuilder->getMetaColumnSql ( 'pw_members' ) ;
+		$this->assertEquals ( $this->trimSpace( $sql), $this->trimSpace($metaColumSql));
 	}
 	
 	public function testSelect() {
@@ -275,18 +290,31 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	}
 	
 	public function testUpdate() {
-		$builder = $this->WindMySqlBuilder->from ( 'pw_posts' )->set ( 'subject=?,buy=?', array ('suqian', 3 ) )->where ( 'pid = 1' )->update ();
-		$this->assertTrue ( ($builder instanceof WindSqlBuilder) );
+		$result = $this->WindMySqlBuilder->from ( 'pw_posts' )->set ( 'subject=?,buy=?', array ('suqian', 3 ) )->where ( 'pid = 1' )->update ();
+		$this->assertTrue ( $result );
 	}
 	
 	public function testDelete() {
-		$builder = $this->WindMySqlBuilder->from ( 'pw_posts' )->where ( 'pid = 2' )->delete ();
-		$this->assertTrue ( ($builder instanceof WindSqlBuilder) );
+		$result = $this->WindMySqlBuilder->from ( 'pw_posts' )->where ( 'pid = 2' )->delete ();
+		$this->assertTrue ( $result );
 	}
 	
 	public function testInsert() {
-		$builder = $this->WindMySqlBuilder->from ( 'pw_actions' )->field ( 'images', 'descrip', 'name' )->data ( 'a', 'b', 'c' )->insert ();
-		$this->assertTrue ( ($builder instanceof WindSqlBuilder) );
+		$result = $this->WindMySqlBuilder->from ( 'pw_actions' )->field ( 'images', 'descrip', 'name' )->data ( 'a', 'b', 'c' )->insert ();
+		$this->assertTrue ( $result );
+	}
+	
+	/**
+	 * @dataProvider providerPlaceHolder
+	 */
+	public function testPlaceHolder($where,$value){
+		$sql="SELECT name,id,images FROM pw_actions WHERE id= 1 AND name='suqian'";
+		$selectSql = $this->WindMySqlBuilder->from('pw_actions')->field('name','id','images')->where($where,$value)->getSelectSql();
+		$this->assertEquals ( $this->trimSpace($sql),$this->trimSpace($selectSql ));
+	}
+	
+	private function trimSpace($sql){
+		return preg_replace("/[\t ]+/", '', $sql);
 	}
 	
 	private function _where($type, $where, $value, $group, $logic) {
@@ -304,7 +332,7 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	}
 	
 	private function _join($joinType, $table, $joinWhere, $table_alias, $fields, $schema) {
-		$joinMethod = $joinType . 'Join';
+		$joinMethod = 'join' == $joinType ? $joinType: $joinType . 'Join';
 		$builder = $this->WindMySqlBuilder->$joinMethod ( $table, $joinWhere, $table_alias, $fields, $schema );
 		$join = $this->WindMySqlBuilder->getSql ( WindSqlBuilder::JOIN );
 		$field = $fields ? $this->WindMySqlBuilder->getSql ( WindSqlBuilder::FIELD ) : true;
