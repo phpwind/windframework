@@ -26,7 +26,6 @@ class WindFrontController extends WindServer {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->initConfig();
 	}
 	
 	public function run($applicationType = 'web') {
@@ -63,7 +62,7 @@ class WindFrontController extends WindServer {
 	 */
 	private function initFilter() {
 		$filters = C::getConfig(IWindConfig::FILTERS);
-		if (empty($filters)) return;
+		if (empty($filters)) return false;
 		WindFilterFactory::getFactory()->setExecute(array($this, 'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create();
 		if ($filter instanceof WindFilter) {
@@ -71,15 +70,6 @@ class WindFrontController extends WindServer {
 			return false;
 		}
 		return true;
-	}
-	
-	/**
-	 * 初始化系统配置信息
-	 * 
-	 * @param array $config
-	 */
-	private function initConfig() {
-		
 	}
 	
 	/**
