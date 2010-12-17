@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
- return array(
-    'rootPath' = '',
+ return array( 
+    'rootPath' => '',
 	'applications' => array(
 		'web' => array(
 			'class' => 'WIND:core.WindWebApplication',

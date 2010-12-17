@@ -27,7 +27,7 @@ interface IWindConfig {
 	const MODULE_TEMPLATE = 'template';
 	const MODULE_CONTROLLER_SUFFIX = 'controllerSuffix';
 	const MODULE_ACTION_SUFFIX = 'actionSuffix';
-	const MODULE_METHOD = 'mehtod';
+	const MODULE_METHOD = 'method';
 	/**
 	 * 过滤器链
 	 */
