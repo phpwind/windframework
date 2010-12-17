@@ -6,6 +6,7 @@
  * @license 
  */
  return array(
+    'rootPath' = '',
 	'applications' => array(
 		'web' => array(
 			'class' => 'WIND:core.WindWebApplication',

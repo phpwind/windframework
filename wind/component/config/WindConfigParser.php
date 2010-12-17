@@ -74,6 +74,7 @@ class WindConfigParser {
 	 * @return array 解析成功返回的数据
 	 */
 	public function parser($currentAppName, $configPath = '') {
+		$currentAppName = strtolower(trim($currentAppName));
 		if ($this->isCompiled($currentAppName)) {
 			$app = W::getApps($currentAppName);
 			return include $app[IWindConfig::APP_CONFIG];
@@ -88,8 +89,8 @@ class WindConfigParser {
 		$defaultConfig = $this->executeParser(WIND_PATH . D_S . $this->defaultConfig . '.' . $this->parserEngine);
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
 		
-		W::setCurrentApp($currentAppName);
-		$this->updateGlobalCache($currentAppName);
+		//$this->updateGlobalCache($currentAppName);
+		(!isset($userConfig[IWindConfig::ROOTPATH]) || trim($userConfig[IWindConfig::ROOTPATH]) == '') && $userConfig[IWindConfig::ROOTPATH] = dirname($_SERVER['SCRIPT_FILENAME']);
 		$this->saveAsFile($currentAppName . '_config.php', $userConfig);
 		return $userConfig;
 	}
@@ -245,7 +246,7 @@ class WindConfigParser {
 	 */
 	private function saveAsFile($filename, $data) {
 		if (!W::ifCompile() || !$filename || !$data) return false;
-		Common::writeover(COMPILE_PATH . D_S . $filename, "<?php\r\n return " . Common::varExport($data) . ";\r\n?>");
+		Common::writeover(COMPILE_PATH . D_S . strtolower($filename), "<?php\r\n return " . Common::varExport($data) . ";\r\n?>");
 		return true;
 	}
 	

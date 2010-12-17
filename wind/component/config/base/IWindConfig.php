@@ -8,12 +8,10 @@
 interface IWindConfig {
 	
 	/**
-	 * 应用配置信息
+	 * 应用的入口地址
 	 */
-	const APP = 'app';
-	const APP_NAME = 'name';
-	const APP_ROOTPATH = 'rootPath';
-	const APP_CONFIG = 'configPath';
+	const ROOTPATH = 'rootPath';
+	
 	
 	const APPLICATIONS = 'applications';
 	const APPLICATIONS_CLASS = 'class';
