@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.request.base.IWindRequest');
+L::import('WIND:core.base.IWindRequest');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -82,14 +82,10 @@ class WindHttpRequest implements IWindRequest {
 	
 	protected function normalizeRequest() {
 		if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-			if (isset($_GET))
-				$_GET = $this->stripSlashes($_GET);
-			if (isset($_POST))
-				$_POST = $this->stripSlashes($_POST);
-			if (isset($_REQUEST))
-				$_REQUEST = $this->stripSlashes($_REQUEST);
-			if (isset($_COOKIE))
-				$_COOKIE = $this->stripSlashes($_COOKIE);
+			if (isset($_GET)) $_GET = $this->stripSlashes($_GET);
+			if (isset($_POST)) $_POST = $this->stripSlashes($_POST);
+			if (isset($_REQUEST)) $_REQUEST = $this->stripSlashes($_REQUEST);
+			if (isset($_COOKIE)) $_COOKIE = $this->stripSlashes($_COOKIE);
 		}
 	}
 	
@@ -115,7 +111,8 @@ class WindHttpRequest implements IWindRequest {
 			return $_ENV[$name];
 		else if (isset($_SERVER[$name]))
 			return $_SERVER[$name];
-		else return $value;
+		else
+			return $value;
 	}
 	
 	/**
@@ -137,8 +134,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null
 	 */
 	public function getPost($name = null, $defaultValue = null) {
-		if ($name == null)
-			return $_POST;
+		if ($name == null) return $_POST;
 		return isset($_POST[$name]) ? $_POST[$name] : $defaultValue;
 	}
 	
@@ -150,8 +146,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null
 	 */
 	public function getGet($name = '', $defaultValue = null) {
-		if ($name == null)
-			return $_GET;
+		if ($name == null) return $_GET;
 		return (isset($_GET[$name])) ? $_GET[$name] : $defaultValue;
 	}
 	
@@ -163,8 +158,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null|array
 	 */
 	public function getCookie($name = null, $defaultValue = null) {
-		if ($name == null)
-			return $_COOKIE;
+		if ($name == null) return $_COOKIE;
 		return (isset($_COOKIE[$name])) ? $_COOKIE[$name] : $defaultValue;
 	}
 	
@@ -176,8 +170,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null|array
 	 */
 	public function getSession($name = null, $defaultValue = null) {
-		if ($name == null)
-			return $_SESSION;
+		if ($name == null) return $_SESSION;
 		return (isset($_SESSION[$name])) ? $_SESSION[$name] : $defaultValue;
 	}
 	
@@ -189,8 +182,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null|array
 	 */
 	public function getServer($name = null, $defaultValue = null) {
-		if ($name == null)
-			return $_SERVER;
+		if ($name == null) return $_SERVER;
 		return (isset($_SERVER[$name])) ? $_SERVER[$name] : $defaultValue;
 	}
 	
@@ -202,8 +194,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|null|array
 	 */
 	public function getEnv($name = null, $defaultValue = null) {
-		if ($name == null)
-			return $_ENV;
+		if ($name == null) return $_ENV;
 		return (isset($_ENV[$name])) ? $_ENV[$name] : $defaultValue;
 	}
 	
@@ -230,8 +221,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string|0.0.0.0
 	 */
 	public function getClientIp() {
-		if (!$this->_clientIp)
-			$this->_getClientIp();
+		if (!$this->_clientIp) $this->_getClientIp();
 		return $this->_clientIp;
 	}
 	
@@ -239,7 +229,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 获得请求的方法
 	 */
 	public function getRequestMethod() {
-		return $this->getServer('REQUEST_METHOD', 'POST');
+		return strtoupper($this->getServer('REQUEST_METHOD'));
 	}
 	
 	/**
@@ -310,8 +300,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getRequestUri() {
-		if (!$this->_requestUri)
-			$this->initRequestUri();
+		if (!$this->_requestUri) $this->initRequestUri();
 		return $this->_requestUri;
 	}
 	
@@ -379,8 +368,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getBaseUrl($absolute = false) {
-		if ($this->_baseUrl === null)
-			$this->_baseUrl = rtrim(dirname($this->getScriptUrl()), '\\/');
+		if ($this->_baseUrl === null) $this->_baseUrl = rtrim(dirname($this->getScriptUrl()), '\\/');
 		return $absolute ? $this->getHostInfo() . $this->_baseUrl : $this->_baseUrl;
 	}
 	
@@ -556,16 +544,12 @@ class WindHttpRequest implements IWindRequest {
 			$this->_requestUri = $requestUri;
 		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
 			$this->_requestUri = $requestUri;
-			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false)
-				$this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
 			$this->_requestUri = $requestUri;
-			if (($query = $this->getServer('QUERY_STRING')) != null)
-				$this->_requestUri .= '?' . $query;
+			if (($query = $this->getServer('QUERY_STRING')) != null) $this->_requestUri .= '?' . $query;
 		} else
 			throw new WindException(__CLASS__ . ' is unable to determine the request URI.');
-		
-		$this->_requestUri = $requestUri;
 	}
 	
 	/**
@@ -579,8 +563,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return
 	 */
 	private function _initScriptUrl() {
-		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null)
-			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
+		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
 		
 		$scriptName = basename($scriptName);
 		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
@@ -615,8 +598,7 @@ class WindHttpRequest implements IWindRequest {
 			$this->_hostInfo = $http . '://' . $httpHost;
 		elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
 			$this->_hostInfo = $http . '://' . $httpHost;
-			if (($port = $this->getServerPort()) != null)
-				$this->_hostInfo .= ':' . $port;
+			if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
 		} else
 			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
 	}
@@ -637,10 +619,10 @@ class WindHttpRequest implements IWindRequest {
 			$pathInfo = substr($requestUri, strlen($baseUrl));
 		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
 			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
-		else throw new WindException('');
+		else
+			throw new WindException('');
 		
-		if (($pos = strpos($pathInfo, '?')) !== false)
-			$pathInfo = substr($pathInfo, 0, $pos);
+		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
 		
 		$this->_pathInfo = trim($pathInfo, '/');
 	}
