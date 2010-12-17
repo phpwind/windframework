@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
- return array( 
-    'rootPath' => '',
+ return array(
+	'rootPath' => '',
 	'applications' => array(
 		'web' => array(
 			'class' => 'WIND:core.WindWebApplication',
@@ -26,24 +26,25 @@
 		'other' => array(
 			'path' => 'otherControllers',
 			'template' => 'wind',
+			'suffix' => 'controller',
 			'controllerSuffix' => 'controller',
 			'actionSuffix' => 'action',
 			'method' => 'run',
 		),
 	),
 	'error' => array(
+		'isMerge' => 'true',
 		'default' => 'WIND:core.WindErrorAction',
-	    'isMerge' => 'true',
 	),
 	'filters' => array(
+		'isMerge' => 'true',
 		'WindFormFilter' => array(
 			'filterPath' => 'WIND:core.filter.WindFormFilter',
 		),
-	    'isMerge' => 'true',
 	),
 	'templates' => array(
 		'default' => array(
-			'dir' => 'front',
+			'dir' => 'template',
 			'default' => 'index',
 			'ext' => 'htm',
 			'resolver' => 'default',
@@ -62,14 +63,14 @@
 		),
 	),
 	'viewerResolvers' => array(
+		'isMerge' => 'true',
 		'default' => 'WIND:core.viewer.WindViewer',
-	    'isMerge' => 'true',
 	),
 	'router' => array(
 		'parser' => 'url',
 	),
 	'routerParsers' => array(
-	    'isMerge' => 'true',
+		'isMerge' => 'true',
 		'url' => array(
 			'rule' => array(
 				'a' => 'run',
