@@ -44,12 +44,11 @@
 	</templates>
 	<error>
 		<errorAction name='ppp'>WIND:core.WindErrorAction</errorAction>
-		<errorAction name='defaut'>WIND:core.*</errorAction>
+		<errorAction name='defaut1'>WIND:core.*</errorAction>
 	</error>
 	<filters>
 		<filter name="WindFormFilter1">
 			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
-	<pp>dsfsd</pp>
 </WIND>
