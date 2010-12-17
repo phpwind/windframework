@@ -21,14 +21,18 @@
 class W {
 	private static $_current = '';
 	
+	static public function init() {
+		L::register(WIND_PATH, 'wind');
+		self::initBaseLib();
+		self::initErrorHandle();
+	}
+	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 */
 	static public function application($currentName, $config = '', $type = 'web') {
-		if (!$currentName) throw new Exception('please defined a application name.');
-		self::initBaseLib();
-		self::initErrorHandle();
+		self::init();
 		$config = self::initConfig($currentName, $config);
 		$frontController = new WindFrontController();
 		return new WindFrontController();
@@ -70,7 +74,6 @@ class W {
 	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
 	 */
 	static private function initLoad() {
-		L::register('WIND', WIND_PATH);
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.router.*');
 		L::import('WIND:core.exception.*');
@@ -94,8 +97,7 @@ class W {
 			$config = $configParser->parser($currentName, $config);
 		}
 		C::init($config);
-		self::$_current = $currentName;
-		L::register($currentName, $config['rootPath']);
+		L::register($config['rootPath']);
 		return $config;
 	}
 	
@@ -112,8 +114,7 @@ class W {
 		}
 	}
 	
-	static private function initErrorHandle() {	
-
+	static private function initErrorHandle() {
 	/*set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
 		set_error_handler(array('WindErrorHandle', 'errorHandle'));*/
 	}
@@ -130,24 +131,13 @@ class W {
 class L {
 	private static $_namespace = array();
 	private static $_imports = array();
+	private static $_classes = array();
 	private static $_instances = array();
-	private static $_extensions = array('php');
+	private static $_extensions = 'php';
+	private static $_includePaths = array();
 	
 	static public function getImports($key = '') {
 		return $key ? self::$_imports[$key] : self::$_imports;
-	}
-	
-	/**
-	 * 将路径信息注册到命名空间
-	 *
-	 * @param string $name
-	 * @param string $path
-	 */
-	static public function register($name, $path) {
-		$name = strtolower($name);
-		if (!isset(self::$_namespace[$name]) && $path) {
-			self::$_namespace[$name] = $path;
-		}
 	}
 	
 	/**
@@ -156,6 +146,29 @@ class L {
 	static public function setImports($class = array()) {
 		foreach ((array) $class as $key => $value) {
 			if (!self::isImported($key)) self::$_imports[$key] = $value;
+		}
+	}
+	
+	/**
+	 * 将路径信息注册到命名空间
+	 *
+	 * @param string $name
+	 * @param string $path
+	 */
+	static public function register($path, $name = '', $includePath = false) {
+		if (empty(self::$_includePaths) || self::$_includePaths === null) {
+			self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
+			if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+		}
+		array_unshift(self::$_includePaths, $path);
+		if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
+			throw new Exception('set include path error.');
+		}
+		if ($name !== '') {
+			$name = strtolower($name);
+			if (!isset(self::$_namespace[$name]) && $path) {
+				self::$_namespace[$name] = $path;
+			}
 		}
 	}
 	
@@ -174,30 +187,54 @@ class L {
 	 * @author Qiong Wu
 	 * @return string|null
 	 */
-	static public function import($filePath, $include = false) {
+	static public function import($filePath, $includes = false) {
 		if (!$filePath) return false;
 		if (key_exists($filePath, self::$_imports)) {
 			return self::$_imports[$filePath];
 		}
-		list($fileName, $realPath, $ext, $isPackage) = self::getRealPath($filePath, true);
-		if (!$realPath) return false;
-		$fileNames = array();
+		if (($pos = strrpos($filePath, '.')) === false)
+			$fileName = $filePath;
+		else
+			$fileName = substr($filePath, $pos + 1);
+		$isPackage = $fileName === '*';
 		if (!$isPackage) {
-			self::windInclude($realPath, $filePath, $fileName, $isPackage);
-			return $fileName;
-		}
-		if (!$dh = opendir($realPath)) throw new Exception('the file ' . $realPath . ' open failed!');
-		while (($file = readdir($dh)) !== false) {
-			if ($file != "." && $file != ".." && !(is_dir($realPath . D_S . $file))) {
-				if (($pos = strrpos($file, '.')) === false) $pos = strlen($file);
-				$fileNames[] = array(substr($file, 0, $pos), substr($file, $pos + 1));
+			if (!in_array($fileName, self::$_imports)) {
+				self::$_imports[$filePath] = $fileName;
+				if ($includes)
+					self::autoLoad($fileName);
+				else
+					self::$_classes[$fileName] = $filePath;
+				return $fileName;
 			}
-		}
-		closedir($dh);
-		foreach ($fileNames as $var) {
-			self::windInclude($realPath . D_S . $var[0] . '.' . $var[1], $filePath, $var[0], $isPackage);
+		} elseif ($isPackage) {
+			$filePath = substr($filePath, 0, $pos);
+			$dirPath = self::getRealPath($filePath);
+			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
+			while (($file = readdir($dh)) !== false) {
+				if ($file != "." && $file != ".." && !(is_dir($dirPath . D_S . $file))) {
+					if (($pos = strrpos($file, '.')) === false)
+						$fileName = $file;
+					else
+						$fileName = substr($file, 0, $pos);
+					self::$_imports[$filePath . '.' . $fileName] = $fileName;
+					if ($includes)
+						self::autoLoad($fileName);
+					else
+						self::$_classes[$fileName] = $filePath . '.' . $fileName;
+				}
+			}
+			closedir($dh);
 		}
 		return true;
+	}
+	
+	static public function autoLoad($className) {
+		if (!isset(self::$_classes[$className])) throw new Exception('auto load ' . $className . ' failed.');
+		$path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
+		if (is_file($path))
+			include $path;
+		else
+			throw new Exception('auto load ' . $path . ' failed.');
 	}
 	
 	/**
@@ -241,35 +278,15 @@ class L {
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
 	 * @return string|array
 	 */
-	static public function getRealPath($filePath, $info = false, $ext = 'php', $dir = '') {
-		$isPackage = false;
-		$fileName = $namespace = '';
-		if (($pos = strrpos($filePath, '.')) === false) {
-			$fileName = $filePath;
-		} else {
-			$fileName = substr($filePath, $pos + 1);
-			$filePath = substr($filePath, 0, $pos);
-		}
+	static public function getRealPath($filePath) {
+		$namespace = '';
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = substr($filePath, 0, $pos);
 			$filePath = substr($filePath, $pos + 1);
 		}
-		if ($dir !== '')
-			$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
-		else
-			$filePath = self::getRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
-		$isPackage = $fileName === '*';
-		if (!$isPackage && !$ext) {
-			foreach ((array) self::getExtension() as $key => $value) {
-				if (file_exists($filePath . D_S . $fileName . '.' . $value)) {
-					$ext = $value;
-					break;
-				}
-			}
-		}
-		$realpath = !$isPackage ? $filePath . D_S . $fileName . '.' . $ext : $filePath;
-		if ($info) return array($fileName, realpath($realpath), $ext, $isPackage);
-		return realpath($realpath);
+		$filePath = str_replace('.', D_S, $filePath);
+		if ($namespace) $filePath = trim(self::getRootPath($namespace), D_S) . D_S . $filePath;
+		return $filePath;
 	}
 	
 	/**
@@ -300,7 +317,7 @@ class L {
 		if (in_array($fileName, self::$_imports)) return $realPath;
 		include $realPath;
 		if ($ispackage) $filePath = str_replace('*', $fileName, $filePath);
-		self::$_imports[$filePath] = $fileName;
+		self::$_imports[$fileName] = $filePath;
 		return $realPath;
 	}
 	
@@ -329,6 +346,10 @@ class L {
 		$namespace = strtolower($namespace);
 		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
+}
+
+function __autoload($className) {
+	L::autoLoad($className);
 }
 
 /**

@@ -153,7 +153,6 @@ class WindViewer implements IWindViewer {
 		if (strrpos($templateName, ':') === false) {
 			$templateName = $this->templatePath . '.' . $templateName;
 		}
-		return L::getRealPath($templateName, false, $templateExt);
+		return L::getRealPath($templateName) . '.' . $templateExt;
 	}
-
 }
