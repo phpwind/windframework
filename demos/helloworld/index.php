@@ -18,7 +18,8 @@ require_once (FREAMWORK_PATH . '/wind.php');
 
 /*$_GET['formName'] = 'userForm';
 $_POST['username'] = 'asssss';*/
-W::application('test', R_P . 'config.xml')->run();
+W::application('test', '')->run();
+//W::application('test', R_P . 'config.xml')->run();
 //W::application('test', R_P . 'config.php')->run();
 //W::application('test', R_P . 'config.ini')->run();
 //W::application('test', R_P . 'config.properties')->run();
