@@ -41,8 +41,9 @@ class WindDateFormat{
 	}
 
 	/**
-	 * @param unknown_type $time unix时间戳
-	 * @param unknown_type $format 格式化
+	 * 格式化输出
+	 * @param int $time unix时间戳
+	 * @param string $format 格式化
 	 * @return string
 	 */
 	private static function format($time = null,$format = null) {
@@ -195,7 +196,7 @@ class WindDateFormat{
 	 * @return string
 	 */
 	public function getTimeZone(){
-		return date('e',$this->time);
+		return function_exists('date_default_timezone_get') ? date_default_timezone_get(): date('e',$this->time);
 	}
 	
 	/**
@@ -225,11 +226,20 @@ class WindDateFormat{
 	}
 	
 	/**
+	 * 取得当前时间
+	 * @return WindDateFormat
+	 */
+	public function getNow(){
+		$date = getdate(time());
+		return new self($date["year"],$date["mon"],$date["mday"],$date["hours"],$date["minutes"],$date["seconds"]);
+	}
+	
+	/**
 	 * 设置默认时区
 	 * @param string $timezone 时间
 	 */
 	public static function setTimezone($timezone){
-		date_default_timezone_set ($timezone);
+		function_exists('date_default_timezone_set') ? date_default_timezone_set ($timezone) : putenv("TZ={$timezone}");
 	}
 	
 	/**
@@ -328,7 +338,7 @@ class WindDateFormat{
 	 * return int
 	 */
 	public static function sDaysInMonth($month,$year){
-		if ($month < 1 || $month > 12){
+		if ( 1 > $month  || 12 < $month){
 			return 0;
 		}
 		if(!($daysInmonths = $this->getRealDaysInMonthsOfYear($year))){
@@ -357,7 +367,7 @@ class WindDateFormat{
 	 * @return string
 	 */
 	public function toUTCString(){
-		$oldTimezone = date_default_timezone_get();
+		$oldTimezone = $this->getTimezone();
 		if('UTC' !== strtoupper($oldTimezone)){
 			self::setTimezone('UTC');
 		}
