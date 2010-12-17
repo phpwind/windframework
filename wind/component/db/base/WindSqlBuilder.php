@@ -441,9 +441,16 @@ abstract class WindSqlBuilder {
 	 * @return mixed 返回解析后的文本
 	 */
 	private function parsePlaceHolder($text,$replace=array(),$separators=','){
-		if($text && $replace && is_array($text)){
+		if($text  && is_array($text)){
 			foreach($text as $key=>$_where){
-				$text[$key] = str_replace('?',$this->escapeString($replace[$key]),$_where);
+				if(is_int($key)){
+					$text[$key] = strpos($_where,'?') ? str_replace('?',$this->escapeString($replace[$key]),$_where) : $_where;
+				}
+				if(is_string($key)){
+					$value = $key.'='. $this->escapeString($_where);
+					$text[] = $value;
+					unset($text[$key]);
+				}
 			}
 			$text = implode($separators ? $separators : ',',$text);
 		}
@@ -457,6 +464,22 @@ abstract class WindSqlBuilder {
 						$_replace = $match.self::LG.implode ( ',', $replace[$key] ).self::RG;
 					}else{
 						$_replace = $match.$this->escapeString($replace[$key]);
+					}
+					$text = str_replace($matches[0][$key],$_replace,$text);
+				}
+			}
+			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches)){
+				if(is_string($replace)){
+					$tmp = explode('=',$replace);
+					$replace = array($tmp[0]=>$tmp[1]);
+				}
+				foreach($matches[1] as $key=>$match){
+					$_trueKey = $matches[3][$key];
+					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+						array_walk ( $replace[$_trueKey], array ($this, 'escapeString' ) );
+						$_replace = $match.self::LG.implode ( ',', $replace[$_trueKey] ).self::RG;
+					}else{
+						$_replace = $match.$this->escapeString($replace[$_trueKey]);
 					}
 					$text = str_replace($matches[0][$key],$_replace,$text);
 				}
