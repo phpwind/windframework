@@ -32,17 +32,6 @@ class WindXMLConfigTest extends BaseTestCase {
 			$this->isFalse('False');
 		}
 	}
-	public function testLoadXMLString() {
-		$this->xml->loadXMLString(file_get_contents($this->fileName));
-		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
-	}
-	public function testLoadXMLStringWithNull() {
-		try {
-			$this->xml->loadXMLString('');
-		} catch (Exception $e) {
-			$this->isFalse('False');
-		}
-	}
 	public function resultValidator($array, $num, $memberList) {
 		$this->assertTrue(is_array($array));
 		$this->assertTrue(count($array) == $num);
@@ -51,16 +40,10 @@ class WindXMLConfigTest extends BaseTestCase {
 			$this->assertTrue(isset($array[$value]));
 		}
 	}
-	public function testParser() {
-		$this->resultValidator($this->xml->getResult(), 4, $this->nodeList);
+	public function testParse() {
+		$this->resultValidator($this->xml->parser(), 4, $this->nodeList);
 	}
-	public function testGetGlobal() {
-		$this->xml->parser();
-		$this->resultValidator($this->xml->getGlobalTags(), 1, array('info'));
-	}
-
-	public function testGetMerge() {
-		$this->xml->parser();
-		$this->resultValidator($this->xml->getMergeTags(), 1, array('jobs'));
+	public function testParseWithFileName() {
+		$this->resultValidator($this->xml->parser($this->filename), 4, $this->nodeList);
 	}
 }
