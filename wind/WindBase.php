@@ -19,56 +19,19 @@
  * @version $Id$
  */
 class W {
-	private static $_apps = array();
 	private static $_current = '';
 	
 	/**
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 */
-	static public function application($currentName, $configPath = '', $type = 'web') {
+	static public function application($currentName, $config = '', $type = 'web') {
 		if (!$currentName) throw new Exception('please defined a application name.');
 		self::initBaseLib();
 		self::initErrorHandle();
-		$systemConfig = self::initConfig($currentName, $configPath);
-		$frontController = new WindFrontController($systemConfig, $type);
+		$config = self::initConfig($currentName, $config);
+		$frontController = new WindFrontController();
 		return new WindFrontController();
-	}
-	
-	/**
-	 * 获得应用相关配置信息
-	 *
-	 * @param string $name
-	 * @return array
-	 */
-	static public function getApps($name = '') {
-		if ($name && isset(self::$_apps[$name]))
-			return self::$_apps[$name];
-		elseif (self::$_current && isset(self::$_apps[self::$_current]))
-			return self::$_apps[self::$_current];
-		else
-			return '';
-	}
-	
-	/**
-	 * @param string $name
-	 * @param array $value
-	 * @param boolean $default
-	 */
-	static public function setApps($name, $value, $current = false) {
-		if (empty($value) || !is_array($value)) return;
-		self::$_apps[$name] = $value;
-		if ($current) self::$_current = $name;
-		L::register($name, $value['rootPath']);
-	}
-	
-	/**
-	 * 设置当前应用的名称
-	 *
-	 * @param string $name
-	 */
-	static public function setCurrentApp($name) {
-		if ($name) self::$_current = $name;
 	}
 	
 	/**
@@ -87,6 +50,10 @@ class W {
 		return defined('COMPILE_PATH') ? true : false;
 	}
 	
+	static public function getCurrent() {
+		return self::$_current;
+	}
+	
 	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
@@ -103,7 +70,7 @@ class W {
 	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
 	 */
 	static private function initLoad() {
-		self::setApps('WIND', array('name' => 'WIND', 'rootPath' => WIND_PATH));
+		L::register('WIND', WIND_PATH);
 		L::import('WIND:core.base.*');
 		L::import('WIND:core.router.*');
 		L::import('WIND:core.exception.*');
@@ -120,23 +87,29 @@ class W {
 	/**
 	 * 初始化配置信息
 	 */
-	static private function initConfig($currentName, $configPath = '') {
-		$systemConfig = self::parseConfig($currentName, $configPath);
-		C::init($systemConfig);
-		if (!is_file(COMPILE_PATH . '/config.php')) return false;
-		$sysConfig = include COMPILE_PATH . '/config.php';
-		foreach ($sysConfig as $appName => $appConfig) {
-			self::setApps($appName, $appConfig);
+	static private function initConfig($currentName, $config = '') {
+		if (!is_array($config)) {
+			L::import('WIND:component.config.WindConfigParser');
+			$configParser = new WindConfigParser();
+			$config = $configParser->parser($currentName, $config);
 		}
+		C::init($config);
+		self::$_current = $currentName;
+		L::register($currentName, $config['rootPath']);
+		return $config;
 	}
 	
 	/**
-	 * 解析配置文件
+	 * @param appConfig
 	 */
-	private static function parseConfig($currentName, $configPath = '') {
-		L::import('WIND:component.config.WindConfigParser');
-		$configParser = new WindConfigParser();
-		return $configParser->parser($currentName, $configPath);
+	static private function registerApplications() {
+		$appConfigPath = WIND_PATH . '/app_config.php';
+		if (file_exists($appConfigPath)) {
+			$appConfig = include $appConfigPath;
+			foreach ($appConfig as $appName => $appConfig) {
+				L::register($appName, $appConfig['rootPath']);
+			}
+		}
 	}
 	
 	static private function initErrorHandle() {	
@@ -172,7 +145,7 @@ class L {
 	 */
 	static public function register($name, $path) {
 		$name = strtolower($name);
-		if (!isset(self::$_namespace[$name])) {
+		if (!isset(self::$_namespace[$name]) && $path) {
 			self::$_namespace[$name] = $path;
 		}
 	}
@@ -201,7 +174,7 @@ class L {
 	 * @author Qiong Wu
 	 * @return string|null
 	 */
-	static public function import($filePath) {
+	static public function import($filePath, $include = false) {
 		if (!$filePath) return false;
 		if (key_exists($filePath, self::$_imports)) {
 			return self::$_imports[$filePath];
@@ -284,7 +257,7 @@ class L {
 		if ($dir !== '')
 			$filePath = $dir . D_S . str_replace('.', D_S, $filePath);
 		else
-			$filePath = self::getAppRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
+			$filePath = self::getRootPath($namespace) . D_S . str_replace('.', D_S, $filePath);
 		$isPackage = $fileName === '*';
 		if (!$isPackage && !$ext) {
 			foreach ((array) self::getExtension() as $key => $value) {
@@ -351,13 +324,10 @@ class L {
 	 * 获得跟路径信息
 	 * @return string
 	 */
-	static private function getAppRootPath($namespace = '') {
+	static private function getRootPath($namespace = '') {
+		if ($namespace === '') $namespace = W::getCurrentApp();
 		$namespace = strtolower($namespace);
-		if ($namespace && isset(self::$_namespace[$namespace])) {
-			return self::$_namespace[$namespace];
-		} else {
-			return W::getCurrentApp() ? self::$_namespace[strtolower(W::getCurrentApp())] : '';
-		}
+		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
 }
 
@@ -371,7 +341,6 @@ class L {
  */
 class C {
 	private static $config = array();
-	private static $c;
 	/**
 	 * 初始化配置文件对象
 	 * @param array $configSystem
@@ -381,7 +350,6 @@ class C {
 			throw new Exception('system config file is not exists.');
 		}
 		self::$config = $configSystem;
-		self::$c = new C();
 	}
 	
 	/**
