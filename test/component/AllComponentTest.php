@@ -8,6 +8,7 @@
 include (R_P . '/test/component/db/AllDBTest.php');
 include (R_P . '/test/component/config/WindConfigParserTest.php');
 include (R_P . '/test/component/config/WindXMLConfigTest.php');
+include (R_P . '/test/component/parser/WindIniParserTest.php');
 
 class AllComponentTest {
 
@@ -20,6 +21,7 @@ class AllComponentTest {
 		$suite->addTest(ALLDBTest::suite());
 		$suite->addTestSuite('WindXMLConfigTest');
 		$suite->addTestSuite('WindConfigParserTest');
+		$suite->addTestSuite('WindIniParserTest');
 		return $suite;
 	}
 }
