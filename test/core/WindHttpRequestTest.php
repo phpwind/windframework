@@ -6,9 +6,11 @@
  * @license 
  */
 require_once (dirname(dirname(__FILE__)) . '/BaseTestCase.php');
-L::import('WIND:core.WindHttpRequest');
-L::import('WIND:core.exception.WindException');
-
+//L::import('WIND:core.WindHttpRequest');
+//L::import('WIND:core.exception.WindException');
+include(WIND_PATH . '/core/WindHttpRequest.php');
+include(WIND_PATH . '/core/WindHttpResponse.php');
+include(WIND_PATH . '/core/exception/WindException.php');
 
 class WindHttpRequestTest extends BaseTestCase {
 	private $httpRequest;
@@ -359,12 +361,60 @@ class WindHttpRequestTest extends BaseTestCase {
 		$this->assertEquals('http://localhost:80', $this->httpRequest->getHostInfo());
 	}
 	public function testGetBaseUrl() {
-		$url = '/usr/ppt/demos';
 		$this->assertEquals('http://localhost:80/usr/ppt/demos', $this->httpRequest->getBaseUrl(true));
 		$this->assertEquals('/usr/ppt/demos', $this->httpRequest->getBaseUrl(false));
 	}
 	public function testGetPathInfo() {
-		
+		$this->assertEquals('', $this->httpRequest->getPathInfo());
+		throw new PHPUnit_Framework_IncompleteTestError('Incomplete');
 	}
+	
+	public function testGetServerName() {
+		$serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+		$this->assertEquals($serverName, $this->httpRequest->getServerName());
+	}
+    
+	public function testSetServerPort() {
+		$this->httpRequest->setServerPort(89);
+		$this->assertEquals(89, $this->httpRequest->getServerPort());
+	}
+	
+	public function testGetRemoteHost() {
+		$value = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
+		$this->assertEquals($value, $this->httpRequest->getRemoteHost());
+	}
+	
+	public function testGetUrlReferer() {
+		$value = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+		$this->assertEquals($value, $this->httpRequest->getUrlReferer());
+	}
+	public function testGetRemotePort() {
+		$value = isset($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : null;
+		$this->assertEquals($value, $this->httpRequest->getRemotePort());
+	}
+	public function testGetUserAgent() {
+		$value = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$this->assertEquals($value, $this->httpRequest->getUserAgent());
+	}
+	public function testGetAcceptTypes() {
+		$value = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+		$this->assertEquals($value, $this->httpRequest->getAcceptType());
+	}
+
+	public function testGetAcceptCharset() {
+		$value = isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
+		$this->assertEquals($value, $this->httpRequest->getAcceptCharset());
+	}
+	
+	public function testGetAcceptLanguage() {
+		$value = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
+		$language = explode(',', $value);
+	    $value = $language[0] ? $language[0] : 'zh-cn';
+	    $this->assertEquals($value, $this->httpRequest->getAcceptLanguage());
+	}
+	public function testGetResponse() {
+		$this->assertTrue($this->httpRequest->getResponse() instanceof WindHttpResponse);
+	}
+	
 }
 

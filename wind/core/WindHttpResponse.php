@@ -309,6 +309,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function setHeader($name, $value, $replace = false) {
+		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $value) {
 			if ($value['name'] == $name) $this->_headers[$key] = array('name' => $name, 'value' => $value, 
@@ -323,6 +324,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function addHeader($name, $value, $replace = false) {
+		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
@@ -346,6 +348,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
+		if (!is_string($content)) return;
 		if ($name == null || !is_string($name)) $name = 'default';
 		
 		$this->_body[$name] = (string) $content;
@@ -471,6 +474,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @return string
 	 */
 	private function _normalizeHeader($name) {
+		if (trim($name) == '') return '';
 		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
