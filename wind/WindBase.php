@@ -352,6 +352,7 @@ function __autoload($className) {
 	L::autoLoad($className);
 }
 
+L::import('WIND:component.config.base.IWindConfig');
 /**
  * 全文配置访问
  *
