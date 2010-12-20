@@ -114,10 +114,9 @@ class W {
 		}
 	}
 	
-	static private function initErrorHandle() {
-	/*set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+	static private function initErrorHandle() {/*set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
 		set_error_handler(array('WindErrorHandle', 'errorHandle'));*/
-	}
+}
 
 }
 
@@ -201,7 +200,7 @@ class L {
 			if (!in_array($fileName, self::$_imports)) {
 				self::$_imports[$filePath] = $fileName;
 				if ($includes)
-					self::autoLoad($fileName);
+					self::autoLoad($fileName, $filePath);
 				else
 					self::$_classes[$fileName] = $filePath;
 				return $fileName;
@@ -216,11 +215,12 @@ class L {
 						$fileName = $file;
 					else
 						$fileName = substr($file, 0, $pos);
-					self::$_imports[$filePath . '.' . $fileName] = $fileName;
+					$_filePath = $filePath . '.' . $fileName;
+					self::$_imports[$_filePath] = $fileName;
 					if ($includes)
-						self::autoLoad($fileName);
+						self::autoLoad($fileName, $_filePath);
 					else
-						self::$_classes[$fileName] = $filePath . '.' . $fileName;
+						self::$_classes[$fileName] = $_filePath;
 				}
 			}
 			closedir($dh);
@@ -228,9 +228,9 @@ class L {
 		return true;
 	}
 	
-	static public function autoLoad($className) {
+	static public function autoLoad($className, $path = '') {
 		if (!isset(self::$_classes[$className])) throw new Exception('auto load ' . $className . ' failed.');
-		$path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
+		if ($path === '') $path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
 		if (is_file($path))
 			include $path;
 		else
