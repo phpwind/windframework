@@ -6,11 +6,11 @@
  * @license 
  */
 require_once (dirname(dirname(__FILE__)) . '/BaseTestCase.php');
-//L::import('WIND:core.WindHttpRequest');
-//L::import('WIND:core.exception.WindException');
-include(WIND_PATH . '/core/WindHttpRequest.php');
-include(WIND_PATH . '/core/WindHttpResponse.php');
-include(WIND_PATH . '/core/exception/WindException.php');
+L::import('WIND:core.WindHttpRequest');
+L::import('WIND:core.exception.WindException');
+//include(WIND_PATH . '/core/WindHttpRequest.php');
+//include(WIND_PATH . '/core/WindHttpResponse.php');
+//include(WIND_PATH . '/core/exception/WindException.php');
 
 class WindHttpRequestTest extends BaseTestCase {
 	private $httpRequest;

@@ -8,7 +8,7 @@
 !defined('R_P') && define('R_P', dirname(dirname(__FILE__)));
 include 'PHPUnit/Framework/TestCase.php';
 include R_P . DIRECTORY_SEPARATOR . 'wind/WindBase.php';
-C::init(include R_P . '/test/config.php');
+C::init(include R_P . '/_tests/config.php');
 L::register(WIND_PATH, 'WIND');
 
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
