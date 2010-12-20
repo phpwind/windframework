@@ -7,7 +7,7 @@
  */
 
 abstract class WindApplication {
-	abstract public function init();
+	abstract public function init($request, $response);
 	abstract public function processRequest($request, $response);
 	abstract public function destory();
 }

@@ -17,15 +17,16 @@ abstract class WindDispatcher {
 	protected $request = null;
 	protected $response = null;
 	
+	protected $application = null;
+	
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 * @param WindFrontController $frontController
 	 */
-	public function __construct($request, $response, $app) {
+	public function __construct($request, $response) {
 		$this->request = $request;
 		$this->response = $response;
-		$this->application = $app;
 	}
 	
 	/**
@@ -86,8 +87,12 @@ abstract class WindDispatcher {
 			$className = L::import($path . ucfirst($this->action) . $suffix);
 			$method = $this->moduleConfig[IWindConfig::MODULE_METHOD];
 		}
-		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
-		return array($className, $method);
+		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(
+			null, 
+			null);
+		return array(
+			$className, 
+			$method);
 	}
 	
 	/**
@@ -95,7 +100,11 @@ abstract class WindDispatcher {
 	 * @param WindRedirecter $redirecter
 	 */
 	protected function dispatchWithRedirect($redirecter) {
-		$redirect = $redirecter->buildUrl(array($this->router, 'buildUrl'), array($this->action, $this->controller, 
+		$redirect = $redirecter->buildUrl(array(
+			$this->router, 
+			'buildUrl'), array(
+			$this->action, 
+			$this->controller, 
 			$this->module));
 		$this->response->sendRedirect($redirect);
 	}
@@ -154,6 +163,14 @@ abstract class WindDispatcher {
 			}
 		}
 		$this->moduleConfig = $modules[$this->module];
+	}
+	
+	/**
+	 * @param $application the $application to set
+	 * @author Qiong Wu
+	 */
+	public function setApplication($application) {
+		$this->application = $application;
 	}
 
 }
