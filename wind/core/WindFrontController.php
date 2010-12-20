@@ -35,12 +35,14 @@ class WindFrontController extends WindServer {
 		$this->afterProcess();
 	}
 	
-	protected function beforProcess() {}
+	protected function beforProcess() {
+		$this->initDispatcher();
+	}
 	
 	public function process($request, $response) {
 		if ($this->initFilter()) return;
 		$application = $this->createApplication();
-		$application->init();
+		$application->init($request, $response);
 		$application->processRequest($request, $response);
 		$application->destory();
 	}
@@ -58,12 +60,24 @@ class WindFrontController extends WindServer {
 	}
 	
 	/**
+	 * 初始化Dispatcher
+	 */
+	protected function initDispatcher() {
+		$router = WindRouterFactory::getFactory()->create();
+		$router->doParser($this->request, $this->response);
+		$dispatcher = new WindWebDispatcher($this->request, $this->response, $this);
+		$this->response->setDispatcher($dispatcher->initWithRouter($router));
+	}
+	
+	/**
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function initFilter() {
 		$filters = C::getConfig(IWindConfig::FILTERS);
 		if (empty($filters)) return false;
-		WindFilterFactory::getFactory()->setExecute(array($this, 'process'), $this->request, $this->response);
+		WindFilterFactory::getFactory()->setExecute(array(
+			$this, 
+			'process'), $this->request, $this->response);
 		$filter = WindFilterFactory::getFactory()->create();
 		if ($filter instanceof WindFilter) {
 			$filter->doFilter($this->request, $this->response);

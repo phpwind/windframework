@@ -493,7 +493,7 @@ class WindHttpResponse implements IWindResponse {
 		return self::$_instance;
 	}
 	
-	public function setDispatcher(&$dispatcher = null) {
+	public function setDispatcher($dispatcher = null) {
 		$this->_dispatcher = $dispatcher;
 	}
 	

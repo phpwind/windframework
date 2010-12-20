@@ -19,9 +19,13 @@ class WindWebApplication extends WindApplication {
 	
 	/**
 	 * 初始化配置信息
-	 * @param WSystemConfig $configObj
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 */
-	public function init() {}
+	public function init($request, $response) {
+		$this->dispatcher = $response->getDispatcher();
+		$this->dispatcher->setApplication($this);
+	}
 	
 	/**
 	 * @param WindHttpRequest $request
@@ -29,7 +33,6 @@ class WindWebApplication extends WindApplication {
 	 * @param WSystemConfig $configObj
 	 */
 	public function processRequest($request, $response) {
-		$this->initDispatcher($request, $response);
 		list($className, $method) = $this->getActionHandle($request, $response);
 		$action = new $className($request, $response);
 		if (!($action instanceof WindAction)) throw new WindException('the type of action is error.');
@@ -52,7 +55,9 @@ class WindWebApplication extends WindApplication {
 			throw new WindException('can\'t create action handle.');
 		}
 		$this->checkReprocess($className . '_' . $method);
-		return array($className, $method);
+		return array(
+			$className, 
+			$method);
 	}
 	
 	/**
@@ -75,20 +80,6 @@ class WindWebApplication extends WindApplication {
 	 */
 	protected function processDispatch($request, $response, $forward) {
 		$this->dispatcher->setForward($forward)->dispatch();
-	}
-	
-	/**
-	 * 初始化Dispatcher
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	protected function initDispatcher($request, $response) {
-		if ($this->dispatcher instanceof WindDispatcher) return;
-		$router = WindRouterFactory::getFactory()->create();
-		$router->doParser($request, $response);
-		$this->dispatcher = new WindWebDispatcher($request, $response, $this);
-		$this->dispatcher->initWithRouter($router);
 	}
 	
 	public function destory() {}
