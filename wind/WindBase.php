@@ -97,7 +97,7 @@ class W {
 			$config = $configParser->parser($currentName, $config);
 		}
 		C::init($config);
-		L::register($config['rootPath']);
+		L::register($config['rootPath'],$currentName);
 		return $config;
 	}
 	
