@@ -10,7 +10,12 @@ include 'WindBase.php';
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
+		W::init();
 		C::init(include 'config.php');
-		L::register(WIND_PATH, 'WIND');
+	}
+	
+	protected function tearDown() {
+		parent::tearDown();
+		C::init(include 'config.php');
 	}
 }
