@@ -15,7 +15,7 @@ class Common {
 	 * @param string $indent 缩进
 	 * @return string
 	 */
-	public function varExport($input, $indent = '') {
+	public static function varExport($input, $indent = '') {
 		switch (gettype($input)) {
 			case 'string':
 				return "'" . str_replace(array("\\", "'"), array("\\\\", "\'"), $input) . "'";
@@ -50,7 +50,7 @@ class Common {
 	 * @param bool $ifChmod 是否将文件属性改为可读写
 	 * @return bool 是否写入成功
 	 */
-	public function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
+	public static function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
 		$tmpname = strtolower($fileName);
 		$tmparray = array(':\/\/', "\0");
 		$tmparray[] = '..';
