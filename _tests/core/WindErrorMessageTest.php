@@ -18,6 +18,7 @@ L::import('WIND:core.WindErrorMessage');
 class WindErrorMessageTest extends BaseTestCase {
 	private $errorMessage;
 	public function setUp() {
+		parent::setUp();
 		$this->errorMessage = WindErrorMessage::getInstance();
 		$this->errorMessage->clear();
 	}
