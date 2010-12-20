@@ -5,12 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once (dirname(dirname(__FILE__)) . '/BaseTestCase.php');
 L::import('WIND:core.WindHttpRequest');
+L::import('WIND:core.WindHttpResponse');
 L::import('WIND:core.exception.WindException');
-//include(WIND_PATH . '/core/WindHttpRequest.php');
-//include(WIND_PATH . '/core/WindHttpResponse.php');
-//include(WIND_PATH . '/core/exception/WindException.php');
 
 class WindHttpRequestTest extends BaseTestCase {
 	private $httpRequest;
@@ -36,7 +33,6 @@ class WindHttpRequestTest extends BaseTestCase {
 			array('name'),
 			array(array('p' => "pear'", 'a' => 'apple\'s', 'c' => '\\\\')),
 			array(10),
-			array($this),
 			array(''),
 			array(null),
 		);
@@ -82,66 +78,67 @@ class WindHttpRequestTest extends BaseTestCase {
 					$this->assertTrue(isset($array[$value]));
 		}
 	}
-	private function searchArray($param) {
+	private function slashesArray($param) {
 		static $result = array();
-		foreach ($param as $key => $value) {
-			if (is_array($value)) $this->searchArray($value);
+		foreach ((array)$param as $key => $value) {
+			if (is_array($value)) $this->slashesArray($value);
 			$result[$key] = stripslashes($value);
 		}
 		return $result;
 	}
 	/**
-	 * @dataProvider providerSlashes
-	 * @param unknown_type $param
 	 */
-	public function teststripSlashes($params) {
-		if (is_array($params)) {
-			$param = $this->searchArray($params);
-		} else {
-			$param = stripslashes($params);
+	public function teststripSlashes() {
+		foreach(self::providerSlashes() as $value) {
+			$params = $value[0];
+			if (is_array($params)) {
+				$param = $this->slashesArray($params);
+				$this->checkArray($this->httpRequest->stripSlashes($params), count($param), $param, true);
+			} else {
+				$this->assertEquals(stripslashes($params), $this->httpRequest->stripSlashes($params));
+			}
 		}
-		$this->assertEquals($param, $this->httpRequest->stripSlashes($params));
 	}
 	
 	/**
-	 * @dataProvider providerGet
 	 */
-	public function testGetAttributeFromGet($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
+	public function testGetAttributeFromGet() {
+		foreach(self::providerGet() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
 	}
 
 	/**
-	 * @dataProvider providerPost
 	 */
-	public function testGetAttributeFromPost($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
+	public function testGetAttributeFromPost() {
+		foreach(self::providerPost() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
 	}
 
 	/**
-	 * @dataProvider providerCookie
 	 */
-	public function testGetAttributeFromCookie($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
+	public function testGetAttributeFromCookie() {
+		foreach(self::providerCookie() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
 	}
 	
 	/**
-	 * @dataProvider providerDefault
 	 */
-	public function testGetAttributeWithDefaultValue($name, $defaultValue) {
-		$this->assertEquals($defaultValue, $this->httpRequest->getAttribute($name, $defaultValue));
+	public function testGetAttributeWithDefaultValue() {
+		foreach(self::providerDefault() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0], $value[1]));
 	}
 	
 	/**
-	 * @dataProvider providerGet
 	 */
-	public function testGetQuery($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getQuery($name));
+	public function testGetQuery() {
+		foreach(self::providerGet() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getQuery($value[0]));
 	}
 	/**
-	 * @dataProvider providerDefault
 	 */
-	public function testGetQueryWithDefault($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getQuery($name, $value));
+	public function testGetQueryWithDefault() {
+		foreach(self::providerDefault() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getQuery($value[0], $value[1]));
 	}
 	
 	public function testGetQuestWithNull() {
@@ -151,33 +148,34 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 
 	/**
-	 * @dataProvider providerPost
 	 */
-	public function testGetPost($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getPost($name));
+	public function testGetPost() {
+		foreach(self::providerPost() as $value) 
+			$this->assertEquals($value[1], $this->httpRequest->getPost($value[0]));
 	}
 	/**
-	 * @dataProvider providerDefault
 	 */
-	public function testGetPostWithDefault($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getPost($name, $value));
+	public function testGetPostWithDefault() {
+		foreach(self::providerDefault() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getPost($value[0], $value[1]));
 	}
+	
 	public function testGetPostWithNull() {
 		$param = $this->httpRequest->getPost();
 		$this->checkArray($param, 2, array('address' => 'zhejiangU', 'step' => '5'), true);
 	}
 	
 	/**
-	 * @dataProvider providerGet
 	 */
-	public function testGet($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getGet($name));
+	public function testGet() {
+		foreach(self::providerGet() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getGet($value[0]));
 	}
 	/**
-	 * @dataProvider providerDefault
 	 */
-	public function testGetWithDefault($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getGet($name, $value));
+	public function testGetWithDefault() {
+		foreach(self::providerDefault() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getGet($value[0], $value[1]));
 	}
 	
 	public function testGetWithNull() {
@@ -187,16 +185,16 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 	
 	/**
-	 * @dataProvider providerCookie
 	 */
-	public function testGetCookie($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getCookie($name));
+	public function testGetCookie() {
+		foreach(self::providerCookie() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getCookie($value[0]));
 	}
 	/**
-	 * @dataProvider providerDefault
 	 */
-	public function testGetCookieWithDefault($name, $value) {
-		$this->assertEquals($value, $this->httpRequest->getCookie($name, $value));
+	public function testGetCookieWithDefault() {
+		foreach(self::providerDefault() as $value)
+			$this->assertEquals($value[1], $this->httpRequest->getCookie($value[0], $value[1]));
 	}
 	
 	public function testGetCookieWithNull() {
@@ -287,12 +285,15 @@ class WindHttpRequestTest extends BaseTestCase {
 	 * WindHttpRequest会在第一次运行后保持值·· 
 	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_requestUri))
 	 */
-	public function testGetRequestUri() {
+	public function testGetRequestUriWithException() {
 		try{
 	    	$uri = $this->httpRequest->getRequestUri();
-	    } catch (Exception $exception) {
-	    	$this->isFalse('yes');
+	    } catch (WindException $exception) {
+	    	return;
 	    }
+	    $this->fail('Exception');
+	}
+	public function testGetRequestUri() {
 		$_SERVER['HTTP_X_REWRITE_URL'] = '/example/index.php?a=test';
 		$this->assertEquals('/example/index.php?a=test', $this->httpRequest->getRequestUri());
 		
@@ -306,12 +307,16 @@ class WindHttpRequestTest extends BaseTestCase {
 		$_SERVER['QUERY_STRING'] = 'a=test';
 		$this->assertEquals('/example/index.php?a=test', $this->httpRequest->getRequestUri());
 	}
-	public function testGetScriptUrl() {
+	
+	public function testGetScriptUrlWithException() {
 		try{
 		    $url = $this->httpRequest->getScriptUrl();
-	    } catch (Exception $exception) {
-	    	$this->isFalse('yes');
+	    } catch (WindException $exception) {
+	    	return;
 	    }
+	    $this->fail('an exception is catched');
+	}
+	public function testGetScriptUrl() {
 	    $_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/index.php";
 	    
 		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/index.php';
@@ -329,6 +334,7 @@ class WindHttpRequestTest extends BaseTestCase {
 		$_SERVER['DOCUMENT_ROOT'] = 'D:/php';
 		$_SERVER['SCRIPT_FILENAME'] = "D:/php/usr/ppt/demos/index.php";
 		$this->assertEquals('/usr/ppt/demos/index.php', $this->httpRequest->getScriptUrl());
+	
 	}
 	
 	public function testGetScript() {
@@ -347,13 +353,15 @@ class WindHttpRequestTest extends BaseTestCase {
 		$port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : $default;
 		$this->assertEquals($port, $this->httpRequest->getServerPort());
 	}
-	
-	public function testGetHostInfo() {
+	public function testGetHostInfoWithException() {
 		try{
 			$this->httpRequest->getHostInfo();
-		} catch(Exception $e) {
-			$this->isFalse('false');
+		} catch(WindException $e) {
+			return;
 		}
+		$this->fail('an exception is catched');
+	}
+	public function testGetHostInfo() {
 		$_SERVER['HTTP_HOST'] = 'localhost:80';
 		$this->assertEquals('http://localhost:80', $this->httpRequest->getHostInfo());
 		$_SERVER['HTTP_HOST'] = '';
@@ -364,11 +372,17 @@ class WindHttpRequestTest extends BaseTestCase {
 		$this->assertEquals('http://localhost:80/usr/ppt/demos', $this->httpRequest->getBaseUrl(true));
 		$this->assertEquals('/usr/ppt/demos', $this->httpRequest->getBaseUrl(false));
 	}
-	public function testGetPathInfo() {
-		$this->assertEquals('', $this->httpRequest->getPathInfo());
-		throw new PHPUnit_Framework_IncompleteTestError('Incomplete');
+	public function testGetPathInfoWithException() {
+		try{
+			$this->assertEquals('', $this->httpRequest->getPathInfo());
+		}catch(WindException $e) {
+			return ;
+		}
+		$this->fail('Exception error!');
 	}
-	
+	public function testGetPathInfo() {
+		$_SERVER['PHP_SELF'] = '/usr/ppt/demos';
+	}
 	public function testGetServerName() {
 		$serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
 		$this->assertEquals($serverName, $this->httpRequest->getServerName());
@@ -398,7 +412,7 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 	public function testGetAcceptTypes() {
 		$value = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-		$this->assertEquals($value, $this->httpRequest->getAcceptType());
+		$this->assertEquals($value, $this->httpRequest->getAcceptTypes());
 	}
 
 	public function testGetAcceptCharset() {
@@ -415,6 +429,4 @@ class WindHttpRequestTest extends BaseTestCase {
 	public function testGetResponse() {
 		$this->assertTrue($this->httpRequest->getResponse() instanceof WindHttpResponse);
 	}
-	
 }
-

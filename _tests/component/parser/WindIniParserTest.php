@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-include (dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'BaseTestCase.php');
 L::import('WIND:component.parser.WindIniParser');
 
 class WindIniParserTest extends BaseTestCase {

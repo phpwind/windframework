@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once (dirname(dirname(__FILE__)) . '/BaseTestCase.php');
 //L::import('WIND:core.WindHttpResponse');
 //L::import('WIND:core.exception.WindException');
 include(WIND_PATH . '/core/WindHttpResponse.php');
@@ -186,7 +185,7 @@ class WindHttpResponseTest extends BaseTestCase {
 		try{
 			$this->httpResponse->isSendedHeader(true);
 		} catch(Exception $e) {
-			$this->isFalse('OK');
+			$this->fail('an exception is catched');
 		}
 	}
 	

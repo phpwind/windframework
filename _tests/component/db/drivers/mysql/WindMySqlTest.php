@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-include (dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/BaseTestCase.php');
 L::import('WIND:core.exception.WindException');
 L::import('WIND:component.db.drivers.mysql.WindMySql');
 
