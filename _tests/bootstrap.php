@@ -1,5 +1,5 @@
 <?php
-$path = '/../wind/';
+$path = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'wind';
 $_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
 if (($pos = array_search('.', $_includePaths, true)) !== false) unset($_includePaths[$pos]);
 array_unshift($_includePaths, $path);
