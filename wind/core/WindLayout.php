@@ -39,12 +39,15 @@ class WindLayout {
 	 * 解析layout布局文件
 	 */
 	public function parserLayout($dirName = '', $ext = '', $content = '') {
+		print_r($this->layoutFile);
 		if ($this->layoutFile) {
 			$this->content = $content;
-			if (!($file = L::getRealPath($dirName . '.' . $this->layoutFile, false, $ext))) {
-				throw new WindException('cant find layout file.');
-			}
-			@include $file;
+			$file = L::getRealPath($dirName . '.' . $this->layoutFile);
+			$file = $file . '.' . $ext;
+			if (is_file($file))
+				include $file;
+			else
+				throw new WindException('the layout file ' . $file . ' is not exists.');
 		}
 		return $this->segments;
 	}
