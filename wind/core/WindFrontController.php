@@ -39,11 +39,11 @@ class WindFrontController extends WindServer {
 		$this->initDispatcher();
 	}
 	
-	public function process($request, $response) {
+	public function process() {
 		if ($this->initFilter()) return;
 		$application = $this->createApplication();
-		$application->init($request, $response);
-		$application->processRequest($request, $response);
+		$application->init($this->response->getDispatcher());
+		$application->processRequest($this->request, $this->response);
 		$application->destory();
 	}
 	

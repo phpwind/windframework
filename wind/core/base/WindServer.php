@@ -40,7 +40,7 @@ abstract class WindServer {
 		$this->response->sendResponse();
 	}
 	
-	abstract function process($request, $resopnse);
+	abstract function process();
 	
 	/**
 	 * Receives standard HTTP requests from the public

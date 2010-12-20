@@ -22,8 +22,8 @@ class WindWebApplication extends WindApplication {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function init($request, $response) {
-		$this->dispatcher = $response->getDispatcher();
+	public function init($dispatcher) {
+		$this->dispatcher = $dispatcher;
 		$this->dispatcher->setApplication($this);
 	}
 	
