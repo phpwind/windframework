@@ -285,7 +285,7 @@ class L {
 			$filePath = substr($filePath, $pos + 1);
 		}
 		$filePath = str_replace('.', D_S, $filePath);
-		if ($namespace) $filePath = trim(self::getRootPath($namespace), D_S) . D_S . $filePath;
+		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
 		return $filePath;
 	}
 	
