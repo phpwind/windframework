@@ -39,7 +39,7 @@ class WindViewer implements IWindViewer {
 		ob_start();
 		if (($segments = $this->parserLayout()) == null) {
 			$template = $this->getViewTemplate($template);
-			if ($template) include $template;
+			if (is_file($template)) @include $template;
 		} else {
 			foreach ($segments as $value) {
 				$template = $this->getViewTemplate($value);
