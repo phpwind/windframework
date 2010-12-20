@@ -337,6 +337,14 @@ class WindSession implements IteratorAggregate, ArrayAccess, Countable {
 		return ini_set('session.auto_start', $autostart ? '1' : '0');
 	}
 	
+	/**
+	 * 获取当前session的文件名
+	 * @return string
+	 */
+	public function getCurrentSessionFileName(){
+		return $this->getSavePath().'/sess_'.$this->getSessionId();
+	}
+	
 	public function offsetExists($offset) {
 		$this->exist($offset);
 	}
