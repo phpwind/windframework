@@ -15,6 +15,7 @@ class WindHttpRequestTest extends BaseTestCase {
 	private $post = array('address' => 'zhejiangU', 'step' => '5');
 	private $cookie = array('logIP' => '10.1.123.99', 'loginTime' => '2010-12-17');
 	public function setUp() {
+		parent::setUp();
 		$_GET = array();
 		$_POST = array();
 		$_COOKIE = array();
@@ -248,8 +249,23 @@ class WindHttpRequestTest extends BaseTestCase {
 		$this->assertTrue($protocol == $this->httpRequest->getProtocol());
 	}
 	
+	/**
+	 * WindHttpRequest会在第一次运行后保持值·· 
+	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_clientIp)),同时去除注释
+	 */
 	public function testGetClientIp() {
 		$this->assertTrue('0.0.0.0' == $this->httpRequest->getClientIp());
+		$_SERVER['HTTP_CLIENT_IP'] = '192.168.0.200';
+		/*$this->assertTrue('192.168.0.200' == $this->httpRequest->getClientIp());
+		
+		$_SERVER['HTTP_PROXY_USER'] = '10.1.200.23';
+		$_SERVER['HTTP_CLIENT_IP'] = '';
+		$this->assertTrue('10.1.200.23' == $this->httpRequest->getClientIp());
+		
+		$_SERVER['HTTP_PROXY_USER'] = '';
+		$_SERVER['HTTP_CLIENT_IP'] = '';
+		$_SERVER['REMOTE_ADDR'] = '172.36.5.2';
+		$this->assertTrue('172.36.5.2' == $this->httpRequest->getClientIp());*/
 	}
 	
 	public function testGetRequestMethod() {
@@ -281,10 +297,6 @@ class WindHttpRequestTest extends BaseTestCase {
 		$this->assertFalse($this->httpRequest->isDelete());
 	}
 	
-	/**
-	 * WindHttpRequest会在第一次运行后保持值·· 
-	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_requestUri))
-	 */
 	public function testGetRequestUriWithException() {
 		try{
 	    	$uri = $this->httpRequest->getRequestUri();
@@ -293,6 +305,10 @@ class WindHttpRequestTest extends BaseTestCase {
 	    }
 	    $this->fail('Exception');
 	}
+	/**
+	 * WindHttpRequest会在第一次运行后保持值·· 
+	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_requestUri))
+	 */
 	public function testGetRequestUri() {
 		$_SERVER['HTTP_X_REWRITE_URL'] = '/example/index.php?a=test';
 		$this->assertEquals('/example/index.php?a=test', $this->httpRequest->getRequestUri());
@@ -316,28 +332,35 @@ class WindHttpRequestTest extends BaseTestCase {
 	    }
 	    $this->fail('an exception is catched');
 	}
+	
+	/**
+	 * WindHttpRequest会在第一次运行后保持值·· 
+	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_scriptUrl))
+	 */
 	public function testGetScriptUrl() {
-	    $_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/index.php";
+	    $_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/example/index.php";
 	    
-		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/index.php';
-		$this->assertEquals('/usr/ppt/demos/index.php', $this->httpRequest->getScriptUrl());
+		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/example/index.php';
+		$this->assertEquals('/usr/ppt/demos/example/index.php', $this->httpRequest->getScriptUrl());
 		
 		$_SERVER['SCRIPT_NAME'] = '';
-		$_SERVER['PHP_SELF'] = '/usr/ppt/demos/index.php';
-		$this->assertEquals('/usr/ppt/demos/index.php', $this->httpRequest->getScriptUrl());
+		$_SERVER['PHP_SELF'] = '/usr/ppt/demos/example/index.php';
+		$this->assertEquals('/usr/ppt/demos/example/index.php', $this->httpRequest->getScriptUrl());
 		
 		$_SERVER['PHP_SELF'] = '';
-		$_SERVER['ORIG_SCRIPT_NAME'] = '/usr/ppt/demos/index.php';
-		$this->assertEquals('/usr/ppt/demos/index.php', $this->httpRequest->getScriptUrl());
+		$_SERVER['ORIG_SCRIPT_NAME'] = '/usr/ppt/demos/example/index.php';
+		$this->assertEquals('/usr/ppt/demos/example/index.php', $this->httpRequest->getScriptUrl());
 		
 		$_SERVER['ORIG_SCRIPT_NAME'] = '';
 		$_SERVER['DOCUMENT_ROOT'] = 'D:/php';
-		$_SERVER['SCRIPT_FILENAME'] = "D:/php/usr/ppt/demos/index.php";
-		$this->assertEquals('/usr/ppt/demos/index.php', $this->httpRequest->getScriptUrl());
+		$_SERVER['SCRIPT_FILENAME'] = "D:/php/usr/ppt/demos/example/index.php";
+		$this->assertEquals('/usr/ppt/demos/example/index.php', $this->httpRequest->getScriptUrl());
 	
 	}
 	
 	public function testGetScript() {
+		$_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/example/index.php";
+		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/example/index.php';
 		$this->assertEquals('index.php', $this->httpRequest->getScript());
 	}
 	
@@ -369,8 +392,11 @@ class WindHttpRequestTest extends BaseTestCase {
 		$this->assertEquals('http://localhost:80', $this->httpRequest->getHostInfo());
 	}
 	public function testGetBaseUrl() {
-		$this->assertEquals('http://localhost:80/usr/ppt/demos', $this->httpRequest->getBaseUrl(true));
-		$this->assertEquals('/usr/ppt/demos', $this->httpRequest->getBaseUrl(false));
+		$_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/example/index.php";
+		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/example/index.php';
+		$_SERVER['HTTP_HOST'] = 'localhost:80';
+		$this->assertEquals('http://localhost:80/usr/ppt/demos/example', $this->httpRequest->getBaseUrl(true));
+		$this->assertEquals('/usr/ppt/demos/example', $this->httpRequest->getBaseUrl(false));
 	}
 	public function testGetPathInfoWithException() {
 		try{
@@ -380,9 +406,18 @@ class WindHttpRequestTest extends BaseTestCase {
 		}
 		$this->fail('Exception error!');
 	}
+	/**
+	 * WindHttpRequest会在第一次运行后保持值·· 
+	 * 测试其他逻辑需要先注释已经有值的判断(//if (!$this->_pathInfo) )
+	 */
 	public function testGetPathInfo() {
-		$_SERVER['PHP_SELF'] = '/usr/ppt/demos';
+		$_SERVER['HTTP_X_REWRITE_URL'] = '/example/index.php?a=test';
+		$_SERVER['PHP_SELF'] = '/usr/ppt/demos/example/index.php?a=test';
+	    $_SERVER['SCRIPT_FILENAME'] = "/usr/ppt/demos/example/index.php";
+		$_SERVER['SCRIPT_NAME'] = '/usr/ppt/demos/example/index.php';
+		$this->assertTrue('' == $this->httpRequest->getPathInfo());
 	}
+	
 	public function testGetServerName() {
 		$serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
 		$this->assertEquals($serverName, $this->httpRequest->getServerName());

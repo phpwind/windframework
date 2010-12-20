@@ -5,14 +5,13 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-//L::import('WIND:core.WindHttpResponse');
-//L::import('WIND:core.exception.WindException');
-include(WIND_PATH . '/core/WindHttpResponse.php');
-include(WIND_PATH . '/core/exception/WindException.php');
+L::import('WIND:core.WindHttpResponse');
+L::import('WIND:core.exception.WindException');
 
 class WindHttpResponseTest extends BaseTestCase {
 	private $httpResponse;
 	public function setUp() {
+		parent::setUp();
 		$this->httpResponse = WindHttpResponse::getInstance();
 	}
 	public static function providerSets() {
@@ -64,7 +63,7 @@ class WindHttpResponseTest extends BaseTestCase {
 	}
 	private function checkArray($array, $num, $member = array(), $flag = false) {
 		$this->assertTrue(is_array($array));
-		$this->assertEqueals($num, count($array));
+		$this->assertEquals($num, count($array));
 		if (!$member) return;
 		foreach ((array)$member as $key => $value) {
 			if (!$flag) {
@@ -76,18 +75,20 @@ class WindHttpResponseTest extends BaseTestCase {
 	}
 	
 	/**
-	 * @dataProvider providerAdd
 	 * @param unknown_type $name
 	 * @param unknown_type $value
 	 * @param unknown_type $replcae
 	 */
-	public function testAddHeader($name, $value, $replcae = false) {
-		$this->httpResponse->addHeader($name, $value, $replcae);
-		$this->isTrue('OK');
+	public function testAddHeader() {
+		foreach(self::providerAdd() as $value) {
+			list($name, $value, $replace) = $value;
+			$this->httpResponse->addHeader($name, $value, $replace);
+			$this->isTrue('OK');
+		}
 	}
 	
 	public function testGetHeaderForAdd() {
-		$header = $this->httpResponse->getHeader();
+		$header = $this->httpResponse->getHeaders();
 		$this->checkArray($header, 4);
 		$this->checkArray($header[0], 3, array('name' => 'Name', 'value' => 'phpschool', 'replace' => true), true);
 		$this->checkArray($header[1], 3, array('name' => '-Id-Name', 'value' => 'hello', 'replace' => false), true);
@@ -95,17 +96,19 @@ class WindHttpResponseTest extends BaseTestCase {
 		$this->checkArray($header[3], 3, array('name' => '--Pear----Lod', 'value' => 'xiaonei', 'replace' => false), true);
 	}
 	/**
-	 * @dataProvider providerSets
 	 * @param unknown_type $name
 	 * @param unknown_type $value
 	 * @param unknown_type $replace
 	 */
-	public function testSetHeader($name, $value, $replace = false) {
-		$this->httpResponse->setHeader($name, $value, $replace);
-		$this->isTrue('OK');
+	public function testSetHeader() {
+		foreach(self::providerSets() as $value) {
+			list($name, $value, $replace) = $value;
+			$this->httpResponse->setHeader($name, $value, $replace);
+			$this->isTrue('OK');
+		}
 	}
 	public function testGetHeaderForSet() {
-		$header = $this->httpResponse->getHeader();
+		$header = $this->httpResponse->getHeaders();
 		$this->checkArray($header, 4);
 		$this->checkArray($header[0], 3, array('name' => 'Name', 'value' => 'xxx', 'replace' => false), true);
 		$this->checkArray($header[1], 3, array('name' => '-Id-Name', 'value' => 'hello', 'replace' => false), true);
@@ -114,25 +117,29 @@ class WindHttpResponseTest extends BaseTestCase {
 	}
 	public function testClearHeaders() {
 		$this->httpResponse->clearHeaders();
-		$header = $this->httpResponse->getHeader();
+		$header = $this->httpResponse->getHeaders();
 		$this->checkArray($header, 0);
 	}
 	/**
-	 * @dataProvider providerStatus
 	 */
-	public function testSetStatus($no, $message) {
-		$this->httpResponse->setStatus($no, $message);
-		$this->isTrue('OK');
+	public function testSetStatus() {
+		foreach(self::providerStatus() as $value) {
+			list($no, $message) = $value;
+			$this->httpResponse->setStatus($no, $message);
+			$this->isTrue('OK');
+		}
 	}
 	
 	/**
-	 * @dataProvider providerBody
 	 * @param string $content
 	 * @param string $name
 	 */
-	public function testSetBody($content, $name) {
-		$this->httpResponse->setBody($content, $name);
-		$this->isTrue('OK');
+	public function testSetBody() {
+		foreach(self::providerBody() as $value) {
+			list($content, $name) = $value;
+			$this->httpResponse->setBody($content, $name);
+			$this->isTrue('OK');
+		}
 	}
 
 	public function testSendBody() {
@@ -140,7 +147,7 @@ class WindHttpResponseTest extends BaseTestCase {
 					'header' => 'i am header',
 				    'footer' => '',
 					);
-		$this->assertEquals(implode('', $conent), $this->httpResponse->sendBody());
+		$this->assertEquals(implode('', $content), $this->httpResponse->sendBody());
 	}
 	public function testGetBodyByFalse() {
 		$content = array('default' => 'i am body',
@@ -190,13 +197,15 @@ class WindHttpResponseTest extends BaseTestCase {
 	}
 	
 	/**
-	 * @dataProvider providerStatus
 	 * @param unknown_type $no
 	 * @param unknown_type $message
 	 */
-	public function testSendError($no, $message) {
-		$this->httpResponse->sendError($no, $message);
-		$this->isTrue('OK');
+	public function testSendError() {
+		foreach(self::providerStatus() as $value) {
+			list($no, $message) = $value;
+			$this->httpResponse->sendError($no, $message);
+			$this->isTrue('OK');
+		}
 	}
 	public function testSendErrorWithBody() {
 		$body = $this->httpResponse->getBody(true);
