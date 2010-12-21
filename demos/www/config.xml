@@ -3,7 +3,7 @@
 	<rootPath>E:/workspace_c/wind/demos</rootPath>
 	<modules>
 		<module name='default'>
-			<path>helloworld1.actionControllers</path>
+			<path>helloworld.actionControllers</path>
 			<template>front</template>
 			<controllerSuffix>controller</controllerSuffix>
 			<actionSuffix>action</actionSuffix>
