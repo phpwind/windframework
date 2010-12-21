@@ -70,7 +70,7 @@ class WindSystemConfig extends WindConfig {
 	const ROUTER_PARSERS_PATH = 'path';
 	
 	public function getRootPath() {
-		if (!isset($this->rootPath) && ($this->rootPath = $this->getConfig(self::ROOTPATH)) === '') {
+		if (!isset($this->rootPath) && !($this->rootPath = $this->getConfig(self::ROOTPATH))) {
 			$this->rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
 		}
 		return $this->rootPath;
