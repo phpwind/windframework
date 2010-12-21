@@ -71,7 +71,7 @@ class WindFormFilter extends WindFilter {
 	private function getFormHandle($request, $response) {
 		$formName = $request->getGet(self::FORMNAME) ? $request->getGet(self::FORMNAME) : $request->getPost(self::FORMNAME);
 		if (!$formName) return null;
-		$module = C::getConfig('modules', $response->getDispatcher()->module);
+		$module = $response->getData('systemConfig')->getConfig('modules', $response->getDispatcher()->module);
 		L::import('WIND:component.form.WindActionForm');
 		L::import($module['path'] . ".actionForm." . $formName);
 		if (!class_exists($formName)) {
