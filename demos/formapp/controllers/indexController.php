@@ -25,8 +25,19 @@ class IndexController extends WindController {
 		$this->setTemplate('header');
 	}
 	public function setFooter() {
-		$this->setOutput(array('footer'=> array('2010-2110', '@phpwind'),
+		$this->setOutput(array('footer'=> array('2010-2110', 'phpwind'),
 								'version' => 'WindFrameWorkV1.0'));
+		$this->setOutput($this->getInfo());
 		$this->setTemplate('footer');
+	}
+	
+	private function getInfo() {
+		$fileNum = count(L::getImports());
+		list($start_usec, $start_sec) = explode(' ', $_SESSION['start']);
+         /* 内存占用情况 */
+		(function_exists('memory_get_usage')) && $memory = (memory_get_usage() / 1048576);
+		list($now_usec, $now_sec) = explode(' ', microtime());
+		$excustTime = number_format(($now_sec - $start_sec) + ($now_usec - $start_usec), 6);
+		return array('includeFileNum' => $fileNum, 'excuceTime' => $excustTime, 'memory' => $memory);
 	}
 }

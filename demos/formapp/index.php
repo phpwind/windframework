@@ -3,8 +3,10 @@
  * @author xiaoxia xu <x_824@sina.com> 2010-12-3
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * @license
  */
+session_start();
+$_SESSION['start'] = microtime();
 header("Content-type: text/html; charset=utf8");
 define('R_P', dirname(__FILE__) . '/');
 /* 框架文件路径 */

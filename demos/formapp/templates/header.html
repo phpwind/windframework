@@ -2,24 +2,53 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $title;?></title>
-<link href="templates/css/form.css" rel="stylesheet" />
+<title><?php echo $this->getVar('title', 'index');?></title>
+<link href="templates/images/core.css" rel="stylesheet" />
+<link href="templates/images/css.css" rel="stylesheet" />
 </head>
-<body class="twoColLiqRtHdr">
-<div id="container">
-  <div id="header">
-	<h1><b style="font-size: 20px"><?php echo $name;?></b>----欢迎您的光临！</h1>
-	<hr></hr>
-	<p>
-		<h3>WindFrameWork </h3>
-		<p><b>其他demo:</b><br/>
-		<?php foreach ( $demos as $path => $describe) { ?>
-		   <li><a href="<?php echo $path;?>" target="_blank" title="我要测试"><?php echo $describe;?></a></li><br/>
-		<?php }?>
-		</p>
-		<p align="right"><a href="index.php"><<返回首页</a></p>
-	</p>
-  </div>
+
+<body>
+<div class="wrap">
+	<div id="header" class="mb10">
+		<div class="header">
+			<table width="100%"><tr>
+				<td><h2 class="fl logo"><a href="#"><img src="templates/images/logo.png" width="198" height="80" class="fl" /></a></h2></td>
+				<td align="right">
+					<div class="login_header fr">
+						<dl class="cc login_dlA">
+							<dt>----欢迎您的光临！</dt>
+							<dd></dd>
+							<dd></dd>
+						</dl>
+						<dl class="cc login_dlA">
+							<dt><?php echo $name;?></dt>
+							<dd><span class="bt2"></span></span></span></dd>
+							<dd><span class="btn2"><span></span></span></dd>
+						</dl>
+					</div>
+				</td>
+			</tr></table>
+		    <div id="navA">
+				<div class="navA">
+					<ul class="cc">
+						<li><a href="">首页</a></li>
+						<li class="current"><a href="#">FormBean测试</a></li>
+						<li><a href="#">其他</a></li>
+						<li><a href="#">其他</a></li>
+						<li><a href="#">其他</a></li>
+						<li><a href="#">其他</a></li>
+						<li><a href="#">其他</a></li>
+						<li class="tail">&nbsp;</li>
+					</ul>
+				</div>
+			</div>
+			<div id="breadCrumb" class="cc">
+				<img id="td_cate" src="images/home.gif" class="cp breadHome" /><em></em>
+				<a href="#" title="首页">首页</a><em></em>
+				<a href="#" title="Formbean测试">formBean测试</a>
+			</div
+		</div>
+	</div>
   	
   
 	
