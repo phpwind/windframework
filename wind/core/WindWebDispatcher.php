@@ -41,7 +41,7 @@ class WindWebDispatcher extends WindDispatcher {
 	 */
 	private function getView() {
 		if (!($templateConfigName = $this->forward->getTemplateConfig())) {
-			$_temps = C::getModules($this->module);
+			$_temps = $this->modules[$this->module];
 			isset($_temps[IWindConfig::MODULE_TEMPLATE]) && $templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
 		}
 		if (!isset($this->views[$templateConfigName])) {

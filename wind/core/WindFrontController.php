@@ -32,7 +32,7 @@ class WindFrontController extends WindServer {
 	}
 	
 	public function process() {
-		if ($this->excuteFilter()) return;
+		if ($this->excuteFilterChain()) return;
 		$this->application->init($this->response->getDispatcher());
 		$this->application->processRequest($this->request, $this->response);
 	}
@@ -41,7 +41,7 @@ class WindFrontController extends WindServer {
 	 * 初始化Dispatcher
 	 */
 	protected function initDispatcher() {
-		$router = WindRouterFactory::getFactory()->create();
+		$router = WindRouterFactory::getFactory()->create($this->request, $this->response);
 		$router->doParser($this->request, $this->response);
 		$dispatcher = new WindWebDispatcher($this->request, $this->response, $this);
 		$this->response->setDispatcher($dispatcher->initWithRouter($router));
@@ -50,13 +50,11 @@ class WindFrontController extends WindServer {
 	/**
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
-	private function excuteFilter() {
+	private function excuteFilterChain() {
 		$filters = $this->systemConfig->getConfig(IWindConfig::FILTERS);
 		if (empty($filters)) return false;
-		WindFilterFactory::getFactory()->setExecute(array(
-			$this, 
-			'process'), $this->request, $this->response);
-		$filter = WindFilterFactory::getFactory()->create();
+		WindFilterFactory::getFactory()->setExecute(array($this, 'process'));
+		$filter = WindFilterFactory::getFactory()->create($this->systemConfig->getFilters());
 		if ($filter instanceof WindFilter) {
 			$filter->doFilter($this->request, $this->response);
 			return false;
@@ -76,7 +74,7 @@ class WindFrontController extends WindServer {
 			$config = $configParser->parse($appName, $config, true);
 		}
 		$this->systemConfig = new WindSystemConfig($config);
-		$this->response->setData($this->systemConfig, 'systemConfig');
+		$this->response->setData($this->systemConfig, 'WindSystemConfig');
 		L::register($this->systemConfig->getRootPath(), $appName);
 	}
 	

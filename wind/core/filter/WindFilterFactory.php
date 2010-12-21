@@ -27,10 +27,10 @@ class WindFilterFactory extends WindFactory {
 	 * @param WSystemConfig $config
 	 * @return WFilter
 	 */
-	public function create() {
+	public function create($filters = array()) {
 		if ($this->state === true) return null;
 		if (empty($this->filters)) {
-			$this->_initFilters();
+			$this->_initFilters($filters);
 		}
 		return $this->createFilter();
 	}
@@ -69,9 +69,7 @@ class WindFilterFactory extends WindFactory {
 	public function setExecute() {
 		$args = func_get_args();
 		$callback = array_shift($args);
-		if (count($args) > 1) {
-			$this->args = $args;
-		}
+		if (count($args) > 1) $this->args = $args;
 		$this->callBack = $callback;
 	}
 	
@@ -136,10 +134,9 @@ class WindFilterFactory extends WindFactory {
 	 *
 	 * @param WSystemConfig $config
 	 */
-	private function _initFilters() {
+	private function _initFilters($filters = array()) {
 		$this->index = 0;
 		$this->filters = array();
-		$filters = C::getConfig('filters');
 		foreach ((array) $filters as $key => $value) {
 			$name = $key;
 			$path = $value[IWindConfig::FILTER_PATH];

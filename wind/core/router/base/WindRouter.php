@@ -58,29 +58,6 @@ abstract class WindRouter {
 	abstract public function buildUrl($action = '', $controller = '', $module = '');
 	
 	/**
-	 * 获得请求处理类,返回一个数组，array('$className','$method')
-	 * 
-	 * @return array
-	 */
-	public function getActionHandle() {
-		$moduleConfig = C::getModules($this->getModule());
-		$module = $moduleConfig[IWindConfig::MODULE_PATH];
-		$className = $this->getController();
-		$method = $this->getAction();
-		L::import($module . '.' . $className);
-		if (!class_exists($className)) {
-			$module .= $module . '.' . $className;
-			$className = $this->getAction();
-			L::import($module . '.' . $className);
-			if (!class_exists($className)) return array(null, null);
-			$method = $this->method;
-		}
-		if (!in_array($method, get_class_methods($className))) return array(null, null);
-		$this->modulePath = $module;
-		return array($className, $method);
-	}
-	
-	/**
 	 * 获得业务操作
 	 */
 	public function getAction() {

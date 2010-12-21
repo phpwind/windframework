@@ -12,8 +12,8 @@ abstract class WindDispatcher {
 	public $forward = null;
 	public $router = null;
 	
+	protected $modules;
 	protected $immediately = false;
-	protected $moduleConfig;
 	protected $request = null;
 	protected $response = null;
 	
@@ -77,22 +77,19 @@ abstract class WindDispatcher {
 	 * @return array($className,$method)
 	 */
 	public function getActionHandle() {
-		$module = $this->moduleConfig[IWindConfig::MODULE_PATH];
-		$suffix = ucfirst($this->moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX]);
-		$method = $this->action ? $this->action : $this->moduleConfig[IWindConfig::MODULE_METHOD];
+		$moduleConfig = $this->modules[$this->module];
+		$module = $moduleConfig[IWindConfig::MODULE_PATH];
+		$suffix = ucfirst($moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX]);
+		$method = $this->action ? $this->action : $moduleConfig[IWindConfig::MODULE_METHOD];
 		$path = $module . '.' . $this->controller . $suffix;
 		$className = L::import($module . '.' . ucfirst($this->controller) . $suffix);
 		if (!$className) {
-			$suffix = ucfirst($this->moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX]);
+			$suffix = ucfirst($moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX]);
 			$className = L::import($path . ucfirst($this->action) . $suffix);
-			$method = $this->moduleConfig[IWindConfig::MODULE_METHOD];
+			$method = $moduleConfig[IWindConfig::MODULE_METHOD];
 		}
-		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(
-			null, 
-			null);
-		return array(
-			$className, 
-			$method);
+		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
+		return array($className, $method);
 	}
 	
 	/**
@@ -100,11 +97,7 @@ abstract class WindDispatcher {
 	 * @param WindRedirecter $redirecter
 	 */
 	protected function dispatchWithRedirect($redirecter) {
-		$redirect = $redirecter->buildUrl(array(
-			$this->router, 
-			'buildUrl'), array(
-			$this->action, 
-			$this->controller, 
+		$redirect = $redirecter->buildUrl(array($this->router, 'buildUrl'), array($this->action, $this->controller, 
 			$this->module));
 		$this->response->sendRedirect($redirect);
 	}
@@ -154,15 +147,14 @@ abstract class WindDispatcher {
 	 * @param pos
 	 */
 	private function setModule($module) {
-		$modules = $this->response->getData('systemConfig')->getModules();
-		if (key_exists($module, $modules)) {
+		$this->modules = $this->response->getData('WindSystemConfig')->getModules();
+		if (key_exists($module, $this->modules)) {
 			$this->module = $module;
 		} else {
-			foreach ($modules as $key => $value) {
+			foreach ($this->modules as $key => $value) {
 				if ($module == $value[IWindConfig::MODULE_PATH]) $this->module = $key;
 			}
 		}
-		$this->moduleConfig = $modules[$this->module];
 	}
 	
 	/**

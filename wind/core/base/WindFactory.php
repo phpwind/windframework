@@ -16,7 +16,7 @@ abstract class WindFactory {
 	private static $instance = array();
 	
 	abstract public function create();
-
+	
 	static public function &getFactory($class) {
 		if (!$class) return null;
 		if (!isset(self::$instance[$class]) || self::$instance[$class] === null) {

@@ -16,11 +16,11 @@ L::import('WIND:core.WindMessage');
 class WindErrorMessage extends WindMessage {
 	private $errorAction = '';
 	private static $instance = null;
-
+	
 	private function __construct() {}
-
+	
 	private $forward = null;
-
+	
 	/**
 	 * 添加错误信息
 	 *
@@ -30,7 +30,7 @@ class WindErrorMessage extends WindMessage {
 	public function addError($message, $key = '') {
 		parent::addMessage($message, $key);
 	}
-
+	
 	/**
 	 * 返回错误信息
 	 *
@@ -40,14 +40,14 @@ class WindErrorMessage extends WindMessage {
 	public function getError($key = '') {
 		return parent::getMessage($key);
 	}
-
+	
 	/**
 	 * 设置错误处理操作
 	 */
 	public function setErrorAction($action = '') {
 		$action && $this->errorAction = $action;
 	}
-
+	
 	/**
 	 * 重定向错误处理
 	 */
@@ -65,7 +65,7 @@ class WindErrorMessage extends WindMessage {
 		$this->clear();
 		exit();
 	}
-
+	
 	/**
 	 * @return WindErrorMessage
 	 */
