@@ -85,7 +85,6 @@ abstract class WindDbAdapter {
 	 * @return array 返回解析后的数据库配置
 	 */
 	final protected function parseConfig($config) {
-		$config = is_array($config) ? $config : $this->parseDSN($config);
 		return $this->checkConfig($config);
 	}
 	/**
