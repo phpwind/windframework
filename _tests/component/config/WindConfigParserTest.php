@@ -10,9 +10,11 @@ L::import('WIND:core.WindHttpRequest');
 
 class WindConfigParserTest extends BaseTestCase {
 	private $parser;
+	private $path;
 	public function __construct() {
 		parent::setUp();
 		$this->parser = new WindConfigParser();
+		$this->path = dirname(__FILE__);
 	}
 	public function setUp() {
 		$_SERVER['SCRIPT_FILENAME'] = __FILE__;
@@ -29,8 +31,7 @@ class WindConfigParserTest extends BaseTestCase {
 	}
 	
 	public function testParserWithXML() {
-		$result = $this->parser->parser('XML', 'component/config/config.xml');
-		var_dump($result);
+		$result = $this->parser->parser('XML', $this->path . '/config.xml');
 		$this->checkArray($result, 9, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers'));
 		$this->checkArray($result['viewerResolvers'], 2, array('pp' => 'WIND:core.viewer.WindViewer', 
@@ -38,20 +39,20 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->assertTrue(strrpos($result['rootPath'], '_tests') !== false);
 	}
 	public function testParserWithIni() {
-		$result = $this->parser->parser('Ini', 'component/config/config.ini');
+		$result = $this->parser->parser('Ini', $this->path . '/config.ini');
 		$this->checkArray($result, 9, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers'));
 		$this->checkArray($result['viewerResolvers'], 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
 		$this->assertTrue(strrpos($result['rootPath'], 'phpwind') !== false);
 	}
 	public function testParserWithProperties() {
-		$result = $this->parser->parser('properties', 'component/config/config.properties');
+		$result = $this->parser->parser('properties', $this->path . '/config.properties');
 		$this->checkArray($result, 9, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers'));
 		$this->checkArray($result['error'], 2, array('default' => 'WIND:core.WindErrorAction', 'QQ' => 'WindErrorAction'), true);
 	}
 	public function testParserWithPHP() {
-		$result = $this->parser->parser('PHP', 'component/config/config.php');
+		$result = $this->parser->parser('PHP', $this->path . '/config.php');
 		$this->checkArray($result, 9, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers'));
 		$this->checkArray($result['viewerResolvers'], 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
