@@ -469,7 +469,7 @@ abstract class WindSqlBuilder {
 				}
 			}
 			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches)){
-				if(is_string($replace)){
+				if(!is_array($replace)){
 					$tmp = explode('=',$replace);
 					$replace = array($tmp[0]=>$tmp[1]);
 				}
