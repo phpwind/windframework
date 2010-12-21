@@ -28,4 +28,7 @@
 			<compileDir>compile</compileDir>
 		</template>
 	</templates>
+	<extensionConfig>
+		<config name='formConfig'>form_config</config>
+	</extensionConfig>
 </WIND>
