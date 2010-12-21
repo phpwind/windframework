@@ -42,12 +42,6 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpResponse $response
 	 */
 	public function doBeforeProcess($request, $response) {
-		$formConfigPath = $response->getData('WindSystemConfig')->getConfig('extensionConfig', 'formConfig');
-		$formConfigPath = L::getRealPath($formConfigPath);
-		L::import('WIND:component.config.WindConfigParser');
-		$parser = new WindConfigParser();
-		$formConfigPath = $parser->parse('formConfig', $formConfigPath . '.php');
-		
 		$formObject = $this->getFormHandle($request, $response);
 		if ($formObject === null) return;
 		$formObject->setProperties(array_merge($request->getGet(), $request->getPost()));
@@ -74,11 +68,16 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpResponse $response
 	 */
 	private function getFormHandle($request, $response) {
-		$formName = $request->getGet(self::FORMNAME) ? $request->getGet(self::FORMNAME) : $request->getPost(self::FORMNAME);
+		$formConfig = $this->getFormConfig($response);
+		$module = $response->getDispatcher()->module;
+		if (!isset($formConfig[$module]) || !($moduleFormConfig = $formConfig[$module])) return null;
+		
+		$formName = (isset($formConfig[self::FORMNAME]) && $formConfig[self::FORMNAME]) ? $formConfig[self::FORMNAME] : self::FORMNAME;
+		$formName = $request->getAttribute($formName);
 		if (!$formName) return null;
-		$module = $response->getData('WindSystemConfig')->getConfig('modules', $response->getDispatcher()->module);
+		
 		L::import('WIND:component.form.WindActionForm');
-		L::import($module['path'] . ".actionForm." . $formName);
+		L::import($moduleFormConfig['path'] . '.' . $formName);
 		if (!class_exists($formName)) {
 			throw new WindException('Class \'' . $formName . '\' is not exists!');
 		}
@@ -87,5 +86,17 @@ class WindFormFilter extends WindFilter {
 			throw new WindException('The class \'' . $formName . '\' must extend WindActionForm!');
 		}
 		return $formObject;
+	}
+	
+	/**
+	 * 获得form的配置解析
+	 * @param WindHttpResponse $response
+	 */
+	private function getFormConfig($response) {
+		$formConfigPath = $response->getData('WindSystemConfig')->getConfig('extensionConfig', 'formConfig');
+		$formConfigPath = L::getRealPath($formConfigPath); 
+		L::import('WIND:component.config.WindConfigParser'); 
+		$parser = new WindConfigParser(); 
+		return $parser->parse('formConfig', $formConfigPath . '.xml'); 
 	}
 }

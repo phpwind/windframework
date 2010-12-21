@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formAction>
+	<formName>formName</formName>
+	<form name='default'>
+		<moduleName>default</moduleName>
+		<path>controllers.actionForm</path>
+	</form>
+</formAction>
