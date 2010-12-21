@@ -16,16 +16,36 @@ defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
  */
 class WindDebug {
 	
+	/**
+	 * @var array 调试点
+	 */
 	private static $breakpoint = array();
+	/**
+	 * @var int 保留的小数位数
+	 */
+	const DECIMAL_DIGITS = 4;
+	
+	/**
+	 * @var int 记录内存使用标记
+	 */
+	const MEMORY = 'mem';
+	/**
+	 * @var int 记录程序运行时时间使用标记
+	 */
+	const RUN_TIME = 'time';
+	/**
+	 * 设置调试点
+	 * @param string $point 调试点
+	 */
 	public static function setBreakPoint($point = '') {
 		if (isset(self::$breakpoint[$point]))
 			return false;
-		self::$breakpoint[$point]['time'] = microtime(true);
-		self::$breakpoint[$point]['mem'] = memory_get_usage();
+		self::$breakpoint[$point][self::RUN_TIME] = microtime(true);
+		self::$breakpoint[$point][self::MEMORY] = memory_get_usage();
 		return true;
 	}
 	/**
-	 * 设置调试点
+	 * 移除调试点
 	 * @param string $point 调试点
 	 */
 	public static function removeBreakPoint($point = '') {
@@ -42,7 +62,7 @@ class WindDebug {
 	 */
 	public static function getMemUsage() {
 		$useMem = memory_get_usage() - USEMEM_START;
-		return $useMem ? round($useMem / 1024, 4) : 0;
+		return $useMem ? round($useMem / 1024, self::DECIMAL_DIGITS) : 0;
 	}
 	
 	/**
@@ -50,7 +70,7 @@ class WindDebug {
 	 */
 	public static function getExecTime() {
 		$useTime = microtime(true) - RUNTIME_START;
-		return $useTime ? round($useTime, 4) : 0;
+		return $useTime ? round($useTime, self::DECIMAL_DIGITS) : 0;
 	}
 	
 	/**
@@ -73,9 +93,9 @@ class WindDebug {
 	public static function getMemUsageOfp2p($beginPoint, $endPoint = '') {
 		if (!isset(self::$breakpoint[$beginPoint]))
 			return 0;
-		$endMemUsage = isset(self::$breakpoint[$endPoint]) ? self::$breakpoint[$endPoint]['mem'] : memory_get_usage();
-		$useMemUsage = $endMemUsage - self::$breakpoint[$beginPoint]['mem'];
-		return round($useMemUsage / 1024, 4);
+		$endMemUsage = isset(self::$breakpoint[$endPoint]) ? self::$breakpoint[$endPoint][self::MEMORY] : memory_get_usage();
+		$useMemUsage = $endMemUsage - self::$breakpoint[$beginPoint][self::MEMORY];
+		return round($useMemUsage / 1024, self::DECIMAL_DIGITS);
 	}
 	
 	/**
@@ -87,9 +107,9 @@ class WindDebug {
 	public static function getExecTimeOfp2p($beginPoint, $endPoint = '') {
 		if (!isset(self::$breakpoint[$beginPoint]))
 			return 0;
-		$endTime = self::$breakpoint[$endPoint] ? self::$breakpoint[$endPoint]['time'] : microtime(true);
-		$useTime = $endTime - self::$breakpoint[$beginPoint]['time'];
-		return round($useTime, 4);
+		$endTime = self::$breakpoint[$endPoint] ? self::$breakpoint[$endPoint][self::RUN_TIME] : microtime(true);
+		$useTime = $endTime - self::$breakpoint[$beginPoint][self::RUN_TIME];
+		return round($useTime, self::DECIMAL_DIGITS);
 	}
 	
 	/**
