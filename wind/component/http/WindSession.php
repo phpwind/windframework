@@ -241,7 +241,7 @@ class WindSession implements IteratorAggregate, ArrayAccess, Countable {
 		} else {
 			return self::COOKIE_MODE_ONLY;
 		}
-		return 0;
+		return false;
 	}
 	
 	/**
