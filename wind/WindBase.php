@@ -5,14 +5,14 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license
  */
-!defined('VERSION') && define('VERSION', '1.0.2');
+!defined('VERSION') && define('VERSION', '0.1');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
 
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'preload_' . VERSION . '.php');
+!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'wind_' . VERSION . '.php');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -22,7 +22,8 @@ class W {
 	private static $_current = '';
 	
 	static public function init() {
-		L::register(WIND_PATH, 'wind');
+		self::checkEnvironment();
+		self::systemRegist();
 		self::initBaseLib();
 		self::initErrorHandle();
 	}
@@ -114,9 +115,29 @@ class W {
 		}
 	}
 	
-	static private function initErrorHandle() {/*set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
-		set_error_handler(array('WindErrorHandle', 'errorHandle'));*/
-}
+	static private function checkEnvironment() {
+
+	}
+	
+	/**
+	 * 注册自动加载器
+	 * 系统信息注册
+	 */
+	static private function systemRegist() {
+		L::registerAutoloader();
+		L::register(WIND_PATH, 'WIND');
+		//self::registerApplications();
+	}
+	
+	static private function initErrorHandle() {	
+
+	//		set_exception_handler(array(
+	//			'WindErrorHandle', 
+	//			'exceptionHandle'));
+	//		set_error_handler(array(
+	//			'WindErrorHandle', 
+	//			'errorHandle'));
+	}
 
 }
 
@@ -154,21 +175,14 @@ class L {
 	 * @param string $name
 	 * @param string $path
 	 */
-	static public function register($path, $name = '', $includePath = false) {
-		if (empty(self::$_includePaths) || self::$_includePaths === null) {
-			self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-			if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
-		}
-		array_unshift(self::$_includePaths, $path);
-		if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
-			throw new Exception('set include path error.');
-		}
+	static public function register($path, $name = '', $includePath = true) {
 		if ($name !== '') {
 			$name = strtolower($name);
 			if (!isset(self::$_namespace[$name]) && $path) {
 				self::$_namespace[$name] = $path;
 			}
 		}
+		if ($includePath) self::setIncludePath($path);
 	}
 	
 	/**
@@ -183,29 +197,20 @@ class L {
 	 * 加载一个包的参数方式：'WIND:core.base.*'
 	 *
 	 * @param string $filePath //文件路径信息
+	 * @param boolean $autoIncludes //是否采用自动加载方式
 	 * @author Qiong Wu
 	 * @return string|null
 	 */
-	static public function import($filePath, $includes = false) {
+	static public function import($filePath, $autoInclude = true) {
 		if (!$filePath) return false;
-		if (key_exists($filePath, self::$_imports)) {
-			return self::$_imports[$filePath];
-		}
+		if (self::isImported($filePath)) return self::$_imports[$filePath];
+		
 		if (($pos = strrpos($filePath, '.')) === false)
 			$fileName = $filePath;
 		else
 			$fileName = substr($filePath, $pos + 1);
 		$isPackage = $fileName === '*';
-		if (!$isPackage) {
-			if (!in_array($fileName, self::$_imports)) {
-				self::$_imports[$filePath] = $fileName;
-				if ($includes)
-					self::autoLoad($fileName, $filePath);
-				else
-					self::$_classes[$fileName] = $filePath;
-				return $fileName;
-			}
-		} elseif ($isPackage) {
+		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealPath($filePath);
 			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
@@ -215,26 +220,29 @@ class L {
 						$fileName = $file;
 					else
 						$fileName = substr($file, 0, $pos);
-					$_filePath = $filePath . '.' . $fileName;
-					self::$_imports[$_filePath] = $fileName;
-					if ($includes)
-						self::autoLoad($fileName, $_filePath);
-					else
-						self::$_classes[$fileName] = $_filePath;
+					self::setImport($fileName, $filePath . '.' . $fileName, $autoInclude);
 				}
 			}
 			closedir($dh);
+		} else {
+			self::setImport($fileName, $filePath, $autoInclude);
 		}
-		return true;
+		return $fileName;
 	}
 	
 	static public function autoLoad($className, $path = '') {
 		if (!isset(self::$_classes[$className])) throw new Exception('auto load ' . $className . ' failed.');
 		if ($path === '') $path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
-		if (is_file($path))
-			include $path;
-		else
-			throw new Exception('auto load ' . $path . ' failed.');
+		if ((@include $path) === false) throw new Exception('auto load ' . $path . ' failed.');
+	}
+	
+	public static function registerAutoloader() {
+		if (!function_exists('spl_autoload_register')) {
+			function __autoload($className) {
+				L::autoLoad($className);
+			}
+		}
+		return spl_autoload_register('L::autoLoad');
 	}
 	
 	/**
@@ -331,28 +339,31 @@ class L {
 		return key_exists($path, self::$_imports) || in_array($path, self::$_imports);
 	}
 	
-	/**
-	 * 获得所有支持的扩展名
-	 *
-	 * @return array
-	 */
-	static private function getExtension() {
-		return self::$_extensions;
-	}
-	
-	/**
-	 * 获得跟路径信息
-	 * @return string
-	 */
 	static private function getRootPath($namespace = '') {
 		if ($namespace === '') $namespace = W::getCurrentApp();
 		$namespace = strtolower($namespace);
 		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
-}
-
-function __autoload($className) {
-	L::autoLoad($className);
+	
+	static private function setImport($className, $classPath, $autoInclude) {
+		if (self::isImported($className)) return;
+		self::$_imports[$classPath] = $className;
+		if ($autoInclude)
+			self::$_classes[$className] = $classPath;
+		else
+			self::autoLoad($className, $classPath);
+	}
+	
+	static private function setIncludePath($path) {
+		if (empty(self::$_includePaths) || self::$_includePaths === null) {
+			self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
+			if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+		}
+		array_unshift(self::$_includePaths, $path);
+		if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
+			throw new Exception('set include path error.');
+		}
+	}
 }
 
 L::import('WIND:component.config.base.IWindConfig');
