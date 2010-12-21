@@ -15,9 +15,8 @@
  * @version $Id$ 
  */
 abstract class WindModule {
-	
-	protected $_trace = array();
-	protected $_serialize = NULL;
+	private $_trace = array();
+	private $_serialize = NULL;
 	
 	function __construct() {
 		$this->_init();
@@ -40,6 +39,17 @@ abstract class WindModule {
 		if (!$this->_validateProperties($propertyName)) return;
 		if (!isset($this->_trace['setted'])) return false;
 		return array_key_exists($propertyName, $this->_trace['setted']);
+	}
+	
+	public function toArray() {
+		$class = new ReflectionClass(get_class($this));
+		$properties = $class->getProperties();
+		$vars = array();
+		foreach ($properties as $property) {
+			$_propertyName = $property->name;
+			$vars[$_propertyName] = $this->$_propertyName;
+		}
+		return $vars;
 	}
 	
 	/**

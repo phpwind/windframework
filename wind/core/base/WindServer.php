@@ -13,8 +13,8 @@
  * @package 
  */
 abstract class WindServer {
-	protected $request = null;
-	protected $response = null;
+	protected $request;
+	protected $response;
 	
 	const METHOD_DELETE = "DELETE";
 	const METHOD_HEAD = "HEAD";
@@ -26,21 +26,24 @@ abstract class WindServer {
 	
 	public function __construct() {
 		try {
-			$this->request = WindHttpRequest::getInstance();
+			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
-		
 		} catch (Exception $exception) {
 			throw new Exception('init action servlet failed!!');
 		}
 	}
 	
 	public function run() {
+		$this->beforeProcess();
 		if ($this->request === null || $this->response === null) throw new Exception('init action servlet failed!!');
 		$this->service($this->request, $this->response);
 		$this->response->sendResponse();
+		$this->afterProcess();
 	}
 	
+	protected function beforeProcess() {}
 	abstract function process();
+	protected function afterProcess() {}
 	
 	/**
 	 * Receives standard HTTP requests from the public

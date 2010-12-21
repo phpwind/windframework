@@ -154,7 +154,7 @@ abstract class WindDispatcher {
 	 * @param pos
 	 */
 	private function setModule($module) {
-		$modules = C::getModules();
+		$modules = $this->response->getData('systemConfig')->getModules();
 		if (key_exists($module, $modules)) {
 			$this->module = $module;
 		} else {
