@@ -44,6 +44,10 @@ abstract class WindFilter {
 		$this->doAfterProcess($request, $response);
 	}
 	
+	public function getConfig() {
+		
+	}
+	
 	/**
 	 * 获得过滤器配置信息
 	 * @return mixed
