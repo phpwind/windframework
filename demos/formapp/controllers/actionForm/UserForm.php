@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.form.base.WindActionForm');
+
 class UserForm extends WindActionForm {
 	protected $_isValidate = true;//是否执行该form中的验证方法
 	protected $username;

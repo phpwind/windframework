@@ -6,8 +6,10 @@
  * @license 
  */
 class FormController extends WindController {
+	
 	public function run() {
-		$this->setOutput(array('title' => '用户输入表单自动获得UserForm对象'));
+		$this->setOutput(array(
+			'title' => '用户输入表单自动获得UserForm对象'));
 		$this->setTemplate('Form');
 	}
 	
@@ -15,9 +17,11 @@ class FormController extends WindController {
 	 * 获得数据
 	 */
 	public function postForm() {
-		$this->setOutput(array('title' => '显示用户输入的表单数据'));
-		$userInfo = L::getInstance('UserForm');
-		$this->setOutput(array('userInfo' => $userInfo));
+		$this->setOutput(array(
+			'title' => '显示用户输入的表单数据'));
+		$userInfo = $this->getInput('userform', self::INPUT_TYPE_FORM);
+		$this->setOutput(array(
+			'userInfo' => $userInfo));
 		$this->setTemplate('showInput');
 	}
 }
