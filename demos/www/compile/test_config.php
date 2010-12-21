@@ -28,7 +28,7 @@
 	),
 	'templates' => array(
 		'front' => array(
-			'dir' => 'front',
+			'dir' => 'template',
 			'default' => 'index',
 			'ext' => 'htm',
 			'resolver' => 'default',

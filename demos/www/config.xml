@@ -12,7 +12,7 @@
 	</modules>
 	<templates>
 		<template name='front'>
-			<dir>front</dir>
+			<dir>template</dir>
 			<default>index</default>
 			<ext>htm</ext>
 			<resolver>default</resolver>
