@@ -6,13 +6,20 @@
  * @license 
  */
 
+/**
+ * 字符、路径过滤等安全处理
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ */
 class WindSecurity{
 /**
 	 * html转换输出
 	 * @param $param
 	 * @return string
 	 */
-	public static function htmlEscape($str) {
+	public static function escapeHTML($str) {
 		return htmlspecialchars($str, ENT_QUOTES);
 	}
 	/**
@@ -116,8 +123,8 @@ class WindSecurity{
 	}
 	/**
 	 * 私用路径转换
-	 * @param $fileName
-	 * @param $ifCheck
+	 * @param string  $fileName
+	 * @param boolean $ifCheck
 	 * @return boolean
 	 */
 	private static function _escapePath($fileName, $ifCheck = true) {
@@ -131,7 +138,7 @@ class WindSecurity{
 	}
 	/**
 	 * 目录转换
-	 * @param unknown_type $dir
+	 * @param string $dir
 	 * @return string
 	 */
 	public static function escapeDir($dir) {
@@ -140,10 +147,8 @@ class WindSecurity{
 	}
 	/**
 	 * 通用多类型转换
-	 * @param $mixed
-	 * @param $isint
-	 * @param $istrim
-	 * @return mixture
+	 * @param  mixed $value
+	 * @return mixed
 	 */
 	public static function escapeChar($value) {
 		if (is_array($value)) {
@@ -159,12 +164,21 @@ class WindSecurity{
 	}
 	/**
 	 * 字符转换
-	 * @param $string
+	 * @param string $string
 	 * @return string
 	 */
 	public static function escapeString($string) {
 		$string = strtr($string,array("\0"=>'',"%00"=>'','\t'=>'    ','  '=>'&nbsp;&nbsp;',"\r"=>'',"\r\n"=>'',"\n"=>'',"%3C"=>'&lt;','<'=>'&lt;',"%3E"=>'&gt;','>'=>'&gt;','"'=>'&quot;',"'"=>'&#39;')); 
 		return preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/','/&(?!(#[0-9]+|[a-z]+);)/is'), array('', '&amp;'), $string);
+	}
+	
+	/**
+	 * 该函数可用于转义拥有特殊意义的字符，比如 SQL 中的 ( )、[ ] 以及 *。
+	 * @param string $string
+	 * @return string
+	 */
+	public static function quotemeta($string){
+		return quotemeta($string);
 	}
 	
 
