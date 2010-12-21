@@ -14,7 +14,7 @@ L::import('WIND:core.base.WindModule');
  * @package
  */
 abstract class WindActionForm extends WindModule {
-	private $isValidation = false;
+	private $isValidation = true;
 	private $error = null;
 	
 	public function __construct() {
