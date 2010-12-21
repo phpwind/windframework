@@ -39,7 +39,6 @@ class WindLayout {
 	 * 解析layout布局文件
 	 */
 	public function parserLayout($dirName = '', $ext = '', $content = '') {
-		print_r($this->layoutFile);
 		if ($this->layoutFile) {
 			$this->content = $content;
 			$file = L::getRealPath($dirName . '.' . $this->layoutFile);
