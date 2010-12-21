@@ -9,10 +9,10 @@ L::import('WIND:component.parser.WindIniParser');
 
 class WindIniParserTest extends BaseTestCase {
 	private $parser;
-	private $filename;
+	private $path;
 	public function __construct() {
 		$this->parser = new WindIniParser();
-		$this->filename = R_P . '/test/component/parser/test.ini';
+		$this->path = dirname(__FILE__);
 	}
 	
 	private function checkArray($array, $num, $member = array(), $flag = false) {
@@ -32,7 +32,7 @@ class WindIniParserTest extends BaseTestCase {
 		
 	}
 	public function testParser() {
-		$data = $this->parser->parse($this->filename);
+		$data = $this->parser->parse($this->path . '/test.ini');
 		$this->checkArray($data, 4, array('people', 'xxx', 'xjx', 'student'));
 		$this->checkArray($data['people'], 3, array('name', 'sex', 'job'));
 		$this->checkArray($data['xxx'], 3, array('name', 'school', 'sex'));
@@ -45,7 +45,7 @@ class WindIniParserTest extends BaseTestCase {
 	}
 	
 	public function testParserWithThree() {
-		$data = $this->parser->parse($this->filename);
+		$data = $this->parser->parse($this->path . '/test.ini');
 		$this->checkArray($data['student'], 3, array('name' => 'xxx', 'school' => 'zhejiang'), true);
 		$this->checkArray($data['student']['home'], 1, array('address'));
 		$this->checkArray($data['student']['home']['address'], 3, array('country' => 'china', 

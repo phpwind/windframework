@@ -311,9 +311,8 @@ class WindHttpResponse implements IWindResponse {
 	public function setHeader($name, $value, $replace = false) {
 		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
-		foreach ($this->_headers as $key => $value) {
-			if ($value['name'] == $name) $this->_headers[$key] = array('name' => $name, 'value' => $value, 
-				'replace' => $replace);
+		foreach ($this->_headers as $key => $one) {
+			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 		}
 	}
 	
@@ -348,9 +347,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
-		if (!is_string($content)) return;
+		if (!is_string($content) || trim($content) == '') return;
 		if ($name == null || !is_string($name)) $name = 'default';
-		
 		$this->_body[$name] = (string) $content;
 	}
 	
@@ -432,7 +430,7 @@ class WindHttpResponse implements IWindResponse {
 			return ob_get_clean();
 		} elseif ($name === true) {
 			return $this->_body;
-		} else if (isset($this->_body[$name])) return $this->_body[$name];
+		} elseif (is_string($name) && isset($this->_body[$name])) return $this->_body[$name];
 		
 		return null;
 	}

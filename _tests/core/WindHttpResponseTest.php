@@ -20,7 +20,7 @@ class WindHttpResponseTest extends BaseTestCase {
 			array('id_name', 'xjx', true),
 			array('-id_2', 'phpwind'),
 			array('___2r_time', '2010', true),
-			array('--Pear—--_lod', 'xiaowai', false),
+			array('--Pear---_lod', 'xiaowai', false),
 			array('-pear_id', '', false),
 			array(' ', 'contents', false),
 			array('', '', ),
@@ -74,14 +74,9 @@ class WindHttpResponseTest extends BaseTestCase {
 		}
 	}
 	
-	/**
-	 * @param unknown_type $name
-	 * @param unknown_type $value
-	 * @param unknown_type $replcae
-	 */
 	public function testAddHeader() {
-		foreach(self::providerAdd() as $value) {
-			list($name, $value, $replace) = $value;
+		foreach(self::providerAdd() as $one) {
+			list($name, $value, $replace) = $one;
 			$this->httpResponse->addHeader($name, $value, $replace);
 			$this->isTrue('OK');
 		}
@@ -90,19 +85,15 @@ class WindHttpResponseTest extends BaseTestCase {
 	public function testGetHeaderForAdd() {
 		$header = $this->httpResponse->getHeaders();
 		$this->checkArray($header, 4);
-		$this->checkArray($header[0], 3, array('name' => 'Name', 'value' => 'phpschool', 'replace' => true), true);
+		$this->checkArray($header[0], 3, array('name' => 'Name', 'value' => 'phpSchool', 'replace' => true), true);
 		$this->checkArray($header[1], 3, array('name' => '-Id-Name', 'value' => 'hello', 'replace' => false), true);
 		$this->checkArray($header[2], 3, array('name' => '-Pear-Id', 'value' => 'iphone', 'replace' => true), true);
 		$this->checkArray($header[3], 3, array('name' => '--Pear----Lod', 'value' => 'xiaonei', 'replace' => false), true);
 	}
-	/**
-	 * @param unknown_type $name
-	 * @param unknown_type $value
-	 * @param unknown_type $replace
-	 */
+
 	public function testSetHeader() {
-		foreach(self::providerSets() as $value) {
-			list($name, $value, $replace) = $value;
+		foreach(self::providerSets() as $one) {
+			list($name, $value, $replace) = $one;
 			$this->httpResponse->setHeader($name, $value, $replace);
 			$this->isTrue('OK');
 		}
@@ -142,27 +133,6 @@ class WindHttpResponseTest extends BaseTestCase {
 		}
 	}
 
-	public function testSendBody() {
-		$content = array('default' => 'i am body',
-					'header' => 'i am header',
-				    'footer' => '',
-					);
-		$this->assertEquals(implode('', $content), $this->httpResponse->sendBody());
-	}
-	public function testGetBodyByFalse() {
-		$content = array('default' => 'i am body',
-					'header' => 'i am header',
-				    'footer' => '',
-					);
-		$this->assertEquals(implode('', $content), $this->httpResponse->getBody(false));
-	}
-	public function testGetBodyByTrue() {
-		$content = array('default' => 'i am body',
-					'header' => 'i am header',
-				    'footer' => '',
-					);
-		$this->checkArray($this->httpResponse->getBody(true), 3, $content, true);
-	}
 	public function testGetBodyByName() {
 		$this->assertEquals('i am body', $this->httpResponse->getBody('default'));
 		$this->assertEquals('', $this->httpResponse->getBody('footer'));
@@ -170,6 +140,26 @@ class WindHttpResponseTest extends BaseTestCase {
 		$this->assertEquals(null, $this->httpResponse->getBody(array('default')));
 		$this->assertEquals('i am header', $this->httpResponse->getBody('header'));
 	}
+	public function testGetBodyByFalse() {
+		$content = array('default' => 'i am body',
+					'header' => 'i am header');
+		$this->assertEquals(implode('', $content), $this->httpResponse->getBody(false));
+	}
+	public function testGetBodyByTrue() {
+		$content = array('default' => 'i am body',
+					'header' => 'i am header');
+		$this->checkArray($this->httpResponse->getBody(true), 2, $content, true);
+	}
+	
+	public function testSendBody() {
+		$content = array('default' => 'i am body',
+					'header' => 'i am header');
+		ob_start();
+		$this->httpResponse->sendBody();
+		$value = ob_get_clean();
+		$this->assertEquals(implode('', $content), $value);
+	}
+	
 	public function testClearBody() {
 		$this->httpResponse->clearBody();
 		$body = $this->httpResponse->getBody(true);
@@ -191,9 +181,10 @@ class WindHttpResponseTest extends BaseTestCase {
 		$this->assertTrue($this->httpResponse->isSendedHeader());
 		try{
 			$this->httpResponse->isSendedHeader(true);
-		} catch(Exception $e) {
-			$this->fail('an exception is catched');
+		} catch(WindException $e) {
+			return;
 		}
+		$this->fail('an exception is catched');
 	}
 	
 	/**
