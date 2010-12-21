@@ -14,7 +14,7 @@ L::import('WIND:core.base.WindModule');
  * @package
  */
 abstract class WindActionForm extends WindModule {
-	private $_isValidate = false;
+	private $isValidation = false;
 	private $error = null;
 	
 	public function __construct() {
@@ -22,11 +22,18 @@ abstract class WindActionForm extends WindModule {
 	}
 	
 	/**
+	 * 设置是否开启验证
+	 * @param boolean $isValidate
+	 */
+	public function setIsValidation($isValidation) {
+		$this->isValidation = (boolean)$isValidation;
+	}
+	/**
 	 * 是否开启验证
 	 * @return string
 	 */
 	public function getIsValidation() {
-		return $this->_isValidate;
+		return $this->isValidation;
 	}
 	
 	/**
@@ -36,10 +43,8 @@ abstract class WindActionForm extends WindModule {
 	 */
 	public function validation() {
 		$methods = get_class_methods($this);
-		foreach ($methods as $_value) {
-			if (strtolower(substr($_value, -8)) == 'validate') call_user_func(array(
-				$this, 
-				$_value));
+		foreach ($methods as $value) {
+			if (strtolower(substr($value, -8)) == 'validate') call_user_func(array($this, $value));
 		}
 	}
 	
@@ -67,10 +72,10 @@ abstract class WindActionForm extends WindModule {
 	 * 设置属性值
 	 * @param array $_params
 	 */
-	public function setProperties($_params) {
-		if (!$_params) return false;
-		foreach ($_params as $_key => $_value) {
-			$this->$_key = $_value;
+	public function setProperties($params) {
+		if (!$params) return false;
+		foreach ($params as $key => $value) {
+			$this->$key = $value;
 		}
 		return true;
 	}

@@ -7,12 +7,12 @@
  */
 
 class UserForm extends WindActionForm {
-	protected $_isValidate = true;//是否执行该form中的验证方法
 	protected $username;
 	protected $password;
 	public function __construct() {
 		parent::__construct();
 		$this->setErrorAction('controllers.ErrorControllers');
+		$this->setIsValidation(true);
 	}
 	/**
 	 * 验证函数
