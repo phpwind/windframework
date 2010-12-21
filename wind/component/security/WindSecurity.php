@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindSecurity{
+ class WindSecurity{
 /**
 	 * html转换输出
 	 * @param $param
@@ -83,7 +83,7 @@ class WindSecurity{
 		if (is_array($array)) {
 			foreach ($array as $key => $value) {
 				if (is_array($value)) {
-					self::addSlashes($array[$key]);
+					self::addSlashesFromArray($array[$key]);
 				} else {
 					$array[$key] = self::addSlashesFromString($value,$gpc,$df);
 				}
@@ -153,7 +153,7 @@ class WindSecurity{
 	public static function escapeChar($value) {
 		if (is_array($value)) {
 			foreach ($value as $key => $sub) {
-				$value[$key] = self::escapeString($sub);
+				$value[$key] = self::escapeChar($sub);
 			}
 		} elseif (is_int($value)) {
 			$value = (int) $value;
@@ -180,8 +180,4 @@ class WindSecurity{
 	public static function quotemeta($string){
 		return quotemeta($string);
 	}
-	
-
-	
-
 }
