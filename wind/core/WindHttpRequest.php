@@ -55,29 +55,14 @@ class WindHttpRequest implements IWindRequest {
 	private $_baseUrl = null;
 	private $_hostInfo = null;
 	
-	private static $_instance = null;
-	
 	/**
 	 * 请求参数信息
 	 * @var array
 	 */
 	private $_params = array();
 	
-	private function __construct() {
+	public function __construct() {
 		$this->normalizeRequest();
-	}
-	
-	/**
-	 * 返回请求对象的单例实例
-	 * 
-	 * @return WindHttpRequest
-	 */
-	static public function &getInstance() {
-		if (self::$_instance === null) {
-			$class = __CLASS__;
-			self::$_instance = new $class();
-		}
-		return self::$_instance;
 	}
 	
 	protected function normalizeRequest() {
@@ -90,7 +75,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	public function stripSlashes(&$data) {
-		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
+		return is_array($data) ? array_map(array(
+			$this, 
+			'stripSlashes'), $data) : stripslashes($data);
 	}
 	
 	/**

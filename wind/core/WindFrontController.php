@@ -23,39 +23,18 @@ L::import('WIND:core.base.WindServer');
  */
 class WindFrontController extends WindServer {
 	private $application = null;
+	private $systemConfig = null;
+	private $applicationType = 'web';
 	
-	public function __construct() {
+	public function __construct($currentName = '', $config = array()) {
 		parent::__construct();
-	}
-	
-	public function run($type = 'web') {
-		$this->beforProcess($type);
-		parent::run();
-		$this->afterProcess();
-	}
-	
-	protected function beforProcess($type) {
-		$this->initDispatcher();
-		$this->createApplication($type);
+		$this->setSystemConfig($currentName, $config);
 	}
 	
 	public function process() {
-		if ($this->initFilter()) return;
+		if ($this->excuteFilter()) return;
 		$this->application->init($this->response->getDispatcher());
 		$this->application->processRequest($this->request, $this->response);
-	}
-	
-	protected function afterProcess() {
-		$this->application->destory();
-		restore_exception_handler();
-	}
-	
-	protected function doPost($request, $response) {
-		$this->process($request, $response);
-	}
-	
-	protected function doGet($request, $response) {
-		$this->process($request, $response);
 	}
 	
 	/**
@@ -71,8 +50,8 @@ class WindFrontController extends WindServer {
 	/**
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
-	private function initFilter() {
-		$filters = C::getConfig(IWindConfig::FILTERS);
+	private function excuteFilter() {
+		$filters = $this->systemConfig->getConfig(IWindConfig::FILTERS);
 		if (empty($filters)) return false;
 		WindFilterFactory::getFactory()->setExecute(array(
 			$this, 
@@ -86,16 +65,50 @@ class WindFrontController extends WindServer {
 	}
 	
 	/**
+	 * 初始化应用配置
+	 * @param string $appName
+	 * @param string $config
+	 */
+	private function setSystemConfig($appName, $config) {
+		if (!is_array($config)) {
+			L::import('WIND:component.config.WindConfigParser');
+			$configParser = new WindConfigParser();
+			$config = $configParser->parser($appName, $config);
+		}
+		$this->systemConfig = new WindSystemConfig($config);
+		$this->response->setData($this->systemConfig, 'systemConfig');
+		L::register($this->systemConfig->getRootPath(), $appName);
+	}
+	
+	/**
 	 * @return WindWebApplication
 	 */
-	protected function createApplication($type) {
+	protected function createApplication() {
 		if ($this->application !== null) return;
-		$application = C::getApplications($type);
+		$application = $this->systemConfig->getApplications($this->applicationType);
 		$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
 		if (!class_exists($className)) {
 			throw new WindException('create application failed. the class ' . $className . ' is not exist.');
 		}
 		$this->application = new $className();
+	}
+	
+	protected function beforeProcess() {
+		$this->initDispatcher();
+		$this->createApplication();
+	}
+	
+	protected function afterProcess() {
+		$this->application->destory();
+		restore_exception_handler();
+	}
+	
+	protected function doPost($request, $response) {
+		$this->process($request, $response);
+	}
+	
+	protected function doGet($request, $response) {
+		$this->process($request, $response);
 	}
 
 }

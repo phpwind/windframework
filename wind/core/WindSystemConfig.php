@@ -69,11 +69,18 @@ class WindSystemConfig extends WindConfig {
 	const ROUTER_PARSERS_RULE = 'rule';
 	const ROUTER_PARSERS_PATH = 'path';
 	
+	public function getRootPath() {
+		if (!isset($this->rootPath) && ($this->rootPath = $this->getConfig(self::ROOTPATH)) === '') {
+			$this->rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+		}
+		return $this->rootPath;
+	}
+	
 	/**
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getModules($name = '') {
+	public function getModules($name = '') {
 		return $this->getConfig(self::MODULES, $name);
 	}
 	
@@ -81,7 +88,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getTemplate($name = '') {
+	public function getTemplate($name = '') {
 		return $this->getConfig(self::TEMPLATE, $name);
 	}
 	
@@ -89,7 +96,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getFilters($name = '') {
+	public function getFilters($name = '') {
 		return $this->getConfig(self::FILTERS, $name);
 	}
 	
@@ -97,7 +104,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getViewerResolvers($name = '') {
+	public function getViewerResolvers($name = '') {
 		return $this->getConfig(self::VIEWER_RESOLVERS, $name);
 	}
 	
@@ -105,7 +112,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getRouter($name = '') {
+	public function getRouter($name = '') {
 		return $this->getConfig(self::ROUTER, $name);
 	}
 	
@@ -113,7 +120,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	static public function getRouterParsers($name = '') {
+	public function getRouterParsers($name = '') {
 		return $this->getConfig(self::ROUTER_PARSERS, $name);
 	}
 	
@@ -121,7 +128,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
-	static public function getApplications($name = '') {
+	public function getApplications($name = '') {
 		return $this->getConfig(self::APPLICATIONS, $name);
 	}
 	
@@ -129,7 +136,7 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
 	 */
-	static public function getErrorMessage($name = '') {
+	public function getErrorMessage($name = '') {
 		return $this->getConfig(self::ERROR, $name);
 	}
 }
