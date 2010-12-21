@@ -7,7 +7,29 @@
  */
 
 class Common {
-	
+	/**
+	 * 保存文件
+	 * @param string $fileName          保存的文件名
+	 * @param mixed $data               保存的数据
+	 * @param boolean $isBuildReturn    是否组装保存的数据是return $params的格式，如果没有则以变量声明的方式保存
+	 * @param string $method            打开文件方式
+	 * @param boolean $ifLock           是否对文件加锁
+	 */
+	public static function saveData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
+		$temp = "<?php\r\n ";
+		if (!$isBuildReturn && is_array($data)) {
+			foreach ( $data as $key => $value ) {
+				if (!preg_match ( '/^\w+$/', $key ))
+					continue;
+				$temp .= "\$" . $key . " = " . self::varExport($value) . ";\r\n";
+			}
+			$temp .= "\r\n?>";
+		} else {
+			($isBuildReturn) && $temp .= " return ";
+			$temp .= self::varExport($data) . ";\r\n?>";
+		}
+		return self::writeover($fileName, $temp, $method, $ifLock);
+	}
 	/**
 	 * 变量导出为字符串
 	 *
@@ -22,7 +44,7 @@ class Common {
 			case 'array':
 				$output = "array(\r\n";
 				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . Common::varExport($key, $indent . "\t") . ' => ' . Common::varExport($value, $indent . "\t");
+					$output .= $indent . "\t" . self::varExport($key, $indent . "\t") . ' => ' . self::varExport($value, $indent . "\t");
 					$output .= ",\r\n";
 				}
 				$output .= $indent . ')';
