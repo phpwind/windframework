@@ -454,7 +454,7 @@ abstract class WindSqlBuilder {
 			}
 			$text = implode($separators ? $separators : ',',$text);
 		}
-		if($text && $replace && !is_array($text)){
+		if($text  && is_string($text)){
 			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
 				$replace = is_array($replace) ? $replace : array($replace);
 				foreach($matches[1] as $key=>$match){
