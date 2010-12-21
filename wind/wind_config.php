@@ -80,5 +80,9 @@
 			'path' => 'WIND:core.router.WindUrlBasedRouter',
 		),
 	),
+	'extensionConfig' => array(
+		'formConfig' => 'WIND:component.form.form_config',
+		'dbConfig' => 'WIND:component.form.form_config',
+	)
 );
 ?>

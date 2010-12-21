@@ -35,8 +35,8 @@ class W {
 	static public function application($currentName, $config = '') {
 		self::init();
 		$config = self::initConfig($currentName, $config);
-		$frontController = new WindFrontController();
-		return new WindFrontController();
+		$frontController = new WindFrontController($currentName, $config);
+		return $frontController;
 	}
 	
 	/**

@@ -30,7 +30,7 @@
 	</error>
 	<filters isMerge='true'>
 		<filter name="WindFormFilter">
-			<filterPath>WIND:core.filter.WindFormFilter</filterPath>
+			<filterPath>WIND:component.form.WindFormFilter</filterPath>
 		</filter>
 	</filters>
 	<templates>
@@ -69,4 +69,8 @@
 			<path>WIND:core.router.WindUrlBasedRouter</path>
 		</parser>
 	</routerParsers>
+	<extensionConfig>
+		<config name='formConfig'>WIND:component.form.form_config</config>
+		<config name='dbConfig'>WIND:component.form.db_config</config>
+	</extensionConfig>
 </WIND>
