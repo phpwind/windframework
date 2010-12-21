@@ -73,7 +73,7 @@ class WindFrontController extends WindServer {
 		if (!is_array($config)) {
 			L::import('WIND:component.config.WindConfigParser');
 			$configParser = new WindConfigParser();
-			$config = $configParser->parser($appName, $config);
+			$config = $configParser->parse($appName, $config, true);
 		}
 		$this->systemConfig = new WindSystemConfig($config);
 		$this->response->setData($this->systemConfig, 'systemConfig');

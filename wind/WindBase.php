@@ -95,7 +95,7 @@ class W {
 		if (!is_array($config)) {
 			L::import('WIND:component.config.WindConfigParser');
 			$configParser = new WindConfigParser();
-			$config = $configParser->parser($currentName, $config);
+			$config = $configParser->parse($currentName, $config, true);
 		}
 		C::init($config);
 		L::register(C::getRootPath(), $currentName);
