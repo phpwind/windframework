@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import("WIND:component.filter.base.WindFilter");
+L::import("WIND:core.filter.base.WindFilter");
 /**
  * form组件的一个插件引入实现
  * 用户需要配置form组件的时候，只要在配置文件中<filters>的配置项中配置该formfilter即可自动使用用户定义的form
