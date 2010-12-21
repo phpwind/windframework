@@ -74,7 +74,6 @@ abstract class WindDbAdapter {
 	 * @param array $config
 	 */
 	public function __construct($config) {
-		$config = is_array($config) ? $config : C::getDatabaseConnection($config);
 		$this->parseConfig ( $config );
 		$this->connect();
 	}
