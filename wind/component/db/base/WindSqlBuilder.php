@@ -504,7 +504,7 @@ abstract class WindSqlBuilder {
 	 * @return string;
 	 */
 	protected function buildFrom() {
-		if (empty ( $this->sql[self::FROM] ) ||   !is_array ( $this->sql[self::FROM] )) {
+		if (!isset($this->sql[self::FROM] ) || empty ( $this->sql[self::FROM] ) ||   !is_array ( $this->sql[self::FROM] )) {
 			throw new WindSqlException (WindSqlException::DB_TABLE_EMPTY);
 		}
 		$tableList = '';
@@ -518,14 +518,14 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildDistinct() {
-		return $this->sqlFillSpace ($this->sql[self::DISTINCT]);
+		return isset($this->sql[self::DISTINCT] ) ? $this->sqlFillSpace ($this->sql[self::DISTINCT]):'';
 	}
 	/**
 	 * 解析查询字段
 	 * @return string
 	 */
 	protected function buildField() {
-		if (empty ( $this->sql[self::FIELD] ) ||  !is_array ( $this->sql[self::FIELD] )) {
+		if (!isset($this->sql[self::FIELD] ) || empty ( $this->sql[self::FIELD] ) ||  !is_array ( $this->sql[self::FIELD] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_FIELD_FORMAT);
 		}
 		$fieldList = '';
@@ -544,7 +544,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildJoin() {
-		if (empty ( $this->sql[self::JOIN] ) ||  !is_array ( $this->sql[self::JOIN] )) {
+		if (!isset($this->sql[self::JOIN] ) || empty ( $this->sql[self::JOIN] ) ||  !is_array ( $this->sql[self::JOIN] )) {
 			return '';
 		}
 		$joinContidion = '';
@@ -566,6 +566,9 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildWhere() {
+		if(!isset($this->sql[self::WHERE])){
+			return '';
+		}
 		$where = is_array($this->sql[self::WHERE]) ? implode(' ',$this->sql[self::WHERE]) : $this->sql[self::WHERE];
 		return $where ? $this->sqlFillSpace (self::SQL_WHERE.$where) : '' ;
 	}
@@ -574,6 +577,9 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildGroup() {
+		if(!isset($this->sql[self::GROUP])){
+			return '';
+		}
 		$group = is_array ( $this->sql[self::GROUP] ) ? implode ( ',', $this->sql[self::GROUP] ) : $this->sql[self::GROUP];
 		return $group ? $this->sqlFillSpace (self::SQL_GROUP . $group) : '';
 	}
@@ -582,6 +588,9 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildOrder() {
+		if(!isset($this->sql[self::ORDER])){
+			return '';
+		}
 		$orderby = '';
 		if (is_array ( $this->sql[self::ORDER] )) {
 			foreach ( $this->sql[self::ORDER] as $key => $value ) {
@@ -597,6 +606,9 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildHaving() {
+		if(!isset($this->sql[self::HAVING])){
+			return '';
+		}
 		 $having = is_array($this->sql[self::HAVING]) ? implode(' ',$this->sql[self::HAVING]) : $this->sql[self::HAVING];
 		 return $having ? $this->sqlFillSpace (self::SQL_HAVING.$having) : '' ;
 	}
@@ -605,8 +617,8 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildLimit() {
-		if(empty($this->sql[self::LIMIT])){
-			return ;
+		if(!isset($this->sql[self::LIMIT]) || empty($this->sql[self::LIMIT])){
+			return '';
 		}
 		if(is_string($this->sql[self::LIMIT])){
 			return $this->sqlFillSpace($this->sql[self::LIMIT]);
@@ -614,7 +626,7 @@ abstract class WindSqlBuilder {
 		if(is_array($this->sql[self::LIMIT])){
 			$this->sql[self::LIMIT] = array_pop($this->sql[self::LIMIT]);
 		}
-		if(is_array($this->sql[self::OFFSET])){
+		if(isset($this->sql[self::OFFSET]) && is_array($this->sql[self::OFFSET])){
 			$this->sql[self::OFFSET] = array_pop($this->sql[self::OFFSET]);
 		}
 		return $this->sqlFillSpace ( ($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT].' ' : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '' );
@@ -624,7 +636,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildSet() {
-		if (empty ( $this->sql[self::SET] )) {
+		if (!isset($this->sql[self::SET]) || empty ( $this->sql[self::SET] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_UPDATE_DATA);
 		}
 		if (is_string ( $this->sql[self::SET] )) {
@@ -644,7 +656,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	protected function buildData() {
-		if (empty ( $this->sql[self::DATA] ) || ! is_array ( $this->sql[self::DATA] )) {
+		if (!isset($this->sql[self::DATA]) || empty ( $this->sql[self::DATA] ) || ! is_array ( $this->sql[self::DATA] )) {
 			throw new WindSqlException (WindSqlException::DB_QUERY_INSERT_DATA);
 		}
 		if($this->getDimension ( $this->sql[self::DATA] ) == 1){
