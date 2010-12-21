@@ -352,7 +352,7 @@ abstract class WindSqlBuilder {
 		if(empty($assembleValue)){
 			return $this;
 		}
-		if(empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
+		if(!isset($this->sql[$assembleType]) || empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
 			$this->sql[$assembleType] = array();
 		}
 		$assembleValue = is_array($assembleValue) ? $assembleValue : array($assembleValue);
