@@ -82,11 +82,7 @@ class WindConfigParser {
 			return include $cacheFileName;
 		}
 		$configPath = trim($configPath);
-		if ($configPath === '') {
-			$this->parseFormat = self::CONFIG_PHP;
-		} else {
-			$this->parseFormat = $this->getConfigFormat($configPath);
-		}
+		$this->parseFormat = $this->getConfigFormat($configPath);
 		$userConfig = $this->doParser($configPath);
 		$defaultConfig = $this->doParser($this->getWindConfigPath());
 		$userConfig = $this->mergeConfig($defaultConfig, $userConfig);
@@ -217,6 +213,8 @@ class WindConfigParser {
 	 * @return boolean : true  解析文件格式成功，解析失败则抛出异常
 	 */
 	private function getConfigFormat($configPath) {
+		if ($configPath === '' )
+			return self::CONFIG_XML;
 		$format = strtoupper(trim(strrchr($configPath, '.'), '.'));
 		if (!in_array($format, $this->getConfigFormatList())) {
 			throw new WindException("The format of the config file doesn't sopported yet!");
