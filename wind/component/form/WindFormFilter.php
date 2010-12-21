@@ -42,10 +42,15 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpResponse $response
 	 */
 	public function doBeforeProcess($request, $response) {
+		$formConfigPath = $response->getData('WindSystemConfig')->getConfig('extensionConfig', 'formConfig');
+		$formConfigPath = L::getRealPath($formConfigPath);
+		L::import('WIND:component.config.WindConfigParser');
+		$parser = new WindConfigParser();
+		$formConfigPath = $parser->parse('formConfig', $formConfigPath . '.php');
+		
 		$formObject = $this->getFormHandle($request, $response);
 		if ($formObject === null) return;
-		$formObject->setProperties($request->getGet());
-		$formObject->setProperties($request->getPost());
+		$formObject->setProperties(array_merge($request->getGet(), $request->getPost()));
 		$this->validation($formObject);
 		$response->setData($formObject, get_class($formObject));
 	}
