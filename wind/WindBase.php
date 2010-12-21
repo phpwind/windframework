@@ -31,7 +31,7 @@ class W {
 	 * 初始化框架上下文
 	 * 1. 策略加载框架必须的基础类库
 	 */
-	static public function application($currentName, $config = '', $type = 'web') {
+	static public function application($currentName, $config = '') {
 		self::init();
 		$config = self::initConfig($currentName, $config);
 		$frontController = new WindFrontController();
@@ -97,7 +97,7 @@ class W {
 			$config = $configParser->parser($currentName, $config);
 		}
 		C::init($config);
-		L::register($config['rootPath'],$currentName);
+		L::register($config['rootPath'], $currentName);
 		return $config;
 	}
 	
@@ -300,8 +300,11 @@ class L {
 	static private function createInstance($className, $args) {
 		$class = new ReflectionClass($className);
 		if ($class->isAbstract() || $class->isInterface()) return;
-		if (!is_array($args)) $args = array($args);
-		$object = call_user_func_array(array($class, 'newInstance'), $args);
+		if (!is_array($args)) $args = array(
+			$args);
+		$object = call_user_func_array(array(
+			$class, 
+			'newInstance'), $args);
 		return $object;
 	}
 	
@@ -387,7 +390,6 @@ class C {
 			$_config = self::$config[$configName];
 		}
 		if (!$subConfigName) return $_config;
-		
 		$_subConfig = array();
 		if (is_array($_config) && isset($_config[$subConfigName])) {
 			$_subConfig = $_config[$subConfigName];

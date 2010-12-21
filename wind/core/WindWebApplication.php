@@ -61,6 +61,14 @@ class WindWebApplication extends WindApplication {
 	}
 	
 	/**
+	 * 获得表单处理句柄
+	 */
+	protected function buildFormObject() {
+		$form = new stdClass();
+		
+	}
+	
+	/**
 	 * 判断是否是重复提交，再一次请求中，不允许连续重复请求两次获两次以上某个操作
 	 * @param string $key
 	 */

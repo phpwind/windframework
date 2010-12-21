@@ -7,7 +7,6 @@
 			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
-
 	<database>
 		<connections>
 			<connection name='phpwind_8'>
@@ -15,28 +14,29 @@
 				<type>master</type>
 				<host>localhost</host>
 				<user>root</user>
-				<password>suqian0512h</password>
+				<password>phpwind.net</password>
 				<port>3306</port>
-				<name>phpwind_8</name>
+				<name>yulingsp3</name>
 			</connection>
 			<connection name='phpwind_beta'>
 				<driver>mysql</driver>
 				<type>slave</type>
 				<host>localhost</host>
 				<user>root</user>
-				<password>suqian0512h</password>
+				<password>phpwind.net</password>
 				<port>3306</port>
-				<name>phpwind_beta</name>
+				<name>yulingsp3</name>
 			</connection>
-			<connection name='user'>
+			<!--<connection name='user'>
 				<driver>mssql</driver>
 				<type>slave</type>
 				<host>localhost</host>
-				<user>sa</user>
-				<password>151@suqian</password>
-				<name>phpwind</name>
+				<user>root</user>
+				<password>phpwind.net</password>
+				<port>3306</port>
+				<name>yulingsp3</name>
 			</connection>
-		</connections>
+		--></connections>
 		<drivers>
 			<driver name='mysql'>
 				<builder>mysql</builder>
@@ -56,6 +56,4 @@
 			</builder>
 		</builders>
 	</database>
-
-
 </WIND>

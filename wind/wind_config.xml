@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-    <rootPath></rootPath>
+	<rootPath></rootPath>
 	<applications>
 		<application name='web'>
 			<class>WIND:core.WindWebApplication</class>

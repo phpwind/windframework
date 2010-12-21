@@ -22,32 +22,31 @@ L::import('WIND:core.base.WindServer');
  * @package 
  */
 class WindFrontController extends WindServer {
-	private $applicationType;
+	private $application = null;
 	
 	public function __construct() {
 		parent::__construct();
 	}
 	
-	public function run($applicationType = 'web') {
-		$this->applicationType = $applicationType;
-		$this->beforProcess();
+	public function run($type = 'web') {
+		$this->beforProcess($type);
 		parent::run();
 		$this->afterProcess();
 	}
 	
-	protected function beforProcess() {
+	protected function beforProcess($type) {
 		$this->initDispatcher();
+		$this->createApplication($type);
 	}
 	
 	public function process() {
 		if ($this->initFilter()) return;
-		$application = $this->createApplication();
-		$application->init($this->response->getDispatcher());
-		$application->processRequest($this->request, $this->response);
-		$application->destory();
+		$this->application->init($this->response->getDispatcher());
+		$this->application->processRequest($this->request, $this->response);
 	}
 	
 	protected function afterProcess() {
+		$this->application->destory();
 		restore_exception_handler();
 	}
 	
@@ -89,13 +88,14 @@ class WindFrontController extends WindServer {
 	/**
 	 * @return WindWebApplication
 	 */
-	protected function createApplication() {
-		$application = C::getApplications($this->applicationType);
+	protected function createApplication($type) {
+		if ($this->application !== null) return;
+		$application = C::getApplications($type);
 		$className = L::import($application[IWindConfig::APPLICATIONS_CLASS]);
 		if (!class_exists($className)) {
 			throw new WindException('create application failed. the class ' . $className . ' is not exist.');
 		}
-		return new $className();
+		$this->application = new $className();
 	}
 
 }
