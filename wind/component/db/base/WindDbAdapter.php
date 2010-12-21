@@ -40,11 +40,6 @@ abstract class WindDbAdapter {
 	 * @var boolean 是否永久连接
 	 */
 	protected $pconnect = false;
-
-	/**
-	 * @var array 框架支持的数据库种类
-	 */
-	protected $dbMap = array ('mysql' => 'MySql', 'mssql' => 'MsSql', 'pgsql' => 'PgSql', 'ocisql' => 'OciSql' );
 	/**
 	 * @var int 事务记数器
 	 */
@@ -94,30 +89,6 @@ abstract class WindDbAdapter {
 		return $this->checkConfig($config);
 	}
 	/**
-	 * 解析DSN格式数据库配置
-	 * @param string $dsn 数据库连接格式
-	 * @return array 
-	 */
-	final public function parseDSN($dsn) {
-		$ifdsn = preg_match ( '/^(.+)\:\/\/(.+)\:(.+)\@(.+)\:(\d{1,6})\/(\w+)\/(\w+)\/(0|1)\/(0|1)\/(master|slave)?\/?$/', trim ( $dsn ), $config );
-		if (empty ( $dsn ) || empty ( $ifdsn ) || empty ( $config )) {
-			throw new WindSqlException (WindSqlException::DB_CONN_FORMAT);
-		}
-		return array (
-						IWindDbConfig::CONN_DRIVER => $config [1], 
-						IWindDbConfig::CONN_USER => $config [2], 
-						IWindDbConfig::CONN_PASS => $config [3], 
-						IWindDbConfig::CONN_HOST => $config [4], 
-						IWindDbConfig::CONN_PORT => $config [5], 
-						IWindDbConfig::CONN_NAME => $config [6],
-						IWindDbConfig::CONN_CHAR=>$config [7], 
-						IWindDbConfig::CONN_FORCE => $config [8],
-						IWindDbConfig::CONN_PCONN=>$config [9],
-						IWindDbConfig::CONN_TYPE=>$config [10] 
-					);
-	}
-	
-	/**
 	 * 验证config操作
 	 * @param array $config 数据库配置
 	 * @return array
@@ -129,10 +100,10 @@ abstract class WindDbAdapter {
 		if(empty($config[IWindDbConfig::CONN_DRIVER]) || empty($config[IWindDbConfig::CONN_HOST]) || empty($config[IWindDbConfig::CONN_NAME]) || empty($config[IWindDbConfig::CONN_USER])  || empty($config[IWindDbConfig::CONN_PASS])){
 			throw new WindSqlException (WindSqlException::DB_CONN_FORMAT);
 		}
-		$config [IWindDbConfig::CONN_HOST] = $config [IWindDbConfig::CONN_PORT] ? $config [IWindDbConfig::CONN_HOST] . ':' . $config [IWindDbConfig::CONN_PORT] : $config [IWindDbConfig::CONN_HOST];
-		$config [IWindDbConfig::CONN_PCONN] = $config [IWindDbConfig::CONN_PCONN] ? $config [IWindDbConfig::CONN_PCONN] : $this->pconnect;
-		$config [IWindDbConfig::CONN_FORCE] = $config [IWindDbConfig::CONN_FORCE] ? $config [IWindDbConfig::CONN_FORCE] : $this->force;
-		$config [IWindDbConfig::CONN_CHAR] = $config [IWindDbConfig::CONN_CHAR] ? $config [IWindDbConfig::CONN_CHAR] : $this->charset;
+		$config [IWindDbConfig::CONN_HOST] = isset($config [IWindDbConfig::CONN_PORT]) ? $config [IWindDbConfig::CONN_HOST] . ':' . $config [IWindDbConfig::CONN_PORT] : $config [IWindDbConfig::CONN_HOST];
+		$config [IWindDbConfig::CONN_PCONN] = isset($config [IWindDbConfig::CONN_PCONN]) ? $config [IWindDbConfig::CONN_PCONN] : $this->pconnect;
+		$config [IWindDbConfig::CONN_FORCE] = isset($config [IWindDbConfig::CONN_FORCE]) ? $config [IWindDbConfig::CONN_FORCE] : $this->force;
+		$config [IWindDbConfig::CONN_CHAR] = isset($config [IWindDbConfig::CONN_CHAR]) ? $config [IWindDbConfig::CONN_CHAR] : $this->charset;
 		return $this->config = $config;
 	}
 	
