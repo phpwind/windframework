@@ -13,6 +13,8 @@
  * @package 
  */
 abstract class WindAction {
+	const INPUT_TYPE_FORM = 'form';
+	
 	public $forward = null;
 	public $urlManager = null;
 	
@@ -147,16 +149,24 @@ abstract class WindAction {
 	private function getInputWithString($name, $type = '', $callback = null) {
 		$value = '';
 		switch ($type) {
+			case self::INPUT_TYPE_FORM:
+				$value = $this->response->getData($name);
+				break;
 			case IWindRequest::INPUT_TYPE_GET:
 				$value = $this->request->getGet($name);
+				break;
 			case IWindRequest::INPUT_TYPE_POST:
 				$value = $this->request->getPost($name);
+				break;
 			case IWindRequest::INPUT_TYPE_COOKIE:
 				$value = $this->request->getCookie($name);
+				break;
 			default:
 				$value = $this->request->getAttribute($name);
 		}
-		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
+		return $callback ? array(
+			$value, 
+			call_user_func_array($callback, $value)) : $value;
 	}
 	
 	private function getInputWithArray($name, $type = '') {

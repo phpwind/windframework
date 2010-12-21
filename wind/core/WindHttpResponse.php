@@ -24,6 +24,8 @@ class WindHttpResponse implements IWindResponse {
 	
 	private $_body = array();
 	
+	private $_data = array();
+	
 	private $_headers = array();
 	
 	private $_isRedirect = false;
@@ -312,7 +314,10 @@ class WindHttpResponse implements IWindResponse {
 		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $one) {
-			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+			($one['name'] == $name) && $this->_headers[$key] = array(
+				'name' => $name, 
+				'value' => $value, 
+				'replace' => $replace);
 		}
 	}
 	
@@ -325,7 +330,10 @@ class WindHttpResponse implements IWindResponse {
 	public function addHeader($name, $value, $replace = false) {
 		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
-		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+		$this->_headers[] = array(
+			'name' => $name, 
+			'value' => $value, 
+			'replace' => $replace);
 	}
 	
 	/**
@@ -430,7 +438,8 @@ class WindHttpResponse implements IWindResponse {
 			return ob_get_clean();
 		} elseif ($name === true) {
 			return $this->_body;
-		} elseif (is_string($name) && isset($this->_body[$name])) return $this->_body[$name];
+		} elseif (is_string($name) && isset($this->_body[$name]))
+			return $this->_body[$name];
 		
 		return null;
 	}
@@ -473,7 +482,9 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	private function _normalizeHeader($name) {
 		if (trim($name) == '') return '';
-		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
+		$filtered = str_replace(array(
+			'-', 
+			'_'), ' ', (string) $name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
 		return $filtered;
@@ -500,6 +511,28 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function getDispatcher() {
 		return $this->_dispatcher;
+	}
+	
+	/**
+	 * @return the $_data
+	 */
+	public function getData($key = '') {
+		return $key === '' ? $this->_data : ($key = strtolower($key) && isset($this->_data[$key]) ? $this->_data[$key] : '');
+	}
+	
+	/**
+	 * @param $_data the $_data to set
+	 * @author Qiong Wu
+	 */
+	public function setData($data, $key = '') {
+		if ($key === '') {
+			if (is_object($data)) $data = get_object_vars($data);
+			if (is_array($data)) $this->_data += $data;
+		} else {
+			$key = strtolower($key);
+			$this->_data[$key] = $data;
+		}
+		return;
 	}
 
 }
