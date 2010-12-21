@@ -39,7 +39,7 @@
 	'filters' => array(
 		'isMerge' => 'true',
 		'WindFormFilter' => array(
-			'filterPath' => 'WIND:core.filter.WindFormFilter',
+			'filterPath' => 'WIND:component.form.WindFormFilter',
 		),
 	),
 	'templates' => array(

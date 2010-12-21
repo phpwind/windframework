@@ -98,7 +98,7 @@ class W {
 			$config = $configParser->parser($currentName, $config);
 		}
 		C::init($config);
-		L::register($config['rootPath'], $currentName);
+		L::register(C::getRootPath(), $currentName);
 		return $config;
 	}
 	
@@ -406,6 +406,13 @@ class C {
 			$_subConfig = $_config[$subConfigName];
 		}
 		return $_subConfig;
+	}
+	
+	static public function getRootPath() {
+		if (!($rootPath = self::getConfig(IWindConfig::ROOTPATH))) {
+			$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+		}
+		return $rootPath;
 	}
 	
 	/**
