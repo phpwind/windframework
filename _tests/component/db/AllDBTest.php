@@ -6,11 +6,11 @@
  * @license 
  */
 
-include (R_P . '/test/component/db/WindConnectionManagerTest.php');
-include (R_P . '/test/component/db/drivers/mysql/WindMySqlBuilderTest.php');
-include (R_P . '/test/component/db/drivers/mysql/WindMySqlTest.php');
-include (R_P . '/test/component/db/drivers/mssql/WindMsSqlBuilderTest.php');
-include (R_P . '/test/component/db/drivers/mssql/WindMsSqlTest.php');
+include ('component/db/WindConnectionManagerTest.php');
+include ('component/db/drivers/mysql/WindMySqlBuilderTest.php');
+include ('component/db/drivers/mysql/WindMySqlTest.php');
+include ('component/db/drivers/mssql/WindMsSqlBuilderTest.php');
+include ('component/db/drivers/mssql/WindMsSqlTest.php');
 
 class AllDBTest {
 	public static function main() {
