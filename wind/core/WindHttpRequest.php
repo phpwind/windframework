@@ -61,6 +61,8 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	private $_params = array();
 	
+	private $_response = null;
+	
 	public function __construct() {
 		$this->normalizeRequest();
 	}
@@ -75,9 +77,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 	
 	public function stripSlashes(&$data) {
-		return is_array($data) ? array_map(array(
-			$this, 
-			'stripSlashes'), $data) : stripslashes($data);
+		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
 	}
 	
 	/**
@@ -483,7 +483,10 @@ class WindHttpRequest implements IWindRequest {
 	 * @return WindHttpResponse
 	 */
 	public function getResponse() {
-		return WindHttpResponse::getInstance();
+		if ($this->_response === null) {
+			$this->_response = new WindHttpResponse();
+		}
+		return $this->_response;
 	}
 	
 	/**
