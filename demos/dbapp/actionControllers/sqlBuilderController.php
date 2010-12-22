@@ -39,6 +39,13 @@ class SqlBuilderController extends WindController{
 					 ->order('dateline',true);
 		$sql = $mySqlBuilder->getSelectSql();
 		echo 'This is join sql::  '.$sql.'<br/>';
+		
+		$mySqlBuilder->from('pw_members','a','username')
+					 ->leftJoin('pw_posts','a.uid=b.authorid','b','title')
+					 ->where('a.uid != :uid and name like :username',array(':uid'=>'1',':username'=>'%adfa%'))
+					 ->order('dateline',true);
+		$sql = $mySqlBuilder->getSelectSql();
+		echo 'This is join sql::  '.$sql.'<br/>';
 	}
 	
 	public function insertSql(){
