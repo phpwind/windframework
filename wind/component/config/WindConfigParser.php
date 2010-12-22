@@ -85,7 +85,7 @@ class WindConfigParser {
 	public function parse($name, $configPath = '', $isApp = false) {
 		$cacheFileName = strtolower(trim($name)) . '.php';
 		if ($this->isCompiled($cacheFileName)) {
-			return include $cacheFileName;
+			return include $this->buildCacheFilePath($cacheFileName);
 		}
 		$configPath = trim($configPath);
 		$this->parseFormat = $this->getConfigFormat($configPath);
