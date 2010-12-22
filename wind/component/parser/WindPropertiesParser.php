@@ -62,7 +62,7 @@ class WindPropertiesParser {
 				continue;
 			}
 			$tmp = explode('=', $value);
-			if (0 === strpos(trim($value), self::LPROCESS) && strlen($value) - 2 === strrpos($value, self::RPROCESS)) {
+			if (0 === strpos(trim($value), self::LPROCESS) && (strlen($value) - 1) === strrpos($value, self::RPROCESS)) {
 				if ($process) {
 					$current_process = $this->trimChar(trim($value), array(self::LPROCESS, self::RPROCESS));
 					$data[$current_process] = array();
@@ -93,7 +93,7 @@ class WindPropertiesParser {
 			if (is_array($value)) {
 				$data[$key] = $this->formatDataArray($value);
 			} else {
-				$this->fromatDataFromString($key, $value, $data);
+				$this->formatDataFromString($key, $value, $data);
 			}
 		}
 		return $data;
@@ -107,6 +107,7 @@ class WindPropertiesParser {
 	 * @return array
 	 */
 	public function toArray($key, $value, &$data = array()) {
+		if (empty($key) && empty($value)) return array();
 		if (strpos($key, $this->separator)) {
 			$start = substr($key, 0, strpos($key, $this->separator));
 			$end = substr($key, strpos($key, $this->separator) + 1);
@@ -148,9 +149,12 @@ class WindPropertiesParser {
 	 * @param array $data
 	 * return array
 	 */
-	public function fromatDataFromString($key, $value, &$data) {
-		$start = substr($key, 0, strpos($key, $this->separator));
+	public function formatDataFromString($key, $value, &$data) {
 		$tmp = $this->toArray($key, $value);
+		if(false == strpos($key, $this->separator)){
+			return $tmp;
+		}
+		$start = substr($key, 0, strpos($key, $this->separator));
 		if ((!isset($data[$start]) || !is_array($data[$start])) && isset($tmp[$start])) {
 			$data[$start] = $tmp[$start];
 		} else {
