@@ -32,7 +32,7 @@ class IndexController extends WindController {
 	}
 	
 	private function getInfo() {
-		$fileNum = count(L::getImports());
+		$fileNum = count(get_included_files());
 		list($start_usec, $start_sec) = explode(' ', $_SESSION['start']);
          /* 内存占用情况 */
 		(function_exists('memory_get_usage')) && $memory = (memory_get_usage() / 1048576);
