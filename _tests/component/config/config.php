@@ -11,5 +11,8 @@ return array(
 			'class' => 'WindPHPWind',
 		),
 	),
+	'extensionConfig' => array(
+		'formConfig' => 'controllers.actionForm',
+	)
 );
 ?>
