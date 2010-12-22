@@ -455,7 +455,7 @@ abstract class WindSqlBuilder {
 			$text = implode($separators ? $separators : ',',$text);
 		}
 		if($text  && is_string($text)){
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
+			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
 				$replace = is_array($replace) ? $replace : array($replace);
 				foreach($matches[1] as $key=>$match){
 					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
@@ -468,7 +468,7 @@ abstract class WindSqlBuilder {
 					$text = str_replace($matches[0][$key],$_replace,$text);
 				}
 			}
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|>=|<=|=|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches)){
+			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches)){
 				if(!is_array($replace)){
 					$tmp = explode('=',$replace);
 					$replace = array($tmp[0]=>$tmp[1]);
