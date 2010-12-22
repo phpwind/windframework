@@ -23,8 +23,8 @@ class W {
 	
 	static public function init() {
 		self::checkEnvironment();
-		self::systemRegist();
-		self::initBaseLib();
+		self::systemRegister();
+		self::loadBaseLib();
 		self::initErrorHandle();
 	}
 	
@@ -63,29 +63,11 @@ class W {
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
 	 */
-	static private function initBaseLib() {
+	static private function loadBaseLib() {
 		if (!IS_DEBUG && is_file(COMPILE_IMPORT_PATH)) {
 			return include COMPILE_IMPORT_PATH;
 		} else
-			self::initLoad();
-	}
-	
-	/**
-	 * 加载框架核心文件
-	 * 如果开启了预加载编译缓存则将加载的文件保存到编译缓存中
-	 */
-	static private function initLoad() {
-		L::import('WIND:core.base.*');
-		L::import('WIND:core.router.*');
-		L::import('WIND:core.exception.*');
-		L::import('WIND:core.filter.*');
-		L::import('WIND:core.viewer.*');
-		L::import('WIND:core.*');
-		if (self::ifCompile() && !IS_DEBUG) {
-			L::import('WIND:component.WindPack');
-			$pack = L::getInstance('WindPack');
-			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
-		}
+			L::loadCoreLibrary();
 	}
 	
 	/**
@@ -93,7 +75,7 @@ class W {
 	 */
 	static private function initConfig($currentName, $config = '') {
 		if (!is_array($config)) {
-			L::import('WIND:component.config.WindConfigParser');
+			L::import('WindConfigParser');
 			$configParser = new WindConfigParser();
 			$config = $configParser->parse($currentName, $config, true);
 		}
@@ -116,27 +98,27 @@ class W {
 	}
 	
 	static private function checkEnvironment() {
-
+		
 	}
 	
 	/**
 	 * 注册自动加载器
 	 * 系统信息注册
 	 */
-	static private function systemRegist() {
+	static private function systemRegister() {
 		L::registerAutoloader();
 		L::register(WIND_PATH, 'WIND');
-		//self::registerApplications();
+//		self::registerApplications();
 	}
 	
-	static private function initErrorHandle() {	
-
-	//		set_exception_handler(array(
-	//			'WindErrorHandle', 
-	//			'exceptionHandle'));
-	//		set_error_handler(array(
-	//			'WindErrorHandle', 
-	//			'errorHandle'));
+	/**
+	 * 初始化错误处理
+	 */
+	static private function initErrorHandle() {
+		if (!IS_DEBUG) {
+			set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+			set_error_handler(array('WindErrorHandle', 'errorHandle'));
+		}
 	}
 
 }
@@ -196,14 +178,14 @@ class L {
 	 * 加载一个类的参数方式：'WIND:core.base.WFrontController'
 	 * 加载一个包的参数方式：'WIND:core.base.*'
 	 *
-	 * @param string $filePath //文件路径信息
+	 * @param string $filePath //文件路径信息 或者className
 	 * @param boolean $autoIncludes //是否采用自动加载方式
 	 * @author Qiong Wu
 	 * @return string|null
 	 */
-	static public function import($filePath, $autoInclude = true) {
+	static public function import($filePath, $autoInclude = true, $recursivePackage = false) {
 		if (!$filePath) return false;
-		if (self::isImported($filePath)) return self::$_imports[$filePath];
+		if ($className = self::isImported($filePath)) return $className;
 		
 		if (($pos = strrpos($filePath, '.')) === false)
 			$fileName = $filePath;
@@ -215,7 +197,12 @@ class L {
 			$dirPath = self::getRealPath($filePath);
 			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
-				if ($file != "." && $file != ".." && !(is_dir($dirPath . D_S . $file))) {
+				if (is_dir($dirPath . D_S . $file)) {
+					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
+						$_filePath = $filePath . '.' . $file . '.' . '*';
+						self::import($_filePath, $autoInclude, $recursivePackage);
+					}
+				} else {
 					if (($pos = strrpos($file, '.')) === false)
 						$fileName = $file;
 					else
@@ -237,12 +224,13 @@ class L {
 	}
 	
 	public static function registerAutoloader() {
-		if (!function_exists('spl_autoload_register')) {
+		if (function_exists('spl_autoload_register')) {
+			spl_autoload_register('L::autoLoad');
+		} else {
 			function __autoload($className) {
 				L::autoLoad($className);
 			}
 		}
-		return spl_autoload_register('L::autoLoad');
 	}
 	
 	/**
@@ -298,6 +286,25 @@ class L {
 	}
 	
 	/**
+	 * 加载框架核心库文件
+	 */
+	static public function loadCoreLibrary() {
+		L::import('WIND:core.*', true, true);
+		L::import('WIND:component.*', true, true);
+	}
+	
+	/**
+	 * 预加载处理
+	 */
+	static private function perLoad() {
+		if (self::ifCompile() && !IS_DEBUG) {
+			self::import('WindPack');
+			$pack = new WindPack();
+			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
+		}
+	}
+	
+	/**
 	 * 根据类名称创建类的单例对象，并保存到静态对象中
 	 * 同时调用清理单例对象的策略
 	 *
@@ -308,11 +315,8 @@ class L {
 	static private function createInstance($className, $args) {
 		$class = new ReflectionClass($className);
 		if ($class->isAbstract() || $class->isInterface()) return;
-		if (!is_array($args)) $args = array(
-			$args);
-		$object = call_user_func_array(array(
-			$class, 
-			'newInstance'), $args);
+		if (!is_array($args)) $args = array($args);
+		$object = call_user_func_array(array($class, 'newInstance'), $args);
 		return $object;
 	}
 	
@@ -336,7 +340,9 @@ class L {
 	 * @param string $key
 	 */
 	private static function isImported($path) {
-		return key_exists($path, self::$_imports) || in_array($path, self::$_imports);
+		if (key_exists($path, self::$_imports)) return self::$_imports[$path];
+		if (in_array($path, self::$_imports)) return $path;
+		return false;
 	}
 	
 	static private function getRootPath($namespace = '') {
