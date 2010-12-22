@@ -16,6 +16,5 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 	
 	protected function tearDown() {
 		parent::tearDown();
-		C::init(include 'config.php');
 	}
 }

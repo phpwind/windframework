@@ -6,9 +6,8 @@
  * @license
  */
 
-include 'BaseTestCase.php';
-include R_P . '/test/component/AllComponentTest.php';
-include R_P . '/test/core/AllCoreTest.php';
+include 'component/AllComponentTest.php';
+include 'test/core/AllCoreTest.php';
 
 class AllTest {
 	public static function main() {
