@@ -18,6 +18,9 @@ class WindPack {
 	const STRIP_PHP = 'stripWhiteSpaceByPhp';
 	const STRIP_TOKEN = 'stripWhiteSpaceByToken';
 	private $packList = array();
+	
+	private $contentInjectionPosition;
+	private $contentInjectionCallBack = '';
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
@@ -274,23 +277,22 @@ class WindPack {
 	}
 	
 	/**
+	 * array('E://www/wind/core/WindAciton.php'=>'WindAction')
 	 * @param mixed $fileList
 	 * @param method $packMethod
 	 * @param string $absolutePath
 	 * @return array:
 	 */
-	public function readContentFromFile($fileList, $packMethod = WindPack::STRIP_PHP, $absolutePath = '') {
+	public function readContentFromFileList($fileList, $packMethod = WindPack::STRIP_PHP, $absolutePath = '') {
 		if (empty($fileList) || false === $this->isValidatePackMethod($packMethod)) {
 			return false;
 		}
 		$content = array();
 		$fileList = is_array($fileList) ? $fileList : array($fileList);
 		foreach ($fileList as $key => $value) {
-			$temp = L::getRealPath($key);
-			$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $temp : $temp;
+			$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $key : $key;
 			if (is_file($file)) {
 				$content[] = $this->$packMethod($file);
-				$this->setPackList($key, $value);
 			}
 		}
 		return $content;
@@ -388,18 +390,24 @@ class WindPack {
 	 * @param string $absolutePath
 	 * @return string|string
 	 */
-	public function packFromFile($fileList, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '') {
+	public function packFromFileList($fileList, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '') {
 		if (empty($dst) || empty($fileList)) {
 			return false;
 		}
-		if (!($content = $this->readContentFromFile($fileList, $packMethod, $absolutePath))) {
+		if (!($content = $this->readContentFromFileList($fileList, $packMethod, $absolutePath))) {
 			return false;
 		}
 		$fileSuffix = $this->getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
 		$content = implode($replace, $content);
 		$content = $this->stripNR($content, $replace);
-		$content = $this->setImports($content, $replace);
+		if ($this->contentInjectionCallBack !== '') {
+			$_content = call_user_func_array($this->contentInjectionCallBack, array());
+			if ($this->contentInjectionPosition == 'before') {
+				$content = $replace . $_content . $content;
+			} elseif ($this->contentInjectionPosition == 'after')
+				$content .= $replace . $_content . $replace;
+		}
 		$content = $this->stripPhpIdentify($content, '');
 		$content = $this->stripImport($content, '');
 		$content = $this->getContentBySuffix($content, $fileSuffix);
@@ -414,6 +422,17 @@ class WindPack {
 	public function getFileName($path, $ifsuffix = false) {
 		$filename = substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1);
 		return $ifsuffix ? $filename : substr($filename, 0, strrpos($filename, '.'));
+	}
+	
+	/**
+	 * @param $contentInjectionCallBack the $contentInjectionCallBack to set
+	 * @param string $position 调用位置(before|after)
+	 * @author Qiong Wu
+	 */
+	public function setContentInjectionCallBack($contentInjectionCallBack, $position = 'before') {
+		if (!in_array($position, array('before', 'after'))) $position = 'before';
+		$this->contentInjectionPosition = $position;
+		$this->contentInjectionCallBack = $contentInjectionCallBack;
 	}
 
 }
