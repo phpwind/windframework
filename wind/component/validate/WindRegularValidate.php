@@ -13,23 +13,45 @@
  * @package 
  */
 class WindRegularValidate{
-	public static function validateEmail($string){
-		return preg_match("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/",$string);
+	
+	public static function validateByRegExp($regExp,$string,&$matches=array(),$ifall = false){
+		if($ifAll){
+			return preg_match_all($regExp,$string,$matches);
+		}
+		return preg_match($regExp,$string,$matches);
 	}
 	
-	public static function validateIdCard($string){
-		return preg_match("/\d{17}[\d|X]|\d{15}/",$string);
+	public static function validateEmail($string,&$matches=array(),$ifAll = false){
+		return $this->validateByRegExp("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/",$string,$matches,$ifall);
 	}
 	
-	public static function validateUrl($string){
-		return preg_match("/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/",$string);
+	public static function validateIdCard($string,&$matches=array(),$ifAll = false){
+		return $this->validateByRegExp("/\d{17}[\d|X]|\d{15}/",$string,$matches,$ifall);
 	}
 	
-	public static function validateChinese($string){
-		return preg_match("/^[\u4e00-\u9fa5]+/",$string);
+	public static function validateUrl($string,&$matches = array(),$ifAll = false){
+		return $this->validateByRegExp("/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/",$string,$matches,$ifall);
 	}
 	
-	public static function ValidateHtml($string){
-		return preg_match("/<(.*)>.*|<(.*)\/>/",$string);
+	public static function validateChinese($string,&$matches=array(),$ifAll = false){
+		return $this->validateByRegExp("/^[\u4e00-\u9fa5]+/",$string,$matches,$ifall);
+	}
+	
+	/**
+	 * 验证是否是html
+	 * @param string $string
+	 * @return number
+	 */
+	public static function validateHtml($string,&$matches=array(),$ifAll = false){
+		return $this->validateByRegExp("/<(.*)>.*|<(.*)\/>/",$string,$matches,$ifall);
+	}
+	
+	/**
+	 * 验证是否是双字节,包括汉字
+	 * @param string $string
+	 * @return bo
+	 */
+	public static function validateDoubleType($string,&$matches=array(),$ifAll = false){
+		return $this->validateByRegExp("/[^\x00-\xff]+/",$string,$matches,$ifall);
 	}
 }
