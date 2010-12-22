@@ -125,7 +125,6 @@ class W {
 }
 
 /**
- * 文件加载类
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -139,22 +138,9 @@ class L {
 	private static $_extensions = 'php';
 	private static $_includePaths = array();
 	
-	static public function getImports($key = '') {
-		return $key ? self::$_imports[$key] : self::$_imports;
-	}
-	
-	/**
-	 * @param array $class
-	 */
-	static public function setImports($class = array()) {
-		foreach ((array) $class as $key => $value) {
-			if (!self::isImported($key)) self::$_imports[$key] = $value;
-		}
-	}
-	
 	/**
 	 * 将路径信息注册到命名空间
-	 *
+	 * 
 	 * @param string $name
 	 * @param string $path
 	 */
@@ -221,12 +207,24 @@ class L {
 		return $fileName;
 	}
 	
+	/**
+	 * 类文件加载
+	 * 
+	 * @param string $className
+	 * @param string $path
+	 * @return null
+	 */
 	static public function autoLoad($className, $path = '') {
 		if (!isset(self::$_classes[$className])) throw new Exception('auto load ' . $className . ' failed.');
 		if ($path === '') $path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
 		if ((@include $path) === false) throw new Exception('auto load ' . $path . ' failed.');
 	}
 	
+	/**
+	 * 注册自动加载回调方法
+	 * 
+	 * @return
+	 */
 	public static function registerAutoloader() {
 		if (function_exists('spl_autoload_register')) {
 			spl_autoload_register('L::autoLoad');
@@ -245,7 +243,7 @@ class L {
 	 * 返回一个对象的引用
 	 *
 	 * @param string $className
-	 * @retur Object
+	 * @return Object
 	 */
 	static public function getInstance($className, $args = array(), $nameSpace = '') {
 		$className = strtolower($className);
@@ -259,24 +257,12 @@ class L {
 	}
 	
 	/**
-	 * 清理全局变量
-	 *
-	 * @param string $className
-	 */
-	static public function unsetInstance($className = '') {
-		if ($className)
-			unset(self::$_instances[$className]);
-		else
-			self::$_instances = array();
-	}
-	
-	/**
 	 * 解析路径信息，并返回路径的详情
-	 * 返回array('isPackage','fileName','extension','realPath')
+	 * 
 	 * @param string $filePath 路径信息
 	 * @param boolean $info 是否返回路径详情
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
-	 * @return string|array
+	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	static public function getRealPath($filePath, $ext = '') {
 		$namespace = '';
@@ -292,43 +278,36 @@ class L {
 	
 	/**
 	 * 加载框架核心库文件
+	 * 
+	 * @return
 	 */
 	static public function loadCoreLibrary() {
 		self::import('WIND:core.*', true, true);
 		self::import('COM:config.*', true, true);
-		self::perLoad();
-	}
-	
-	/**
-	 * 预加载处理
-	 */
-	static private function perLoad() {
-		if (W::ifCompile() && !IS_DEBUG) {
-			self::import('COM:WindPack');
-			$pack = new WindPack();
-			$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
-			$fileList = array();
-			foreach (L::getImports() as $key => $value) {
-				$key = self::getRealPath($key, self::$_extensions);
-				$fileList[$key] = $value;
-			}
-			$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
-		}
+		if (!IS_DEBUG && W::ifCompile()) self::perLoadCoreLibrary();
 	}
 	
 	/**
 	 * 预加载处理回调处理，注入内容到打包文件头部
+	 * 
+	 * @param array $classes 
 	 * @return string
 	 */
-	static public function perLoadInjection() {
-		L::import('COM:format.WindStringFormat');
-		return "L::setImports(" . WindStringFormat::varExport(L::getImports()) . ");";
+	static public function perLoadInjection($classes = array()) {
+		if (!empty($classes)) {
+			foreach ($classes as $key => $value) {
+				if (!self::isImported($key)) self::$_imports[$key] = $value;
+			}
+		} else {
+			L::import('COM:format.WindStringFormat');
+			return "L::perLoadInjection(" . WindStringFormat::varExport(L::getImports()) . ");";
+		}
 	}
 	
 	/**
 	 * 根据类名称创建类的单例对象，并保存到静态对象中
 	 * 同时调用清理单例对象的策略
-	 *
+	 * 
 	 * @param string $className 类名称
 	 * @param array $args 参数数组
 	 * @return void|string
@@ -341,29 +320,14 @@ class L {
 		return $object;
 	}
 	
-	/**
-	 * 全局包含文件的唯一入口
-	 *
-	 * @param string $realPath 绝对路径名
-	 * @param string $filePath 输入的路径名
-	 * @param string $fileName 文件名称
-	 * @return string
-	 */
-	static private function windInclude($realPath, $filePath, $fileName, $ispackage = false) {
-		if (in_array($fileName, self::$_imports)) return $realPath;
-		include $realPath;
-		if ($ispackage) $filePath = str_replace('*', $fileName, $filePath);
-		self::$_imports[$fileName] = $filePath;
-		return $realPath;
-	}
-	
-	/**
-	 * @param string $key
-	 */
-	private static function isImported($path) {
+	static private function isImported($path) {
 		if (key_exists($path, self::$_imports)) return self::$_imports[$path];
 		if (in_array($path, self::$_imports)) return $path;
 		return false;
+	}
+	
+	static public function getImports($key = '') {
+		return $key ? self::$_imports[$key] : self::$_imports;
 	}
 	
 	static private function getRootPath($namespace = '') {
@@ -391,6 +355,18 @@ class L {
 			throw new Exception('set include path error.');
 		}
 	}
+	
+	static private function perLoadCoreLibrary() {
+		self::import('COM:WindPack');
+		$pack = new WindPack();
+		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
+		$fileList = array();
+		foreach (L::getImports() as $key => $value) {
+			$key = self::getRealPath($key, self::$_extensions);
+			$fileList[$key] = $value;
+		}
+		$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
+	}
 }
 
 /**
@@ -400,6 +376,7 @@ class L {
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package
+ * @deprecated
  */
 class C {
 	private static $config = array();
