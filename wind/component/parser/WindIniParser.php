@@ -45,7 +45,7 @@ class WindIniParser {
 			if (is_array($value)) {
 				$data[$key] = $this->formatDataArray($value);
 			} else {
-				$this->fromatDataFromString($key, $value, $data);
+				$this->formatDataFromString($key, $value, $data);
 			}
 		}
 		return $data;
@@ -59,6 +59,7 @@ class WindIniParser {
 	 * @return array
 	 */
 	public function toArray($key, $value, &$data = array()) {
+		if (empty($key) && empty($value)) return array();
 		if (strpos($key, $this->separator)) {
 			$start = substr($key, 0, strpos($key, $this->separator));
 			$end = substr($key, strpos($key, $this->separator) + 1);
@@ -100,9 +101,12 @@ class WindIniParser {
 	 * @param array $data
 	 * return array
 	 */
-	public function fromatDataFromString($key, $value, &$data) {
-		$start = substr($key, 0, strpos($key, $this->separator));
+	public function formatDataFromString($key, $value, &$data) {
 		$tmp = $this->toArray($key, $value);
+		if(false == strpos($key, $this->separator)){
+			return $tmp;
+		}
+		$start = substr($key, 0, strpos($key, $this->separator));
 		if ((!isset($data[$start]) || !is_array($data[$start])) && isset($tmp[$start])) {
 			$data[$start] = $tmp[$start];
 		} else {
