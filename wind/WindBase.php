@@ -316,6 +316,10 @@ class L {
 		}
 	}
 	
+	/**
+	 * 预加载处理回调处理，注入内容到打包文件头部
+	 * @return string
+	 */
 	static public function perLoadInjection() {
 		L::import('COM:format.WindStringFormat');
 		return "L::setImports(" . WindStringFormat::varExport(L::getImports()) . ");";
