@@ -192,4 +192,21 @@ class WindRegularValidate {
 	public static function isScript($string) {
 		return 0 < preg_match('/<script(?:.*?)>(?:[^\x00]*?)<\/script>/', $string);
 	}
+	
+	public static function isInt($value){
+		return is_int($value);
+	}
+	
+	public static function isFloat($value){
+		return is_float($value);
+	}
+	
+	public static function isArray($value){
+		return is_array($value);
+	}
+	
+	public static function isBool($value){
+		return is_bool($value);
+	}
+	
 }
