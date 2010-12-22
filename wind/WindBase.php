@@ -12,7 +12,7 @@
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'wind_' . VERSION . '.php');
+!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.php');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -75,7 +75,7 @@ class W {
 	 */
 	static private function initConfig($currentName, $config = '') {
 		if (!is_array($config)) {
-			L::import('WindConfigParser');
+			L::import('COM:config.WindConfigParser');
 			$configParser = new WindConfigParser();
 			$config = $configParser->parse($currentName, $config, true);
 		}
@@ -98,7 +98,7 @@ class W {
 	}
 	
 	static private function checkEnvironment() {
-		
+
 	}
 	
 	/**
@@ -108,7 +108,8 @@ class W {
 	static private function systemRegister() {
 		L::registerAutoloader();
 		L::register(WIND_PATH, 'WIND');
-//		self::registerApplications();
+		L::register(WIND_PATH . 'component' . D_S, 'COM');
+		//		self::registerApplications();
 	}
 	
 	/**
@@ -187,10 +188,13 @@ class L {
 		if (!$filePath) return false;
 		if ($className = self::isImported($filePath)) return $className;
 		
-		if (($pos = strrpos($filePath, '.')) === false)
-			$fileName = $filePath;
-		else
+		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
+		elseif (($pos1 = strrpos($filePath, ':')) !== false)
+			$fileName = substr($filePath, $pos1 + 1);
+		else
+			$fileName = $filePath;
+		
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
@@ -274,7 +278,7 @@ class L {
 	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
 	 * @return string|array
 	 */
-	static public function getRealPath($filePath) {
+	static public function getRealPath($filePath, $ext = '') {
 		$namespace = '';
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = substr($filePath, 0, $pos);
@@ -282,6 +286,7 @@ class L {
 		}
 		$filePath = str_replace('.', D_S, $filePath);
 		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
+		if ($ext) $filePath .= '.' . $ext;
 		return $filePath;
 	}
 	
@@ -289,19 +294,31 @@ class L {
 	 * 加载框架核心库文件
 	 */
 	static public function loadCoreLibrary() {
-		L::import('WIND:core.*', true, true);
-		L::import('WIND:component.*', true, true);
+		self::import('WIND:core.*', true, true);
+		self::import('COM:config.*', true, true);
+		self::perLoad();
 	}
 	
 	/**
 	 * 预加载处理
 	 */
 	static private function perLoad() {
-		if (self::ifCompile() && !IS_DEBUG) {
-			self::import('WindPack');
+		if (W::ifCompile() && !IS_DEBUG) {
+			self::import('COM:WindPack');
 			$pack = new WindPack();
-			$pack->packFromFile(L::getImports(), COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
+			$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
+			$fileList = array();
+			foreach (L::getImports() as $key => $value) {
+				$key = self::getRealPath($key, self::$_extensions);
+				$fileList[$key] = $value;
+			}
+			$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 		}
+	}
+	
+	static public function perLoadInjection() {
+		L::import('COM:format.WindStringFormat');
+		return "L::setImports(" . WindStringFormat::varExport(L::getImports()) . ");";
 	}
 	
 	/**
@@ -372,7 +389,6 @@ class L {
 	}
 }
 
-L::import('WIND:component.config.base.IWindConfig');
 /**
  * 全文配置访问
  *
