@@ -267,7 +267,7 @@ class WindConfigParser {
 	 * @return string 	获得默认配置文件的路径
 	 */
 	private function getWindConfigPath() {
-		return WIND_PATH . D_S . $this->windConfig . '.' . $this->parseFormat;
+		return WIND_PATH . $this->windConfig . '.' . strtolower($this->parseFormat);
 	}
 	
 	/**
