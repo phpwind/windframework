@@ -6,6 +6,13 @@
  * @license 
  */
 
-class WindComponent extends WindModule {
+/**
+ * 框架核心组件基类
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$ 
+ * @package 
+ */
+abstract class WindComponent {
 	
 }
