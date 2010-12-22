@@ -308,7 +308,7 @@ class WindDateFormat{
 	 */
 	public static function sGetRealDaysInMonthsOfYear($year){
 		$months = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-		if($this->isLeapYear($year)){
+		if(self::sIsLeapYear($year)){
 			$months[1] = 29;
 		}
 		return $months;
@@ -341,7 +341,7 @@ class WindDateFormat{
 		if ( 1 > $month  || 12 < $month){
 			return 0;
 		}
-		if(!($daysInmonths = $this->getRealDaysInMonthsOfYear($year))){
+		if(!($daysInmonths = self::sGetRealDaysInMonthsOfYear($year))){
 			return 0;
 		}
 		return $daysInmonths[$month - 1];
