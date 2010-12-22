@@ -14,6 +14,14 @@
  */
 class WindRegularValidate{
 	
+	/**
+	 * 在 $string 字符串中搜索与 $regExp 给出的正则表达式相匹配的内容。
+	 * @param string $regExp  搜索的规则(正则)
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifall   是否进行全局正则表达式匹配
+	 * @return number
+	 */
 	public static function validateByRegExp($regExp,$string,&$matches=array(),$ifall = false){
 		if($ifAll){
 			return preg_match_all($regExp,$string,$matches);
@@ -21,35 +29,68 @@ class WindRegularValidate{
 		return preg_match($regExp,$string,$matches);
 	}
 	
+	/**
+	 * 验证是否是合法的email
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
+	 * @return number
+	 */
 	public static function validateEmail($string,&$matches=array(),$ifAll = false){
 		return $this->validateByRegExp("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/",$string,$matches,$ifall);
 	}
 	
+	/**
+	 * 验证是否是合法的身份证号
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
+	 * @return number
+	 */
 	public static function validateIdCard($string,&$matches=array(),$ifAll = false){
 		return $this->validateByRegExp("/\d{17}[\d|X]|\d{15}/",$string,$matches,$ifall);
 	}
 	
+	/**
+	 * 验证是否是合法的URL
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
+	 * @return number
+	 */
 	public static function validateUrl($string,&$matches = array(),$ifAll = false){
 		return $this->validateByRegExp("/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/",$string,$matches,$ifall);
 	}
 	
+	/**
+	 * 验证是否是中文
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
+	 * @return number
+	 */
 	public static function validateChinese($string,&$matches=array(),$ifAll = false){
 		return $this->validateByRegExp("/^[\u4e00-\u9fa5]+/",$string,$matches,$ifall);
 	}
 	
 	/**
 	 * 验证是否是html
-	 * @param string $string
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return number
 	 */
 	public static function validateHtml($string,&$matches=array(),$ifAll = false){
 		return $this->validateByRegExp("/<(.*)>.*|<(.*)\/>/",$string,$matches,$ifall);
 	}
 	
+	
 	/**
-	 * 验证是否是双字节,包括汉字
-	 * @param string $string
-	 * @return bo
+	 * 验证是否是双字节
+	 * @param string $string  被搜索的 字符串
+	 * @param array $matches 会被搜索的结果
+	 * @param boolean $ifAll   是否进行全局正则表达式匹配
+	 * @return number
 	 */
 	public static function validateDoubleType($string,&$matches=array(),$ifAll = false){
 		return $this->validateByRegExp("/[^\x00-\xff]+/",$string,$matches,$ifall);
