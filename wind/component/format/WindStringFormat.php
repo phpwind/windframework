@@ -162,4 +162,35 @@ class WindStringFormat {
 		return $count;
 	
 	}
+	
+	/**
+	 * 变量导出为字符串
+	 *
+	 * @param mixed $input 变量
+	 * @param string $indent 缩进
+	 * @return string
+	 */
+	public static function varExport($input, $indent = '') {
+		switch (gettype($input)) {
+			case 'string':
+				return "'" . str_replace(array("\\", "'"), array("\\\\", "\'"), $input) . "'";
+			case 'array':
+				$output = "array(\r\n";
+				foreach ($input as $key => $value) {
+					$output .= $indent . "\t" . self::varExport($key, $indent . "\t") . ' => ' . self::varExport($value, $indent . "\t");
+					$output .= ",\r\n";
+				}
+				$output .= $indent . ')';
+				return $output;
+			case 'boolean':
+				return $input ? 'true' : 'false';
+			case 'NULL':
+				return 'NULL';
+			case 'integer':
+			case 'double':
+			case 'float':
+				return "'" . (string) $input . "'";
+		}
+		return 'NULL';
+	}
 }
