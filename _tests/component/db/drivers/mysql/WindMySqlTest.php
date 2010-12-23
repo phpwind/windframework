@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.exception.WindException');
-L::import('WIND:component.db.drivers.mysql.WindMySql');
+require_once('core/exception/WindException.php');
+require_once('component/db/drivers/mysql/WindMysql.php');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -25,6 +25,7 @@ class WindMySqlTest extends BaseTestCase {
 	
 	public function __construct() {
 		parent::__construct();
+		C::init(include 'config.php');
 		$this->config = C::getDataBaseConnection('phpwind_8');
 		$this->WindMySql = new WindMySql($this->config);
 	}

@@ -5,14 +5,13 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindActionForm');
+require_once('component/form/WindActionForm.php');
 
 class UserForm extends WindActionForm {
 	protected $name;
 	protected $password;
 	protected $address = 'hangz';
 	protected $nick;
-	protected $_isValidate = false;
 	public function __construct() {
 		parent::__construct();
 		$this->setErrorAction('error');
@@ -23,7 +22,6 @@ class UserForm extends WindActionForm {
 		}
 	}
 }
-
 class WindActionFormTest extends BaseTestCase {
 	private $obj;
 	public function setUp() {
@@ -33,7 +31,7 @@ class WindActionFormTest extends BaseTestCase {
 
 	}
 	public function testGetIsValidation() {
-		$this->assertFalse($this->obj->getIsValidation());
+		$this->assertTrue($this->obj->getIsValidation());
 	}
 	public function testSetProperties() {
 		$array = array('name' => 'phpwind', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
@@ -55,3 +53,4 @@ class WindActionFormTest extends BaseTestCase {
 		$this->assertEquals('name too short', $error->getError('nameError'));
 	}
 }
+

@@ -5,8 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindErrorMessage');
-
+require_once('core/WindErrorMessage.php');
 /**
  * 测试WindErrorMessage
  * 
@@ -18,7 +17,6 @@ L::import('WIND:core.WindErrorMessage');
 class WindErrorMessageTest extends BaseTestCase {
 	private $errorMessage;
 	public function setUp() {
-		parent::setUp();
 		$this->errorMessage = WindErrorMessage::getInstance();
 		$this->errorMessage->clear();
 	}
@@ -34,7 +32,7 @@ class WindErrorMessageTest extends BaseTestCase {
 	}
 	
 	public function testGetAndSetError() {
-		$this->assertEquals('', $this->errorMessage->getError('name'));
+		$this->assertTrue(0 == count($this->errorMessage->getError('key')));
 		$this->errorMessage->addError('nameError', 'name');
 		$this->assertEquals('nameError', $this->errorMessage->getError('name'));
 		$this->errorMessage->addError('', 'password');
@@ -57,8 +55,6 @@ class WindErrorMessageTest extends BaseTestCase {
 	}
 	
 	public function testSendErrorAction() {
-		$this->errorMessage->setErrorAction(R_P . '/test/component/message/TestClass.php');
-		$this->assertEquals(null, $this->errorMessage->sendError());
 		throw new PHPUnit_Framework_IncompleteTestError('No complete');
 		/*$obj->addError('nameError', 'name');
 		$obj->sendError();*/

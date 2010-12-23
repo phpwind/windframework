@@ -7,9 +7,7 @@
  */
 
 include ('core/base/WindModuleTest.php');
-include ('core/filter/WindFormFilterTest.php');
 include ('core/viewer/WindViewerTest.php');
-include ('core/WindActionFormTest.php');
 include ('core/WindErrorHandleTest.php');
 include ('core/WindErrorMessageTest.php');
 include ('core/WindHttpRequestTest.php');
@@ -27,14 +25,11 @@ class AllCoreTest {
 	public static function suite() { 
 	    $suite = new PHPUnit_Framework_TestSuite('AllCoreTest_Suite');
 	    $suite->addTestSuite('WindModuleTest');
-	    $suite->addTestSuite('WindFormFilterTest');
 	    $suite->addTestSuite('WindViewerTest');
-	    $suite->addTestSuite('WindActionFormTest');
 	    $suite->addTestSuite('WindErrorHandleTest');
 	    $suite->addTestSuite('WindErrorMessageTest');
 	    $suite->addTestSuite('WindHttpRequestTest');
 	    $suite->addTestSuite('WindHttpResponseTest');
-	    $suite->addTestSuite('WindLayoutTest');
 	    $suite->addTestSuite('WindMessageTest');
 	    $suite->addTestSuite('WindViewTest');
 	    return $suite;

@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindMessage');
-
+//L::import('WIND:core.WindMessage');
+require_once('core/WindMessage.php');
 /**
  * WindMessage
  * the last known user to change this file in the repository  <$LastChangedBy$>

@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.config.WindConfigParser');
-L::import('WIND:core.WindHttpRequest');
+require_once('component/config/WindConfigParser.php');
+require_once('core/WindHttpRequest.php');
 
 class WindConfigParserTest extends BaseTestCase {
 	private $parser;

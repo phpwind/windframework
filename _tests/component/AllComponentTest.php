@@ -8,6 +8,8 @@
 include ('component/db/AllDBTest.php');
 include ('component/config/WindConfigParserTest.php');
 include ('component/parser/WindIniParserTest.php');
+include ('component/parser/WindPropertiesParserTest.php');
+include ('component/parser/WindXmlParserTest.php');
 
 class AllComponentTest {
 
@@ -17,9 +19,11 @@ class AllComponentTest {
 
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
-		$suite->addTest(ALLDBTest::suite());
+		//$suite->addTest(ALLDBTest::suite());
 		$suite->addTestSuite('WindConfigParserTest');
 		$suite->addTestSuite('WindIniParserTest');
+		$suite->addTestSuite('WindPropertiesParserTest');
+		$suite->addTestSuite('WindXmlParserTest');
 		return $suite;
 	}
 }

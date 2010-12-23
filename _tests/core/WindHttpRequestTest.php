@@ -5,9 +5,12 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindHttpRequest');
-L::import('WIND:core.WindHttpResponse');
-L::import('WIND:core.exception.WindException');
+//L::import('WIND:core.WindHttpRequest');
+//L::import('WIND:core.WindHttpResponse');
+//L::import('WIND:core.exception.WindException');
+require_once('core/WindHttpRequest.php');
+require_once('core/WindHttpResponse.php');
+require_once('core/exception/WindException.php');
 
 class WindHttpRequestTest extends BaseTestCase {
 	private $httpRequest;
@@ -26,7 +29,7 @@ class WindHttpRequestTest extends BaseTestCase {
 		$_POST['step'] = '5';
 		$_COOKIE['logIP'] = '10.1.123.99';
 		$_COOKIE['loginTime'] = '2010-12-17';
-		$this->httpRequest = WindHttpRequest::getInstance();
+		$this->httpRequest = new WindHttpRequest();
 	}
 	
 	public static function providerSlashes() {

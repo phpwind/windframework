@@ -5,8 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-L::import('WIND:core.base.WindModule');
-
+require_once('core/base/WindModule.php');
 class WindModuleTest extends BaseTestCase {
 	private $obj;
 	public function __construct() {}

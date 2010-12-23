@@ -6,9 +6,9 @@
  * @license 
  */
 
-L::import('WIND:core.exception.WindException');
-L::import('WIND:component.db.drivers.mysql.WindMySqlBuilder');
-L::import('WIND:component.db.base.IWindDbConfig');
+require_once('core/exception/WindException.php');
+require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
+
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>

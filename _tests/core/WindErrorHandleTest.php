@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindErrorHandle');
+require_once('core/windErrorHandle.php');
 
 /**
  * test case.

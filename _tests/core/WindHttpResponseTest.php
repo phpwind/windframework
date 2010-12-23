@@ -5,8 +5,10 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindHttpResponse');
-L::import('WIND:core.exception.WindException');
+//L::import('WIND:core.WindHttpResponse');
+//L::import('WIND:core.exception.WindException');
+require_once('core/WindHttpResponse.php');
+require_once('core/exception/WindException.php');
 
 class WindHttpResponseTest extends BaseTestCase {
 	private $httpResponse;
