@@ -21,6 +21,64 @@ class WindPack {
 	
 	private $contentInjectionPosition;
 	private $contentInjectionCallBack = '';
+	
+	/**
+	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
+	 * @param mixed $dir 要打包的目录
+	 * @param string $dst 文件名
+	 * @param string $packMethod 打包方式
+	 * @param boolean $compress 是否压缩
+	 * @param string $absolutePath 文件路径
+	 * @param array $ndir 不须要打包的目录
+	 * @param array $suffix 不永许打包的文件类型
+	 * @return string
+	 */
+	public function packFromDir($dir, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '', $ndir = array('.','..','.svn'), $suffix = array(), $nfile = array()) {
+		if (empty($dst) || empty($dir)) {
+			return false;
+		}
+		$suffix = is_array($suffix) ? $suffix : array($suffix);
+		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
+			return false;
+		}
+		$fileSuffix = $this->getFileSuffix($dst);
+		$replace = $compress ? ' ' : "\n";
+		$content = implode($replace, $content);
+		$content = $this->callBack($content, $replace);
+		$content = $this->stripNR($content, $replace);
+		$content = $this->stripPhpIdentify($content, '');
+		$content = $this->stripImport($content, '');
+		$content = $this->getContentBySuffix($content, $fileSuffix,$replace);
+		$this->writeContentToFile($dst, $content);
+		return true;
+	}
+	
+	/**
+	 * @param mixed $fileList
+	 * @param string $dst
+	 * @param method $packMethod
+	 * @param boolean $compress
+	 * @param string $absolutePath
+	 * @return string|string
+	 */
+	public function packFromFileList($fileList, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '') {
+		if (empty($dst) || empty($fileList)) {
+			return false;
+		}
+		if (!($content = $this->readContentFromFileList($fileList, $packMethod, $absolutePath))) {
+			return false;
+		}
+		$fileSuffix = $this->getFileSuffix($dst);
+		$replace = $compress ? ' ' : "\n";
+		$content = implode($replace, $content);
+		$content = $this->callBack($content, $replace);
+		$content = $this->stripNR($content, $replace);
+		$content = $this->stripPhpIdentify($content, '');
+		$content = $this->stripImport($content, '');
+		$content = $this->getContentBySuffix($content, $fileSuffix,$replace);
+		$this->writeContentToFile($dst, $content);
+		return true;
+	}
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
@@ -33,7 +91,6 @@ class WindPack {
 		$content = $this->getContentFromFile($filename);
 		$content = $this->stripComment($content, '');
 		$content = $this->stripSpace($content, ' ');
-		$content = $this->stripNR($content, $compress ? '' : "\n");
 		return $content;
 	}
 	
@@ -57,7 +114,7 @@ class WindPack {
 	/**
 	 * 去除注释
 	 * @param string $content 要去除的内容
-	 * @param string $replace 要替换的文本
+	 * @param mixed $replace 要替换的文本
 	 * @return string
 	 */
 	public function stripComment($content, $replace = '') {
@@ -67,17 +124,17 @@ class WindPack {
 	/**
 	 * 去除换行
 	 * @param string $content 要去除的内容
-	 * @param string $replace 要替换的文本
+	 * @param mixed $replace 要替换的文本
 	 * @return string
 	 */
-	public function stripNR($content, $replace = "\n") {
+	public function stripNR($content, $replace = array("\n","\r\n","\r")) {
 		return preg_replace("/[\n\r]+/", $replace, $content);
 	}
 	
 	/**
 	 * 去除空格符
 	 * @param string $content 要去除的内容
-	 * @param string $replace 要替换的文本
+	 * @param mixed $replace 要替换的文本
 	 * @return string
 	 */
 	public function stripSpace($content, $replace = ' ') {
@@ -87,7 +144,7 @@ class WindPack {
 	/**
 	 * 去除php标识
 	 * @param string $content
-	 * @param string $replace
+	 * @param mixed $replace
 	 * @return string
 	 */
 	public function stripPhpIdentify($content, $replace = '') {
@@ -98,7 +155,7 @@ class WindPack {
 	 * 根据指定规则替换指定内容中相应的内容
 	 * @param string $content
 	 * @param string $rule
-	 * @param string $replace
+	 * @param $mixed $replace
 	 * @return string
 	 */
 	public function stripStrByRule($content, $rule, $replace = '') {
@@ -108,7 +165,7 @@ class WindPack {
 	/**
 	 * 去除多余的文件导入信息
 	 * @param string $content
-	 * @param string $replace
+	 * @param mixed $replace
 	 * @return string
 	 */
 	public function stripImport($content, $replace = '') {
@@ -133,19 +190,6 @@ class WindPack {
 		return $this->packList;
 	}
 	
-	public function convertPackList($pack = array(), $samekey = '') {
-		static $list = array();
-		$pack = $pack && is_array($pack) ? $pack : $this->getPackList();
-		foreach ($pack as $key => $value) {
-			if (is_array($value)) {
-				$this->convertPackList($value, $key);
-			} else {
-				$key = $samekey ? $samekey : $key;
-				array_push($list, $key . '=' . $value);
-			}
-		}
-		return $list;
-	}
 	/**
 	 *从文件读取内容
 	 * @param string $filename 文件名
@@ -181,64 +225,19 @@ class WindPack {
 	 * 根据文件后缀得取对应的mime内容
 	 * @param string $content 要打包的内容内容
 	 * @param string $suffix 文件后缀类型
+	 * @param string $replace
 	 * @return string
 	 */
-	public function getContentBySuffix($content, $suffix) {
+	public function getContentBySuffix($content, $suffix,$replace=' ') {
 		switch ($suffix) {
 			case 'php':
-				$content = '<?php' . $content . '?>';
+				$content = '<?php'.$replace . $content . '?>';
 			default:
 				;
 		}
 		return $content;
 	}
 	
-	/**
-	 * @param string $content
-	 * @param string $suffix
-	 * @param string $other
-	 * @return string
-	 */
-	public function getCommentBySuffix($content, $suffix, $other = '') {
-		switch ($suffix) {
-			case 'php':
-				$content = "\r\n/**$other\r\n*" . $content . "\r\n*/\r\n";
-			default:
-				;
-		}
-		return $content;
-	}
-	/**
-	 * 将指定的数组转化形字符串格式
-	 * @param array $pack
-	 * @return string
-	 */
-	public function getPackListAsString($pack = array()) {
-		$str = '';
-		$packs = $pack ? $pack : $this->getPackList();
-		foreach ($packs as $key => $value) {
-			$str .= (is_string($key) ? '"' . $key . '"' : $key) . '=>';
-			if (is_array($value)) {
-				$str .= 'array(';
-				$str .= $this->getPackListAsString($value);
-				$str .= ')';
-			} else {
-				$str .= (is_string($value) ? '"' . $value . '"' : $value) . ',';
-			}
-		}
-		return empty($pack) ? 'array(' . $str . ')' : $str;
-	}
-	
-	/**
-	 * @param unknown_type $content
-	 * @param unknown_type $sep
-	 * @return string
-	 */
-	public function setImports($content = '', $sep = "\r\n") {
-		$packlist = $this->getPackListAsString();
-		$sep = isset($sep) ? $sep : "\r\n";
-		return "{$sep}L::setImports(" . $packlist . ");{$sep}" . $content;
-	}
 	
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
@@ -293,6 +292,7 @@ class WindPack {
 			$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $key : $key;
 			if (is_file($file)) {
 				$content[] = $this->$packMethod($file);
+				$this->setPackList($file, $value);
 			}
 		}
 		return $content;
@@ -351,70 +351,6 @@ class WindPack {
 		return is_dir($dir);
 	}
 	
-	/**
-	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
-	 * @param mixed $dir 要打包的目录
-	 * @param string $dst 文件名
-	 * @param string $packMethod 打包方式
-	 * @param boolean $compress 是否压缩
-	 * @param string $absolutePath 文件路径
-	 * @param array $ndir 不须要打包的目录
-	 * @param array $suffix 不永许打包的文件类型
-	 * @return string
-	 */
-	public function packFromDir($dir, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '', $ndir = array('.','..','.svn'), $suffix = array(), $nfile = array()) {
-		if (empty($dst) || empty($dir)) {
-			return false;
-		}
-		$suffix = is_array($suffix) ? $suffix : array($suffix);
-		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
-			return false;
-		}
-		$fileSuffix = $this->getFileSuffix($dst);
-		$replace = $compress ? ' ' : "\n";
-		$content = implode($replace, $content);
-		$content = $this->stripNR($content, $replace);
-		$content = $this->setImports($content, $replace);
-		$content = $this->stripPhpIdentify($content, '');
-		$content = $this->stripImport($content, '');
-		$content = $this->getContentBySuffix($content, $fileSuffix);
-		$this->writeContentToFile($dst, $content);
-		return true;
-	}
-	
-	/**
-	 * @param mixed $fileList
-	 * @param string $dst
-	 * @param method $packMethod
-	 * @param boolean $compress
-	 * @param string $absolutePath
-	 * @return string|string
-	 */
-	public function packFromFileList($fileList, $dst, $packMethod = WindPack::STRIP_PHP, $compress = true, $absolutePath = '') {
-		if (empty($dst) || empty($fileList)) {
-			return false;
-		}
-		if (!($content = $this->readContentFromFileList($fileList, $packMethod, $absolutePath))) {
-			return false;
-		}
-		$fileSuffix = $this->getFileSuffix($dst);
-		$replace = $compress ? ' ' : "\n";
-		$content = implode($replace, $content);
-		$content = $this->stripNR($content, $replace);
-		if ($this->contentInjectionCallBack !== '') {
-			$_content = call_user_func_array($this->contentInjectionCallBack, array());
-			if ($this->contentInjectionPosition == 'before') {
-				$content = $replace . $_content . $content;
-			} elseif ($this->contentInjectionPosition == 'after')
-				$content .= $replace . $_content . $replace;
-		}
-		$content = $this->stripPhpIdentify($content, '');
-		$content = $this->stripImport($content, '');
-		$content = $this->getContentBySuffix($content, $fileSuffix);
-		$this->writeContentToFile($dst, $content);
-		return true;
-	}
-	
 	public function getFileSuffix($filename) {
 		return substr($filename, strrpos($filename, '.') + 1);
 	}
@@ -422,6 +358,10 @@ class WindPack {
 	public function getFileName($path, $ifsuffix = false) {
 		$filename = substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1);
 		return $ifsuffix ? $filename : substr($filename, 0, strrpos($filename, '.'));
+	}
+	
+	public function getFilePath($path){
+		return substr($path, 0,strrpos($path, DIRECTORY_SEPARATOR));
 	}
 	
 	/**
@@ -433,6 +373,23 @@ class WindPack {
 		if (!in_array($position, array('before', 'after'))) $position = 'before';
 		$this->contentInjectionPosition = $position;
 		$this->contentInjectionCallBack = $contentInjectionCallBack;
+	}
+	
+	/**
+	 * 回调函数调用
+	 * @param string $content
+	 * @param string $replace
+	 * @return string
+	 */
+	public function callBack($content, $replace = '') {
+		if ($this->contentInjectionCallBack !== '') {
+			$_content = call_user_func_array($this->contentInjectionCallBack, array());
+			if ($this->contentInjectionPosition == 'before') {
+				$content = $replace . $_content . $content;
+			} elseif ($this->contentInjectionPosition == 'after')
+				$content .= $replace . $_content . $replace;
+		}
+		return $content;
 	}
 
 }
