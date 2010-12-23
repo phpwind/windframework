@@ -68,13 +68,12 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpResponse $response
 	 */
 	private function getFormHandle($request, $response) {
-		$formConfig = $this->getFormConfig($response);
+		if (!($formConfig = $this->getFormConfig($response))) return null;
 		$module = $response->getDispatcher()->module;
 		if (!isset($formConfig[$module]) || !($moduleFormConfig = $formConfig[$module])) return null;
 		
 		$formName = (isset($formConfig[self::FORMNAME]) && $formConfig[self::FORMNAME]) ? $formConfig[self::FORMNAME] : self::FORMNAME;
-		$formName = $request->getAttribute($formName);
-		if (!$formName) return null;
+		if (!($formName = $request->getAttribute($formName))) return null;
 		
 		L::import('WIND:component.form.WindActionForm');
 		L::import($moduleFormConfig['path'] . '.' . $formName);
@@ -94,6 +93,7 @@ class WindFormFilter extends WindFilter {
 	 */
 	private function getFormConfig($response) {
 		$formConfigPath = $response->getData('WindSystemConfig')->getConfig('extensionConfig', 'formConfig');
+		if (!$formConfigPath) return array();
 		$formConfigPath = L::getRealPath($formConfigPath); 
 		L::import('WIND:component.config.WindConfigParser'); 
 		$parser = new WindConfigParser(); 
