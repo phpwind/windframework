@@ -5,20 +5,21 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.filter.WindFormFilter');
-L::import('WIND:core.WindHttpRequest');
-L::import('WIND:core.WindHttpResponse');
-L::import('WIND:core.WindActionForm');
+require_once('component/form/WindFormFilter.php');
+require_once('component/form/WindActionForm.php');
+require_once('core/WindHttpRequest.php');
+require_once('core/WindHttpResponse.php');
+require_once('core/WindSystemConfig.php');
 
 class UserFormTest extends WindActionForm {
 	protected $name;
 	protected $password;
 	protected $address = 'hangz';
 	protected $nick;
-	protected $_isValidate = false;
 	public function __construct() {
 		parent::__construct();
 		$this->setErrorAction('error');
+		$this->setIsValidation(true);
 	}
 	public function nameValidate() {
 		if (strlen($this->name) < 6) {
@@ -31,6 +32,16 @@ class WindFormFilterTest extends BaseTestCase {
 	private $obj;
 	private $request;
 	private $response;
+	public function __construct() {
+		$array = array('extensionConfig' => array('formConfig' => 'component.form.WindFormFilterTest.php'));
+		$systemConfig = new WindSystemConfig($array);
+		$_GET['name'] = 'phpwind';
+		$_GET['address'] = 'hz';
+		$_GET['nick'] = 'xiaxia';
+		$this->request = new WindHttpRequest();
+		$this->response = new WindHttpResponse();
+		$this->response->setData($systemConfig, 'WindSystemConfig');
+	}
 	public function setUp() {
 		$this->obj = new WindFormFilter();
 	}
@@ -40,17 +51,14 @@ class WindFormFilterTest extends BaseTestCase {
 		$this->response = null;
 	}
 	public function testNullForm() {
-		$p = $this->obj->doBeforeProcess(WindHttpRequest::getInstance(), WindHttpResponse::getInstance());
+		$p = $this->obj->doBeforeProcess($this->request, $this->response);
 		$this->assertEquals(null, $p);
 	}
 	
 	public function testSetFormNoValidation() {
-		$_GET['name'] = 'phpwind';
 		$_GET['formName'] = 'UserFormTest';
 		throw new PHPUnit_Framework_IncompleteTestError('No complete');
-		$response = WindHttpResponse::getInstance();
-		$response->setDispatcher(WindDispatcher::getInstance());
-		$this->obj->doBeforeProcess(WindHttpRequest::getInstance(), $response);
+		$this->obj->doBeforeProcess($this->request, $this->response);
 		$userForm = L::getInstance('UserFormTest');
 		$this->assertEquals('phpwind', $userForm->name);
 	}
