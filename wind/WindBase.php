@@ -19,7 +19,6 @@
  * @version $Id$
  */
 class W {
-	private static $_current = '';
 	
 	static public function init() {
 		self::checkEnvironment();
@@ -55,10 +54,6 @@ class W {
 		return defined('COMPILE_PATH') ? true : false;
 	}
 	
-	static public function getCurrent() {
-		return self::$_current;
-	}
-	
 	/**
 	 * 自动加载框架底层类库
 	 * 包括基础的抽象类和接口
@@ -85,7 +80,7 @@ class W {
 	}
 	
 	/**
-	 * @param appConfig
+	 * 多应用注册
 	 */
 	static private function registerApplications() {
 		$appConfigPath = WIND_PATH . '/app_config.php';
@@ -97,6 +92,9 @@ class W {
 		}
 	}
 	
+	/**
+	 * 环境监察
+	 */
 	static private function checkEnvironment() {
 
 	}
@@ -109,17 +107,16 @@ class W {
 		L::registerAutoloader();
 		L::register(WIND_PATH, 'WIND');
 		L::register(WIND_PATH . 'component' . D_S, 'COM');
-		//		self::registerApplications();
+		//self::registerApplications();
 	}
 	
 	/**
 	 * 初始化错误处理
 	 */
 	static private function initErrorHandle() {
-		if (!IS_DEBUG) {
-			set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
-			set_error_handler(array('WindErrorHandle', 'errorHandle'));
-		}
+		if (IS_DEBUG) return;
+		set_exception_handler(array('WindErrorHandle', 'exceptionHandle'));
+		set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
 
 }
@@ -247,13 +244,11 @@ class L {
 	 */
 	static public function getInstance($className, $args = array(), $nameSpace = '') {
 		$className = strtolower($className);
-		$app = W::getCurrentApp() ? W::getCurrentApp() : 'default';
 		$nameSpace = $nameSpace === '' ? $className : $className . '_' . $nameSpace;
-		if (!isset(self::$_instances[$app])) self::$_instances[$app] = array();
-		if (!key_exists($nameSpace, self::$_instances[$app])) {
-			self::$_instances[$app][$nameSpace] = self::createInstance($className, $args);
+		if (!key_exists($nameSpace, self::$_instances)) {
+			self::$_instances[$nameSpace] = self::createInstance($className, $args);
 		}
-		return self::$_instances[$app][$nameSpace];
+		return self::$_instances[$nameSpace];
 	}
 	
 	/**
