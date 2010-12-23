@@ -125,6 +125,26 @@ class WindRegularValidateTest extends PHPUnit_Framework_TestCase{
 		$this->assertTrue(WindRegularValidate::isNonNegative("0") && WindRegularValidate::isNonNegative("1") && !WindRegularValidate::isNonNegative("-1"));
 	}
 	
+	public function testIsBool(){
+		$this->assertTrue(WindRegularValidate::isBool(true) && !WindRegularValidate::isBool(""));
+	}
+	
+	public function testIsInt(){
+		$this->assertTrue(WindRegularValidate::isInt(1) && !WindRegularValidate::isInt("a"));
+	}
+	
+	public function testIsFloat(){
+		$this->assertTrue(WindRegularValidate::isFloat(10.01) && !WindRegularValidate::isFloat("a"));
+	}
+	
+	public  function testIsArray($value){
+		$this->assertTrue(WindRegularValidate::isArray(array("")) && !WindRegularValidate::isArray("a"));
+	}
+	
+	public function testHasHtmlMatch(){
+		$this->assertTrue(WindRegularValidate::hasHTML("afaf<a>asdfa<b>",$matchs,true) > 0 && is_array($matchs));
+	}
+	
 	
 	
 	
