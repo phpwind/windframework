@@ -8,7 +8,7 @@
 header("Content-type: text/html; charset=utf8");
 define('R_P', dirname(__FILE__) . '/');
 /* 框架文件路径 */
-define('FREAMWORK_PATH', R_P . '/../../windTemp/');
+define('FREAMWORK_PATH', R_P . '/../../wind/');
 /* 缓存文件路径 */
 define('COMPILE_PATH', R_P . 'compile/');
 require_once (FREAMWORK_PATH . '/wind.php');

@@ -4,12 +4,10 @@
 		<module name='default'>
 			<path>controllers</path>
 			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
 		</module>
 		<module name='other'>
 			<path>otherControllers</path>
 			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
 		</module>
 	</modules>
 	<filters>

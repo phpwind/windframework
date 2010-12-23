@@ -11,7 +11,7 @@ class ForwardController extends WindController {
 		$this->setOutput(array('arg2' => '我是第一次forward中产生的CTO!'));
 		$tmp = array('arg2' => '我是第一次forward中产生的CTO!',
 					'arg1' => $this->getInput('p'));
-		$this->forwardRedirectAction('showBody', 'otherControllers.ForwardController', $tmp);
+		$this->forwardRedirectAction('showBody', '', $tmp);
 	}
 	
 	public function showBody() {
@@ -19,5 +19,10 @@ class ForwardController extends WindController {
 								'arg3' => '我是第二次forward中产生的CTO!'));
 		$this->setOutput($this->getInput(array('arg1', 'arg2')));
 		$this->setTemplate('forward');
+	}
+	
+	public function req() {
+		echo '我在测试forwardAction<br/>';
+		
 	}
 }

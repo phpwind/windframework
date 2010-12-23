@@ -8,10 +8,14 @@
 
 class IndexController extends WindController {
 	public function run() {
-		
 	}
 	
 	public function iforward() {
-		$this->forwardRedirectAction('run', 'otherControllers.ForwardController', array('p' => '22'));
+		$this->forwardRedirectAction('run', 'otherControllers.Forward', array('p' => '22'));
+	}
+
+	public function getInfo() {
+		echo 'forwardAction测试请求，我是请求的变量<br/>';
+		$this->forwardAction('req', 'other.Forward');
 	}
 }

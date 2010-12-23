@@ -20,8 +20,7 @@ class FormController extends WindController {
 		$this->setOutput(array(
 			'title' => '显示用户输入的表单数据'));
 		$userInfo = $this->getInput('userform', self::INPUT_TYPE_FORM);
-		$this->setOutput(array(
-			'userInfo' => $userInfo));
+		$this->setOutput(array('userInfo' => $userInfo, 'notice' => 'formBean测试结果如下'));
 		$this->setTemplate('showInput');
 	}
 }
