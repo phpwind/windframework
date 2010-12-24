@@ -14,8 +14,8 @@ L::import('WIND:component.http.base.WindHttp');
  */
 final class WindHttpCurl extends WindHttp{
 	
-	private function __construct($url = ''){
-		parent::__construct($url);
+	private function __construct($url = '',$timeout = 5){
+		parent::__construct($url,$timeout);
 	}
 	
 	public function open(){
@@ -25,15 +25,15 @@ final class WindHttpCurl extends WindHttp{
 		return $this->httpResource;
 	}
 	
-	public function setParam($name,$value){
+	public function request($name,$value=null){
 		return curl_setopt($this->httpResource,$name,$value);
 	}
 	
-	public function setParamsByArray($opt = array()){
+	public function requestByArray($opt = array()){
 		return curl_setopt_array($this->httpResource,$opt);
 	}
 	
-	public function request(){
+	public function response(){
 		return curl_exec($this->httpResource);
 	}
 	
@@ -46,55 +46,55 @@ final class WindHttpCurl extends WindHttp{
 	}
 	
 	public function getError(){
-		$err = curl_error($this->httpResource);
-		$eno = curl_errno($this->httpResource);
-		return $err ? array($err,$eno) : array();
+		$this->err = curl_error($this->httpResource);
+		$this->eno = curl_errno($this->httpResource);
+		return $this->err ? $this->eno.':'.$this->err :'';
 	}
 	
-	public  function post($url = '',$data = array(),$timeout = 3,$header=array(),$cookie = array(),$options = array()){
+	public  function post($url = '',$data = array(),$header=array(),$cookie = array(),$option = array()){
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
 		$cookie && is_array($cookie) && $this->setCookies($cookie);
 		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::POST, $timeout,$options);
+		return $this->send(self::POST, $timeout,$option);
 	}
-	public  function get($url = '',$data = array(),$timeout = 3,$header=array(),$cookie = array(),$options = array()){
+	public  function get($url = '',$data = array(),$header=array(),$cookie = array(),$option = array()){
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
 		$cookie && is_array($cookie) && $this->setCookies($cookie);
 		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::GET, $timeout,$options);
+		return $this->send(self::GET,$option);
 	}
-	public  function send($method = self::GET,$timeout = 3,$options = array()){
+	public  function send($method = self::GET,$options = array()){
 		if(null === $this->httpResource){
 			$this->open();
 		}
-		$this->setParams(CURLOPT_HEADER,0);
-		$this->setParams(CURLOPT_FOLLOWLOCATION,1);
-		$this->setParams(CURLOPT_RETURNTRANSFER,1);
-		$this->setParams(CURLOPT_TIMEOUT,$timeout);   
+		$this->request(CURLOPT_HEADER,0);
+		$this->request(CURLOPT_FOLLOWLOCATION,1);
+		$this->request(CURLOPT_RETURNTRANSFER,1);
+		$this->request(CURLOPT_TIMEOUT,$this->timeout);   
 		if ($options && is_array($options)) {
-			$this->setParamsByArray($options);
+			$this->requestByArray($options);
 		}
-		if (self::GET === $method && !empty($this->data)) {
+		if (self::GET === $method && $this->data) {
 			$get = self::buildQuery($this->data,'&');
 			$url = parse_url($this->url);
 			$sep = isset($url['query']) ? '&' : '?';
 			$this->url .= $sep . $get;
 		}
-		if (self::POST === $method) {
-			$this->setParams(CURLOPT_POST,1);
-			$this->setParams(CURLOPT_POSTFIELDS,self::buildQuery($this->cookie,'&'));
+		if (self::POST === $method &&  $this->data) {
+			$this->request(CURLOPT_POST,1);
+			$this->request(CURLOPT_POSTFIELDS,self::buildQuery($this->data,'&'));
 		}
-		if ($this->cookie && is_array($this->cookie)) {
-			$this->setParams(CURLOPT_COOKIE,self::buildQuery($this->cookie,';'));  
+		if ($this->cookie && $this->cookie) {
+			$this->request(CURLOPT_COOKIE,self::buildQuery($this->cookie,';'));  
 		}
 		if (empty($this->header)) {
 			$this->setHeader('User-Agent','Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1');
 		}
-		$this->setParams(CURLOPT_HTTPHEADER, self::buildArray($this->header,':'));
-		$this->setParams(CURLOPT_URL,$this->url); 
-		return $this->request();
+		$this->request(CURLOPT_HTTPHEADER, self::buildArray($this->header,':'));
+		$this->request(CURLOPT_URL,$this->url); 
+		return $this->response();
 	}
 	
 	public function __construct(){
@@ -102,3 +102,4 @@ final class WindHttpCurl extends WindHttp{
 	}
 	
 }
+

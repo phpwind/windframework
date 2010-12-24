@@ -11,7 +11,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WindHttp{
+abstract class WindHttp {
 	
 	/**  
 	 * @var WindHttp 单例 对象
@@ -41,6 +41,20 @@ abstract class WindHttp{
 	protected $data = array();
 	
 	/**
+	 * @var string 错误信息
+	 */
+	protected $err = '';
+	/**
+	 * @var string 错误编码
+	 */
+	protected $eno = 0;
+	
+	/**
+	 * @var string 超时时间
+	 */
+	protected  $timeout = 0;
+	
+	/**
 	 * @var strint 指向$cookie属性
 	 */
 	const _COOKIE = 'cookie';
@@ -53,15 +67,15 @@ abstract class WindHttp{
 	 */
 	const _DATA = 'data';
 	
-	const GET = 'get';
-	const POST = 'post';
+	const GET = 'GET';
+	const POST = 'POST';
 	/**
 	 * 声明受保护的构造函数,避免在类的外界实例化
 	 * @param string $url
 	 */
-	protected function __construct($url = ''){
+	protected function __construct($url = '',$timeout = 5) {
 		$this->url = $url;
-		$this->open();
+		$this->timeout=$timeout;
 	}
 	
 	/**
@@ -69,23 +83,18 @@ abstract class WindHttp{
 	 * @param string $url
 	 * @return WindHttp
 	 */
-	public static function getInstance($url ='') {
-		if (null === self::$instance || false === (self::$instance instanceof self)) {
-			self::$instance = new self($url);
-		}
-		return self::$instance;
-	}
-	
+	public static abstract function getInstance($url='');
+
 	/**
 	 * 防止克隆
 	 */
-	protected  function __clone(){}
+	protected function __clone() {}
 	
 	/**
 	 * 设置url
 	 * @param string|array $url
 	 */
-	public  function setUrl($url){
+	public function setUrl($url) {
 		$url && $this->url = $url;
 	}
 	/**
@@ -93,7 +102,7 @@ abstract class WindHttp{
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setHeader($key,$value){
+	public function setHeader($key, $value) {
 		$this->header[$key] = $value;
 	}
 	/**
@@ -101,15 +110,15 @@ abstract class WindHttp{
 	 * @param array $datas 实际的http头，数组的值基于key/value形式
 	 * @return boolean
 	 */
-	public  function setHeaders($headers=array()){
-		return $this->setPropertityValue(self::_HEADER,$headers);
+	public function setHeaders($headers = array()) {
+		return $this->setPropertityValue(self::_HEADER, $headers);
 	}
 	/**
 	 * 设置cookie
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setCookie($key,$value){
+	public function setCookie($key, $value) {
 		$this->cookie[$key] = $value;
 	}
 	/**
@@ -117,15 +126,15 @@ abstract class WindHttp{
 	 * @param array $cookies 要传送的cookie，数组的值基于key/value形式
 	 * @return boolean
 	 */
-	public  function setCookies($cookies=array()){
-		return $this->setPropertityValue(self::_COOKIE,$cookies);
+	public function setCookies($cookies = array()) {
+		return $this->setPropertityValue(self::_COOKIE, $cookies);
 	}
 	/**
 	 * 设置data
 	 * @param string $key
 	 * @param string $value
 	 */
-	public  function setData($key,$value){
+	public function setData($key, $value) {
 		$this->data[$key] = $value;
 	}
 	/**
@@ -133,24 +142,24 @@ abstract class WindHttp{
 	 * @param array $datas 要传送的数据，数组的值基于key/value形式
 	 * @return boolean
 	 */
-	public function setDatas($datas = array()){
-		return $this->setPropertityValue(self::_DATA,$datas);
+	public function setDatas($datas = array()) {
+		return $this->setPropertityValue(self::_DATA, $datas);
 	}
-	public  function clear(){
+	public function clear() {
 		$this->url = array();
 		$this->header = array();
 		$this->cookie = array();
 		$this->data = array();
 	}
 	
-	public abstract function post($url,$data ,$timeout ,$header,$cookie ,$options);
-	public abstract function get($url,$data ,$timeout ,$header,$cookie ,$options);
-	public abstract function send($method,$timeout,$options);
+	public abstract function post($url = '',$data = array(),$header=array(),$cookie = array(),$options = array());
+	public abstract function get($url = '',$data = array(),$header=array(),$cookie = array(),$options = array());
+	public abstract function send($method = self::GET, $options = array());
 	
 	public abstract function open();
-	public abstract function setParam($key,$value);
-	public abstract function setParamsByArray($opt = array());
-	public abstract function request();
+	public abstract function request($key, $value = null);
+	public abstract function requestByArray($request = array());
+	public abstract function response();
 	public abstract function close();
 	public abstract function getError();
 	
@@ -160,47 +169,41 @@ abstract class WindHttp{
 	 * @param array $value 要设置属性的值
 	 * @return boolean
 	 */
-	private function setPropertityValue($propertity,$value = array()){
-		if(!in_array($propertity,array(self::_COOKIE,self::_DATA,self::_HEADER))){
+	private function setPropertityValue($propertity, $value = array()) {
+		if (!in_array($propertity, array(self::_COOKIE, self::_DATA, self::_HEADER))) {
 			return false;
 		}
-		if(!is_array($value)){
+		if (!is_array($value)) {
 			return false;
 		}
-		if(empty($this->$propertity)){
+		if (empty($this->$propertity)) {
 			$this->$propertity = $value;
-		}else{
-			foreach($value as $key=>$_value){
+		} else {
+			foreach ($value as $key => $_value) {
 				$this->$propertity[$key] = $_value;
 			}
 		}
 		return true;
 	}
-	
 	public static function buildQuery($query, $sep = '&') {
-		if(!is_array($query)){
+		if (!is_array($query)) {
 			return '';
 		}
 		$_query = '';
-		foreach($query as $key=>$value){
+		foreach ($query as $key => $value) {
 			$tmp = rawurlencode($key) . '=' . rawurlencode($value);
-			$_query .= $_query ? $sep.$tmp : $tmp;
+			$_query .= $_query ? $sep . $tmp : $tmp;
 		}
 		return $_query;
 	}
-	
-	public static function buildArray($array,$sep = ':'){
-		if(!is_array($array)){
+	public static function buildArray($array, $sep = ':') {
+		if (!is_array($array)) {
 			return array();
 		}
 		$_array = array();
-		foreach($array as $key =>$value){
-			$_array[] = $key.$sep.$value;
+		foreach ($array as $key => $value) {
+			$_array[] = $key . $sep . $value;
 		}
 		return $_array;
 	}
-	
-	
-	
-	
 }
