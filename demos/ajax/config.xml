@@ -10,7 +10,7 @@
 	<templates>
 		<template name='ajax'>
 			<dir>templates</dir>
-			<default></default>
+			<default>index</default>
 			<ext>htm</ext>
 			<resolver>default</resolver>
 			<isCache>false</isCache>

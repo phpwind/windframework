@@ -13,10 +13,12 @@ class IndexAjax extends WindAction {
 	public function getJson() {
 		$info = array('您好!', '您正在测试ajax的调用');
 		echo json_encode($info);
+		$this->setTemplate('default');
 	}
 	public function getTimeByInput() {
 		date_default_timezone_set('Asia/ShangHai');
 		echo date('Y-m-d H:i:s', time());
+		$this->setTemplate('default');
 	}
 }
 ?>
