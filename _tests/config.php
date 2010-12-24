@@ -1,5 +1,6 @@
 <?php
  return array(
+ 	'rootPath' => '',
 	'applications' => array(
 		'web' => array(
 			'class' => 'WIND:core.WindWebApplication',
@@ -68,6 +69,9 @@
 			'path' => 'WIND:core.router.WindUrlBasedRouter',
 		),
 	),
-	'rootPath' => 'D:\\PHPAPP\\phpwindframework/_tests/component/config',
+	'extensionConfig' => array(
+		'formConfig' => 'WIND:component.form.form_config',
+		'dbConfig' => 'WIND:component.form.db_config',
+	),
 );
 ?>
