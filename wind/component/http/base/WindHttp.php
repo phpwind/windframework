@@ -18,6 +18,11 @@ abstract class WindHttp{
 	 */
 	protected static $instance = null;
 	
+	/**
+	 * @var resource http连接句柄
+	 */
+	protected $httpResource = null;
+	
 	/**  
 	 * @var string 发送的cookie  
 	 */
@@ -29,7 +34,7 @@ abstract class WindHttp{
 	/**  
 	 * @var array 访问的URL地址  
 	 */
-	protected $url = array();
+	protected $url = '';
 	/**  
 	 * @var array  发送的数据  
 	 */
@@ -47,12 +52,16 @@ abstract class WindHttp{
 	 * @var string 指定$data属性
 	 */
 	const _DATA = 'data';
+	
+	const GET = 'get';
+	const POST = 'post';
 	/**
 	 * 声明受保护的构造函数,避免在类的外界实例化
 	 * @param string $url
 	 */
 	protected function __construct($url = ''){
 		$this->url = $url;
+		$this->open();
 	}
 	
 	/**
@@ -77,13 +86,7 @@ abstract class WindHttp{
 	 * @param string|array $url
 	 */
 	public  function setUrl($url){
-		if(is_array($url)){
-			foreach($url as $value){
-				$this->url[] = $value;
-			}
-		}else{
-			$this->url[] = $url;
-		}
+		$url && $this->url = $url;
 	}
 	/**
 	 * 设置http头
@@ -139,10 +142,17 @@ abstract class WindHttp{
 		$this->cookie = array();
 		$this->data = array();
 	}
-	public abstract function post();
-	public abstract function get();
-	public abstract function put();
-	public abstract function send();
+	
+	public abstract function post($url,$data ,$timeout ,$header,$cookie ,$options);
+	public abstract function get($url,$data ,$timeout ,$header,$cookie ,$options);
+	public abstract function send($method,$timeout,$options);
+	
+	public abstract function open();
+	public abstract function setParam($key,$value);
+	public abstract function setParamsByArray($opt = array());
+	public abstract function request();
+	public abstract function close();
+	public abstract function getError();
 	
 	/**
 	 * 增量式设置对象的属性的值
@@ -166,6 +176,31 @@ abstract class WindHttp{
 		}
 		return true;
 	}
+	
+	public static function buildQuery($query, $sep = '&') {
+		if(!is_array($query)){
+			return '';
+		}
+		$_query = '';
+		foreach($query as $key=>$value){
+			$tmp = rawurlencode($key) . '=' . rawurlencode($value);
+			$_query .= $_query ? $sep.$tmp : $tmp;
+		}
+		return $_query;
+	}
+	
+	public static function buildArray($array,$sep = ':'){
+		if(!is_array($array)){
+			return array();
+		}
+		$_array = array();
+		foreach($array as $key =>$value){
+			$_array[] = $key.$sep.$value;
+		}
+		return $_array;
+	}
+	
+	
 	
 	
 }
