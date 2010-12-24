@@ -92,7 +92,7 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpResponse $response
 	 */
 	private function getFormConfig($response) {
-		$formConfigPath = $response->getData('WindSystemConfig')->getConfig('extensionConfig', 'formConfig');
+		$formConfigPath = $response->getData('WindSystemConfig')->getExtensionConfig('formConfig');
 		if (!$formConfigPath) return array();
 		$formConfigPath = L::getRealPath($formConfigPath); 
 		L::import('WIND:component.config.WindConfigParser'); 
