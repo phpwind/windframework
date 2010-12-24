@@ -14,7 +14,7 @@ L::import('WIND:component.http.base.WindHttp');
  */
 final class WindHttpCurl extends WindHttp{
 	
-	private function __construct($url = '',$timeout = 5){
+	protected function __construct($url = '',$timeout = 5){
 		parent::__construct($url,$timeout);
 	}
 	
@@ -97,9 +97,15 @@ final class WindHttpCurl extends WindHttp{
 		return $this->response();
 	}
 	
-	public function __construct(){
-		$this->close();
+	public static function getInstance($url = '') {
+		if (null === self::$instance || false === (self::$instance instanceof self)) {
+			self::$instance = new self($url);
+		}
+		return self::$instance;
 	}
 	
+	public function __destruct(){
+		$this->close();
+	}
 }
 

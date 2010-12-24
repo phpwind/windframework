@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.http.base.WindHttp');
 /**
  * socket操作
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -122,5 +122,9 @@ final class WindHttpSocket extends WindHttp {
 			self::$instance = new self($url);
 		}
 		return self::$instance;
+	}
+	
+	public function __destruct(){
+		$this->close();
 	}
 }
