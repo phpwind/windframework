@@ -69,11 +69,12 @@ class WindSystemConfig extends WindConfig {
 	const ROUTER_PARSERS_RULE = 'rule';
 	const ROUTER_PARSERS_PATH = 'path';
 	
+
 	/**
-	 * 扩展配置
+	 * @var string 扩展配置
 	 */
 	const EXTENSIONCONFIG = 'extensionConfig';
-	
+
 	public function getRootPath() {
 		if (empty($this->rootPath) && !($this->rootPath = $this->getConfig(self::ROOTPATH))) {
 			$this->rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -144,6 +145,7 @@ class WindSystemConfig extends WindConfig {
 	public function getErrorMessage($name = '') {
 		return $this->getConfig(self::ERROR, $name);
 	}
+
 	
 	/**
 	 * @param string $name
@@ -152,4 +154,5 @@ class WindSystemConfig extends WindConfig {
 	public function getExtensionConfig($name = '') {
 		return $this->getConfig(self::EXTENSIONCONFIG, $name);
 	}
+
 }
