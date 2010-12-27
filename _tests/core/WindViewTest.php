@@ -17,10 +17,6 @@ class WindViewTest extends BaseTestCase {
 		$this->assertEquals($windView->initViewWithForward($this->createWindForward())->templateDefault, 'testIndex');
 	}
 	
-	public function testDoAction() {
-
-	}
-	
 	/**
 	 * @dataProvider providerConfig
 	 */
