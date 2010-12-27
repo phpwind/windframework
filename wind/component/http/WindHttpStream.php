@@ -53,7 +53,7 @@ class WindHttpStream extends WindHttp {
 	
 	public function response() {
 		$response = '';
-		while(!feof($this->httpResource)){
+		while (!feof($this->httpResource)) {
 			$response .= fgets($this->httpResource);
 		}
 		return $response;
@@ -108,10 +108,10 @@ class WindHttpStream extends WindHttp {
 		
 		if ($this->header) {
 			$header = '';
-			foreach ($this->header as $key=>$value) {
-				$header .= $key.': '.$value . "\n";
+			foreach ($this->header as $key => $value) {
+				$header .= $key . ': ' . $value . "\n";
 			}
-			$this->request('header',$header);
+			$this->request('header', $header);
 		}
 		$data && $this->request('content', $data);
 		$options && is_array($options) && $this->requestByArray($options);
