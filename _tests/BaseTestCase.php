@@ -7,14 +7,16 @@
  */
 (!class_exists('PHPUnit_Framework_TestCase')) && include 'PHPUnit/Framework/TestCase.php';
 include 'WindBase.php';
-W::init();
+
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
+		W::init();
 		C::init(include 'config.php');
 	}
 	
 	protected function tearDown() {
 		parent::tearDown();
+		spl_autoload_unregister('L::autoLoad');
 	}
 }
