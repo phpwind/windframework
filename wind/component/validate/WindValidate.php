@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindRegularValidate {
+class WindValidate {
 	
 	/**
 	 * 在 $string 字符串中搜索与 $regExp 给出的正则表达式相匹配的内容。
