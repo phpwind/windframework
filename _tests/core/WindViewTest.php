@@ -1,4 +1,5 @@
 <?php
+
 require_once 'core/WindView.php';
 
 class WindViewTest extends BaseTestCase {
@@ -17,28 +18,21 @@ class WindViewTest extends BaseTestCase {
 	}
 	
 	public function testDoAction() {
-		
+
 	}
 	
-	public function testCreateWindView() {
-		$this->templateConfig = 'default';
-		C::init(WindViewData::getData1());
+	/**
+	 * @dataProvider providerConfig
+	 */
+	public function testCreateWindView($configName, $config) {
+		$this->templateConfig = $configName;
+		C::init($config);
 		$windView = $this->createWindView();
 		$this->assertEquals($windView->templateDir, 'template');
 		$this->assertEquals($windView->templateExt, 'htm');
 		$this->assertEquals($windView->templateDefault, 'index');
 		$this->assertEquals($windView->templateCacheDir, 'cache');
 		$this->assertEquals($windView->templateCompileDir, 'compile');
-	}
-	
-	public function testCreateWindView1() {
-		$this->templateConfig = '';
-		C::init(WindViewData::getData1());
-		try {
-			$windView = $this->createWindView();
-		} catch (Exception $exception) {
-			$this->assertEquals('WindException', get_class($exception));
-		}
 	}
 	
 	private function createWindForward() {
@@ -50,6 +44,31 @@ class WindViewTest extends BaseTestCase {
 	private function createWindView() {
 		return new WindView($this->templateConfig);
 	}
+
+	public function providerConfig() {
+		$configs = array();
+		$configs[] = array('wind', 
+			array(
+				'templates' => array(
+					'default' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile'), 
+					'wind' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile')), 
+				'viewerResolvers' => array('default' => 'WIND:core.viewer.WindViewer')));
+		$configs[] = array('default', 
+			array(
+				'templates' => array(
+					'default' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile'), 
+					'wind' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile')), 
+				'viewerResolvers' => array('default' => 'WIND:core.viewer.WindViewer')));
+		return $configs;
+	}
 	
 	protected function setUp() {
 		parent::setUp();
@@ -57,37 +76,6 @@ class WindViewTest extends BaseTestCase {
 	
 	protected function tearDown() {
 		parent::tearDown();
-	}
-}
-
-class WindViewData {
-	static public function getData2() {
-		return array(
-			'templates' => array(), 
-			'viewerResolvers' => array(
-				'default' => 'WIND:core.viewer.WindViewer'));
-	}
-	static public function getData1() {
-		return array(
-			'templates' => array(
-				'default' => array(
-					'dir' => 'template', 
-					'default' => 'index', 
-					'ext' => 'htm', 
-					'resolver' => 'default', 
-					'isCache' => '0', 
-					'cacheDir' => 'cache', 
-					'compileDir' => 'compile'), 
-				'wind' => array(
-					'dir' => 'template', 
-					'default' => 'index', 
-					'ext' => 'htm', 
-					'resolver' => 'default', 
-					'isCache' => '0', 
-					'cacheDir' => 'cache', 
-					'compileDir' => 'compile')), 
-			'viewerResolvers' => array(
-				'default' => 'WIND:core.viewer.WindViewer'));
 	}
 }
 
