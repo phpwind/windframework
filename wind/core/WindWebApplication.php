@@ -55,9 +55,7 @@ class WindWebApplication extends WindApplication {
 			throw new WindException('can\'t create action handle.');
 		}
 		$this->checkReprocess($className . '_' . $method);
-		return array(
-			$className, 
-			$method);
+		return array($className, $method);
 	}
 	
 	/**
@@ -65,7 +63,7 @@ class WindWebApplication extends WindApplication {
 	 */
 	protected function buildFormObject() {
 		$form = new stdClass();
-		
+	
 	}
 	
 	/**

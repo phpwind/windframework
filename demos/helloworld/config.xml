@@ -38,12 +38,16 @@
 		</template>
 	</templates>
 	<error>
-		<errorAction name='ppp'>WIND:core.WindErrorAction</errorAction>
-		<errorAction name='defaut1'>WIND:core.*</errorAction>
+		<errorAction name='ppp'>
+			<class>WIND:core.WindErrorAction</class>
+		</errorAction>
+		<errorAction name='defaut1'>
+			<class>WIND:core.*</class>
+		</errorAction>
 	</error>
 	<filters>
 		<filter name="WindFormFilter1">
-			<filterPath>WIND:component.form.WindFormFilter</filterPath>
+			<class>WIND:component.form.WindFormFilter</class>
 		</filter>
 	</filters>
 </WIND>

@@ -139,7 +139,7 @@ class WindFilterFactory extends WindFactory {
 		$this->filters = array();
 		foreach ((array) $filters as $key => $value) {
 			$name = $key;
-			$path = $value[IWindConfig::FILTER_PATH];
+			$path = $value[IWindConfig::FILTER_CLASS];
 			if (($pos = strrpos($path, '.')) === false)
 				$filterName = $path;
 			else

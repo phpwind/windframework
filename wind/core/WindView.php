@@ -43,7 +43,7 @@ class WindView {
 	public function createViewerResolver() {
 		if ($this->viewResolver === null) {
 			$viewerResolver = C::getViewerResolvers($this->config[IWindConfig::TEMPLATE_RESOLVER]);
-			$className = L::import($viewerResolver);
+			$className = L::import($viewerResolver[IWindConfig::ROUTER_PARSERS_CLASS]);
 			if (!class_exists($className)) {
 				throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
 			}

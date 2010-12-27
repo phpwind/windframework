@@ -18,6 +18,7 @@ interface IWindConfig {
 	
 	const ERROR = 'error';
 	const ERROR_ERRORACTION = 'errorAction';
+	const ERROR_CLASS = 'class';
 	
 	/**
 	 * 模快設置
@@ -32,7 +33,7 @@ interface IWindConfig {
 	 * 过滤器链
 	 */
 	const FILTERS = 'filters';
-	const FILTER_PATH = 'filterPath';
+	const FILTER_CLASS = 'class';
 	
 	/**
 	 * 模板相关配置信息
@@ -68,11 +69,11 @@ interface IWindConfig {
 	 */
 	const ROUTER_PARSERS = 'routerParsers';
 	const ROUTER_PARSERS_RULE = 'rule';
-	const ROUTER_PARSERS_PATH = 'path';
+	const ROUTER_PARSERS_CLASS = 'class';
 	
 	/**
 	 * @var 数据库配置
 	 */
 	const DATABASE = 'database';
-	const DATABASE_PATH = 'path';
+	const DATABASE_CLASS = 'class';
 }

@@ -9,7 +9,7 @@ header("Content-type: text/html; charset=gbk");
 define('R_P', dirname(__FILE__));
 define('F_P', R_P . '/../../wind/');
 define('C_P', R_P . '/wind/');
-define('COMPILE_PATH', R_P . '/cache');
+define('COMPILE_PATH', R_P . '/compile');
 require_once (F_P . '/wind.php');
 
 W::application('SmartyDemo', R_P . '/config.xml')->run();

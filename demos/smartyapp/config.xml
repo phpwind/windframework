@@ -19,6 +19,8 @@
 		</template>
 	</templates>
 	<viewerResolvers isMerge='true'>
-		<resolver name='smarty'>libs.WindSmarty</resolver>
+		<resolver name='smarty'>
+			<class>libs.WindSmarty</class>
+		</resolver>
 	</viewerResolvers>
 </WIND>

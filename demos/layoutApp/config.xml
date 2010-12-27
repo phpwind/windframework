@@ -25,7 +25,9 @@
 		</template>
 	</templates>
 	<viewerResolvers>
-		<my>WIND:core.viewer.WindViewer</my>
+		<my>
+			<class>WIND:core.viewer.WindViewer</class>
+		</my>
 	</viewerResolvers>
 	<routerParsers>
 		<parser name='url'>
@@ -34,7 +36,7 @@
 				<controller name='c'>Layout</controller>
 				<module name='m'>layout</module>
 			</rule>
-			<path>WIND:core.router.WindUrlBasedRouter</path>
+			<class>WIND:core.router.WindUrlBasedRouter</class>
 		</parser>
 	</routerParsers>
 </WIND>

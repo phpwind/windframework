@@ -177,7 +177,7 @@ class L {
 			$fileName = substr($filePath, $pos1 + 1);
 		else
 			$fileName = $filePath;
-		
+			
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);

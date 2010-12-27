@@ -45,7 +45,6 @@ class WindWebDispatcher extends WindDispatcher {
 			isset($_temps[IWindConfig::MODULE_TEMPLATE]) && $templateConfigName = $_temps[IWindConfig::MODULE_TEMPLATE];
 		}
 		if (!isset($this->views[$templateConfigName])) {
-			L::import('WIND:component.viewer.WindView');
 			$view = new WindView($templateConfigName);
 			$view->dispatcher = $this;
 			$this->views[$templateConfigName] = $view;

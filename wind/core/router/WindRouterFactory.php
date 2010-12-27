@@ -26,7 +26,7 @@ class WindRouterFactory extends WindFactory {
 		$systemConfig = $response->getData('WindSystemConfig');
 		$parser = $systemConfig->getRouter(IWindConfig::ROUTER_PARSER);
 		$parserConfig = $systemConfig->getRouterParsers($parser);
-		$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_PATH];
+		$parserPath = $parserConfig[IWindConfig::ROUTER_PARSERS_CLASS];
 		$className = L::import($parserPath);
 		if (!class_exists($className)) throw new WindException('The router ' . $className . ' is not exists.');
 		return new $className($parserConfig);

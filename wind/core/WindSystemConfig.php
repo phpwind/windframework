@@ -17,6 +17,7 @@ class WindSystemConfig extends WindConfig {
 	
 	const ERROR = 'error';
 	const ERROR_ERRORACTION = 'errorAction';
+	const ERROR_CLASS = 'class';
 	
 	/**
 	 * 模快設置
@@ -31,7 +32,7 @@ class WindSystemConfig extends WindConfig {
 	 * 过滤器链
 	 */
 	const FILTERS = 'filters';
-	const FILTER_PATH = 'filterPath';
+	const FILTER_CLASS = 'class';
 	
 	/**
 	 * 模板相关配置信息
@@ -67,7 +68,7 @@ class WindSystemConfig extends WindConfig {
 	 */
 	const ROUTER_PARSERS = 'routerParsers';
 	const ROUTER_PARSERS_RULE = 'rule';
-	const ROUTER_PARSERS_PATH = 'path';
+	const ROUTER_PARSERS_CLASS = 'class';
 	
 
 	/**

@@ -12,7 +12,7 @@
 	</modules>
 	<filters>
 		<filter name="WindFormFilter">
-			<filterPath>WIND:component.form.WindFormFilter</filterPath>
+			<class>WIND:component.form.WindFormFilter</class>
 		</filter>
 	</filters>
 	<templates>

@@ -41,7 +41,7 @@
 				<controller name='c'>Index</controller>
 				<module name='m'>module1</module>
 			</rule>
-			<path>WIND:core.router.WindUrlBasedRouter</path>
+			<class>WIND:core.router.WindUrlBasedRouter</class>
 		</parser>
 	</routerParsers>
 </WIND>

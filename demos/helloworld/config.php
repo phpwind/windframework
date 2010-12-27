@@ -7,6 +7,8 @@
  */
 return array(
 	'error'  => array(
-		'ddddd' => 'sdfsdfsdfwerwe',
+		'ddddd' => array(
+		   'class' => 'sdfsdfsdfwerwe',
+		),
 	)
 );

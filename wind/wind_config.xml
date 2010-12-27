@@ -26,11 +26,13 @@
 		</module>
 	</modules>
 	<error isMerge='true'>
-		<errorAction name='default'>WIND:core.WindErrorAction</errorAction>
+		<errorAction name='default'>
+			<class>WIND:core.WindErrorAction</class>
+		</errorAction>
 	</error>
 	<filters isMerge='true'>
 		<filter name="WindFormFilter">
-			<filterPath>WIND:component.form.WindFormFilter</filterPath>
+			<class>WIND:component.form.WindFormFilter</class>
 		</filter>
 	</filters>
 	<templates>
@@ -54,7 +56,9 @@
 		</template>
 	</templates>
 	<viewerResolvers isMerge='true'>
-		<resolver name='default'>WIND:core.viewer.WindViewer</resolver>
+		<resolver name='default'>
+			<class>WIND:core.viewer.WindViewer</class>
+		</resolver>
 	</viewerResolvers>
 	<router>
 		<parser>url</parser>
@@ -66,7 +70,7 @@
 				<controller name='c'>index</controller>
 				<module name='m'>default</module>
 			</rule>
-			<path>WIND:core.router.WindUrlBasedRouter</path>
+			<class>WIND:core.router.WindUrlBasedRouter</class>
 		</parser>
 	</routerParsers>
 	<extensionConfig>
