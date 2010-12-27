@@ -34,35 +34,39 @@ class WindConfigParserTest extends BaseTestCase {
 		$result = $this->parser->parse('XML', $this->path . '/config.xml', true);
 		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 2, array('pp' => 'WIND:core.viewer.WindViewer', 
-														'default' => 'WIND:core.viewer.WindViewer'), true);
+		$this->checkArray($result['viewerResolvers'], 2, array('pp', 'default'));
+		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['pp']['class']);
 	}
 	public function testParserWithIni() {
 		$result = $this->parser->parse('Ini', $this->path . '/config.ini', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
+		$this->checkArray($result['viewerResolvers'], 1);
+		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 		$this->assertTrue(strrpos($result['rootPath'], 'phpwind') !== false);
 	}
 	public function testParserWithProperties() {
 		$result = $this->parser->parse('properties', $this->path . '/config.properties', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['error'], 2, array('default' => 'WIND:core.WindErrorAction', 'QQ' => 'WindErrorAction'), true);
+		$this->checkArray($result['error'], 2, array('default', 'QQ'));
+		$this->assertEquals('WIND:core.WindErrorAction', $result['error']['default']['class']);
+		$this->assertEquals('WindErrorAction', $result['error']['QQ']['class']);
 		$this->assertTrue($result['extensionConfig']['formConfig'] == 'test:controllers');
 	}
 	public function testParserWithPHP() {
 		$result = $this->parser->parse('PHP', $this->path . '/config.php', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
-		$this->assertEquals('WindPHPWind', $result['applications']['com']['class']);
+		$this->checkArray($result['viewerResolvers'], 1);
+		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 		$this->assertEquals('controllers.actionForm', $result['extensionConfig']['formConfig']);
 	}
 	public function testParserWithEmpty() {
 		$result = $this->parser->parse('Empty', '', true);
 		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
+		$this->checkArray($result['viewerResolvers'], 1, array('default'));
+		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 	}
 }

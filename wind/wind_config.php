@@ -34,12 +34,14 @@
 	),
 	'error' => array(
 		'isMerge' => 'true',
-		'default' => 'WIND:core.WindErrorAction',
+		'default' => array(
+			'class' => 'WIND:core.WindErrorAction',
+		),
 	),
 	'filters' => array(
 		'isMerge' => 'true',
 		'WindFormFilter' => array(
-			'filterPath' => 'WIND:component.form.WindFormFilter',
+			'class' => 'WIND:component.form.WindFormFilter',
 		),
 	),
 	'templates' => array(
@@ -64,7 +66,9 @@
 	),
 	'viewerResolvers' => array(
 		'isMerge' => 'true',
-		'default' => 'WIND:core.viewer.WindViewer',
+		'default' => array(
+			'class' => 'WIND:core.viewer.WindViewer',
+		),
 	),
 	'router' => array(
 		'parser' => 'url',
@@ -77,7 +81,7 @@
 				'c' => 'index',
 				'm' => 'default',
 			),
-			'path' => 'WIND:core.router.WindUrlBasedRouter',
+			'class' => 'WIND:core.router.WindUrlBasedRouter',
 		),
 	),
 	'extensionConfig' => array(
