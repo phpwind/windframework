@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindDateFormat{
+class WindDate{
 	
 	/**
 	 * @var int 填充展示
@@ -227,7 +227,7 @@ class WindDateFormat{
 	
 	/**
 	 * 取得当前时间
-	 * @return WindDateFormat
+	 * @return WindDate
 	 */
 	public function getNow(){
 		$date = getdate(time());

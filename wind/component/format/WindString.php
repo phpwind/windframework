@@ -13,7 +13,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindStringFormat {
+class WindString {
 	
 	/**
 	 * 截取字符串
