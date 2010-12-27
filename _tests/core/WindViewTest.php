@@ -44,7 +44,7 @@ class WindViewTest extends BaseTestCase {
 	private function createWindView() {
 		return new WindView($this->templateConfig);
 	}
-
+	
 	public function providerConfig() {
 		$configs = array();
 		$configs[] = array('wind', 
