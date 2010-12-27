@@ -70,8 +70,8 @@ class WindErrorMessage extends WindMessage {
 			$this->forward = new WindForward();
 			$this->forward->setAction($this->errorAction, $this->errorActionPath);
 		}
-		$this->response->getDispatcher()->setForward($this->forward)->dispatch();
-		$this->clear();
+		$this->response->getDispatcher()->setForward($this->forward)->dispatch(); 
+		$this->clear(); 
 		exit();
 	}
 	
