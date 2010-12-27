@@ -15,11 +15,17 @@ L::import('WIND:core.WindMessage');
  */
 class WindErrorMessage extends WindMessage {
 	private $errorAction = '';
+	private $errorActionPath = '';
 	private static $instance = null;
 	
-	private function __construct() {}
-	
 	private $forward = null;
+	private $request;
+	private $response;
+	
+	private function __construct($request, $response) {
+		$this->request = $request;
+		$this->response = $response;
+	}
 	
 	/**
 	 * 添加错误信息
@@ -44,8 +50,9 @@ class WindErrorMessage extends WindMessage {
 	/**
 	 * 设置错误处理操作
 	 */
-	public function setErrorAction($action = '') {
-		$action && $this->errorAction = $action;
+	public function setErrorAction($action, $path) {
+		$this->errorAction = $action;
+		$this->errorActionPath = $path;
 	}
 	
 	/**
@@ -53,15 +60,17 @@ class WindErrorMessage extends WindMessage {
 	 */
 	public function sendError() {
 		if (count($this->getError()) == 0) return;
+		if ($this->errorActionPath === '') {
+			$this->errorActionPath = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
+		}
 		if ($this->errorAction === '') {
-			$this->errorAction = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
+			$this->errorAction = 'run';
 		}
 		if ($this->forward === null) {
 			$this->forward = new WindForward();
-			//TODO run
-			$this->forward->setAction('run', $this->errorAction);
+			$this->forward->setAction($this->errorAction, $this->errorActionPath);
 		}
-		WindDispatcher::getInstance()->setForward($this->forward)->dispatch();
+		$this->response->getDispatcher()->setForward($this->forward)->dispatch();
 		$this->clear();
 		exit();
 	}
@@ -69,11 +78,10 @@ class WindErrorMessage extends WindMessage {
 	/**
 	 * @return WindErrorMessage
 	 */
-	static public function &getInstance() {
-		//TODO
+	static public function getInstance($request, $response) {
 		if (self::$instance === null) {
 			$class = __CLASS__;
-			self::$instance = new $class();
+			self::$instance = new $class($request, $response);
 		}
 		return self::$instance;
 	}
