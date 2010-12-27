@@ -21,14 +21,23 @@ class WindViewTest extends BaseTestCase {
 	 * @dataProvider providerConfig
 	 */
 	public function testCreateWindView($configName, $config) {
-		$this->templateConfig = $configName;
-		C::init($config);
-		$windView = $this->createWindView();
+		$windView = $this->createWindView($configName, $config);
 		$this->assertEquals($windView->templateDir, 'template');
 		$this->assertEquals($windView->templateExt, 'htm');
 		$this->assertEquals($windView->templateDefault, 'index');
 		$this->assertEquals($windView->templateCacheDir, 'cache');
 		$this->assertEquals($windView->templateCompileDir, 'compile');
+	}
+	
+	/**
+	 * @dataProvider providerErrorConfig
+	 */
+	public function testCreateWindViewWithErrorConfig($configName, $config) {
+		try {
+			$windView = $this->createWindView($configName, $config);
+		} catch (Exception $exception) {
+			$this->assertEquals(get_class($exception), 'WindException');
+		}
 	}
 	
 	private function createWindForward() {
@@ -37,8 +46,25 @@ class WindViewTest extends BaseTestCase {
 		return $forward;
 	}
 	
-	private function createWindView() {
-		return new WindView($this->templateConfig);
+	private function createWindView($configName = '', $config = array()) {
+		if (!empty($config)) C::init($config);
+		return new WindView($configName);
+	}
+	
+	public function providerErrorConfig() {
+		$configs = array();
+		$configs[] = array('', array());
+		$configs[] = array('wind', 
+			array(
+				'templates' => array(
+					'default' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile'), 
+					'wind1' => array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+						'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 
+						'compileDir' => 'compile')), 
+				'viewerResolvers' => array('default' => 'WIND:core.viewer.WindViewer')));
+		return $configs;
 	}
 	
 	public function providerConfig() {
