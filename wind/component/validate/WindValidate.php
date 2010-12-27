@@ -214,16 +214,13 @@ class WindValidate {
 	}
 	
 	/**
-	 * @param WindString $validate 字符串操作器
+	 * 验证字符串的长度
 	 * @param string $string 要验证的字符串
 	 * @param string $length 指定的合法的长度
 	 * @param string $charset 字符编码
 	 * @return boolean
 	 */
-	public static function isLegalLength(WindString $validate,$string,$length,$charset='utf8'){
-		if(false === ($validate instanceof WindString)){
-			return false;
-		}
+	public static function isLegalLength($string,$length,$charset='utf8'){
 		return WindString::strlen($string,$charset) > (int)$length;
 	}
 	
