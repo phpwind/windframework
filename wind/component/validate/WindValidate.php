@@ -209,6 +209,10 @@ class WindValidate {
 		return is_bool($value);
 	}
 	
+	public static function isEmpty($value){
+		return empty($value);
+	}
+	
 	/**
 	 * @param WindString $validate 字符串操作器
 	 * @param string $string 要验证的字符串
