@@ -52,7 +52,7 @@ abstract class WindHttp {
 	/**
 	 * @var string 超时时间
 	 */
-	protected  $timeout = 0;
+	protected $timeout = 0;
 	
 	/**
 	 * @var strint 指向$cookie属性
@@ -73,18 +73,79 @@ abstract class WindHttp {
 	 * 声明受保护的构造函数,避免在类的外界实例化
 	 * @param string $url
 	 */
-	protected function __construct($url = '',$timeout = 5) {
+	protected function __construct($url = '', $timeout = 5) {
 		$this->url = $url;
-		$this->timeout=$timeout;
+		$this->timeout = $timeout;
 	}
 	
 	/**
+	 * 发送post请求
+	 * @param string $url 请求的url
+	 * @param array $data 请求的数据
+	 * @param array $header 发送请求的头
+	 * @param array $cookie  发送的cookie
+	 * @param array $options 额外的请求头
+	 * @return string 返回页根据请求的响应页面
+	 */
+	public abstract function post($url = '', $data = array(), $header = array(), $cookie = array(), $options = array());
+	/**
+	 * get方式传值
+	 * @param string $url 请求的url
+	 * @param array $data 请求的数据
+	 * @param array $header 发送请求的头
+	 * @param array $cookie  发送的cookie
+	 * @param array $options 额外的请求头
+	 * @return string 返回页根据请求的响应页面
+	 */
+	public abstract function get($url = '', $data = array(), $header = array(), $cookie = array(), $options = array());
+	/**
+	 * 发送请求底层操作
+	 * @param string $method 请求方式
+	 * @param array $options 额外的主求参数
+	 * @return string 返回页根据请求的响应页面
+	 */
+	public abstract function send($method = self::GET, $options = array());
+	
+	/**
+	 * 打开一个http请求
+	 * @return httpResource http请求指针
+	 */
+	public abstract function open();
+	/**
+	 * 发送请求
+	 * @param string $key  请求的名称
+	 * @param string $value 请求的值
+	 * @return boolean
+	 */
+	public abstract function request($key, $value = null);
+	/**
+	 * 以数组格式请求
+	 * @param array $request
+	 * @return boolean
+	 */
+	public abstract function requestByArray($request = array());
+	/**
+	 * 响应用户的请求
+	 * @return string 返回响应
+	 */
+	public abstract function response();
+	/**
+	 * 
+	 * 关闭请求
+	 */
+	public abstract function close();
+	/**
+	 * 取得http通信中的错误
+	 */
+	public abstract function getError();
+	
+	/**
 	 * 获取http单例对象,对象唯一访问入口
-	 * @param string $url
+	 * @param string $url 请求的url
 	 * @return WindHttp
 	 */
-	public static abstract function getInstance($url='');
-
+	public static abstract function getInstance($url = '');
+	
 	/**
 	 * 防止克隆
 	 */
@@ -145,6 +206,9 @@ abstract class WindHttp {
 	public function setDatas($datas = array()) {
 		return $this->setPropertityValue(self::_DATA, $datas);
 	}
+	/**
+	 *请空数据，重新发送请求 
+	 */
 	public function clear() {
 		$this->url = array();
 		$this->header = array();
@@ -152,16 +216,39 @@ abstract class WindHttp {
 		$this->data = array();
 	}
 	
-	public abstract function post($url = '',$data = array(),$header=array(),$cookie = array(),$options = array());
-	public abstract function get($url = '',$data = array(),$header=array(),$cookie = array(),$options = array());
-	public abstract function send($method = self::GET, $options = array());
-	
-	public abstract function open();
-	public abstract function request($key, $value = null);
-	public abstract function requestByArray($request = array());
-	public abstract function response();
-	public abstract function close();
-	public abstract function getError();
+	/**
+	 * 构请查询字符串
+	 * @param array $query  查询的关联数组
+	 * @param string $sep 分隔符
+	 * @return string
+	 */
+	public static function buildQuery($query, $sep = '&') {
+		if (!is_array($query)) {
+			return '';
+		}
+		$_query = '';
+		foreach ($query as $key => $value) {
+			$tmp = rawurlencode($key) . '=' . rawurlencode($value);
+			$_query .= $_query ? $sep . $tmp : $tmp;
+		}
+		return $_query;
+	}
+	/**
+	 * 以指定分隔符的形式来将数组转化成字符串
+	 * @param array $array 关联数组
+	 * @param strin $sep 分隔符
+	 * @return string
+	 */
+	public static function buildArray($array, $sep = ':') {
+		if (!is_array($array)) {
+			return array();
+		}
+		$_array = array();
+		foreach ($array as $key => $value) {
+			$_array[] = $key . $sep . $value;
+		}
+		return $_array;
+	}
 	
 	/**
 	 * 增量式设置对象的属性的值
@@ -184,26 +271,5 @@ abstract class WindHttp {
 			}
 		}
 		return true;
-	}
-	public static function buildQuery($query, $sep = '&') {
-		if (!is_array($query)) {
-			return '';
-		}
-		$_query = '';
-		foreach ($query as $key => $value) {
-			$tmp = rawurlencode($key) . '=' . rawurlencode($value);
-			$_query .= $_query ? $sep . $tmp : $tmp;
-		}
-		return $_query;
-	}
-	public static function buildArray($array, $sep = ':') {
-		if (!is_array($array)) {
-			return array();
-		}
-		$_array = array();
-		foreach ($array as $key => $value) {
-			$_array[] = $key . $sep . $value;
-		}
-		return $_array;
 	}
 }

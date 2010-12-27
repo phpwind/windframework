@@ -19,18 +19,30 @@ final class WindHttpStream extends WindHttp {
 	const FTPS = 'ftp';
 	const SOCKET = 'socket';
 	
+	/**
+	 * @var string 字节流对象
+	 */
 	private $context = null;
+	/**
+	 * @var string 通信协议
+	 */
 	private $wrapper = self::HTTP;
-	private $request = array();
 	protected function __construct($url = '', $timeout = 5) {
 		parent::__construct($url, $timeout);
 		$this->context = stream_context_create();
 	}
 	
+	/**
+	 * 设置通信协议
+	 * @param string $wrapper
+	 */
 	public function setWrapper($wrapper = self::HTTP) {
 		$this->wrapper = $wrapper;
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#open()
+	 */
 	public function open() {
 		if (null === $this->httpResource) {
 			$this->httpResource = fopen($this->url, 'r', false, $this->context);
@@ -38,10 +50,16 @@ final class WindHttpStream extends WindHttp {
 		return $this->httpResource;
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#request()
+	 */
 	public function request($name, $value = null) {
 		return stream_context_set_option($this->context, $this->wrapper, $name, $value);
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#requestByArray()
+	 */
 	public function requestByArray($opt = array()) {
 		foreach ($opt as $key => $value) {
 			if (false === $this->request($key, $value)) {
@@ -51,6 +69,9 @@ final class WindHttpStream extends WindHttp {
 		return true;
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#response()
+	 */
 	public function response() {
 		$response = '';
 		while (!feof($this->httpResource)) {
@@ -59,6 +80,9 @@ final class WindHttpStream extends WindHttp {
 		return $response;
 	}
 	
+	/**
+	 * 释放资源
+	 */
 	public function close() {
 		if ($this->httpResource) {
 			fclose($this->httpResource);
@@ -67,10 +91,16 @@ final class WindHttpStream extends WindHttp {
 		}
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#getError()
+	 */
 	public function getError() {
 		return $this->err ? $this->eno . ':' . $this->err : '';
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#post()
+	 */
 	public function post($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
@@ -78,6 +108,9 @@ final class WindHttpStream extends WindHttp {
 		$data && is_array($data) && $this->setDatas($data);
 		return $this->send(self::POST, $timeout, $option);
 	}
+	/* 
+	 * @see wind/component/http/base/WindHttp#get()
+	 */
 	public function get($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
@@ -85,6 +118,9 @@ final class WindHttpStream extends WindHttp {
 		$data && is_array($data) && $this->setDatas($data);
 		return $this->send(self::GET, $option);
 	}
+	/* 
+	 * @see wind/component/http/base/WindHttp#send()
+	 */
 	public function send($method = self::GET, $options = array()) {
 		$url = parse_url($this->url);
 		if (self::GET === $method && $this->data) {
@@ -118,6 +154,10 @@ final class WindHttpStream extends WindHttp {
 		return $this->response();
 	}
 	
+	/**
+	 * @see wind/component/http/base/WindHttp#getInstance()
+	 *
+	 */
 	public static function getInstance($url = '') {
 		if (null === self::$instance || false === (self::$instance instanceof self)) {
 			self::$instance = new self($url);

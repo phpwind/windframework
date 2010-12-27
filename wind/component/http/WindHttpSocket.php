@@ -20,10 +20,13 @@ final class WindHttpSocket extends WindHttp {
 	private $path = '';
 	private $query = '';
 	
-	protected function __construct($url = '',$timeout = 5) {
-		parent::__construct($url,$timeout);
+	protected function __construct($url = '', $timeout = 5) {
+		parent::__construct($url, $timeout);
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#open()
+	 */
 	public function open() {
 		if (null === $this->httpResource) {
 			$url = parse_url($this->url);
@@ -32,15 +35,21 @@ final class WindHttpSocket extends WindHttp {
 			$this->path = isset($url['path']) && $url['path'] ? $url['path'] : '/';
 			$this->path .= $url['query'] ? '?' . $url['query'] : '';
 			$this->query = $url['query'];
-			$this->httpResource = fsockopen($this->host, $this->port, &$this->eno, &$this->err,$this->timeout);
+			$this->httpResource = fsockopen($this->host, $this->port, &$this->eno, &$this->err, $this->timeout);
 		}
 		return $this->httpResource;
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#request()
+	 */
 	public function request($name, $value = null) {
 		return fputs($this->httpResource, ($value ? $name . ': ' . $value : $name) . "\n");
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#requestByArray()
+	 */
 	public function requestByArray($request = array()) {
 		$_request = '';
 		foreach ($request as $key => $value) {
@@ -54,15 +63,20 @@ final class WindHttpSocket extends WindHttp {
 		}
 		fputs($this->httpResource, $_request);
 	}
-	
+	/* 
+	 * @see wind/component/http/base/WindHttp#response()
+	 */
 	public function response() {
 		$response = '';
-		while(!feof($this->httpResource)){
+		while (!feof($this->httpResource)) {
 			$response .= fgets($this->httpResource);
 		}
 		return $response;
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#close()
+	 */
 	public function close() {
 		if ($this->httpResource) {
 			fclose($this->httpResource);
@@ -70,23 +84,35 @@ final class WindHttpSocket extends WindHttp {
 		}
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#getError()
+	 */
 	public function getError() {
 		return $this->err ? $this->eno . ':' . $this->err : '';
 	}
-	public function post($url='', $data=array(), $header =array(),$cookie=array(), $option = array()) {
+	/* 
+	 * @see wind/component/http/base/WindHttp#post()
+	 */
+	public function post($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
 		$cookie && is_array($cookie) && $this->setCookies($cookie);
 		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::POST,$option);
+		return $this->send(self::POST, $option);
 	}
-	public function get($url='', $data=array(), $header =array(),$cookie=array(), $option = array()) {
+	/* 
+	 * @see wind/component/http/base/WindHttp#get()
+	 */
+	public function get($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
 		$url && $this->setUrl($url);
 		$header && is_array($header) && $this->setHeaders($header);
 		$cookie && is_array($cookie) && $this->setCookies($cookie);
 		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::GET,$option);
+		return $this->send(self::GET, $option);
 	}
+	/* 
+	 * @see wind/component/http/base/WindHttp#send()
+	 */
 	public function send($method = self::GET, $options = array()) {
 		if (self::GET === $method && $this->data) {
 			$url = parse_url($this->url);
@@ -101,22 +127,25 @@ final class WindHttpSocket extends WindHttp {
 		}
 		if (self::POST === $method && $this->data) {
 			$data = self::buildQuery($this->data, '&');
-			$this->setHeader('Content-Type','application/x-www-form-urlencoded');
+			$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
 			$this->setHeader('Content-Length', strlen($data));
 		}
-		if($options){
+		if ($options) {
 			$this->setHeaders($options);
 		}
-		$this->setHeader('Connection','Close');
+		$this->setHeader('Connection', 'Close');
 		$this->request($method . " " . $this->path . " HTTP/1.1");
 		$this->requestByArray($this->header);
-		if($data){
-			$this->request("\n".$data);
+		if ($data) {
+			$this->request("\n" . $data);
 		}
 		$this->request("\n");
 		return $this->response();
 	}
 	
+	/* 
+	 * @see wind/component/http/base/WindHttp#getInstance()
+	 */
 	public static function getInstance($url = '') {
 		if (null === self::$instance || false === (self::$instance instanceof self)) {
 			self::$instance = new self($url);
@@ -124,7 +153,7 @@ final class WindHttpSocket extends WindHttp {
 		return self::$instance;
 	}
 	
-	public function __destruct(){
+	public function __destruct() {
 		$this->close();
 	}
 }
