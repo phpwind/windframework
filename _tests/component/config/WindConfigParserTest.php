@@ -5,18 +5,16 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('component/config/WindConfigParser.php');
-require_once('core/WindHttpRequest.php');
 
 class WindConfigParserTest extends BaseTestCase {
 	private $parser;
 	private $path;
-	public function __construct() {
+	public function setUp() {
 		parent::setUp();
+		require_once('component/config/WindConfigParser.php');
+		require_once('core/WindHttpRequest.php');
 		$this->parser = new WindConfigParser();
 		$this->path = dirname(__FILE__);
-	}
-	public function setUp() {
 		$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 	}
 	

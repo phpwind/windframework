@@ -5,7 +5,10 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('component/form/WindActionForm.php');
+include('core/base/WindModule.php');
+include('core/WindMessage.php');
+include('core/WindErrorMessage.php');
+include('component/form/WindActionForm.php');
 
 class UserForm extends WindActionForm {
 	protected $name;

@@ -5,13 +5,15 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-//L::import('WIND:core.WindHttpRequest');
-//L::import('WIND:core.WindHttpResponse');
-//L::import('WIND:core.exception.WindException');
-require_once('core/WindHttpRequest.php');
-require_once('core/WindHttpResponse.php');
-require_once('core/exception/WindException.php');
 
+/**
+ * WindHttpRequest单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class WindHttpRequestTest extends BaseTestCase {
 	private $httpRequest;
 	private $get = array('name' => 'xxx', 'sex' => '1', 'file' => array('filename1', 'filename2'));
@@ -19,6 +21,9 @@ class WindHttpRequestTest extends BaseTestCase {
 	private $cookie = array('logIP' => '10.1.123.99', 'loginTime' => '2010-12-17');
 	public function setUp() {
 		parent::setUp();
+		require_once ('core/WindHttpRequest.php');
+		require_once ('core/WindHttpResponse.php');
+		require_once ('core/exception/WindException.php');
 		$_GET = array();
 		$_POST = array();
 		$_COOKIE = array();
@@ -91,58 +96,57 @@ class WindHttpRequestTest extends BaseTestCase {
 		return $result;
 	}
 	/**
+	 * @dataProvider providerSlashes
 	 */
-	public function teststripSlashes() {
-		foreach(self::providerSlashes() as $value) {
-			$params = $value[0];
-			if (is_array($params)) {
-				$param = $this->slashesArray($params);
-				$this->checkArray($this->httpRequest->stripSlashes($params), count($param), $param, true);
-			} else {
-				$this->assertEquals(stripslashes($params), $this->httpRequest->stripSlashes($params));
-			}
+	public function teststripSlashes($params) {
+		if (is_array($params)) {
+			$param = $this->slashesArray($params);
+			$this->checkArray($this->httpRequest->stripSlashes($params), count($param), $param, true);
+		} else {
+			$this->assertEquals(stripslashes($params), $this->httpRequest->stripSlashes($params));
 		}
 	}
 	
 	/**
+	 * @dataProvider providerGet
 	 */
-	public function testGetAttributeFromGet() {
-		foreach(self::providerGet() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
+	public function testGetAttributeFromGet($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
 	}
 
 	/**
+	 * @dataProvider providerPost
 	 */
-	public function testGetAttributeFromPost() {
-		foreach(self::providerPost() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
+	public function testGetAttributeFromPost($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
 	}
 
 	/**
+	 * @dataProvider providerCookie
 	 */
-	public function testGetAttributeFromCookie() {
-		foreach(self::providerCookie() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0]));
+	public function testGetAttributeFromCookie($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getAttribute($name));
 	}
 	
 	/**
+	 * @dataProvider providerDefault
 	 */
-	public function testGetAttributeWithDefaultValue() {
-		foreach(self::providerDefault() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getAttribute($value[0], $value[1]));
+	public function testGetAttributeWithDefaultValue($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getAttribute($name, $value));
 	}
 	
 	/**
+	 * @dataProvider providerGet
 	 */
-	public function testGetQuery() {
-		foreach(self::providerGet() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getQuery($value[0]));
+	public function testGetQuery($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getQuery($name));
 	}
+	
 	/**
+	 * @dataProvider providerDefault
 	 */
-	public function testGetQueryWithDefault() {
-		foreach(self::providerDefault() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getQuery($value[0], $value[1]));
+	public function testGetQueryWithDefault($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getQuery($name, $value));
 	}
 	
 	public function testGetQuestWithNull() {
@@ -152,16 +156,16 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 
 	/**
+	 * @dataProvider providerPost
 	 */
-	public function testGetPost() {
-		foreach(self::providerPost() as $value) 
-			$this->assertEquals($value[1], $this->httpRequest->getPost($value[0]));
+	public function testGetPost($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getPost($name));
 	}
 	/**
+	 * @dataProvider providerDefault
 	 */
-	public function testGetPostWithDefault() {
-		foreach(self::providerDefault() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getPost($value[0], $value[1]));
+	public function testGetPostWithDefault($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getPost($name, $value));
 	}
 	
 	public function testGetPostWithNull() {
@@ -170,10 +174,10 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 	
 	/**
+	 * @dataProvider providerGet
 	 */
-	public function testGet() {
-		foreach(self::providerGet() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getGet($value[0]));
+	public function testGet($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getGet($name));
 	}
 	/**
 	 */
@@ -189,16 +193,17 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 	
 	/**
+	 * @dataProvider providerCookie
 	 */
-	public function testGetCookie() {
-		foreach(self::providerCookie() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getCookie($value[0]));
+	public function testGetCookie($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getCookie($name));
 	}
+	
 	/**
+	 * @dataProvider providerDefault
 	 */
-	public function testGetCookieWithDefault() {
-		foreach(self::providerDefault() as $value)
-			$this->assertEquals($value[1], $this->httpRequest->getCookie($value[0], $value[1]));
+	public function testGetCookieWithDefault($name, $value) {
+		$this->assertEquals($value, $this->httpRequest->getCookie($name, $value));
 	}
 	
 	public function testGetCookieWithNull() {

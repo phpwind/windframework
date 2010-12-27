@@ -6,6 +6,15 @@
  * @license
  */
 require_once('core/base/WindModule.php');
+
+/**
+ * WindModule单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class WindModuleTest extends BaseTestCase {
 	private $obj;
 	public function __construct() {}
@@ -35,6 +44,17 @@ class WindModuleTest extends BaseTestCase {
 		$this->assertTrue($this->obj->isseted('name'));
 		$this->assertEquals('phpwind', $this->obj->name);
 		$this->assertFalse($this->obj->isseted('address'));
+	}
+	public function testToArray() {
+		$this->obj->name = 'wind';
+		$this->obj->nick = 'hello';
+		$this->obj->password = 'phpwind';
+		$value = $this->obj->toArray();
+		$this->assertTrue(is_array($value) && count($value) == 4);
+		$this->assertTrue(isset($value['name']) && $value['name'] == 'wind');
+		$this->assertTrue(isset($value['nick']) && $value['nick'] == 'hello');
+		$this->assertTrue(isset($value['password']) && $value['password'] == 'phpwind');
+		$this->assertTrue(isset($value['address']) && $value['address'] == 'hangz');
 	}
 }
 

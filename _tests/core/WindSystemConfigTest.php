@@ -5,11 +5,20 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once ('core/WindSystemConfig.php');
 
+/**
+ * WindSystemConfig单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class WindSystemConfigTest extends BaseTestCase {
 	private $config;
-	public function __construct() {
+	public function setUp() {
+		parent::setUp();
+		require_once ('core/WindSystemConfig.php');
 		$this->config = new WindSystemConfig(include 'config.php');
 	}
 	
@@ -64,21 +73,21 @@ class WindSystemConfigTest extends BaseTestCase {
 	public function testGetFilters() {
 		$config = $this->config->getFilters();
 		$this->checkArray($config, 1, array('WindFormFilter'));
-		$this->checkArray($config['WindFormFilter'], 1, array('filterPath' => 'WIND:core.filter.WindFormFilter'), true);
+		$this->checkArray($config['WindFormFilter'], 1, array('class' => 'WIND:core.filter.WindFormFilter'), true);
 	}
 	public function testGetFiltersByName() {
 		$config = $this->config->getFilters('WindFormFilter');
-		$this->checkArray($config, 1, array('filterPath' => 'WIND:core.filter.WindFormFilter'), true);
+		$this->checkArray($config, 1, array('class' => 'WIND:core.filter.WindFormFilter'), true);
 		
-		$this->checkArray($this->config->getFilters('filterPath'), 0);
+		$this->checkArray($this->config->getFilters('class'), 0);
 	}
 	public function testGetViewerResolvers() {
 		$config = $this->config->getViewerResolvers();
-		$this->checkArray($config, 1, array('default' => 'WIND:core.viewer.WindViewer'), true);
+		$this->checkArray($config['default'], 1, array('class' => 'WIND:core.viewer.WindViewer'), true);
 	}
 	public function testGetViewerResolversByName() {
 		$config = $this->config->getViewerResolvers('default');
-		$this->assertEquals('WIND:core.viewer.WindViewer', $config);
+		$this->assertEquals('WIND:core.viewer.WindViewer', $config['class']);
 		
 		$this->checkArray($this->config->getViewerResolvers('other'), 0);
 	}
@@ -94,15 +103,15 @@ class WindSystemConfigTest extends BaseTestCase {
 	public function testGetRouterParsers() {
 		$config = $this->config->getRouterParsers();
 		$this->checkArray($config, 1, array('url'));
-		$this->checkArray($config['url'], 2, array('rule', 'path'));
+		$this->checkArray($config['url'], 2, array('rule', 'class'));
 		$this->checkArray($config['url']['rule'], 3, array('a' => 'run', 'c' => 'index', 'm' => 'default'), true);
-		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['url']['path']);
+		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['url']['class']);
 	}
 	public function testGetRouterParsersByName() {
 		$config = $this->config->getRouterParsers('url');
-		$this->checkArray($config, 2, array('rule', 'path'));
+		$this->checkArray($config, 2, array('rule', 'class'));
 		$this->checkArray($config['rule'], 3, array('a' => 'run', 'c' => 'index', 'm' => 'default'), true);
-		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['path']);
+		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['class']);
 		
 		$this->checkArray($this->config->getRouterParsers('write'), 0);
 	}
@@ -120,10 +129,11 @@ class WindSystemConfigTest extends BaseTestCase {
 	}
 	public function testGetErrorMessage() {
 		$config = $this->config->getErrorMessage();
-		$this->checkArray($config, 1, array('default' => 'WIND:core.WindErrorAction'), true);
+		$this->checkArray($config['default'], 1, array('class' => 'WIND:core.WindErrorAction'), true);
 	}
 	public function testGetErrorMessageByName() {
-		$this->assertEquals('WIND:core.WindErrorAction', $this->config->getErrorMessage('default'));
+		$errorConfig = $this->config->getErrorMessage('default');
+		$this->assertEquals('WIND:core.WindErrorAction', $errorConfig['class']);
 		
 		$this->checkArray($this->config->getErrorMessage('errorMessage'), 0);
 	}

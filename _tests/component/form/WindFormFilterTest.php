@@ -5,12 +5,18 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('component/form/WindFormFilter.php');
-require_once('component/form/WindActionForm.php');
-require_once('core/WindHttpRequest.php');
-require_once('core/WindHttpResponse.php');
-require_once('core/WindSystemConfig.php');
 
+/**
+ * WindFormFilter单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
+
+require_once('core/base/WindModule.php');
+require_once('component/form/WindActionForm.php');
 class UserFormTest extends WindActionForm {
 	protected $name;
 	protected $password;
@@ -21,6 +27,7 @@ class UserFormTest extends WindActionForm {
 		$this->setErrorAction('error');
 		$this->setIsValidation(true);
 	}
+	
 	public function nameValidate() {
 		if (strlen($this->name) < 6) {
 			$this->addError('name too short', 'nameError');
@@ -32,7 +39,13 @@ class WindFormFilterTest extends BaseTestCase {
 	private $obj;
 	private $request;
 	private $response;
-	public function __construct() {
+	
+	public function setUp() {
+		parent::setUp();
+		require_once('component/form/WindFormFilter.php');
+		require_once('core/WindHttpRequest.php');
+		require_once('core/WindHttpResponse.php');
+		require_once('core/WindSystemConfig.php');
 		$array = array('extensionConfig' => array('formConfig' => 'component.form.WindFormFilterTest.php'));
 		$systemConfig = new WindSystemConfig($array);
 		$_GET['name'] = 'phpwind';
@@ -41,8 +54,6 @@ class WindFormFilterTest extends BaseTestCase {
 		$this->request = new WindHttpRequest();
 		$this->response = new WindHttpResponse();
 		$this->response->setData($systemConfig, 'WindSystemConfig');
-	}
-	public function setUp() {
 		$this->obj = new WindFormFilter();
 	}
 	public function tearDown() {
@@ -83,4 +94,3 @@ class WindFormFilterTest extends BaseTestCase {
 		$this->assertEquals('wind', $userForm->name);*/
 	}
 }
-

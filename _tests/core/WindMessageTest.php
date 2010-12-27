@@ -5,10 +5,10 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-//L::import('WIND:core.WindMessage');
-require_once('core/WindMessage.php');
+
 /**
- * WindMessage
+ * WindMessage单元测试
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
  * @version $Id$ 
@@ -17,18 +17,31 @@ require_once('core/WindMessage.php');
 class WindMessageTest extends BaseTestCase {
 	private $message = null;
 	public function setUp() {
+		parent::setUp();
+		require_once('core/WindMessage.php');
 		$this->message = new WindMessage();
 	}
 	public function tearDown() {
+		parent::tearDown();
 		$this->message = null;
 	}
-	public static function providerWithGetMess() {
-		return array();
-	}
+	
 	private function addTestMessage() {
 		$_tmp = array('one' => 'php', 'two' => $this->message, 'three' => '', 'four', 
 			'five' => array('six' => 'true', 'seven' => 'false'));
 		$this->message->addMessage($_tmp);
+	}
+	private function getArrayToString($args) {
+		return trim(implode(',', (array)$args), ',');
+	}
+	
+	private function checkArray($array, $num, $member = array(), $ifCheck = false) {
+		$this->assertTrue(is_array($array) && count($array) == $num);
+		if (!$member) return;
+		foreach ((array)$member as $key => $value) {
+			($ifCheck) ? $this->assertTrue(isset($array[$key]) && $array[$key] == $value) :
+						$this->assertTrue(isset($array[$value]));
+		}
 	}
 	/**
 	 * 测试获得信息：
@@ -71,6 +84,28 @@ class WindMessageTest extends BaseTestCase {
 		$this->assertTrue(is_object($obj) && $obj instanceof PHPUnit_Framework_TestCase);
 	}
 	
+	public function testGetMessageWithString() {
+		$value = $this->message->getMessageWithString();
+		$this->assertTrue(is_string($value) && $value == '');
+		$this->addTestMessage();
+		$value = $this->message->getMessageWithString();
+		$args = array('one' => 'php', 'four', 'six' => 'true', 'seven' => 'false');
+		$this->assertTrue(is_string($value) && ($value == $this->getArrayToString($args)));
+		$value = $this->message->getMessageWithString('one');
+		$this->assertTrue(is_string($value) && $value == 'php');
+	}
+	
+	public function testGetMessageWithArray() {
+		$value = $this->message->getMessageWithArray();
+		$this->assertTrue(is_array($value) && count($value) == 0);
+		$this->addTestMessage();
+		$value = $this->message->getMessageWithArray();
+		$args = array('one' => 'php', '0' => 'four', 'six' => 'true', 'seven' => 'false');
+		$this->checkArray($value, 5, $args, true);
+		$value = $this->message->getMessageWithArray('two');
+		$this->assertTrue(is_array($value) && count($value) == 1);
+		$this->assertTrue(is_object($value[0]) && $value[0] instanceof WindMessage);
+	}
 	/**
 	 * 添加一条信息：
 	 * 1：添加一条空信息

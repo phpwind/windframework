@@ -26,11 +26,13 @@
 		),
 	),
 	'error' => array(
-		'default' => 'WIND:core.WindErrorAction',
+		'default' => array(
+			'class' => 'WIND:core.WindErrorAction',
+		),
 	),
 	'filters' => array(
 		'WindFormFilter' => array(
-			'filterPath' => 'WIND:core.filter.WindFormFilter',
+			'class' => 'WIND:core.filter.WindFormFilter',
 		),
 	),
 	'templates' => array(
@@ -54,7 +56,9 @@
 		),
 	),
 	'viewerResolvers' => array(
-		'default' => 'WIND:core.viewer.WindViewer',
+		'default' => array(
+			'class' => 'WIND:core.viewer.WindViewer',
+		),
 	),
 	'router' => array(
 		'parser' => 'url',
@@ -66,7 +70,7 @@
 				'c' => 'index',
 				'm' => 'default',
 			),
-			'path' => 'WIND:core.router.WindUrlBasedRouter',
+			'class' => 'WIND:core.router.WindUrlBasedRouter',
 		),
 	),
 	'extensionConfig' => array(

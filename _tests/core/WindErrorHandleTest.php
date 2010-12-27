@@ -5,13 +5,21 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('core/windErrorHandle.php');
 
 /**
- * test case.
+ * WindErrorHandle单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
  */
 class WindErrorHandleTest extends BaseTestCase {
 	private $message = 'Uncaught exception';
+	public function setUp() {
+		parent::setUp();
+		require_once('core/windErrorHandle.php');
+	}
 	public static function providerMessage() {
 		return array(
 		   array('i am error!', 'test1', '160', ''),
@@ -44,44 +52,38 @@ class WindErrorHandleTest extends BaseTestCase {
     	);
     }
 	/**
+	 * @dataProvider providerMessage
 	 */
-	public function testBuildMessage() {
-		foreach(self::providerMessage() as $value) {
-			list($message, $file, $line, $type) = $value;
-			$result = "Error Type: $type\nError Message: $message\n";
-			$result .= "Info: on line $line in file $file \n";
-			$this->assertEquals($result, WindErrorHandle::buildMessage($message, $file, $line, $type));
-		}
+	public function testBuildMessage($message, $file, $line, $type) {
+		$result = "Error Type: $type\nError Message: $message\n";
+		$result .= "Info: on line $line in file $file \n";
+		$this->assertEquals($result, WindErrorHandle::buildMessage($message, $file, $line, $type));
 	}
 	
 	/**
+	 * @dataProvider providerMessage
 	 */
-    public function testBuildErrorMessage() {
-    	foreach(self::providerMessage() as $value) {
-    		list($message, $file, $line, $type) = $value;
-	    	$result = "Error Type: $type\nError Message: $message\n";
-			$result .= "Info: on line $line in file $file \n";
-			$result .= "PHP " . PHP_VERSION . "(" . PHP_OS . ")\n";
-			$result .= "Aborting...\n";
-			$this->assertEquals($result, WindErrorHandle::buildErrorMessage($message, $file, $line, $type));
-    	}
+    public function testBuildErrorMessage($message, $file, $line, $type) {
+    	$result = "Error Type: $type\nError Message: $message\n";
+		$result .= "Info: on line $line in file $file \n";
+		$result .= "PHP " . PHP_VERSION . "(" . PHP_OS . ")\n";
+		$result .= "Aborting...\n";
+		$this->assertEquals($result, WindErrorHandle::buildErrorMessage($message, $file, $line, $type));
     }
     
     /**
+     * @dataProvider providerException
 	 */
-	public function testExceptionHandle() {
-		foreach(self::providerException() as $value) {
-			$exception = $value[0];
-			$message = "Error Type: " . $this->message . "\nError Message: " . $exception->getMessage() . "\n";
-			$message .= "Info: on line " . $exception->getLine() . " in file " . $exception->getFile() . " \n";
-			$message .= "PHP " . PHP_VERSION . "(" . PHP_OS . ")\n";
-			$message .= "Aborting...\n";
-			$message .= $exception->getTraceAsString();
-			ob_start();
-			WindErrorHandle::ExceptionHandle($exception);
-			$result = ob_get_clean();
-			$this->assertEquals($message, $result);
-		}
+	public function testExceptionHandle($exception) {
+		$message = "Error Type: " . $this->message . "\nError Message: " . $exception->getMessage() . "\n";
+		$message .= "Info: on line " . $exception->getLine() . " in file " . $exception->getFile() . " \n";
+		$message .= "PHP " . PHP_VERSION . "(" . PHP_OS . ")\n";
+		$message .= "Aborting...\n";
+		$message .= $exception->getTraceAsString();
+		ob_start();
+		WindErrorHandle::ExceptionHandle($exception);
+		$result = ob_get_clean();
+		$this->assertEquals($message, $result);
 	}
 	
 	private function buildMessage($errno, $errstr, $errfile, $errline) {
@@ -107,16 +109,14 @@ class WindErrorHandleTest extends BaseTestCase {
 		return $result;
 	}
 	/**
+	 * @dataProvider providerErrorHanddle
 	 */
-	public function testErrorHandle() {
-		foreach(self::providerErrorHanddle() as $value) {
-			list($errno, $errstr, $errfile, $errline) = $value;
-			$message = $this->buildMessage($errno, $errstr, $errfile, $errline);
-			ob_start();
-			WindErrorHandle::errorHandle($errno, $errstr, $errfile, $errline);
-			$result = ob_get_clean();
-			$this->assertEquals($message, $result);
-		}
+	public function testErrorHandle($errno, $errstr, $errfile, $errline) {
+		$message = $this->buildMessage($errno, $errstr, $errfile, $errline);
+		ob_start();
+		WindErrorHandle::errorHandle($errno, $errstr, $errfile, $errline);
+		$result = ob_get_clean();
+		$this->assertEquals($message, $result);
 	}
 }
 

@@ -42,21 +42,30 @@ class WindMessage {
 	
 	/**
 	 * 以数组的方式返回message信息
+	 * 考虑为对象的情况，如果直接用(array)强制转换会出现问题
 	 * 
 	 * @param string $key
 	 * @return array
 	 */
 	public function getMessageWithArray($key = '') {
-		return (array) $this->getMessage($key);
+		$args = $this->getMessage($key);
+		return (is_array($args)) ? $args : array($args);
 	}
 	
 	/**
 	 * 以字符串格式返回message
+	 * 如果含有object对象，则去除该对象
 	 * @return string
 	 */
 	public function getMessageWithString($key = '') {
-		$message = implode(',', (array) $this->getMessage($key));
-		return trim($message, ' ,');
+		$args = (array) $this->getMessage($key);
+		foreach ($args as $key => $message) {
+			if (is_object($message)) {
+				$args[$key] = null;
+				unset($args[$key]);
+			}
+		}
+		return trim(implode(',', $args), ',');
 	}
 	
 	/**

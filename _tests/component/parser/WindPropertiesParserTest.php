@@ -8,6 +8,14 @@
 
 require_once('component/parser/WindPropertiesParser.php');
 
+/**
+ * WindProperties单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class WindPropertiesParserTest extends BaseTestCase {
 	private $parser;
 	private $path;

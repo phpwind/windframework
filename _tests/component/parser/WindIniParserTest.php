@@ -7,6 +7,14 @@
  */
 require_once('component/parser/WindIniParser.php');
 
+/**
+ * WindIniParser单元测试
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author xiaoxia xu <x_824@sina.com>
+ * @version $Id$ 
+ * @package
+ */
 class WindIniParserTest extends BaseTestCase {
 	private $parser;
 	private $path;
