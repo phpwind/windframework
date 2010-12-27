@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindHttpStream extends WindHttp {
+final class WindHttpStream extends WindHttp {
 	const HTTP = 'http';
 	const HTTPS = 'https';
 	const FTP = 'ftp';
@@ -63,12 +63,11 @@ class WindHttpStream extends WindHttp {
 		if ($this->httpResource) {
 			fclose($this->httpResource);
 			$this->httpResource = null;
+			$this->context = null;
 		}
 	}
 	
 	public function getError() {
-		$this->err = curl_error($this->httpResource);
-		$this->eno = curl_errno($this->httpResource);
 		return $this->err ? $this->eno . ':' . $this->err : '';
 	}
 	
