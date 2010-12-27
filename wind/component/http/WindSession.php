@@ -144,9 +144,9 @@ class WindSession implements IteratorAggregate, ArrayAccess, Countable {
 	}
 	/**
 	 * 设置当前会话名称
-	 * @return string
+	 * @return string $name
 	 */
-	public function setSessionName() {
+	public function setSessionName($name) {
 		return session_name($name);
 	}
 	

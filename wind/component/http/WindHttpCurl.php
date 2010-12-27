@@ -76,7 +76,7 @@ final class WindHttpCurl extends WindHttp {
 		$header && is_array($header) && $this->setHeaders($header);
 		$cookie && is_array($cookie) && $this->setCookies($cookie);
 		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::POST, $timeout, $option);
+		return $this->send(self::POST, $option);
 	}
 	/* 
 	 * @see wind/component/http/base/WindHttp#get()
