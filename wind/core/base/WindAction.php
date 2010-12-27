@@ -17,6 +17,7 @@ abstract class WindAction {
 	
 	public $forward = null;
 	public $urlManager = null;
+	public $error = null;
 	
 	protected $request;
 	protected $response;
@@ -144,6 +145,7 @@ abstract class WindAction {
 	private function initBaseAction() {
 		L::import('WIND:core.WindForward');
 		$this->forward = new WindForward();
+		$this->error = WindErrorMessage::getInstance($this->request, $this->response);
 	}
 	
 	private function getInputWithString($name, $type = '', $callback = null) {
@@ -164,9 +166,7 @@ abstract class WindAction {
 			default:
 				$value = $this->request->getAttribute($name);
 		}
-		return $callback ? array(
-			$value, 
-			call_user_func_array($callback, $value)) : $value;
+		return $callback ? array($value, call_user_func_array($callback, $value)) : $value;
 	}
 	
 	private function getInputWithArray($name, $type = '') {
