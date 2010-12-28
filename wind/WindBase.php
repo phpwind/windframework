@@ -134,6 +134,7 @@ class L {
 	private static $_instances = array();
 	private static $_extensions = 'php';
 	private static $_includePaths = array();
+	private static $_isAutoLoad = true;
 	
 	/**
 	 * 将路径信息注册到命名空间
@@ -177,7 +178,7 @@ class L {
 			$fileName = substr($filePath, $pos1 + 1);
 		else
 			$fileName = $filePath;
-			
+		
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
@@ -223,11 +224,14 @@ class L {
 	 * @return
 	 */
 	public static function registerAutoloader() {
+		if (!self::$_isAutoLoad) return;
 		if (function_exists('spl_autoload_register')) {
 			spl_autoload_register('L::autoLoad');
 		} else {
-			function __autoload($className) {
-				L::autoLoad($className);
+			if (!function_exists('__autoload')) {
+				function __autoload($className) {
+					L::autoLoad($className);
+				}
 			}
 		}
 	}
@@ -334,7 +338,7 @@ class L {
 	static private function setImport($className, $classPath, $autoInclude) {
 		if (self::isImported($className)) return;
 		self::$_imports[$classPath] = $className;
-		if ($autoInclude)
+		if (self::$_isAutoLoad && $autoInclude)
 			self::$_classes[$className] = $classPath;
 		else
 			self::autoLoad($className, $classPath);
