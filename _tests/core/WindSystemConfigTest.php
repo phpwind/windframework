@@ -19,7 +19,7 @@ class WindSystemConfigTest extends BaseTestCase {
 	public function setUp() {
 		parent::setUp();
 		require_once ('core/WindSystemConfig.php');
-		$this->config = new WindSystemConfig(include 'config.php');
+		$this->config = new WindSystemConfig(include 'data/config.php');
 	}
 	
 	public function testGetConfig() {
