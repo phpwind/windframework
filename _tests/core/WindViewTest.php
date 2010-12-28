@@ -1,11 +1,7 @@
 <?php
-
-require_once 'core/WindView.php';
-
 class WindViewTest extends BaseTestCase {
-	private $templateConfig = 'default';
 	
-	function testCreateViewerResolver() {
+	public function testCreateViewerResolver() {
 		$windView = $this->createWindView();
 		$viewResolver = $windView->createViewerResolver();
 		$this->assertEquals('WindViewer', get_class($viewResolver), 'test create viewer resolver failed.');
@@ -48,6 +44,7 @@ class WindViewTest extends BaseTestCase {
 	
 	private function createWindView($configName = '', $config = array()) {
 		if (!empty($config)) C::init($config);
+		require_once 'core/WindView.php';
 		return new WindView($configName);
 	}
 	
