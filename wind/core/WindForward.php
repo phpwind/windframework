@@ -137,14 +137,6 @@ class WindForward {
 	}
 	
 	/**
-	 * 是否为重定向请求
-	 * @return the $isRedirect
-	 */
-	public function isRedirect() {
-		return $this->isRedirect;
-	}
-	
-	/**
 	 * 获得模板配置名称
 	 * @return the $templateConfig
 	 */
