@@ -229,7 +229,6 @@ class L {
 	public static function registerAutoloader() {
 		if (!self::$_isAutoLoad) return;
 		if (function_exists('spl_autoload_register')) {
-			spl_autoload_unregister();
 			spl_autoload_register('L::autoLoad');
 		} elseif (!function_exists('__autoload')) {
 			function __autoload($className) {
