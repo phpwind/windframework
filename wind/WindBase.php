@@ -93,7 +93,7 @@ class W {
 	}
 	
 	/**
-	 * 环境监察
+	 * 环境检查
 	 */
 	static private function checkEnvironment() {
 
@@ -134,7 +134,7 @@ class L {
 	private static $_instances = array();
 	private static $_extensions = 'php';
 	private static $_includePaths = array();
-	private static $_isAutoLoad = false;
+	private static $_isAutoLoad = true;
 	
 	/**
 	 * 将路径信息注册到命名空间
@@ -229,13 +229,14 @@ class L {
 	public static function registerAutoloader() {
 		if (!self::$_isAutoLoad) return;
 		if (function_exists('spl_autoload_register')) {
+			spl_autoload_unregister();
 			spl_autoload_register('L::autoLoad');
-		} else {
-			if (!function_exists('__autoload')) {
-				function __autoload($className) {
-					L::autoLoad($className);
-				}
+		} elseif (!function_exists('__autoload')) {
+			function __autoload($className) {
+				L::autoLoad($className);
 			}
+		} else {
+			self::$_isAutoLoad = false;
 		}
 	}
 	
@@ -369,6 +370,15 @@ class L {
 		}
 		$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 	}
+	
+	/**
+	 * @param $_isAutoLoad the $_isAutoLoad to set
+	 * @author Qiong Wu
+	 */
+	public static function setIsAutoLoad($isAutoLoad) {
+		L::$_isAutoLoad = $isAutoLoad;
+	}
+
 }
 
 /**
