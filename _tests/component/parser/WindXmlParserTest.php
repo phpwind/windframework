@@ -21,7 +21,7 @@ class WindXmlParserTest extends BaseTestCase {
 	private $path;
 	public function __construct() {
 		$this->parser = new WindXmlParser('UTF-8');
-		$this->path = dirname(__FILE__);
+		$this->path = dirname(dirname(dirname(__FILE__)));
 	}
 	private function checkArray($array, $num, $member = array(), $flag = false) {
 		$this->assertTrue(is_array($array));
@@ -39,7 +39,7 @@ class WindXmlParserTest extends BaseTestCase {
 		}
 	}
 	public function testParse() {
-		$data = $this->parser->parse($this->path . '/test.xml');
+		$data = $this->parser->parse($this->path . '/data/WindXmlParserTest.xml');
 		$this->checkArray($data, 3, array('php', 'java', 'book'));
 		$this->checkArray($data['php'], 2, array('price' => '20', 'pages' => 200), true);
 		$this->checkArray($data['java'], 3, array('name' => 'C#', 'price' => 30, 'pages' => '150'), true);

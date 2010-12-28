@@ -14,7 +14,7 @@ class WindConfigParserTest extends BaseTestCase {
 		require_once('component/config/WindConfigParser.php');
 		require_once('core/WindHttpRequest.php');
 		$this->parser = new WindConfigParser();
-		$this->path = dirname(__FILE__);
+		$this->path = dirname(dirname(dirname(__FILE__)));
 		$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 	}
 	
@@ -29,14 +29,14 @@ class WindConfigParserTest extends BaseTestCase {
 	}
 	
 	public function testParserWithXML() {
-		$result = $this->parser->parse('XML', $this->path . '/config.xml', true);
+		$result = $this->parser->parse('XML', $this->path . '/data/test_config.xml', true);
 		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 2, array('pp', 'default'));
 		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['pp']['class']);
 	}
 	public function testParserWithIni() {
-		$result = $this->parser->parse('Ini', $this->path . '/config.ini', true);
+		$result = $this->parser->parse('Ini', $this->path . '/data/test_config.ini', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 1);
@@ -44,7 +44,7 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->assertTrue(strrpos($result['rootPath'], 'phpwind') !== false);
 	}
 	public function testParserWithProperties() {
-		$result = $this->parser->parse('properties', $this->path . '/config.properties', true);
+		$result = $this->parser->parse('properties', $this->path . '/data/test_config.properties', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['error'], 2, array('default', 'QQ'));
@@ -53,7 +53,7 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->assertTrue($result['extensionConfig']['formConfig'] == 'test:controllers');
 	}
 	public function testParserWithPHP() {
-		$result = $this->parser->parse('PHP', $this->path . '/config.php', true);
+		$result = $this->parser->parse('PHP', $this->path . '/data/test_config.php', true);
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 1);

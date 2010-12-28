@@ -21,7 +21,7 @@ class WindPropertiesParserTest extends BaseTestCase {
 	private $path;
 	public function __construct() {
 		$this->parser = new WindPropertiesParser();
-		$this->path = dirname(__FILE__);
+		$this->path = dirname(dirname(dirname(__FILE__)));
 	}
 	private function checkArray($array, $num, $member = array(), $flag = false) {
 		$this->assertTrue(is_array($array));
@@ -39,7 +39,7 @@ class WindPropertiesParserTest extends BaseTestCase {
 		}
 	}
 	public function testParser() {
-		$data = $this->parser->parse($this->path . '/test.properties');
+		$data = $this->parser->parse($this->path . '/data/WindPropertiesParserTest.properties');
 		$this->checkArray($data, 6, array('student', 'xxx', 'name', 'your', 'xjx', 'people'));
 		$this->assertTrue($data['name'] == 'test');
 		$this->checkArray($data['people'], 3, array('name', 'sex', 'job'));

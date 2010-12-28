@@ -20,7 +20,7 @@ class WindIniParserTest extends BaseTestCase {
 	private $path;
 	public function __construct() {
 		$this->parser = new WindIniParser();
-		$this->path = dirname(__FILE__);
+		$this->path = dirname(dirname(dirname(__FILE__)));
 	}
 	
 	private function checkArray($array, $num, $member = array(), $flag = false) {
@@ -40,7 +40,7 @@ class WindIniParserTest extends BaseTestCase {
 		
 	}
 	public function testParser() {
-		$data = $this->parser->parse($this->path . '/test.ini');
+		$data = $this->parser->parse($this->path . '/data/WindIniParserTest.ini');
 		$this->checkArray($data, 6, array('people', 'xxx', 'xjx', 'student'));
 		$this->assertTrue($data['name'] == 'test');
 		$this->checkArray($data['people'], 3, array('name', 'sex', 'job'));

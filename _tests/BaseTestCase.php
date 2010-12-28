@@ -12,7 +12,7 @@ abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 		W::init();
-		C::init(include 'config.php');
+		C::init(include 'data/config.php');
 	}
 	
 	protected function tearDown() {
