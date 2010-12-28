@@ -310,7 +310,8 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回执行脚本
 	 */
 	public function getScript() {
-		return substr($this->getScriptUrl(), strrpos($this->getScriptUrl(), '/') + 1);
+		if (($pos = strrpos($this->getScriptUrl(), '/')) === false) $pos = -1;
+		return substr($this->getScriptUrl(), $pos + 1);
 	}
 	
 	/**
@@ -355,7 +356,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string
 	 */
 	public function getBaseUrl($absolute = false) {
-		if ($this->_baseUrl === null) $this->_baseUrl = rtrim(dirname($this->getScriptUrl()), '\\/');
+		if ($this->_baseUrl === null) $this->_baseUrl = rtrim(dirname($this->getScriptUrl()), '\\/.');
 		return $absolute ? $this->getHostInfo() . $this->_baseUrl : $this->_baseUrl;
 	}
 	
