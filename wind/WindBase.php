@@ -213,10 +213,8 @@ class L {
 	 * @return null
 	 */
 	static public function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className]))
-			$path = self::$_classes[$className];
-		elseif ($path === '')
-			throw new Exception('auto load ' . $className . ' failed.');
+		if (isset(self::$_classes[$className])) $path = self::$_classes[$className];
+		if ($path === '') throw new Exception('auto load ' . $className . ' failed.');
 		$path = self::getRealPath($path, self::$_extensions);
 		if ((@include $path) === false) throw new Exception('include file ' . $path . ' failed.');
 	}
