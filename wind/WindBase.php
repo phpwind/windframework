@@ -134,7 +134,7 @@ class L {
 	private static $_instances = array();
 	private static $_extensions = 'php';
 	private static $_includePaths = array();
-	private static $_isAutoLoad = true;
+	private static $_isAutoLoad = false;
 	
 	/**
 	 * 将路径信息注册到命名空间
@@ -213,9 +213,12 @@ class L {
 	 * @return null
 	 */
 	static public function autoLoad($className, $path = '') {
-		if (!isset(self::$_classes[$className])) throw new Exception('auto load ' . $className . ' failed.');
-		if ($path === '') $path = self::getRealPath(self::$_classes[$className]) . '.' . 'php';
-		if ((@include $path) === false) throw new Exception('auto load ' . $path . ' failed.');
+		if (isset(self::$_classes[$className]))
+			$path = self::$_classes[$className];
+		elseif ($path === '')
+			throw new Exception('auto load ' . $className . ' failed.');
+		$path = self::getRealPath($path, self::$_extensions);
+		if ((@include $path) === false) throw new Exception('include file ' . $path . ' failed.');
 	}
 	
 	/**
