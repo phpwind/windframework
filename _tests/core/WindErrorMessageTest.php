@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('core/WindErrorMessage.php');
 /**
  * 测试WindErrorMessage
  * 
@@ -17,6 +16,8 @@ require_once('core/WindErrorMessage.php');
 class WindErrorMessageTest extends BaseTestCase {
 	private $errorMessage;
 	public function setUp() {
+		parent::setUp();
+		require_once('core/WindErrorMessage.php');
 		$this->errorMessage = WindErrorMessage::getInstance();
 		$this->errorMessage->clear();
 	}
