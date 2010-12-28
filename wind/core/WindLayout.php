@@ -22,7 +22,7 @@ class WindLayout {
 	 */
 	private $segments = array();
 	private $layoutFile = '';
-	private $content = '';
+	private $tplName = '';
 	
 	/**
 	 * 设置layout布局文件
@@ -40,19 +40,19 @@ class WindLayout {
 	 */
 	public function parserLayout($dirName = '', $ext = '', $content = '') {
 		if ($this->layoutFile) {
-			$this->content = $content;
-			$file = L::getRealPath($dirName . '.' . $this->layoutFile);
+			$this->tplName = $content;
+			$dirName && $dirName = $dirName . '.';
+			$ext === '' && $ext = 'htm';
+			$file = L::getRealPath($dirName . $this->layoutFile);
 			$file = $file . '.' . $ext;
-			if (is_file($file))
-				include $file;
-			else
-				throw new WindException('the layout file ' . $file . ' is not exists.');
+			if (!@include $file) throw new WindException('the layout file ' . $file . ' is not exists.');
 		}
 		return $this->segments;
 	}
 	
 	/**
 	 * 设置切片文件
+	 * 
 	 * @param string $segment
 	 */
 	private function setSegments($segment) {
@@ -61,9 +61,11 @@ class WindLayout {
 	
 	/**
 	 * 设置当前内容模板
+	 * 
+	 * @deprecated
 	 */
-	private function setContent($content = '') {
-		if ($content == '') $content = $this->content;
-		$this->setSegments($this->content);
+	private function setContent($tplName = '') {
+		$tplName && $this->tplName = $tplName;
+		$this->setSegments($this->tplName);
 	}
 }
