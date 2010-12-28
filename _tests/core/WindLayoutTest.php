@@ -1,36 +1,65 @@
 <?php
 
-
-/**
- * test case.
- */
-class WindLayoutTest extends PHPUnit_Framework_TestCase {
+class WindLayoutTest extends BaseTestCase {
 	
 	/**
-	 * Prepares the environment before running a test.
+	 * @param string $fileName
+	 * @param string $dir
+	 * @param string $ext
+	 * @param string $contentTplName
+	 * 
+	 * @dataProvider providerWithLayoutFileError
 	 */
+	public function testParserLayoutWithError($fileName, $dir, $ext, $contentTplName) {
+		$windLayout = $this->createWindLayout($fileName);
+		try {
+			$segments = $windLayout->parserLayout($dir, $ext, $contentTplName);
+		} catch (Exception $exception) {
+			$this->assertEquals(get_class($exception), 'WindException');
+		}
+	}
+	
+	/**
+	 * @param string $fileName
+	 * @param string $dir
+	 * @param string $ext
+	 * @param string $contentTplName
+	 * 
+	 * @dataProvider providerWithLayoutFile
+	 */
+	public function testParserLayout($fileName, $dir, $ext, $contentTplName) {
+		$windLayout = $this->createWindLayout($fileName);
+		$segments = $windLayout->parserLayout($dir, $ext, $contentTplName);
+		$this->assertEquals($segments[0], 'header');
+		$this->assertEquals($segments[1], 'content');
+		$this->assertEquals($segments[2], 'footer');
+	}
+	
+	public function providerWithLayoutFileError() {
+		$args = array();
+		$args[] = array('testData.layout1', '', 'htm', 'content');
+		return $args;
+	}
+	
+	public function providerWithLayoutFile() {
+		$args = array();
+		$args[] = array('testData.layout', '', 'htm', 'content');
+		return $args;
+	}
+	
+	private function createWindLayout($fileName) {
+		require_once 'core/WindLayout.php';
+		$windLayout = new WindLayout();
+		$windLayout->setLayoutFile($fileName);
+		return $windLayout;
+	}
+	
 	protected function setUp() {
 		parent::setUp();
-		
-	// TODO Auto-generated WindLayoutTest::setUp()
-	
-
 	}
 	
-	/**
-	 * Cleans up the environment after running a test.
-	 */
 	protected function tearDown() {
-		// TODO Auto-generated WindLayoutTest::tearDown()
-		
-
 		parent::tearDown();
-	}
-	
-	/**
-	 * Constructs the test case.
-	 */
-	public function __construct() {	// TODO Auto-generated constructor
 	}
 
 }
