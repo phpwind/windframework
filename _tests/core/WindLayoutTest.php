@@ -37,13 +37,13 @@ class WindLayoutTest extends BaseTestCase {
 	
 	public function providerWithLayoutFileError() {
 		$args = array();
-		$args[] = array('testData.layout1', '', 'htm', 'content');
+		$args[] = array('data.layout1', '', 'htm', 'content');
 		return $args;
 	}
 	
 	public function providerWithLayoutFile() {
 		$args = array();
-		$args[] = array('testData.layout', '', 'htm', 'content');
+		$args[] = array('data.layout', '', 'htm', 'content');
 		return $args;
 	}
 	
