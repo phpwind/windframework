@@ -64,7 +64,7 @@ final class WindHttpSocket extends WindHttp {
 		fputs($this->httpResource, $_request);
 	}
 	/* 
-	 * @see wind/component/http/base/WindHttp#response()
+	 * @see wind/component/http/base/WindHttp#resonseLine()
 	 */
 	public function response() {
 		$response = '';
@@ -72,6 +72,13 @@ final class WindHttpSocket extends WindHttp {
 			$response .= fgets($this->httpResource);
 		}
 		return $response;
+	}
+	
+	/**
+	 *  @see wind/component/http/base/WindHttp#response()
+	 */
+	public function resonseLine(){
+		return feof($this->httpResource) ? '' : fgets($this->httpResource);
 	}
 	
 	/* 

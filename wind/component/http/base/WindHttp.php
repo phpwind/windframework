@@ -130,6 +130,11 @@ abstract class WindHttp {
 	 */
 	public abstract function response();
 	/**
+	 *响应用户请求，只返回一行数据
+	 *@return string 
+	 */
+	public abstract function resonseLine();
+	/**
 	 * 
 	 * 关闭请求
 	 */

@@ -81,6 +81,13 @@ final class WindHttpStream extends WindHttp {
 	}
 	
 	/**
+	 *  @see wind/component/http/base/WindHttp#resonseLine()
+	 */
+	public function resonseLine(){
+		return feof($this->httpResource) ? '' : fgets($this->httpResource);
+	}
+	
+	/**
 	 * 释放资源
 	 */
 	public function close() {

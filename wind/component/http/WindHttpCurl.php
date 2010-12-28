@@ -50,6 +50,13 @@ final class WindHttpCurl extends WindHttp {
 	}
 	
 	/**
+	 * @see wind/component/http/base/WindHttp#resonseLine()
+	 */
+	public function resonseLine(){
+		return '';
+	}
+	
+	/**
 	 * 释放资源
 	 */
 	public function close() {
