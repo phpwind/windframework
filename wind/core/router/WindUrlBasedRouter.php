@@ -49,7 +49,10 @@ class WindUrlBasedRouter extends WindRouter {
 		if ($action && $action !== $this->rule[$keys[0]]) $url .= '&' . $keys[0] . '=' . $action;
 		if ($controller && $controller !== $this->rule[$keys[1]]) $url .= '&' . $keys[1] . '=' . $controller;
 		if ($module && $module !== $this->rule[$keys[2]]) $url .= '&' . $keys[2] . '=' . $module;
-		$url = $baseUrl . '/' . $script . '?' . trim($url, '&');
+		if ($url !== '')
+			$url = $baseUrl . '/' . $script . '?' . trim($url, '&');
+		else
+			$url = $baseUrl . '/' . $script;
 		return $url;
 	}
 	
