@@ -17,12 +17,11 @@
 class WindSmtp {
 	const CRLF = "\r\n";
 	protected $smtp = null;
-	protected $log = array();
 	protected $request = array();
 	protected $resonse = array();
 	
-	public function __construct($host, $port) {
-		$this->smtp = new WindSocket($host, $port);
+	public function __construct($host, $port,$timeout = 60) {
+		$this->smtp = new WindSocket($host, $port ,$timeout);
 	}
 	
 	/**
@@ -174,6 +173,7 @@ class WindSmtp {
 	 * @param string $request
 	 */
 	public function request($request) {
+		$this->request[] = $request.self::CRLF;
 		return $this->smtp->request($request . self::CRLF);
 	}
 	
