@@ -61,7 +61,8 @@ class WindErrorMessage extends WindMessage {
 	public function sendError() {
 		if (count($this->getError()) == 0) return;
 		if ($this->errorActionPath === '') {
-			$this->errorActionPath = C::getErrorMessage(IWindConfig::ERRORMESSAGE_ERRORACTION);
+			$this->errorActionPath = C::getErrorMessage(IWindConfig::ERROR_ERRORACTION);
+			$this->errorActionPath = $this->errorActionPath[IWindConfig::ERROR_CLASS];
 		}
 		if ($this->errorAction === '') {
 			$this->errorAction = 'run';
