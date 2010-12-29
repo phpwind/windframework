@@ -29,6 +29,7 @@ class WindViewer implements IWindViewer {
 	protected $layout = null;
 	
 	protected $var = array();
+	protected $varObj = array();
 	
 	/**
 	 * 获取模板信息
@@ -39,18 +40,18 @@ class WindViewer implements IWindViewer {
 		ob_start();
 		if (($segments = $this->parserLayout()) == null) {
 			$template = $this->getViewTemplate($template);
-			if (is_file($template)) @include $template;
+			include $template;
 		} else {
 			foreach ($segments as $value) {
 				$template = $this->getViewTemplate($value);
-				if (is_file($template)) @include $template;
+				include $template;
 			}
 		}
 		return ob_get_clean();
 	}
 	
 	/**
-	 * 理解输出模板内容
+	 * 立即输出模板内容
 	 * 
 	 * @param string $template
 	 */
@@ -60,17 +61,19 @@ class WindViewer implements IWindViewer {
 	
 	/**
 	 * 以对象方式访问模板变量
+	 * 
 	 * @param string $templateName
 	 */
-	public function getVarWithObject($templateName = '') {
-		$varName = $templateName . 'Object';
-		if (!isset($this->$varName)) {
-			$this->$varName = new stdClass();
-			foreach ($this->$templateName as $key => $value) {
-				$this->$varName->$key = $value;
+	public function getVarWithObject($templateName) {
+		if (!$templateName) return new stdClass();
+		if (!isset($this->varObj[$templateName])) {
+			$varObj = new stdClass();
+			foreach ($this->var[$templateName] as $key => $value) {
+				$varObj->$key = $value;
 			}
+			$this->varObj[$templateName] = $varObj;
 		}
-		return $this->$varName;
+		return $this->varObj[$templateName];
 	}
 	
 	/**
@@ -118,7 +121,7 @@ class WindViewer implements IWindViewer {
 		$this->templateName = $view->templateDefault;
 		$this->templatePath = $view->templateDir;
 		$this->templateExt = $view->templateExt;
-		$this->layout = $view->layout;
+		$this->setLayout($view->layout);
 		$this->view = $view;
 	}
 	
@@ -155,4 +158,17 @@ class WindViewer implements IWindViewer {
 		}
 		return L::getRealPath($templateName) . '.' . $templateExt;
 	}
+	
+	/**
+	 * @param WindLayout $layout the $layout to set
+	 * @author Qiong Wu
+	 */
+	public function setLayout($layout) {
+		if (!$layout) return;
+		if ($layout instanceof WindLayout)
+			$this->layout = $layout;
+		else
+			throw new WindException('set Layout type error.');
+	}
+
 }
