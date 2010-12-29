@@ -17,8 +17,8 @@ class WindUrlManager {
 	private $urlArgs;
 	
 	public function __construct($url = '', $urlArgs = '') {
-		$this->url = $url;
-		$this->urlArgs = $urlArgs;
+		$this->setUrl($url);
+		$this->setUrlArgs($urlArgs);
 	}
 	
 	public function buildUrl($callback = array(), $args = array()) {
