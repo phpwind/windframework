@@ -7,7 +7,7 @@
  */
 (!class_exists('PHPUnit_Framework_TestCase')) && include 'PHPUnit/Framework/TestCase.php';
 include 'WindBase.php';
-
+define('T_P', dirname(__FILE__));
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
