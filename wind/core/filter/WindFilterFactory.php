@@ -24,8 +24,8 @@ class WindFilterFactory extends WindFactory {
 	/**
 	 * 创建一个Filter
 	 *
-	 * @param WSystemConfig $config
-	 * @return WFilter
+	 * @param WindSystemConfig $config
+	 * @return WindFilter
 	 */
 	public function create($filters = array()) {
 		if ($this->state === true) return null;
@@ -38,7 +38,7 @@ class WindFilterFactory extends WindFactory {
 	/**
 	 * 创建一个filter
 	 *
-	 * @return WFilter
+	 * @return WindFilter
 	 */
 	public function createFilter() {
 		if ((int) $this->index >= count($this->filters)) return null;
@@ -47,7 +47,7 @@ class WindFilterFactory extends WindFactory {
 		if ($filterName && class_exists($filterName) && in_array('WindFilter', class_parents($filterName))) {
 			return new $filterName();
 		}
-		$this->createFilter();
+		return $this->createFilter();
 	}
 	
 	/**
@@ -69,7 +69,7 @@ class WindFilterFactory extends WindFactory {
 	public function setExecute() {
 		$args = func_get_args();
 		$callback = array_shift($args);
-		if (count($args) > 1) $this->args = $args;
+		if (count($args) > 0) $this->args = $args;
 		$this->callBack = $callback;
 	}
 	
@@ -88,6 +88,7 @@ class WindFilterFactory extends WindFactory {
 		if ($deleteIndex >= 0) {
 			array_pop($this->filters);
 		}
+		($deleteIndex < $this->index) && $this->index--;
 	}
 	
 	/**
@@ -118,6 +119,7 @@ class WindFilterFactory extends WindFactory {
 			$exchange != null && $this->filters[] = $exchange;
 		}
 		$this->filters[$addIndex] = array($filterName, $path);
+		($addIndex < $this->index) && $this->index ++;
 	}
 	
 	/**

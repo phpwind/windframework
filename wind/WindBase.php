@@ -39,14 +39,6 @@ class W {
 	}
 	
 	/**
-	 * 获得当前应用名字
-	 * @return string $name
-	 */
-	static public function getCurrentApp() {
-		return self::$_current;
-	}
-	
-	/**
 	 * 是否支持预编译
 	 * @return string
 	 */
@@ -87,7 +79,7 @@ class W {
 		if (file_exists($appConfigPath)) {
 			$appConfig = include $appConfigPath;
 			foreach ($appConfig as $appName => $appConfig) {
-				L::register($appName, $appConfig['rootPath']);
+				L::register($appConfig['rootPath'], $appName);
 			}
 		}
 	}
@@ -299,8 +291,8 @@ class L {
 				if (!self::isImported($key)) self::$_imports[$key] = $value;
 			}
 		} else {
-			L::import('COM:format.WindStringFormat');
-			return "L::perLoadInjection(" . WindStringFormat::varExport(L::getImports()) . ");";
+			L::import('COM:format.WindString');
+			return "L::perLoadInjection(" . WindString::varExport(L::getImports()) . ");";
 		}
 	}
 	
@@ -394,7 +386,7 @@ class C {
 	 * @param array $configSystem
 	 */
 	static public function init($configSystem) {
-		if (empty($configSystem)) {
+		if (empty($configSystem) || !is_array($configSystem)) {
 			throw new Exception('system config file is not exists.');
 		}
 		self::$config = $configSystem;
