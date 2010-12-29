@@ -6,7 +6,7 @@
  * @license 
  */
 
-class ErrorControllers extends WindErrorAction {
+class ErrorController extends WindErrorAction {
 	public function run() {
 		$this->setOutput(array('title' => '用户输入表单错误页面'));
 		echo $this->error->getError('username');

@@ -6,8 +6,6 @@
  * @license 
  */
 include('core/base/WindModule.php');
-include('core/WindMessage.php');
-include('core/WindErrorMessage.php');
 include('component/form/WindActionForm.php');
 
 class UserForm extends WindActionForm {
@@ -16,8 +14,7 @@ class UserForm extends WindActionForm {
 	protected $address = 'hangz';
 	protected $nick;
 	public function __construct() {
-		parent::__construct();
-		$this->setErrorAction('error');
+		$this->setErrorAction('error', 'showError');
 	}
 	public function nameValidate() {
 		if (strlen($this->name) < 6) {
@@ -37,23 +34,45 @@ class WindActionFormTest extends BaseTestCase {
 		$this->assertTrue($this->obj->getIsValidation());
 	}
 	public function testSetProperties() {
-		$array = array('name' => 'phpwind', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
+		$array = array('name' => 'php', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
 			'site' => 'www.phpwind.net');
 		$this->obj->setProperties($array);
 		$this->assertTrue($this->obj->getIsValidation());
-		$this->assertEquals('phpwind', $this->obj->name);
+		$this->assertEquals('php', $this->obj->name);
 		$this->assertEquals('phpwind.net', $this->obj->password);
 		$this->assertEquals('china', $this->obj->address);
 		$this->assertEquals('', $this->obj->site);
 	}
 	
-	public function testError() {
+	public function testValidationAndGetError() {
+		$error = $this->obj->getError();
+		$this->assertTrue(is_array($error) && count($error) == 0);
+		$this->obj->validation();
+		$error = $this->obj->getError();
+		$this->assertTrue(is_array($error) && ('name too short' == $error['nameError']) && count($error) == 1);
+	}
+	public function testAddError() {
+		$this->assertFalse($this->obj->addError(''));
 		$array = array('name' => 'php', 'password' => 'phpwind.net', 'address' => 'china', '_isValidate' => true, 
 			'site' => 'www.phpwind.net');
-		$this->obj->setProperties($array);
-		$this->obj->validation();
-		$error = WindErrorMessage::getInstance();
-		$this->assertEquals('name too short', $error->getError('nameError'));
+		$this->obj->addError($array);
+		$error = $this->obj->getError();
+		$this->assertTrue(is_array($error) && count($error) == 5);
+		$this->assertTrue('php' == $error['name'] && 'phpwind.net' == $error['password']);
+		$this->obj->addError('ppp');
+		$this->assertEquals('ppp', $this->obj->getError(0));
+	}
+	
+	public function testGetErrorAction() {
+		list($action, $actionClass) = $this->obj->getErrorAction();
+		$this->assertTrue($action == 'showError' && $actionClass = 'error');
+		$this->obj->setErrorAction('controller.ErrorController');
+		list($action, $actionClass) = $this->obj->getErrorAction();
+		$this->assertTrue($actionClass == 'controller.ErrorController' && $action = 'run');
+	}
+	public function testSetIsValidation() {
+		$this->obj->setIsValidation(false);
+		$this->assertFalse($this->obj->getIsValidation());
 	}
 }
 

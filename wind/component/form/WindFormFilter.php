@@ -45,7 +45,7 @@ class WindFormFilter extends WindFilter {
 		$formObject = $this->getFormHandle($request, $response);
 		if ($formObject === null) return;
 		$formObject->setProperties(array_merge($request->getGet(), $request->getPost()));
-		$this->validation($formObject);
+		$this->checkError($formObject, $request, $response);
 		$response->setData($formObject, get_class($formObject));
 	}
 	
@@ -54,10 +54,16 @@ class WindFormFilter extends WindFilter {
 	 * 如果有错误信息则发送错误信息
 	 * @param WindActionForm $formObject
 	 */
-	private function validation($formObject) {
+	private function checkError($formObject, $request, $response) {
 		if (!$formObject->getIsValidation()) return false;
 		$formObject->validation();
-		$formObject->sendError();
+		$error = $formObject->getError();
+		if (empty($error)) return false;
+		$errorMessage = WindErrorMessage::getInstance($request, $response);
+		$errorMessage->addError($error);
+		list($errorAction, $errorActionPath) = $formObject->getErrorAction();
+		$errorMessage->setErrorAction($errorAction, $errorActionPath);
+		$errorMessage->sendError();
 	}
 	
 	/**
@@ -94,9 +100,9 @@ class WindFormFilter extends WindFilter {
 	private function getFormConfig($response) {
 		$formConfigPath = $response->getData('WindSystemConfig')->getExtensionConfig('formConfig');
 		if (!$formConfigPath) return array();
-		$formConfigPath = L::getRealPath($formConfigPath); 
+		$formConfigPath = L::getRealPath($formConfigPath, 'xml'); 
 		L::import('WIND:component.config.WindConfigParser'); 
 		$parser = new WindConfigParser(); 
-		return $parser->parse('formConfig', $formConfigPath . '.xml'); 
+		return $parser->parse('formConfig', $formConfigPath); 
 	}
 }

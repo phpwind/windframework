@@ -11,7 +11,7 @@ class UserForm extends WindActionForm {
 	protected $password;
 	public function __construct() {
 		parent::__construct();
-		$this->setErrorAction('controllers.ErrorControllers');
+		$this->setErrorAction('controllers.ErrorController');
 		$this->setIsValidation(true);
 	}
 	/**

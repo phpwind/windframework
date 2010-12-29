@@ -15,11 +15,9 @@ L::import('WIND:core.base.WindModule');
  */
 abstract class WindActionForm extends WindModule {
 	private $isValidation = true;
-	private $error = null;
-	
-	public function __construct() {
-		$this->error = WindErrorMessage::getInstance();
-	}
+	private $error = array();
+	private $errorAction = '';
+	private $errorActionClass = '';
 	
 	/**
 	 * 设置是否开启验证
@@ -28,6 +26,7 @@ abstract class WindActionForm extends WindModule {
 	public function setIsValidation($isValidation) {
 		$this->isValidation = (boolean)$isValidation;
 	}
+	
 	/**
 	 * 是否开启验证
 	 * @return string
@@ -49,26 +48,6 @@ abstract class WindActionForm extends WindModule {
 	}
 	
 	/**
-	 * 添加验证中产生的错误信息
-	 * @param string $message
-	 */
-	public function addError($message, $key = '') {
-		$this->error->addError($message, $key);
-		return false;
-	}
-	
-	/**
-	 * 设置错误处理操作
-	 *
-	 */
-	public function setErrorAction($action = '') {
-		$this->error->setErrorAction($action);
-	}
-	public function sendError() {
-		$this->error->sendError();
-	}
-	
-	/**
 	 * 设置属性值
 	 * @param array $_params
 	 */
@@ -78,5 +57,51 @@ abstract class WindActionForm extends WindModule {
 			$this->$key = $value;
 		}
 		return true;
+	}
+	
+	/**
+	 * 添加验证中产生的错误信息
+	 * @param string $message
+	 */
+	public function addError($message, $key = '') {
+		if (!$message) return false;
+		if (is_array($message)) {
+			foreach ($message as $key => $value) {
+				$this->error[$key] = $value;
+			}
+		} else {
+			if ($key) {
+				$this->error[$key] = $message;
+			} else {
+				$this->error[] = $message;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 获得Error信息
+	 * @return array 错误信息
+	 */
+	public function getError($key = '') {
+		return ($key === '') ? $this->error : $this->error[trim($key)];
+	}
+	
+	/**
+	 * 设置错误处理操作
+	 * @param string $path 错误处理类路径
+	 * @param string $action 错误处理action，默认为run
+	 */
+	public function setErrorAction($path, $action = 'run') {
+		$this->errorAction = $action;
+		$this->errorActionClass = $path;
+	}
+	
+	/**
+	 * 返回错误处理操作的Action
+	 * @return string ErrorAction
+	 */
+	public function getErrorAction() {
+		return array($this->errorAction, $this->errorActionClass);
 	}
 }
