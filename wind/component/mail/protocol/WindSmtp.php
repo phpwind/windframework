@@ -153,6 +153,7 @@ class WindSmtp {
 	 * 关闭smtp服务器
 	 */
 	public function close() {
+		$this->quit();
 		$this->smtp->close();
 		$this->smtp = null;
 	}
