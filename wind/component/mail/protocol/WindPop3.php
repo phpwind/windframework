@@ -233,7 +233,7 @@ class WindPop3 {
 	}
 	
 	public function __destruct() {
-		if ($this->smtp) {
+		if ($this->pop3) {
 			$this->close();
 		}
 	}
