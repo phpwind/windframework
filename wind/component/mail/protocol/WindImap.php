@@ -127,13 +127,33 @@ class WindImap {
 	 */
 	const TO = 'To';
 	/**
+	 * @var string 抄送地址
+	 */
+	const CC = 'Cc';
+	/**
+	 * @var string 抄送地址
+	 */
+	const BCC = 'Bcc';
+	/**
+	 * @var string 发送地址
+	 */
+	const DELIVERED = 'Delivered-To';
+	/**
+	 * @var string 回复地址
+	 */
+	const REPLY = 'Reply-To';
+	/**
 	 * @var string 主题
 	 */
 	const SUBEJCT = 'Subject';
 	/**
-	 * @var string MIME
+	 * @var string MIME内容的类型
 	 */
 	const CONTENTTYPE = 'Content-Type';
+	/**
+	 * @var string 内容的传输编码方式 
+	 */
+	const CONTENTENCODE = 'Content-Transfer-Encoding';
 	/**
 	 * @var string MIME版本
 	 */
@@ -142,6 +162,15 @@ class WindImap {
 	 * @var string 消息ID
 	 */
 	const MESSAGEID = 'Message-Id';
+	
+	/**
+	 * @var string 传输路径
+	 */
+	const RECEIVED = 'Received';
+	/**
+	 * @var string 回复地址
+	 */
+	const RETURNPATH = 'Return-Path';
 	/*--------header中的field--------*/
 	
 	/*--------status命令中所用参数--------*/

@@ -121,9 +121,7 @@ class WindSmtp {
 		$data = str_replace("\r\n", "\n", $data);
 		$data = str_replace("\r", "\n", $data);
 		$lines = explode("\n", $data);
-		print_r($lines);
 		foreach ($lines as $line) {
-			echo $line . '<br/>';
 			if (0 === strpos($line, '.')) {
 				$line = '.' . $line;
 			}
@@ -192,7 +190,7 @@ class WindSmtp {
 			$this->resonse[] = $_response;
 			list($code, $info) = preg_split('/([\s-]+)/', $_response, 2);
 			(null === $code || !in_array($code, $expect)) && $this->error($info);
-			if (substr($_response, 3, 1) == " ") {
+			if (" " == substr($_response, 3, 1)) {
 				break;
 			}
 		}
