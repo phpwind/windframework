@@ -40,11 +40,6 @@ class WindConfigParser {
 	 * @var object $configParser
 	 */
 	private $configParser = null;
-	/**
-	 * 当前配置解析的格式
-	 * @var string $parserFormat
-	 */
-	private $parseFormat;
 	
 	/**
 	 * 配置文件解析出来的数据编码
@@ -65,7 +60,6 @@ class WindConfigParser {
 	 */
 	public function __construct($outputEncoding = 'UTF-8') {
 		$this->encoding = $outputEncoding;
-		$this->parseFormat = self::CONFIG_XML;
 	}
 	
 	/**
@@ -82,36 +76,73 @@ class WindConfigParser {
 	 * @param boolean $isApp     判断是应用解析还是组件配置解析
 	 * @return array             解析成功返回的数据
 	 */
-	public function parse($name, $configPath = '', $isApp = false) {
-		$cacheFileName = strtolower(trim($name)) . '.php';
-		if ($this->isCompiled($cacheFileName)) {
-			return include $this->buildCacheFilePath($cacheFileName);
+	public function parseConfig($name, $configPath = '') {
+		$cacheFileName = $this->buildCacheFilePath(trim($name) . '.php');
+		if (($config = $this->getCacheContent($cacheFileName)) && isset($config['wind'])) {
+			return $config['wind'];
 		}
 		$configPath = trim($configPath);
-		$this->parseFormat = $this->getConfigFormat($configPath);
-		$configResult = $this->doParser($configPath);
-		($isApp) && $configResult = $this->getAppConfig($configResult);
-		$this->saveConfigFile($cacheFileName, $configResult);
+		$parseFormat = $this->getConfigFormat($configPath);
+		$configResult = $this->doParser($configPath, $parseFormat);
+		$configResult = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $configResult);
+		$this->saveConfigFile($cacheFileName, array('wind' => $configResult));
 		return $configResult;
 	}
 	
 	/**
-	 * 如获得解析文件的合并项
+	 * 解析组件的配置文件
 	 * 
-	 * @param array $userConfig  用户配置的解析结果
-	 * @return array 			  返回用户配置和缺省配置解析后的结果
+	 * 从应用的配置缓存中读取$alias为key的缓存文件，
+	 * 如果该缓存文件不存在，则判断如果不是以追加的方式，并且已经存在该缓存文件，则返回该缓存文件
+	 * 如果都不存在，则执行解析，并根据是否追加的条件，进行追加或是新建。
+	 * 
+	 * @param string $currentAppName  当前应用的APPname-用于获得
+	 * @param string $alias 解析后保存的key名
+	 * @param string $configPath 待解析的文件路径
+	 * @param boolean $isAppand 标签，是否采用追加的方式
+	 * @return array 解析结果
 	 */
-	private function getAppConfig($userConfig) {
-		return $this->mergeConfig($this->doParser($this->getWindConfigPath()), $userConfig);
+	public function parse($currentAppName, $alias, $configPath, $isAppand = true) {
+		if (!($alias = trim($alias))) throw new WindException('The alia name must be given!');
+		$cacheFileName = $this->buildCacheFilePath(trim($currentAppName) . '.php');
+		$config = array();
+		if (($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
+			return $config[$alias];
+		}
+		if (!$isAppand && ($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php')))) {
+			return $aliasConfig;
+		}
+		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
+		$configResult = $config[$alias] = $this->doParser($configPath, $this->getConfigFormat($configPath));
+		if ((count($config) == 1) || !$isAppand) {
+			$cacheFileName = $this->buildCacheFilePath($alias . '.php');
+			$config = $config[$alias];
+		}
+		$this->saveConfigFile($cacheFileName, $config);
+		return $configResult;
 	}
 	
+	/**
+	 * 获得缓存文件内容
+	 * 
+	 * @param string $file 缓存文件名
+	 * @return array 缓存文件内容
+	 */
+	private function getCacheContent($file, $ifCheck = true) {
+		$config = array();
+		if (is_file($file)) {
+			$config = include($file);
+			($ifCheck && !$this->isCompiled()) && $config = array();
+		}
+		return $config;
+	}
 	/**
 	 * 创建配置文件解析器
 	 * 
 	 * @access private
 	 */
-	private function createParser() {
-		switch ($this->parseFormat) {
+	private function createParser($type) {
+		switch ($type) {
 			case self::CONFIG_XML:
 				L::import("WIND:component.parser.WindXmlParser");
 				return new WindXmlParser('1.0', $this->encoding);
@@ -138,13 +169,13 @@ class WindConfigParser {
 	 * @param string $configFile  解析的文件路径
 	 * @return array			    返回解析结果
 	 */
-	private function doParser($configFile) {
+	private function doParser($configFile, $type) {
 		if (!$configFile) return array();
-		if ($this->parseFormat == 'PHP') {
+		if ($type == 'PHP') {
 			return include($configFile);
 		}
 		if ($this->configParser === null) {
-			$this->configParser = $this->createParser();
+			$this->configParser = $this->createParser($type);
 		}
 		return $this->configParser->parse($configFile);
 	}
@@ -215,9 +246,8 @@ class WindConfigParser {
 	 * @param string $cacheFile  缓存文件路径
 	 * @return boolean  		 false:需要进行解析， true：不需要进行解析，直接读取缓存文件
 	 */
-	private function isCompiled($cacheFile) {
-		if (IS_DEBUG || !W::ifCompile() || !is_file($this->buildCacheFilePath($cacheFile))) 
-		    return false;
+	private function isCompiled() {
+		if (IS_DEBUG || !W::ifCompile()) return false;
 		return true;
 	}
 	
@@ -259,16 +289,17 @@ class WindConfigParser {
 	private function saveConfigFile($filename, $data) {
 		if (!W::ifCompile() || !$filename || !$data) return false;
 		L::import('WIND:component.Common');
-		return Common::saveData($this->buildCacheFilePath($filename), $data);
+		return Common::saveData($filename, $data);
 	}
 	
 	/**
 	 * 获得默认配置文件的路径
 	 * 
+	 * @param string $parseFormat 后缀
 	 * @return string 	获得默认配置文件的路径
 	 */
-	private function getWindConfigPath() {
-		return WIND_PATH . $this->windConfig . '.' . strtolower($this->parseFormat);
+	private function getWindConfigPath($parseFormat) {
+		return WIND_PATH . $this->windConfig . '.' . strtolower($parseFormat);
 	}
 	
 	/**
@@ -278,7 +309,7 @@ class WindConfigParser {
 	 * @return string 			 返回缓存文件的$fileName的绝对路径
 	 */
     private function buildCacheFilePath($fileName) {
-   		return COMPILE_PATH . D_S . strtolower($fileName);
+   		return trim(COMPILE_PATH, '/') . D_S . strtolower($fileName);
     }
     
 	/**
@@ -288,5 +319,13 @@ class WindConfigParser {
 	 */
 	private function getConfigFormatList() {
 		return array(self::CONFIG_XML, self::CONFIG_PHP, self::CONFIG_INI, self::CONFIG_PROPERTIES);
+	}
+	
+	/**
+	 * 析构函数
+	 * 
+	 */
+	public function __destruct() {
+		$this->configParser = null;
 	}
 }

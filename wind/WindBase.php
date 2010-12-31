@@ -34,8 +34,7 @@ class W {
 	static public function application($currentName, $config = '') {
 		self::init();
 		$config = self::initConfig($currentName, $config);
-		$frontController = new WindFrontController($currentName, $config);
-		return $frontController;
+		return new WindFrontController($currentName, $config);
 	}
 	
 	/**
@@ -64,7 +63,7 @@ class W {
 		if (!is_array($config)) {
 			L::import('COM:config.WindConfigParser');
 			$configParser = new WindConfigParser();
-			$config = $configParser->parse($currentName, $config, true);
+			$config = $configParser->parseConfig($currentName, $config);
 		}
 		C::init($config);
 		L::register(C::getRootPath(), $currentName);

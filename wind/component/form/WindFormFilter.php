@@ -103,6 +103,6 @@ class WindFormFilter extends WindFilter {
 		$formConfigPath = L::getRealPath($formConfigPath, 'xml'); 
 		L::import('WIND:component.config.WindConfigParser'); 
 		$parser = new WindConfigParser(); 
-		return $parser->parse('formConfig', $formConfigPath); 
+		return $parser->parse('', 'formConfig', $formConfigPath); 
 	}
 }
