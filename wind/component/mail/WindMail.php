@@ -369,6 +369,18 @@ class WindMail {
 	}
 	
 	/**
+	 * 取得邮件主题
+	 * @return array
+	 */
+	public function getSubject() {
+		if(isset($this->mailHeader[self::SUBJECT])){
+			$subject = $this->mailHeader[self::SUBJECT];
+			return is_array($subject) ? array_shift($subject) : $subject;
+		}
+		return '';
+	}
+	
+	/**
 	 * 取得边界符
 	 * @return array
 	 */

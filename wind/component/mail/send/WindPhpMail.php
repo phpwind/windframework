@@ -16,4 +16,19 @@
  */
 class WindPhpMail{
 	
+	public function send(WindMail $mail){
+		$recipients = $mail->getRecipients();
+		$to = $this->getToAsString($recipients);
+		return mail($to,$mail->getSubject(),$mail->createBody(),$mail->createHeader());
+	}
+	
+	public function getToAsString($recipients = array()){
+		$to = '';
+		foreach($recipients as $key=>$value){
+			$_value = is_string($key) ? $key.' '.$_value : $_value;
+			$to .= $to ? ', '.$_value : $_value;
+		}
+		return $to;
+		
+	}
 }
