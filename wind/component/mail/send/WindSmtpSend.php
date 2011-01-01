@@ -7,6 +7,13 @@
  * tags
  */
 
+/**
+ * 邮件发送
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ */
 class WindSmtpSend{
 	/**
 	 * @var WindSmtp 邮件发送服务器
