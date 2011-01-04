@@ -101,27 +101,15 @@ abstract class WindSqlBuilder {
 	 */
 	public $connection = null;
 	
-	public function __construct($config = array(),$driverConfig=array()){
-		if($config && (is_array($config) || is_string($config))){
-			$config = is_array($config) ? $config : C::getDatabaseConnection($config);
-			$driverConfig = $driverConfig ? $driverConfig : C::getDataBaseDriver($config[IWindDbConfig::CONN_DRIVER]);
-			$driverClass = $driverConfig[IWindDbConfig::DRIVER_CLASS]; 
-			if(empty($driverClass)){
-				throw new WindSqlException(WindSqlException::DB_DRIVER_NOT_EXIST);
-			}
-			if(strtolower(str_replace(array('Wind','Builder'),'',get_class($this))) != strtolower($config[IWindDbConfig::CONN_DRIVER])){
+	/**
+	 * @param string $adapter
+	 */
+	public function __construct($adapter = null){
+		if($adapter){
+			if(false === ($adapter instanceof WindDbAdapter) || strtr(get_class($this),array('Builder'=>'')) != get_class($adapter)){
 				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
-			L::import ($driverClass);
-			$class = substr ( $driverClass, strrpos ( $driverClass, '.' ) + 1 );
-			$this->connection = new $class($config);
-
-		}
-		if($config && is_object($config)){
-			if(str_replace('Builder','',get_class($this)) != get_class($config)){
-				throw new WindSqlException(WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
-			}
-			$this->connection = $config;
+			$this->connection = $adapter;
 		}
 	}
 	/**
@@ -262,7 +250,7 @@ abstract class WindSqlBuilder {
 	 * 过滤分组
 	 * @param string|array $having 过滤条件
 	 * @param string|array $value  条件对应的值
-	 * @param string|array $group  是否启用分组
+	 * @param boolean $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
 	public  function having($having,$value=array(),$group=false){
@@ -270,9 +258,9 @@ abstract class WindSqlBuilder {
 	}
 	/**
 	 * 过滤分组
-	 * @param unknown_type $having 过滤条件
-	 * @param unknown_type $value  条件对应的值
-	 * @param unknown_type $group  是否启用分组
+	 * @param string|array $having 过滤条件
+	 * @param string|array $value  条件对应的值
+	 * @param boolean $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
 	public function orHaving($having,$value=array(),$group=false){
@@ -307,26 +295,7 @@ abstract class WindSqlBuilder {
 	public function data($data){
 		$params = func_num_args();
 		$data = $params >1 ? func_get_args() : func_get_arg(0);
-		$key = array_keys ( $data );
-		$tmp_data = $field = array ();
-		if (is_string ( $key [0] )) {
-			$rows = count ( $data [$key [0]] );
-			for($i = 0; $i < $rows; $i ++) {
-				foreach ( $data as $key => $value ) {
-					$fvalues = array_values($field);
-					if(!in_array($key,$fvalues)){
-						$field [] = $key;
-					}
-					if(is_array($value)){
-						$tmp_data [$i] [] = $value [$i];
-						unset ( $data [$key] [$i] );
-					}else{
-						$tmp_data [] = $value;
-					}
-				}
-			}
-		};
-		$data = $tmp_data ? $tmp_data : $data;
+		list($data,$field) = $this->parseData($data);
 		$field && $this->field($field);
 		return $this->assembleSql($data,self::DATA);
 	}
@@ -339,164 +308,6 @@ abstract class WindSqlBuilder {
 	public function set($field,$value=array()){
 		$realSet = $this->parsePlaceHolder($field,$value,',');
 		return $this->assembleSql($realSet,self::SET);
-	}
-	
-	
-/**
-	 * 组装sql语句
-	 * @param mixed $assembleValue 组装条件
-	 * @param mixed $assembleType  组装类型
-	 * @return WindMySqlBuilder
-	 */
-	private function assembleSql($assembleValue,$assembleType){
-		if(empty($assembleValue)){
-			return $this;
-		}
-		if(!isset($this->sql[$assembleType]) || empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
-			$this->sql[$assembleType] = array();
-		}
-		$assembleValue = is_array($assembleValue) ? $assembleValue : array($assembleValue);
-		foreach($assembleValue as $key=>$value){
-			if(is_string($key)){
-				$this->sql[$assembleType][$key] = $value;
-			}
-			if(is_int($key)){
-				$this->sql[$assembleType][] = $value;
-			}
-		}
-		return $this;
-	}
-	
-	/**
-	 * 组装where语句
-	 * @param mixed $where 条件
-	 * @param mixed $whereType 类型（where or having）
-	 * @param mixed $value  值
-	 * @param mixed $logic  是否是逻辑条件
-	 * @param mixed $group  是否提供分组
-	 * @return WindMySqlBuilder
-	 */
-	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
-		$_where = '';
-		if(!in_array($whereType,array(self::WHERE,self::HAVING))){
-			throw new WindSqlException(WindSqlException::DB_WHERE_ERROR);
-		}
-		$where = $this->trueWhere($where,$value,$logic);
-		if($group && in_array($group,self::$group)){
-			$_where = self::$group[$group];
-		}
-		if($this->sql[$whereType]){
-			if($logic){
-				$_where .= self::SQL_AND.$where;
-			}else{
-				$_where .= self::SQL_OR.$where;
-			}
-		}else{
-			$_where[] = $where;
-		}
-		return $this->assembleSql($_where,$whereType);
-	}
-	
-	/**
-	 * 组装要对指定表进行操作的字段
-	 * @param mixed $fields 表字段
-	 * @param mixed $table 表名
-	 * @param mixed $table_alias 表别名
-	 * @return WindMySqlBuilder
-	 */
-	private function assembleFieldByTable($fields,$table,$table_alias=''){
-		if($fields && (is_string($fields) || is_array($fields))){
-			$fields = is_array($fields) ? $fields : explode(',',$fields);
-			foreach($fields as $key=>$field){
-				$fields[$key] = (false === ($pos = strpos('.',$field))) ? $table_alias ? $table_alias.'.'.$field : $table.'.'.$field :$field;
-			}
-			$this->assembleSql($fields,self::FIELD);
-		}
-		return $this;
-	}
-
-	/**
-	 * 组装联接sql语句
-	 * @param mixed $type 联接类型
-	 * @param mixed $table 表名
-	 * @param mixed $joinWhere 联接接条件
-	 * @param mixed $table_alias 表别名
-	 * @param mixed $fields 字段
-	 * @param mixed $schema 数据库
-	 * @return WindMySqlBuilder
-	 */
-	private  function assembleJoin($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
-		if(!in_array($type,array_keys(self::$joinType))){
-			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
-		}
-		$fields && $this->assembleFieldByTable($fields,$table,$table_alias);
-		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
-	}
-	
-	/**
-	 * 解析占位符
-	 * @param mixed $text 包含占位符的文本
-	 * @param mixed $replace 将占位符替换成指定的值
-	 * @param mixed $separators 分隔符
-	 * @return mixed 返回解析后的文本
-	 */
-	private function parsePlaceHolder($text,$replace=array(),$separators=','){
-		if($text  && is_array($text)){
-			foreach($text as $key=>$_where){
-				if(is_int($key)){
-					$text[$key] = strpos($_where,'?') ? str_replace('?',$this->escapeString($replace[$key]),$_where) : $_where;
-				}
-				if(is_string($key)){
-					$value = $key.'='. $this->escapeString($_where);
-					$text[] = $value;
-					unset($text[$key]);
-				}
-			}
-			$text = implode($separators ? $separators : ',',$text);
-		}
-		if($text  && is_string($text)){
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches)){
-				$replace = is_array($replace) ? $replace : array($replace);
-				foreach($matches[1] as $key=>$match){
-					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
-						$replace[$key] = is_array($replace[$key]) ? $replace[$key] : array($replace[$key]);
-						array_walk ( $replace[$key], array ($this, 'escapeString' ) );
-						$_replace = $match.self::LG.implode ( ',', $replace[$key] ).self::RG;
-					}else{
-						$_replace = $match.$this->escapeString($replace[$key]);
-					}
-					$text = str_replace($matches[0][$key],$_replace,$text);
-				}
-			}
-			if(preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches)){
-				if(!is_array($replace)){
-					$tmp = explode('=',$replace);
-					$replace = array($tmp[0]=>$tmp[1]);
-				}
-				foreach($matches[1] as $key=>$match){
-					$_trueKey = $matches[3][$key];
-					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
-						array_walk ( $replace[$_trueKey], array ($this, 'escapeString' ) );
-						$_replace = $match.self::LG.implode ( ',', $replace[$_trueKey] ).self::RG;
-					}else{
-						$_replace = $match.$this->escapeString($replace[$_trueKey]);
-					}
-					$text = str_replace($matches[0][$key],$_replace,$text);
-				}
-			}
-		}
-		return $text;
-	}
-	
-	/**
-	 * 返回真实的where条件
-	 * @param mixed $where 包含占位符的where条件
-	 * @param mixed $value where条件中占位符对应的值
-	 * @param boolean $logic 逻辑条件
-	 * @return mixed
-	 */
-	private function trueWhere($where,$value = array(),$logic = true){
-		return $this->parsePlaceHolder($where,$value, $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR));
 	}
 	
 	/**
@@ -894,5 +705,231 @@ abstract class WindSqlBuilder {
 	
 	public function getSql($type=''){
 		return $type ? $this->sql[$type] : $this->sql;
+	}
+	
+	private function parseData($data = array()){
+		if(empty($data) || !is_array($data)){
+			throw new WindSqlException();
+		}
+		$key = array_keys ( $data );
+		if(!is_string($key[0])){
+			return array($data,array());
+		}
+		$tmp_data = $field = array ();
+		$rows = count ( $data [$key [0]] );
+		for($i = 0; $i < $rows; $i ++) {
+			foreach ( $data as $key => $value ) {
+				$fvalues = array_values($field);
+				if(!in_array($key,$fvalues)){
+					$field [] = $key;
+				}
+				if(is_array($value)){
+					$tmp_data [$i] [] = $value [$i];
+					unset ( $data [$key] [$i] );
+				}else{
+					$tmp_data [] = $value;
+				}
+			}
+		}
+		$data = $tmp_data ? $tmp_data : $data;
+		return array($data,$field);
+	}
+	
+	/**
+	 * 返回真实的where条件
+	 * @param mixed $where 包含占位符的where条件
+	 * @param mixed $value where条件中占位符对应的值
+	 * @param boolean $logic 逻辑条件
+	 * @return mixed
+	 */
+	private function trueWhere($where,$value = array(),$logic = true){
+		return $this->parsePlaceHolder($where,$value, $this->sqlFillSpace ($logic ? self::SQL_AND : self::SQL_OR));
+	}
+	
+/**
+	 * 组装sql语句
+	 * @param mixed $assembleValue 组装条件
+	 * @param mixed $assembleType  组装类型
+	 * @return WindMySqlBuilder
+	 */
+	private function assembleSql($assembleValue,$assembleType){
+		if(empty($assembleValue)){
+			return $this;
+		}
+		if(!isset($this->sql[$assembleType]) || empty($this->sql[$assembleType]) || !is_array($this->sql[$assembleType])){
+			$this->sql[$assembleType] = array();
+		}
+		$assembleValue = is_array($assembleValue) ? $assembleValue : array($assembleValue);
+		foreach($assembleValue as $key=>$value){
+			if(is_string($key)){
+				$this->sql[$assembleType][$key] = $value;
+			}
+			if(is_int($key)){
+				$this->sql[$assembleType][] = $value;
+			}
+		}
+		return $this;
+	}
+	
+	/**
+	 * 组装where语句
+	 * @param mixed $where 条件
+	 * @param mixed $whereType 类型（where or having）
+	 * @param mixed $value  值
+	 * @param mixed $logic  是否是逻辑条件
+	 * @param mixed $group  是否提供分组
+	 * @return WindMySqlBuilder
+	 */
+	private function assembleWhere($where,$whereType=self::WHERE,$value=array(),$logic = true,$group = false){
+		$_where = '';
+		if(!in_array($whereType,array(self::WHERE,self::HAVING))){
+			throw new WindSqlException(WindSqlException::DB_WHERE_ERROR);
+		}
+		$where = $this->trueWhere($where,$value,$logic);
+		if($group && in_array($group,self::$group)){
+			$_where = self::$group[$group];
+		}
+		if($this->sql[$whereType]){
+			if($logic){
+				$_where .= self::SQL_AND.$where;
+			}else{
+				$_where .= self::SQL_OR.$where;
+			}
+		}else{
+			$_where[] = $where;
+		}
+		return $this->assembleSql($_where,$whereType);
+	}
+	
+	/**
+	 * 组装要对指定表进行操作的字段
+	 * @param mixed $fields 表字段
+	 * @param mixed $table 表名
+	 * @param mixed $table_alias 表别名
+	 * @return WindMySqlBuilder
+	 */
+	private function assembleFieldByTable($fields,$table,$table_alias=''){
+		if($fields && (is_string($fields) || is_array($fields))){
+			$fields = is_array($fields) ? $fields : explode(',',$fields);
+			foreach($fields as $key=>$field){
+				$fields[$key] = (false === ($pos = strpos('.',$field))) ? $table_alias ? $table_alias.'.'.$field : $table.'.'.$field :$field;
+			}
+			$this->assembleSql($fields,self::FIELD);
+		}
+		return $this;
+	}
+
+	/**
+	 * 组装联接sql语句
+	 * @param mixed $type 联接类型
+	 * @param mixed $table 表名
+	 * @param mixed $joinWhere 联接接条件
+	 * @param mixed $table_alias 表别名
+	 * @param mixed $fields 字段
+	 * @param mixed $schema 数据库
+	 * @return WindMySqlBuilder
+	 */
+	private  function assembleJoin($type,$table,$joinWhere,$table_alias='',$fields='',$schema =''){
+		if(!in_array($type,array_keys(self::$joinType))){
+			throw new WindSqlException(WindSqlException::DB_JOIN_TYPE_ERROR);
+		}
+		$fields && $this->assembleFieldByTable($fields,$table,$table_alias);
+		return $this->assembleSql(array($table=>array($type,$joinWhere,$table_alias,$schema)),self::JOIN);
+	}
+	
+	/**
+	 * 解析占位符
+	 * @param mixed $text 包含占位符的文本
+	 * @param mixed $replace 将占位符替换成指定的值
+	 * @param mixed $separators 分隔符
+	 * @return mixed 返回解析后的文本
+	 * @todo 重构占位符
+	 */
+	private function parsePlaceHolder($text,$replace=array(),$separators=','){
+		if($text  && is_array($text)){
+			return $this->parseArrayPlaceHolder($text,$replace,$separators);
+		}
+		if($text  && is_string($text)){
+			list($ifmatch,$text) = $this->parseUnFixedPlaceHolder($text,$replace,$separators);
+			if($ifmatch){
+				return $text;
+			}else{
+				list(,$text) = $this->parseFixedPlaceHolder($text,$replace,$separators);
+			}
+			return $text;
+		}
+		return $text;
+	}
+	/**
+	 * 按数组方式解析占位符
+	 * @param mixed $text 包含占位符的文本
+	 * @param mixed $replace 将占位符替换成指定的值
+	 * @param mixed $separators 分隔符
+	 * @return mixed 返回解析后的文本
+	 */
+	private function parseArrayPlaceHolder($text,$replace=array(),$separators=','){
+		if(!is_array($text)){
+			return $text;
+		}
+		foreach($text as $key=>$_where){
+			if(is_int($key)){
+				$text[$key] = strpos($_where,'?') ? str_replace('?',$this->escapeString($replace[$key]),$_where) : $_where;
+			}
+			if(is_string($key)){
+				$value = $key.'='. $this->escapeString($_where);
+				$text[] = $value;
+				unset($text[$key]);
+			}
+		}
+		return implode($separators ? $separators : ',',$text);	
+	}
+	/**
+	 * 按固定的方式解析占位符
+	 * @param mixed $text 包含占位符的文本
+	 * @param mixed $replace 将占位符替换成指定的值
+	 * @param mixed $separators 分隔符
+	 * @return mixed 返回解析后的文本
+	 */
+	private function parseFixedPlaceHolder($text,$replace=array(),$separators=','){
+		if(0 < (int)($ifmatch = preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(\?)/i',$text,$matches))){
+			$replace = is_array($replace) ? $replace : array($replace);
+			foreach($matches[1] as $key=>$match){
+				if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+					$replace[$key] = is_array($replace[$key]) ? $replace[$key] : array($replace[$key]);
+					array_walk ( $replace[$key], array ($this, 'escapeString' ) );
+					$_replace = $match.self::LG.implode ( $separators, $replace[$key] ).self::RG;
+				}else{
+					$_replace = $match.$this->escapeString($replace[$key]);
+				}
+				$text = strtr($text,array($matches[0][$key]=>$_replace));
+			}
+		}
+		return array($ifmatch,$text);
+	}
+	/**
+	 * 按灵活的方式解析占位符
+	 * @param mixed $text 包含占位符的文本
+	 * @param mixed $replace 将占位符替换成指定的值
+	 * @param mixed $separators 分隔符
+	 * @return mixed 返回解析后的文本
+	 */
+	private function parseUnFixedPlaceHolder($text,$replace=array(),$separators=','){
+		if(0 < (int)($ifmatch = preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i',$text,$matches))){
+				if(!is_array($replace)){
+					$tmp = explode('=',$replace);
+					$replace = array($tmp[0]=>$tmp[1]);
+				}
+				foreach($matches[1] as $key=>$match){
+					$_trueKey = $matches[3][$key];
+					if(in_array(strtoupper(trim($matches[2][$key])),array('IN','NOT IN'))){
+						array_walk ( $replace[$_trueKey], array ($this, 'escapeString' ) );
+						$_replace = $match.self::LG.implode ( $separators, $replace[$_trueKey] ).self::RG;
+					}else{
+						$_replace = $match.$this->escapeString($replace[$_trueKey]);
+					}
+					$text = strtr($text,array($matches[0][$key]=>$_replace));
+				}
+		}
+		return array($ifmatch,$text);
 	}
 }

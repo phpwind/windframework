@@ -173,17 +173,18 @@ abstract class WindDbAdapter {
 	 * 返回sqlBuilder生成器
 	 * @param array builderConfig 生成器配置
 	 * @return WindSqlBuilder
+	 * @todo 重构获取sqlbuilder方式
 	 */
 	final public  function getSqlBuilder($builderConfig = array()){
 		if(empty($this->sqlBuilder)){
 			$driverConfig = C::getDataBaseDriver($this->config[IWindDbConfig::CONN_DRIVER]);
 			$builderConfig = $builderConfig ? $builderConfig :  C::getDataBaseBuilder($driverConfig[IWindDbConfig::DRIVER_BUILDER]);
-			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS]; 
-			if(empty($builderClass)){
-				throw new WindSqlException(WindSqlException::DB_BUILDER_NOT_EXIST);
-			}
+			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS];
 			L::import ($builderClass);
 			$class = substr ( $builderClass, strrpos ( $builderClass, '.' ) + 1 );
+			if(false === class_exists($class)){
+				throw new WindSqlException(WindSqlException::DB_BUILDER_NOT_EXIST);
+			}
 			$this->sqlBuilder = new $class($this);
 		}
 		return $this->sqlBuilder;
