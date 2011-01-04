@@ -82,25 +82,25 @@ class WindConfigParserTest extends BaseTestCase {
 	}
 	public function testParserWithFileException() {
 		try	{
-		  $result = $this->parser->parse('', 'testF', '');
+		  $result = $this->parser->parse('testF', '');
 		} catch(Exception $e) {
 			$this->assertTrue($e instanceof WindException);
 		}
 	}
 	public function testParserWithAppend() {
-		$result = $this->parser->parse('empty', 'testF', T_P . '/data/formConfig.xml');
+		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml', 'empty');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}
 
 	public function testParserWithHasAppend() {
-		$result = $this->parser->parse('empty', 'testF', T_P . '/data/formConfig.xml');
+		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml', 'empty');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}
 	
 	public function testParserWithNoAppend() {
-		$result = $this->parser->parse('test', 'testF', T_P . '/data/formConfig.xml', false);
+		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}

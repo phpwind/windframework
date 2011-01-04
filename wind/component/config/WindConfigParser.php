@@ -96,25 +96,23 @@ class WindConfigParser {
 	 * 如果该缓存文件不存在，则判断如果不是以追加的方式，并且已经存在该缓存文件，则返回该缓存文件
 	 * 如果都不存在，则执行解析，并根据是否追加的条件，进行追加或是新建。
 	 * 
-	 * @param string $currentAppName  当前应用的APPname-用于获得
 	 * @param string $alias 解析后保存的key名
 	 * @param string $configPath 待解析的文件路径
-	 * @param boolean $isAppand 标签，是否采用追加的方式
+	 * @param string $appandName  采用最佳的方法追加到$appandName指定的文件中
 	 * @return array 解析结果
 	 */
-	public function parse($currentAppName, $alias, $configPath, $isAppand = true) {
+	public function parse($alias, $configPath, $appandName = '') {
 		if (!($alias = trim($alias))) throw new WindException('The alia name must be given!');
-		$cacheFileName = $this->buildCacheFilePath(trim($currentAppName) . '.php');
 		$config = array();
-		if (($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
+		trim($appandName) && $cacheFileName = $this->buildCacheFilePath(trim($appandName) . '.php');
+		if ($appandName && ($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
 			return $config[$alias];
-		}
-		if (!$isAppand && ($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php')))) {
+		} elseif ($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php'))) {
 			return $aliasConfig;
 		}
 		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
 		$configResult = $config[$alias] = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if ((count($config) == 1) || !$isAppand) {
+		if ((count($config) == 1)) {
 			$cacheFileName = $this->buildCacheFilePath($alias . '.php');
 			$config = $config[$alias];
 		}
