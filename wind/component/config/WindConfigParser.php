@@ -76,16 +76,15 @@ class WindConfigParser {
 	 * @param boolean $isApp     判断是应用解析还是组件配置解析
 	 * @return array             解析成功返回的数据
 	 */
-	public function parseConfig($alias, $configPath = '') {
-		$cacheFileName = $this->buildCacheFilePath(trim($alias) . '.php');
-		if (($config = $this->getCacheContent($cacheFileName)) && isset($config['wind'])) {
+	public function parseConfig($configPath = '', $alias = '') {
+		if ($alias && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($alias) . '.php'))) && isset($config['wind'])) {
 			return $config['wind'];
 		}
 		$configPath = trim($configPath);
 		$parseFormat = $this->getConfigFormat($configPath);
 		$configResult = $this->doParser($configPath, $parseFormat);
 		$configResult = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $configResult);
-		$this->saveConfigFile($cacheFileName, array('wind' => $configResult));
+		$alias && $this->saveConfigFile($this->buildCacheFilePath(trim($alias) . '.php'), array('wind' => $configResult));
 		return $configResult;
 	}
 
@@ -93,31 +92,41 @@ class WindConfigParser {
 	 * 解析组件的配置文件
 	 * 
 	 * 从应用的配置缓存中读取$alias为key的缓存文件，
+	 * 如果用户没有传入别名，则每次都执行解析
+	 * 如果用户传入别名，判断是否传入了追加的文件名
+	 * 如果传入了追加的文件名，则判断该文件的内容中是否存在以别名为key的值
+	 * 如果有该值则返回该值，否则继续
+	 * 如果没有传入追加的文件名，则判断该别名命名的缓存文件是否存在
+	 * 如果存在则返回该文件内容，否则继续
+	 * 如果没有传入别名，则继续
+	 * 
 	 * 如果该缓存文件不存在，则判断如果不是以追加的方式，并且已经存在该缓存文件，则返回该缓存文件
 	 * 如果都不存在，则执行解析，并根据是否追加的条件，进行追加或是新建。
 	 * 
-	 * @param string $alias 解析后保存的key名
 	 * @param string $configPath 待解析的文件路径
-	 * @param string $appandName  采用最佳的方法追加到$appandName指定的文件中
+	 * @param string $alias 解析后保存的key名
+	 * @param string $append  采用最佳的方法追加到$appandName指定的文件中
 	 * @return array 解析结果
 	 */
-	public function parse($alias, $configPath, $appand = '') {
-		if (!($alias = trim($alias))) throw new WindException('The alia name must be given!');
+	public function parse($configPath, $alias = '', $append = '') {
 		$config = array();
-		trim($appand) && $cacheFileName = $this->buildCacheFilePath(trim($appand) . '.php');
-		if ($appand && ($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
-			return $config[$alias];
-		} elseif ($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php'))) {
-			return $aliasConfig;
+		if (($alias = trim($alias))) {
+			if ($append && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($append) . '.php'), false)) && isset($config[$alias])) {
+				return $config[$alias];
+			}
+			if (($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php'))) && isset($aliasConfig[$alias])) {
+				return $aliasConfig[$alias];
+			}
 		}
+		
 		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
-		$configResult = $config[$alias] = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if ((count($config) == 1)) {
-			$cacheFileName = $this->buildCacheFilePath($alias . '.php');
-			$config = $config[$alias];
-		}
+		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
+		if (!$alias) return $result;
+		$config[$alias] = $result;
+		$cacheFileName = $this->buildCacheFilePath($alias . '.php');
+		(trim($append)) && $cacheFileName = $this->buildCacheFilePath(trim($append) . '.php');
 		$this->saveConfigFile($cacheFileName, $config);
-		return $configResult;
+		return $result;
 	}
 
 	/**
@@ -275,7 +284,7 @@ class WindConfigParser {
 	private function checkCanMerge($value) {
 		return in_array(strtolower(trim($value)), $this->mergeValue);
 	}
-
+	
 	/**
 	 * 保存成文件
 	 * 
@@ -308,7 +317,7 @@ class WindConfigParser {
 	private function buildCacheFilePath($fileName) {
 		return trim(COMPILE_PATH, '/') . D_S . strtolower($fileName);
 	}
-
+	
 	/**
 	 * 获得支持解析的配置文件格式的白名单
 	 * 

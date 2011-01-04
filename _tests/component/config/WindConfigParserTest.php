@@ -29,20 +29,20 @@ class WindConfigParserTest extends BaseTestCase {
 
 	public function testParserConfigWithErrorConfig() {
 		try {
-			$result = $this->parser->parseConfig('testF', T_P . '/data/formConfig.dat');
+			$result = $this->parser->parseConfig(T_P . '/data/formConfig.dat', 'testF');
 		} catch(Exception $e) {
 			$this->assertTrue($e instanceof WindException);
 		}
 	}
 	public function testParserConfigWithXML() {
-		$result = $this->parser->parseConfig('XML', T_P . '/data/test_config.xml');
+		$result = $this->parser->parseConfig(T_P . '/data/test_config.xml', 'XML');
 		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 2, array('pp', 'default'));
 		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['pp']['class']);
 	}
 	public function testParserConfigWithIni() {
-		$result = $this->parser->parseConfig('Ini', T_P . '/data/test_config.ini');
+		$result = $this->parser->parseConfig(T_P . '/data/test_config.ini', 'Ini');
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 1);
@@ -50,7 +50,7 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->assertTrue(strrpos($result['rootPath'], 'phpwind') !== false);
 	}
 	public function testParserConfigWithProperties() {
-		$result = $this->parser->parseConfig('properties', T_P . '/data/test_config.properties');
+		$result = $this->parser->parseConfig(T_P . '/data/test_config.properties', 'properties');
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['error'], 2, array('default', 'QQ'));
@@ -59,48 +59,58 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->assertTrue($result['extensionConfig']['formConfig'] == 'test:controllers');
 	}
 	public function testParserConfigWithPHP() {
-		$result = $this->parser->parseConfig('PHP', T_P . '/data/test_config.php');
+		$result = $this->parser->parseConfig(T_P . '/data/test_config.php', 'PHP');
 		$this->checkArray($result, 10, array('rootPath', 'modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 1);
 		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 		$this->assertEquals('controllers.actionForm', $result['extensionConfig']['formConfig']);
 	}
-	public function testParserConfigWithEmpty() {
-		$result = $this->parser->parseConfig('Empty', '');
+
+	public function testParserConfigWithEmptyALL() {
+		$result = $this->parser->parseConfig('', '');
 		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
 					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
 		$this->checkArray($result['viewerResolvers'], 1, array('default'));
 		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 	}
-	public function testParserWithAliasException() {
-		try	{
-		  $result = $this->parser->parse('', '', '');
-		} catch(Exception $e) {
-			$this->assertTrue($e instanceof WindException);
-		}
+
+	public function testParserConfigWithEmpty() {
+		$result = $this->parser->parseConfig('', 'Empty');
+		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
+					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
+		$this->checkArray($result['viewerResolvers'], 1, array('default'));
+		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
 	}
+	
 	public function testParserWithFileException() {
 		try	{
-		  $result = $this->parser->parse('testF', '');
+		  $result = $this->parser->parse('');
 		} catch(Exception $e) {
 			$this->assertTrue($e instanceof WindException);
 		}
 	}
+	
+	public function testParserWithNoAlias() {
+		$result = $this->parser->parse(T_P . '/data/formConfig.xml');
+		$this->checkArray($result, 2, array('formName', 'default'));
+		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
+	}
+	
 	public function testParserWithAppend() {
-		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml', 'empty');
+		$result = $this->parser->parse(T_P . '/data/formConfig.xml', 'testF', 'empty');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}
 
 	public function testParserWithHasAppend() {
-		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml', 'empty');
+		$result = $this->parser->parse(T_P . '/data/formConfig.xml', 'testF', 'empty');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}
 	
 	public function testParserWithNoAppend() {
-		$result = $this->parser->parse('testF', T_P . '/data/formConfig.xml');
+		$result = $this->parser->parse(T_P . '/data/formConfig.xml', 'testF');
 		$this->checkArray($result, 2, array('formName', 'default'));
 		$this->checkArray($result['default'], 2, array('moduleName' => 'default', 'path' => 'TEST:data'), true);
 	}
