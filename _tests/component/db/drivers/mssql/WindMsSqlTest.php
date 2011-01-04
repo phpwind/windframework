@@ -5,9 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.exception.WindException');
-L::import('WIND:component.db.drivers.mssql.WindMsSql');
-L::import('WIND:component.db.drivers.mssql.WindMsSqlBuilder');
+
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -23,10 +21,24 @@ class WindMsSqlTest extends BaseTestCase {
 	private $deleteSql = "DELETE FROM pw_actions WHERE id = 2";
 	private $config = array();
 	
-	public function __construct() {
-		parent::__construct();
-		$this->config = C::getDataBaseConnection('user');
-		$this->WindMsSql = new WindMsSql($this->config);
+	public function init() {
+		L::import ( 'WIND:core.exception.WindException' );
+		L::import ( 'WIND:component.db.base.IWindDbConfig' );
+		L::import ( 'WIND:component.db.drivers.mssql.WindMsSqlBuilder' );
+		L::import ( 'WIND:component.db.drivers.mssql.WindMsSql' );
+		if ($this->WindMySql == null) {
+			$this->config = C::getDataBaseConnection('user');
+			$this->WindMsSql = new WindMsSql($this->config);
+		}
+	}
+	
+	public function setUp() {
+		parent::setUp();
+		$this->init();
+	}
+	
+	public function tearDown() {
+		parent::tearDown();
 	}
 	
 	public function testGetSqlBuilder() {

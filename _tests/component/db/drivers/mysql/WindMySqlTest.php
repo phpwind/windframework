@@ -5,8 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('core/exception/WindException.php');
-require_once('component/db/drivers/mysql/WindMysql.php');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -23,11 +21,25 @@ class WindMySqlTest extends BaseTestCase {
 	private $deleteSql = "DELETE FROM pw_actions WHERE id = 2";
 	private $config = array();
 	
-	public function __construct() {
-		parent::__construct();
-		C::init(include 'config.php');
-		$this->config = C::getDataBaseConnection('phpwind_8');
-		$this->WindMySql = new WindMySql($this->config);
+	
+	public function init() {
+		L::import ( 'WIND:core.exception.WindException' );
+		L::import ( 'WIND:component.db.base.IWindDbConfig' );
+		L::import ( 'WIND:component.db.drivers.mysql.WindMySqlBuilder' );
+		L::import ( 'WIND:component.db.drivers.mysql.WindMySql' );
+		if ($this->WindMySql == null) {
+			$this->config = C::getDataBaseConnection('phpwind_8');
+			$this->WindMySql = new WindMySql($this->config);
+		}
+	}
+	
+	public function setUp() {
+		parent::setUp();
+		$this->init();
+	}
+	
+	public function tearDown() {
+		parent::tearDown();
 	}
 	
 	public function testGetSqlBuilder() {
@@ -108,8 +120,4 @@ class WindMySqlTest extends BaseTestCase {
 	}
 	
 	
-	
-	public function __destruct() {
-		$this->WindMySql = null;
-	}
 }

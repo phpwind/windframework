@@ -6,8 +6,7 @@
  * @license 
  */
 
-require_once('core/exception/WindException.php');
-require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
+
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -18,13 +17,18 @@ require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
 class WindMySqlBuilderTest extends BaseTestCase {
 	
 	private $config = '';
+	private $adapter = null;
 	private $WindMySqlBuilder = null;
 	
 	public function init() {
-		
+		L::import ( 'WIND:core.exception.WindException' );
+		L::import ( 'WIND:component.db.base.IWindDbConfig' );
+		L::import ( 'WIND:component.db.drivers.mysql.WindMySqlBuilder' );
+		L::import ( 'WIND:component.db.drivers.mysql.WindMySql' );
 		if ($this->WindMySqlBuilder == null) {
 			$this->config = C::getDataBaseConnection('phpwind_8');
-			$this->WindMySqlBuilder = new WindMySqlBuilder($this->config);
+			$this->adapter = new WindMySql($this->config);
+			$this->WindMySqlBuilder = new WindMySqlBuilder($this->adapter);
 		}
 	}
 	
@@ -55,9 +59,11 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	}
 	
 	public static function providerData() {
-		return array(array(array('a', 'b', 'c')), 
+		return array(
+			array(array('1', '2', '3')), 
 			array(array(array('1a', '1b', '1c'), array('2a', '2b', '2c'))), 
-			array('username' => array(1, 2, 3), 'age' => array(1, 2, 3)));
+			array(array('username' => array(1, 2, 3), 'age' => array(4, 5, 6)))
+			);
 	}
 	
 	public static function providerSet() {
@@ -190,14 +196,14 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	/**
 	 * @dataProvider providerWhere
 	 */
-	public function testHaving() {
+	public function testHaving($where,$value,$group) {
 		$this->assertTrue($this->_where(WindSqlBuilder::HAVING, $where, $value, $group, true));
 	}
 	
 	/**
 	 * @dataProvider providerWhere
 	 */
-	public function testOrHaving() {
+	public function testOrHaving($where,$value,$group) {
 		$this->assertTrue($this->_where(WindSqlBuilder::HAVING, $where, $value, $group, false));
 	}
 	

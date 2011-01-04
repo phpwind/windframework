@@ -5,8 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('core/exception/WindException.php');
-require_once('component/db/drivers/mssql/WindMsSqlBuilder.php');
+
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -16,13 +15,18 @@ require_once('component/db/drivers/mssql/WindMsSqlBuilder.php');
 class WindMsSqlBuilderTest extends BaseTestCase {
 	
 	private $config = '';
+	private $adapter = null;
 	private $WindMsSqlBuilder = null;
 	
 	public function init() {
-		
+		L::import ( 'WIND:core.exception.WindException' );
+		L::import ( 'WIND:component.db.base.IWindDbConfig' );
+		L::import ( 'WIND:component.db.drivers.mssql.WindMsSqlBuilder' );
+		L::import ( 'WIND:component.db.drivers.mssql.WindMsSql' );
 		if ($this->WindMsSqlBuilder == null) {
 			$this->config = C::getDataBaseConnection('user');
-			$this->WindMsSqlBuilder = new WindMsSqlBuilder($this->config);
+			$this->adapter = new WindMsSql($this->config);
+			$this->WindMsSqlBuilder = new WindMsSqlBuilder($this->adapter);
 		}
 	}
 	
