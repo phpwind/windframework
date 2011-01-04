@@ -101,11 +101,11 @@ class WindConfigParser {
 	 * @param string $appandName  采用最佳的方法追加到$appandName指定的文件中
 	 * @return array 解析结果
 	 */
-	public function parse($alias, $configPath, $appandName = '') {
+	public function parse($alias, $configPath, $appand = '') {
 		if (!($alias = trim($alias))) throw new WindException('The alia name must be given!');
 		$config = array();
-		trim($appandName) && $cacheFileName = $this->buildCacheFilePath(trim($appandName) . '.php');
-		if ($appandName && ($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
+		trim($appand) && $cacheFileName = $this->buildCacheFilePath(trim($appand) . '.php');
+		if ($appand && ($config = $this->getCacheContent($cacheFileName, false)) && isset($config[$alias])) {
 			return $config[$alias];
 		} elseif ($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php'))) {
 			return $aliasConfig;
