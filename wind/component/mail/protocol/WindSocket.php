@@ -74,6 +74,7 @@ class WindSocket {
 			fclose($this->socket);
 			$this->socket = null;
 		}
+		return true;
 	}
 	/**
 	 * 获取请求中的错误
@@ -81,6 +82,14 @@ class WindSocket {
 	 */
 	public function getError() {
 		return $this->errstr ? $this->errno . ':' . $this->errstr : '';
+	}
+	
+	/**
+	 * 取得socket操作对象
+	 * @return resource
+	 */
+	public function getSocket(){
+		return $this->socket;
 	}
 	
 	/**
