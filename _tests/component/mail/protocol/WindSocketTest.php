@@ -19,7 +19,7 @@ class WindSocketTest extends BaseTestCase{
 	public function init(){
 		L::import ( 'WIND:component.mail.protocol.WindSocket' );
 		if(null === $this->socket){
-			$url = 'www.baidu.com';
+			$url = 'www.phpwind.net';
 			$this->socket = new WindSocket($url,80);
 		}
 	}
@@ -65,8 +65,8 @@ class WindSocketTest extends BaseTestCase{
 	
 	public function request(){
 		$this->socket->open();
-		$request  = "GET http://www.baidu.com HTTP/1.1\n";
-		$request .= "Host: www.baidu.com\n";
+		$request  = "GET http://www.phpwind.net HTTP/1.1\n";
+		$request .= "Host: www.phpwind.net\n";
 		$request .= "Connection: Close\n";
 		$request .= "\n";
 		return $this->socket->request($request);
