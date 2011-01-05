@@ -28,7 +28,7 @@ class WindSmtpTest extends BaseTestCase{
 	
 	public static function provider(){
 		return array(
-			array('qq.com','635927818@qq.com','15167152327@suba','635927818@qq.com','635927818@qq.com')
+			array('qq.com','635927818@qq.com','','635927818@qq.com','635927818@qq.com')
 		);
 	}
 	/**
