@@ -1,0 +1,47 @@
+<?php $this->doAction('setHeader', 'controllers.indexController');?>
+<div class="main">
+<div class="grid_2 cc mb10">
+	<div class="cm">
+		<div class="cw">
+			<div class="bA">
+				<div class="content">	
+					<div class="mb10 f16 b">用户表单测试</div>
+					<div class="mb10 f14">测试FormBean</div>
+					<form action="index.php?c=Form&a=postForm" method="post">
+					<dl class="mb10">
+						<dt>请输入用户名<span class="s1">*</span></dt>
+						<dd><input name="username" type="text" class="input"></dd>
+					</dl>
+					<dl class="mb10">
+						<dt>请输入密码<span class="s1">*</span></dt>
+						<dd><input name="password" type="password" class="input"></dd>
+					</dl>    
+					<input type="hidden" name="formName" value="UserForm"/>
+					<span class="btn" style="margin:0 0;"><span><button type="submit">提 交 测 试</button></span></span>
+					</form>
+		   	 	</div>
+		   	 </div>
+		 </div>
+     </div>
+     <div class="sd">
+			<div class="bB mb10">
+				<h2 class="hdB">tags</h2>
+				<div class="p10">
+					<ul class="tags cc">
+						<li><a href="index.php">返回</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="bB">
+				<h2 class="hdB">WindFrameWork其他demo:</h2>
+				<div class="p10">
+					<ul><?php foreach ($this->getVar('demos', 'header') as $path => $describe) { ?>
+						<li><a href="<?php echo $path;?>" target="_blank" title="我要测试"><?php echo $describe;?></a></li>
+					<?php }?>
+					</ul>
+				</div>
+			</div>
+		</div>
+</div>
+</div>
+<?php $this->doAction('setFooter', 'controllers.indexController');?>

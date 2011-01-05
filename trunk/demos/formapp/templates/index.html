@@ -1,0 +1,82 @@
+<?php $this->doAction('setHeader');?>
+
+<div class="main">
+	<div class="grid_2 cc mb10">
+		<div class="cm">
+			<div class="cw">
+				<div class="bA">
+					<div class="content">
+						<h1>本次测试Demo说明</h1>
+						<div class="read_info">
+							<span class="mr10">最新更新时间：2010-12-21</span>作者：肖
+						</div>
+				        <div>
+							<h3>1、form表单提交：</h3>
+							<h4>案例1：为form提交表单设置一个WindActionForm子类，用来保存该提交的表单</h4>
+							<ol>
+								<li>步骤一：在配置文件中的配置项filters中配置了WindFormFilter， 
+								    <div class="s4">代码：</div>
+									<textarea style="width:95%;height:80px;" class="mb5"><filters>
+    <filter name="WindFormFilter">
+    	<filterPath>WIND:component.form.WindFormFilter</filterPath>
+	</filter>
+</filters>
+									</textarea>
+								</li>
+								<li>步骤二：在controllers/actionForm中建立一个WindActionForm类的子类UserForm。
+								    <b>注意:</b>类属性名字和表单中的提交名字必须保存一致。同时被继承的属性$_isValidate设置为true则自动执行验证方法，
+								    默认为false（验证方法为：访问权限为public，并且以validate结尾）
+								</li>
+								<li>步骤三：创建一个该对应表单，同时设置该表单需要填充到UserForm中，即formName设置为UserForm随同表单一同递交。</li>
+								<li>步骤四：在处理表单的action中通过L::getInstance('UserForm');来获得表单中的内容进行操作
+									<div class="s4">代码：</div>
+									<textarea style="width:95%;height:80px;" class="mb5"><form action="index.php?c=Form&a=postForm" method="post">
+请输入用户名<input type="text" value="" name="username"/><br/>
+请输入密码<input type="password" value="" name="password"/><br/>
+<input type="hidden" name="formName" value="UserForm"/>
+<input type="submit" value="测试" name="submit"/>
+</form>
+									</textarea>
+									<div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=Form'">测试一下</button></span></span></div>
+								</li>
+							</ol><br/>
+							
+							<h4>案例2：不设置form表单的处理类UserForm</h4>
+							<ol>
+								<li>该情况下用户无需配置，也无需设置formName的处理类。在处理的action中通过request来获得表单内容.<br/>
+     	        				           还是使用上面一个表单 <br/>
+     	        				    <b>注意:</b>这次不用设置：
+								    <div class="s4">代码：</div>
+									<textarea style="width:95%;height:80px;" class="mb5"><input type="hidden" name="formName" value="UserForm"/></textarea>
+									<div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=NormalForm'">测试一下</button></span></span></div>
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="sd">
+			<div class="bB mb10">
+				<h2 class="hdB">tags</h2>
+				<div class="p10">
+					<ul class="tags cc">
+						<li><a href="index.php?c=Form">案例一测试</a></li>
+						<li><a href="index.php?c=NormalForm">案例二测试</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="bB">
+				<h2 class="hdB">WindFrameWork其他demo:</h2>
+				<div class="p10">
+					<ul><?php foreach ($this->getVar('demos', 'header') as $path => $describe) { ?>
+						<li><a href="<?php echo $path;?>" target="_blank" title="我要测试"><?php echo $describe;?></a></li>
+					<?php }?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end #mainContent -->
+<?php $this->doAction('setFooter');?>

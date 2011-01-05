@@ -1,0 +1,11 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>模板变量共享</title>
+</head>
+<body>
+I am Header~~~<br/>
+头部变量：&nbsp;&nbsp;<?php echo $headerArg;?><br/>
+主Action变量：&nbsp;&nbsp;<?php echo $this->getVar('bodyArg', 'templateVarShare.index');?><br/>
+echo footer的变量: &nbsp;&nbsp;<?php echo $this->getVar('footerArg', 'templateVarShare.foot');?><br/>
+<hr/><br/><br/><br/><br/>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<modules>
+		<module name='module1'>
+			<path>module1Controllers</path>
+			<template>module1</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+		</module>
+		<module name="module2">
+			<path>module2Controllers</path>
+			<template>module2</template>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+		</module>
+	</modules>
+	<templates>
+		<template name='module1'>
+			<dir>template.module1</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+		<template name='module2'>
+			<dir>template.module2</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+	<routerParsers>
+		<parser name='url'>
+			<rule>
+				<action name='a'>run</action>
+				<controller name='c'>Index</controller>
+				<module name='m'>module1</module>
+			</rule>
+			<class>WIND:core.router.WindUrlBasedRouter</class>
+		</parser>
+	</routerParsers>
+</WIND>

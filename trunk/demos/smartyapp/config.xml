@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<modules>
+		<module name='default'>
+			<path>actionControllers</path>
+			<controllerSuffix>controller</controllerSuffix>
+			<actionSuffix>action</actionSuffix>
+		</module>
+	</modules>
+	<templates>
+		<template>
+			<dir>template</dir>
+			<default>index</default>
+			<ext>phtml</ext>
+			<resolver>smarty</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+	<viewerResolvers isMerge='true'>
+		<resolver name='smarty'>
+			<class>libs.WindSmarty</class>
+		</resolver>
+	</viewerResolvers>
+</WIND>

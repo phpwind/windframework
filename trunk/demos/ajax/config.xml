@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<modules>
+		<module name='default'>
+			<path>ajaxController</path>
+			<controllerSuffix>Ajax</controllerSuffix>
+			<template>ajax</template>
+		</module>
+	</modules>
+	<templates>
+		<template name='ajax'>
+			<dir>templates</dir>
+			<default>index</default>
+			<ext>htm</ext>
+			<resolver>default</resolver>
+			<isCache>false</isCache>
+			<cacheDir>cache</cacheDir>
+			<compileDir>compile</compileDir>
+		</template>
+	</templates>
+</WIND>
