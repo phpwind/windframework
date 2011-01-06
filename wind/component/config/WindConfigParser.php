@@ -29,6 +29,7 @@ class WindConfigParser {
 	const CONFIG_INI = 'INI';
 	const CONFIG_PROPERTIES = 'PROPERTIES';
 	
+	const CONFIG_ROOT = 'wind';
 	/**
 	 * 框架缺省配置文件的名字
 	 * @var string $defaultConfig 
@@ -77,14 +78,14 @@ class WindConfigParser {
 	 * @return array             解析成功返回的数据
 	 */
 	public function parseConfig($configPath = '', $alias = '') {
-		if ($alias && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($alias) . '.php'))) && isset($config['wind'])) {
-			return $config['wind'];
+		if ($alias && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($alias) . '.php'))) && isset($config[self::CONFIG_ROOT])) {
+			return $config[self::CONFIG_ROOT];
 		}
 		$configPath = trim($configPath);
 		$parseFormat = $this->getConfigFormat($configPath);
 		$configResult = $this->doParser($configPath, $parseFormat);
 		$configResult = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $configResult);
-		$alias && $this->saveConfigFile($this->buildCacheFilePath(trim($alias) . '.php'), array('wind' => $configResult));
+		$alias && $this->saveConfigFile($this->buildCacheFilePath(trim($alias) . '.php'), array(self::CONFIG_ROOT => $configResult));
 		return $configResult;
 	}
 
@@ -110,8 +111,9 @@ class WindConfigParser {
 	 */
 	public function parse($configPath, $alias = '', $append = '') {
 		$config = array();
-		if (($alias = trim($alias))) {
-			if ($append && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($append) . '.php'), false)) && isset($config[$alias])) {
+		$alias = trim($alias);
+		if ($alias) {
+			if ($append && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($append) . '.php'))) && isset($config[$alias])) {
 				return $config[$alias];
 			}
 			if (($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias . '.php'))) && isset($aliasConfig[$alias])) {
@@ -135,11 +137,10 @@ class WindConfigParser {
 	 * @param string $file 缓存文件名
 	 * @return array 缓存文件内容
 	 */
-	private function getCacheContent($file, $ifCheck = true) {
+	private function getCacheContent($file) {
 		$config = array();
-		if (is_file($file)) {
+		if ($this->isCompiled() && is_file($file)) {
 			$config = include ($file);
-			($ifCheck && !$this->isCompiled()) && $config = array();
 		}
 		return $config;
 	}
