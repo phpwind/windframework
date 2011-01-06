@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import ( 'WIND:component.mail.protocol.WindSocket' );
 /**
  * pop3协议
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -228,6 +228,28 @@ class WindPop3 {
 		return $response;
 	}
 	
+	/**
+	 * 获取解析后的内容
+	 * @param $content
+	 * @param $sep
+	 */
+	public function getMailContent($content,$sep = "\n\n"){
+		$content = explode($sep,$content);
+		$content[0] = explode("\n",$content[0]);
+		$headers = array();
+		foreach($content[0] as $value){
+			$_value = explode(':',$value);
+			$headers[$_value[0]] = trim($_value[1]);
+		}
+		$encode = $headers['Content-Transfer-Encoding'];
+		if('base64' == $encode){
+			$content = base64_decode($content[1]);
+		}else{
+			$content = $content[1];
+		}
+		return array($headers,$content);
+	}
+	
 	public function error($error, $type = E_USER_ERROR) {
 		trigger_error($error, $type);
 	}
@@ -237,5 +259,6 @@ class WindPop3 {
 			$this->close();
 		}
 	}
+	
 }
 ?>
