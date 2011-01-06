@@ -13,59 +13,59 @@
  * @version $Id$ 
  * @package 
  */
-class WindSocketTest extends BaseTestCase{
+class WindSocketTest extends BaseTestCase {
 	private $socket = null;
 	
-	public function init(){
-		L::import ( 'WIND:component.mail.protocol.WindSocket' );
-		if(null === $this->socket){
+	public function init() {
+		require_once ('component/mail/protocol/WindSocket.php');
+		if (null === $this->socket) {
 			$url = 'www.phpwind.net';
-			$this->socket = new WindSocket($url,80);
+			$this->socket = new WindSocket($url, 80);
 		}
 	}
 	
-	public function setUp(){
+	public function setUp() {
 		parent::setUp();
 		$this->init();
 	}
 	
-	public function tearDown(){
+	public function tearDown() {
 		parent::tearDown();
 	}
 	
-	public function testOpen(){
+	public function testOpen() {
 		$this->assertTrue(!is_resource($this->socket->getSocket()));
 		$this->socket->open();
 		$this->assertTrue(is_resource($this->socket->getSocket()));
 	}
 	
-	public function testClose(){
+	public function testClose() {
 		$this->socket->open();
 		$this->assertTrue($this->socket->close());
 	}
 	
-	public function testRequest(){
-		$this->assertTrue( 0 < (int)($this->request()));
+	public function testRequest() {
+		$this->assertTrue(0 < (int) ($this->request()));
 	}
 	
-	public function testResponse(){
+	public function testResponse() {
 		$this->request();
 		$this->assertTrue(0 < strlen($this->socket->response()));
 	}
 	
-	public function testResponseLine(){
+	public function testResponseLine() {
 		$this->request();
 		$this->assertTrue(0 < strlen($this->socket->responseLine()));
 	}
 	
-	public function testSetSocketTimeOut(){
+	public function testSetSocketTimeOut() {
 		$this->socket->open();
 		$this->assertTrue($this->socket->setSocketTimeOut(8));
 	}
 	
-	public function request(){
+	public function request() {
 		$this->socket->open();
-		$request  = "GET http://www.phpwind.net HTTP/1.1\n";
+		$request = "GET http://www.phpwind.net HTTP/1.1\n";
 		$request .= "Host: www.phpwind.net\n";
 		$request .= "Connection: Close\n";
 		$request .= "\n";

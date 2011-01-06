@@ -7,41 +7,42 @@
  * tags
  */
 
-class WindSmtpTest extends BaseTestCase{
+class WindSmtpTest extends BaseTestCase {
 	private $smtp = null;
 	
-	public function init(){
-		L::import ( 'WIND:component.mail.protocol.WindSmtp' );
-		if(null === $this->smtp){
+	public function init() {
+		require_once ('component/mail/protocol/WindSmtp.php');
+		if (null === $this->smtp) {
 			$this->smtp = new WindSmtp('smtp.qq.com', 25);
 		}
 	}
 	
-	public function setUp(){
+	public function setUp() {
 		parent::setUp();
 		$this->init();
 	}
 	
-	public function tearDown(){
+	public function tearDown() {
 		parent::tearDown();
 	}
 	
-	public static function provider(){
-		return array(
-			array('qq.com','635927818@qq.com','','635927818@qq.com','635927818@qq.com')
-		);
+	/**
+	 * 根据测试填写上自己的测试邮箱
+	 */
+	public static function provider() {
+		return array(array('qq.com', '961412979@qq.com', '', '961412979@qq.com', '961412979@qq.com'));
 	}
 	/**
 	 * @dataProvider provider
 	 */
-	public function testSend($ehlo,$loginMail,$loginPwd,$from,$to){
+	public function testSend($ehlo, $loginMail, $loginPwd, $from, $to) {
 		$this->smtp->open();
 		$this->smtp->ehlo($ehlo);
 		$this->smtp->authLogin($loginMail, $loginPwd);
 		$this->smtp->mailFrom($from);
 		$this->smtp->rcptTo($to);
 		//$smtp->rcptTo('1752585926@qq.com testa');
-		$data  = "From: {$from}\n";
+		$data = "From: {$from}\n";
 		$data .= "To: {$to}\n";
 		$data .= "Cc: {$to},afafa 402289603@qq.com\n";
 		$data .= "Date: Mon, 25 Oct 2004 14:24:27 +0800\n";
@@ -53,7 +54,5 @@ class WindSmtpTest extends BaseTestCase{
 		$this->smtp->close();
 		$this->assertTrue(true);
 	}
-	
-	
-	
+
 }
