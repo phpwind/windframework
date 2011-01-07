@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import ( 'WIND:component.mail.protocol.WindSmtp' );
 /**
  * 邮件发送
  * the last known user to change this file in the repository  <$LastChangedBy$>
