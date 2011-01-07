@@ -49,6 +49,7 @@ class WindForward {
 	 */
 	
 	public function setTemplateName($templateName) {
+		echo 'hahhahhaha';
 		$this->templateName = $templateName;
 	}
 	
