@@ -88,13 +88,13 @@ class WindConfig extends AbstractWindConfig {
 	protected $rootPath = '';
 	protected $appName = 'windApp';
 	protected $imports = array();
-
+	
 	public function __construct($config, $configParser, $appName) {
 		$cacheName = $appName . '_config';
 		$this->appName = $appName;
 		parent::__construct($config, $configParser, $cacheName);
 	}
-
+	
 	/**
 	 * @param string $appName | 应用名称
 	 * @param string $config | 配置文件路径信息
@@ -104,9 +104,9 @@ class WindConfig extends AbstractWindConfig {
 			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
-		parent::initConfig($config);
+		$this->setConfig($config);
 	}
-
+	
 	/**
 	 * 返回应用路径信息
 	 * 
@@ -118,7 +118,7 @@ class WindConfig extends AbstractWindConfig {
 		}
 		return $this->rootPath;
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -126,7 +126,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getImports($name = '') {
 		return $name === '' ? $this->getConfig(self::IMPORTS) : $this->parseImport($name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -134,7 +134,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getModules($name = '') {
 		return $this->getConfig(self::MODULES, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -142,7 +142,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getTemplate($name = '') {
 		return $this->getConfig(self::TEMPLATE, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -150,7 +150,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getFilters($name = '') {
 		return $this->getConfig(self::FILTERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -158,7 +158,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getViewerResolvers($name = '') {
 		return $this->getConfig(self::VIEWER_RESOLVERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -166,7 +166,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getRouter($name = '') {
 		return $this->getConfig(self::ROUTER, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -174,7 +174,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getRouterParsers($name = '') {
 		return $this->getConfig(self::ROUTER_PARSERS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -182,7 +182,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getApplications($name = '') {
 		return $this->getConfig(self::APPLICATIONS, $name);
 	}
-
+	
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -190,14 +190,14 @@ class WindConfig extends AbstractWindConfig {
 	public function getErrorMessage($name = '') {
 		return $this->getConfig(self::ERROR, $name);
 	}
-
+	
 	/**
 	 * @return the $appName
 	 */
 	public function getAppName() {
 		return $this->appName;
 	}
-
+	
 	/**
 	 * @param name
 	 * @param cacheName
