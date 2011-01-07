@@ -59,7 +59,7 @@ class WindMail {
 	private $charSet = 'gbk';
 	
 	/**
-	 * @var string 邮件mimeo类型
+	 * @var string 邮件mime类型
 	 */
 	private $contentType = self::MIME_TEXT;
 	/**
@@ -160,11 +160,17 @@ class WindMail {
 	
 	/**
 	 * 设置邮件头
-	 * @param unknown_type $name 邮件头名称
-	 * @param unknown_type $value 邮件头对应的值
+	 * @param string $name 邮件头名称
+	 * @param string $value 邮件头对应的值
+	 * @param boolean $append 是否是追加
+	 * @return boolean
 	 */
-	public function setMailHeader($name, $value) {
+	public function setMailHeader($name, $value,$append = true) {
 		$value = is_array($value) ? $value : array($value);
+		if(false === $append){
+			$this->mailHeader[$name] = $value;
+			return true;
+		}
 		if (!isset($this->mailHeader[$name])) {
 			$this->mailHeader[$name] = $value;
 		}else{ 
@@ -176,6 +182,7 @@ class WindMail {
 				}
 			}
 		}
+		return true;
 	}
 	
 	/**
@@ -185,7 +192,7 @@ class WindMail {
 	 */
 	public function setFrom($email, $name = null) {
 		$value = $name ? array($name => $email) : array($email);
-		$this->setMailHeader(self::FROM, $value);
+		$this->setMailHeader(self::FROM, $value,false);
 	}
 	
 	/**
@@ -221,15 +228,19 @@ class WindMail {
 	 * @param string $subject 主题
 	 */
 	public function setSubject($subject) {
-		$this->setMailHeader(self::SUBJECT, $subject);
+		$this->setMailHeader(self::SUBJECT, $subject,false);
 	}
 	
 	/**
 	 * 设置邮件日期
 	 * @param boolean $ifchinese 是否是中国日期
 	 */
-	public function setDate($ifchinese = true){
-		$this->setMailHeader(self::DATE, $ifchinese ? $this->getChineseDate() : $this->getRFCDate());
+	public function setDate($date = null,$ifchinese = true){
+		if(!$date){
+			L::import ( 'WIND:component.format.WindDate' );
+			$date = $ifchinese ? WindDate::getChineseDate() : WindDate::getRFCDate();
+		}
+		$this->setMailHeader(self::DATE,$date );
 	}
 	
 	/**
@@ -260,7 +271,7 @@ class WindMail {
 	 */
 	public function setContentType($type = null){
 		if(!$type){
-			$mime = $this->getMimeType();echo $mime;
+			$mime = $this->getMimeType();
 			if(self::ONLYTEXT === $mime){
 				$type = self::MIME_TEXT;
 			}elseif(self::ONLYHTML === $mime){
@@ -285,7 +296,15 @@ class WindMail {
 			$contentType = sprintf("%s;%s boundary=\"%s\"",$type,self::CRLF,$this->getBoundary());
 		}
 		$this->contentType = $type;
-		$this->setMailHeader(self::CONTENTTYPE,$contentType);
+		$this->setMailHeader(self::CONTENTTYPE,$contentType,false);
+	}
+	
+	/**
+	 * 设置是否是内嵌资源
+	 * @param boolean $embed
+	 */
+	public function setEmbed($embed = false){
+		$this->embed = $embed;
 	}
 	
 	/**
@@ -331,6 +350,20 @@ class WindMail {
 	 */
 	public function setBoundary() {
 		$this->boundary = '==_' . md5(microtime(true) . uniqid());
+	}
+	
+	public function getMailHeader($name = null,$subname = null){
+		if(!$name){
+			return $this->mailHeader;
+		}
+		if(!isset($this->mailHeader[$name])){
+			return '';
+		}
+		$header = $this->mailHeader[$name];
+		if(!$subname || !isset($header[$subname])){
+			return $header;
+		}
+		return $header[$subname];
 	}
 	
 	/**
@@ -707,64 +740,6 @@ class WindMail {
         return strtr($string,self::getQpTable());
     }
 	/**
-	 * 取得符合外国人习惯的时间 
-	 * @return string
-	 */
-	public static function getRFCDate() {
-		$tz = date('Z');
-		$tzs = ($tz < 0) ? '-' : '+';
-		$tz = abs($tz);
-		$tz = (int) ($tz / 3600) * 100 + ($tz % 3600) / 60;
-		return sprintf("%s %s%04d", date('D, j M Y H:i:s'), $tzs, $tz);
-	}
-	/**
-	 * 取得符合中国人习惯的日期时间
-	 * @return string
-	 */
-	public static function getChineseDate() {
-		list($y, $m, $d, $w, $h, $_h, $i) = explode(' ', date('Y n j w G g i'));
-		return sprintf('%s年%s月%s日(%s) %s%s:%s', $y, $m, $d, self::getChineseWeek($w), self::getPeriodOfTime($h), $_h, $i);
-	}
-	/**
-	 * 取得中国的星期
-	 * @param int $week 处国人的星期，是一个数值
-	 * @return string
-	 */
-	public static function getChineseWeek($week = null) {
-		$week = $week ? $week : (int) date('w', time());
-		$weekMap = array("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
-		return $weekMap[$week];
-	}
-	/**
-	 * 取得一天中的时段
-	 * @param int $hour 小时
-	 * @return string
-	 */
-	public static function getPeriodOfTime($hour = null) {
-		$hour = $hour ? $hour : (int) date('G', time());
-		$period = '';
-		if (0 <= $hour && 6 > $hour) {
-			$period = '凌晨';
-		} elseif (6 <= $hour && 8 > $hour) {
-			$period = '早上';
-		} elseif (8 <= $hour && 11 > $hour) {
-			$period = '上午';
-		} elseif (11 <= $hour && 13 > $hour) {
-			$period = '中午';
-		} elseif (13 <= $hour && 15 > $hour) {
-			$period = '响午';
-		} elseif (15 <= $hour && 18 > $hour) {
-			$period = '下午';
-		} elseif (18 <= $hour && 20 > $hour) {
-			$period = '傍晚';
-		} elseif (20 <= $hour && 22 > $hour) {
-			$period = '晚上';
-		} elseif (22 <= $hour && 23 >= $hour) {
-			$period = '深夜';
-		}
-		return $period;
-	}
-	/**
 	 * 生成mime邮件头的消息ID
 	 * @return string
 	 */
@@ -788,6 +763,66 @@ class WindMail {
 			$host = php_uname('n');
 		}
 		return sha1(time() . $user . $rand . $recipient) . '@' . $host;
+	}
+	
+	/**
+	 * 清空邮件头
+	 * @param string $header
+	 */
+	public function clearMailHeader($header = null){
+		if($header){
+			if(isset($this->mailHeader[$header])){
+			 unset($this->mailHeader[$header]);
+			}
+		}else{
+			$this->mailHeader = array();
+		}
+	}
+	/**
+	 * 清空附件
+	 */
+	public function clearAttachment(){
+		$this->attachment = array();
+	}
+	
+	/**
+	 * 清空收件人
+	 */
+	public function clearRecipients(){
+		$this->recipients = array();
+	}
+	
+	/**
+	 * 清空边界线
+	 */
+	public function clearBoundary(){
+		$this->boundary = '';
+	}
+	
+	/**
+	 * 清空html格式的邮件正文
+	 */
+	public function clearBodyHtml(){
+		$this->bodyHtml = '';
+	}
+	
+	/**
+	 *  清空text格式的邮件正文
+	 */
+	public function clearBodyText(){
+		$this->bodyText = '';
+	}
+	
+	/**
+	 * 清空邮件头、附件、收件人、边界线、html和text格式的邮件正文;
+	 */
+	public function clearAll(){
+		$this->clearMailHeader();
+		$this->clearRecipients();
+		$this->clearAttachment();
+		$this->clearBoundary();
+		$this->clearBodyHtml();
+		$this->clearBodyText();
 	}
 	/**
 	 * 构建收件人列表

@@ -518,6 +518,65 @@ class WindDate {
 	public static function sDaysInYear($year) {
 		return self::sIsLeapYear($year) ?  366 : 365;
 	}
+	
+	/**
+	 * 取得符合外国人习惯的时间 
+	 * @return string
+	 */
+	public static function getRFCDate() {
+		$tz = date('Z');
+		$tzs = ($tz < 0) ? '-' : '+';
+		$tz = abs($tz);
+		$tz = (int) ($tz / 3600) * 100 + ($tz % 3600) / 60;
+		return sprintf("%s %s%04d", date('D, j M Y H:i:s'), $tzs, $tz);
+	}
+	/**
+	 * 取得符合中国人习惯的日期时间
+	 * @return string
+	 */
+	public static function getChineseDate() {
+		list($y, $m, $d, $w, $h, $_h, $i) = explode(' ', date('Y n j w G g i'));
+		return sprintf('%s年%s月%s日(%s) %s%s:%s', $y, $m, $d, self::getChineseWeek($w), self::getPeriodOfTime($h), $_h, $i);
+	}
+	/**
+	 * 取得中国的星期
+	 * @param int $week 处国人的星期，是一个数值
+	 * @return string
+	 */
+	public static function getChineseWeek($week = null) {
+		$week = $week ? $week : (int) date('w', time());
+		$weekMap = array("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+		return $weekMap[$week];
+	}
+	/**
+	 * 取得一天中的时段
+	 * @param int $hour 小时
+	 * @return string
+	 */
+	public static function getPeriodOfTime($hour = null) {
+		$hour = $hour ? $hour : (int) date('G', time());
+		$period = '';
+		if (0 <= $hour && 6 > $hour) {
+			$period = '凌晨';
+		} elseif (6 <= $hour && 8 > $hour) {
+			$period = '早上';
+		} elseif (8 <= $hour && 11 > $hour) {
+			$period = '上午';
+		} elseif (11 <= $hour && 13 > $hour) {
+			$period = '中午';
+		} elseif (13 <= $hour && 15 > $hour) {
+			$period = '响午';
+		} elseif (15 <= $hour && 18 > $hour) {
+			$period = '下午';
+		} elseif (18 <= $hour && 20 > $hour) {
+			$period = '傍晚';
+		} elseif (20 <= $hour && 22 > $hour) {
+			$period = '晚上';
+		} elseif (22 <= $hour && 23 >= $hour) {
+			$period = '深夜';
+		}
+		return $period;
+	}
 }
 	
 	
