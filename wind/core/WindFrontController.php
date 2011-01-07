@@ -51,6 +51,7 @@ class WindFrontController extends WindServer {
 	 * 初始化过滤器，并将程序执行句柄指向一个过滤器入口
 	 */
 	private function excuteFilterChain() {
+		echo 'asdfasdf';
 		$filters = $this->systemConfig->getConfig(IWindConfig::FILTERS);
 		if (empty($filters)) return false;
 		WindFilterFactory::getFactory()->setExecute(array($this, 'process'));
