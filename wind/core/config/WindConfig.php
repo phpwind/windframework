@@ -211,10 +211,16 @@ class WindConfig extends AbstractWindConfig {
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
-				$cacheName = $import[self::IMPORTS_IS_APPEND] === 'false' ? $this->appName . '_' . $name . '_config' : $name;
 				$configPath = L::getRealPath($import[self::IMPORTS_RESOURCE], $import[self::IMPORTS_SUFFIX]);
-				$append = !isset($import[self::IMPORTS_IS_APPEND]) || $import[self::IMPORTS_IS_APPEND] === 'true' ? $this->configCache : $import[self::IMPORTS_IS_APPEND];
-				$config = $this->parseConfig($cacheName, $configPath, $append);
+				if (!isset($import[self::IMPORTS_IS_APPEND]) || $import[self::IMPORTS_IS_APPEND] === 'true') {
+					$append = $this->configCache;
+				} elseif ($import[self::IMPORTS_IS_APPEND] === 'false' || $import[self::IMPORTS_IS_APPEND] === '') {
+					$append = false;
+				} else {
+					$append = $import[self::IMPORTS_IS_APPEND];
+				}
+				$cacheName = $append ? $name : $this->appName . '_' . $name . '_config';
+				$config = $this->parseConfig($configPath, $cacheName, $append);
 			}
 			$this->imports[$name] = $config;
 		}

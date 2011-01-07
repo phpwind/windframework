@@ -64,7 +64,7 @@ abstract class AbstractWindConfig extends WindModule {
 	 */
 	protected function initConfig($config) {
 		if (!is_array($config)) {
-			$config = $this->parseConfig($config);
+			$config = $this->parseConfig($config, $this->getCacheName(), $this->getAppend());
 		}
 		$this->setConfig($config);
 	}
@@ -76,11 +76,11 @@ abstract class AbstractWindConfig extends WindModule {
 	 * @param string $append | 配置缓存是否追加到该缓存文件下面
 	 * @return array
 	 */
-	protected function parseConfig($config) {
+	protected function parseConfig($config, $cacheName, $append) {
 		if ($this->getConfigParser() === null) {
 			throw new WindException('configParser is null.');
 		}
-		return $this->getConfigParser()->parse($config, $this->getCacheName(), $this->getAppend());
+		return $this->getConfigParser()->parse($config, $cacheName, $append);
 	}
 
 	/**
