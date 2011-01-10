@@ -6,7 +6,7 @@
  * @license 
  */
 
-require_once('component/validate/WindValidate.php');
+require_once('component/validator/WindValidator.php');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -19,7 +19,7 @@ class WindValidateTest extends BaseTestCase{
 	
 	public function init(){
 		if(null === $this->validate){
-			$this->validate = new WindValidate();
+			$this->validate = new WindValidator();
 		}
 	}
 	
@@ -47,110 +47,110 @@ class WindValidateTest extends BaseTestCase{
 	
 	
 	public function testHasEmail(){
-		$this->assertTrue(WindValidate::hasEmail("中国aoxue.1988.su.qian@163.com") > 0);
+		$this->assertTrue(WindValidator::hasEmail("中国aoxue.1988.su.qian@163.com") > 0);
 	}
 	
 	public function testIsEmail(){
-		$this->assertTrue(WindValidate::isEmail("aoxue.1988.su.qian@163.com"));
+		$this->assertTrue(WindValidator::isEmail("aoxue.1988.su.qian@163.com"));
 	}
 	/**
 	 * @dataProvider providerIdCard
 	 */
 	public function testHasIdCard($idCard){
-		$this->assertTrue(WindValidate::hasIdCard($idCard) > 0);
+		$this->assertTrue(WindValidator::hasIdCard($idCard) > 0);
 	}
 	
 	/**
 	 * @dataProvider providerIdCard
 	 */
 	public function testIsIdCard($idCard){
-		$this->assertTrue(WindValidate::isIdCard($idCard));
+		$this->assertTrue(WindValidator::isIdCard($idCard));
 	}
 	
 	/**
 	 * @dataProvider providerUrl
 	 */
 	public function testHasUrl($url){
-		$this->assertTrue(WindValidate::hasUrl($url) > 0);
+		$this->assertTrue(WindValidator::hasUrl($url) > 0);
 	}
 	
 	/**
 	 * @dataProvider providerUrl
 	 */
 	public function testIsUrl($url){
-		$this->assertTrue(WindValidate::isUrl($url));
+		$this->assertTrue(WindValidator::isUrl($url));
 	}
 	
 	public function testHasChinese(){
-		$this->assertTrue(WindValidate::hasChinese("afa中国") > 0);
+		$this->assertTrue(WindValidator::hasChinese("afa中国") > 0);
 	}
 	
 	public function testIsChinese(){
-		$this->assertTrue(WindValidate::isChinese("中国"));
+		$this->assertTrue(WindValidator::isChinese("中国"));
 	}
 	
 	public function testHasIP(){
-		$this->assertTrue(WindValidate::hasIP("afa,198.168.2.4") > 0);
+		$this->assertTrue(WindValidator::hasIP("afa,198.168.2.4") > 0);
 	}
 	
 	public function testIsIP(){
-		$this->assertTrue(WindValidate::isIP("192.168.1.104"));
+		$this->assertTrue(WindValidator::isIP("192.168.1.104"));
 	}
 	
 	public function testHasHTML(){
-		$this->assertTrue(WindValidate::hasHTML("afaf<a>asdfa<b>") > 0);
+		$this->assertTrue(WindValidator::hasHTML("afaf<a>asdfa<b>") > 0);
 	}
 	
 	public function testIsHTML(){
-		$this->assertTrue(WindValidate::isHTML("<a>asdfa<b>"));
+		$this->assertTrue(WindValidator::isHTML("<a>asdfa<b>"));
 	}
 	
 	public function testHasScript(){
-		$this->assertTrue(WindValidate::hasScript("afaf<script>4</script>") > 0);
+		$this->assertTrue(WindValidator::hasScript("afaf<script>4</script>") > 0);
 	}
 	
 	public function testIsScript(){
-		$this->assertTrue(WindValidate::isScript("<script type='java'>asdfa</script>"));
+		$this->assertTrue(WindValidator::isScript("<script type='java'>asdfa</script>"));
 	}
 	
 	public function testIsNegative(){
-		$this->assertTrue(WindValidate::isNegative("-1") && !WindValidate::isNegative("1") && !WindValidate::isNegative("0"));
+		$this->assertTrue(WindValidator::isNegative("-1") && !WindValidator::isNegative("1") && !WindValidator::isNegative("0"));
 	}
 	
 	public function testIsPositive(){
-		$this->assertTrue(WindValidate::isPositive("1") && !WindValidate::isPositive("-1") && !WindValidate::isPositive("0"));
+		$this->assertTrue(WindValidator::isPositive("1") && !WindValidator::isPositive("-1") && !WindValidator::isPositive("0"));
 	}
 	
 	public function testIsNonNegative(){
-		$this->assertTrue(WindValidate::isNonNegative("0") && WindValidate::isNonNegative("1") && !WindValidate::isNonNegative("-1"));
+		$this->assertTrue(WindValidator::isNonNegative("0") && WindValidator::isNonNegative("1") && !WindValidator::isNonNegative("-1"));
 	}
 	
 	public function testIsBool(){
-		$this->assertTrue(WindValidate::isBool(true) && !WindValidate::isBool(""));
+		$this->assertTrue(WindValidator::isBool(true) && !WindValidator::isBool(""));
 	}
 	
 	public function testIsInt(){
-		$this->assertTrue(WindValidate::isInt(1) && !WindValidate::isInt("a"));
+		$this->assertTrue(WindValidator::isInt(1) && !WindValidator::isInt("a"));
 	}
 	
 	public function testIsFloat(){
-		$this->assertTrue(WindValidate::isFloat(10.01) && !WindValidate::isFloat("a"));
+		$this->assertTrue(WindValidator::isFloat(10.01) && !WindValidator::isFloat("a"));
 	}
 	
 	public  function testIsArray(){
-		$this->assertTrue(WindValidate::isArray(array("")) && !WindValidate::isArray("a"));
+		$this->assertTrue(WindValidator::isArray(array("")) && !WindValidator::isArray("a"));
 	}
 	
 	public function testIsEmpty(){
-		$this->assertTrue(WindValidate::isEmpty("") && WindValidate::isEmpty(0)  && WindValidate::isEmpty(array()) &&   WindValidate::isEmpty(false));
+		$this->assertTrue(WindValidator::isEmpty("") && WindValidator::isEmpty(0)  && WindValidator::isEmpty(array()) &&   WindValidator::isEmpty(false));
 	}
 	
 	public function testIsLegalLength(){
-		$this->assertTrue(WindValidate::isLegalLength("3333",3));
+		$this->assertTrue(WindValidator::isLegalLength("3333",3));
 	}
 	
 	public function testHasHtmlMatch(){
-		$this->assertTrue(WindValidate::hasHTML("afaf<a>asdfa<b>",$matchs,true) > 0 && is_array($matchs));
+		$this->assertTrue(WindValidator::hasHTML("afaf<a>asdfa<b>",$matchs,true) > 0 && is_array($matchs));
 	}
 	
 	
