@@ -29,15 +29,15 @@ class WindCookie{
 	 * @param boolean $httponly 是否可以访问脚本设置的cookie
 	 * @return string|string
 	 */
-	public static function set($name, $value=null, $expires = null, $path = null,$domain =null,$encode = false,$serialize = false,$prefix=null,$secure = false,$httponly=false){
+	public static function set($name, $value=null, $expires = null,$encode = false,$serialize = false,$prefix=null ,$path = null,$domain =null,$secure = false,$httponly=false){
 		if(empty($name)){
 			return false;
 		}
 		$name = $prefix ? $prefix.$name : $name;
 		$value = $serialize ? serialize($value) : $value;
 		$value = $encode ? base64_encode($value) : $value;
-		$expires = is_int($expires) ? time()+$expires : strtotime($expires);
 		$path = $path ? $path : '/';
+		$expires = is_int($expires) ? time()+$expires : strtotime($expires);
 		setcookie($name,$value,$expires,$path,$domain,$secure,$httponly);
 		return true;
 	}
@@ -49,7 +49,7 @@ class WindCookie{
 	 * @param string $prefix cookie前缀
 	 * @return boolean
 	 */
-	public static function remove($name,$prefix=''){
+	public static function remove($name,$prefix=null){
 		 $name = $prefix ? $prefix.$name : $name;
 		 if(self::exist($name)){
 		 	self::set($name,'',time()-3600);
@@ -66,11 +66,12 @@ class WindCookie{
 	 * @param string $prefix cookie前缀
 	 * @return string|boolean
 	 */
-	public static function get($name,$encode = false,$serialize = false,$prefix=''){
+	public static function get($name,$encode = false,$serialize = false,$prefix=null){
 		$name = $prefix ? $prefix.$name : $name;
 		if(self::exist($name)){
-			$value = $serialize ? unserialize($_COOKIE[$name]) : $_COOKIE[$name];
-			return $encode ?  base64_decode($value):$value;
+			$value = get_magic_quotes_gpc() ? stripslashes($_COOKIE[$name]) : $_COOKIE[$name]; 
+			$value = $encode ?  base64_decode($value):$value;
+			return $serialize ? unserialize($value) : $value;
 		}
 		return false;
 	}
@@ -87,7 +88,7 @@ class WindCookie{
 	 * @param string $name cookie名称
 	 * @param string $prefix cookie前缀
 	 */
-	public static function exist($name,$prefix=''){
+	public static function exist($name,$prefix=null){
 		return isset($_COOKIE[$prefix ? $prefix.$name : $name]);
 	}
 }
