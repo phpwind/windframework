@@ -14,7 +14,7 @@ require_once('component/validator/WindValidator.php');
  * @version $Id$ 
  * @package 
  */
-class WindValidateTest extends BaseTestCase{
+class WindValidatorTest extends BaseTestCase{
 	private $validate = null;
 	
 	public function init(){
