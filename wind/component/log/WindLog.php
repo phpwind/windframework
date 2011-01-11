@@ -6,7 +6,6 @@
  * @license 
  */
 defined ( 'LOG_PATH' ) or define ( 'LOG_PATH', './log/' );
-defined ( 'LOG_DISPLAY_TYPE' ) or define ( 'LOG_DISPLAY_TYPE', 'log' );
 /**
  * 日志记录
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -20,10 +19,19 @@ class WindLog {
 	const TRACE = 'trace';
 	const INFO = 'info';
 	const DB = 'db';
+	/**日志展示类型***/
+	const LOG = 'log';
+	const HTML = 'html';
 	/*写入日志类别*/
+	const SYSTEM = 0;
+	const EMAIL = 1;
+	const TCP = 2;
+	const FILE = 3;
 	private static $msgType = array ('system' => 0, 'email' => 1, 'tcp' => 2, 'file' => 3 );
 	
 	private static $logs = array ();
+	
+	private static $logDisplay = self::LOG;
 	/**
 	 * 记录日志信息，但不写入文件
 	 * @param string $msg	     日志信息
@@ -41,11 +49,13 @@ class WindLog {
 	 * @param $type		记录类别
 	 * @param $dst		日志被记录于何处
 	 * @param $header	其它信息
+	 * @return boolean
 	 */
-	public static function log($msg, $logType = self::INFO, $type = 'file', $dst = '', $header = '') {
-		$type = in_array ( $type, self::$msgType ) ? $type : 'file';
+	public static function log($msg, $logType = self::INFO, $type = self::FILE, $dst = '', $header = '') {
+		$type = in_array ( $type, self::$msgType ) ? $type : self::FILE;
 		$dst = empty ( $dst ) ? self::getFileName () : $dst;
-		error_log ( self::build ( $msg, $logType ), self::$msgType [$type], $dst, $header );
+		error_log ( self::build ( $msg, $logType ), $type, $dst, $header );
+		return true;
 	}
 	
 	/**
@@ -53,14 +63,17 @@ class WindLog {
 	 * @param string $type 日志类别
 	 * @param string $dst  日志被记录于何处
 	 * @param string $header 其它信息
+	 * @return boolean
 	 */
-	public static function flush($type = 'file', $dst = '', $header = '') {
+	public static function flush($type = self::FILE, $dst = '', $header = '') {
 		if (self::$logs) {
-			$type = in_array ( $type, self::$msgType ) ? $type : 'file';
+			$type = in_array ( $type, self::$msgType ) ? $type : self::FILE;
 			$dst = empty ( $dst ) ? self::getFileName () : $dst;
-			error_log ( join ( "", self::$logs ), self::$msgType [$type], $dst, $header );
+			error_log ( join ( "", self::$logs ), $type, $dst, $header );
 			self::$logs = array ();
+			return true;
 		}
+		return false;
 	}
 	
 	/*
@@ -80,15 +93,24 @@ class WindLog {
 	}
 	
 	/**
+	 * 设置日志展示类型
+	 * 
+	 * @param sting $type 日志展示类型(log/html)
+	 */
+	public static function setLogDisplay($type = self::LOG){
+		self::$logDisplay = $type;
+	}
+	
+	/**
 	 * 取得日志文件名
 	 */
 	private static function getFileName() {
 		self::createFolder ( LOG_PATH );
 		$size = 1024 * 50;
-		$filename = LOG_PATH . date ( "Y_m_d" ) . '.' . LOG_DISPLAY_TYPE;
+		$filename = LOG_PATH . date ( "Y_m_d" ) . '.' . self::$logDisplay;
 		if (is_file ( $filename ) && $size < filesize ( $filename )) {
 			for($i = 100; $counter = 100 - $i, $i >= 0; $i --) {
-				$filename = LOG_PATH . date ( "Y_m_d_{$counter}" ) . '.' . LOG_DISPLAY_TYPE;
+				$filename = LOG_PATH . date ( "Y_m_d_{$counter}" ) . '.' . self::$logDisplay;
 				if (! is_file ( $filename ) || (is_file ( $filename ) && $size > filesize ( $filename )))
 					break;
 			}
@@ -107,7 +129,7 @@ class WindLog {
 	 * @return string
 	 */
 	private static function build($msg, $logType = self::INFO) {
-		return 'log' == LOG_DISPLAY_TYPE ? self::buildLog ( var_export ( $msg, true ), $logType ) : self::buildHtm ( var_export ( $msg, true ), $logType );
+		return 'log' == self::$logDisplay ? self::buildLog ( var_export ( $msg, true ), $logType ) : self::buildHtm ( var_export ( $msg, true ), $logType );
 	}
 	
 	private static function info() {
