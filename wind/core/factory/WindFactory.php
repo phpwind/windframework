@@ -21,33 +21,27 @@ L::import('WIND:core.factory.AbstractWindFactory');
 class WindFactory extends AbstractWindFactory {
 	const CLASSES_DEFINITIONS = 'classes';
 	
-	private $classProxy = null;
-	
-	/**
-	 * @return the $classProxy
-	 */
-	public function getClassProxy() {
-		return $this->classProxy;
-	}
+	private $classProxy = 'WIND:core.factory.WindClassProxy';
 	
 	/**
 	 * @param WindClassProxy $classProxy
 	 */
 	public function setClassProxy($classProxy) {
-		$this->classProxy = $classProxy;
+		if (is_string($classProxy)) $this->classProxy = $classProxy;
 	}
 	
 	/* (non-PHPdoc)
 	 * @see AbstractWindFactory::createInstance()
 	 */
 	public function createInstance($className, $args) {
-		if (!class_exists($className)) throw new WindException('create class instance error. class ' . $className . 'is not exists.');
-		$reflection = new ReflectionClass($className);
+		if (!class_exists($className)) throw new WindException('Unable to create instance for \'' . $className . '\'');
+		if (!$this->classProxy) {
+			return parent::createInstance($className, $args);
+		}
+		$reflection = new ReflectionClass(L::import($this->classProxy));
 		if ($reflection->isAbstract() || $reflection->isInterface()) return;
-		
-		$object = call_user_func_array(array($reflection, 'newInstance'), (array) $args);
-		return $object;
+		$classProxy = call_user_func_array(array($reflection, 'newInstance'), array($className, $args));
+		return $classProxy;
 	}
-	
 
 }

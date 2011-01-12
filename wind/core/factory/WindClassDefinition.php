@@ -142,11 +142,11 @@ class WindClassDefinition extends WindModule {
 		if ($this->prototype !== null) return clone $this->prototype;
 		$instance = null;
 		if (empty($args)) {
-			$args = $this->setInstanceDepandence($this->getConstructArgs(), $factory);
+			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		}
 		$contructArgs = $this->getConstructArgs();
 		$instance = $factory->createInstance($this->getClassName(), $args);
-		$this->setInstanceDepandence($this->getPropertys(), $factory, $instance);
+		$this->setProperties($this->getPropertys(), $factory, $instance);
 		return $instance;
 	}
 	
@@ -156,7 +156,7 @@ class WindClassDefinition extends WindModule {
 	 * @param AbstractWindFactory $factory | 抽象的类工厂
 	 * @param object  $instance | 类实例
 	 */
-	private function setInstanceDepandence($subDefinitions, $factory, $instance = null) {
+	private function setProperties($subDefinitions, $factory, $instance = null) {
 		//TODO add check
 		$_temp = array();
 		foreach ($subDefinitions as $key => $subDefinition) {

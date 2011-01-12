@@ -9,45 +9,30 @@
  * @package 
  */
 interface IWindClassProxy {
-	
+
 	/**
 	 * Enter description here ...
 	 */
 	public function getInstance();
-	
+
 	/**
 	 * Enter description here ...
 	 */
 	public function getReflection();
-	
+
 	/**
 	 * Enter description here ...
 	 */
 	public function getClassPrototype();
-	
+
 	/**
 	 * Enter description here ...
 	 * 
 	 * @param string $method
 	 * @param IWindHandlerInterceptor $interceptor
 	 */
-	public function registerAspect(string $method, IWindHandlerInterceptor $interceptor);
-	
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param string $property
-	 * @param IWindHandlerInterceptor $interceptor
-	 */
-	public function registerSetPropertyAspect(string $property, IWindHandlerInterceptor $interceptor);
-	
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param string $property
-	 * @param IWindHandlerInterceptor $interceptor
-	 */
-	public function registerGetPropertyAspect(string $property, IWindHandlerInterceptor $interceptor);
+	public function registerEvent(string $method, IWindHandlerInterceptor $interceptor, string $registerType);
+
 }
 
 ?>
