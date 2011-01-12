@@ -194,7 +194,6 @@ class WindClassDefinition extends WindModule {
 	private function init($classDefinition) {
 		$this->validate($classDefinition);
 		$className = L::import($classDefinition[self::PATH]);
-		//TODO　create Error 管理类，替换目前的Exception机制
 		if (!$className) throw new WindException('class is not exists');
 		$this->setClassName(L::import($classDefinition[self::PATH]));
 		$this->setAlias($classDefinition[self::NAME]);

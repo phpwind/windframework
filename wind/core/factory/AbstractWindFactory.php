@@ -58,9 +58,9 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 	 */
 	public function createInstance($className, $args) {
 		if (!class_exists($className)) throw new WindException('create class instance error. class ' . $className . 'is not exists.');
-		$class = new ReflectionClass($className);
-		if ($class->isAbstract() || $class->isInterface()) return;
-		$object = call_user_func_array(array($class, 'newInstance'), (array) $args);
+		$reflection = new ReflectionClass($className);
+		if ($reflection->isAbstract() || $reflection->isInterface()) return;
+		$object = call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 		return $object;
 	}
 	
