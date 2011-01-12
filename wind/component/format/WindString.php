@@ -22,9 +22,10 @@ class WindString {
 	 * @param int $length    截取的长度
 	 * @param string $charset 原妈编码 
 	 * @param boolean $dot    是否显示省略号
+	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = 'UTF-8', $dot = false) {
-		if (in_array($charset, array('utf-8', 'UTF-8', 'utf8'))) {
+		if (in_array($charset, array('utf-8', 'UTF-8', 'utf8', 'UTF8'))) {
 			return self::utf8_substr($string, $start, $length, $dot);
 		} else {
 			return self::gbk_substr($string, $start, $length, $dot);
@@ -34,14 +35,14 @@ class WindString {
 	/**
 	 * 求取字符串长度
 	 * @param string $string  要计算的字符串编码
-	 * @param string $charset 原妈编码
-	 * @return number
+	 * @param string $charset 原始编码
+	 * @return int
 	 */
 	public static function strlen($string, $charset = 'UTF-8') {
 		$len = strlen($string);
 		$i = $count = 0;
-		while ($i < strlen($string)) {
-			ord($string[$i]) > 129 ? in_array($charset, array('utf-8', 'UTF-8', 'utf8')) ? $i += 3 : $i += 2 : $i++;
+		while ($i < $len) {
+			ord($string[$i]) > 129 ? in_array($charset, array('utf-8', 'UTF-8', 'utf8', 'UTF8')) ? $i += 3 : $i += 2 : $i++;
 			$count++;
 		}
 		return $count;
@@ -155,12 +156,11 @@ class WindString {
 	public static function gbk_strlen($string) {
 		$len = strlen($string);
 		$i = $count = 0;
-		while ($i < strlen($string)) {
+		while ($i < $len) {
 			ord($string[$i]) > 129 ? $i += 2 : $i++;
 			$count++;
 		}
 		return $count;
-	
 	}
 	
 	/**
