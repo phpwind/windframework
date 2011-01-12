@@ -26,6 +26,11 @@ class WindCacheDependeny implements IWindCacheDependency{
 	/**
 	 * @see wind/component/cache/base/IWindCacheDependency#injectDependent()
 	 */
+	
+	public function __construct(){
+		$this->injectDependent();
+	}
+	
 	public  function injectDependent(){
 		$this->dependent = $this->notifyDependencyChanged();
 	}
@@ -59,7 +64,8 @@ class WindCacheDependeny implements IWindCacheDependency{
 		return $this->dependent;
 	}
 	
-	/*	 * 通知依赖项已更改。
+	/*	 
+	 *  通知依赖项已更改。
 	 */
 	protected function notifyDependencyChanged(){
 		return null;

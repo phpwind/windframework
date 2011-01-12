@@ -15,10 +15,7 @@
  * @package 
  */
 interface IWindCache{
-	/**
-	 * @var array 缓存标记库
-	 */
-	protected static $tags = array();
+
 	/**
 	 * 设置缓存，如果$key不存在，设置缓存，否则，抛出异常。
 	 * @param string $key 保存缓存数据的键。
