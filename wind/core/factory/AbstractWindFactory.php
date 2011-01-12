@@ -22,7 +22,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 	protected $classDefinitions = array();
 	
 	protected $cache = '';
-
+	
 	/**
 	 * 初始化抽象工厂类
 	 * 可以通过两种方式初始化该工厂
@@ -33,7 +33,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 	public function __construct($classDefinitions) {
 		$this->loadClassDefinitions($classDefinitions);
 	}
-
+	
 	/**
 	 * 根据类的别名获得类实例
 	 * 
@@ -45,9 +45,11 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 		if (!isset($this->classDefinitions[$alias])) return $instance;
 		/*@var $classDefinition WindClassDefinition */
 		$classDefinition = $this->classDefinitions[$alias];
-		return $classDefinition->getInstance($this);
+		$args = func_get_args();
+		if ($args > 1) unset($args[0]);
+		return $classDefinition->getInstance($this, $args);
 	}
-
+	
 	/**
 	 * 根据类名创建类实例
 	 * 
@@ -61,7 +63,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 		$object = call_user_func_array(array($class, 'newInstance'), (array) $args);
 		return $object;
 	}
-
+	
 	/**
 	 * 返回类定义，是否为单利模式加载
 	 * 
@@ -72,7 +74,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 		$classDefinition = $this->getClassDefinition($classAlias);
 		return isset($classDefinition[self::CLASS_SINGLE]) && $classDefinition[self::CLASS_SINGLE] === 'false';
 	}
-
+	
 	/**
 	 * 获得类定义对象
 	 * 
@@ -82,7 +84,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 		if (!isset($this->classDefinitions[$classAlias])) return null;
 		return $this->classDefinitions[$classAlias];
 	}
-
+	
 	/**
 	 * @param WindClassDefinistion $classDefinition
 	 */
@@ -92,7 +94,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 			$this->classDefinitions[$alias] = $classDefinition;
 		}
 	}
-
+	
 	/**
 	 * 加载并解析类定义文件
 	 * 
@@ -107,7 +109,7 @@ abstract class AbstractWindFactory extends WindModule implements IWindFactory {
 			$this->addClassDefinitions($classDefinition);
 		}
 	}
-
+	
 	/**
 	 * 类定义检查
 	 * 

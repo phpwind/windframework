@@ -27,4 +27,5 @@ class WindFactory extends AbstractWindFactory {
 	const PROPERTY_TYPE = 'type';
 	
 	
+	
 }

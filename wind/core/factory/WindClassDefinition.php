@@ -102,12 +102,12 @@ class WindClassDefinition extends WindModule {
 	 * @param AbstractWindFactory $factory
 	 * @return instance|Ambigous <prototype, void, mixed>|NULL
 	 */
-	public function getInstance($factory) {
+	public function getInstance($factory, $args = array()) {
 		switch ($this->scope) {
 			case 'singleton':
-				return $this->createInstanceWithSingleton($factory);
+				return $this->createInstanceWithSingleton($factory, $args);
 			case 'prototype':
-				return $this->createInstanceWithPrototype($factory);
+				return $this->createInstanceWithPrototype($factory, $args);
 			default:
 				return null;
 		}
@@ -118,8 +118,8 @@ class WindClassDefinition extends WindModule {
 	 * 
 	 * @param AbstractWindFactory $factory
 	 */
-	protected function createInstanceWithPrototype($factory) {
-		return $this->createInstance($factory);
+	protected function createInstanceWithPrototype($factory, $args) {
+		return $this->createInstance($factory, $args);
 	}
 	
 	/**
@@ -127,20 +127,23 @@ class WindClassDefinition extends WindModule {
 	 * @param AbstractWindFactory $factory
 	 * @return instance
 	 */
-	protected function createInstanceWithSingleton($factory) {
+	protected function createInstanceWithSingleton($factory, $args) {
 		if (!isset($this->instance)) {
-			$this->instance = $this->createInstanceWithPrototype($factory);
+			$this->instance = $this->createInstanceWithPrototype($factory, $args);
 		}
 		return $this->instance;
 	}
 	
 	/**
 	 * @param AbstractWindFactory $factory
+	 * @param array $args
 	 */
-	protected function createInstance($factory) {
+	protected function createInstance($factory, $args) {
 		if ($this->prototype !== null) return clone $this->prototype;
 		$instance = null;
-		$args = $this->setInstanceDepandence($this->getConstructArgs(), $factory);
+		if (empty($args)) {
+			$args = $this->setInstanceDepandence($this->getConstructArgs(), $factory);
+		}
 		$contructArgs = $this->getConstructArgs();
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		$this->setInstanceDepandence($this->getPropertys(), $factory, $instance);
