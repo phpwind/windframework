@@ -8,11 +8,11 @@
  */
 
 interface IWindDataOperations{
-	public  function delete($obj);
-	public  function deleteBy();
-	public  function find();
-	public  function findBy();
-	public  function update();
-	public  function updateBy();
-	public  function save();
+	public  function delete(IWindEntity $entity);
+	public  function deleteBy(IWindEntity $entity);
+	public  function find(IWindEntity $entity);
+	public  function findBy(IWindEntity $entity);
+	public  function update(IWindEntity $entity);
+	public  function updateBy(IWindEntity $entity);
+	public  function save(IWindEntity $entity);
 }

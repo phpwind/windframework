@@ -7,9 +7,6 @@
  * tags
  */
 
-class WindTemplate{
-	
-	public function run(){
-		
-	}
+abstract class WindTemplate implements IWindDataOperations{
+
 }
