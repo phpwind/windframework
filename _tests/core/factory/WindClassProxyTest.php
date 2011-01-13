@@ -1,7 +1,4 @@
 <?php
-
-require_once '_tests\BaseTestCase.php';
-
 /**
  * Enter description here ...
  *
