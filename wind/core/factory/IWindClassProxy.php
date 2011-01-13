@@ -10,6 +10,30 @@
  */
 interface IWindClassProxy {
 
+	const EVENT_TYPE_METHOD = 'method';
+
+	/**
+	 * Enter description here ...
+	 *
+	 * @var unknown_type
+	 * @deprecated
+	 */
+	const EVENT_TYPE_SETTER = 'setter';
+
+	/**
+	 * Enter description here ...
+	 *
+	 * @var unknown_type
+	 * @deprecated
+	 */
+	const EVENT_TYPE_GETTER = 'getter';
+
+	/**
+	 * Enter description here ...
+	 * @return ReflectionClass
+	 */
+	public function getReflection();
+
 	/**
 	 * Enter description here ...
 	 */
@@ -17,21 +41,12 @@ interface IWindClassProxy {
 
 	/**
 	 * Enter description here ...
-	 */
-	public function getReflection();
-
-	/**
-	 * Enter description here ...
-	 */
-	public function getClassPrototype();
-
-	/**
-	 * Enter description here ...
 	 * 
-	 * @param string $method
-	 * @param IWindHandlerInterceptor $interceptor
+	 * @param string $event
+	 * @param Object $listener
+	 * @param string $type
 	 */
-	public function registerEvent(string $method, IWindHandlerInterceptor $interceptor, string $registerType);
+	public function registerEventListener($event, $listener, $type);
 
 }
 
