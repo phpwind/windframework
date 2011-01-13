@@ -15,10 +15,12 @@
  * @package 
  */
 abstract class WindDaoSupport{
+	protected $template = null;
 	public function __construct(){
 		$this->init();
 	}
 	public abstract function init();
+	public abstract function setTemplate();
 	public abstract function getTemplate();
 	
 }
