@@ -123,7 +123,7 @@ class WindClassProxy implements IWindClassProxy {
 		}
 		if ($events = $this->_getEventsByType(self::EVENT_TYPE_METHOD, $methodName)) {
 			$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
-				'newInstance'), array($events, array($this, 'getPropertyName'), $methodName, $args));
+				'newInstance'), array($events, array($this->getInstance(), $methodName), $args));
 			if (null !== ($handler = $interceptorChain->getHandler())) {
 				return call_user_func_array(array($handler, 'handle'), $args);
 			}
