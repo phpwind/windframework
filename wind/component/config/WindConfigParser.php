@@ -22,7 +22,6 @@ class WindConfigParser {
 	const ISMERGE = 'isMerge';
 	/**
 	 * 配置文件支持的格式白名单
-	 * @var 
 	 */
 	const CONFIG_XML = 'XML';
 	const CONFIG_PHP = 'PHP';

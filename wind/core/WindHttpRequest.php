@@ -528,7 +528,6 @@ class WindHttpRequest implements IWindRequest {
 	 * $this->_requestUri = /example/index.php?a=test
 	 * 
 	 * @throws WindException
-	 * @return
 	 */
 	private function initRequestUri() {
 		if (($requestUri = $this->getServer('HTTP_X_REWRITE_URL')) != null) {
@@ -551,7 +550,6 @@ class WindHttpRequest implements IWindRequest {
 	 * $this->_scriptUrl = /example/index.php
 	 * 
 	 * @throws WindException
-	 * @return
 	 */
 	private function _initScriptUrl() {
 		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
@@ -581,7 +579,6 @@ class WindHttpRequest implements IWindRequest {
 	 * $this->_hostInfo = https://www.phpwind.net:443/
 	 * 
 	 * @throws WindException
-	 * @return 
 	 */
 	private function _initHostInfo() {
 		$http = $this->isSecure() ? 'https' : 'http';
@@ -598,7 +595,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
 	 * @throws WindException
-	 * @return
 	 */
 	private function _initPathInfo() {
 		$requestUri = urldecode($this->getRequestUri());
