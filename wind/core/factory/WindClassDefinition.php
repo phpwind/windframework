@@ -146,7 +146,7 @@ class WindClassDefinition extends WindModule {
 	 * @param AbstractWindFactory $factory
 	 * @param array $args
 	 */
-	protected function createInstance($factory, $args) {
+	protected function createInstance($factory, $args = array()) {
 		if ($this->prototype !== null) return clone $this->prototype;
 		$instance = null;
 		if (empty($args)) {
