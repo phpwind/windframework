@@ -15,8 +15,9 @@
  * @package
  */
 class WindException extends Exception {
+
 	private $innerException = null;
-	
+
 	/**
 	 * 异常构造函数
 	 * 
@@ -29,14 +30,14 @@ class WindException extends Exception {
 		parent::__construct($message, $code);
 		$this->innerException = $innerException;
 	}
-	
+
 	/**
 	 * 取得内部异常
 	 */
 	public function getInnerException() {
 		return $this->innerException;
 	}
-	
+
 	/**
 	 * 取得异常堆栈信息
 	 */
@@ -53,7 +54,7 @@ class WindException extends Exception {
 		}
 		return array();
 	}
-	
+
 	public function buildMessage($message, $code) {
 		return $message;
 	}
