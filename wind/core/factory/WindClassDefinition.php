@@ -149,9 +149,7 @@ class WindClassDefinition extends WindModule {
 	protected function createInstance($factory, $args = array()) {
 		if ($this->prototype !== null) return clone $this->prototype;
 		$instance = null;
-		if (empty($args)) {
-			$args = $this->setProperties($this->getConstructArgs(), $factory);
-		}
+		if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
 		$contructArgs = $this->getConstructArgs();
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		$this->setProperties($this->getPropertys(), $factory, $instance);
