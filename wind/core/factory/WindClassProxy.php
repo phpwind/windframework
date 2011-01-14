@@ -29,7 +29,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * 
 	 * @param string|object $targetObj
 	 */
-	public function __construct($targetObj, $args = array()) {
+	public function __construct($targetObj = null, $args = array()) {
 		$this->_initClassProxy($targetObj, $args);
 	}
 
@@ -140,6 +140,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @throws WindException
 	 */
 	private function _initClassProxy($targetObject, $args = array()) {
+		if ($targetObject === null) return null;
 		if (is_object($targetObject)) {
 			$this->setClassName(get_class($targetObject));
 			$this->_instance = $targetObject;
@@ -147,13 +148,14 @@ class WindClassProxy implements IWindClassProxy {
 			if (!class_exists($targetObject)) throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
 			$this->setClassName($targetObject);
 		}
-		
-		$reflection = new ReflectionClass($this->_className);
-		if ($reflection->isAbstract() || $reflection->isInterface()) return;
-		if ($this->_instance === null) {
-			$this->_instance = call_user_func_array(array($reflection, 'newInstance'), $args);
+		if ($this->_reflection === null) {
+			$reflection = new ReflectionClass($this->_className);
+			if ($reflection->isAbstract() || $reflection->isInterface()) return;
+			$this->_reflection = $reflection;
 		}
-		$this->_reflection = $reflection;
+		if ($this->_instance === null) {
+			$this->_instance = call_user_func_array(array($this->_reflection, 'newInstance'), $args);
+		}
 	}
 
 	/**
