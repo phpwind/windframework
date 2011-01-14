@@ -14,15 +14,7 @@
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  */
-abstract class WindModule {
-	private $_trace = array();
-	private $_serialize = NULL;
-	
-	function __construct() {
-		$this->_init();
-	}
-	
-	private function _init() {}
+abstract class WindModule extends WindEnableValidateModule {
 	
 	public function __get($propertyName) {
 		if (!$this->_validateProperties($propertyName)) return;
@@ -31,13 +23,11 @@ abstract class WindModule {
 	
 	public function __set($propertyName, $value) {
 		if (!$this->_validateProperties($propertyName)) return;
-		$this->_trace['setted'][$propertyName] = $value;
 		$this->$propertyName = $value;
 	}
 	
 	public function isseted($propertyName) {
 		if (!$this->_validateProperties($propertyName)) return;
-		if (!isset($this->_trace['setted'])) return false;
 		return array_key_exists($propertyName, $this->_trace['setted']);
 	}
 	
@@ -57,6 +47,7 @@ abstract class WindModule {
 	 * @param string $propertyName
 	 */
 	protected function _validateProperties($propertyName) {
+		//TODO move this method to formModule
 		return $propertyName && array_key_exists($propertyName, get_object_vars($this));
 	}
 }
