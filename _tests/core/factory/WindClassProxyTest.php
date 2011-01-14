@@ -76,8 +76,8 @@ class WindClassProxyTest extends BaseTestCase {
 	 */
 	protected function setUp() {
 		parent::setUp();
-		require_once 'wind/core/factory/WindClassProxy.php';
-		require_once '_tests/data/ForWindClassProxy.php';
+		require_once 'core/factory/WindClassProxy.php';
+		require_once 'data/ForWindClassProxy.php';
 	}
 
 	/**

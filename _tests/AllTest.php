@@ -7,7 +7,7 @@
  */
 
 include 'component/AllComponentTest.php';
-include 'test/core/AllCoreTest.php';
+include 'core/AllCoreTest.php';
 
 class AllTest {
 	public static function main() {

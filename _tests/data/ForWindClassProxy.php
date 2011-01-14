@@ -6,7 +6,7 @@
  * @license
  */
 
-require_once 'wind/core/web/WindHandlerInterceptor.php';
+require_once 'core/web/WindHandlerInterceptor.php';
 
 class Listener extends WindHandlerInterceptor {
 

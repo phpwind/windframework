@@ -7,23 +7,36 @@
  */
 include ('component/db/AllDBTest.php');
 include ('component/config/WindConfigParserTest.php');
-include ('component/parser/WindIniParserTest.php');
-include ('component/parser/WindPropertiesParserTest.php');
-include ('component/parser/WindXmlParserTest.php');
+include ('component/form/WindActionFormTest.php');
+include ('component/form/WindFormFilterTest.php');
+include ('component/format/AllFormatTest.php');
+include ('component/log/AllLogTest.php');
+include ('component/mail/AllMailTest.php');
+include ('component/parser/AllParserTest.php');
+include ('component/security/WindSecurityTest.php');
+include ('component/validator/WindValidatorTest.php');
+include('component/WindPackTest.php');
 
 class AllComponentTest {
-
+	
 	public static function main() {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
-
+	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
-		//$suite->addTest(ALLDBTest::suite());
 		$suite->addTestSuite('WindConfigParserTest');
-		$suite->addTestSuite('WindIniParserTest');
-		$suite->addTestSuite('WindPropertiesParserTest');
-		$suite->addTestSuite('WindXmlParserTest');
+		$suite->addTest(ALLDBTest::suite());
+		$suite->addTestSuite('WindActionFormTest');
+		$suite->addTestSuite('WindFormFilterTest');
+		$suite->addTest(ALLFormatTest::suite());
+		$suite->addTest(AllLogTest::suite());
+		$suite->addTest(AllMailTest::suite());
+		$suite->addTest(AllParserTest::suite());
+		
+		$suite->addTestSuite('WindSecurityTest');
+		$suite->addTestSuite('WindValidatorTest');
+		$suite->addTestSuite('WindPackTest');
 		return $suite;
 	}
 }

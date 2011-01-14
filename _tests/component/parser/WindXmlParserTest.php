@@ -55,11 +55,14 @@ class WindXmlParserTest extends BaseTestCase {
 		$data = $this->parser->parse(WIND_PATH . 'wind_config.xml');
 	}
 	
+	public function testTestParse() {
+		$data = $this->parser->parse($this->path . '/data/test.xml');
+		print_r($data);
+	}
+	
 	public function testParseWithEmpty() {
 		$tmp = $this->parser->parse('');
-		$this->assertTrue(is_array($tmp) && count($tmp) == 0);
-		$tmp = $this->parser->parse(array());
-		$this->assertTrue(is_array($tmp) && count($tmp) == 0);
+		$this->assertTrue(is_array($tmp) && (count($tmp) == 0));
 	}
 	
 	public function testGetChildsWithError() {
