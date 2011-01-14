@@ -12,6 +12,10 @@ L::import('WIND:core.factory.IWindClassProxy');
  */
 class WindClassProxy implements IWindClassProxy {
 
+	protected $_className = '';
+
+	protected $_classPath = '';
+
 	protected $_reflection = null;
 
 	protected $_instance = null;
@@ -26,10 +30,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param string|object $targetObj
 	 */
 	public function __construct($className, $args = array()) {
-		if (!class_exists($className)) {
-			throw new WindException('unable to create instace for ' . $className . ', class is not exist.');
-		}
-		$this->_setReflection($className, $args);
+		$this->_initClassProxy($className, $args);
 	}
 
 	/* (non-PHPdoc)
@@ -132,14 +133,27 @@ class WindClassProxy implements IWindClassProxy {
 	}
 
 	/**
-	 * Enter description here ...
+	 * 初始化类代理对象
 	 * 
-	 * @param className
+	 * @param string|object $object
+	 * @param array $args
+	 * @throws WindException
 	 */
-	private function _setReflection($className, $args) {
-		$reflection = new ReflectionClass($className);
+	private function _initClassProxy($object, $args = array()) {
+		if (is_object($object)) {
+			$this->setClassName(get_class($object));
+			$this->_instance = $object;
+			$this->_reflection = new ReflectionClass(get_class($object));
+		} elseif (is_string($object) && !empty($object)) {
+			if (!class_exists($object)) throw new WindException($object, WindException::ERROR_CLASS_NOT_EXIST);
+			$this->setClassName($object);
+		}
+		
+		$reflection = new ReflectionClass($this->_className);
 		if ($reflection->isAbstract() || $reflection->isInterface()) return;
-		$this->_instance = call_user_func_array(array($reflection, 'newInstance'), $args);
+		if ($this->_instance === null) {
+			$this->_instance = call_user_func_array(array($reflection, 'newInstance'), $args);
+		}
 		$this->_reflection = $reflection;
 	}
 
@@ -167,6 +181,35 @@ class WindClassProxy implements IWindClassProxy {
 	 */
 	public function getReflection() {
 		return $this->_reflection;
+	}
+
+	/**
+	 * @return the $_className
+	 */
+	public function getClassName() {
+		return $this->_className;
+	}
+
+	/**
+	 * @return the $_classPath
+	 */
+	public function getClassPath() {
+		return $this->_classPath;
+	}
+
+	/**
+	 * @param string $className
+	 */
+	public function setClassName($className) {
+		$this->_className = $className;
+	}
+
+	/**
+	 * @param string $classPath
+	 */
+	public function setClassPath($classPath) {
+		$this->setClassName(L::import($classPath));
+		$this->_classPath = $classPath;
 	}
 
 }
