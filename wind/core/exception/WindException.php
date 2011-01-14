@@ -16,6 +16,12 @@
  */
 class WindException extends Exception {
 
+	/* 类错误 */
+	const ERROR_CLASS_NOT_EXIST = '100';
+
+	/* 参数错误 */
+	const ERROR_PARAMETER_TYPE_ERROR = '110';
+
 	private $innerException = null;
 
 	/**
@@ -56,7 +62,17 @@ class WindException extends Exception {
 	}
 
 	public function buildMessage($message, $code) {
+		eval('$message="' . addcslashes($this->messageMapper($code), '"') . '";');
+		
 		return $message;
+	}
+
+	private function messageMapper($code) {
+		$messages = array(
+			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
+			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.');
+		
+		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
 
 }
