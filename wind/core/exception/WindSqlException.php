@@ -16,6 +16,7 @@ class WindSqlException extends WindException {
 
 	//TODO change exception message like WindException.
 	
+
 	const DB_CONN_EMPTY = 'Database configuration is empty';
 
 	const DB_CONN_FORMAT = 'Database configuration format is incorrect';
