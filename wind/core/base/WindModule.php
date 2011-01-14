@@ -15,22 +15,9 @@
  * @version $Id$ 
  */
 abstract class WindModule extends WindEnableValidateModule {
-	
-	public function __get($propertyName) {
-		if (!$this->_validateProperties($propertyName)) return;
-		return $this->$propertyName;
-	}
-	
-	public function __set($propertyName, $value) {
-		if (!$this->_validateProperties($propertyName)) return;
-		$this->$propertyName = $value;
-	}
-	
-	public function isseted($propertyName) {
-		if (!$this->_validateProperties($propertyName)) return;
-		return array_key_exists($propertyName, $this->_trace['setted']);
-	}
-	
+
+	private $_classProxy = '';
+
 	public function toArray() {
 		$class = new ReflectionClass(get_class($this));
 		$properties = $class->getProperties();
@@ -41,13 +28,19 @@ abstract class WindModule extends WindEnableValidateModule {
 		}
 		return $vars;
 	}
-	
+
 	/**
-	 * 验证属性文件是否存在
-	 * @param string $propertyName
+	 * @return the $_classProxy
 	 */
-	protected function _validateProperties($propertyName) {
-		//TODO move this method to formModule
-		return $propertyName && array_key_exists($propertyName, get_object_vars($this));
+	public function getClassProxy() {
+		return $this->_classProxy;
 	}
+
+	/**
+	 * @param field_type $_classProxy
+	 */
+	public function setClassProxy($_classProxy) {
+		$this->_classProxy = $_classProxy;
+	}
+
 }

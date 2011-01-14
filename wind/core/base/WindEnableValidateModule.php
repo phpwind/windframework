@@ -15,11 +15,11 @@
  * @package 
  */
 abstract class WindEnableValidateModule {
-	
+
 	protected $_validator = null;
-	
+
 	protected $_errors = array();
-	
+
 	/**
 	 * 返回验证规则
 	 * 
@@ -29,7 +29,7 @@ abstract class WindEnableValidateModule {
 	protected function validateRules() {
 		return array();
 	}
-	
+
 	/**
 	 * 验证方法
 	 * 
@@ -43,7 +43,7 @@ abstract class WindEnableValidateModule {
 		elseif (is_object($input))
 			$this->validateObject($input, $this->validateRules());
 	}
-	
+
 	/**
 	 * 验证数组类型的输入
 	 * @param array $input
@@ -59,18 +59,18 @@ abstract class WindEnableValidateModule {
 			}
 		}
 	}
-	
+
 	private function validateObject(&$input, $rules) {
 		//TODO 仿照validateArray实现该方法
 	}
-	
+
 	/**
 	 * @param WindValidator $windValidator
 	 */
 	protected function registerValidator($windValidator) {
 		$this->_validator = $windValidator;
 	}
-	
+
 	/**
 	 * 返回验证器
 	 * @return WindValidator 
@@ -78,7 +78,7 @@ abstract class WindEnableValidateModule {
 	protected function getValidator() {
 		return $this->_validator;
 	}
-	
+
 	/**
 	 * 组装测试规则
 	 * @param string $field	| 验证字段名称
