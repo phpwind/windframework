@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.factory.AbstractWindFactory');
+L::import('WIND:core.factory.IWindFactory');
 /**
  * Wind容器基类，创建类对象（分为两种模式，一种是普通模式，一种为单利模式）
  * 
@@ -18,30 +18,121 @@ L::import('WIND:core.factory.AbstractWindFactory');
  * @version $Id$ 
  * @package 
  */
-class WindFactory extends AbstractWindFactory {
-	const CLASSES_DEFINITIONS = 'classes';
-	
-	private $classProxy = 'WIND:core.factory.WindClassProxy';
-	
+class WindFactory implements IWindFactory {
+
+	protected $classDefinitionType = 'WIND:core.factory.WindClassDefinition';
+
+	protected $classDefinitions = array();
+
+	protected $cache = '';
+
 	/**
-	 * @param WindClassProxy $classProxy
+	 * 初始化抽象工厂类
+	 * 可以通过两种方式初始化该工厂
+	 * 1. 直接传递一个解析好的类配置信息
+	 * 
+	 * @param string $configFile
 	 */
-	public function setClassProxy($classProxy) {
-		if (is_string($classProxy)) $this->classProxy = $classProxy;
+	public function __construct($classDefinitions) {
+		$this->loadClassDefinitions($classDefinitions);
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindFactory::getInstance()
+	 */
+	public function getInstance($alias) {
+		$instance = null;
+		if (!isset($this->classDefinitions[$alias])) return $instance;
+		/*@var $classDefinition WindClassDefinition */
+		$classDefinition = $this->classDefinitions[$alias];
+		$args = func_get_args();
+		if ($args > 1) unset($args[0]);
+		return $classDefinition->getInstance($this, $args);
+	}
+
 	/* (non-PHPdoc)
 	 * @see AbstractWindFactory::createInstance()
 	 */
-	public function createInstance($className, $args) {
-		if (!class_exists($className)) throw new WindException('Unable to create instance for \'' . $className . '\'');
-		if (!$this->classProxy) {
-			return parent::createInstance($className, $args);
+	public function createInstance($className) {
+		if (!class_exists($className)) {
+			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		$reflection = new ReflectionClass(L::import($this->classProxy));
-		if ($reflection->isAbstract() || $reflection->isInterface()) return;
-		$classProxy = call_user_func_array(array($reflection, 'newInstance'), array($className, $args));
-		return $classProxy;
+		$reflection = new ReflectionClass($className);
+		if ($reflection->isAbstract() || $reflection->isInterface()) return null;
+		$args = func_get_args();
+		unset($args[0]);
+		return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param string $classAlias
+	 * @return boolean
+	 */
+	public function isSingled($classAlias) {
+		$classDefinition = $this->getClassDefinition($classAlias);
+		return isset($classDefinition[self::CLASS_SINGLE]) && $classDefinition[self::CLASS_SINGLE] === 'false';
+	}
+
+	/**
+	 * 获得类定义对象
+	 * 
+	 * @param string $classDefinition
+	 */
+	public function getClassDefinition($classAlias) {
+		if (!isset($this->classDefinitions[$classAlias])) return null;
+		return $this->classDefinitions[$classAlias];
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param WindClassDefinition|array $classDefinition
+	 */
+	public function addClassDefinitions($classDefinition) {
+		if ($classDefinition instanceof WindClassDefinition) {
+			$alias = $classDefinition->getAlias();
+			if (!isset($this->classDefinitions[$alias])) {
+				$this->classDefinitions[$alias] = $classDefinition;
+			}
+		} elseif (is_array($classDefinition)) {
+			foreach ($classDefinition as $value)
+				$this->addClassDefinitions(a);
+		}
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param array $classDefinitions
+	 * @throws WindException
+	 */
+	protected function loadClassDefinitions($classDefinitions) {
+		if (!is_array($classDefinitions)) {
+			throw new WindException($classDefinitions, WindException::ERROR_PARAMETER_TYPE_ERROR);
+		}
+		$classDefinitionType = L::import($this->classDefinitionType);
+		if (!class_exists($classDefinitionType)) {
+			throw new WindException($classDefinitionType, WindException::ERROR_CLASS_NOT_EXIST);
+		}
+		foreach ($classDefinitions as $classAlias => $definition) {
+			if (!$this->checkClassDefinition($definition)) continue;
+			$classDefinition = self::createInstance($classDefinitionType, $definition);
+			$classDefinition->setAlias($classAlias);
+			$this->addClassDefinitions($classDefinition);
+		}
+	}
+
+	/**
+	 * 类定义检查
+	 * 
+	 * @param array $definition
+	 * @return string
+	 */
+	protected function checkClassDefinition($definition) {
+		//TODO check class definition
+		return true;
 	}
 
 }
