@@ -24,6 +24,8 @@ class WindFactory implements IWindFactory {
 
 	protected $classDefinitions = array();
 
+	protected $classAlias = array();
+
 	protected $cache = '';
 
 	/**
@@ -41,12 +43,10 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias) {
-		$instance = null;
-		if (!isset($this->classDefinitions[$alias])) return $instance;
+		if (null === ($classDefinition = $this->getClassDefinition($alias))) return null;
 		/*@var $classDefinition WindClassDefinition */
-		$classDefinition = $this->classDefinitions[$alias];
 		$args = func_get_args();
-		if ($args > 1) unset($args[0]);
+		unset($args[0]);
 		return $classDefinition->getInstance($this, $args);
 	}
 
@@ -76,11 +76,16 @@ class WindFactory implements IWindFactory {
 	/**
 	 * 获得类定义对象
 	 * 
-	 * @param string $classDefinition
+	 * @param string $classAlias
+	 * @return WindClassDefinition
 	 */
 	public function getClassDefinition($classAlias) {
-		if (!isset($this->classDefinitions[$classAlias])) return null;
-		return $this->classDefinitions[$classAlias];
+		$classDefinition = $this->classDefinitions[$classAlias];
+		if (is_object($classDefinition)) return $classDefinition;
+		
+		$_className = $this->classAlias[$classAlias];
+		$classDefinition = $this->classDefinitions[$_className];
+		return is_object($classDefinition) ? $classDefinition : null;
 	}
 
 	/**
@@ -90,13 +95,13 @@ class WindFactory implements IWindFactory {
 	 */
 	public function addClassDefinitions($classDefinition) {
 		if ($classDefinition instanceof WindClassDefinition) {
+			$className = $classDefinition->getClassName();
 			$alias = $classDefinition->getAlias();
-			if (!isset($this->classDefinitions[$alias])) {
-				$this->classDefinitions[$alias] = $classDefinition;
-			}
+			$this->classDefinitions[$className] = $classDefinition;
+			$this->classAlias[$alias] = $className;
 		} elseif (is_array($classDefinition)) {
 			foreach ($classDefinition as $value)
-				$this->addClassDefinitions(a);
+				$this->addClassDefinitions($value);
 		}
 	}
 

@@ -139,7 +139,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param array $args
 	 * @throws WindException
 	 */
-	private function _initClassProxy($targetObject, $args = array()) {
+	public function initClassProxy($targetObject, $args = array()) {
 		if ($targetObject === null) return null;
 		if (is_object($targetObject)) {
 			$this->setClassName(get_class($targetObject));

@@ -34,6 +34,8 @@ class WindClassDefinition extends WindModule {
 
 	const SCOPE = 'scope';
 
+	const PROXY = 'proxy';
+
 	const PROPERTIES = 'properties';
 
 	const CONSTRUCTOR_ARG = 'constructor-arg';
@@ -66,6 +68,13 @@ class WindClassDefinition extends WindModule {
 	 * @var string
 	 */
 	protected $scope = '';
+
+	/**
+	 * 类代理对象定义
+	 *
+	 * @var string
+	 */
+	protected $proxy = '';
 
 	/**
 	 * 构造参数定义
@@ -188,6 +197,7 @@ class WindClassDefinition extends WindModule {
 		$rules[] = $this->buildValidateRule(self::SCOPE, 'isRequired', 'singleton');
 		$rules[] = $this->buildValidateRule(self::INIT_METHOD, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::FACTORY_METHOD, 'isRequired', '');
+		$rules[] = $this->buildValidateRule(self::PROXY, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::PROPERTIES, 'isRequired', array());
 		$rules[] = $this->buildValidateRule(self::CONSTRUCTOR_ARG, 'isRequired', array());
 		return $rules;
@@ -200,11 +210,13 @@ class WindClassDefinition extends WindModule {
 	private function init($classDefinition) {
 		$this->validate($classDefinition);
 		$className = L::import($classDefinition[self::PATH]);
-		if (!$className) throw new WindException('class is not exists');
+		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
+		
 		$this->setClassName(L::import($classDefinition[self::PATH]));
 		$this->setAlias($classDefinition[self::NAME]);
 		$this->setPath($classDefinition[self::PATH]);
 		$this->setScope($classDefinition[self::SCOPE]);
+		$this->setProxy($classDefinition[self::PROXY]);
 		$this->setPropertys($classDefinition[self::PROPERTIES]);
 		$this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
 		$this->setClassDefinition($classDefinition);
@@ -313,6 +325,20 @@ class WindClassDefinition extends WindModule {
 	 */
 	public function setClassDefinition($classDefinition) {
 		$this->classDefinition = $classDefinition;
+	}
+
+	/**
+	 * @return the $proxy
+	 */
+	public function getProxy() {
+		return $this->proxy;
+	}
+
+	/**
+	 * @param string $proxy
+	 */
+	public function setProxy($proxy) {
+		$this->proxy = $proxy;
 	}
 
 }
