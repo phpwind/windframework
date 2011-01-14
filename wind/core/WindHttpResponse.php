@@ -377,7 +377,6 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function sendError($status, $message = '') {
 		if (!is_int($status) || $status < 400 || $status > 505) return;
-		
 		$this->setBody($message);
 		$this->setStatus($status);
 	}
