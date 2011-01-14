@@ -29,8 +29,8 @@ class WindClassProxy implements IWindClassProxy {
 	 * 
 	 * @param string|object $targetObj
 	 */
-	public function __construct($className, $args = array()) {
-		$this->_initClassProxy($className, $args);
+	public function __construct($targetObj, $args = array()) {
+		$this->_initClassProxy($targetObj, $args);
 	}
 
 	/* (non-PHPdoc)
@@ -135,18 +135,18 @@ class WindClassProxy implements IWindClassProxy {
 	/**
 	 * 初始化类代理对象
 	 * 
-	 * @param string|object $object
+	 * @param string|object $targetObject
 	 * @param array $args
 	 * @throws WindException
 	 */
-	private function _initClassProxy($object, $args = array()) {
-		if (is_object($object)) {
-			$this->setClassName(get_class($object));
-			$this->_instance = $object;
-			$this->_reflection = new ReflectionClass(get_class($object));
-		} elseif (is_string($object) && !empty($object)) {
-			if (!class_exists($object)) throw new WindException($object, WindException::ERROR_CLASS_NOT_EXIST);
-			$this->setClassName($object);
+	private function _initClassProxy($targetObject, $args = array()) {
+		if (is_object($targetObject)) {
+			$this->setClassName(get_class($targetObject));
+			$this->_instance = $targetObject;
+			$this->_reflection = new ReflectionClass(get_class($targetObject));
+		} elseif (is_string($targetObject) && !empty($targetObject)) {
+			if (!class_exists($targetObject)) throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
+			$this->setClassName($targetObject);
 		}
 		
 		$reflection = new ReflectionClass($this->_className);
