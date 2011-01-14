@@ -7,6 +7,6 @@
  * tags
  */
 
-abstract class WindTemplate implements IWindDataOperations{
+abstract class WindTemplate  {
 
 }
