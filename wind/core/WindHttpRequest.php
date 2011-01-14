@@ -59,7 +59,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求参数信息
 	 * @var array
 	 */
-	private $_params = array();
+	private $_attribute = array();
 	
 	private $_response = null;
 	
@@ -80,13 +80,19 @@ class WindHttpRequest implements IWindRequest {
 		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
 	}
 	
+	public function setAttribute($name, $value) {
+		$this->_attribute[$name] = $value;
+	}
+	
 	/**
-	 * 根据名称获得服务器和执行环境信息,如果名称不存在则返回NULL
+	 * 根据名称获得服务器和执行环境信息
 	 * 
 	 * @param string|null $name
 	 */
 	public function getAttribute($name, $value = '') {
-		if (isset($_GET[$name]))
+		if (isset($this->_attribute[$name])) {
+			return $this->_attribute[$name];
+		} else if (isset($_GET[$name]))
 			return $_GET[$name];
 		else if (isset($_POST[$name]))
 			return $_POST[$name];
@@ -550,6 +556,7 @@ class WindHttpRequest implements IWindRequest {
 	 * $this->_scriptUrl = /example/index.php
 	 * 
 	 * @throws WindException
+	 * @return
 	 */
 	private function _initScriptUrl() {
 		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
@@ -579,6 +586,7 @@ class WindHttpRequest implements IWindRequest {
 	 * $this->_hostInfo = https://www.phpwind.net:443/
 	 * 
 	 * @throws WindException
+	 * @return 
 	 */
 	private function _initHostInfo() {
 		$http = $this->isSecure() ? 'https' : 'http';
@@ -595,6 +603,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
 	 * @throws WindException
+	 * @return
 	 */
 	private function _initPathInfo() {
 		$requestUri = urldecode($this->getRequestUri());
