@@ -143,7 +143,6 @@ class WindClassProxy implements IWindClassProxy {
 		if (is_object($targetObject)) {
 			$this->setClassName(get_class($targetObject));
 			$this->_instance = $targetObject;
-			$this->_reflection = new ReflectionClass(get_class($targetObject));
 		} elseif (is_string($targetObject) && !empty($targetObject)) {
 			if (!class_exists($targetObject)) throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
 			$this->setClassName($targetObject);
