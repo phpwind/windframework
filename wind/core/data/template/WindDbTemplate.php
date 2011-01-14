@@ -10,54 +10,5 @@
 class WindDbTemplate extends WindTemplate{
 	
 	
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function delete(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function deleteBy(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function find(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function findBy(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function update(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function updateBy(IWindEntity $entity) {
-		
-	}
-
-	/**
-	 * @param IWindEntity IWindEntity $entity
-	 */
-	public function save(IWindEntity $entity) {
-		
-	}
-
 
 }
