@@ -8,6 +8,8 @@
  */
 
 class WindDbTemplate extends WindTemplate{
+	
+	
 	/**
 	 * @param IWindEntity IWindEntity $entity
 	 */
