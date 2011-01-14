@@ -30,7 +30,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param string|object $targetObj
 	 */
 	public function __construct($targetObj = null, $args = array()) {
-		$this->_initClassProxy($targetObj, $args);
+		$this->initClassProxy($targetObj, $args);
 	}
 
 	/* (non-PHPdoc)
