@@ -57,9 +57,9 @@ class WindFrontController extends WindServer {
 		$filter = WindFilterFactory::getFactory()->create($this->systemConfig->getFilters());
 		if ($filter instanceof WindFilter) {
 			$filter->doFilter($this->request, $this->response);
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	/**
