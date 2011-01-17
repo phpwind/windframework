@@ -19,16 +19,31 @@ class WindFactoryTest extends BaseTestCase {
 	}
 	public function testNoClassCreate() {
 		try{
-			$this->factory->createInstance('WindCoreTest', 'hahah');
+			$this->factory->createInstance('CoreTest', 'hahah');
 		}catch(Exception $e) {
-			//$this->assertTrue($e instanceof WindException);
 			return;
 		}
 		$this->fail('Exception Error!');
 	}
 	
-	public function testCreateClassProxyInstance() {
+	public function testGetClassDefinition() {
+		$this->assertTrue($this->factory->getClassDefinition('ppp') instanceof WindClassDefinition);
+	}
+	
+	public function testAddClassDefinitions() {
+		$p = new WindClassDefinition(array('name' => 'kkk', 'path' => 'WIND:core.WindView'));
+		$this->factory->addClassDefinitions($p);
+		$this->assertTrue($this->factory->getClassDefinition('kkk') instanceof WindClassDefinition);
 		
+		$p = new WindClassDefinition(array('name' => 'ooo', 'path' => 'WIND:core.WindView'));
+		$this->factory->addClassDefinitions(array($p));
+		$this->assertTrue($this->factory->getClassDefinition('ooo') instanceof WindClassDefinition);
+	}
+	
+	public function testGetInstance() {
+		$this->assertNull($this->factory->getInstance('ooo'));
+		$obj = $this->factory->getInstance('ppp');
+		$this->assertTrue($obj instanceof WindView);
 	}
 	
 	private function getTestData() {

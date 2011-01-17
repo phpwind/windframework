@@ -212,7 +212,7 @@ class WindClassDefinition extends WindModule {
 		$className = L::import($classDefinition[self::PATH]);
 		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		
-		$this->setClassName(L::import($classDefinition[self::PATH]));
+		$this->setClassName($className);
 		$this->setAlias($classDefinition[self::NAME]);
 		$this->setPath($classDefinition[self::PATH]);
 		$this->setScope($classDefinition[self::SCOPE]);

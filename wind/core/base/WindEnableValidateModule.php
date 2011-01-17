@@ -52,7 +52,7 @@ abstract class WindEnableValidateModule {
 	private function validateArray(&$input, $rules) {
 		foreach ((array) $rules as $rule) {
 			$validator = $rule['validator'];
-			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : $rule['default'];
+			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : '';
 			if ($this->getValidator()->$validator($_input) === false) {
 				if ($rule['default'] === null) throw new WindException('the field ' . $rule['field'] . ' validate fail.');
 				$input[$rule['field']] = $rule['default'];

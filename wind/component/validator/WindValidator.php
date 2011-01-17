@@ -228,6 +228,7 @@ class WindValidator {
 	public function isRequired($value) {
 		if (empty($value)) return false;
 		if ($value === null) return false;
+		return true;
 	}
 	
 	/**
