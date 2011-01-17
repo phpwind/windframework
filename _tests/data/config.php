@@ -77,5 +77,29 @@
 		'formConfig' => 'WIND:component.form.form_config',
 		'dbConfig' => 'WIND:component.form.db_config',
 	),
+	'database' => array(
+			'connections' => array(
+				'phpwind_8' => array(
+					'driver' => 'mysql',
+					'host' => 'localhost',
+					'user' => 'root',
+					'password' => 'xxx',
+					'port' => '3306',
+					'name' => 'phpwindteam',
+					'charset' => 'utf8',
+				),
+			),
+			'drivers' => array(
+				'mysql' => array(
+					'builder' => 'mysql',
+					'class' => 'WIND:component.db.drivers.mysql.WindMySql',
+				),
+			),
+			'builders' => array(
+				'mysql' => array(
+					'class' => 'WIND:component.db.drivers.mysql.WindMySqlBuilder',
+				),
+			),
+		),
 );
 ?>
