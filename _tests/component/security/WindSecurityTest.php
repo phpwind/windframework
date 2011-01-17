@@ -59,19 +59,6 @@ class WindSecurityTest extends BaseTestCase {
 		);
 	}
 	
-	private function assertArrayEquals($arr1, $arr2) {
-		$this->assertTrue(is_array($arr1) && is_array($arr2));
-		$this->assertEquals(count($arr1), count($arr2));
-		foreach ($arr1 as $key => $value) {
-			$this->assertTrue(isset($arr2[$key]));
-			if (is_array($arr2[$key])) {
-				$this->assertArrayEquals($value, $arr2[$key]);
-			} else {
-				$this->assertTrue($value == $arr2[$key]);
-			}
-		}
-	}
-	
 	/**
 	 * @dataProvider htmlData
 	 */
