@@ -83,7 +83,7 @@
 					'driver' => 'mysql',
 					'host' => 'localhost',
 					'user' => 'root',
-					'password' => 'xxx',
+					'password' => 'root',
 					'port' => '3306',
 					'name' => 'phpwindteam',
 					'charset' => 'utf8',
