@@ -61,13 +61,27 @@ class WindException extends Exception {
 		return array();
 	}
 
+	/**
+	 * 组装异常信息
+	 * 
+	 * 根据输入的异常号组装相对应的异常信息
+	 * 
+	 * @param string $message 用户自定义的信息
+	 * @param int $code  异常号
+	 * @return string 组装后的异常信息
+	 */
 	public function buildMessage($message, $code) {
 		eval('$message="' . addcslashes($this->messageMapper($code), '"') . '";');
-		
 		return $message;
 	}
-
-	private function messageMapper($code) {
+    
+	/**
+	 * 自定义异常号的对应异常信息
+	 * 
+	 * @param int $code  异常号
+	 * @return string 返回异常号对应的异常组装信息原型
+	 */
+	protected function messageMapper($code) {
 		$messages = array(
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
 			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.');
