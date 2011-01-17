@@ -27,7 +27,7 @@ abstract class WindDbAdapter {
 	 * @var int 前句执行sql时的错误代码
 	 */
 	protected $last_errcode = 0;
-
+	
 	/**
 	 * @var string 数据库字符集
 	 */
@@ -51,15 +51,15 @@ abstract class WindDbAdapter {
 	/**
 	 * @var array 事务回滚点
 	 */
-	protected $savepoint = array ();
+	protected $savepoint = array();
 	/**
 	 * @var resoruce 数据库连接
 	 */
-	protected  $connection = null;
+	protected $connection = null;
 	/**
 	 * @var WindSqlBuilder sql语句生成器
 	 */
-	protected  $sqlBuilder = null;
+	protected $sqlBuilder = null;
 	/**
 	 * @var resource 当前查询句柄
 	 */
@@ -67,14 +67,14 @@ abstract class WindDbAdapter {
 	/**
 	 * @var array 数据库连接配置
 	 */
-	protected  $config = array ();
+	protected $config = array();
 	
 	/**
 	 * 初始化配置
 	 * @param array $config
 	 */
 	public function __construct($config) {
-		$this->parseConfig ( $config );
+		$this->parseConfig($config);
 		$this->connect();
 	}
 	
@@ -91,17 +91,17 @@ abstract class WindDbAdapter {
 	 * @param array $config 数据库配置
 	 * @return array
 	 */
-	final private function checkConfig($config){
-		if (empty ( $config ) || (! is_array ( $config ) && !is_string($config))) {
-			throw new WindSqlException (WindSqlException::DB_CONN_EMPTY);
+	final private function checkConfig($config) {
+		if (empty($config) || (!is_array($config) && !is_string($config))) {
+			throw new WindSqlException('', WindSqlException::DB_CONN_EMPTY);
 		}
-		if(empty($config[IWindDbConfig::CONN_DRIVER]) || empty($config[IWindDbConfig::CONN_HOST]) || empty($config[IWindDbConfig::CONN_NAME]) || empty($config[IWindDbConfig::CONN_USER])  || empty($config[IWindDbConfig::CONN_PASS])){
-			throw new WindSqlException (WindSqlException::DB_CONN_FORMAT);
+		if (empty($config[IWindDbConfig::CONN_DRIVER]) || empty($config[IWindDbConfig::CONN_HOST]) || empty($config[IWindDbConfig::CONN_NAME]) || empty($config[IWindDbConfig::CONN_USER]) || empty($config[IWindDbConfig::CONN_PASS])) {
+			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
 		}
-		$config [IWindDbConfig::CONN_HOST] = isset($config [IWindDbConfig::CONN_PORT]) ? $config [IWindDbConfig::CONN_HOST] . ':' . $config [IWindDbConfig::CONN_PORT] : $config [IWindDbConfig::CONN_HOST];
-		$config [IWindDbConfig::CONN_PCONN] = isset($config [IWindDbConfig::CONN_PCONN]) ? $config [IWindDbConfig::CONN_PCONN] : $this->pconnect;
-		$config [IWindDbConfig::CONN_FORCE] = isset($config [IWindDbConfig::CONN_FORCE]) ? $config [IWindDbConfig::CONN_FORCE] : $this->force;
-		$config [IWindDbConfig::CONN_CHAR] = isset($config [IWindDbConfig::CONN_CHAR]) ? $config [IWindDbConfig::CONN_CHAR] : $this->charset;
+		$config[IWindDbConfig::CONN_HOST] = isset($config[IWindDbConfig::CONN_PORT]) ? $config[IWindDbConfig::CONN_HOST] . ':' . $config[IWindDbConfig::CONN_PORT] : $config[IWindDbConfig::CONN_HOST];
+		$config[IWindDbConfig::CONN_PCONN] = isset($config[IWindDbConfig::CONN_PCONN]) ? $config[IWindDbConfig::CONN_PCONN] : $this->pconnect;
+		$config[IWindDbConfig::CONN_FORCE] = isset($config[IWindDbConfig::CONN_FORCE]) ? $config[IWindDbConfig::CONN_FORCE] : $this->force;
+		$config[IWindDbConfig::CONN_CHAR] = isset($config[IWindDbConfig::CONN_CHAR]) ? $config[IWindDbConfig::CONN_CHAR] : $this->charset;
 		return $this->config = $config;
 	}
 	
@@ -175,15 +175,15 @@ abstract class WindDbAdapter {
 	 * @return WindSqlBuilder
 	 * @todo 重构获取sqlbuilder方式
 	 */
-	final public  function getSqlBuilder($builderConfig = array()){
-		if(empty($this->sqlBuilder)){
+	final public function getSqlBuilder($builderConfig = array()) {
+		if (empty($this->sqlBuilder)) {
 			$driverConfig = C::getDataBaseDriver($this->config[IWindDbConfig::CONN_DRIVER]);
-			$builderConfig = $builderConfig ? $builderConfig :  C::getDataBaseBuilder($driverConfig[IWindDbConfig::DRIVER_BUILDER]);
+			$builderConfig = $builderConfig ? $builderConfig : C::getDataBaseBuilder($driverConfig[IWindDbConfig::DRIVER_BUILDER]);
 			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS];
-			L::import ($builderClass);
-			$class = substr ( $builderClass, strrpos ( $builderClass, '.' ) + 1 );
-			if(false === class_exists($class)){
-				throw new WindSqlException(WindSqlException::DB_BUILDER_NOT_EXIST);
+			L::import($builderClass);
+			$class = substr($builderClass, strrpos($builderClass, '.') + 1);
+			if (false === class_exists($class)) {
+				throw new WindSqlException($class, WindSqlException::DB_BUILDER_NOT_EXIST);
 			}
 			$this->sqlBuilder = new $class($this);
 		}
@@ -194,7 +194,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 新增sql语句
 	 * @return boolean
 	 */
-	final public  function insert($sql){
+	final public function insert($sql) {
 		return $this->query($sql);
 	}
 	
@@ -203,7 +203,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 更新sql语句
 	 * @return boolean
 	 */
-	final public  function update($sql){
+	final public function update($sql) {
 		return $this->query($sql);
 	}
 	/**
@@ -211,7 +211,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 查询sql语句
 	 * @return boolean
 	 */
-	final public function select($sql){
+	final public function select($sql) {
 		return $this->query($sql);
 	}
 	/**
@@ -219,7 +219,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 删除sql语句
 	 * @return boolean
 	 */
-	final public  function delete($sql){
+	final public function delete($sql) {
 		return $this->query($sql);
 	}
 	
@@ -228,7 +228,7 @@ abstract class WindDbAdapter {
 	 * @param string  $sql 替换sql语句
 	 * @return boolean
 	 */
-	final public function replace($sql){
+	final public function replace($sql) {
 		return $this->query($sql);
 	}
 	
@@ -245,7 +245,7 @@ abstract class WindDbAdapter {
 	 * 返回DataBase连接
 	 * @return resoruce
 	 */
-	public function getConnection(){
+	public function getConnection() {
 		return $this->connection;
 	}
 	
@@ -253,10 +253,10 @@ abstract class WindDbAdapter {
 	 * 返回数据库配置
 	 * @return array
 	 */
-	public function getConfig(){
+	public function getConfig() {
 		return $this->config;
 	}
-
+	
 	/**
 	 * 返回上一条sqly语句
 	 * @return string
@@ -264,24 +264,24 @@ abstract class WindDbAdapter {
 	final public function getLastSql() {
 		return $this->last_sql;
 	}
-
+	
 	/**
 	 * 取得数据库
 	 * @return string:
 	 */
-	final public function getSchema(){
-		return  $this->config[IWindDbConfig::CONN_NAME];
+	final public function getSchema() {
+		return $this->config[IWindDbConfig::CONN_NAME];
 	}
 	
 	/**
 	 * 取得数据库驱动
 	 * @return string;
 	 */
-	final public function getDriver(){
-		return  $this->config[IWindDbConfig::CONN_DRIVER];
+	final public function getDriver() {
+		return $this->config[IWindDbConfig::CONN_DRIVER];
 	}
-
-	public function __destruct(){
+	
+	public function __destruct() {
 		$this->dispose();
 	}
 }
