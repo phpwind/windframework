@@ -6,8 +6,6 @@
  * @license 
  */
 
-
-
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -20,27 +18,33 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	private $adapter = null;
 	private $WindMySqlBuilder = null;
 	
+	public function setUp() {
+		parent::setUp();
+		$this->init();
+	}
+	
+	public function tearDown() {
+		parent::tearDown();
+	}
+	
 	public function init() {
-		L::import ( 'WIND:core.exception.WindException' );
-		L::import ( 'WIND:component.db.base.IWindDbConfig' );
-		L::import ( 'WIND:component.db.drivers.mysql.WindMySqlBuilder' );
-		L::import ( 'WIND:component.db.drivers.mysql.WindMySql' );
+		require_once('component/db/base/IWindDbConfig.php');
+		require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
+		require_once('component/db/drivers/mysql/WindMySql.php');
 		if ($this->WindMySqlBuilder == null) {
 			$this->config = C::getDataBaseConnection('phpwind_8');
 			$this->adapter = new WindMySql($this->config);
 			$this->WindMySqlBuilder = new WindMySqlBuilder($this->adapter);
 		}
+		$this->WindMySqlBuilder->reset();
 	}
 	
 	public static function provider() {
-		return array(
-			array('pw_posts', '', '', '', ''), 
-			array('pw_posts', 'a.uid=pw_posts.authorid', '', '', ''), 
+		return array(array('pw_posts', '', '', '', ''), array('pw_posts', 'a.uid=pw_posts.authorid', '', '', ''), 
 			array('pw_posts', 'a.uid=b.authorid', 'b', '', ''), 
 			array('pw_posts', 'a.uid=b.authorid', 'b', 'subject,pid', ''), 
 			array('pw_posts', 'a.uid=b.authorid', 'b', 'b.subject,b.pid', ''), 
-			array('pw_posts', 'a.uid=b.authorid', 'b', array('subject', 'pid'), 'phpwind_8')
-			);
+			array('pw_posts', 'a.uid=b.authorid', 'b', array('subject', 'pid'), 'phpwind_8'));
 	}
 	
 	public static function providerWhere() {
@@ -59,11 +63,8 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	}
 	
 	public static function providerData() {
-		return array(
-			array(array('1', '2', '3')), 
-			array(array(array('1a', '1b', '1c'), array('2a', '2b', '2c'))), 
-			array(array('username' => array(1, 2, 3), 'age' => array(4, 5, 6)))
-			);
+		return array(array(array('1', '2', '3')), array(array(array('1a', '1b', '1c'), array('2a', '2b', '2c'))), 
+			array(array('username' => array(1, 2, 3), 'age' => array(4, 5, 6))));
 	}
 	
 	public static function providerSet() {
@@ -83,22 +84,10 @@ class WindMySqlBuilderTest extends BaseTestCase {
 			array('id=:id AND name=:name', array(':name' => 'suqian', ':id' => 1)));
 	}
 	
-	public function setUp() {
-		parent::setUp();
-		$this->init();
-	}
-	
-	public function tearDown() {
-		parent::tearDown();
-		$this->WindMySqlBuilder->reset();
-	}
-	
 	/**
 	 * @dataProvider provider
 	 */
-	
 	public function testFrom($table, $joinWhere, $table_alias, $fields, $schema) {
-		
 		$builder = $this->WindMySqlBuilder->from($table, $table_alias, $fields, $schema);
 		$from = $this->WindMySqlBuilder->getSql(WindSqlBuilder::FROM);
 		$field = $fields ? $this->WindMySqlBuilder->getSql(WindSqlBuilder::FIELD) : true;
@@ -113,7 +102,6 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	}
 	
 	public function testField() {
-		
 		$this->assertTrue($this->_field('username', 'uid'));
 	}
 	
@@ -196,14 +184,14 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	/**
 	 * @dataProvider providerWhere
 	 */
-	public function testHaving($where,$value,$group) {
+	public function testHaving($where, $value, $group) {
 		$this->assertTrue($this->_where(WindSqlBuilder::HAVING, $where, $value, $group, true));
 	}
 	
 	/**
 	 * @dataProvider providerWhere
 	 */
-	public function testOrHaving($where,$value,$group) {
+	public function testOrHaving($where, $value, $group) {
 		$this->assertTrue($this->_where(WindSqlBuilder::HAVING, $where, $value, $group, false));
 	}
 	
@@ -344,6 +332,7 @@ class WindMySqlBuilderTest extends BaseTestCase {
 		$_where = $this->WindMySqlBuilder->getSql($type);
 		return $_where && ($builder instanceof WindSqlBuilder);
 	}
+	
 	private function _field($field) {
 		$params = func_num_args();
 		$field = $params > 1 ? func_get_args() : func_get_arg(0);

@@ -5,8 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('core/exception/WindException.php');
-require_once('component/db/WindConnectionManager.php');
+require_once ('component/db/base/IWindDbConfig.php');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -17,6 +16,7 @@ class WindConnectionManagerTest extends BaseTestCase {
 	private $dbManager = null;
 	private $config = array();
 	public function init() {
+		require_once ('component/db/WindConnectionManager.php');
 		if ($this->dbManager == null) {
 			$this->config = C::getDataBase();
 			$this->dbManager = new WindConnectionManager($this->config);
@@ -24,7 +24,12 @@ class WindConnectionManagerTest extends BaseTestCase {
 	}
 	
 	public function setUp() {
+		parent::setUp();
 		$this->init();
+	}
+	
+	public function tearDown() {
+		parent::tearDown();
 	}
 	
 	public static function providerConnection() {

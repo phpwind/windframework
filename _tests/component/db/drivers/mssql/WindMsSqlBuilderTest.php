@@ -18,16 +18,25 @@ class WindMsSqlBuilderTest extends BaseTestCase {
 	private $adapter = null;
 	private $WindMsSqlBuilder = null;
 	
+	public function setUp() {
+		parent::setUp();
+		$this->init();
+	}
+	
+	public function tearDown() {
+		parent::tearDown();
+	}
+	
 	public function init() {
-		L::import ( 'WIND:core.exception.WindException' );
-		L::import ( 'WIND:component.db.base.IWindDbConfig' );
-		L::import ( 'WIND:component.db.drivers.mssql.WindMsSqlBuilder' );
-		L::import ( 'WIND:component.db.drivers.mssql.WindMsSql' );
+		require_once('component/db/base/IWindDbConfig.php');
+		require_once('component/db/drivers/mssql/WindMsSqlBuilder.php');
+		require_once('component/db/drivers/mssql/WindMsSql.php');
 		if ($this->WindMsSqlBuilder == null) {
-			$this->config = C::getDataBaseConnection('user');
+			$this->config = C::getDataBaseConnection('use');
 			$this->adapter = new WindMsSql($this->config);
 			$this->WindMsSqlBuilder = new WindMsSqlBuilder($this->adapter);
 		}
+		$this->WindMsSqlBuilder->reset();
 	}
 	
 	public static function provider() {
@@ -76,14 +85,6 @@ class WindMsSqlBuilderTest extends BaseTestCase {
 			array('id=? AND name=?',array(1,'suqian')),
 			array('id=:id AND name=:name',array(':name'=>'suqian',':id'=>1,))
 		);
-	}
-	
-	public function setUp() {
-		$this->init();
-	}
-	
-	public function tearDown() {
-		$this->WindMsSqlBuilder->reset();
 	}
 	
 	/**

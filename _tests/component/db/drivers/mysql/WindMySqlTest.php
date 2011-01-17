@@ -23,10 +23,9 @@ class WindMySqlTest extends BaseTestCase {
 	
 	
 	public function init() {
-		L::import ( 'WIND:core.exception.WindException' );
-		L::import ( 'WIND:component.db.base.IWindDbConfig' );
-		L::import ( 'WIND:component.db.drivers.mysql.WindMySqlBuilder' );
-		L::import ( 'WIND:component.db.drivers.mysql.WindMySql' );
+		require_once('component/db/base/IWindDbConfig.php');
+		require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
+		require_once('component/db/drivers/mysql/WindMySql.php');
 		if ($this->WindMySql == null) {
 			$this->config = C::getDataBaseConnection('phpwind_8');
 			$this->WindMySql = new WindMySql($this->config);

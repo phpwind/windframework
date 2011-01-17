@@ -22,10 +22,9 @@ class WindMsSqlTest extends BaseTestCase {
 	private $config = array();
 	
 	public function init() {
-		L::import ( 'WIND:core.exception.WindException' );
-		L::import ( 'WIND:component.db.base.IWindDbConfig' );
-		L::import ( 'WIND:component.db.drivers.mssql.WindMsSqlBuilder' );
-		L::import ( 'WIND:component.db.drivers.mssql.WindMsSql' );
+		require_once('component/db/base/IWindDbConfig.php');
+		require_once('component/db/drivers/mssql/WindMsSqlBuilder.php');
+		require_once('component/db/drivers/mssql/WindMsSql.php');
 		if ($this->WindMySql == null) {
 			$this->config = C::getDataBaseConnection('user');
 			$this->WindMsSql = new WindMsSql($this->config);
