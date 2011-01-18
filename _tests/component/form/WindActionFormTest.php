@@ -5,30 +5,15 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-include('core/base/WindModule.php');
-include('component/form/WindActionForm.php');
-
-class UserForm extends WindActionForm {
-	protected $name;
-	protected $password;
-	protected $address = 'hangz';
-	protected $nick;
-	public function __construct() {
-		$this->setErrorAction('error', 'showError');
-	}
-	public function nameValidate() {
-		if (strlen($this->name) < 6) {
-			$this->addError('name too short', 'nameError');
-		}
-	}
-}
 class WindActionFormTest extends BaseTestCase {
 	private $obj;
 	public function setUp() {
-		$this->obj = new UserForm();
+		parent::setUp();
+        require_once('data/TestForm.php');
+		$this->obj = new TestForm();
 	}
 	public function tearDown() {
-
+		parent::tearDown();
 	}
 	public function testGetIsValidation() {
 		$this->assertTrue($this->obj->getIsValidation());
@@ -38,10 +23,9 @@ class WindActionFormTest extends BaseTestCase {
 			'site' => 'www.phpwind.net');
 		$this->obj->setProperties($array);
 		$this->assertTrue($this->obj->getIsValidation());
-		$this->assertEquals('php', $this->obj->name);
-		$this->assertEquals('phpwind.net', $this->obj->password);
-		$this->assertEquals('china', $this->obj->address);
-		$this->assertEquals('', $this->obj->site);
+		$this->assertEquals('php', $this->obj->getName());
+		$this->assertEquals('phpwind.net', $this->obj->getPassword());
+		$this->assertEquals('china', $this->obj->getAddress());
 	}
 	
 	public function testValidationAndGetError() {

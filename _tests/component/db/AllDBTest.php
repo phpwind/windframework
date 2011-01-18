@@ -6,11 +6,11 @@
  * @license 
  */
 
-include ('component/db/WindConnectionManagerTest.php');
-include ('component/db/drivers/mysql/WindMySqlBuilderTest.php');
-include ('component/db/drivers/mysql/WindMySqlTest.php');
-include ('component/db/drivers/mssql/WindMsSqlBuilderTest.php');
-include ('component/db/drivers/mssql/WindMsSqlTest.php');
+require_once ('component/db/WindConnectionManagerTest.php');
+require_once ('component/db/drivers/mysql/WindMySqlBuilderTest.php');
+require_once ('component/db/drivers/mysql/WindMySqlTest.php');
+require_once ('component/db/drivers/mssql/WindMsSqlBuilderTest.php');
+require_once ('component/db/drivers/mssql/WindMsSqlTest.php');
 
 class AllDBTest {
 	public static function main() {
@@ -19,7 +19,7 @@ class AllDBTest {
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllDBTest_Suite');
-		$suite->addTestSuite('WindMysqlBuilderTest');
+		//$suite->addTestSuite('WindMysqlBuilderTest');
 		$suite->addTestSuite('WindMySqlTest');
 		$suite->addTestSuite('WindConnectionManagerTest');
 		/*$suite->addTestSuite('WindMsSqlBuilderTest');

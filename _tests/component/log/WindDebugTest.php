@@ -21,6 +21,7 @@ class WindDebugTest extends BaseTestCase {
 	
 	public function setUp() {
 		parent::setUp();
+		date_default_timezone_set('UTC');
 		$this->init();
 	}
 	

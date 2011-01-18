@@ -122,7 +122,9 @@ class WindDebug {
 		$traceInfo = array();
 		foreach ($debugTrace as $info) {
 			$info['args'] = self::traceArgs($info['args']);
-			$str = '[' . date("Y-m-d H:i:m") . '] ' . $info['file'] . ' (line:' . $info['line'] . ') ';
+			$file = isset($info['file']) ? $info['file'] : '';
+			$line = isset($info['line']) ? $info['line'] : '';
+			$str = '[' . date("Y-m-d H:i:m") . '] ' . $file . ' (line:' . $line . ') ';
 			$str .= $info['class'] . $info['type'] . $info['function'] . '(';
 			$str .= implode(', ', $info['args']);
 			$str .= ")";
@@ -142,6 +144,7 @@ class WindDebug {
 		$useMem = self::getMemUsage();
 		$separate = "<br/>";
 		$trace = implode("{$separate}", self::trace($trace));
+		$debug = '';
 		$debug .= "{$message}{$separate}";
 		$debug .= "Runtime:{$runtime}s{$separate}";
 		$debug .= "Memory consumption:{$useMem}byte{$separate}";

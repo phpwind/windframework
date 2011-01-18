@@ -6,23 +6,19 @@
  * @license
  */
 
-include 'component/AllComponentTest.php';
-include 'core/AllCoreTest.php';
+require_once 'component/AllComponentTest.php';
+require_once 'core/AllCoreTest.php';
 
 class AllTest {
 	public static function main() {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
-
+	
 	public static function suite() {
-		return self::registerTest();
-	}
-
-	private static function registerTest() {
 		$suite = new PHPUnit_Framework_TestSuite('AllTest_Suite');
 		$suite->addTest(AllComponentTest::suite());
 		$suite->addTest(ALLCoreTest::suite());
- 		return $suite;
+		return $suite;
 	}
 }
 

@@ -43,7 +43,7 @@ abstract class WindActionForm extends WindModule {
 	public function validation() {
 		$methods = get_class_methods($this);
 		foreach ($methods as $value) {
-			if (strtolower(substr($value, -8)) == 'validate') call_user_func(array($this, $value));
+			if ((strlen($value) != 8) && (strtolower(substr($value, -8)) == 'validate')) call_user_func(array($this, $value));
 		}
 	}
 	

@@ -6,8 +6,8 @@
  * @license 
  */
 
-include ('component/form/WindActionFormTest.php');
-include ('component/form/WindFormFilterTest.php');
+require_once ('component/form/WindActionFormTest.php');
+require_once ('component/form/WindFormFilterTest.php');
 
 class AllFormTest {
 	public static function main() {

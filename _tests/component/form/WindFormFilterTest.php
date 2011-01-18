@@ -15,9 +15,6 @@
  * @package
  */
 
-require_once('core/base/WindModule.php');
-require_once('component/form/WindActionForm.php');
-
 class WindFormFilterTest extends BaseTestCase {
 	private $obj;
 	private $request;
@@ -25,10 +22,12 @@ class WindFormFilterTest extends BaseTestCase {
 	
 	public function setUp() {
 		parent::setUp();
-		require_once('component/form/WindFormFilter.php');
-		require_once('core/WindHttpRequest.php');
-		require_once('core/WindHttpResponse.php');
-		require_once('core/WindSystemConfig.php');
+		require_once ('component/form/WindFormFilter.php');
+		require_once ('core/base/WindModule.php');
+		require_once ('component/form/WindActionForm.php');
+		require_once ('core/WindHttpRequest.php');
+		require_once ('core/WindHttpResponse.php');
+		require_once ('core/WindSystemConfig.php');
 		$array = array('extensionConfig' => array('formConfig' => 'TEST:data.formConfig'));
 		$systemConfig = new WindSystemConfig($array);
 		$_GET['name'] = 'phpwind';

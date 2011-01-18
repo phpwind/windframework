@@ -6,27 +6,26 @@
  * @license 
  */
 
-include ('core/base/WindModuleTest.php');
-include ('core/config/WindConfigParserTest.php');
-include ('core/exception/AllExceptionTest.php');
-include ('core/factory/AllFactoryTest.php');
+require_once ('core/config/WindConfigParserTest.php');
+require_once ('core/exception/AllExceptionTest.php');
+require_once ('core/factory/AllFactoryTest.php');
 
-include ('core/filter/WindFilterFactoryTest.php');
-include ('core/router/AllRouterTest.php');
+require_once ('core/filter/WindFilterFactoryTest.php');
+require_once ('core/router/AllRouterTest.php');
 
-include ('core/viewer/WindViewerTest.php');
+require_once ('core/viewer/WindViewerTest.php');
 
-include ('core/WindBaseTest.php');
-include ('core/WindErrorHandleTest.php');
-include ('core/WindErrorMessageTest.php');
-include ('core/WindForwardTest.php');
-include ('core/WindHttpRequestTest.php');
-include ('core/WindHttpResponseTest.php');
-include ('core/WindLayoutTest.php');
-include ('core/WindMessageTest.php');
-include ('core/WindSystemConfigTest.php');
-include ('core/WindUrlManagerTest.php');
-include ('core/WindViewTest.php');
+require_once ('core/WindBaseTest.php');
+require_once ('core/WindErrorHandleTest.php');
+require_once ('core/WindErrorMessageTest.php');
+require_once ('core/WindForwardTest.php');
+require_once ('core/WindHttpRequestTest.php');
+require_once ('core/WindHttpResponseTest.php');
+require_once ('core/WindLayoutTest.php');
+require_once ('core/WindMessageTest.php');
+require_once ('core/WindSystemConfigTest.php');
+require_once ('core/WindUrlManagerTest.php');
+require_once ('core/WindViewTest.php');
 
 class AllCoreTest {
 	
@@ -36,15 +35,15 @@ class AllCoreTest {
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllCoreTest_Suite');
-		$suite->addTestSuite('WindModuleTest');
 		$suite->addTestSuite('WindConfigParserTest');
 		$suite->addTest(AllExceptionTest::suite());
 		$suite->addTest(AllFactoryTest::suite());
-		$suite->addTestSuite('WindFilterFactoryTest');
+		//$suite->addTestSuite('WindFilterFactoryTest');
 		$suite->addTest(AllRouterTest::suite());
 		
 		$suite->addTestSuite('WindViewerTest');
-		$suite->addTestSuite('WindBaseTest');
+		$suite->addTestSuite('LTest');
+		$suite->addTestSuite('WTest');
 		$suite->addTestSuite('WindErrorHandleTest');
 		$suite->addTestSuite('WindErrorMessageTest');
 		$suite->addTestSuite('WindForwardTest');

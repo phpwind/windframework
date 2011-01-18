@@ -16,8 +16,7 @@ class WindFilterFactoryTest extends BaseTestCase {
 	}
 	
 	public function testGetFactory() {
-		$p = WindFilterFactory::getFactory();
-		$this->assertTrue($p instanceof WindFilterFactory);
+		$this->assertTrue(WindFilterFactory::getFactory() instanceof WindFilterFactory);
 	}
 	
 	public function show($name = '') {

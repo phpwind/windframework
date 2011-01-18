@@ -6,9 +6,9 @@
  * @license 
  */
 
-include ('component/format/WindDateTest.php');
-include ('component/format/WindStringGBKTest.php');
-include ('component/format/WindStringUTF8Test.php');
+require_once ('component/format/WindDateTest.php');
+require_once ('component/format/WindStringGBKTest.php');
+require_once ('component/format/WindStringUTF8Test.php');
 
 class AllFormatTest {
 	public static function main() {

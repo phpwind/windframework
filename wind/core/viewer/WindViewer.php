@@ -36,7 +36,7 @@ class WindViewer implements IWindViewer {
 	 */
 	public function windFetch($template = '') {
 		$varName = $this->getTemplateVarName();
-		@extract($this->var[$varName], EXTR_REFS);
+		@extract((array)$this->var[$varName], EXTR_REFS);
 		ob_start();
 		if (($segments = $this->parserLayout()) == null) {
 			$template = $this->getViewTemplate($template);

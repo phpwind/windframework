@@ -18,16 +18,21 @@ class LTest extends BaseTestCase {
 	 * @dataProvider providerRealPath
 	 */
 	public function testGetRealPath($value, $args) {
-		list($filename, $ext) = (array) $args;
+		if (is_array($args)) {
+			list($filename, $ext) = $args;
+		} else {
+			$filename = $args;
+			$ext = '';
+		}		
 		$this->assertEquals($value, L::getRealPath($filename, $ext));
 	}
 	
 	public function testRegisterWithEmpty() {
-		define('R_P', dirname(__FILE__) . D_S);
-		L::register(R_P, '', false);
-		$this->assertFalse($this->checkIncludePath(R_P));
-		L::register(R_P, '');
-		$this->assertTrue($this->checkIncludePath(R_P));
+		define('P_P', dirname(__FILE__) . D_S);
+		L::register(P_P, '', false);
+		$this->assertFalse($this->checkIncludePath(P_P));
+		L::register(P_P, '');
+		$this->assertTrue($this->checkIncludePath(P_P));
 	}
 	
 	public function testRegister() {
@@ -255,18 +260,3 @@ class CTest extends BaseTestCase {
 		$this->checkArray(C::getErrorMessage('default'), 1, $config, true);
 	}
 }
-/*
-
-class WindBaseTest {
-	public static function main() {
-		PHPUnit_TextUI_TestRunner::run(self::suite());
-	}
-	
-	public static function suite() { 
-	    $suite = new PHPUnit_Framework_TestSuite('WindBaseTest_Suite');
-	    $suite->addTestSuite('WTest');
-	    $suite->addTestSuite('LTest');
-	    $suite->addTestSuite('CTest');
-	    return $suite;
-	}
-}*/

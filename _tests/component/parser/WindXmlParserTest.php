@@ -57,7 +57,6 @@ class WindXmlParserTest extends BaseTestCase {
 	
 	public function testTestParse() {
 		$data = $this->parser->parse($this->path . '/data/test.xml');
-		print_r($data);
 	}
 	
 	public function testParseWithEmpty() {

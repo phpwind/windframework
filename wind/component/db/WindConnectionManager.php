@@ -37,7 +37,7 @@ class WindConnectionManager {
 	 * @param int|string $identify
 	 */
 	public function registerConnectionConfig($identify, $config) {
-		if ($this->config[$identify]) {
+		if (isset($this->config[$identify]) && $this->config[$identify]) {
 			throw new WindSqlException($identify, WindSqlException::DB_CONN_EXIST);
 		}
 		$this->config[$identify] = $config;
@@ -49,7 +49,7 @@ class WindConnectionManager {
 	 * @param string $driver 驱动类型
 	 */
 	public function registerConnectionDriver($driver, $config) {
-		if ($this->drivers[$driver]) {
+		if (isset($this->drivers[$driver]) && $this->drivers[$driver]) {
 			throw new WindSqlException($driver, WindSqlException::DB_DRIVER_EXIST);
 		}
 		$this->drivers[$driver] = $config;
@@ -61,7 +61,7 @@ class WindConnectionManager {
 	 * @param string $builder 驱动类型
 	 */
 	public function registerConnectionBuilder($builder, $config) {
-		if ($this->drivers[$builder]) {
+		if (isset($this->drivers[$builder]) && $this->drivers[$builder]) {
 			throw new WindSqlException($builder, WindSqlException::DB_BUILDER_EXIST);
 		}
 		$this->builders[$builder] = $config;
@@ -149,7 +149,7 @@ class WindConnectionManager {
 	private function getMasterSlave() {
 		$array = array();
 		foreach ($this->config as $key => $value) {
-			if (in_array($value[IWindDbConfig::CONN_TYPE], array(IWindDbConfig::CONN_MASTER, IWindDbConfig::CONN_SLAVE))) {
+			if (isset($value[IWindDbConfig::CONN_TYPE]) && in_array($value[IWindDbConfig::CONN_TYPE], array(IWindDbConfig::CONN_MASTER, IWindDbConfig::CONN_SLAVE))) {
 				$array[$value[IWindDbConfig::CONN_TYPE]][$key] = $value;
 			}
 		}

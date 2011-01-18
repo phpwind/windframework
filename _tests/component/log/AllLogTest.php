@@ -6,8 +6,8 @@
  * @license 
  */
 
-include ('component/log/WindDebugTest.php');
-include ('component/log/WindLogTest.php');
+require_once ('component/log/WindDebugTest.php');
+require_once ('component/log/WindLogTest.php');
 
 class AllLogTest {
 	public static function main() {

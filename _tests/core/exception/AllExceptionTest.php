@@ -6,15 +6,15 @@
  * @license 
  */
 
-include ('core/exception/WindExceptionTest.php');
-include ('core/exception/WindSqlExceptionTest.php');
+require_once ('core/exception/WindExceptionTest.php');
+require_once ('core/exception/WindSqlExceptionTest.php');
 
 class AllExceptionTest {
 	public static function main() {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
 	
-	public static function sutie() {
+	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllException_suite');
 		$suite->addTestSuite('WindExceptionTest');
 		$suite->addTestSuite('WindSqlExceptionTest');

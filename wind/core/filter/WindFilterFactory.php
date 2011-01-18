@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-
+L::import('WIND:core.base.WindFactory');
 /**
  * 过滤器工场
  * the last known user to change this file in the repository  <$LastChangedBy$>

@@ -6,13 +6,13 @@
  * @license 
  */
 
-include ('component/mail/protocol/WindImapTest.php');
-include ('component/mail/protocol/WindPop3Test.php');
-include ('component/mail/protocol/WindSmtpTest.php');
-include ('component/mail/protocol/WindSocketTest.php');
+require_once ('component/mail/protocol/WindImapTest.php');
+require_once ('component/mail/protocol/WindPop3Test.php');
+require_once ('component/mail/protocol/WindSmtpTest.php');
+require_once ('component/mail/protocol/WindSocketTest.php');
 
-include ('component/mail/send/WindSmtpSendTest.php');
-include ('component/WindMailTest.php');
+require_once ('component/mail/send/WindSmtpSendTest.php');
+require_once ('component/mail/WindMailTest.php');
 
 class AllMailTest {
 	public static function main() {
@@ -21,11 +21,11 @@ class AllMailTest {
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
-		$suite->addTestSuite('WindImapTest');
-		$suite->addTestSuite('WindPop3Test');
-		$suite->addTestSuite('WindSmtpTest');
+		//$suite->addTestSuite('WindImapTest');
+		//$suite->addTestSuite('WindPop3Test');
+		//$suite->addTestSuite('WindSmtpTest');
 		$suite->addTestSuite('WindSocketTest');
-		$suite->addTestSuite('WindSmtpSendTest');
+		//$suite->addTestSuite('WindSmtpSendTest');
 		$suite->addTestSuite('WindMailTest');
 		return $suite;
 	}

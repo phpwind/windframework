@@ -101,11 +101,11 @@ class WindFrontController extends WindServer {
 		restore_exception_handler();
 	}
 	
-	protected function doPost($request, $response) {
+	protected function doPost(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
 	}
 	
-	protected function doGet($request, $response) {
+	protected function doGet(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
 	}
 

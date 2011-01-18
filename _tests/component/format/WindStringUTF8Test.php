@@ -67,7 +67,7 @@ class WindStringUTF8Test extends BaseTestCase {
 			array(NULL, 'NULL'),
 			array(12345.22, "'12345.22'"),
 			array('12342.44', "'12342.44'"),
-			array($this, 'NULL'),
+			array(new WindString(), 'NULL'),
 		);
 	}
 	/**

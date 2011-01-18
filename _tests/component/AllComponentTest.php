@@ -5,17 +5,17 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license
  */
-include ('component/db/AllDBTest.php');
-include ('component/config/WindConfigParserTest.php');
-include ('component/form/WindActionFormTest.php');
-include ('component/form/WindFormFilterTest.php');
-include ('component/format/AllFormatTest.php');
-include ('component/log/AllLogTest.php');
-include ('component/mail/AllMailTest.php');
-include ('component/parser/AllParserTest.php');
-include ('component/security/WindSecurityTest.php');
-include ('component/validator/WindValidatorTest.php');
-include('component/WindPackTest.php');
+//require_once ('component/config/WindConfigParserTest.php');
+require_once ('component/db/AllDBTest.php');
+require_once ('component/form/WindActionFormTest.php');
+require_once ('component/form/WindFormFilterTest.php');
+require_once ('component/format/AllFormatTest.php');
+require_once ('component/log/AllLogTest.php');
+require_once ('component/mail/AllMailTest.php');
+require_once ('component/parser/AllParserTest.php');
+require_once ('component/security/WindSecurityTest.php');
+require_once ('component/validator/WindValidatorTest.php');
+require_once('component/WindPackTest.php');
 
 class AllComponentTest {
 	
@@ -25,7 +25,7 @@ class AllComponentTest {
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
-		$suite->addTestSuite('WindConfigParserTest');
+		//$suite->addTestSuite('WindConfigParserTest');
 		$suite->addTest(ALLDBTest::suite());
 		$suite->addTestSuite('WindActionFormTest');
 		$suite->addTestSuite('WindFormFilterTest');

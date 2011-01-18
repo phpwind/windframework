@@ -197,6 +197,7 @@ class WindPack {
 	 */
 	public function getContentFromFile($filename) {
 		if ($this->isFile($filename)) {
+			$content = '';
 			$fp = fopen($filename, "r");
 			while (!feof($fp)) {
 				$line = fgets($fp);

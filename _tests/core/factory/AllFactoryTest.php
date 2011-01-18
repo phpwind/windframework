@@ -7,15 +7,19 @@
  */
 
 include ('core/factory/WindClassProxyTest.php');
+include('core/factory/WindClassDefinitionTest.php');
+include('core/factory/WindFactoryTest.php');
 
 class AllFactoryTest {
 	public static function main() {
-		PHPUnit_TestUI_TestRunner::run(self::suite());
+		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllFactoryTest_suite');
-		$suite->addTestSuite('WindClassProxyTest');
+		//$suite->addTestSuite('WindClassProxyTest');
+		$suite->addTestSuite('WindClassDefinitionTest');
+		$suite->addTestSuite('WindFactoryTest');
 		return $suite;
 	}
 }
