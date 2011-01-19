@@ -15,40 +15,55 @@ L::import('WIND:core.config.AbstractWindConfig');
  * @package 
  */
 class WindConfig extends AbstractWindConfig {
+
 	/**
 	 * import 外部配置文件包含
 	 * */
 	const IMPORTS = 'imports';
+
 	const IMPORTS_RESOURCE = 'resource';
+
 	const IMPORTS_SUFFIX = 'suffix';
+
 	const IMPORTS_IS_APPEND = 'is-append';
-	
+
 	/**
 	 * 应用的入口地址
 	 */
 	const ROOTPATH = 'rootPath';
+
 	const APPLICATIONS = 'applications';
+
 	const APPLICATIONS_CLASS = 'class';
+
 	const ERROR = 'error';
+
 	const ERROR_ERRORACTION = 'errorAction';
+
 	const ERROR_CLASS = 'class';
-	
+
 	/**
 	 * 模快設置
 	 */
 	const MODULES = 'modules';
+
 	const MODULE_PATH = 'path';
+
 	const MODULE_TEMPLATE = 'template';
+
 	const MODULE_CONTROLLER_SUFFIX = 'controllerSuffix';
+
 	const MODULE_ACTION_SUFFIX = 'actionSuffix';
+
 	const MODULE_METHOD = 'method';
-	
+
 	/**
 	 * 过滤器链
 	 */
 	const FILTERS = 'filters';
+
 	const FILTER_CLASS = 'class';
-	
+
 	/**
 	 * 模板相关配置信息
 	 * 1.模板文件存放路径
@@ -59,42 +74,61 @@ class WindConfig extends AbstractWindConfig {
 	 * 6.模板编译路径
 	 */
 	const TEMPLATE = 'templates';
+
 	const TEMPLATE_DIR = 'dir';
+
 	const TEMPLATE_DEFAULT = 'default';
+
 	const TEMPLATE_EXT = 'ext';
+
 	const TEMPLATE_RESOLVER = 'resolver';
+
 	const TEMPLATE_ISCACHE = 'isCache';
+
 	const TEMPLATE_CACHE_DIR = 'cacheDir';
+
 	const TEMPLATE_COMPILER_DIR = 'compileDir';
-	
+
 	/**
 	 * 模板引擎配置信息
 	 */
 	const VIEWER_RESOLVERS = 'viewerResolvers';
-	
+
 	/**
 	 * 路由策略配置
 	 */
 	const ROUTER = 'router';
+
 	const ROUTER_PARSER = 'parser';
-	
+
 	/**
 	 * 路由解析器配置
 	 */
 	const ROUTER_PARSERS = 'routerParsers';
+
 	const ROUTER_PARSERS_RULE = 'rule';
+
 	const ROUTER_PARSERS_CLASS = 'class';
-	
+
 	protected $rootPath = '';
+
 	protected $appName = 'windApp';
+
 	protected $imports = array();
-	
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param string $config
+	 * @param WindConfigParser $configParser
+	 * @param string $appName
+	 */
 	public function __construct($config, $configParser, $appName) {
 		$cacheName = $appName . '_config';
 		$this->appName = $appName;
 		parent::__construct($config, $configParser, $cacheName);
 	}
-	
+
 	/**
 	 * @param string $appName | 应用名称
 	 * @param string $config | 配置文件路径信息
@@ -106,7 +140,18 @@ class WindConfig extends AbstractWindConfig {
 		}
 		$this->setConfig($config);
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindConfig::getConfig()
+	 */
+	public function getConfig($configName = '', $subConfigName = '') {
+		$imports = parent::getConfig(self::IMPORTS);
+		if (key_exists($configName, $imports)) {
+			return $this->parseImport($configName);
+		}
+		return parent::getConfig($configName, $subConfigName);
+	}
+
 	/**
 	 * 返回应用路径信息
 	 * 
@@ -118,15 +163,7 @@ class WindConfig extends AbstractWindConfig {
 		}
 		return $this->rootPath;
 	}
-	
-	/**
-	 * @param string $name
-	 * @return array|string
-	 */
-	public function getImports($name = '') {
-		return $name === '' ? $this->getConfig(self::IMPORTS) : $this->parseImport($name);
-	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -134,7 +171,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getModules($name = '') {
 		return $this->getConfig(self::MODULES, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -142,7 +179,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getTemplate($name = '') {
 		return $this->getConfig(self::TEMPLATE, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -150,7 +187,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getFilters($name = '') {
 		return $this->getConfig(self::FILTERS, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -158,7 +195,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getViewerResolvers($name = '') {
 		return $this->getConfig(self::VIEWER_RESOLVERS, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -166,7 +203,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getRouter($name = '') {
 		return $this->getConfig(self::ROUTER, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return array|string
@@ -174,7 +211,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getRouterParsers($name = '') {
 		return $this->getConfig(self::ROUTER_PARSERS, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -182,7 +219,7 @@ class WindConfig extends AbstractWindConfig {
 	public function getApplications($name = '') {
 		return $this->getConfig(self::APPLICATIONS, $name);
 	}
-	
+
 	/**
 	 * @param string $name
 	 * @return Ambigous <string, multitype:, unknown>
@@ -190,14 +227,14 @@ class WindConfig extends AbstractWindConfig {
 	public function getErrorMessage($name = '') {
 		return $this->getConfig(self::ERROR, $name);
 	}
-	
+
 	/**
 	 * @return the $appName
 	 */
 	public function getAppName() {
 		return $this->appName;
 	}
-	
+
 	/**
 	 * @param name
 	 * @param cacheName
@@ -213,7 +250,7 @@ class WindConfig extends AbstractWindConfig {
 			if (is_array($import) && !empty($import)) {
 				$configPath = L::getRealPath($import[self::IMPORTS_RESOURCE], $import[self::IMPORTS_SUFFIX]);
 				if (!isset($import[self::IMPORTS_IS_APPEND]) || $import[self::IMPORTS_IS_APPEND] === 'true') {
-					$append = $this->configCache;
+					$append = $this->cacheName;
 				} elseif ($import[self::IMPORTS_IS_APPEND] === 'false' || $import[self::IMPORTS_IS_APPEND] === '') {
 					$append = false;
 				} else {
