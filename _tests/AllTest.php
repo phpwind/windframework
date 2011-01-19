@@ -17,7 +17,7 @@ class AllTest {
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllTest_Suite');
 		$suite->addTest(AllComponentTest::suite());
-		$suite->addTest(ALLCoreTest::suite());
+		$suite->addTest(AllCoreTest::suite());
 		return $suite;
 	}
 }

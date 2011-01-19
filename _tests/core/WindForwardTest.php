@@ -71,7 +71,7 @@ class WindForwardTest extends BaseTestCase {
 	 * 
 	 * @dataProvider providerWithSetVars
 	 */
-	public function testSetVars($vars, $key) {
+	public function testSetVars($vars, $key = '') {
 		$this->windForward->setVars($vars, $key);
 		$_vars = $this->windForward->getVars();
 		$this->assertEquals('1', $_vars['test1']);

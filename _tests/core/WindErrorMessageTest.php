@@ -32,7 +32,7 @@ class WindErrorMessageTest extends BaseTestCase {
 	}
 	
 	public function testGetAndSetError() {
-		$this->assertTrue(0 == count($this->errorMessage->getError('key')));
+		$this->assertTrue('' == $this->errorMessage->getError('key'));
 		$this->errorMessage->addError('nameError', 'name');
 		$this->assertEquals('nameError', $this->errorMessage->getError('name'));
 		$this->errorMessage->addError('', 'password');

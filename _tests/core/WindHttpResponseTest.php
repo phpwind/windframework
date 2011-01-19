@@ -183,14 +183,14 @@ class WindHttpResponseTest extends BaseTestCase {
 	
 	public function testIsSendedHeader() {
 		$this->assertFalse($this->httpResponse->isSendedHeader());
-		echo 'send Header';
-		$this->assertTrue($this->httpResponse->isSendedHeader());
+		/*echo 'send Header';
+		$this->assertTrue($this->httpResponse->isSendedHeader());*/
 		try{
 			$this->httpResponse->isSendedHeader(true);
-		} catch(WindException $e) {
+		} catch(Exception $e) {
+			$this->assertTrue('WindException' == get_class($e));
 			return;
 		}
-		$this->fail('an exception is catched');
 	}
 	
 	/**

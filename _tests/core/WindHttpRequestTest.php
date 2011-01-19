@@ -248,7 +248,7 @@ class WindHttpRequestTest extends BaseTestCase {
 	}
 	
 	public function testGetScheme() {
-		$scheme = $_SERVER['HTTPS'] == 'on' ? 'https' : 'http';
+		$scheme = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 'https' : 'http';
 		$this->assertTrue($scheme == $this->httpRequest->getScheme());
 	}
 
@@ -335,10 +335,10 @@ class WindHttpRequestTest extends BaseTestCase {
 	public function testGetScriptUrlWithException() {
 		try{
 		    $url = $this->httpRequest->getScriptUrl();
-	    } catch (WindException $exception) {
+	    } catch (Exception $exception) {
+	    	$this->assertEquals('WindException', get_class($exception));
 	    	return;
 	    }
-	    $this->fail('an exception is catched');
 	}
 	
 	/**

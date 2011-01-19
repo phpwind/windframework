@@ -37,7 +37,7 @@ class WindMessage {
 	 * @return string|array
 	 */
 	public function getMessage($key = '') {
-		return ($key !== '' && $key !== null) ? $this->message[$key] : $this->message;
+		return ($key !== '' && $key !== null) ? (isset($this->message[$key]) ? $this->message[$key] : '') : $this->message;
 	}
 	
 	/**
