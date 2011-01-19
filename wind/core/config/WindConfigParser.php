@@ -79,21 +79,26 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array             解析成功返回的数据
 	 */
 	public function parseConfig($configPath = '', $alias = '') {
-		if ($alias && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($alias)))) && isset($config[self::WIND_ROOT])) {
-			return $config[self::WIND_ROOT];
+		$alias = trim($alias);
+		$cacheFile = '';
+		$config = array();
+		if ($alias) {
+		    $cacheFile = $this->buildCacheFilePath($alias);
+		    $config = $this->getCacheContent($cacheFile);
+		    if (isset($config[self::WIND_ROOT]) && !$this->needCompiled()) return $config[self::WIND_ROOT];
 		}
+		$config = (array)$config;
 		$configPath = trim($configPath);
 		$parseFormat = $this->getConfigFormat($configPath);
-		$configResult = $this->doParser($configPath, $parseFormat);
-		$configResult = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $configResult);
-		$alias && $this->saveConfigFile($this->buildCacheFilePath(trim($alias)), array(self::WIND_ROOT => $configResult));
-		return $configResult;
+		$config[self::WIND_ROOT] = $this->doParser($configPath, $parseFormat);
+		$config[self::WIND_ROOT] = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $config[self::WIND_ROOT]);
+		$alias && $this->saveConfigFile($cacheFile, $config);
+		return $config[self::WIND_ROOT];
 	}
 
 	/**
 	 * 解析组件的配置文件
 	 * 
-	 * 从应用的配置缓存中读取$alias为key的缓存文件，
 	 * 如果用户没有传入别名，则每次都执行解析
 	 * 如果用户传入别名，判断是否传入了追加的文件名
 	 * 如果传入了追加的文件名，则判断该文件的内容中是否存在以别名为key的值
@@ -113,21 +118,19 @@ class WindConfigParser implements IWindConfigParser {
 	public function parse($configPath, $alias = '', $append = '') {
 		$config = array();
 		$alias = trim($alias);
+		$append = trim($append);
+		$alias && $cacheFileName = ($append ? $this->buildCacheFilePath($append) : $this->buildCacheFilePath($alias));
 		if ($alias) {
-			if ($append && ($config = $this->getCacheContent($this->buildCacheFilePath(trim($append)), true)) && isset($config[$alias])) {
+			$config = $append ? $this->getCacheContent($cacheFileName, true) : $this->getCacheContent($cacheFileName);
+			if (isset($config[$alias]) && !$this->needCompiled()) {
 				return $config[$alias];
-			}
-			if (($aliasConfig = $this->getCacheContent($this->buildCacheFilePath($alias))) && isset($aliasConfig[$alias])) {
-				return $aliasConfig[$alias];
 			}
 		}
 		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias) return $result;
 		$config[$alias] = $result;
-		$cacheFileName = $this->buildCacheFilePath($alias);
-		(trim($append)) && $cacheFileName = $this->buildCacheFilePath(trim($append));
-		$this->saveConfigFile($cacheFileName, $config);
+		$alias && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
 
@@ -142,7 +145,7 @@ class WindConfigParser implements IWindConfigParser {
 		if ($isThrowFileNoExistsException && !$tmp) {
 			throw new WindException("The file no exists!");
 		}
-		return ($tmp && !$this->needCompiled()) ? include($file) : array();
+		return $tmp ? include($file) : array();
 	}
 
 	/**
@@ -315,7 +318,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return string 			 返回缓存文件的$fileName的绝对路径
 	 */
 	private function buildCacheFilePath($fileName) {
-		return trim(COMPILE_PATH, '/') . D_S . strtolower($fileName . '.php');
+		return rtrim(COMPILE_PATH, '/') . D_S . strtolower($fileName . '.php');
 	}
 
 	/**
