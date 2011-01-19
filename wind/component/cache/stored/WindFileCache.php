@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindFileCache implements IWindCache{
+class WindFileCache implements IWindCache {
 	
 	protected $cacheDir;
 	protected $cacheFileSuffix = '.bin';
@@ -33,17 +33,17 @@ class WindFileCache implements IWindCache{
 	 * 初始化文件缓存配置
 	 * @param array $config
 	 */
-	public function __construct(array $config = array()){
-		 $this->setCacheDir($config[self::CACHEDIR]);
-		 if(isset($config[self::SUFFIX])){
-		 	$this->cacheFileSuffix = $config[self::SUFFIX];
-		 }
-		 if(isset($config[self::LEVEL])){
-		 	$this->cacheDirectoryLevel = (int)$config[self::LEVEL];
-		 }
-		 if(isset($config[self::SECURITY])){
+	public function __construct(array $config = array()) {
+		$this->setCacheDir($config[self::CACHEDIR]);
+		if (isset($config[self::SUFFIX])) {
+			$this->cacheFileSuffix = $config[self::SUFFIX];
+		}
+		if (isset($config[self::LEVEL])) {
+			$this->cacheDirectoryLevel = (int) $config[self::LEVEL];
+		}
+		if (isset($config[self::SECURITY])) {
 			$this->securityCode = $config[self::SECURITY];
-		 }
+		}
 	}
 	
 	/* 
@@ -51,38 +51,35 @@ class WindFileCache implements IWindCache{
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheFile = $this->getCacheFileName($key);
-		if(is_file($cacheFile)){
+		if (is_file($cacheFile)) {
 			$this->error("The cache already exists");
 			return false;
 		}
-		$data = $this->storeData($value,$expires,$denpendency);
-		return $this->writeToFile($cacheFile,$data,$expires);
+		$data = $this->storeData($value, $expires, $denpendency);
+		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheFile = $this->getCacheFileName($key);
-		$data = $this->storeData($value,$expires,$denpendency);
-		return $this->writeToFile($cacheFile,$data,$expires);
+		$data = $this->storeData($value, $expires, $denpendency);
+		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheFile = $this->getCacheFileName($key);
-		if(false === is_file($cacheFile)){
+		if (false === is_file($cacheFile)) {
 			$this->error("The cache does not exist");
 			return false;
 		}
-		$data = $this->storeData($value,$expires,$denpendency);
-		return $this->writeToFile($cacheFile,$data,$expires);
+		$data = $this->storeData($value, $expires, $denpendency);
+		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
 	
 	/*
 	 * @see wind/component/cache/base/IWindCache#fetch()
@@ -90,65 +87,63 @@ class WindFileCache implements IWindCache{
 	public function fetch($key) {
 		$cacheFile = $this->getCacheFileName($key);
 		$data = $this->getFromFile($cacheFile);
-		if(empty($data) || !is_array($data)){
+		if (empty($data) || !is_array($data)) {
 			return $data;
 		}
-		if(isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY] instanceof IWindCacheDependency){
-			if($data[self::DEPENDENCY]->hasChanged()){
+		if (isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY] instanceof IWindCacheDependency) {
+			if ($data[self::DEPENDENCY]->hasChanged()) {
 				$this->delete($key);
 				return null;
 			}
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
 	public function batchFetch(array $keys) {
 		$data = array();
-		foreach($keys as $key){
-			if('' != ($value = $this->fetch($key))){
+		foreach ($keys as $key) {
+			if ('' != ($value = $this->fetch($key))) {
 				$data[$key] = $value;
 			}
 		}
 		return $data;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
 		$cacheFile = $this->getCacheFileName($key);
-		if(is_file($cacheFile)){
+		if (is_file($cacheFile)) {
 			return unlink($cacheFile);
 		}
 		return false;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
 	 */
 	public function batchDelete(array $keys) {
-		foreach($keys as $key){
+		foreach ($keys as $key) {
 			$this->delete($key);
 		}
 		return true;
 	}
-
 	
 	/**
-	 *  @see wind/component/cache/base/IWindCache#flush()
+	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		$this->clearByPath($this->cacheDir,false);
+		$this->clearByPath($this->cacheDir, false);
 	}
 	
 	/**
 	 * 删除过期缓存
 	 */
-	public function deleteExpiredCache(){
+	public function deleteExpiredCache() {
 		$this->clearByPath($this->cacheDir);
 	}
 	
@@ -157,8 +152,8 @@ class WindFileCache implements IWindCache{
 	 * @param string $message
 	 * @param int $type
 	 */
-	public function error($message,$type = E_USER_ERROR){
-		trigger_error($message,$type);
+	public function error($message, $type = E_USER_ERROR) {
+		trigger_error($message, $type);
 	}
 	
 	/**
@@ -166,22 +161,22 @@ class WindFileCache implements IWindCache{
 	 * @param string $key
 	 * @return string
 	 */
-	protected function getCacheFileName($key){
-		$filename = $key.'_'.substr(sha1($key.$this->securityCode),0,5).'.'.ltrim($this->cacheFileSuffix,'.');
-		if($this->cacheDirectoryLevel > 0){
+	protected function getCacheFileName($key) {
+		$filename = $key . '_' . substr(sha1($key . $this->securityCode), 0, 5) . '.' . ltrim($this->cacheFileSuffix, '.');
+		if ($this->cacheDirectoryLevel > 0) {
 			$root = $this->cacheDir;
-			for($i=$this->cacheDirectoryLevel;$i>0;--$i){
-				if(false === isset($key[$i])){
+			for ($i = $this->cacheDirectoryLevel; $i > 0; --$i) {
+				if (false === isset($key[$i])) {
 					continue;
 				}
-				$root .= $key[$i].DIRECTORY_SEPARATOR;
+				$root .= $key[$i] . DIRECTORY_SEPARATOR;
 			}
-			if(false === is_dir($root)){
-				mkdir($root,0777,true);
+			if (false === is_dir($root)) {
+				mkdir($root, 0777, true);
 			}
-			return $root.$filename;
+			return $root . $filename;
 		}
-		return $this->cacheDir.$filename;
+		return $this->cacheDir . $filename;
 	}
 	
 	/* 
@@ -190,7 +185,7 @@ class WindFileCache implements IWindCache{
 	 * @return string
 	 */
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = array(self::DATA=>$value, self::EXPIRES=> $expires,self::STORETIME=>time());
+		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent();
 			$data[self::DEPENDENCY] = $denpendency;
@@ -205,13 +200,12 @@ class WindFileCache implements IWindCache{
 	 * @param int $mtime 缓存文件的修改时间，即缓存的过期时间
 	 * @return boolean
 	 */
-	protected function writeToFile($file,$data,$mtime = 0){
-		if($mtime<=0)
-			$mtime=60*60*24*30*12; 
-		$mtime+=time();
-		if(file_put_contents($file,$data,LOCK_EX)==strlen($data)){
-			chmod($file,0777);
-			return touch($file,$mtime);
+	protected function writeToFile($file, $data, $mtime = 0) {
+		if ($mtime <= 0) $mtime = 60 * 60 * 24 * 30 * 12;
+		$mtime += time();
+		if (file_put_contents($file, $data, LOCK_EX) == strlen($data)) {
+			chmod($file, 0777);
+			return touch($file, $mtime);
 		}
 		return false;
 	}
@@ -220,14 +214,14 @@ class WindFileCache implements IWindCache{
 	 * @param string $file 缓存文件名
 	 * @return mixed
 	 */
-	protected function getFromFile($file){
-		if(false === is_file($file)){
+	protected function getFromFile($file) {
+		if (false === is_file($file)) {
 			$this->error('The cache does not exist');
 		}
-		if(($mtime= filemtime($file))>time()){
-			$data =  unserialize(file_get_contents($file));
+		if (($mtime = filemtime($file)) > time()) {
+			$data = unserialize(file_get_contents($file));
 			return $data;
-		}else if($mtime>0){
+		} else if ($mtime > 0) {
 			unlink($file);
 		}
 		return null;
@@ -239,20 +233,24 @@ class WindFileCache implements IWindCache{
 	 * @param boolean $ifexpiled 是否过期
 	 * @return boolean
 	 */
-	protected function clearByPath($path,$ifexpiled = true){
-		if(false === ($handle=opendir($path))){
+	protected function clearByPath($path, $ifexpiled = true) {
+		if (false === ($handle = opendir($path))) {
 			return false;
 		}
-		while(false !== ($file=readdir($handle))){
-			if('.' === $file[0] || '..' === $file[0])
-				continue;
-			$fullPath=$path.DIRECTORY_SEPARATOR.$file;
-			if(is_dir($fullPath))
-				$this->clearByPath($ifexpiled,$fullPath);
-			else if($ifexpiled && filemtime($fullPath)<time() || !$ifexpiled)
+		while (false !== ($file = readdir($handle))) {
+			if ('.' === $file[0] || '..' === $file[0]) continue;
+			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
+			if (is_dir($fullPath)) {
+				$this->clearByPath($fullPath, $ifexpiled);
+			} else if ($ifexpiled && filemtime($fullPath) < time() || !$ifexpiled) {
 				unlink($fullPath);
+			}
 		}
 		closedir($handle);
+		if (false === $ifexpiled) {
+			rmdir($path);
+			!file_exists($this->cacheDir) && mkdir($this->cacheDir, 0777, true);
+		}
 		return true;
 	}
 	
@@ -260,18 +258,18 @@ class WindFileCache implements IWindCache{
 	 * 设置缓存目录
 	 * @param string $dir
 	 */
-	private function setCacheDir($dir){
-		if(false === is_dir($dir)){
+	private function setCacheDir($dir) {
+		if (false === is_dir($dir)) {
 			$this->error('cache dir must be a directory');
 		}
-		if(false === is_writable($dir)){
+		if (false === is_writable($dir)) {
 			$this->error('cache dir must be a writable directory');
 		}
-		$this->cacheDir = rtrim(realpath($dir),'\\/').DIRECTORY_SEPARATOR;
+		$this->cacheDir = rtrim(realpath($dir), '\\/') . DIRECTORY_SEPARATOR;
 	}
-
-	public function __destruct(){
+	
+	public function __destruct() {
 		$this->deleteExpiredCache();
 	}
-		
+
 }
