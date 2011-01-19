@@ -15,7 +15,23 @@
  * @package 
  */
 interface IWindCache{
-
+	//存储数据
+	/**
+	 * @var string 标志缓存依赖
+	 */
+	const DEPENDENCY = 'dependency';
+	/**
+	 * @var string 标志过期时间
+	 */
+	const EXPIRES = 'EXPIRES';
+	/**
+	 * @var string 标志存储时间
+	 */
+	const STORETIME = 'store';
+	/**
+	 * @var string 标志存储数据
+	 */
+	const DATA = 'data';
 	/**
 	 * 设置缓存，如果$key不存在，设置缓存，否则，抛出异常。
 	 * @param string $key 保存缓存数据的键。
@@ -46,7 +62,7 @@ interface IWindCache{
 	/**
 	 * 获取指定缓存
 	 * @param string $key 获取缓存数据的标识，即键
-	 * @return string
+	 * @return mixed
 	 */
 	public function fetch($key);
 	
@@ -55,7 +71,7 @@ interface IWindCache{
 	 * @param array $keys
 	 * @return array
 	 */
-	public function batchFetch($keys);
+	public function batchFetch(array $keys);
 	/**
 	 * 删除缓存数据
 	 * @param string $key 获取缓存数据的标识，即键
@@ -65,9 +81,9 @@ interface IWindCache{
 	/**
 	 * 通过key批量删除缓存数据
 	 * @param array $keys
-	 * @return array
+	 * @return boolean
 	 */
-	public function batchDelete($keys);
+	public function batchDelete(array $keys);
 	/**
 	 * 清空所有缓存
 	 */

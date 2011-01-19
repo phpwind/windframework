@@ -13,24 +13,24 @@
  * @version $Id$ 
  * @package 
  */
-final class WindMemcache implements IWindCache {
+class WindMemcache implements IWindCache {
 	
 	/**
 	 * @var string key的安全码
 	 */
-	private $securityCode = '';
+	protected $securityCode = '';
 	/**
 	 * @var array memcache服务器配置
 	 */
-	private $servers = array();
+	protected $servers = array();
 	/**
 	 * @var Memcache memcache缓存操作句柄
 	 */
-	private $cache = null;
+	protected $cache = null;
 	/**
 	 * @var int 是否对缓存采取压缩存储
 	 */
-	private $compress = 0;
+	protected $compress = 0;
 	//配置信息
 	const HOST = 'host';
 	const PORT = 'port';
@@ -42,12 +42,7 @@ final class WindMemcache implements IWindCache {
 	const FCALLBACK = 'fcallback';
 	const SECURITY = 'security';
 	const COMPRESS = 'compress';
-	//存储数据
-	const DEPENDENCY = 'dependency';
-	const EXPIRES = 'EXPIRES';
-	const STORETIME = 'store';
-	const DATA = 'data';
-	
+
 	/**
 	 * 
 	 * @example array(
@@ -127,7 +122,7 @@ final class WindMemcache implements IWindCache {
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$key = $this->buildSecurityKey($key);
-		$data = $this->storeData($key, $value, $expires, $denpendency);
+		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->cache->add($key, $data, $this->compress, (int) $expires);
 	}
 	/* 
@@ -135,7 +130,7 @@ final class WindMemcache implements IWindCache {
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$key = $this->buildSecurityKey($key);
-		$data = $this->storeData($key, $value, $expires, $denpendency);
+		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->cache->set($key, $data, $this->compress, (int)$expires);
 	}
 	/* 
@@ -143,7 +138,7 @@ final class WindMemcache implements IWindCache {
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$key = $this->buildSecurityKey($key);
-		$data = $this->storeData($key, $value, $expires, $denpendency);
+		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->cache->replace($key, $data, $this->compress,(int)$expires);
 	}
 	/* 
@@ -157,7 +152,7 @@ final class WindMemcache implements IWindCache {
 		}
 		if(isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY] instanceof IWindCacheDependency){
 			if($data[self::DEPENDENCY]->hasChanged()){
-				$this->cache->delete($key);
+				$this->delete($key);
 				return '';
 			}
 		}
@@ -215,7 +210,7 @@ final class WindMemcache implements IWindCache {
 	 * @see wind/component/cache/stored/IWindCache#set()
 	 * @return array
 	 */
-	private function storeData($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA=>$value, self::EXPIRES=> $expires,self::STORETIME=>time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent();
