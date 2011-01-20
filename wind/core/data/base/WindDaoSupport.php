@@ -20,6 +20,5 @@ abstract class WindDaoSupport{
 		$this->init();
 	}
 	public abstract function init();
-	public abstract function setTemplate();
 	public abstract function getTemplate();
 }
