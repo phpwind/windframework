@@ -86,6 +86,9 @@ class WindConnectionManager {
 			}
 			L::import($driverPath);
 			$class = substr($driverPath, strrpos($driverPath, '.') + 1);
+			if (false === class_exists($class)) {
+				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
+			}
 			$this->linked[$identify] = new $class($config);
 		}
 		return $this->connection = $this->linked[$identify];
