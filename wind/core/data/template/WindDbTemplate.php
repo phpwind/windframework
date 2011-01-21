@@ -44,7 +44,7 @@ class WindDbTemplate extends WindTemplate {
 	 * 将查询的结果作为数组返回
 	 * @param string $sql 要执行的sql语句
 	 * @param string $fetch_type 从结果集中取得一行作为关联数组，或数字数组，或二者兼有
-	 * @return multitype:
+	 * @return array
 	 */
 	public function queryForArray($sql, $fetch_type = IWindDbConfig::RESULT_ASSOC) {
 		return $this->query($sql, $fetch_type);
@@ -58,16 +58,6 @@ class WindDbTemplate extends WindTemplate {
 	public function insert($sql) {
 		return $this->write($sql);
 	}
-	
-	/**
-	 * 新增操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
-	 * 哎，如果php支持多态那是多好啊
-	 * @param WindSqlBuilder $builder sql语句生成器
-	 * @return boolean;
-	 */
-	public function insertByBuilder(WindSqlBuilder $builder){
-		return $this->write($builder->getInsertSql());
-	}
 	/**
 	 * 删除操作
 	 * @param string $sql
@@ -76,15 +66,6 @@ class WindDbTemplate extends WindTemplate {
 	public function delete($sql) {
 		return $this->write($sql);
 	}
-	
-	/**
-	 * 删除操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
-	 * @param WindSqlBuilder $builder
-	 * @return boolean;
-	 */
-	public function deleteByBuilder(WindSqlBuilder $builder){
-		return $this->write($builder->getDeleteSql());
-	}
 	/**
 	 * 更新操作
 	 * @param string $sql
@@ -92,15 +73,6 @@ class WindDbTemplate extends WindTemplate {
 	 */
 	public function update($sql) {
 		return $this->write($sql);
-	}
-	
-	/**
-	 * 更新操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
-	 * @param WindSqlBuilder $builder
-	 * @return boolean;
-	 */
-	public function updateByBuilder(WindSqlBuilder $builder){
-		return $this->write($builder->getUpdateSql());
 	}
 	/**
 	 * 查询操作
@@ -113,7 +85,51 @@ class WindDbTemplate extends WindTemplate {
 		}
 		return array();
 	}
-	
+	/**
+	 * 将查询的结果作为对象返回，采用sql语句组装器实现要执行的sql语句,，便于实现跨数据库引挚操作
+	 * @param WindSqlBuilder $builder sql语句组装器
+	 * @param string $fetch_type 从结果集中取得一行作为关联数组，或数字数组，或二者兼有
+	 * @param boolean $colAsProp 是否将结查询的结果的字段名作为对象的属性.
+	 * @return stdClass
+	 */
+	public function queryForObjectByBuilder(WindSqlBuilder $builder, $fetch_type = IWindDbConfig::RESULT_ASSOC, $colAsProp = true) {
+		$result = $this->queryByBuilder($builder, $fetch_type);
+		return $this->bindValueToObject(new stdClass(), $result, $colAsProp);
+	}
+	/**
+	 * 将查询的结果作为数组返回,采用sql语句组装器实现要执行的sql语句,，便于实现跨数据库引挚操作
+	 * @param WindSqlBuilder $builder sql语句组装器
+	 * @param string $fetch_type 从结果集中取得一行作为关联数组，或数字数组，或二者兼有
+	 * @return array
+	 */
+	public function queryForArrayByBuilder(WindSqlBuilder $builder, $fetch_type = IWindDbConfig::RESULT_ASSOC) {
+		return $this->queryByBuilder($builder, $fetch_type);
+	}
+	/**
+	 * 新增操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
+	 * 哎，如果php支持多态那是多好啊
+	 * @param WindSqlBuilder $builder sql语句生成器
+	 * @return boolean;
+	 */
+	public function insertByBuilder(WindSqlBuilder $builder){
+		return $this->write($builder->getInsertSql());
+	}
+	/**
+	 * 删除操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
+	 * @param WindSqlBuilder $builder
+	 * @return boolean;
+	 */
+	public function deleteByBuilder(WindSqlBuilder $builder){
+		return $this->write($builder->getDeleteSql());
+	}
+	/**
+	 * 更新操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
+	 * @param WindSqlBuilder $builder
+	 * @return boolean;
+	 */
+	public function updateByBuilder(WindSqlBuilder $builder){
+		return $this->write($builder->getUpdateSql());
+	}
 	/**
 	 * 查询操作,由sql语句组装器组装的sql语句操作，便于实现跨数据库引挚操作
 	 * @param WindSqlBuilder $builder
