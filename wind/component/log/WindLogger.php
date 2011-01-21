@@ -88,6 +88,7 @@ class WindLogger {
 	 * @param const  $logType 日志类别
 	 */
 	public static function add($msg, $logType = self::INFO) {
+		//TODO rename this method with 'log'
 		self::$logs[] = self::build($msg, $logType);
 		count(self::$logs) > 100 && self::flush();
 	}
@@ -99,11 +100,13 @@ class WindLogger {
 	 * @param $type		记录类别
 	 * @param $dst		日志被记录于何处
 	 * @param $header	其它信息
+	 * @deprecated
 	 * @return boolean
 	 */
 	public static function log($msg, $logType = self::INFO, $type = self::FILE, $dst = '', $header = '') {
 		$type = in_array($type, self::$msgType) ? $type : self::FILE;
 		$dst = empty($dst) ? self::getFileName() : $dst;
+		//TODO 替代error_log写日志的方式
 		error_log(self::build($msg, $logType), $type, $dst, $header);
 		return true;
 	}
@@ -119,6 +122,7 @@ class WindLogger {
 		if (self::$logs) {
 			$type = in_array($type, self::$msgType) ? $type : self::FILE;
 			$dst = empty($dst) ? self::getFileName() : $dst;
+			//TODO 替代error_log写日志的方式
 			error_log(join("", self::$logs), $type, $dst, $header);
 			self::$logs = array();
 			return true;
@@ -148,6 +152,7 @@ class WindLogger {
 	 * @param sting $type 日志展示类型(log/html)
 	 */
 	public static function setLogDisplay($type = self::LOG) {
+		//TODO 日志展示类型去掉吧
 		self::$logDisplay = $type;
 	}
 
@@ -179,9 +184,17 @@ class WindLogger {
 	/**
 	 * Enter description here ...
 	 * 
+	 * 错误类型，message，堆栈信息，日期时间
+	 * 
+	 * error 
+	 * info  type message
+	 * trace type message trace 
+	 * debug type message class/method date time
+	 * 
 	 * @return string
 	 */
 	private static function info() {
+		//TODO error info trace debug
 		$info = '';
 		foreach (debug_backtrace() as $info) {
 			if (in_array($info['function'], array('log', 'add'))) {
