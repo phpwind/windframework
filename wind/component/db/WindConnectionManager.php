@@ -8,7 +8,7 @@
 L::import('WIND:component.exception.WindSqlException');
 L::import('WIND:component.db.base.IWindDbConfig');
 /**
- * 分步式数据库操作管理
+ * 实现分步式数据库操作管理及由静态工厂返回相应的数据库适配器
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
