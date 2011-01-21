@@ -92,18 +92,18 @@ class WindConnectionManager {
 	
 	/**
 	 * 取得主服务器
-	 * @return resource
+	 * @return WindDbAdapter
 	 */
 	public function getMasterConnection() {
-		return $this->getConnection('', IWindDbConfig::CONN_MASTER);
+		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_MASTER) : $this->getConnection('','');
 	}
 	
 	/**
 	 * 取得从服务器
-	 * @return Ambigous <resource, multitype:>
+	 * @return WindDbAdapter
 	 */
 	public function getSlaveConnection() {
-		return $this->getConnection('', IWindDbConfig::CONN_SLAVE);
+		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_SLAVE) : $this->getConnection('','');
 	}
 	/**
 	 * 取得配置里面的数据库信息
