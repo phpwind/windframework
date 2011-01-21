@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import ( 'WIND:component.cache.base.IWindCache' );
 /**
  * 文件缓存类
  * the last known user to change this file in the repository  <$LastChangedBy$>

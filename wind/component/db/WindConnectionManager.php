@@ -22,7 +22,7 @@ class WindConnectionManager {
 	private $linked = array();
 	private $connection = null;
 	
-	public function __construct($config = array()) {
+	public function __construct(array $config = array()) {
 		if ($config && (!isset($config[IWindDbConfig::CONNECTIONS]) || !isset($config[IWindDbConfig::DRIVERS]) || !isset($config[IWindDbConfig::BUILDERS]))) {
 			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
 		}
@@ -81,11 +81,7 @@ class WindConnectionManager {
 		if (empty($this->linked[$identify])) {
 			$config = $this->config[$identify];
 			$driverPath = $this->getDriver($config[IWindDbConfig::CONN_DRIVER], IWindDbConfig::DRIVER_CLASS);
-			if (empty($driverPath)) {
-				throw new WindSqlException('', WindSqlException::DB_DRIVER_NOT_EXIST);
-			}
-			L::import($driverPath);
-			$class = substr($driverPath, strrpos($driverPath, '.') + 1);
+			$class = L::import($driverPath);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
 			}

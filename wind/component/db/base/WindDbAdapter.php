@@ -180,8 +180,7 @@ abstract class WindDbAdapter {
 			$driverConfig = C::getDataBaseDriver($this->config[IWindDbConfig::CONN_DRIVER]);
 			$builderConfig = $builderConfig ? $builderConfig : C::getDataBaseBuilder($driverConfig[IWindDbConfig::DRIVER_BUILDER]);
 			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS];
-			L::import($builderClass);
-			$class = substr($builderClass, strrpos($builderClass, '.') + 1);
+			$class = L::import($builderClass);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_BUILDER_NOT_EXIST);
 			}
