@@ -41,8 +41,10 @@ class WindClassProxy implements IWindClassProxy {
 		if (!in_array($type, array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER))) {
 			throw new WindException('incorrect registerType ' . $type);
 		}
-		if (!isset($this->_events[$type])) $this->_events[$type] = array();
-		if (!isset($this->_events[$type][$event])) $this->_events[$type][$event] = array();
+		if (!isset($this->_events[$type]))
+			$this->_events[$type] = array();
+		if (!isset($this->_events[$type][$event]))
+			$this->_events[$type][$event] = array();
 		array_push($this->_events[$type][$event], $listener);
 	}
 
@@ -140,17 +142,20 @@ class WindClassProxy implements IWindClassProxy {
 	 * @throws WindException
 	 */
 	public function initClassProxy($targetObject, $args = array()) {
-		if ($targetObject === null) return null;
+		if ($targetObject === null)
+			return null;
 		if (is_object($targetObject)) {
 			$this->setClassName(get_class($targetObject));
 			$this->_instance = $targetObject;
 		} elseif (is_string($targetObject) && !empty($targetObject)) {
-			if (!class_exists($targetObject)) throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
+			if (!class_exists($targetObject))
+				throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
 			$this->setClassName($targetObject);
 		}
 		if ($this->_reflection === null) {
 			$reflection = new ReflectionClass($this->_className);
-			if ($reflection->isAbstract() || $reflection->isInterface()) return;
+			if ($reflection->isAbstract() || $reflection->isInterface())
+				return;
 			$this->_reflection = $reflection;
 		}
 		if ($this->_instance === null) {
