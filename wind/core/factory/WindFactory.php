@@ -20,6 +20,8 @@ L::import('WIND:core.factory.IWindFactory');
  */
 class WindFactory implements IWindFactory {
 
+	const CLASSES_DEFINITIONS = 'classes';
+
 	protected $classDefinitionType = 'WIND:core.factory.WindClassDefinition';
 
 	protected $classDefinitions = array();
@@ -81,14 +83,13 @@ class WindFactory implements IWindFactory {
 	 * @param string $classAlias
 	 * @return WindClassDefinition
 	 */
-	public function getClassDefinition($classAlias) {
-		$classDefinition = isset($this->classDefinitions[$classAlias]) ? $this->classDefinitions[$classAlias] : '';
-		if (is_object($classDefinition))
-			return $classDefinition;
-		
-		$_className = isset($this->classAlias[$classAlias]) ? $this->classAlias[$classAlias] : '';
-		$classDefinition = isset($this->classDefinitions[$_className]) ? $this->classDefinitions[$_className] : '';
-		return is_object($classDefinition) ? $classDefinition : null;
+	public function getClassDefinition($classAlias, $isAlias = true) {
+		if (isset($this->classDefinitions[$classAlias])) {
+			return $this->classDefinitions[$classAlias];
+		} elseif ($isAlias && isset($this->classAlias[$classAlias])) {
+			return $this->getClassDefinition($this->classAlias[$classAlias], false);
+		}
+		return null;
 	}
 
 	/**
