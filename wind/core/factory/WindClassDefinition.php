@@ -7,7 +7,6 @@
  */
 
 L::import('WIND:core.base.WindModule');
-L::import('WIND:component.validator.WindValidator');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * 
@@ -21,7 +20,7 @@ L::import('WIND:component.validator.WindValidator');
  * @version $Id$ 
  * @package 
  */
-class WindClassDefinition extends WindModule {
+class WindClassDefinition extends WindEnableValidateModule {
 
 	/* 配置信息定义 */
 	const NAME = 'name';
@@ -110,7 +109,8 @@ class WindClassDefinition extends WindModule {
 	 * @param array $classDefinition
 	 */
 	public function __construct($classDefinition = array()) {
-		$this->_validator = new WindValidator();
+		L::import('WIND:component.validator.WindValidator');
+		$this->registerValidator(new WindValidator());
 		$this->init($classDefinition);
 	}
 
@@ -156,9 +156,11 @@ class WindClassDefinition extends WindModule {
 	 * @param array $args
 	 */
 	protected function createInstance($factory, $args = array()) {
-		if ($this->prototype !== null) return clone $this->prototype;
+		if ($this->prototype !== null)
+			return clone $this->prototype;
 		$instance = null;
-		if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
+		if (empty($args))
+			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		$contructArgs = $this->getConstructArgs();
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		$this->setProperties($this->getPropertys(), $factory, $instance);
@@ -192,8 +194,8 @@ class WindClassDefinition extends WindModule {
 	 * @return multitype:multitype:string  
 	 */
 	protected function validateRules() {
-		$rules[] = $this->buildValidateRule(self::NAME, 'isRequired');
-		$rules[] = $this->buildValidateRule(self::PATH, 'isRequired');
+		$rules[] = $this->buildValidateRule(self::NAME, 'isRequired', '');
+		$rules[] = $this->buildValidateRule(self::PATH, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::SCOPE, 'isRequired', 'singleton');
 		$rules[] = $this->buildValidateRule(self::INIT_METHOD, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::FACTORY_METHOD, 'isRequired', '');
@@ -210,7 +212,8 @@ class WindClassDefinition extends WindModule {
 	private function init($classDefinition) {
 		$this->validate($classDefinition);
 		$className = L::import($classDefinition[self::PATH]);
-		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
+		if (!$className)
+			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		
 		$this->setClassName($className);
 		$this->setAlias($classDefinition[self::NAME]);
@@ -308,7 +311,8 @@ class WindClassDefinition extends WindModule {
 	 * @author Qiong Wu
 	 */
 	public function setConstructArgs($constructArgs) {
-		if (is_array($constructArgs) && !empty($constructArgs)) $this->constructArgs = $constructArgs;
+		if (is_array($constructArgs) && !empty($constructArgs))
+			$this->constructArgs = $constructArgs;
 	}
 
 	/**
@@ -316,7 +320,8 @@ class WindClassDefinition extends WindModule {
 	 * @author Qiong Wu
 	 */
 	public function setPropertys($propertys) {
-		if (is_array($propertys) && !empty($propertys)) $this->propertys = $propertys;
+		if (is_array($propertys) && !empty($propertys))
+			$this->propertys = $propertys;
 	}
 
 	/**
