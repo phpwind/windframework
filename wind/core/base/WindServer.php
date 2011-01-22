@@ -13,17 +13,25 @@
  * @package 
  */
 abstract class WindServer {
+
 	protected $request;
+
 	protected $response;
-	
+
 	const METHOD_DELETE = "DELETE";
+
 	const METHOD_HEAD = "HEAD";
+
 	const METHOD_GET = "GET";
+
 	const METHOD_OPTIONS = "OPTIONS";
+
 	const METHOD_POST = "POST";
+
 	const METHOD_PUT = "PUT";
+
 	const METHOD_TRACE = "TRACE";
-	
+
 	public function __construct() {
 		try {
 			$this->request = new WindHttpRequest();
@@ -32,19 +40,22 @@ abstract class WindServer {
 			throw new Exception('init action servlet failed!!');
 		}
 	}
-	
+
 	public function run() {
 		$this->beforeProcess();
-		if ($this->request === null || $this->response === null) throw new Exception('init action servlet failed!!');
+		if ($this->request === null || $this->response === null)
+			throw new Exception('init action servlet failed!!');
 		$this->service($this->request, $this->response);
 		$this->response->sendResponse();
 		$this->afterProcess();
 	}
-	
+
 	protected function beforeProcess() {}
+
 	abstract function process();
+
 	protected function afterProcess() {}
-	
+
 	/**
 	 * Receives standard HTTP requests from the public
 	 * <code>service</code> method and dispatches
@@ -81,7 +92,7 @@ abstract class WindServer {
 			$response->sendError(WindHttpResponse::SC_METHOD_NOT_ALLOWED, $errMsg);
 		}
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -95,7 +106,7 @@ abstract class WindServer {
 		} else
 			$this->process($request, $response);
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -109,7 +120,7 @@ abstract class WindServer {
 		} else
 			$this->process($request, $response);
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -118,7 +129,7 @@ abstract class WindServer {
 	protected function doPut(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -127,7 +138,7 @@ abstract class WindServer {
 	protected function doDelete(WindHttpRequest $request, WindHttpResponse $response) {
 		$this->process($request, $response);
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -135,7 +146,7 @@ abstract class WindServer {
 	protected function doTrace(WindHttpRequest $request, WindHttpResponse $response) {
 
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
@@ -143,7 +154,7 @@ abstract class WindServer {
 	protected function doOptions(WindHttpRequest $request, WindHttpResponse $response) {
 
 	}
-	
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
