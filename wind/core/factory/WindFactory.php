@@ -43,8 +43,9 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias) {
-		if (null === ($classDefinition = $this->getClassDefinition($alias))) return null;
-		/*@var $classDefinition WindClassDefinition */
+		if (null === ($classDefinition = $this->getClassDefinition($alias)))
+			return null;
+			/*@var $classDefinition WindClassDefinition */
 		$args = func_get_args();
 		unset($args[0]);
 		return $classDefinition->getInstance($this, $args);
@@ -58,7 +59,8 @@ class WindFactory implements IWindFactory {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		$reflection = new ReflectionClass($className);
-		if ($reflection->isAbstract() || $reflection->isInterface()) return null;
+		if ($reflection->isAbstract() || $reflection->isInterface())
+			return null;
 		return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 	}
 
@@ -81,7 +83,8 @@ class WindFactory implements IWindFactory {
 	 */
 	public function getClassDefinition($classAlias) {
 		$classDefinition = isset($this->classDefinitions[$classAlias]) ? $this->classDefinitions[$classAlias] : '';
-		if (is_object($classDefinition)) return $classDefinition;
+		if (is_object($classDefinition))
+			return $classDefinition;
 		
 		$_className = isset($this->classAlias[$classAlias]) ? $this->classAlias[$classAlias] : '';
 		$classDefinition = isset($this->classDefinitions[$_className]) ? $this->classDefinitions[$_className] : '';
@@ -120,7 +123,8 @@ class WindFactory implements IWindFactory {
 			throw new WindException($classDefinitionType, WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		foreach ($classDefinitions as $classAlias => $definition) {
-			if (!$this->checkClassDefinition($definition)) continue;
+			if (!$this->checkClassDefinition($definition))
+				continue;
 			$classDefinition = self::createInstance($classDefinitionType, array($definition));
 			$classDefinition->setAlias($classAlias);
 			$this->addClassDefinitions($classDefinition);
