@@ -27,6 +27,15 @@ class WindConfig extends AbstractWindConfig {
 
 	const IMPORTS_IS_APPEND = 'is-append';
 
+	/*
+	 * app 相关配置
+	 * */
+	const WEB_APPS = 'web-apps';
+
+	const WEB_APP_CLASS = 'class';
+
+	const WEB_APP_ROOT_PATH = 'root-path';
+
 	/**
 	 * 应用的入口地址
 	 */
@@ -110,9 +119,7 @@ class WindConfig extends AbstractWindConfig {
 
 	const ROUTER_PARSERS_CLASS = 'class';
 
-	protected $rootPath = '';
-
-	protected $appName = 'windApp';
+	protected $appName = '';
 
 	protected $imports = array();
 
@@ -135,10 +142,12 @@ class WindConfig extends AbstractWindConfig {
 	 */
 	public function initConfig($config) {
 		if (!is_array($config)) {
-			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
+			if ($this->getConfigParser() === null)
+				throw new WindException('configParser is null.');
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
 		$this->setConfig($config);
+		$this->checkWindConfig();
 	}
 
 	/* (non-PHPdoc)
@@ -153,15 +162,37 @@ class WindConfig extends AbstractWindConfig {
 	}
 
 	/**
+	 * @return the $appName
+	 */
+	public function getAppName() {
+		return $this->appName;
+	}
+
+	/**
+	 * 返回当前应用的启动脚本位置
+	 */
+	public function getAppClass() {
+		$appConfig = $this->getConfig(self::WEB_APPS, $this->appName);
+		return isset($appConfig[self::WEB_APP_CLASS]) ? $appConfig[self::WEB_APP_CLASS] : '';
+	}
+
+	/**
 	 * 返回应用路径信息
 	 * 
 	 * @return string
 	 */
-	public function getRootPath() {
-		if (empty($this->rootPath) && !($this->rootPath = $this->getConfig(self::ROOTPATH))) {
-			$this->rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+	public function getRootPath($appName = '') {
+		if ($appName === '') {
+			$appName = $this->appName;
 		}
-		return $this->rootPath;
+		$propertyName = $appName . 'RootPath';
+		if (!isset($this->$propertyName)) {
+			$appConfig = $this->getConfig(self::WEB_APPS, $appName);
+			$rootPath = isset($appConfig[self::WEB_APP_ROOT_PATH]) ? $appConfig[self::WEB_APP_ROOT_PATH] : dirname($_SERVER['SCRIPT_FILENAME']);
+			//TODO 绝对路径相对路径判断，相对于webroot，支持自定义路径
+			$this->$propertyName = $rootPath;
+		}
+		return $this->$propertyName;
 	}
 
 	/**
@@ -229,10 +260,12 @@ class WindConfig extends AbstractWindConfig {
 	}
 
 	/**
-	 * @return the $appName
+	 * 配置信息合法性检查
 	 */
-	public function getAppName() {
-		return $this->appName;
+	protected function checkWindConfig() {
+		if (!$this->getConfig(self::WEB_APPS, $this->appName)) {
+			throw new WindException('config error.');
+		}
 	}
 
 	/**
@@ -244,7 +277,8 @@ class WindConfig extends AbstractWindConfig {
 	protected function parseImport($name) {
 		if (!isset($this->imports[$name])) {
 			$imports = $this->getConfig(self::IMPORTS);
-			if (!isset($imports[$name])) return array();
+			if (!isset($imports[$name]))
+				return array();
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
