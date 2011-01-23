@@ -45,9 +45,11 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias) {
-		if (null === ($classDefinition = $this->getClassDefinition($alias)))
+		$classDefinition = $this->getClassDefinition($alias);
+		if (!($classDefinition instanceof WindClassDefinition)) {
 			return null;
-			/*@var $classDefinition WindClassDefinition */
+		}
+		/*@var $classDefinition WindClassDefinition */
 		$args = func_get_args();
 		unset($args[0]);
 		return $classDefinition->getInstance($this, $args);

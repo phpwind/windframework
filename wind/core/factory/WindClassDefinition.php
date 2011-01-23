@@ -156,15 +156,26 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param array $args
 	 */
 	protected function createInstance($factory, $args = array()) {
-		if ($this->prototype !== null)
-			return clone $this->prototype;
+		if ($this->prototype !== null) return clone $this->prototype;
 		$instance = null;
-		if (empty($args))
-			$args = $this->setProperties($this->getConstructArgs(), $factory);
+		if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
 		$contructArgs = $this->getConstructArgs();
 		$instance = $factory->createInstance($this->getClassName(), $args);
+		$this->setProxyForClass($instance);
 		$this->setProperties($this->getPropertys(), $factory, $instance);
 		return $instance;
+	}
+
+	/**
+	 * 为类设置代理
+	 * 
+	 * @param WindModule $instance
+	 */
+	protected function setProxyForClass($instance) {
+		if (!$instance instanceof WindModule) return;
+		$proxyClass = L::import($this->getProxy());
+		if (class_exists($proxyClass)) $proxyClass = new $proxyClass();
+		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
 	}
 
 	/**
@@ -212,8 +223,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	private function init($classDefinition) {
 		$this->validate($classDefinition);
 		$className = L::import($classDefinition[self::PATH]);
-		if (!$className)
-			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
+		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		
 		$this->setClassName($className);
 		$this->setAlias($classDefinition[self::NAME]);
@@ -311,8 +321,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @author Qiong Wu
 	 */
 	public function setConstructArgs($constructArgs) {
-		if (is_array($constructArgs) && !empty($constructArgs))
-			$this->constructArgs = $constructArgs;
+		if (is_array($constructArgs) && !empty($constructArgs)) $this->constructArgs = $constructArgs;
 	}
 
 	/**
@@ -320,8 +329,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @author Qiong Wu
 	 */
 	public function setPropertys($propertys) {
-		if (is_array($propertys) && !empty($propertys))
-			$this->propertys = $propertys;
+		if (is_array($propertys) && !empty($propertys)) $this->propertys = $propertys;
 	}
 
 	/**

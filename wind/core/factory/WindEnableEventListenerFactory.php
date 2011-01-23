@@ -20,26 +20,19 @@ class WindEnableEventListenerFactory extends WindFactory {
 		if ($object instanceof WindModule) {
 			$classProxy = $object->getClassProxy();
 		}
-		if (!$classProxy) {
-			$classDefinition = $this->getClassDefinition($className);
-			$classProxy = $classDefinition->getProxy();
-		}
 		if ($classProxy instanceof WindClassProxy) {
-			$classProxy->initClassProxy($object);
 			return $classProxy;
-		} elseif (is_string($classProxy) && !empty($classProxy)) {
-			$classProxyName = L::import($classProxy);
-			return parent::createInstance($classProxyName, array($object));
 		}
 		return $object;
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see WindFactory::create()
 	 */
 	public function create() {
 		// TODO Auto-generated method stub
-		
+	
+
 	}
 }
 
