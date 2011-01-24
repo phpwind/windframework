@@ -218,7 +218,7 @@ abstract class WindSqlBuilder {
 	 * @param boolean $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
-	public function where($where, $value = array(), $group = false) {
+	public function where($where, $value = array(), $group = '') {
 		return $this->assembleWhere($where, self::WHERE, $value, true, $group);
 	}
 	/**
@@ -228,7 +228,7 @@ abstract class WindSqlBuilder {
 	 * @param boolean $group 是否启用分组
 	 * @return WindSqlBuilder
 	 */
-	public function orWhere($where, $value = array(), $group = false) {
+	public function orWhere($where, $value = array(), $group = '') {
 		return $this->assembleWhere($where, self::WHERE, $value, false, $group);
 	}
 	/**
@@ -248,7 +248,7 @@ abstract class WindSqlBuilder {
 	 * @param boolean $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
-	public function having($having, $value = array(), $group = false) {
+	public function having($having, $value = array(), $group = '') {
 		return $this->assembleWhere($having, self::HAVING, $value, true, $group);
 	}
 	/**
@@ -258,7 +258,7 @@ abstract class WindSqlBuilder {
 	 * @param boolean $group  是否启用分组
 	 * @return WindSqlBuilder
 	 */
-	public function orHaving($having, $value = array(), $group = false) {
+	public function orHaving($having, $value = array(), $group = '') {
 		return $this->assembleWhere($having, self::HAVING, $value, false, $group);
 	}
 	/**
