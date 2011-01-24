@@ -20,9 +20,9 @@ L::import('WIND:core.factory.IWindFactory');
  */
 class WindFactory implements IWindFactory {
 
-	const CLASSES_DEFINITIONS = 'classes';
-
 	protected $classDefinitionType = 'WIND:core.factory.WindClassDefinition';
+
+	protected $_classDefinitions = array();
 
 	protected $classDefinitions = array();
 
@@ -45,7 +45,7 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias) {
-		$classDefinition = $this->getClassDefinition($alias);
+		$classDefinition = $this->getClassDefinitionByAlias($alias);
 		if (!($classDefinition instanceof WindClassDefinition)) {
 			return null;
 		}
@@ -63,8 +63,7 @@ class WindFactory implements IWindFactory {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		$reflection = new ReflectionClass($className);
-		if ($reflection->isAbstract() || $reflection->isInterface())
-			return null;
+		if ($reflection->isAbstract() || $reflection->isInterface()) return null;
 		return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 	}
 
@@ -75,7 +74,7 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	public function isSingled($classAlias) {
-		$classDefinition = $this->getClassDefinition($classAlias);
+		$classDefinition = $this->getClassDefinitionByAlias($classAlias);
 		return isset($classDefinition[self::CLASS_SINGLE]) && $classDefinition[self::CLASS_SINGLE] === 'false';
 	}
 
@@ -85,13 +84,17 @@ class WindFactory implements IWindFactory {
 	 * @param string $classAlias
 	 * @return WindClassDefinition
 	 */
-	public function getClassDefinition($classAlias, $isAlias = true) {
-		if (isset($this->classDefinitions[$classAlias])) {
-			return $this->classDefinitions[$classAlias];
-		} elseif ($isAlias && isset($this->classAlias[$classAlias])) {
-			return $this->getClassDefinition($this->classAlias[$classAlias], false);
+	public function getClassDefinitionByAlias($classAlias) {
+		if (!isset($this->_classDefinitions[$classAlias])) return null;
+		if (!isset($this->classAlias[$classAlias])) {
+			$definition = $this->_classDefinitions[$classAlias];
+			$className = L::import($this->classDefinitionType);
+			$classDefinition = self::createInstance($className, array($definition));
+			$classDefinition->setAlias($classAlias);
+			$this->addClassDefinitions($classDefinition);
+			return $classDefinition;
 		}
-		return null;
+		return $this->classDefinitions[$this->classAlias[$classAlias]];
 	}
 
 	/**
@@ -121,17 +124,7 @@ class WindFactory implements IWindFactory {
 		if (!is_array($classDefinitions)) {
 			throw new WindException($classDefinitions, WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
-		$classDefinitionType = L::import($this->classDefinitionType);
-		if (!class_exists($classDefinitionType)) {
-			throw new WindException($classDefinitionType, WindException::ERROR_CLASS_NOT_EXIST);
-		}
-		foreach ($classDefinitions as $classAlias => $definition) {
-			if (!$this->checkClassDefinition($definition))
-				continue;
-			$classDefinition = self::createInstance($classDefinitionType, array($definition));
-			$classDefinition->setAlias($classAlias);
-			$this->addClassDefinitions($classDefinition);
-		}
+		$this->_classDefinitions = $classDefinitions;
 	}
 
 	/**

@@ -116,7 +116,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 
 	/**
 	 * 通过对象工厂创建单例对象
-	 * @param AbstractWindFactory $factory
+	 * @param IWindFactory $factory
 	 * @return instance|Ambigous <prototype, void, mixed>|NULL
 	 */
 	public function getInstance($factory, $args = array()) {
@@ -125,24 +125,54 @@ class WindClassDefinition extends WindEnableValidateModule {
 				return $this->createInstanceWithSingleton($factory, $args);
 			case 'prototype':
 				return $this->createInstanceWithPrototype($factory, $args);
+			case 'request':
+				return $this->createInstanceWithRequest($factory, $args);
+			case 'application':
+				return $this->createInstanceWithApplication($factory, $args);
 			default:
 				return null;
 		}
 	}
 
 	/**
-	 * 创建类原型对象
-	 * 
-	 * @param AbstractWindFactory $factory
+	 * @param IWindFactory $factory
+	 * @param array $args
+	 * @return NULL|object
+	 */
+	protected function createInstanceWithApplication($factory, $args) {
+		if (!isset($factory->application)) return null;
+		if (null === $factory->application->getAttribute($this->getAlias())) {
+			$factory->application->setAttribute($this->getAlias(), $this->createInstanceWithPrototype($factory, $args));
+		}
+		return $factory->application->getAttribute($this->getAlias());
+	}
+
+	/**
+	 * @param IWindFactory $factory
+	 * @param array $args
+	 * @return NULL|object
+	 */
+	protected function createInstanceWithRequest($factory, $args) {
+		if (!isset($factory->request)) return null;
+		if (null === $factory->request->getAttribute($this->getAlias(), null)) {
+			$factory->request->setAttribute($this->getAlias(), $this->createInstanceWithPrototype($factory, $args));
+		}
+		return $factory->request->getAttribute($this->getAlias());
+	}
+
+	/**
+	 * @param IWindFactory $factory
+	 * @param array $args
+	 * @return NULL|object
 	 */
 	protected function createInstanceWithPrototype($factory, $args) {
 		return $this->createInstance($factory, $args);
 	}
 
 	/**
-	 * 创建单例的对象
-	 * @param AbstractWindFactory $factory
-	 * @return instance
+	 * @param IWindFactory $factory
+	 * @param array $args
+	 * @return NULL|object
 	 */
 	protected function createInstanceWithSingleton($factory, $args) {
 		if (!isset($this->instance)) {
@@ -156,14 +186,16 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param array $args
 	 */
 	protected function createInstance($factory, $args = array()) {
-		if ($this->prototype !== null) return clone $this->prototype;
-		$instance = null;
-		if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
-		$contructArgs = $this->getConstructArgs();
-		$instance = $factory->createInstance($this->getClassName(), $args);
-		$this->setProxyForClass($instance);
-		$this->setProperties($this->getPropertys(), $factory, $instance);
-		return $instance;
+		if ($this->prototype === null) {
+			$instance = null;
+			if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
+			$contructArgs = $this->getConstructArgs();
+			$instance = $factory->createInstance($this->getClassName(), $args);
+			$this->setProxyForClass($instance);
+			$this->setProperties($this->getPropertys(), $factory, $instance);
+			$this->prototype = $instance;
+		}
+		return clone $this->prototype;
 	}
 
 	/**
