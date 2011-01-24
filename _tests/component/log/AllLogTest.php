@@ -7,7 +7,7 @@
  */
 
 require_once ('component/log/WindDebugTest.php');
-require_once ('component/log/WindLogTest.php');
+require_once ('component/log/WindLoggerTest.php');
 
 class AllLogTest {
 	public static function main() {
@@ -17,7 +17,7 @@ class AllLogTest {
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllLogTest_Suite');
 		$suite->addTestSuite('WindDebugTest');
-		$suite->addTestSuite('WindLogTest');
+		$suite->addTestSuite('WindLoggerTest');
 		return $suite;
 	}
 }
