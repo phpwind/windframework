@@ -70,14 +70,12 @@ class WindClassProxy implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
-		if ($events = $this->_getEventsByType(self::EVENT_TYPE_SETTER, $propertyName)) {
-			$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
-				'newInstance'), array($events, array($this, '_setProperty'), array($propertyName, $value)));
-			if (null !== ($handler = $interceptorChain->getHandler())) {
-				return $handler->handle($value);
-			}
-		}
-		return $this->_setProperty($propertyName, $value);
+		$events = $this->_getEventsByType(self::EVENT_TYPE_SETTER, $propertyName);
+		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
+			'newInstance'), array());
+		$interceptorChain->addInterceptors($events);
+		$interceptorChain->setCallBack(array($this, '_setProperty'), array($propertyName, $value));
+		return $interceptorChain->getHandler()->handle($value);
 	}
 
 	/**
@@ -100,14 +98,12 @@ class WindClassProxy implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
-		if ($events = $this->_getEventsByType(self::EVENT_TYPE_GETTER, $propertyName)) {
-			$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
-				'newInstance'), array($events, array($this, '_getProperty'), $propertyName));
-			if (null !== ($handler = $interceptorChain->getHandler())) {
-				return $handler->handle($this->_getProperty($propertyName));
-			}
-		}
-		return $this->_getProperty($propertyName);
+		$events = $this->_getEventsByType(self::EVENT_TYPE_GETTER, $propertyName);
+		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
+			'newInstance'), array());
+		$interceptorChain->addInterceptors($events);
+		$interceptorChain->setCallBack(array($this, '_getProperty'), array($propertyName));
+		return $interceptorChain->getHandler()->handle($propertyName);
 	}
 
 	/**
@@ -122,14 +118,13 @@ class WindClassProxy implements IWindClassProxy {
 		if (!$method || !$method->isPublic()) {
 			throw new WindException('undefined method name in ' . $this->getReflection()->getName());
 		}
-		if ($events = $this->_getEventsByType(self::EVENT_TYPE_METHOD, $methodName)) {
-			$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
-				'newInstance'), array($events, array($this->getInstance(), $methodName), $args));
-			if (null !== ($handler = $interceptorChain->getHandler())) {
-				return call_user_func_array(array($handler, 'handle'), $args);
-			}
-		}
-		return call_user_func_array(array($this->getInstance(), $methodName), $args);
+		$events = $this->_getEventsByType(self::EVENT_TYPE_METHOD, $methodName);
+		
+		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
+			'newInstance'), array());
+		$interceptorChain->addInterceptors($events);
+		$interceptorChain->setCallBack(array($this->getInstance(), $methodName), $args);
+		return call_user_func_array(array($interceptorChain->getHandler(), 'handle'), $args);
 	}
 
 	/**
