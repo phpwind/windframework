@@ -7,6 +7,7 @@
  * @version $Id$
  * @package 
  */
+
 class WindClassProxyTest extends BaseTestCase {
 
 	public function testCreatInstance() {
@@ -44,7 +45,7 @@ class WindClassProxyTest extends BaseTestCase {
 		$instance->name = 'wuqiong';
 		$_value = $instance->name;
 		$this->assertEquals($_value, 'wuqiong');
-		$this->assertEquals($listener->testB, 'wuqiong_postHandle');
+		$this->assertEquals($listener->testB, 'name_postHandle');
 	}
 
 	public function testSetter() {
@@ -76,7 +77,7 @@ class WindClassProxyTest extends BaseTestCase {
 	 */
 	protected function setUp() {
 		parent::setUp();
-		require_once 'core/factory/WindClassProxy.php';
+		require_once 'core/factory/proxy/WindClassProxy.php';
 		require_once 'data/ForWindClassProxy.php';
 	}
 
