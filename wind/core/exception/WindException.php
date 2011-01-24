@@ -19,6 +19,8 @@ class WindException extends Exception {
 	/* 类错误 */
 	const ERROR_CLASS_NOT_EXIST = '100';
 
+	const ERROR_CLASS_TYPE_ERROR = '101';
+
 	/* 参数错误 */
 	const ERROR_PARAMETER_TYPE_ERROR = '110';
 
@@ -74,7 +76,7 @@ class WindException extends Exception {
 		eval('$message="' . addcslashes($this->messageMapper($code), '"') . '";');
 		return $message;
 	}
-    
+
 	/**
 	 * 自定义异常号的对应异常信息
 	 * 
@@ -82,7 +84,7 @@ class WindException extends Exception {
 	 * @return string 返回异常号对应的异常组装信息原型
 	 */
 	protected function messageMapper($code) {
-		$messages = array(
+		$messages = array(self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
 			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.');
 		
