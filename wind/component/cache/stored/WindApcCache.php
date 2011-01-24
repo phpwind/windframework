@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import('WIND:component.cache.base.IWindCache');
 /**
  * php加速器缓存
  * the last known user to change this file in the repository  <$LastChangedBy$>
