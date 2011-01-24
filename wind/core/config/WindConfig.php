@@ -18,6 +18,8 @@ class WindConfig extends AbstractWindConfig {
 
 	const CLASS_PATH = 'class';
 
+	const PATH = 'path';
+
 	/**
 	 * import 外部配置文件包含
 	 * */
@@ -44,27 +46,16 @@ class WindConfig extends AbstractWindConfig {
 
 	const WEB_APP_ROUTER = 'router';
 
+	const WEB_APP_MODULE = 'modules';
+
+	const WEB_APP_TEMPLATE = 'template';
+
 	/**
 	 * 应用的入口地址
 	 */
 	const ERROR = 'error';
 
 	const ERROR_ERRORACTION = 'errorAction';
-
-	/**
-	 * 模快設置
-	 */
-	const MODULES = 'modules';
-
-	const MODULE_PATH = 'path';
-
-	const MODULE_TEMPLATE = 'template';
-
-	const MODULE_CONTROLLER_SUFFIX = 'controllerSuffix';
-
-	const MODULE_ACTION_SUFFIX = 'actionSuffix';
-
-	const MODULE_METHOD = 'method';
 
 	/**
 	 * 模板相关配置信息
@@ -211,7 +202,8 @@ class WindConfig extends AbstractWindConfig {
 	 * @return array|string
 	 */
 	public function getModules($name = '') {
-		return $this->getConfig(self::MODULES, $name);
+		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
+		return $this->getConfig(self::WEB_APP_MODULE, $name, $_config);
 	}
 
 	/**
