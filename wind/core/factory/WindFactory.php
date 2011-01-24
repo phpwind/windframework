@@ -85,8 +85,7 @@ class WindFactory implements IWindFactory {
 	 * @return WindClassDefinition
 	 */
 	public function getClassDefinitionByAlias($classAlias) {
-		if (!isset($this->_classDefinitions[$classAlias])) return null;
-		if (!isset($this->classAlias[$classAlias])) {
+		if (!isset($this->classAlias[$classAlias]) && isset($this->_classDefinitions[$classAlias])) {
 			$definition = $this->_classDefinitions[$classAlias];
 			$className = L::import($this->classDefinitionType);
 			$classDefinition = self::createInstance($className, array($definition));

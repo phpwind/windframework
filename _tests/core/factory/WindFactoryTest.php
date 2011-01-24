@@ -17,6 +17,12 @@ class WindFactoryTest extends BaseTestCase {
 	public function tearDown() {
 		parent::tearDown();
 	}
+	
+	public function testGetInstance() {
+		//$this->assertNull($this->factory->getInstance('xxx'));
+		$this->assertTrue($this->factory->getInstance('ppp', 'default') instanceof WindView);
+	}
+	
 	public function testNoClassCreate() {
 		try{
 			$this->factory->createInstance('CoreTest', 'hahah');
@@ -25,25 +31,24 @@ class WindFactoryTest extends BaseTestCase {
 		}
 		$this->fail('Exception Error!');
 	}
+
+	public function testCreateInstance() {
+		$this->assertTrue($this->factory->createInstance('WindWebApplication') instanceof WindWebApplication);
+	}
 	
-	public function testGetClassDefinition() {
-		$this->assertTrue($this->factory->getClassDefinition('ppp') instanceof WindClassDefinition);
+	public function testGetClassDefinitionByAlias() {
+		//$this->assertNull($this->factory->getClassDefinitionByAlias('xxx'));
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('ppp') instanceof WindClassDefinition);
 	}
 	
 	public function testAddClassDefinitions() {
 		$p = new WindClassDefinition(array('name' => 'kkk', 'path' => 'WIND:core.WindView'));
 		$this->factory->addClassDefinitions($p);
-		$this->assertTrue($this->factory->getClassDefinition('kkk') instanceof WindClassDefinition);
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('kkk') instanceof WindClassDefinition);
 		
 		$p = new WindClassDefinition(array('name' => 'ooo', 'path' => 'WIND:core.WindView'));
 		$this->factory->addClassDefinitions(array($p));
-		$this->assertTrue($this->factory->getClassDefinition('ooo') instanceof WindClassDefinition);
-	}
-	
-	public function testGetInstance() {
-		$this->assertNull($this->factory->getInstance('ooo'));
-		$obj = $this->factory->getInstance('ppp');
-		$this->assertTrue($obj instanceof WindView);
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('ooo') instanceof WindClassDefinition);
 	}
 	
 	private function getTestData() {
