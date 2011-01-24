@@ -49,8 +49,8 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	
 	public static function providerWhere() {
 		return array(array('username = "1"', '', ''), array(array('age <= ?', 'uid > ?'), array(3, 4), ''), 
-			array(array('age = 3', 'uid >4'), '', ''), array('uid < ?', 1, true), 
-			array('username = ? AND uid > ? ', array('"suqian"', 2), false));
+			array(array('age = 3', 'uid >4'), '', ''), array('uid < ?', 1, ''), 
+			array('username = ? AND uid > ? ', array('"suqian"', 2), ''));
 	}
 	
 	public static function providerOrder() {

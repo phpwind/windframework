@@ -6,7 +6,7 @@
  * @license 
  */
 
-require_once ('core/config/WindConfigParserTest.php');
+require_once ('core/config/AllConfigTest.php');
 require_once ('core/exception/AllExceptionTest.php');
 require_once ('core/factory/AllFactoryTest.php');
 
@@ -35,7 +35,7 @@ class AllCoreTest {
 	
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('AllCoreTest_Suite');
-		$suite->addTestSuite('WindConfigParserTest');
+		$suite->addTest(AllConfigTest::suite());
 		$suite->addTest(AllExceptionTest::suite());
 		$suite->addTest(AllFactoryTest::suite());
 		//$suite->addTestSuite('WindFilterFactoryTest');

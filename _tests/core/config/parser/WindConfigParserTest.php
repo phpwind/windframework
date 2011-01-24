@@ -11,7 +11,7 @@ class WindConfigParserTest extends BaseTestCase {
 	private $path;
 	public function setUp() {
 		parent::setUp();
-		require_once('core/config/WindConfigParser.php');
+		require_once('core/config/parser/WindConfigParser.php');
 		require_once('core/WindHttpRequest.php');
 		$this->parser = new WindConfigParser();
 		$_SERVER['SCRIPT_FILENAME'] = __FILE__;

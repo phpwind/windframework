@@ -771,7 +771,7 @@ abstract class WindSqlBuilder {
 	 * @param mixed $group  是否提供分组
 	 * @return WindMySqlBuilder
 	 */
-	private function assembleWhere($where, $whereType = self::WHERE, $value = array(), $logic = true, $group = false) {
+	private function assembleWhere($where, $whereType = self::WHERE, $value = array(), $logic = true, $group = '') {
 		$_where = '';
 		if (!in_array($whereType, array(self::WHERE, self::HAVING))) {
 			throw new WindSqlException($whereType, WindSqlException::DB_QUERY_WHERE_ERROR);
