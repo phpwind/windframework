@@ -77,6 +77,48 @@
 		'formConfig' => 'WIND:component.form.form_config',
 		'dbConfig' => 'WIND:component.form.db_config',
 	),
+
+	'database' => array(
+         'connections' => array(
+            'phpwind_8' => array(
+               'driver' => 'mysql',
+               'type' => 'master',
+               'host' => 'localhost',
+               'user' => 'root',
+               'password' => 'suqian0512h',
+               'port' => '3306',
+               'name' => 'phpwind_8',
+            ),
+            'phpwind_beta' => array(
+               'driver' => 'mysql',
+               'type' => 'slave',
+               'host' => 'localhost',
+               'user' => 'root',
+               'password' => 'suqian0512h',
+               'port' => '3306',
+               'name' => 'phpwind_beta',
+            ),
+         ),
+         'drivers' => array(
+            'mysql' => array(
+               'builder' => 'mysql',
+               'class' => 'WIND:component.db.drivers.mysql.WindMySql',
+            ),
+            'mssql' => array(
+               'builder' => 'mssql',
+               'class' => 'WIND:component.db.drivers.mssql.WindMsSql',
+            ),
+         ),
+         'builders' => array(
+            'mysql' => array(
+               'class' => 'WIND:component.db.drivers.mysql.WindMySqlBuilder',
+            ),
+            'mssql' => array(
+               'class' => 'WIND:component.db.drivers.mssql.WindMsSqlBuilder',
+            ),
+         ),
+      ),
+
 	'database' => array(
 			'connections' => array(
 				'phpwind_8' => array(
@@ -101,5 +143,6 @@
 				),
 			),
 		),
+
 );
 ?>
