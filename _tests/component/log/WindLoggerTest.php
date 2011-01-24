@@ -70,6 +70,6 @@ class WindLoggerTest extends BaseTestCase {
 	}
 	
 	public function testClearFiles() {
-		//$this->assertTrue(WindLogger::clearFiles());
+		$this->assertTrue(WindLogger::clearFiles());
 	}
 }
