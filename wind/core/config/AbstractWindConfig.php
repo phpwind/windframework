@@ -6,6 +6,7 @@
  * @license 
  */
 
+L::import('WIND:core.WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -13,12 +14,14 @@
  * @package 
  */
 abstract class AbstractWindConfig extends WindModule {
-	
+
 	/* 配置解析信息 */
 	protected $configParser = null;
+
 	protected $cacheName;
+
 	protected $append;
-	
+
 	protected $config = array();
 
 	/**
@@ -41,13 +44,16 @@ abstract class AbstractWindConfig extends WindModule {
 	 * @param string $subConfigName
 	 * @return string
 	 */
-	public function getConfig($configName = '', $subConfigName = '') {
-		if ($configName === '') return $this->config;
+	public function getConfig($configName = '', $subConfigName = '', $config = array()) {
+		if (!$config) $config = $this->config;
+		if ($configName === '') return $config;
+		
 		$_config = array();
-		if (isset($this->config[$configName])) {
-			$_config = $this->config[$configName];
+		if (isset($config[$configName])) {
+			$_config = $config[$configName];
 		}
 		if ($subConfigName === '') return $_config;
+		
 		$_subConfig = array();
 		if (is_array($_config) && isset($_config[$subConfigName])) {
 			$_subConfig = $_config[$subConfigName];

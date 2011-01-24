@@ -16,6 +16,8 @@ L::import('WIND:core.config.AbstractWindConfig');
  */
 class WindConfig extends AbstractWindConfig {
 
+	const CLASS_PATH = 'class';
+
 	/**
 	 * import 外部配置文件包含
 	 * */
@@ -32,24 +34,22 @@ class WindConfig extends AbstractWindConfig {
 	 * */
 	const WEB_APPS = 'web-apps';
 
-	const WEB_APP_CLASS = 'class';
-
 	const WEB_APP_ROOT_PATH = 'root-path';
+
+	const WEB_APP_FACTORY = 'factory';
+
+	const WEB_APP_FACTORY_CLASS_DEFINITION = 'class-definition';
+
+	const WEB_APP_FILTER = 'filters';
+
+	const WEB_APP_ROUTER = 'router';
 
 	/**
 	 * 应用的入口地址
 	 */
-	const ROOTPATH = 'rootPath';
-
-	const APPLICATIONS = 'applications';
-
-	const APPLICATIONS_CLASS = 'class';
-
 	const ERROR = 'error';
 
 	const ERROR_ERRORACTION = 'errorAction';
-
-	const ERROR_CLASS = 'class';
 
 	/**
 	 * 模快設置
@@ -65,13 +65,6 @@ class WindConfig extends AbstractWindConfig {
 	const MODULE_ACTION_SUFFIX = 'actionSuffix';
 
 	const MODULE_METHOD = 'method';
-
-	/**
-	 * 过滤器链
-	 */
-	const FILTERS = 'filters';
-
-	const FILTER_CLASS = 'class';
 
 	/**
 	 * 模板相关配置信息
@@ -102,13 +95,6 @@ class WindConfig extends AbstractWindConfig {
 	 * 模板引擎配置信息
 	 */
 	const VIEWER_RESOLVERS = 'viewerResolvers';
-
-	/**
-	 * 路由策略配置
-	 */
-	const ROUTER = 'router';
-
-	const ROUTER_PARSER = 'parser';
 
 	/**
 	 * 路由解析器配置
@@ -142,8 +128,7 @@ class WindConfig extends AbstractWindConfig {
 	 */
 	public function initConfig($config) {
 		if (!is_array($config)) {
-			if ($this->getConfigParser() === null)
-				throw new WindException('configParser is null.');
+			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
 		$this->setConfig($config);
@@ -153,12 +138,12 @@ class WindConfig extends AbstractWindConfig {
 	/* (non-PHPdoc)
 	 * @see AbstractWindConfig::getConfig()
 	 */
-	public function getConfig($configName = '', $subConfigName = '') {
+	public function getConfig($configName = '', $subConfigName = '', $config = array()) {
 		$imports = parent::getConfig(self::IMPORTS);
 		if (key_exists($configName, $imports)) {
 			return $this->parseImport($configName);
 		}
-		return parent::getConfig($configName, $subConfigName);
+		return parent::getConfig($configName, $subConfigName, $config);
 	}
 
 	/**
@@ -172,8 +157,8 @@ class WindConfig extends AbstractWindConfig {
 	 * 返回当前应用的启动脚本位置
 	 */
 	public function getAppClass() {
-		$appConfig = $this->getConfig(self::WEB_APPS, $this->appName);
-		return isset($appConfig[self::WEB_APP_CLASS]) ? $appConfig[self::WEB_APP_CLASS] : '';
+		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
+		return $this->getConfig(self::CLASS_PATH, '', $_config);
 	}
 
 	/**
@@ -197,6 +182,32 @@ class WindConfig extends AbstractWindConfig {
 
 	/**
 	 * @param string $name
+	 */
+	public function getFactory($name = '') {
+		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
+		return $this->getConfig(self::WEB_APP_FACTORY, $name, $_config);
+	}
+
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	public function getFilters($name = '') {
+		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
+		return $this->getConfig(self::WEB_APP_FILTER, $name, $_config);
+	}
+
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	public function getRouter($name = '') {
+		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
+		return $this->getConfig(self::WEB_APP_ROUTER, $name, $_config);
+	}
+
+	/**
+	 * @param string $name
 	 * @return array|string
 	 */
 	public function getModules($name = '') {
@@ -215,32 +226,8 @@ class WindConfig extends AbstractWindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	public function getFilters($name = '') {
-		return $this->getConfig(self::FILTERS, $name);
-	}
-
-	/**
-	 * @param string $name
-	 * @return array|string
-	 */
 	public function getViewerResolvers($name = '') {
 		return $this->getConfig(self::VIEWER_RESOLVERS, $name);
-	}
-
-	/**
-	 * @param string $name
-	 * @return array|string
-	 */
-	public function getRouter($name = '') {
-		return $this->getConfig(self::ROUTER, $name);
-	}
-
-	/**
-	 * @param string $name
-	 * @return array|string
-	 */
-	public function getRouterParsers($name = '') {
-		return $this->getConfig(self::ROUTER_PARSERS, $name);
 	}
 
 	/**
@@ -277,8 +264,7 @@ class WindConfig extends AbstractWindConfig {
 	protected function parseImport($name) {
 		if (!isset($this->imports[$name])) {
 			$imports = $this->getConfig(self::IMPORTS);
-			if (!isset($imports[$name]))
-				return array();
+			if (!isset($imports[$name])) return array();
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
