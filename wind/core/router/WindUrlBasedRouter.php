@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.router.base.WindRouter');
+L::import('WIND:core.router.AbstractWindRouter');
 /**
  * 基于URL的路由解析器.
  * 该解析器通过访问一个Http请求的Request对象来获得URL的参数信息
@@ -19,22 +19,66 @@ L::import('WIND:core.router.base.WindRouter');
  * @link WRouteParser
  * @package 
  */
-class WindUrlBasedRouter extends WindRouter {
-	private $request = null;
-	private $response = null;
-	private $rule;
-	/**
-	 * 调用该方法实现路由解析
-	 * 获得到 request 的静态对象，得到request的URL信息
-	 * 获得 config 的静态对象，得到URL的格式信息
-	 * 解析URL，并声称RouterContext对象
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
+class WindUrlBasedRouter extends AbstractWindRouter {
+
+	const URL_RULE = 'url-rule';
+
+	const URL_RULE_URL_PARAM = 'url-param';
+
+	const URL_RULE_DEFAULT_VALUE = 'default-value';
+
+	const URL_RULE_MODULE = 'module';
+
+	const URL_RULE_CONTROLLER = 'controller';
+
+	const URL_RULE_ACTION = 'action';
+
+	protected $controllerSuffix = 'Controller';
+
+	private $urlRule = array();
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::doParser()
 	 */
-	public function doParser($request, $response) {
-		$this->_setValues($request, $response);
+	public function doParse($request) {
+		$windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
+		$this->urlRule = $windConfig->getRouter(self::URL_RULE);
+		$this->module = $this->getValue($request, $this->module, self::URL_RULE_MODULE);
+		$this->controller = $this->getValue($request, $this->controller, self::URL_RULE_CONTROLLER);
+		$this->action = $this->getValue($request, $this->action, self::URL_RULE_ACTION);
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::getHandler()
+	 */
+	public function getHandler($request, $response) {
+		$windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
+		$moduleConfig = $windConfig->getModules($this->getModule());
+		$controllerPath = $moduleConfig[WindConfig::PATH] . '.' . ucfirst($this->controller) . $this->controllerSuffix;
+		if (strpos($controllerPath, ':') === false) {
+			$controllerPath = strtoupper($windConfig->getAppName()) . ':' . $controllerPath;
+		}
+		$controllerClassName = L::import($controllerPath);
+		if (!class_exists($controllerClassName)) {
+			throw new WindException($controllerClassName, WindException::ERROR_CLASS_NOT_EXIST);
+		}
+		return new $controllerClassName($request, $response);
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param request
+	 * @param urlParam
+	 * @param defaultValue
+	 */
+	private function getValue($request, $defaultValue, $type) {
+		if (isset($this->urlRule[$type]) && isset($this->urlRule[$type][self::URL_RULE_URL_PARAM])) {
+			$defaultValue = isset($this->urlRule[$type][self::URL_RULE_DEFAULT_VALUE]) ? $this->urlRule[$type][self::URL_RULE_DEFAULT_VALUE] : $defaultValue;
+			return $request->getAttribute($this->urlRule[$type][self::URL_RULE_URL_PARAM], $defaultValue);
+		}
+		return $defaultValue;
+	}
+
 	/**
 	 * @param string $action
 	 * @param string $controller
@@ -55,19 +99,5 @@ class WindUrlBasedRouter extends WindRouter {
 			$url = $baseUrl . '/' . $script;
 		return $url;
 	}
-	
-	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	private function _setValues($request, $response) {
-		$this->rule = $this->routerConfig[IWindConfig::ROUTER_PARSERS_RULE];
-		$keys = array_keys($this->rule);
-		$this->action = $request->getAttribute($keys[0], $this->rule[$keys[0]]);
-		$this->controller = $request->getAttribute($keys[1], $this->rule[$keys[1]]);
-		$this->module = $request->getAttribute($keys[2], $this->rule[$keys[2]]);
-		$response->setDispatcher($this);
-		$this->request = $request;
-		$this->response = $response;
-	}
+
 }
