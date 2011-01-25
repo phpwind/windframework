@@ -54,15 +54,18 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	public function getHandler($request, $response) {
 		$windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
 		$moduleConfig = $windConfig->getModules($this->getModule());
+		if (!$moduleConfig) {
+			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
+		}
 		$controllerPath = $moduleConfig[WindConfig::PATH] . '.' . ucfirst($this->controller) . $this->controllerSuffix;
 		if (strpos($controllerPath, ':') === false) {
-			$controllerPath = strtoupper($windConfig->getAppName()) . ':' . $controllerPath;
+			$controllerPath = $windConfig->getAppName() . ':' . $controllerPath;
 		}
 		$controllerClassName = L::import($controllerPath);
 		if (!class_exists($controllerClassName)) {
 			throw new WindException($controllerClassName, WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		return new $controllerClassName($request, $response);
+		return $controllerClassName;
 	}
 
 	/**
