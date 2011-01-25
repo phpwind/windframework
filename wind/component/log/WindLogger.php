@@ -21,25 +21,25 @@ defined('LOG_PATH') or define('LOG_PATH', COMPILE_PATH . 'log/');
  * @package
  */
 class WindLogger {
-	
+
 	/*错误类型*/
 	const INFO = 0;
-	
+
 	const TRACE = 1;
-	
+
 	const DEBUG = 2;
-	
+
 	const ERROR = 3;
-	
+
 	/**
 	 * 每次当日志数量达到100的时候，就写入文件一次
 	 * 
 	 * @var int
 	 */
 	const FLUSH = 100;
-	
+
 	private static $logs = array();
-	
+
 	/**
 	 * 添加info级别的日志信息
 	 * 
@@ -48,7 +48,7 @@ class WindLogger {
 	public static function info($msg) {
 		self::log($msg, self::INFO);
 	}
-	
+
 	/**
 	 * 添加trace级别的日志信息
 	 * 
@@ -57,7 +57,7 @@ class WindLogger {
 	public static function trace($msg) {
 		self::log($msg, self::TRACE);
 	}
-	
+
 	/**
 	 * 添加debug的日志信息
 	 * 
@@ -66,7 +66,7 @@ class WindLogger {
 	public static function debug($msg) {
 		self::log($msg, self::DEBUG);
 	}
-	
+
 	/**
 	 * 添加Error级别的日志信息
 	 * 
@@ -75,7 +75,7 @@ class WindLogger {
 	public static function error($msg) {
 		self::log($msg, self::ERROR);
 	}
-	
+
 	/**
 	 * 记录日志信息，但不写入文件
 	 * 
@@ -86,7 +86,7 @@ class WindLogger {
 		self::$logs[] = self::build($msg, $logType);
 		count(self::$logs) >= self::FLUSH && self::flush();
 	}
-	
+
 	/**
 	 * 将记录的日志列表信息写入文件
 	 * 
@@ -101,7 +101,7 @@ class WindLogger {
 		self::$logs = array();
 		return true;
 	}
-	
+
 	/**
 	 * 清空日志文件
 	 * 
@@ -120,7 +120,7 @@ class WindLogger {
 		$dir->close();
 		return true;
 	}
-	
+
 	/**
 	 * Enter description here ...
 	 * 
@@ -129,7 +129,7 @@ class WindLogger {
 	private static function createFolder($path) {
 		!is_dir($path) && mkdir($path, 0777, true);
 	}
-	
+
 	/**
 	 * 组装日志信息
 	 * 
@@ -141,11 +141,11 @@ class WindLogger {
 		$msg = stripslashes(str_replace("<br/>", "\r\n", trim($msg)));
 		return call_user_func_array(array(__CLASS__, self::getLogType($logType)), array($msg));
 	}
-	
+
 	/**
 	 * 组装info级别的信息输出格式
 	 * <code>
-	 *  [2011-01-24 10:00:00] INFO! Message: $msg
+	 * [2011-01-24 10:00:00] INFO! Message: $msg
 	 * </code>
 	 * 
 	 * @param string $msg
@@ -154,13 +154,13 @@ class WindLogger {
 	private static function buildInfo($msg) {
 		return self::getLogDate() . 'INFO! Message:  ' . $msg . "\r\n";
 	}
-	
+
 	/**
 	 * 组装堆栈trace的信息输出格式
 	 * <code>
-	 *  [2011-01-24 10:00:00] TRACE! Message: $msg
-	 *  #1 trace1
-	 *  #2 trace2
+	 * [2011-01-24 10:00:00] TRACE! Message: $msg
+	 * #1 trace1
+	 * #2 trace2
 	 * </code>
 	 * 
 	 * @param string $msg
@@ -169,14 +169,14 @@ class WindLogger {
 	private static function buildTrace($msg) {
 		return self::getLogDate() . 'TRACE! Message:  ' . $msg . "\r\n" . implode("\r\n", self::getTrace()) . "\r\n";
 	}
-	
+
 	/**
 	 * 组装debug信息输出
 	 * 
 	 * <code>
-	 *   [2011-01-24 10:00:00] DEBUG! Message: $msg
-	 *   #1 trace1
-	 *   #2 trace2
+	 * [2011-01-24 10:00:00] DEBUG! Message: $msg
+	 * #1 trace1
+	 * #2 trace2
 	 * </code>
 	 * 
 	 * @param string $msg
@@ -185,14 +185,14 @@ class WindLogger {
 	private static function buildDebug($msg) {
 		return self::getLogDate() . 'DEBUG! Message:  ' . $msg . "\r\n" . implode("\r\n", self::getTrace()) . "\r\n";
 	}
-	
+
 	/**
 	 *组装Error信息输出
 	 * 
 	 * <code>
-	 *   [2011-01-24 10:00:00] ERROR! Message: $msg
-	 *   #1 trace1
-	 *   #2 trace2
+	 * [2011-01-24 10:00:00] ERROR! Message: $msg
+	 * #1 trace1
+	 * #2 trace2
 	 * </code>
 	 * 
 	 * @param string $msg
@@ -201,13 +201,13 @@ class WindLogger {
 	private static function buildError($msg) {
 		return self::getLogDate() . 'ERROR! Message:  ' . $msg . "\r\n" . implode("\r\n", self::getTrace(self::getLogDate())) . "\r\n";
 	}
-	
+
 	/**
 	 * 错误堆栈信息的获取及组装输出
 	 * 
 	 * <code>
-	 *  #1 trace
-	 *  #2 trace
+	 * #1 trace
+	 * #2 trace
 	 * </code>
 	 * 
 	 * @return string
@@ -218,15 +218,15 @@ class WindLogger {
 		$lineHeader = ($type = trim($type)) ? $type : '';
 		$info[] = $lineHeader . ' Stack trace:';
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
-			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos($trace['file'], __CLASS__  . '.php') !== false) continue;
+			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
 			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
 			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
 			$args = array_map(array(__CLASS__, 'buildArg'), $trace['args']);
-			$info[] = $lineHeader . ' #' . ($num ++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
+			$info[] = $lineHeader . ' #' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
 		}
 		return $info;
 	}
-	
+
 	/**
 	 * 组装输出的trace中的参数组装
 	 *
@@ -245,7 +245,7 @@ class WindLogger {
 				break;
 		}
 	}
-	
+
 	/**
 	 * 根据错误级别代码决定使用的组装方法
 	 *
@@ -256,7 +256,7 @@ class WindLogger {
 		$logType = array(0 => 'buildInfo', 1 => 'buildTrace', 2 => 'buildDebug', 3 => 'buildError');
 		return $logType[intval($code)];
 	}
-	
+
 	/**
 	 * 获取日志记录时间
 	 * 
@@ -265,7 +265,7 @@ class WindLogger {
 	private static function getLogDate() {
 		return '[' . date('Y-m-d H:i:s', time()) . '] ';
 	}
-	
+
 	/**
 	 * 将日志内容写入文件
 	 * 
@@ -276,7 +276,7 @@ class WindLogger {
 		L::import('WIND:component.Common');
 		Common::writeover($dst, join("", self::$logs), 'a');
 	}
-	
+
 	/**
 	 * 取得日志文件名
 	 * 
