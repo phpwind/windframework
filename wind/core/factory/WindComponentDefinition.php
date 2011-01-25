@@ -16,5 +16,5 @@ L::import('WIND:core.factory.WindClassDefinition');
  * @package 
  */
 class WindComponentDefinition extends WindClassDefinition {
-
+	
 }

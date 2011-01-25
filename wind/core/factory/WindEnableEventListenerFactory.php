@@ -26,14 +26,6 @@ class WindEnableEventListenerFactory extends WindFactory {
 		return $object;
 	}
 
-	/* (non-PHPdoc)
-	 * @see WindFactory::create()
-	 */
-	public function create() {
-		// TODO Auto-generated method stub
-	
-
-	}
 }
 
 ?>
