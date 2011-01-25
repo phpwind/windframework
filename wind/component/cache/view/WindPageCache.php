@@ -31,7 +31,6 @@ class WindPageCache {
 	 * @var string 模板变量的右定界符
 	 */
 	public $rDelimiter = '}';
-	
 	/**
 	 * 静态文件后缀
 	 * @var string
@@ -41,7 +40,6 @@ class WindPageCache {
 	 * @var string 模板内容
 	 */
 	protected $content = '';
-	
 	/**
 	 * 加载模板文件
 	 * @param string $tplname
@@ -61,7 +59,6 @@ class WindPageCache {
 		ob_end_clean();
 		return true;
 	}
-	
 	/**
 	 * 替换模板变量
 	 * @param string $tplvar
@@ -75,7 +72,6 @@ class WindPageCache {
 		$this->content = str_replace($this->lDelimiter . $tplvar . $this->rDelimiter, $value, $this->content);
 		return true;
 	}
-	
 	/**
 	 * 存储静态化的文件
 	 * @param string $htmFileName 静态化页面文件
@@ -97,7 +93,6 @@ class WindPageCache {
 		return true;
 	
 	}
-	
 	/**
 	 * 取得模板内容
 	 * @return string
@@ -105,7 +100,6 @@ class WindPageCache {
 	public function getContent() {
 		return $this->content;
 	}
-	
 	/**
 	 * 清理静态缓存文件
 	 * @param int $expires 过期时间 ,单位为秒
@@ -126,7 +120,6 @@ class WindPageCache {
 		return true;
 	
 	}
-	
 	/**
 	 * 获取文件后缀
 	 * @param string $filename

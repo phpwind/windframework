@@ -186,6 +186,7 @@ class WindDbCache implements IWindCache {
 	}
 	
 	/**
+	 * 获取写缓存的数据库
 	 * @return WindDbAdapter
 	 */
 	private function getMasterConnection() {
@@ -193,6 +194,7 @@ class WindDbCache implements IWindCache {
 	}
 	
 	/**
+	 *  获取读缓存的数据库
 	 * @return WindDbAdapter
 	 */
 	private function getSlaveConnection() {
