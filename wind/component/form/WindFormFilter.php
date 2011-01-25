@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import("WIND:core.filter.base.WindFilter");
+L::import("WIND:core.filter.WindFilter");
 /**
  * form组件的一个插件引入实现
  * 用户需要配置form组件的时候，只要在配置文件中<filters>的配置项中配置该formfilter即可自动使用用户定义的form
@@ -33,7 +33,7 @@ class WindFormFilter extends WindFilter {
 	 */
 	const FORMNAME = 'formName';
 	
-	public function doAfterProcess($request, $response) {}
+	public function postHandle() {}
 	/**
 	 * 执行前置操作
 	 * 
@@ -41,7 +41,8 @@ class WindFormFilter extends WindFilter {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	public function doBeforeProcess($request, $response) {
+	public function preHandle() {
+		list($request, $response) = func_get_args();
 		$formObject = $this->getFormHandle($request, $response);
 		if ($formObject === null) return;
 		$formObject->setProperties(array_merge($request->getGet(), $request->getPost()));

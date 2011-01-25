@@ -14,21 +14,21 @@ L::import('WIND:core.filter.WindHandlerInterceptorChain');
  * @package
  */
 class WindFilterChain extends WindHandlerInterceptorChain {
-
+	
 	/**
 	 * @param array $filterConfig
 	 */
 	public function __construct($filterConfig) {
 		$this->_initFilters($filterConfig);
 	}
-
+	
 	/**
 	 * @param string $filterName
 	 */
 	public function deleteFilter($alias) {
 		unset($this->_interceptors[$alias]);
 	}
-
+	
 	/**
 	 * 在filter链中动态的添加一个filter
 	 * 当befor为空时，添加到程序结尾处
@@ -40,7 +40,6 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 	 * @param string $beforFilter
 	 */
 	public function addFilter($filter, $beforFilter = '') {
-		$addIndex = count($this->filters);
 		if ($beforFilter === '') {
 			$this->addInterceptors(array(get_class($filter) => $filter));
 			return true;
@@ -54,19 +53,19 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 		$_interceptors[get_class($filter)] = $filter;
 		$this->_interceptors = (array) $_interceptors + (array) $this->_interceptors;
 	}
-
+	
 	/**
 	 * Enter description here ...
 	 * @param array $filters
 	 */
 	private function _initFilters($filters = array()) {
-		$filters = array();
+		$cleanFilters = array();
 		foreach ((array) $filters as $key => $filter) {
 			$filterClass = L::import($filter[WindConfig::CLASS_PATH]);
 			if (!class_exists($filterClass)) continue;
-			$filters[$key] = new $filterClass();
+			$cleanFilters[$key] = new $filterClass();
 		}
-		$this->addInterceptors($filters);
+		$this->addInterceptors($cleanFilters);
 	}
 
 }
