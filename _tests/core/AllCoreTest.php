@@ -10,7 +10,7 @@ require_once ('core/config/AllConfigTest.php');
 require_once ('core/exception/AllExceptionTest.php');
 require_once ('core/factory/AllFactoryTest.php');
 
-require_once ('core/filter/WindFilterFactoryTest.php');
+require_once ('core/filter/WindFilterChainTest.php');
 require_once ('core/router/AllRouterTest.php');
 
 require_once ('core/viewer/WindViewerTest.php');
@@ -38,7 +38,7 @@ class AllCoreTest {
 		$suite->addTest(AllConfigTest::suite());
 		$suite->addTest(AllExceptionTest::suite());
 		$suite->addTest(AllFactoryTest::suite());
-		//$suite->addTestSuite('WindFilterFactoryTest');
+		$suite->addTestSuite('WindFilterChainTest');
 		$suite->addTest(AllRouterTest::suite());
 		
 		$suite->addTestSuite('WindViewerTest');
