@@ -112,7 +112,6 @@ class WindDbCache implements IWindCache {
 	 */
 	public function delete($key) {
 		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('key = :key ', array(':key' => $this->buildSecurityKey($key)))->delete();
-	
 	}
 	
 	/* 
@@ -133,7 +132,7 @@ class WindDbCache implements IWindCache {
 	}
 	
 	public function deleteExpiredCache() {
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('expires < :expires', array(':expires' => time()))->delete();
+		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('expires !=0 AND expires < :expires', array(':expires' => time()))->delete();
 	}
 	
 	/**

@@ -201,8 +201,9 @@ class WindFileCache implements IWindCache {
 	 * @return boolean
 	 */
 	protected function writeToFile($file, $data, $mtime = 0) {
-		if ($mtime <= 0) $mtime = 60 * 60 * 24 * 30 * 12;
-		$mtime += time();
+		if($mtime){
+			$mtime += time();
+		}
 		if (file_put_contents($file, $data, LOCK_EX) == strlen($data)) {
 			chmod($file, 0777);
 			return touch($file, $mtime);
@@ -224,7 +225,7 @@ class WindFileCache implements IWindCache {
 		} else if ($mtime > 0) {
 			unlink($file);
 		}
-		return null;
+		return array();
 	}
 	
 	/**
@@ -242,7 +243,7 @@ class WindFileCache implements IWindCache {
 			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
 				$this->clearByPath($fullPath, $ifexpiled);
-			} else if ($ifexpiled && filemtime($fullPath) < time() || !$ifexpiled) {
+			} else if (($mtime = filemtime($fullPath)) && ($ifexpiled && $mtime < time() || !$ifexpiled)) {
 				unlink($fullPath);
 			}
 		}
