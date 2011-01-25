@@ -127,7 +127,7 @@ class WindEaccelerator implements IWindCache{
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
-			$denpendency->injectDependent();
+			$denpendency->injectDependent($this);
 			$data[self::DEPENDENCY] = $denpendency;
 		}
 		return serialize($data);

@@ -16,8 +16,17 @@ L::import ( 'WIND:component.cache.base.IWindCache' );
  */
 class WindFileCache implements IWindCache {
 	
+	/**
+	 * @var string 缓存目录
+	 */
 	protected $cacheDir;
+	/**
+	 * @var string 缓存后缀
+	 */
 	protected $cacheFileSuffix = '.bin';
+	/**
+	 * @var int 缓存多级目录。最好不要超3层目录
+	 */
 	protected $cacheDirectoryLevel = 0;
 	/**
 	 * @var string key的安全码
@@ -161,7 +170,7 @@ class WindFileCache implements IWindCache {
 	 * @param string $key
 	 * @return string
 	 */
-	protected function getCacheFileName($key) {
+	public function getCacheFileName($key) {
 		$filename = $key . '_' . substr(sha1($key . $this->securityCode), 0, 5) . '.' . ltrim($this->cacheFileSuffix, '.');
 		if ($this->cacheDirectoryLevel > 0) {
 			$root = $this->cacheDir;
@@ -187,7 +196,7 @@ class WindFileCache implements IWindCache {
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
-			$denpendency->injectDependent();
+			$denpendency->injectDependent($this);
 			$data[self::DEPENDENCY] = $denpendency;
 		}
 		return serialize($data);

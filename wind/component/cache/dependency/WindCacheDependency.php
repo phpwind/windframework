@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import('WIND:component.cache.base.IWindCacheDependency');
 /**
  * 缓存依赖基类
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -24,14 +24,20 @@ class WindCacheDependency implements IWindCacheDependency{
 	 */
 	protected $lastModified;
 	/**
-	 * @see wind/component/cache/base/IWindCacheDependency#injectDependent()
+	 * @var IWindCache 缓存创建者
 	 */
+	protected $cache = null;
 	
 	public function __construct(){
-		$this->injectDependent();
+		
 	}
 	
-	public  function injectDependent(){
+	/**
+	 * @see wind/component/cache/base/IWindCacheDependency#injectDependent()
+	 */
+	public  function injectDependent(IWindCache $cache){
+		$this->cache = $cache;
+		$this->setLastModified();
 		$this->dependent = $this->notifyDependencyChanged();
 	}
 	
@@ -39,7 +45,7 @@ class WindCacheDependency implements IWindCacheDependency{
 	 * @see wind/component/cache/base/IWindCacheDependency#hasChanged()
 	 */
 	public function hasChanged(){
-		return $this->dependent != $this->notifyDependencyChanged();
+		return $this->getDependent() != $this->notifyDependencyChanged();
 	}
 	/**
 	 * @see wind/component/cache/base/IWindCacheDependency#getLastModified()
@@ -52,8 +58,8 @@ class WindCacheDependency implements IWindCacheDependency{
 	/**
 	 * @see wind/component/cache/base/IWindCacheDependency#setLastModified()
 	 */
-	public function setLastModified($lastModified){
-		$this->lastModified = $lastModified;
+	public function setLastModified(){
+		$this->lastModified = time();
 	}
 	
 	/**
@@ -64,12 +70,19 @@ class WindCacheDependency implements IWindCacheDependency{
 		return $this->dependent;
 	}
 	
+	/**
+	 * 取得创建缓存依赖的创造者.
+	 * @return IWindCache
+	 */
+	public function getCache(){
+		return $this->cache;
+	}
+	
 	/*	 
 	 *  通知依赖项已更改。
 	 */
 	protected function notifyDependencyChanged(){
 		return null;
 	}
-	
 	
 }
