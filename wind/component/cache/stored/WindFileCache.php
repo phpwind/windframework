@@ -219,7 +219,7 @@ class WindFileCache implements IWindCache {
 		if (false === is_file($file)) {
 			$this->error('The cache does not exist');
 		}
-		if (($mtime = filemtime($file)) > time()) {
+		if (($mtime = filemtime($file)) > time() || !$mtime) {
 			$data = unserialize(file_get_contents($file));
 			return $data;
 		} else if ($mtime > 0) {
@@ -243,7 +243,7 @@ class WindFileCache implements IWindCache {
 			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
 				$this->clearByPath($fullPath, $ifexpiled);
-			} else if (($mtime = filemtime($fullPath)) && ($ifexpiled && $mtime < time() || !$ifexpiled)) {
+			} else if (($ifexpiled && $mtime = filemtime($fullPath) && $mtime < time()) || !$ifexpiled) {
 				unlink($fullPath);
 			}
 		}

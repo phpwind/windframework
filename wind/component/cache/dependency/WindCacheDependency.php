@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindCacheDependeny implements IWindCacheDependency{
+class WindCacheDependency implements IWindCacheDependency{
 	/**
 	 * @var mixed 缓存依赖控制者
 	 */

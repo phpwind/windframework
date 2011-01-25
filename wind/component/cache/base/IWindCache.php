@@ -36,7 +36,7 @@ interface IWindCache{
 	 * 设置缓存，如果$key不存在，设置缓存，否则，抛出异常。
 	 * @param string $key 保存缓存数据的键。
 	 * @param string $value 缓存数据。
-	 * @param string $expires 缓存数据的过期时间
+	 * @param string $expires 缓存数据的过期时间,0表示永不过期
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
@@ -45,7 +45,7 @@ interface IWindCache{
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。
 	 * @param string $key 保存缓存数据的键。
 	 * @param string $value 保存缓存数据。
-	 * @param int $expires 缓存数据的过期时间
+	 * @param int $expires 缓存数据的过期时间,0表示永不过期
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
@@ -54,7 +54,7 @@ interface IWindCache{
 	 * 替换缓存，如果key不存在，抛出异常，否则，替换缓存。
 	 * @param string $key 保存缓存数据的键。
 	 * @param string $value 缓存数据数据。
-	 * @param int $expires 缓存数据的过期时间
+	 * @param int $expires 缓存数据的过期时间,0表示永不过期
  	 * @param IWindCacheDependency $denpendency 缓存依赖 
 	 * @return boolean
 	 */
