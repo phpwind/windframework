@@ -551,7 +551,7 @@ abstract class WindSqlBuilder {
 	
 	/**
 	 * 执行数据库select操作
-	 * @return boolean
+	 * @return WindSqlBuilder
 	 */
 	public function select() {
 		$this->verifyAdapter();
