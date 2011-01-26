@@ -18,24 +18,58 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		WindLogger::info($this->getLogMessage());
+		$this->logger->info($this->getLogMessage());
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		WindLogger::info($this->getLogMessage());
-	
+		$this->logger->info($this->getLogMessage());
 	}
 
 	/**
-	 * Enter description here ...
+	 * 获得调用的堆栈信息中回调的方法信息
+	 * 
+	 * @return string
 	 */
 	private function getLogMessage() {
-		//TODO 当前执行的类和方法，需要记录输入输出
-		$info = '';
-		return $info;
+		$num = 0;
+		$method = ''
+		$info = array();
+		foreach (debug_backtrace(false) as $traceKey => $trace) {
+			$class = isset($trace['class']) ? $trace['class'] : '';
+			if ($class == 'WindLogger' || $class == '') continue;
+			$function = isset($trace['function']) ? $trace['function'] : '';
+			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
+			if ($function != $method) continue;
+			$info[$num] = $trace['file'] . '(' . $trace['line'] . '): ';
+			$args = array_map(array($this, 'buildArg'), $trace['args']);
+			$info[$num] .= $class . $trace['type'] . $function . '(' . implode(',', $args) . ')';
+			$num ++;
+		}
+		return implode("\r\n", $info);
+	}
+	
+	/**
+	 * 将参数进行类型判断返回类型
+	 * 如果类型是字符串，则直接返回该字符串
+	 *
+	 * @param mixed $arg
+	 * @return string
+	 */
+	private function buildArg($arg) {
+		switch (gettype($arg)) {
+			case 'array':
+				return 'Array';
+				break;
+			case 'object':
+				return 'Object ' . get_class($arg);
+				break;
+			default:
+				return "'" . $arg . "'";
+				break;
+		}
 	}
 }
 
