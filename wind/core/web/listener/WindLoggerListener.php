@@ -26,6 +26,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 */
 	public function postHandle() {
 		WindLogger::info($this->getLogMessage());
+		
 	}
 
 	/**
