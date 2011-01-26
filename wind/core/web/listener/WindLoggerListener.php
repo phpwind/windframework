@@ -12,49 +12,45 @@ L::import('WIND:component.log.WindLogger');
  */
 class WindLoggerListener extends WindHandlerInterceptor {
 
-	private $message;
-
-	public function __construct($message = '') {
-		$this->message = $message;
-	}
-
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		/*$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-		$factory->getInstance('windLogger')->info($this->getLogMessage());*/
+		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+		$factory->getInstance('windLogger')->info($this->getLogMessage(func_get_args()));
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		//$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-	//$factory->getInstance('windLogger')->info($this->getLogMessage());
+		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+	    $factory->getInstance('windLogger')->info($this->getLogMessage(func_get_args()));
 	}
 
 	/**
 	 * 获得调用的堆栈信息中回调的方法信息
 	 *
+	 * @param array $args
 	 * @return string
 	 */
-	private function getLogMessage() {
-		$num = 0;
+	private function getLogMessage($args) {
 		$method = '';
 		$info = array();
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
 			$class = isset($trace['class']) ? $trace['class'] : '';
-			if ($class == 'WindLogger' || $class == '') continue;
+			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor') continue;
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
 			if ($function != $method) continue;
-			$info[$num] = $this->message . $trace['file'] . '(' . $trace['line'] . '): ';
-			$args = array_map(array($this, 'buildArg'), $trace['args']);
-			$info[$num] .= $class . $trace['type'] . $function . '(' . implode(',', $args) . ')';
-			$num++;
+			$info[$num] = ' #[caller]: ' . $trace['file'] . '(' . $trace['line'] . '): ';
+			break;
 		}
-		return implode("\r\n", $info);
+		list($class, $method) = $this->event;
+		$args = array_map(array($this, 'buildArg'), $args);
+		$info[] = ' #[excute]: ' . $class . '->' . $method . '(' . implode(', ', $args) . ')';
+		$info[] = ' #[output]: ' . $this->buildArg($this->result);
+		return "<br/>" . implode("\r\n", $info);
 	}
 
 	/**
