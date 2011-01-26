@@ -12,6 +12,12 @@ L::import('WIND:component.log.WindLogger');
  */
 class WindLoggerListener extends WindHandlerInterceptor {
 
+	private $message;
+
+	public function __construct($message = '') {
+		$this->message = $message;
+	}
+
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
