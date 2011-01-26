@@ -23,9 +23,9 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 
 	const URL_RULE = 'url-rule';
 
-	const URL_RULE_URL_PARAM = 'url-param';
+	const URL_PARAM = 'url-param';
 
-	const URL_RULE_DEFAULT_VALUE = 'default-value';
+	const DEFAULT_VALUE = 'default-value';
 
 	const URL_RULE_MODULE = 'module';
 
@@ -35,14 +35,10 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 
 	protected $controllerSuffix = 'Controller';
 
-	private $urlRule = array();
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::doParser()
 	 */
 	public function doParse($request) {
-		$windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
-		$this->urlRule = $windConfig->getRouter(self::URL_RULE);
 		$this->module = $this->getValue($request, $this->module, self::URL_RULE_MODULE);
 		$this->controller = $this->getValue($request, $this->controller, self::URL_RULE_CONTROLLER);
 		$this->action = $this->getValue($request, $this->action, self::URL_RULE_ACTION);
@@ -57,7 +53,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 		if (!$moduleConfig) {
 			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
 		}
-		$controllerPath = $moduleConfig[WindConfig::PATH] . '.' . ucfirst($this->controller) . $this->controllerSuffix;
+		$controllerPath = $moduleConfig[WindSystemConfig::PATH] . '.' . ucfirst($this->controller) . $this->controllerSuffix;
 		if (strpos($controllerPath, ':') === false) {
 			$controllerPath = $windConfig->getAppName() . ':' . $controllerPath;
 		}
@@ -66,20 +62,6 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 			throw new WindException($controllerClassName, WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		return $controllerClassName;
-	}
-
-	/**
-	 * Enter description here ...
-	 * @param request
-	 * @param urlParam
-	 * @param defaultValue
-	 */
-	private function getValue($request, $defaultValue, $type) {
-		if (isset($this->urlRule[$type]) && isset($this->urlRule[$type][self::URL_RULE_URL_PARAM])) {
-			$defaultValue = isset($this->urlRule[$type][self::URL_RULE_DEFAULT_VALUE]) ? $this->urlRule[$type][self::URL_RULE_DEFAULT_VALUE] : $defaultValue;
-			return $request->getAttribute($this->urlRule[$type][self::URL_RULE_URL_PARAM], $defaultValue);
-		}
-		return $defaultValue;
 	}
 
 	/**
@@ -101,6 +83,20 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 		else
 			$url = $baseUrl . '/' . $script;
 		return $url;
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param request
+	 * @param urlParam
+	 * @param defaultValue
+	 */
+	private function getValue($request, $defaultValue, $type) {
+		if ($this->getConfig()->getConfig($type, self::URL_PARAM)) {
+			$defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE) ? $this->getConfig()->getConfig($type, self::DEFAULT_VALUE) : $defaultValue;
+			return $request->getAttribute($this->getConfig()->getConfig($type, self::URL_PARAM), $defaultValue);
+		}
+		return $defaultValue;
 	}
 
 }
