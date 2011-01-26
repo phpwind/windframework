@@ -32,6 +32,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 * Enter description here ...
 	 */
 	private function getLogMessage() {
+		//TODO 当前执行的类和方法，需要记录输入输出
 		$info = '';
 		return $info;
 	}
