@@ -10,6 +10,8 @@
  */
 class WindHandlerInterceptor {
 
+	protected $result;
+
 	/**
 	 * Enter description here ...
 	 */
@@ -32,12 +34,12 @@ class WindHandlerInterceptor {
 		$args = func_get_args();
 		call_user_func_array(array($this, 'preHandle'), $args);
 		if (null !== ($handler = $this->interceptorChain->getHandler())) {
-			$result = call_user_func_array(array($handler, 'handle'), $args);
+			call_user_func_array(array($handler, 'handle'), $args);
 		} else {
-			$result = $this->interceptorChain->execute();
+			$this->result = $this->interceptorChain->execute();
 		}
 		call_user_func_array(array($this, 'postHandle'), $args);
-		return $result;
+		return $this->result;
 	}
 
 	/**
