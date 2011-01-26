@@ -16,12 +16,12 @@ L::import('WIND:component.cache.dependency.WindCacheDependency');
  */
 class WindFileCacheDependency extends WindCacheDependency{
 	
-	private $key;
-	public function __construct($key){
-		$this->key = $key;
+
+	public function __construct(){
+		
 	}
 	
 	protected function notifyDependencyChanged(){
-		return '';
+		return null;
 	}
 }

@@ -14,6 +14,6 @@
  * @version $Id$ 
  * @package 
  */
-class WindSqlCacheDependeny extends WindCacheDependeny{
+class WindSqlCacheDependeny extends WindCacheDependency{
 	
 }
