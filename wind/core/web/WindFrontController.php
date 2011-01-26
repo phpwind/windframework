@@ -89,10 +89,6 @@ class WindFrontController extends AbstractWindServer {
 			
 			$application = $this->getWindFactory()->createInstance($applicationClass);
 			
-			$this->windFactory->request = $request;
-			$this->windFactory->response = $response;
-			$this->windFactory->application = $application;
-			
 			$request->setAttribute(self::WIND_APPLICATION, $application);
 			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
 			$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
