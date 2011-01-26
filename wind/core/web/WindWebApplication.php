@@ -49,6 +49,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			
 			$handler = $handlerAdapter->getHandler($request, $response);
 			$handler = $this->windFactory->createInstance($handler, array($request, $response));
+			
 			//TODO register listener
 			return $handler;
 		} catch (WindException $exception) {
