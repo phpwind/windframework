@@ -17,6 +17,7 @@ class WindLoggerFilter extends WindFilter {
 	 * @see WindFilter::preHandle()
 	 */
 	public function preHandle($request = null, $response = null) {
+		if (!IS_DEBUG) return;
 		$this->initWindLogger($request);
 	}
 
@@ -24,6 +25,7 @@ class WindLoggerFilter extends WindFilter {
 	 * @see WindFilter::postHandle()
 	 */
 	public function postHandle($request = null, $response = null) {
+		if (!IS_DEBUG) return;
 		if ($this->logger instanceof WindLogger) $this->logger->flush();
 	}
 
@@ -33,7 +35,10 @@ class WindLoggerFilter extends WindFilter {
 	 * @param WindHttpRequest $request
 	 */
 	private function initWindLogger($request) {
-		$this->logger = $request->getAttribute(WindFrontController::WIND_FACTORY)->getInstance(self::WIND_LOGGER);
+		$windFactory = $request->getAttribute(WindFrontController::WIND_FACTORY);
+		if ($windFactory instanceof WindFactory) {
+			$this->logger = $windFactory->getInstance(self::WIND_LOGGER);
+		}
 	}
 
 }
