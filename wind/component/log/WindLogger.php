@@ -20,7 +20,7 @@ defined('LOG_PATH') or define('LOG_PATH', COMPILE_PATH . 'log/');
  * @version $Id$ 2011-01-21 
  * @package
  */
-class WindLogger {
+class WindLogger extends WindComponentModule {
 
 	/*错误类型*/
 	const INFO = 0;
