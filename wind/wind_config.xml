@@ -1,80 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-	<rootPath></rootPath>
-	<applications>
-		<application name='web'>
-			<class>WIND:core.WindWebApplication</class>
-		</application>
-		<application name='command'>
-			<class>WIND:core.WindCommandApplication</class>
-		</application>
-	</applications>
-	<modules>
-		<module name='default'>
-			<path>actionControllers</path>
-			<template>default</template>
-			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
-			<method>run</method>
-		</module>
-		<module name='other'>
-			<path>otherControllers</path>
-			<template>wind</template>
-			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
-			<method>run</method>
-		</module>
-	</modules>
-	<error isMerge='true'>
-		<errorAction name='default'>
-			<class>WIND:core.WindErrorAction</class>
-		</errorAction>
-	</error>
-	<filters isMerge='true'>
-		<filter name="WindFormFilter">
-			<class>WIND:component.form.WindFormFilter</class>
-		</filter>
-	</filters>
-	<templates>
-		<template name='default'>
-			<dir>template</dir>
-			<default>index</default>
-			<ext>htm</ext>
-			<resolver>default</resolver>
-			<isCache>false</isCache>
-			<cacheDir>cache</cacheDir>
-			<compileDir>compile</compileDir>
-		</template>
-		<template name='wind'>
-			<dir>template</dir>
-			<default>index</default>
-			<ext>htm</ext>
-			<resolver>default</resolver>
-			<isCache>false</isCache>
-			<cacheDir>cache</cacheDir>
-			<compileDir>compile</compileDir>
-		</template>
-	</templates>
-	<viewerResolvers isMerge='true'>
-		<resolver name='default'>
-			<class>WIND:core.viewer.WindViewer</class>
-		</resolver>
-	</viewerResolvers>
-	<router>
-		<parser>url</parser>
-	</router>
-	<routerParsers isMerge='true'>
-		<parser name='url'>
-			<rule>
-				<action name='a'>run</action>
-				<controller name='c'>index</controller>
-				<module name='m'>default</module>
-			</rule>
-			<class>WIND:core.router.WindUrlBasedRouter</class>
-		</parser>
-	</routerParsers>
-	<extensionConfig>
-		<config name='formConfig'>WIND:component.form.form_config</config>
-		<config name='dbConfig'>WIND:component.form.db_config</config>
-	</extensionConfig>
+	<!-- import external config source file -->
+	<!--<imports> <import name='classes' resource='WIND:classes_config' suffix='xml' 
+		init-delay='false' is-append='true' /> </imports> -->
+
+
+	<!-- web application definitions, you can define application more than one. -->
+	<web-apps>
+		<web-app name='windApp1' class='WIND:core.web.WindWebApplication'
+			root-path=''>
+			<factory class-definition='components'
+				class='WIND:core.factory.WindComponentFactory' />
+			<filters class='WIND:core.filter.WindFilterChain'>
+				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
+			</filters>
+			<router class='urlBasedRouter' />
+			<modules>
+				<module name='default' path='actionControllers'>
+					<template name='default' path='template' ext='htm'>
+						<view-resolver class='WIND:core.viewer.WindViewer'>
+							<is-cache>false</is-cache>
+							<cache-dir>cache</cache-dir>
+							<compile-dir>compile</compile-dir>
+						</view-resolver>
+					</template>
+				</module>
+			</modules>
+		</web-app>
+	</web-apps>
+
+	<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/request/session/application" 
+		proxy=''> -->
+	<!-- <property property-name='' ref/value=''> -->
+	<!-- <constructor-arg ref/value=''> -->
+	<!-- <import resource=''> -->
+	<!-- </component> -->
+
+	<components>
+		<component name='windLogger' path='WIND:component.log.WindLogger'
+			scope='request'>
+			<config path='' />
+		</component>
+		<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
+			scope="application" proxy='WIND:core.factory.proxy.WindClassProxy'>
+			<config>
+				<module url-param='m' default-value='default' />
+				<controller url-param='c' default-value='index' />
+				<action url-param='a' default-value='run' />
+			</config>
+		</component>
+		<component name='viewResolver' path='WIND:core.viewer.WindViewer'
+			scope='request'>
+		</component>
+		<component name='db' path='WIND:component.db.WindConnectionManager'
+			scope='singleton'></component>
+	</components>
+
 </WIND>
