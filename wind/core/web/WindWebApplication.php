@@ -34,27 +34,26 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @see IWindApplication::doDispatch()
 	 */
 	public function doDispatch($request, $response) {
-		$handler = $this->getHandler($request, $response);
-		$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter($request)));
-	
+		try {
+			$handler = $this->getHandler($request, $response);
+			$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter($request)));
+		
+		} catch (WindException $exception) {
+			$this->noActionHandlerFound($request, $response, $exception->getMessage());
+		}
 	}
 
 	/**
 	 * @param WindHttpRequest $request
 	 */
 	protected function getHandler($request, $response) {
-		try {
-			$handlerAdapter = $this->getHandlerAdapter($request);
-			$this->checkReprocess($handlerAdapter->getController() . '_' . $handlerAdapter->getAction());
-			
-			$handler = $handlerAdapter->getHandler($request, $response);
-			$handler = $this->windFactory->createInstance($handler, array($request, $response));
-			
-			//TODO register listener
-			return $handler;
-		} catch (WindException $exception) {
-			$this->noActionHandlerFound($request, $response);
-		}
+		$handlerAdapter = $this->getHandlerAdapter($request);
+		$this->checkReprocess($handlerAdapter->getController() . '_' . $handlerAdapter->getAction());
+		
+		$handler = $handlerAdapter->getHandler($request, $response);
+		$handler = $this->windFactory->createInstance($handler, array($request, $response));
+		
+		return $handler;
 	}
 
 	/**
@@ -62,9 +61,11 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
+	 * @param string $message
 	 */
-	protected function noActionHandlerFound($request, $response) {
-		$response->sendError(WindHttpResponse::SC_NOT_FOUND, '');
+	protected function noActionHandlerFound($request, $response, $message) {
+		//TODO
+		$response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
 	}
 
 	/**
@@ -89,7 +90,9 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		if (null === $this->getAttribute($routerAlias)) {
 			$router = $this->windFactory->getInstance($routerAlias);
 			if (IS_DEBUG) {
-				$router->registerEventListener('doParse', new WindLoggerListener());
+				$router->registerEventListener('doParse', new WindLoggerListener(get_class($router) . '->doParse()'));
+				$router->registerEventListener('getHandler', new WindLoggerListener(get_class($router) . '->getHandler()'));
+				$router->registerEventListener('buildUrl', new WindLoggerListener(get_class($router) . '->buildUrl()'));
 			}
 			$router->doParse($request);
 		}
