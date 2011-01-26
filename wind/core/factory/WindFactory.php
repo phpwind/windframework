@@ -59,7 +59,7 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::createInstance()
 	 */
 	public function createInstance($className, $args = array()) {
-		if (!class_exists($className)) {
+		if (!$className || !class_exists($className)) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		$reflection = new ReflectionClass($className);
