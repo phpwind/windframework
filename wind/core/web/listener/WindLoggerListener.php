@@ -39,11 +39,11 @@ class WindLoggerListener extends WindHandlerInterceptor {
 		$info = array();
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
 			$class = isset($trace['class']) ? $trace['class'] : '';
-			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor') continue;
+			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor'))) continue;
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
 			if ($function != $method) continue;
-			$info[$num] = ' #[caller]: ' . $trace['file'] . '(' . $trace['line'] . '): ';
+			$info[] = ' #[caller]: ' . $trace['file'] . '(' . $trace['line'] . '): ';
 			break;
 		}
 		list($class, $method) = $this->event;
