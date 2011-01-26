@@ -20,7 +20,7 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 
 	protected $_instance = null;
 
-	protected $_events = array();
+	protected $_listener = array();
 
 	private $_interceptorChain = 'WIND:core.web.WindHandlerInterceptorChain';
 
@@ -41,9 +41,9 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 		if (!in_array($type, array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER))) {
 			throw new WindException('incorrect registerType ' . $type);
 		}
-		if (!isset($this->_events[$type])) $this->_events[$type] = array();
-		if (!isset($this->_events[$type][$event])) $this->_events[$type][$event] = array();
-		array_push($this->_events[$type][$event], $listener);
+		if (!isset($this->_listener[$type])) $this->_listener[$type] = array();
+		if (!isset($this->_listener[$type][$event])) $this->_listener[$type][$event] = array();
+		array_push($this->_listener[$type][$event], $listener);
 	}
 
 	/**
@@ -70,9 +70,9 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
-		$events = $this->_getEventsByType(self::EVENT_TYPE_SETTER, $propertyName);
-		$interceptorChain = $this->getInterceptorChain();
-		$interceptorChain->addInterceptors($events);
+		$listeners = $this->_getListenerByType(self::EVENT_TYPE_SETTER, $propertyName);
+		$interceptorChain = $this->getInterceptorChain($propertyName);
+		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_setProperty'), array($propertyName, $value));
 		return $interceptorChain->getHandler()->handle($value);
 	}
@@ -97,9 +97,9 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
-		$events = $this->_getEventsByType(self::EVENT_TYPE_GETTER, $propertyName);
-		$interceptorChain = $this->getInterceptorChain();
-		$interceptorChain->addInterceptors($events);
+		$listeners = $this->_getListenerByType(self::EVENT_TYPE_GETTER, $propertyName);
+		$interceptorChain = $this->getInterceptorChain($propertyName);
+		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_getProperty'), array($propertyName));
 		return $interceptorChain->getHandler()->handle($propertyName);
 	}
@@ -116,10 +116,10 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 		if (!$method || !$method->isPublic()) {
 			throw new WindException('undefined method name in ' . $this->getReflection()->getName());
 		}
-		$events = $this->_getEventsByType(self::EVENT_TYPE_METHOD, $methodName);
+		$listeners = $this->_getListenerByType(self::EVENT_TYPE_METHOD, $methodName);
 		
-		$interceptorChain = $this->getInterceptorChain();
-		$interceptorChain->addInterceptors($events);
+		$interceptorChain = $this->getInterceptorChain($methodName);
+		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this->getInstance(), $methodName), $args);
 		return call_user_func_array(array($interceptorChain->getHandler(), 'handle'), $args);
 	}
@@ -154,11 +154,13 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	/**
 	 * Enter description here ...
 	 */
-	private function getInterceptorChain() {
+	private function getInterceptorChain($event = '') {
 		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
 			'newInstance'), array());
 		if ($interceptorChain instanceof WindComponentModule) {
 			$interceptorChain->setAttribute($this->getAttribute());
+			$interceptorChain->setAttribute('instance', $this->getInstance());
+			$interceptorChain->setAttribute('event', array($this->getClassName(), $event));
 		}
 		return $interceptorChain;
 	}
@@ -166,12 +168,12 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	/**
 	 * Enter description here ...
 	 */
-	private function _getEventsByType($type, $subType) {
-		$events = array();
-		if (isset($this->_events[$type]) && isset($this->_events[$type][$subType])) {
-			$events = $this->_events[$type][$subType];
+	private function _getListenerByType($type, $subType) {
+		$listener = array();
+		if (isset($this->_listener[$type]) && isset($this->_listener[$type][$subType])) {
+			$listener = $this->_listener[$type][$subType];
 		}
-		return $events;
+		return $listener;
 	}
 
 	/* (non-PHPdoc)
