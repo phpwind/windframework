@@ -157,6 +157,9 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	private function getInterceptorChain() {
 		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
 			'newInstance'), array());
+		if ($interceptorChain instanceof WindComponentModule) {
+			$interceptorChain->setAttribute($this->getAttribute());
+		}
 		return $interceptorChain;
 	}
 

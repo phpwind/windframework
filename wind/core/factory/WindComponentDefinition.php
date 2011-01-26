@@ -48,7 +48,7 @@ class WindComponentDefinition extends WindClassDefinition {
 			$windConfig = new WindConfig($this->config);
 		}
 		$instance->setConfig($windConfig);
-		$this->setProxyForClass($instance);
+		$this->setProxyForClass($instance, $factory);
 		return $instance;
 	}
 
@@ -56,11 +56,17 @@ class WindComponentDefinition extends WindClassDefinition {
 	 * 为类设置代理
 	 * 
 	 * @param WindModule $instance
+	 * @param WindFactory $factory
 	 */
-	protected function setProxyForClass($instance) {
+	protected function setProxyForClass($instance, $factory) {
 		if (!$instance instanceof WindModule) return;
 		$proxyClass = L::import($this->getProxy());
-		if (class_exists($proxyClass)) $proxyClass = new $proxyClass();
+		if (!class_exists($proxyClass)) return;
+		
+		$proxyClass = new $proxyClass();
+		if (isset($factory->request)) $proxyClass->setAttribute('request', $factory->request);
+		if (isset($factory->response)) $proxyClass->setAttribute('response', $factory->response);
+		if (isset($factory->application)) $proxyClass->setAttribute('application', $factory->application);
 		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
 	}
 
