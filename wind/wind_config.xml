@@ -12,6 +12,7 @@
 			<factory class-definition='components'
 				class='WIND:core.factory.WindComponentFactory' />
 			<filters class='WIND:core.filter.WindFilterChain'>
+				<filter name='filter2' class='WIND:core.web.filter.WindScopeFilter' />
 				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
 			</filters>
 			<router class='urlBasedRouter' />
