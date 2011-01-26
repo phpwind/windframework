@@ -12,21 +12,15 @@ L::import('WIND:component.log.WindLogger');
  */
 class WindLoggerListener extends WindHandlerInterceptor {
 
-	private $logger;
-
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
-	public function preHandle() {
-		$this->logger->info($this->getLogMessage());
-	}
+	public function preHandle() {}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
-	public function postHandle() {
-		$this->logger->info($this->getLogMessage());
-	}
+	public function postHandle() {}
 
 	/**
 	 * 获得调用的堆栈信息中回调的方法信息
@@ -35,7 +29,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 */
 	private function getLogMessage() {
 		$num = 0;
-		$method = ''
+		$method = '';
 		$info = array();
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
 			$class = isset($trace['class']) ? $trace['class'] : '';
@@ -46,11 +40,11 @@ class WindLoggerListener extends WindHandlerInterceptor {
 			$info[$num] = $trace['file'] . '(' . $trace['line'] . '): ';
 			$args = array_map(array($this, 'buildArg'), $trace['args']);
 			$info[$num] .= $class . $trace['type'] . $function . '(' . implode(',', $args) . ')';
-			$num ++;
+			$num++;
 		}
 		return implode("\r\n", $info);
 	}
-	
+
 	/**
 	 * 将参数进行类型判断返回类型
 	 * 如果类型是字符串，则直接返回该字符串
