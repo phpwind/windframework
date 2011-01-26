@@ -22,16 +22,16 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-		$factory->getInstance('windLogger')->info($this->getLogMessage());
+		/*$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+		$factory->getInstance('windLogger')->info($this->getLogMessage());*/
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
 		//$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-		//$factory->getInstance('windLogger')->info($this->getLogMessage());
+	//$factory->getInstance('windLogger')->info($this->getLogMessage());
 	}
 
 	/**
