@@ -33,8 +33,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 
 	const SCOPE = 'scope';
 
-	const PROXY = 'proxy';
-
 	const PROPERTIES = 'properties';
 
 	const CONSTRUCTOR_ARG = 'constructor-arg';
@@ -67,13 +65,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @var string
 	 */
 	protected $scope = '';
-
-	/**
-	 * 类代理对象定义
-	 *
-	 * @var string
-	 */
-	protected $proxy = '';
 
 	/**
 	 * 构造参数定义
@@ -111,6 +102,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	public function __construct($classDefinition = array()) {
 		L::import('WIND:component.validator.WindValidator');
 		$this->registerValidator(new WindValidator());
+		$this->validate($classDefinition);
 		$this->init($classDefinition);
 	}
 
@@ -166,7 +158,14 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @return NULL|object
 	 */
 	protected function createInstanceWithPrototype($factory, $args) {
-		return $this->createInstance($factory, $args);
+		if ($this->prototype === null) {
+			$instance = $this->createInstance($factory, $args);
+			if (($instance instanceof WindModule) && (null !== ($proxy = $instance->getClassProxy())))
+				$this->prototype = $proxy;
+			else
+				$this->prototype = $instance;
+		}
+		return clone $this->prototype;
 	}
 
 	/**
@@ -186,28 +185,13 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param array $args
 	 */
 	protected function createInstance($factory, $args = array()) {
-		if ($this->prototype === null) {
-			$instance = null;
-			if (empty($args)) $args = $this->setProperties($this->getConstructArgs(), $factory);
-			$contructArgs = $this->getConstructArgs();
-			$instance = $factory->createInstance($this->getClassName(), $args);
-			$this->setProxyForClass($instance);
-			$this->setProperties($this->getPropertys(), $factory, $instance);
-			$this->prototype = $instance;
+		$instance = null;
+		if (empty($args)) {
+			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		}
-		return clone $this->prototype;
-	}
-
-	/**
-	 * 为类设置代理
-	 * 
-	 * @param WindModule $instance
-	 */
-	protected function setProxyForClass($instance) {
-		if (!$instance instanceof WindModule) return;
-		$proxyClass = L::import($this->getProxy());
-		if (class_exists($proxyClass)) $proxyClass = new $proxyClass();
-		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
+		$instance = $factory->createInstance($this->getClassName(), $args);
+		$this->setProperties($this->getPropertys(), $factory, $instance);
+		return $instance;
 	}
 
 	/**
@@ -217,7 +201,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param object  $instance | 类实例
 	 */
 	private function setProperties($subDefinitions, $factory, $instance = null) {
-		//TODO add check
 		$_temp = array();
 		foreach ($subDefinitions as $key => $subDefinition) {
 			if (isset($subDefinition[self::REF]))
@@ -242,7 +225,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$rules[] = $this->buildValidateRule(self::SCOPE, 'isRequired', 'singleton');
 		$rules[] = $this->buildValidateRule(self::INIT_METHOD, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::FACTORY_METHOD, 'isRequired', '');
-		$rules[] = $this->buildValidateRule(self::PROXY, 'isRequired', '');
 		$rules[] = $this->buildValidateRule(self::PROPERTIES, 'isRequired', array());
 		$rules[] = $this->buildValidateRule(self::CONSTRUCTOR_ARG, 'isRequired', array());
 		return $rules;
@@ -252,8 +234,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * 初始化类定义
 	 * @param array $classDefinition
 	 */
-	private function init($classDefinition) {
-		$this->validate($classDefinition);
+	protected function init($classDefinition) {
 		$className = L::import($classDefinition[self::PATH]);
 		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		
@@ -261,7 +242,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$this->setAlias($classDefinition[self::NAME]);
 		$this->setPath($classDefinition[self::PATH]);
 		$this->setScope($classDefinition[self::SCOPE]);
-		$this->setProxy($classDefinition[self::PROXY]);
 		$this->setPropertys($classDefinition[self::PROPERTIES]);
 		$this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
 		$this->setClassDefinition($classDefinition);
@@ -370,20 +350,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 */
 	public function setClassDefinition($classDefinition) {
 		$this->classDefinition = $classDefinition;
-	}
-
-	/**
-	 * @return the $proxy
-	 */
-	public function getProxy() {
-		return $this->proxy;
-	}
-
-	/**
-	 * @param string $proxy
-	 */
-	public function setProxy($proxy) {
-		$this->proxy = $proxy;
 	}
 
 }

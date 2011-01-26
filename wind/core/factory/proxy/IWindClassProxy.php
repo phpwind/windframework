@@ -46,7 +46,7 @@ interface IWindClassProxy {
 	 * @param Object $listener
 	 * @param string $type
 	 */
-	public function registerEventListener($event, $listener, $type);
+	public function registerEventListener($event, $listener, $type = self::EVENT_TYPE_METHOD);
 
 }
 

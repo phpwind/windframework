@@ -16,5 +16,79 @@ L::import('WIND:core.factory.WindClassDefinition');
  * @package 
  */
 class WindComponentDefinition extends WindClassDefinition {
-	
+
+	const CONFIG = 'config';
+
+	const RESOURCE = 'resource';
+
+	const CONFIGCACHE = 'wind_components_config';
+
+	const PROXY = 'proxy';
+
+	/**
+	 * 类代理对象定义
+	 *
+	 * @var string
+	 */
+	protected $proxy = '';
+
+	protected $config = array();
+
+	/* (non-PHPdoc)
+	 * @see WindClassDefinition::createInstance()
+	 */
+	protected function createInstance($factory, $args = array()) {
+		$instance = parent::createInstance($factory, $args);
+		if (!($instance instanceof WindComponentModule)) return $instance;
+		$windConfig = null;
+		if (isset($this->config['resource']) && ($resource = $this->config['resource'])) {
+			L::import('WIND:core.config.parser.WindConfigParser');
+			$windConfig = new WindConfig($resource, new WindConfigParser(), $this->getAlias(), self::CONFIGCACHE);
+		} else {
+			$windConfig = new WindConfig($this->config);
+		}
+		$instance->setConfig($windConfig);
+		$this->setProxyForClass($instance);
+		return $instance;
+	}
+
+	/**
+	 * 为类设置代理
+	 * 
+	 * @param WindModule $instance
+	 */
+	protected function setProxyForClass($instance) {
+		if (!$instance instanceof WindModule) return;
+		$proxyClass = L::import($this->getProxy());
+		if (class_exists($proxyClass)) $proxyClass = new $proxyClass();
+		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindClassDefinition::init()
+	 */
+	protected function init($classDefinition) {
+		parent::init($classDefinition);
+		if (isset($classDefinition[self::CONFIG])) {
+			$this->config = $classDefinition[self::CONFIG];
+		}
+		if (isset($classDefinition[self::PROXY])) {
+			$this->setProxy($classDefinition[self::PROXY]);
+		}
+	}
+
+	/**
+	 * @return the $proxy
+	 */
+	public function getProxy() {
+		return $this->proxy;
+	}
+
+	/**
+	 * @param string $proxy
+	 */
+	public function setProxy($proxy) {
+		$this->proxy = $proxy;
+	}
+
 }
