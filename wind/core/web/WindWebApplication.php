@@ -88,7 +88,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		if (null === $this->getAttribute($routerAlias)) {
 			$router = $this->windFactory->getInstance($routerAlias);
 			if (IS_DEBUG) {
-				//$router->registerEventListener('doParse', new WindLoggerListener());
+				$router->registerEventListener('doParse', new WindLoggerListener());
 			}
 			$router->doParse($request);
 		}
