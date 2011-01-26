@@ -26,7 +26,7 @@ class WindCacheFactory{
 	 * @param string $type 缓存类别
 	 * @param array $config 缓存配置
 	 * @param boolean $reload 是否重新加载缓存类
-	 * @return IWindCache|Cache
+	 * @return IWindCache
 	 */
 	public function storedFactory($cache,$config = array(),$reload = false){
 		return $this->cacheFactory($cache,'stored',$config,$reload);
@@ -38,31 +38,44 @@ class WindCacheFactory{
 	 * @param string $type 缓存类别
 	 * @param array $config 缓存配置
 	 * @param boolean $reload 是否重新加载缓存类
-	 * @return IWindCache|Cache
+	 * @return Cache
 	 */
 	public function viewFactory($cache,$config =array(),$reload = false){
 		return $this->cacheFactory($cache,'view',$config,$reload);
 	}
 	
 	/**
-	 * 缓存工厂
-	 * @param string $cache 缓存名称
-	 * @param string $type 缓存类别
-	 * @param array $config 缓存配置
+	 * 获取缓存依赖
+	 * @param string $dependency 缓存依赖名称
+	 * @param array $extra 构造函数参数
 	 * @param boolean $reload 是否重新加载缓存类
-	 * @return IWindCache|Cache
+	 * @return IWindCacheDependency
 	 */
-	public function cacheFactory($cache,$type='stored',array $config = array(),$reload = false){
-		$class = L::import('WIND:component.cache.'.$type.$cache);
+	public function dependencyFactory($dependency, $extra = array(),$reload = false){
+		return $this->cacheFactory($dependency,'dependency',$extra,$reload);
+	}
+	
+	/**
+	 * 缓存工厂
+	 * @param string $name 类名称
+	 * @param string $type 缓存类别
+	 * @param array  $params 构造函数参数
+	 * @param boolean $reload 是否重新加载缓存类
+	 * @return IWindCache|Cache|IWindCacheDependency
+	 */
+	public function cacheFactory($name,$type='stored',array $params = array(),$reload = false){
+		$class = L::import('WIND:component.cache.'.$type.$name);
 		if(false === class_exists($class)){
 			throw new WindException($class.' is not exists');
 		}
 		if($reload){
-			return $config ? new $class($config) : new $class();
+			return $params ? new $class($params) : new $class();
 		}
 		if(isset(self::$cache[$class])){
 			return self::$cache[$class];
 		}
-		return self::$cache[$class] = $config ? new $class($config) : new $class();
+		return self::$cache[$class] = $params ? new $class($params) : new $class();
 	}
+	
+	
 }
