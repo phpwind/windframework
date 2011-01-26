@@ -1,5 +1,6 @@
 <?php
 
+L::import('WIND:core.WindComponentModule');
 /**
  * Enter description here ...
  *
@@ -8,7 +9,7 @@
  * @version $Id$
  * @package 
  */
-class WindHandlerInterceptorChain {
+class WindHandlerInterceptorChain extends WindComponentModule {
 
 	protected $_interceptors = array();
 

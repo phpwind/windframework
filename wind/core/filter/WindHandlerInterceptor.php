@@ -43,9 +43,15 @@ class WindHandlerInterceptor {
 	}
 
 	/**
-	 * @param WindHandlerInterceptor $interceptorChain
+	 * @param WindHandlerInterceptorChain $interceptorChain
 	 */
 	public function setHandlerInterceptorChain($interceptorChain) {
+		if ($interceptorChain instanceof WindComponentModule) {
+			$attributes = $interceptorChain->getAttribute();
+			foreach ($attributes as $key => $value) {
+				$this->$key = $value;
+			}
+		}
 		$this->interceptorChain = $interceptorChain;
 	}
 
