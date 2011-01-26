@@ -90,6 +90,7 @@ class WindFrontController extends AbstractWindServer {
 			$application = $this->getWindFactory()->createInstance($applicationClass);
 			
 			$this->windFactory->request = $request;
+			$this->windFactory->response = $response;
 			$this->windFactory->application = $application;
 			
 			$request->setAttribute(self::WIND_APPLICATION, $application);
@@ -115,11 +116,12 @@ class WindFrontController extends AbstractWindServer {
 	 * @return WindFilterChain
 	 */
 	private function getFilterChain() {
-		$filterChainClass = L::import('WIND:core.filter.WindFilterChain');
+		$filterChainPath = $this->getWindConfig()->getFilters(WindSystemConfig::CLASS_PATH);
+		$filterChainClass = L::import($filterChainPath);
 		if (!class_exists($filterChainClass)) {
 			throw new WindException($filterChainClass, WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		return $this->getWindFactory()->createInstance($filterChainClass, array($this->getWindConfig()));
+		return $this->getWindFactory()->createInstance($filterChainClass, array($this->getWindConfig()->getFilters()));
 	}
 
 	/* (non-PHPdoc)
@@ -148,7 +150,7 @@ class WindFrontController extends AbstractWindServer {
 	}
 
 	/**
-	 * @return WindConfig $windConfig
+	 * @return WindSystemConfig $windConfig
 	 */
 	public function getWindConfig() {
 		return $this->windSystemConfig;
