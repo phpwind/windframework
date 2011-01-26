@@ -45,7 +45,7 @@ class WindLogger {
 	 * 
 	 * @param string $msg
 	 */
-	public  function info($msg) {
+	public function info($msg) {
 		$this->log($msg, self::INFO);
 	}
 
@@ -54,7 +54,7 @@ class WindLogger {
 	 * 
 	 * @param string $msg
 	 */
-	public  function trace($msg) {
+	public function trace($msg) {
 		$this->log($msg, self::TRACE);
 	}
 
@@ -63,7 +63,7 @@ class WindLogger {
 	 * 
 	 * @param string $msg
 	 */
-	public  function debug($msg) {
+	public function debug($msg) {
 		$this->log($msg, self::DEBUG);
 	}
 
@@ -72,7 +72,7 @@ class WindLogger {
 	 * 
 	 * @param string $msg
 	 */
-	public  function error($msg) {
+	public function error($msg) {
 		$this->log($msg, self::ERROR);
 	}
 
@@ -82,7 +82,7 @@ class WindLogger {
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 */
-	public  function log($msg, $logType = self::INFO) {
+	public function log($msg, $logType = self::INFO) {
 		$this->logs[] = $this->build($msg, $logType);
 		count($this->logs) >= self::FLUSH && $this->flush();
 	}
@@ -110,7 +110,7 @@ class WindLogger {
 	 * @param int $time
 	 * @return bool
 	 */
-	public  function clearFiles($time = 0) {
+	public function clearFiles($time = 0) {
 		if (!is_int($time) || 0 > intval($time) || !is_dir(LOG_PATH)) return false;
 		$dir = dir(LOG_PATH);
 		while (false != ($file = $dir->read())) {
@@ -126,7 +126,7 @@ class WindLogger {
 	 * 
 	 * @param string $path
 	 */
-	private  function createFolder($path) {
+	private function createFolder($path) {
 		!is_dir($path) && mkdir($path, 0777, true);
 	}
 
@@ -137,7 +137,7 @@ class WindLogger {
 	 * @param const  $logType 日志类别
 	 * @return string
 	 */
-	private  function build($msg, $logType = self::INFO) {
+	private function build($msg, $logType = self::INFO) {
 		$msg = stripslashes(str_replace("<br/>", "\r\n", trim($msg)));
 		return call_user_func_array(array($this, $this->getLogType($logType)), array($msg));
 	}
@@ -151,7 +151,7 @@ class WindLogger {
 	 * @param string $msg
 	 * @return string
 	 */
-	private  function buildInfo($msg) {
+	private function buildInfo($msg) {
 		return $this->getLogDate() . 'INFO! Message:  ' . $msg . "\r\n";
 	}
 
@@ -166,7 +166,7 @@ class WindLogger {
 	 * @param string $msg
 	 * @return string
 	 */
-	private  function buildTrace($msg) {
+	private function buildTrace($msg) {
 		return $this->getLogDate() . 'TRACE! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace()) . "\r\n";
 	}
 
@@ -182,7 +182,7 @@ class WindLogger {
 	 * @param string $msg
 	 * @return string
 	 */
-	private  function buildDebug($msg) {
+	private function buildDebug($msg) {
 		return $this->getLogDate() . 'DEBUG! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace()) . "\r\n";
 	}
 
@@ -198,7 +198,7 @@ class WindLogger {
 	 * @param string $msg
 	 * @return string
 	 */
-	private  function buildError($msg) {
+	private function buildError($msg) {
 		return $this->getLogDate() . 'ERROR! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace($this->getLogDate())) . "\r\n";
 	}
 
@@ -212,7 +212,7 @@ class WindLogger {
 	 * 
 	 * @return string
 	 */
-	private  function getTrace($type = '') {
+	private function getTrace($type = '') {
 		$info = array();
 		$num = 0;
 		$lineHeader = ($type = trim($type)) ? $type : '';
@@ -232,7 +232,7 @@ class WindLogger {
 	 *
 	 * @param mixed $arg
 	 */
-	private  function buildArg($arg) {
+	private function buildArg($arg) {
 		switch (gettype($arg)) {
 			case 'array':
 				return 'Array';
@@ -252,8 +252,9 @@ class WindLogger {
 	 * @param int $code
 	 * @return string
 	 */
-	private  function getLogType($code) {
-		$logType = array(self::INFO => 'buildInfo', self::TRACE => 'buildTrace', self::DEBUG => 'buildDebug', self::ERROR => 'buildError');
+	private function getLogType($code) {
+		$logType = array(self::INFO => 'buildInfo', self::TRACE => 'buildTrace', self::DEBUG => 'buildDebug', 
+			self::ERROR => 'buildError');
 		return $logType[intval($code)];
 	}
 
@@ -262,7 +263,7 @@ class WindLogger {
 	 * 
 	 * @return string
 	 */
-	private  function getLogDate() {
+	private function getLogDate() {
 		return '[' . date('Y-m-d H:i:s', time()) . '] ';
 	}
 
@@ -271,7 +272,7 @@ class WindLogger {
 	 * 
 	 * @param string $dst
 	 */
-	private  function writeLog($dst = '') {
+	private function writeLog($dst = '') {
 		$dst = empty($dst) ? $this->getFileName() : $dst;
 		L::import('WIND:component.Common');
 		Common::writeover($dst, join("", $this->logs), 'a');
@@ -282,7 +283,7 @@ class WindLogger {
 	 * 
 	 * @return string 
 	 */
-	private  function getFileName() {
+	private function getFileName() {
 		$this->createFolder(LOG_PATH);
 		$size = 1024 * 50;
 		$filename = LOG_PATH . date("Y_m_d") . '.log';
