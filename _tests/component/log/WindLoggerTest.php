@@ -13,9 +13,10 @@ define('LOG_PATH', COMPILE_PATH . '/log/');
  * @package
  */
 class WindLoggerTest extends BaseTestCase {
-	
+	private $logger = null;
 	public function init() {
 		require_once ('component/Log/WindLogger.php');
+		$this->logger = new WindLogger();
 	}
 	
 	public function setUp() {
@@ -42,34 +43,18 @@ class WindLoggerTest extends BaseTestCase {
 	 * @dataProvider provider
 	 */
 	public function testLog($msg, $type = 0) {
-		WindLogger::log($msg, $type);
+		$this->logger->log($msg, $type);
+		$this->assertTrue($this->logger->flush());
 	}
 	
 	public function testFlush() {
-		$this->assertTrue(WindLogger::flush());
+		$this->logger->info('hello i am testing!');
+		$this->logger->trace('Statck trace:');
+		$this->logger->debug('Debug Echo ');
+		$this->logger->error('Error access');
+		$this->assertTrue($this->logger->flush());
 	}
-	
-	public function testInfo() {
-		WindLogger::info('hello i am testing!');
-	}
-	
-	public function testTrace() {
-		WindLogger::trace('Statck trace:');
-	}
-	
-	public function testDebug() {
-		WindLogger::debug('Debug Echo ');
-	}
-	
-	public function testError() {
-		WindLogger::error('Error access');
-	}
-	
-	public function testFlushEnd() {
-		$this->assertTrue(WindLogger::flush());
-	}
-	
 	public function testClearFiles() {
-		$this->assertTrue(WindLogger::clearFiles());
+		$this->assertTrue($this->logger->clearFiles());
 	}
 }
