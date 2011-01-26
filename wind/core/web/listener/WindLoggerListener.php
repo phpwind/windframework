@@ -8,7 +8,7 @@ L::import('WIND:component.log.WindLogger');
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
- * @package 
+ * @package
  */
 class WindLoggerListener extends WindHandlerInterceptor {
 
@@ -21,16 +21,22 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
-	public function preHandle() {}
-
+	public function preHandle() {
+		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+		$factory->getInstance('windLogger')->info($this->getLogMessage());
+	}
+	
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
-	public function postHandle() {}
+	public function postHandle() {
+		//$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+		//$factory->getInstance('windLogger')->info($this->getLogMessage());
+	}
 
 	/**
 	 * 获得调用的堆栈信息中回调的方法信息
-	 * 
+	 *
 	 * @return string
 	 */
 	private function getLogMessage() {
@@ -43,7 +49,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
 			if ($function != $method) continue;
-			$info[$num] = $trace['file'] . '(' . $trace['line'] . '): ';
+			$info[$num] = $this->message . $trace['file'] . '(' . $trace['line'] . '): ';
 			$args = array_map(array($this, 'buildArg'), $trace['args']);
 			$info[$num] .= $class . $trace['type'] . $function . '(' . implode(',', $args) . ')';
 			$num++;
