@@ -10,9 +10,12 @@
 class WindDbDaoSupport extends WindDaoSupport {
 	
 	public function init() {
-	
+		
 	}
 	
+	/* 
+	 * @return WindDbTemplate
+	 */
 	public function getTemplate() {
 		if (null === $this->template) {
 			$this->template = new WindDbTemplate();

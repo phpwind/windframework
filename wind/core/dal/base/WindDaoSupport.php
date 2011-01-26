@@ -15,10 +15,17 @@
  * @package 
  */
 abstract class WindDaoSupport{
+	/**
+	 * @var WindTemplate dao模板
+	 */
 	protected $template = null;
 	public function __construct(){
 		$this->init();
 	}
 	public abstract function init();
+	/**
+	 * 取得dao模板
+	 * @return WindTemplate
+	 */
 	public abstract function getTemplate();
 }
