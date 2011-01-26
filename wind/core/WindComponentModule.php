@@ -23,8 +23,11 @@ abstract class WindComponentModule extends WindModule {
 	/**
 	 * Enter description here ...
 	 */
-	public function getAttribute($alias) {
-		return isset($this->_attribute[$alias]) ? $this->_attribute[$alias] : null;
+	public function getAttribute($alias = '') {
+		if ($alias === '')
+			return $this->_attribute;
+		else
+			return isset($this->_attribute[$alias]) ? $this->_attribute[$alias] : null;
 	}
 
 	/**
@@ -33,8 +36,11 @@ abstract class WindComponentModule extends WindModule {
 	 * @param string $alias
 	 * @param object $object
 	 */
-	public function setAttribute($alias, $object) {
-		$this->_attribute[$alias] = $object;
+	public function setAttribute($alias, $object = null) {
+		if (is_array($alias))
+			$this->_attribute += $alias;
+		elseif (is_string($alias))
+			$this->_attribute[$alias] = $object;
 	}
 
 	/**
