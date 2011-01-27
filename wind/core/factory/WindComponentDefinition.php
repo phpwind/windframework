@@ -25,6 +25,8 @@ class WindComponentDefinition extends WindClassDefinition {
 
 	const PROXY = 'proxy';
 
+	protected $proxyClass = 'WIND:core.factory.proxy.WindClassProxy';
+
 	/**
 	 * 类代理对象定义
 	 *
@@ -60,13 +62,15 @@ class WindComponentDefinition extends WindClassDefinition {
 	 */
 	protected function setProxyForClass($instance, $factory) {
 		if (!$instance instanceof WindModule) return;
-		$proxyClass = L::import($this->getProxy());
+		if (!($proxyPath = $this->getProxy()) || $proxyPath === 'false') return;
+		$proxyPath = $proxyPath === 'true' ? $this->proxyClass : $this->getProxy();
+		$proxyClass = L::import($proxyPath);
 		if (!class_exists($proxyClass)) return;
 		
 		$proxyClass = new $proxyClass();
-		if (isset($factory->request)) $proxyClass->setAttribute('request', $factory->request);
-		if (isset($factory->response)) $proxyClass->setAttribute('response', $factory->response);
-		if (isset($factory->application)) $proxyClass->setAttribute('application', $factory->application);
+		if (isset($factory->request)) $proxyClass->_setAttribute('request', $factory->request);
+		if (isset($factory->response)) $proxyClass->_setAttribute('response', $factory->response);
+		if (isset($factory->application)) $proxyClass->_setAttribute('application', $factory->application);
 		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
 	}
 

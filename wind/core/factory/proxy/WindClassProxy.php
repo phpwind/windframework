@@ -1,7 +1,6 @@
 <?php
 
 L::import('WIND:core.factory.IWindClassProxy');
-L::import('WIND:core.WindComponentModule');
 /**
  * Enter description here ...
  *
@@ -10,7 +9,9 @@ L::import('WIND:core.WindComponentModule');
  * @version $Id$
  * @package 
  */
-class WindClassProxy extends WindComponentModule implements IWindClassProxy {
+class WindClassProxy implements IWindClassProxy {
+
+	private $_attribute = array();
 
 	protected $_className = '';
 
@@ -66,12 +67,12 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	 * @deprecated
 	 */
 	public function __set($propertyName, $value) {
-		$property = $this->getReflection()->getProperty($propertyName);
+		$property = $this->_getReflection()->getProperty($propertyName);
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_SETTER, $propertyName);
-		$interceptorChain = $this->getInterceptorChain($propertyName);
+		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_setProperty'), array($propertyName, $value));
 		return $interceptorChain->getHandler()->handle($value);
@@ -93,12 +94,12 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	 * @deprecated
 	 */
 	public function __get($propertyName) {
-		$property = $this->getReflection()->getProperty($propertyName);
+		$property = $this->_getReflection()->getProperty($propertyName);
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_GETTER, $propertyName);
-		$interceptorChain = $this->getInterceptorChain($propertyName);
+		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_getProperty'), array($propertyName));
 		return $interceptorChain->getHandler()->handle($propertyName);
@@ -112,15 +113,15 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	 * @throws WindException
 	 */
 	public function __call($methodName, $args) {
-		$method = $this->getReflection()->getMethod($methodName);
+		$method = $this->_getReflection()->getMethod($methodName);
 		if (!$method || !$method->isPublic()) {
-			throw new WindException('undefined method name in ' . $this->getReflection()->getName());
+			throw new WindException('undefined method name in ' . $this->_getReflection()->getName());
 		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_METHOD, $methodName);
 		
-		$interceptorChain = $this->getInterceptorChain($methodName);
+		$interceptorChain = $this->_getInterceptorChain($methodName);
 		$interceptorChain->addInterceptors($listeners);
-		$interceptorChain->setCallBack(array($this->getInstance(), $methodName), $args);
+		$interceptorChain->setCallBack(array($this->_getInstance(), $methodName), $args);
 		return call_user_func_array(array($interceptorChain->getHandler(), 'handle'), $args);
 	}
 
@@ -134,11 +135,11 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	public function initClassProxy($targetObject, $args = array()) {
 		if ($targetObject === null) return null;
 		if (is_object($targetObject)) {
-			$this->setClassName(get_class($targetObject));
+			$this->_setClassName(get_class($targetObject));
 			$this->_instance = $targetObject;
 		} elseif (is_string($targetObject) && !empty($targetObject)) {
 			if (!class_exists($targetObject)) throw new WindException($targetObject, WindException::ERROR_CLASS_NOT_EXIST);
-			$this->setClassName($targetObject);
+			$this->_setClassName($targetObject);
 		}
 		if ($this->_reflection === null) {
 			$reflection = new ReflectionClass($this->_className);
@@ -154,13 +155,13 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 	/**
 	 * Enter description here ...
 	 */
-	private function getInterceptorChain($event = '') {
+	private function _getInterceptorChain($event = '') {
 		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
 			'newInstance'), array());
 		if ($interceptorChain instanceof WindComponentModule) {
-			$interceptorChain->setAttribute($this->getAttribute());
-			$interceptorChain->setAttribute('instance', $this->getInstance());
-			$interceptorChain->setAttribute('event', array($this->getClassName(), $event));
+			$interceptorChain->setAttribute($this->_getAttribute());
+			$interceptorChain->setAttribute('instance', $this->_getInstance());
+			$interceptorChain->setAttribute('event', array($this->_getClassName(), $event));
 		}
 		return $interceptorChain;
 	}
@@ -176,47 +177,72 @@ class WindClassProxy extends WindComponentModule implements IWindClassProxy {
 		return $listener;
 	}
 
-	/* (non-PHPdoc)
-	 * @see IWindClassProxy::getClassPrototype()
+	/**
+	 * Enter description here ...
 	 */
-	public function getInstance() {
-		return $this->_instance;
+	private function _getAttribute($alias = '') {
+		if ($alias === '')
+			return $this->_attribute;
+		else
+			return isset($this->_attribute[$alias]) ? $this->_attribute[$alias] : null;
 	}
 
 	/**
-	 * @see IWindClassProxy::getReflection()
-	 * @return ReflectionClass
+	 * Enter description here ...
+	 * 
+	 * @param string $alias
+	 * @param object $object
 	 */
-	public function getReflection() {
-		return $this->_reflection;
+	public function _setAttribute($alias, $object = null) {
+		if (is_array($alias))
+			$this->_attribute += $alias;
+		elseif (is_string($alias))
+			$this->_attribute[$alias] = $object;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindClassProxy::_getInstance()
+	 */
+	public function _getInstance() {
+		return $this->_instance;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindClassProxy::_getReflection()
+	 */
+	public function _getReflection() {
+		if ($this->_reflection instanceof ReflectionClass)
+			return $this->_reflection;
+		else
+			throw new WindException(get_class($this) . '->_reflection, ' . gettype($this->_reflection), WindException::ERROR_CLASS_TYPE_ERROR);
 	}
 
 	/**
 	 * @return the $_className
 	 */
-	public function getClassName() {
+	public function _getClassName() {
 		return $this->_className;
 	}
 
 	/**
 	 * @return the $_classPath
 	 */
-	public function getClassPath() {
+	public function _getClassPath() {
 		return $this->_classPath;
 	}
 
 	/**
 	 * @param string $className
 	 */
-	public function setClassName($className) {
+	public function _setClassName($className) {
 		$this->_className = $className;
 	}
 
 	/**
 	 * @param string $classPath
 	 */
-	public function setClassPath($classPath) {
-		$this->setClassName(L::import($classPath));
+	public function _setClassPath($classPath) {
+		$this->_setClassName(L::import($classPath));
 		$this->_classPath = $classPath;
 	}
 

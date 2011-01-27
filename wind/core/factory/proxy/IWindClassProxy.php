@@ -32,12 +32,12 @@ interface IWindClassProxy {
 	 * Enter description here ...
 	 * @return ReflectionClass
 	 */
-	public function getReflection();
+	public function _getReflection();
 
 	/**
 	 * Enter description here ...
 	 */
-	public function getInstance();
+	public function _getInstance();
 
 	/**
 	 * Enter description here ...
