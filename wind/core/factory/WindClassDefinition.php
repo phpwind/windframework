@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.base.WindModule');
+L::import('WIND:core.WindEnableValidateModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * 
