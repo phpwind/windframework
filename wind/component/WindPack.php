@@ -14,14 +14,19 @@
  * @package 
  */
 class WindPack {
+
 	const STRIP_SELF = 'stripWhiteSpaceBySelf';
+
 	const STRIP_PHP = 'stripWhiteSpaceByPhp';
+
 	const STRIP_TOKEN = 'stripWhiteSpaceByToken';
+
 	private $packList = array();
-	
+
 	private $contentInjectionPosition;
+
 	private $contentInjectionCallBack = '';
-	
+
 	/**
 	 * 将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
 	 * @param mixed $dir 要打包的目录
@@ -48,11 +53,11 @@ class WindPack {
 		$content = $this->stripNR($content, $replace);
 		$content = $this->stripPhpIdentify($content, '');
 		$content = $this->stripImport($content, '');
-		$content = $this->getContentBySuffix($content, $fileSuffix,$replace);
+		$content = $this->getContentBySuffix($content, $fileSuffix, $replace);
 		$this->writeContentToFile($dst, $content);
 		return true;
 	}
-	
+
 	/**
 	 * @param mixed $fileList
 	 * @param string $dst
@@ -65,9 +70,9 @@ class WindPack {
 		if (empty($dst) || empty($fileList)) {
 			return false;
 		}
-		if (!($content = $this->readContentFromFileList($fileList, $packMethod, $absolutePath))) {
-			return false;
-		}
+		$content = array();
+		$this->readContentFromFileList($fileList, $packMethod, $absolutePath, $content);
+		
 		$fileSuffix = $this->getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
 		$content = implode($replace, $content);
@@ -75,10 +80,11 @@ class WindPack {
 		$content = $this->stripNR($content, $replace);
 		$content = $this->stripPhpIdentify($content, '');
 		$content = $this->stripImport($content, '');
-		$content = $this->getContentBySuffix($content, $fileSuffix,$replace);
+		$content = $this->getContentBySuffix($content, $fileSuffix, $replace);
 		$this->writeContentToFile($dst, $content);
 		return true;
 	}
+
 	/**
 	 * 去除指定文件的注释及空白
 	 * @param string $filename 文件名
@@ -86,14 +92,14 @@ class WindPack {
 	public function stripWhiteSpaceByPhp($filename) {
 		return php_strip_whitespace($filename);
 	}
-	
+
 	public function stripWhiteSpaceBySelf($filename, $compress = true) {
 		$content = $this->getContentFromFile($filename);
 		$content = $this->stripComment($content, '');
 		$content = $this->stripSpace($content, ' ');
 		return $content;
 	}
-	
+
 	public function stripWhiteSpaceByToken($filename) {
 		$content = $this->getContentFromFile($filename);
 		$compressContent = '';
@@ -111,6 +117,7 @@ class WindPack {
 		}
 		return $compressContent;
 	}
+
 	/**
 	 * 去除注释
 	 * @param string $content 要去除的内容
@@ -120,7 +127,7 @@ class WindPack {
 	public function stripComment($content, $replace = '') {
 		return preg_replace('/(?:\/\*.*\*\/)*|(?:\/\/[^\r\n]*[\r\n])*/Us', $replace, $content);
 	}
-	
+
 	/**
 	 * 去除换行
 	 * @param string $content 要去除的内容
@@ -130,7 +137,7 @@ class WindPack {
 	public function stripNR($content, $replace = array("\n","\r\n","\r")) {
 		return preg_replace("/[\n\r]+/", $replace, $content);
 	}
-	
+
 	/**
 	 * 去除空格符
 	 * @param string $content 要去除的内容
@@ -140,7 +147,7 @@ class WindPack {
 	public function stripSpace($content, $replace = ' ') {
 		return preg_replace("/[ ]+/", $replace, $content);
 	}
-	
+
 	/**
 	 * 去除php标识
 	 * @param string $content
@@ -150,7 +157,7 @@ class WindPack {
 	public function stripPhpIdentify($content, $replace = '') {
 		return preg_replace("/(?:<\?(?:php)*)|(\?>)/i", $replace, $content);
 	}
-	
+
 	/**
 	 * 根据指定规则替换指定内容中相应的内容
 	 * @param string $content
@@ -161,7 +168,7 @@ class WindPack {
 	public function stripStrByRule($content, $rule, $replace = '') {
 		return preg_replace("/$rule/", $replace, $content);
 	}
-	
+
 	/**
 	 * 去除多余的文件导入信息
 	 * @param string $content
@@ -181,7 +188,7 @@ class WindPack {
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * 取得被打包的文件列表
 	 * @return array:
@@ -189,7 +196,7 @@ class WindPack {
 	public function getPackList() {
 		return $this->packList;
 	}
-	
+
 	/**
 	 *从文件读取内容
 	 * @param string $filename 文件名
@@ -209,7 +216,7 @@ class WindPack {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 将内容打包的文件
 	 * @param string $filename 文件内容
@@ -222,6 +229,7 @@ class WindPack {
 		fclose($fp);
 		return true;
 	}
+
 	/**
 	 * 根据文件后缀得取对应的mime内容
 	 * @param string $content 要打包的内容内容
@@ -229,17 +237,16 @@ class WindPack {
 	 * @param string $replace
 	 * @return string
 	 */
-	public function getContentBySuffix($content, $suffix,$replace=' ') {
+	public function getContentBySuffix($content, $suffix, $replace = ' ') {
 		switch ($suffix) {
 			case 'php':
-				$content = '<?php'.$replace . $content . '?>';
+				$content = '<?php' . $replace . $content . '?>';
 			default:
 				;
 		}
 		return $content;
 	}
-	
-	
+
 	/**
 	 * 从各个目录中取得对应的每个文件的内容 
 	 * @param string $packMethod 打包方式
@@ -275,7 +282,7 @@ class WindPack {
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * array('E://www/wind/core/WindAciton.php'=>'WindAction')
 	 * @param mixed $fileList
@@ -283,27 +290,50 @@ class WindPack {
 	 * @param string $absolutePath
 	 * @return array:
 	 */
-	public function readContentFromFileList($fileList, $packMethod = WindPack::STRIP_PHP, $absolutePath = '') {
+	public function readContentFromFileList($fileList, $packMethod = WindPack::STRIP_PHP, $absolutePath = '', &$content = array()) {
 		if (empty($fileList) || false === $this->isValidatePackMethod($packMethod)) {
-			return false;
+			return array();
 		}
-		$content = array();
 		$fileList = is_array($fileList) ? $fileList : array($fileList);
 		foreach ($fileList as $key => $value) {
-			$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $key : $key;
-			if (is_file($file)) {
-				$content[] = $this->$packMethod($file);
-				$this->setPackList($file, $value);
+			if (is_array($value) && isset($value[1])) {
+				$parents = class_parents($value[1]);
+				$_fileList = $this->buildFileList($parents, $fileList);
+				$this->readContentFromFileList($_fileList, $packMethod, $absolutePath, $content);
+				
+				$implements = class_implements($value[1]);
+				$_fileList = $this->buildFileList($implements, $fileList);
+				$this->readContentFromFileList($_fileList, $packMethod, $absolutePath, $content);
+				
+				if (key_exists($key, $this->getPackList())) continue;
+				
+				$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $key : $key;
+				if (is_file($file)) {
+					$content[] = $this->$packMethod($file);
+					$this->setPackList($key, $value);
+				}
 			}
 		}
-		return $content;
 	}
-	
+
+	private function buildFileList($list, $fileList) {
+		$_temp = array();
+		foreach ($list as $fileName) {
+			foreach ($fileList as $key => $value) {
+				if ($value[1] == $fileName) {
+					$_temp[$key] = $value;
+					break;
+				}
+			}
+		}
+		return $_temp;
+	}
+
 	private function isValidatePackMethod($packMethod) {
 		return method_exists($this, $packMethod) && in_array($packMethod, array(WindPack::STRIP_PHP, 
 			WindPack::STRIP_SELF, WindPack::STRIP_TOKEN));
 	}
-	
+
 	/**
 	 * 添加被打包的文件到列表
 	 * @param  string $key
@@ -321,7 +351,7 @@ class WindPack {
 			$this->packList[$key] = $value;
 		}
 	}
-	
+
 	/**
 	 * 取得真实的目录
 	 * @param string $path 路径名
@@ -333,7 +363,7 @@ class WindPack {
 		}
 		return $path . DIRECTORY_SEPARATOR;
 	}
-	
+
 	/**
 	 * 判断是否是一个文件
 	 * @param string $filename 文件名
@@ -342,7 +372,7 @@ class WindPack {
 	public function isFile($filename) {
 		return is_file($filename);
 	}
-	
+
 	/**
 	 * 判断是否是一个目录
 	 * @param string $dir 目录名
@@ -351,20 +381,20 @@ class WindPack {
 	public function isDir($dir) {
 		return is_dir($dir);
 	}
-	
+
 	public function getFileSuffix($filename) {
 		return substr($filename, strrpos($filename, '.') + 1);
 	}
-	
+
 	public function getFileName($path, $ifsuffix = false) {
 		$filename = substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1);
 		return $ifsuffix ? $filename : substr($filename, 0, strrpos($filename, '.'));
 	}
-	
-	public function getFilePath($path){
-		return substr($path, 0,strrpos($path, DIRECTORY_SEPARATOR));
+
+	public function getFilePath($path) {
+		return substr($path, 0, strrpos($path, DIRECTORY_SEPARATOR));
 	}
-	
+
 	/**
 	 * @param $contentInjectionCallBack the $contentInjectionCallBack to set
 	 * @param string $position 调用位置(before|after)
@@ -375,7 +405,7 @@ class WindPack {
 		$this->contentInjectionPosition = $position;
 		$this->contentInjectionCallBack = $contentInjectionCallBack;
 	}
-	
+
 	/**
 	 * 回调函数调用
 	 * @param string $content
@@ -384,7 +414,7 @@ class WindPack {
 	 */
 	public function callBack($content, $replace = '') {
 		if ($this->contentInjectionCallBack !== '') {
-			$_content = call_user_func_array($this->contentInjectionCallBack, array());
+			$_content = call_user_func_array($this->contentInjectionCallBack, array($this->getPackList()));
 			if ($this->contentInjectionPosition == 'before') {
 				$content = $replace . $_content . $content;
 			} elseif ($this->contentInjectionPosition == 'after')
