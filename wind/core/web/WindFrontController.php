@@ -82,28 +82,24 @@ class WindFrontController extends AbstractWindServer {
 	protected function process(WindHttpRequest $request, WindHttpResponse $response) {
 		//TODO set logger
 		try {
-			$applicationClass = L::import($this->getWindConfig()->getAppClass());
-			if (!class_exists($applicationClass)) {
-				throw new WindException($applicationClass, WindException::ERROR_CLASS_NOT_EXIST);
-			}
+			$this->getWindFactory()->request = $request;
+			$this->getWindFactory()->response = $response;
 			
-			$application = $this->getWindFactory()->createInstance($applicationClass);
+			$appName = $this->getWindConfig()->getAppClass();
+			$application = $this->getWindFactory()->getInstance($appName);
+			$this->getWindFactory()->application = $application;
 			
-			$request->setAttribute(self::WIND_APPLICATION, $application);
 			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
 			$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
-			
-			if (!($application instanceof IWindApplication)) {
-				throw new WindException($applicationClass, WindException::ERROR_CLASS_TYPE_ERROR);
-			}
 			
 			$filterChain = $this->getFilterChain();
 			$filterChain->setCallBack(array($application, 'processRequest'), array($request, $response));
 			$filterChain->getHandler()->handle($request, $response);
 		
 		} catch (WindException $exception) {
-			//TODO addLog
-			$response->sendError(WindHttpResponse::SC_NOT_FOUND, $exception->getMessage());
+			echo $exception->getMessage();
+		
+			//$response->sendError(WindHttpResponse::SC_NOT_FOUND, $exception->getMessage());
 		}
 	}
 
@@ -149,14 +145,20 @@ class WindFrontController extends AbstractWindServer {
 	 * @return WindSystemConfig $windConfig
 	 */
 	public function getWindConfig() {
-		return $this->windSystemConfig;
+		if ($this->windSystemConfig instanceof WindConfig)
+			return $this->windSystemConfig;
+		else
+			throw new WindException(get_class($this) . '->windSystemConfig', WindException::ERROR_CLASS_TYPE_ERROR);
 	}
 
 	/**
 	 * @return WindFactory $windFactory
 	 */
 	public function getWindFactory() {
-		return $this->windFactory;
+		if ($this->windFactory instanceof WindFactory)
+			return $this->windFactory;
+		else
+			throw new WindException(get_class($this) . '->windFactory', WindException::ERROR_CLASS_TYPE_ERROR);
 	}
 
 }

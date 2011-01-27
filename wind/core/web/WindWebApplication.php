@@ -52,7 +52,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		
 		$handler = $handlerAdapter->getHandler($request, $response);
 		$handler = $this->windFactory->createInstance($handler, array($request, $response));
-		
 		return $handler;
 	}
 
@@ -89,10 +88,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$routerAlias = $this->windConfig->getRouter(WindSystemConfig::CLASS_PATH);
 		if (null === $this->getAttribute($routerAlias)) {
 			$router = $this->windFactory->getInstance($routerAlias);
-			if (IS_DEBUG) {
-				$router->registerEventListener('doParse', new WindLoggerListener(get_class($router) . '->doParse()'));
-				$router->registerEventListener('getHandler', new WindLoggerListener(get_class($router) . '->getHandler()'));
-				$router->registerEventListener('buildUrl', new WindLoggerListener(get_class($router) . '->buildUrl()'));
+			if (IS_DEBUG && $router instanceof WindClassProxy) {
+				$router->registerEventListener('doParse', new WindLoggerListener());
+				$router->registerEventListener('getHandler', new WindLoggerListener());
+				$router->registerEventListener('buildUrl', new WindLoggerListener());
 			}
 			$router->doParse($request);
 		}
