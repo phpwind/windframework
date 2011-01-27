@@ -18,7 +18,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	public function preHandle() {
 		$logger = $this->getLogger();
 		if ($logger instanceof WindLogger) {
-			$logger->info($this->getLogMessage(func_get_args()));
+			$logger->info($this->getPreLogMessage(func_get_args()));
 		}
 	}
 
@@ -28,7 +28,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	public function postHandle() {
 		$logger = $this->getLogger();
 		if ($logger instanceof WindLogger) {
-			$logger->info($this->getLogMessage(func_get_args()));
+			$logger->info($this->getPostLogMessage(func_get_args()));
 		}
 	}
 
@@ -42,7 +42,24 @@ class WindLoggerListener extends WindHandlerInterceptor {
 		}
 		return $this->logger;
 	}
+    
+	private function getPreLogMessage($args) {
+		$log = $this->getLogMessage($args);
+		$log['caller'] = ' #[caller]: ' . $log['caller'];
+		$log['excute'] = ' #[excute-begin]: ' . $log['excute'];
+		$message = 'Begin ' . $this->event[0] . '->' . $this->event[1];
+		return "{$message}<br/>" . implode("\r\n", $log) . '<br/>';
+	}
 
+	private function getPostLogMessage($args) {
+		$log = $this->getLogMessage($args);
+		$log['caller'] = ' #[caller]: ' . $log['caller'];
+		$log['excute'] = ' #[excute-end]: ' . $log['excute'];
+		$log['output'] = ' #[output]: ' . $this->buildArg($this->result);
+		$message = 'End ' . $this->event[0] . '->' . $this->event[1];
+		return "{$message}<br/>" . implode("\r\n", $log) . '<br/>';
+	}
+	
 	/**
 	 * 获得调用的堆栈信息中回调的方法信息
 	 *
@@ -52,20 +69,21 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	private function getLogMessage($args) {
 		$method = '';
 		$info = array();
+		$flag = false;
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
 			$class = isset($trace['class']) ? $trace['class'] : '';
 			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor'))) continue;
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
-			if ($function != $method) continue;
-			$info[] = ' #[caller]: ' . (isset($trace['file']) ? addslashes($trace['file']) : 'null') . '(' . (isset($trace['line']) ? $trace['line'] : 'null') . '): ';
+			($function == $method) && $flag = true; 
+			if (!isset($trace['file'])) continue;
+			$info['caller'] = addslashes($trace['file']) . '(' . $trace['line'] . '): ';
 			break;
 		}
 		list($class, $method) = $this->event;
 		$args = array_map(array($this, 'buildArg'), $args);
-		$info[] = ' #[excute]: ' . $class . '->' . $method . '(' . implode(', ', $args) . ')';
-		$info[] = ' #[output]: ' . $this->buildArg($this->result);
-		return "<br/>" . implode("\r\n", $info);
+		$info['excute'] = $class . '->' . $method . '(' . implode(', ', $args) . ')';
+		return $info;
 	}
 
 	/**
