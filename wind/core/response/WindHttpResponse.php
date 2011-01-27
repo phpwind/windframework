@@ -310,8 +310,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function setHeader($name, $value, $replace = false) {
-		if (trim($name) == '' || trim($value) == '')
-			return;
+		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $one) {
 			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 'value' => $value, 
@@ -326,8 +325,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function addHeader($name, $value, $replace = false) {
-		if (trim($name) == '' || trim($value) == '')
-			return;
+		if (trim($name) == '' || trim($value) == '') return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
@@ -339,8 +337,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $message
 	 */
 	public function setStatus($status, $message = '') {
-		if (!is_int($status) || $status < 100 || $status > 505)
-			return;
+		if (!is_int($status) || $status < 100 || $status > 505) return;
 		
 		$this->_status = (int) $status;
 	}
@@ -352,10 +349,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
-		if (!is_string($content) || trim($content) == '')
-			return;
-		if ($name == null || !is_string($name))
-			$name = 'default';
+		if (!is_string($content) || trim($content) == '') return;
+		if ($name == null || !is_string($name)) $name = 'default';
 		$this->_body[$name] = (string) $content;
 	}
 
@@ -374,9 +369,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param int $status
 	 * @param string $message
 	 */
-	public function sendError($status, $message = '') {
-		if (!is_int($status) || $status < 400 || $status > 505)
-			return;
+	public function sendError($status = self::SC_NOT_FOUND, $message = '') {
+		if (!is_int($status) || $status < 400 || $status > 505) return;
 		$this->setBody($message);
 		$this->setStatus($status);
 	}
@@ -387,8 +381,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $location
 	 */
 	public function sendRedirect($location, $status = 302) {
-		if (!is_int($status) || $status < 300 || $status > 399)
-			return;
+		if (!is_int($status) || $status < 300 || $status > 399) return;
 		
 		$this->addHeader('Location', $location, true);
 		$this->setStatus($status);
@@ -409,8 +402,7 @@ class WindHttpResponse implements IWindResponse {
 	 * 发送响应头部信息
 	 */
 	public function sendHeaders() {
-		if ($this->isSendedHeader())
-			return;
+		if ($this->isSendedHeader()) return;
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
@@ -454,8 +446,7 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
-		if ($throw && $sended)
-			throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+		if ($throw && $sended) throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
@@ -483,8 +474,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @return string
 	 */
 	private function _normalizeHeader($name) {
-		if (trim($name) == '')
-			return '';
+		if (trim($name) == '') return '';
 		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
@@ -532,10 +522,8 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function setData($data, $key = '') {
 		if ($key === '') {
-			if (is_object($data))
-				$data = get_object_vars($data);
-			if (is_array($data))
-				$this->_data += $data;
+			if (is_object($data)) $data = get_object_vars($data);
+			if (is_array($data)) $this->_data += $data;
 		} else {
 			$key = strtolower($key);
 			$this->_data[$key] = $data;
