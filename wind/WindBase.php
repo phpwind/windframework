@@ -6,7 +6,7 @@
  * @license
  */
 
-!defined('VERSION') && define('VERSION', '0.1');
+!defined('VERSION') && define('VERSION', '0.2');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
 
 /* 路径相关配置信息  */
@@ -63,7 +63,8 @@ class W {
 		self::checkEnvironment();
 		self::systemRegister();
 		self::loadBaseLib();
-		self::initErrorHandle();
+	
+		//		self::initErrorHandle();
 	}
 
 	/**
@@ -240,25 +241,6 @@ class L {
 	}
 
 	/**
-	 * 获得一个类的静态单例对象
-	 * 全局的静态单例对象以数组的形式保存在 < self::$_instances >中，索引为类名称
-	 * 类名称必须和文件名称相同，否则将抛出异常
-	 * 支持构造函数参数
-	 * 返回一个对象的引用
-	 *
-	 * @param string $className
-	 * @return Object
-	 */
-	static public function getInstance($className, $args = array(), $nameSpace = '') {
-		$className = strtolower($className);
-		$nameSpace = $nameSpace === '' ? $className : $className . '_' . $nameSpace;
-		if (!key_exists($nameSpace, self::$_instances)) {
-			self::$_instances[$nameSpace] = self::createInstance($className, $args);
-		}
-		return self::$_instances[$nameSpace];
-	}
-
-	/**
 	 * 解析路径信息，并返回路径的详情
 	 * 
 	 * @param string $filePath 路径信息
@@ -294,31 +276,19 @@ class L {
 	 * @param array $classes 
 	 * @return string
 	 */
-	static public function perLoadInjection($classes = array()) {
+	static public function perLoadInjection($packList = array(), $classes = array()) {
 		if (!empty($classes)) {
 			foreach ($classes as $key => $value) {
 				if (!self::isImported($key)) self::$_imports[$key] = $value;
 			}
 		} else {
-			L::import('COM:format.WindString');
-			return "L::perLoadInjection(" . WindString::varExport(L::getImports()) . ");";
+			$imports = array();
+			foreach ($packList as $key => $value) {
+				$imports[$value[0]] = $value[1];
+			}
+			L::import('WIND:component.format.WindString');
+			return "L::perLoadInjection(array()," . WindString::varExport($imports) . ");";
 		}
-	}
-
-	/**
-	 * 根据类名称创建类的单例对象，并保存到静态对象中
-	 * 同时调用清理单例对象的策略
-	 * 
-	 * @param string $className 类名称
-	 * @param array $args 参数数组
-	 * @return void|string
-	 */
-	static private function createInstance($className, $args) {
-		$class = new ReflectionClass($className);
-		if ($class->isAbstract() || $class->isInterface()) return;
-		if (!is_array($args)) $args = array($args);
-		$object = call_user_func_array(array($class, 'newInstance'), $args);
-		return $object;
 	}
 
 	static private function isImported($path) {
@@ -357,20 +327,24 @@ class L {
 		}
 	}
 
+	/**
+	 * Enter description here ...
+	 */
 	static private function perLoadCoreLibrary() {
+		$imports = L::getImports();
 		self::import('COM:WindPack');
 		$pack = new WindPack();
 		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
 		$fileList = array();
-		foreach (L::getImports() as $key => $value) {
-			$key = self::getRealPath($key, self::$_extensions);
-			$fileList[$key] = $value;
+		foreach ($imports as $key => $value) {
+			$_key = self::getRealPath($key, self::$_extensions);
+			$fileList[$_key] = array($key, $value);
 		}
 		$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
 	}
 
 	/**
-	 * @param $_isAutoLoad the $_isAutoLoad to set
+	 * @param $isAutoLoad the $isAutoLoad to set
 	 * @author Qiong Wu
 	 */
 	public static function setIsAutoLoad($isAutoLoad) {
