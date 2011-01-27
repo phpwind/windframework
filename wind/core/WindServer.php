@@ -51,8 +51,7 @@ abstract class WindServer extends WindModule {
 	 */
 	public function run() {
 		$this->beforeProcess();
-		if ($this->request === null || $this->response === null)
-			throw new Exception('init action servlet failed!!');
+		if ($this->request === null || $this->response === null) throw new Exception('init action servlet failed!!');
 		
 		$this->service($this->request, $this->response);
 		$this->response->sendResponse();
