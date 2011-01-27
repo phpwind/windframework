@@ -6,6 +6,7 @@
  * @license 
  */
 
+L::import('WIND:core.WindModule');
 /**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
