@@ -16,16 +16,31 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-		$factory->getInstance('windLogger')->info($this->getLogMessage(func_get_args()));
+		$logger = $this->getLogger();
+		if ($logger instanceof WindLogger) {
+			$logger->info($this->getLogMessage(func_get_args()));
+		}
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-	    $factory->getInstance('windLogger')->info($this->getLogMessage(func_get_args()));
+		$logger = $this->getLogger();
+		if ($logger instanceof WindLogger) {
+			$logger->info($this->getLogMessage(func_get_args()));
+		}
+	}
+
+	/**
+	 * @return WindLogger
+	 */
+	private function getLogger() {
+		if (!isset($this->logger)) {
+			$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
+			$this->logger = $factory->getInstance('windLogger');
+		}
+		return $this->logger;
 	}
 
 	/**
@@ -43,7 +58,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
 			if ($function != $method) continue;
-			$info[] = ' #[caller]: ' . $trace['file'] . '(' . $trace['line'] . '): ';
+			$info[] = ' #[caller]: ' . (isset($trace['file']) ? addslashes($trace['file']) : 'null') . '(' . (isset($trace['line']) ? $trace['line'] : 'null') . '): ';
 			break;
 		}
 		list($class, $method) = $this->event;
