@@ -86,7 +86,15 @@ class WindFrontController extends AbstractWindServer {
 			$this->getWindFactory()->response = $response;
 			
 			$appName = $this->getWindConfig()->getAppClass();
-			$application = $this->getWindFactory()->getInstance($appName);
+			if (null === ($application = $this->getWindFactory()->getInstance($appName))) {
+				throw new WindException('application', WindException::ERROR_CLASS_NOT_EXIST);
+			}
+			
+			if (IS_DEBUG && $application instanceof WindClassProxy) {
+				$application->registerEventListener('processRequest', new WindLoggerListener());
+				$application->registerEventListener('doDispatch', new WindLoggerListener());
+			}
+			
 			$this->getWindFactory()->application = $application;
 			
 			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
@@ -99,7 +107,7 @@ class WindFrontController extends AbstractWindServer {
 		} catch (WindException $exception) {
 			echo $exception->getMessage();
 		
-			//$response->sendError(WindHttpResponse::SC_NOT_FOUND, $exception->getMessage());
+		//$response->sendError(WindHttpResponse::SC_NOT_FOUND, $exception->getMessage());
 		}
 	}
 
