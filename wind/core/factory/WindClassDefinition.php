@@ -65,13 +65,13 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @var string
 	 */
 	protected $scope = '';
-	
+
 	/**
 	 * 类自定义的初始化方法
 	 * @var string
 	 */
 	protected $factoryMethod = '';
-	
+
 	/**
 	 * 类设置属性之后的调用处理操作
 	 * @var string
@@ -211,9 +211,10 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		if ($instance === null) return null;
 		$this->setProperties($this->getPropertys(), $factory, $instance);
-		return $this->executeInitMethod($instance);
+		$this->executeInitMethod($instance);
+		return $instance;
 	}
-	
+
 	/**
 	 * 执行用户配置的初始化操作
 	 * 
@@ -221,10 +222,9 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param object $instance
 	 */
 	private function executeInitMethod($instance) {
-		if (($initMethod = $this->getInitMethod()) && in_array($initMethod, get_class_methods($this->getClassName()))) {
-			$instance->$initMethod();
-		}
-		return $instance;
+		if (!($initMethod = $this->getInitMethod())) return;
+		if (!in_array($initMethod, get_class_methods($instance))) throw new WindException();
+		$instance->$initMethod();
 	}
 
 	/**
@@ -386,8 +386,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	public function setClassDefinition($classDefinition) {
 		$this->classDefinition = $classDefinition;
 	}
-	
-	
+
 	/**
 	 * return the $factoryMethod
 	 * 
@@ -419,13 +418,13 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 *  the $initMethod to set
-	 *  
+	 * the $initMethod to set
+	 * 
 	 * @author xiaoxia.xu
 	 * @param string $initMethod
 	 */
 	public function setInitMethod($initMethod) {
 		$this->initMethod = $initMethod;
 	}
-	
+
 }
