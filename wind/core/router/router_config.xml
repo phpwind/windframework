@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<module url-param='m' default-value='default' />
+	<controller url-param='c' default-value='index' />
+	<action url-param='a' default-value='run' />
+</config>
