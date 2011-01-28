@@ -36,7 +36,7 @@ class WindDbTemplate extends WindTemplate {
 	 * @return stdClass
 	 */
 	public function queryForObject($sql, $fetch_type = IWindDbConfig::RESULT_ASSOC, $colAsProp = true) {
-		$result = $this->query($sql, $fetch_type);
+		$result = $this->queryBySql($sql, $fetch_type);
 		return $this->bindValueToObject(new stdClass(), $result, $colAsProp);
 	}
 	
@@ -47,7 +47,7 @@ class WindDbTemplate extends WindTemplate {
 	 * @return array
 	 */
 	public function queryForArray($sql, $fetch_type = IWindDbConfig::RESULT_ASSOC) {
-		return $this->query($sql, $fetch_type);
+		return $this->queryBySql($sql, $fetch_type);
 	}
 	
 	/**
@@ -79,7 +79,7 @@ class WindDbTemplate extends WindTemplate {
 	 * @param string $sql
 	 * @return array;
 	 */
-	public function query($sql, $fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function queryBySql($sql, $fetch_type = IWindDbConfig::RESULT_ASSOC) {
 		if (true === ($query = $this->read($sql))) {
 			return $this->getConnection()->getAllRow($fetch_type);
 		}

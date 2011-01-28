@@ -22,4 +22,5 @@ class WindDbDaoSupport extends WindDaoSupport {
 		}
 		return $this->template;
 	}
+	
 }

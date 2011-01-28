@@ -8,6 +8,5 @@
  */
 
 abstract class WindTemplate  {
-	protected $cache = null;
 	
 }

@@ -19,6 +19,12 @@ abstract class WindDaoSupport{
 	 * @var WindTemplate dao模板
 	 */
 	protected $template = null;
+	
+	/**
+	 * @var WindCacheFactory 缓存工厂
+	 */
+	protected $cacheFactory = null;
+	
 	public function __construct(){
 		$this->init();
 	}
@@ -28,4 +34,15 @@ abstract class WindDaoSupport{
 	 * @return WindTemplate
 	 */
 	public abstract function getTemplate();
+	
+	/**
+	 * 获取缓存工厂
+	 */
+	public function getCacheFactory(){
+		$class = L::import('WIND:component.cache.WindCacheFactory');
+		if(null == $this->cacheFactory){
+			$this->cacheFactory = new $class();
+		}
+		return $this->cacheFactory;
+	}
 }
