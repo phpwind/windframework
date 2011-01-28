@@ -41,6 +41,9 @@ class WindLoggerFilter extends WindFilter {
 		if ($windFactory instanceof WindFactory) {
 			$this->logger = $windFactory->getInstance(self::WIND_LOGGER);
 		}
+		if (!$this->logger instanceof WindLogger) {
+			throw new WindException('logger', WindException::ERROR_CONFIG_ERROR);
+		}
 	}
 
 }
