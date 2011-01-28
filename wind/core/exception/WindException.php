@@ -93,7 +93,7 @@ class WindException extends Exception {
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
 			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
 			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.', 
-			self::ERROR_CLASS_METHOD_NOT_EXIST => '');
+			self::ERROR_CLASS_METHOD_NOT_EXIST => '\'$message\' Unable to access the method in the class , or the method is not exist.');
 		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
