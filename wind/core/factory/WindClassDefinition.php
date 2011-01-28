@@ -192,6 +192,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		if ($instance === null) return null;
 		$this->setProperties($this->getPropertys(), $factory, $instance);
+		
 		return $instance;
 	}
 

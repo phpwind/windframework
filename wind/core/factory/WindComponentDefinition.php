@@ -17,14 +17,18 @@ L::import('WIND:core.factory.WindClassDefinition');
  */
 class WindComponentDefinition extends WindClassDefinition {
 
+	/* 配置 */
 	const CONFIG = 'config';
 
 	const RESOURCE = 'resource';
 
 	const SUFFIX = 'suffix';
 
+	/* 配置缓存 */
 	const CONFIG_CACHE = 'wind_components_config';
 
+	/* component 定义 */
+	
 	const PROXY = 'proxy';
 
 	protected $proxyClass = 'WIND:core.factory.proxy.WindClassProxy';
