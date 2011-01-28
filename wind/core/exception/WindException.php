@@ -21,6 +21,8 @@ class WindException extends Exception {
 
 	const ERROR_CLASS_TYPE_ERROR = '101';
 
+	const ERROR_CLASS_METHOD_NOT_EXIST = '102';
+
 	/* 参数错误 */
 	const ERROR_PARAMETER_TYPE_ERROR = '110';
 
@@ -90,7 +92,8 @@ class WindException extends Exception {
 		$messages = array(self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
 			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
-			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.');
+			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.', 
+			self::ERROR_CLASS_METHOD_NOT_EXIST => '');
 		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
