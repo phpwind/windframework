@@ -21,7 +21,9 @@ class WindComponentDefinition extends WindClassDefinition {
 
 	const RESOURCE = 'resource';
 
-	const CONFIGCACHE = 'wind_components_config';
+	const SUFFIX = 'suffix';
+
+	const CONFIG_CACHE = 'wind_components_config';
 
 	const PROXY = 'proxy';
 
@@ -43,10 +45,10 @@ class WindComponentDefinition extends WindClassDefinition {
 		$instance = parent::createInstance($factory, $args);
 		if (!($instance instanceof WindComponentModule)) return $instance;
 		$windConfig = null;
-		if (isset($this->config['resource']) && ($resource = $this->config['resource'])) {
+		if (isset($this->config[self::RESOURCE]) && ($resource = $this->config[self::RESOURCE])) {
 			L::import('WIND:core.config.parser.WindConfigParser');
-			$configPath = L::getRealPath($resource, $this->config['suffix']);
-			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias());
+			$configPath = L::getRealPath($resource, $this->config[self::SUFFIX]);
+			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias(), self::CONFIG_CACHE);
 		} else {
 			$windConfig = new WindConfig($this->config);
 		}
