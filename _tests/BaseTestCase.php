@@ -5,18 +5,19 @@ define('IS_DEBUG', true);
 /* 缓存文件路径 */
 define('COMPILE_PATH', T_P . '/data/compile/');
 include 'WindBase.php';
+
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
+
 	protected function setUp() {
 		parent::setUp();
-		W::init();
-		C::init(include 'data/config.php');
+		W::initWindFramework();
 	}
-	
+
 	protected function tearDown() {
 		parent::tearDown();
 		spl_autoload_unregister('L::autoLoad');
 	}
-	
+
 	protected function assertArrayEquals($array1, $array2) {
 		(!is_array($array1)) && $this->fail("Error type for arg1");
 		$this->assertTrue(is_array($array2) && (count($array1) == count($array2)));
