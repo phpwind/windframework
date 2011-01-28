@@ -173,10 +173,18 @@ class WindList implements IteratorAggregate, ArrayAccess, Countable {
 	}
 	/**
 	 * 清空WindList
+	 * @return boolean
 	 */
 	public function clear() {
+		if ($this->isReadOnly) {
+			throw new WindException('The list of read-only');
+		}
+		if($this->isFixedSize){
+			throw new WindException("The list size is fixed");
+		}
 		$this->count = 0;
 		$this->list = array();
+		return true;
 	}
 	/**
 	 * 将数组中的值合并到WindList
