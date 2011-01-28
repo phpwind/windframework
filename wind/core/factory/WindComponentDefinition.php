@@ -45,7 +45,8 @@ class WindComponentDefinition extends WindClassDefinition {
 		$windConfig = null;
 		if (isset($this->config['resource']) && ($resource = $this->config['resource'])) {
 			L::import('WIND:core.config.parser.WindConfigParser');
-			$windConfig = new WindConfig($resource, new WindConfigParser(), $this->getAlias(), self::CONFIGCACHE);
+			$configPath = L::getRealPath($resource, $this->config['suffix']);
+			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias());
 		} else {
 			$windConfig = new WindConfig($this->config);
 		}
