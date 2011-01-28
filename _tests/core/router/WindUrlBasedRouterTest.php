@@ -17,7 +17,7 @@ class WindUrlBasedRouterTest extends BaseTestCase {
 		$_SERVER['SCRIPT_NAME'] = 'index.php';
 		$_SERVER['HTTP_HOST'] = 'localhost:80';
 		$this->setGet($a, $c, $m);
-		$this->router->doParser($this->request, $this->response);
+		$this->router->doParse($this->request, $this->response);
 		$url = $this->router->buildUrl();
 		$this->assertEquals($url, 'http://localhost:80/index.php');
 	}
@@ -30,7 +30,7 @@ class WindUrlBasedRouterTest extends BaseTestCase {
 	 */
 	public function testDoParser($a, $c, $m) {
 		$this->setGet($a, $c, $m);
-		$this->router->doParser($this->request, $this->response);
+		$this->router->doParse($this->request, $this->response);
 		$this->assertEquals($this->router->getAction(), $a);
 		$this->assertEquals($this->router->getController(), $c);
 		$this->assertEquals($this->router->getModule(), $m);
