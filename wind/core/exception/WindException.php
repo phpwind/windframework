@@ -24,6 +24,9 @@ class WindException extends Exception {
 	/* 参数错误 */
 	const ERROR_PARAMETER_TYPE_ERROR = '110';
 
+	/* 配置错误 */
+	const ERROR_CONFIG_ERROR = '120';
+
 	private $innerException = null;
 
 	/**
@@ -86,7 +89,8 @@ class WindException extends Exception {
 	protected function messageMapper($code) {
 		$messages = array(self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
-			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.');
+			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
+			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.');
 		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
