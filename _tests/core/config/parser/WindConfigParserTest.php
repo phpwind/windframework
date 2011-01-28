@@ -12,7 +12,7 @@ class WindConfigParserTest extends BaseTestCase {
 	public function setUp() {
 		parent::setUp();
 		require_once('core/config/parser/WindConfigParser.php');
-		require_once('core/WindHttpRequest.php');
+		require_once('core/request/WindHttpRequest.php');
 		$this->parser = new WindConfigParser();
 		$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 	}
@@ -50,9 +50,8 @@ class WindConfigParserTest extends BaseTestCase {
 	
 	public function testParserConfigWithXML() {
 		$result = $this->parser->parseConfig(T_P . '/data/test_config.xml', 'XML');
-		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
-					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 2, array('pp', 'default'));
+		$this->checkArray($result, 4, array('imports', 'web-apps', 'filters', 'viewerResolvers'));
+		$this->assertTrue(isset($result['viewerResolvers']['pp']));
 		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['pp']['class']);
 	}
 	public function testParserConfigWithIni() {
@@ -83,18 +82,12 @@ class WindConfigParserTest extends BaseTestCase {
 
 	public function testParserConfigWithEmptyALL() {
 		$result = $this->parser->parseConfig('', '');
-		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
-					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 1, array('default'));
-		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
+		$this->checkArray($result, 2, array('imports', 'web-apps'));
 	}
 
 	public function testParserConfigWithEmpty() {
 		$result = $this->parser->parseConfig('', 'Empty');
-		$this->checkArray($result, 10, array('modules', 'filters', 'templates', 
-					'error', 'applications', 'viewerResolvers', 'router', 'routerParsers', 'extensionConfig'));
-		$this->checkArray($result['viewerResolvers'], 1, array('default'));
-		$this->assertEquals('WIND:core.viewer.WindViewer', $result['viewerResolvers']['default']['class']);
+		$this->checkArray($result, 2, array('imports', 'web-apps'));
 	}
 	
 	public function testParserWithFileException() {
@@ -107,7 +100,7 @@ class WindConfigParserTest extends BaseTestCase {
 		$this->fail('No File Exception Error');
 	}
 	
-	public function testParserWithErrorAppendFileException() {
+	/*public function testParserWithErrorAppendFileException() {
 		try	{
 		  $result = $this->parser->parse(T_P . '/data/formConfig.xml', 'file', 'hahah');
 		} catch(Exception $e) {
@@ -115,7 +108,7 @@ class WindConfigParserTest extends BaseTestCase {
 			return;
 		}
 		$this->fail('Error');
-	}
+	}*/
 	
 	public function testParserWithNoAlias() {
 		$result = $this->parser->parse(T_P . '/data/formConfig.xml');

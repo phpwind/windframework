@@ -14,7 +14,7 @@ class AllRouterTest {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllRouterTest_suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllRouterTest');
 		//$suite->addTestSuite('WindRouterFactoryTest');
 		$suite->addTestSuite('WindUrlBasedRouterTest');
 		return $suite;

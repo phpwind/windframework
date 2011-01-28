@@ -7,14 +7,16 @@
  */
 
 require_once ('core/config/parser/WindConfigParserTest.php');
+require_once ('core/config/WindSystemConfigTest.php');
 
 class AllConfigTest {
 	public static function main() {
 		PHPUnit_TextUI_TestRunner::run(self::suite());
 	}
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllConfigTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllConfigTest');
 		$suite->addTestSuite('WindConfigParserTest');
+		$suite->addTestSuite('WindSystemConfigTest');
 		return $suite;
 	}
 }

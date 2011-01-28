@@ -16,25 +16,40 @@
  */
 class WindSystemConfigTest extends BaseTestCase {
 	private $config;
+	private $testConfig;
 	public function setUp() {
 		parent::setUp();
-		require_once ('core/WindSystemConfig.php');
-		$this->config = new WindSystemConfig(include 'data/config.php');
+		require_once ('core/config/WindSystemConfig.php');
+		require_once ('core/config/parser/WindConfigParser.php');
+		$this->testConfig = include 'data/config.php';
+		$this->config = new WindSystemConfig($this->testConfig['wind'], new WindConfigParser(), 'testApp');
+	}
+	
+	public function testInitConfig() {
+		try {
+			$this->config->initConfig('');
+		} catch (Exception $e) {
+			$this->assertTrue(is_file(COMPILE_PATH . 'testApp_config.php'));
+			return;
+		}
+	}
+	
+	public function testAppName() {
+		$this->assertEquals('testApp', $this->config->getAppName());
+	}
+	
+	public function testGetAppClass() {
+		$this->assertEquals('windWebApp', $this->config->getAppClass());
+	}
+	public function testGetRootPath() {
+		$_SERVER['SCRIPT_FILENAME'] = '';
+		$this->assertEquals('', $this->config->getRootPath());
 	}
 	
 	public function testGetConfig() {
 		$config = $this->config->getConfig('wind');
 		$this->assertTrue(is_array($config) && count($config) == 0);
-		$config = $this->config->getConfig('rootPath');
-		$this->assertTrue($config == '');
-	}
-	
-	public function testGetRootPath() {
-		$_SERVER['SCRIPT_FILENAME'] = '';
-		$config = $this->config->getRootPath();
-		$this->assertTrue($config == '');
-		$_SERVER['SCRIPT_FILENAME'] = 'D:/PHPWIND/test.php';
-		$this->assertTrue('D:/PHPWIND' == $this->config->getRootPath());
+		
 	}
 	
 	private function checkArray($array, $num, $member = array(), $ifCheck = false) {
@@ -48,25 +63,23 @@ class WindSystemConfigTest extends BaseTestCase {
 	public function testGetModules() {
 		$config = $this->config->getModules();
 		$this->checkArray($config, 2, array('default', 'other'));
-		$this->checkArray($config['default'], 5, array('path' => 'actionControllers',
-											'template' => 'default', 'controllerSuffix' => 'controller',
-											'actionSuffix' => 'action', 'method' => 'run'), true);
-		$this->checkArray($config['other'], 5, array('path' => 'otherControllers',
-											'template' => 'wind', 'controllerSuffix' => 'controller',
-											'actionSuffix' => 'action', 'method' => 'run'), true);
+		$this->checkArray($config['default'], 5, array('path' => 'actionControllers', 'template' => 'default', 
+			'controllerSuffix' => 'controller', 'actionSuffix' => 'action', 'method' => 'run'), true);
+		$this->checkArray($config['other'], 5, array('path' => 'otherControllers', 'template' => 'wind', 
+			'controllerSuffix' => 'controller', 'actionSuffix' => 'action', 'method' => 'run'), true);
 	}
 	public function testGetTemplate() {
 		$config = $this->config->getTemplate();
 		$this->checkArray($config, 2, array('default', 'wind'));
-		$this->checkArray($config['default'], 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm',
-					'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
+		$this->checkArray($config['default'], 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
 		$this->checkArray($config['wind'], 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
-					'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
+			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
 	}
 	public function testGetTemplateByName() {
 		$config = $this->config->getTemplate('default');
-		$this->checkArray($config, 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm',
-					'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
+		$this->checkArray($config, 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
+			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
 		$config = $this->config->getTemplate('template');
 		$this->checkArray($config, 0);
 	}
@@ -95,7 +108,7 @@ class WindSystemConfigTest extends BaseTestCase {
 		$config = $this->config->getRouter();
 		$this->checkArray($config, 1, array('parser' => 'url'), true);
 	}
-
+	
 	public function testGetRouterByName() {
 		$this->assertEquals('url', $this->config->getRouter('parser'));
 		$this->checkArray($this->config->getRouter('parserTwo'), 0);
@@ -124,7 +137,7 @@ class WindSystemConfigTest extends BaseTestCase {
 	public function testGetApplicationsByName() {
 		$config = $this->config->getApplications('web');
 		$this->checkArray($config, 1, array('class' => 'WIND:core.WindWebApplication'), true);
-
+		
 		$this->checkArray($this->config->getApplications('web2.0'), 0);
 	}
 	public function testGetErrorMessage() {
@@ -139,8 +152,8 @@ class WindSystemConfigTest extends BaseTestCase {
 	}
 	public function testGetExtensionConfig() {
 		$config = $this->config->getExtensionConfig();
-		$this->checkArray($config, 2, array('formConfig' => 'WIND:component.form.form_config',
-							'dbConfig' => 'WIND:component.form.db_config'), true);
+		$this->checkArray($config, 2, array('formConfig' => 'WIND:component.form.form_config', 
+			'dbConfig' => 'WIND:component.form.db_config'), true);
 	}
 	
 	public function testGetExtensionConfigByName() {

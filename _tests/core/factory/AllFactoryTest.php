@@ -16,8 +16,8 @@ class AllFactoryTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllFactoryTest_suite');
-		//$suite->addTestSuite('WindClassProxyTest');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllFactoryTest');
+		$suite->addTestSuite('WindClassProxyTest');
 		$suite->addTestSuite('WindClassDefinitionTest');
 		$suite->addTestSuite('WindFactoryTest');
 		return $suite;

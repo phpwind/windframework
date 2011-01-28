@@ -1,148 +1,85 @@
 <?php
- return array(
- 	'rootPath' => '',
-	'applications' => array(
-		'web' => array(
-			'class' => 'WIND:core.WindWebApplication',
-		),
-		'command' => array(
-			'class' => 'WIND:core.WindCommandApplication',
-		),
-	),
-	'modules' => array(
-		'default' => array(
-			'path' => 'actionControllers',
-			'template' => 'default',
-			'controllerSuffix' => 'controller',
-			'actionSuffix' => 'action',
-			'method' => 'run',
-		),
-		'other' => array(
-			'path' => 'otherControllers',
-			'template' => 'wind',
-			'controllerSuffix' => 'controller',
-			'actionSuffix' => 'action',
-			'method' => 'run',
-		),
-	),
-	'error' => array(
-		'default' => array(
-			'class' => 'WIND:core.WindErrorAction',
-		),
-	),
-	'filters' => array(
-		'WindFormFilter' => array(
-			'class' => 'WIND:core.filter.WindFormFilter',
-		),
-	),
-	'templates' => array(
-		'default' => array(
-			'dir' => 'template',
-			'default' => 'index',
-			'ext' => 'htm',
-			'resolver' => 'default',
-			'isCache' => '0',
-			'cacheDir' => 'cache',
-			'compileDir' => 'compile',
-		),
-		'wind' => array(
-			'dir' => 'template',
-			'default' => 'index',
-			'ext' => 'htm',
-			'resolver' => 'default',
-			'isCache' => '0',
-			'cacheDir' => 'cache',
-			'compileDir' => 'compile',
-		),
-	),
-	'viewerResolvers' => array(
-		'default' => array(
-			'class' => 'WIND:core.viewer.WindViewer',
-		),
-	),
-	'router' => array(
-		'parser' => 'url',
-	),
-	'routerParsers' => array(
-		'url' => array(
-			'rule' => array(
-				'a' => 'run',
-				'c' => 'index',
-				'm' => 'default',
+  return array(
+	'wind' => array(
+		'imports' => array(
+			'components' => array(
+				'resource' => 'WIND:component_config',
+				'suffix' => 'xml',
+				'init-delay' => 'false',
+				'is-append' => 'true',
 			),
-			'class' => 'WIND:core.router.WindUrlBasedRouter',
+			'classes' => array(
+				'resource' => 'WIND:classes_config',
+				'suffix' => 'xml',
+				'init-delay' => 'false',
+				'is-append' => 'true',
+			),
 		),
-	),
-	'extensionConfig' => array(
-		'formConfig' => 'WIND:component.form.form_config',
-		'dbConfig' => 'WIND:component.form.db_config',
-	),
-
-	'database' => array(
-         'connections' => array(
-            'phpwind_8' => array(
-               'driver' => 'mysql',
-               'type' => 'master',
-               'host' => 'localhost',
-               'user' => 'root',
-               'password' => 'suqian0512h',
-               'port' => '3306',
-               'name' => 'phpwind_8',
-            ),
-            'phpwind_beta' => array(
-               'driver' => 'mysql',
-               'type' => 'slave',
-               'host' => 'localhost',
-               'user' => 'root',
-               'password' => 'suqian0512h',
-               'port' => '3306',
-               'name' => 'phpwind_beta',
-            ),
-         ),
-         'drivers' => array(
-            'mysql' => array(
-               'builder' => 'mysql',
-               'class' => 'WIND:component.db.drivers.mysql.WindMySql',
-            ),
-            'mssql' => array(
-               'builder' => 'mssql',
-               'class' => 'WIND:component.db.drivers.mssql.WindMsSql',
-            ),
-         ),
-         'builders' => array(
-            'mysql' => array(
-               'class' => 'WIND:component.db.drivers.mysql.WindMySqlBuilder',
-            ),
-            'mssql' => array(
-               'class' => 'WIND:component.db.drivers.mssql.WindMsSqlBuilder',
-            ),
-         ),
-      ),
-
-	'database' => array(
-			'connections' => array(
-				'phpwind_8' => array(
-					'driver' => 'mysql',
-					'host' => 'localhost',
-					'user' => 'root',
-					'password' => 'xxx',
-					'port' => '3306',
-					'name' => 'phpwindteam',
-					'charset' => 'utf8',
+		'web-apps' => array(
+			'testApp' => array(
+				'class' => 'windWebApp',
+				'root-path' => '',
+				'factory' => array(
+					'class-definition' => 'components',
+					'class' => 'WIND:core.factory.WindComponentFactory',
 				),
-			),
-			'drivers' => array(
-				'mysql' => array(
-					'builder' => 'mysql',
-					'class' => 'WIND:component.db.drivers.mysql.WindMySql',
+				'filters' => array(
+					'class' => 'WIND:core.filter.WindFilterChain',
+					'filter1' => array(
+						'class' => 'WIND:core.web.filter.WindLoggerFilter',
+					),
 				),
-			),
-			'builders' => array(
-				'mysql' => array(
-					'class' => 'WIND:component.db.drivers.mysql.WindMySqlBuilder',
+				'router' => array(
+					'class' => 'urlBasedRouter',
+				),
+				'modules' => array(
+					'default' => array(
+						'path' => 'actionControllers',
+						'default' => array(
+							'path' => 'template',
+							'ext' => 'htm',
+							'view-resolver' => array(
+								'class' => 'WIND:core.viewer.WindViewer',
+								'is-cache' => 'false',
+								'cache-dir' => 'cache',
+								'compile-dir' => 'compile',
+							),
+						),
+					),
 				),
 			),
 		),
-
+	),
+	'components' => array(
+		'windWebApp' => array(
+			'path' => 'WIND:core.web.WindWebApplication',
+			'scope' => 'request',
+			'proxy' => 'true',
+		),
+		'windLogger' => array(
+			'path' => 'WIND:component.log.WindLogger',
+			'scope' => 'request',
+			'config' => array(
+				'path' => '',
+			),
+		),
+		'urlBasedRouter' => array(
+			'path' => 'WIND:core.router.WindUrlBasedRouter',
+			'scope' => 'application',
+			'proxy' => 'true',
+			'config' => array(
+				'resource' => 'WIND:urlRouter_config',
+				'suffix' => 'xml',
+			),
+		),
+		'viewResolver' => array(
+			'path' => 'WIND:core.viewer.WindViewer',
+			'scope' => 'request',
+		),
+		'db' => array(
+			'path' => 'WIND:component.db.WindConnectionManager',
+			'scope' => 'singleton',
+		),
+	),
 );
 ?>

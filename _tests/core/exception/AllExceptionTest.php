@@ -15,7 +15,7 @@ class AllExceptionTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllException_suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllException');
 		$suite->addTestSuite('WindExceptionTest');
 		$suite->addTestSuite('WindSqlExceptionTest');
 		return $suite;
