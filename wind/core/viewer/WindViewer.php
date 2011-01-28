@@ -20,23 +20,27 @@ L::import('WIND:core.viewer.base.IWindViewer');
  * @package 
  */
 class WindViewer implements IWindViewer {
-	
+
 	protected $templateName = '';
+
 	protected $templatePath = '';
+
 	protected $templateExt = '';
-	
+
 	protected $view = null;
+
 	protected $layout = null;
-	
+
 	protected $var = array();
+
 	protected $varObj = array();
-	
+
 	/**
 	 * 获取模板信息
 	 */
 	public function windFetch($template = '') {
 		$varName = $this->getTemplateVarName();
-		@extract((array)$this->var[$varName], EXTR_REFS);
+		@extract((array) $this->var[$varName], EXTR_REFS);
 		ob_start();
 		if (($segments = $this->parserLayout()) == null) {
 			$template = $this->getViewTemplate($template);
@@ -49,7 +53,7 @@ class WindViewer implements IWindViewer {
 		}
 		return ob_get_clean();
 	}
-	
+
 	/**
 	 * 立即输出模板内容
 	 * 
@@ -58,7 +62,7 @@ class WindViewer implements IWindViewer {
 	public function immediatelyWindFetch($template = '') {
 		echo $this->windFetch($template);
 	}
-	
+
 	/**
 	 * 以对象方式访问模板变量
 	 * 
@@ -75,7 +79,7 @@ class WindViewer implements IWindViewer {
 		}
 		return $this->varObj[$templateName];
 	}
-	
+
 	/**
 	 * 以数组方式获得模板变量
 	 * @param string $key
@@ -86,7 +90,7 @@ class WindViewer implements IWindViewer {
 		if ($templateName === '') $templateName = $this->getTemplateVarName();
 		return $key === '' ? $this->var[$templateName] : $this->var[$templateName][$key];
 	}
-	
+
 	/**
 	 * @param string $actionHandle
 	 */
@@ -94,7 +98,7 @@ class WindViewer implements IWindViewer {
 		if ($this->view === null) throw new WindException('excute doAction method failed.');
 		$this->view->doAction($actionHandle, $path);
 	}
-	
+
 	/**
 	 * 设置模板变量信息
 	 * 
@@ -111,7 +115,7 @@ class WindViewer implements IWindViewer {
 		if (is_object($vars)) $vars = get_object_vars($vars);
 		if (is_array($vars)) $this->var[$varName] += $vars;
 	}
-	
+
 	/**
 	 * 设置视图信息
 	 * 
@@ -124,7 +128,7 @@ class WindViewer implements IWindViewer {
 		$this->setLayout($view->layout);
 		$this->view = $view;
 	}
-	
+
 	/**
 	 * 获得模板变量名称
 	 */
@@ -132,7 +136,7 @@ class WindViewer implements IWindViewer {
 		$varName = $this->templateName ? $this->templateName : 'default';
 		return $varName;
 	}
-	
+
 	/**
 	 * 如果存在布局文件则解析布局信息
 	 * @return array()
@@ -141,7 +145,7 @@ class WindViewer implements IWindViewer {
 		if ($this->layout === null) return null;
 		return $this->layout->parserLayout($this->templatePath, $this->templateExt, $this->templateName);
 	}
-	
+
 	/**
 	 * 模板路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
@@ -158,7 +162,7 @@ class WindViewer implements IWindViewer {
 		}
 		return L::getRealPath($templateName) . '.' . $templateExt;
 	}
-	
+
 	/**
 	 * @param WindLayout $layout the $layout to set
 	 * @author Qiong Wu

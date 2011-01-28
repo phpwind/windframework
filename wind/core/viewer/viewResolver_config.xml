@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<is-cache>false</is-cache>
+	<cache-dir>cache</cache-dir>
+	<compile-dir>compile</compile-dir>
+</config>
