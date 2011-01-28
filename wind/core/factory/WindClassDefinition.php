@@ -65,6 +65,18 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @var string
 	 */
 	protected $scope = '';
+	
+	/**
+	 * 类自定义的初始化方法
+	 * @var string
+	 */
+	protected $factoryMethod = '';
+	
+	/**
+	 * 类设置属性之后的调用处理操作
+	 * @var string
+	 */
+	protected $initMethod = '';
 
 	/**
 	 * 构造参数定义
@@ -108,13 +120,18 @@ class WindClassDefinition extends WindEnableValidateModule {
 
 	/**
 	 * 通过对象工厂创建单例对象
+	 * 如果用户配置有factory-method项，则调用该组件的该方法生成实例
+	 * 如果用户配置的该项方法不存在，则正常调用
+	 * 
+	 * @modified xiaoxia.xu
 	 * @param IWindFactory $factory
 	 * @return instance|Ambigous <prototype, void, mixed>|NULL
 	 */
 	public function getInstance($factory, $args = array()) {
+		if (($factoryMethod = $this->getFactoryMethod()) && in_array($factoryMethod, get_class_methods($this->getClassName()))) {
+			return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
+		}
 		switch ($this->scope) {
-			case 'singleton':
-				return $this->createInstanceWithSingleton($factory, $args);
 			case 'prototype':
 				return $this->createInstanceWithPrototype($factory, $args);
 			case 'request':
@@ -122,7 +139,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 			case 'application':
 				return $this->createInstanceWithApplication($factory, $args);
 			default:
-				return null;
+				return $this->createInstanceWithSingleton($factory, $args);
 		}
 	}
 
@@ -181,6 +198,8 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
+	 * 
+	 * @modified xiaoxia.xu
 	 * @param AbstractWindFactory $factory
 	 * @param array $args
 	 */
@@ -192,7 +211,19 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$instance = $factory->createInstance($this->getClassName(), $args);
 		if ($instance === null) return null;
 		$this->setProperties($this->getPropertys(), $factory, $instance);
-		
+		return $this->executeInitMethod($instance);
+	}
+	
+	/**
+	 * 执行用户配置的初始化操作
+	 * 
+	 * @author xiaoxia.xu
+	 * @param object $instance
+	 */
+	private function executeInitMethod($instance) {
+		if (($initMethod = $this->getInitMethod()) && in_array($initMethod, get_class_methods($this->getClassName()))) {
+			$instance->$initMethod();
+		}
 		return $instance;
 	}
 
@@ -244,6 +275,8 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$this->setAlias($classDefinition[self::NAME]);
 		$this->setPath($classDefinition[self::PATH]);
 		$this->setScope($classDefinition[self::SCOPE]);
+		$this->setFactoryMethod($classDefinition[self::FACTORY_METHOD]);
+		$this->setInitMethod($classDefinition[self::INIT_METHOD]);
 		$this->setPropertys($classDefinition[self::PROPERTIES]);
 		$this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
 		$this->setClassDefinition($classDefinition);
@@ -278,7 +311,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $className the $className to set
+	 * @param string $className the $className to set
 	 * @author Qiong Wu
 	 */
 	public function setClassName($className) {
@@ -286,7 +319,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $alias the $alias to set
+	 * @param string $alias the $alias to set
 	 * @author Qiong Wu
 	 */
 	public function setAlias($alias) {
@@ -294,7 +327,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $path the $path to set
+	 * @param string $path the $path to set
 	 * @author Qiong Wu
 	 */
 	public function setPath($path) {
@@ -302,11 +335,11 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $scope the $scope to set
+	 * @param string $scope the $scope to set
 	 * @author Qiong Wu
 	 */
 	public function setScope($scope) {
-		$this->scope = $scope;
+		$this->scope = strtolower($scope);
 	}
 
 	/**
@@ -331,7 +364,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $constructArgs the $constructArgs to set
+	 * @param array $constructArgs the $constructArgs to set
 	 * @author Qiong Wu
 	 */
 	public function setConstructArgs($constructArgs) {
@@ -339,7 +372,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $propertys the $propertys to set
+	 * @param array $propertys the $propertys to set
 	 * @author Qiong Wu
 	 */
 	public function setPropertys($propertys) {
@@ -347,11 +380,52 @@ class WindClassDefinition extends WindEnableValidateModule {
 	}
 
 	/**
-	 * @param $classDefinition the $classDefinition to set
+	 * @param array $classDefinition the $classDefinition to set
 	 * @author Qiong Wu
 	 */
 	public function setClassDefinition($classDefinition) {
 		$this->classDefinition = $classDefinition;
 	}
+	
+	
+	/**
+	 * return the $factoryMethod
+	 * 
+	 * @author xiaoxia.xu
+	 * @return the $factoryMethod
+	 */
+	public function getFactoryMethod() {
+		return $this->factoryMethod;
+	}
 
+	/**
+	 * return the $initMethod
+	 * 
+	 * @author xiaoxia.xu
+	 * @return the $initMethod
+	 */
+	public function getInitMethod() {
+		return $this->initMethod;
+	}
+
+	/**
+	 * the $factoryMethod to set
+	 * 
+	 * @author xiaoxia.xu
+	 * @param string $factoryMethod 
+	 */
+	public function setFactoryMethod($factoryMethod) {
+		$this->factoryMethod = $factoryMethod;
+	}
+
+	/**
+	 *  the $initMethod to set
+	 *  
+	 * @author xiaoxia.xu
+	 * @param string $initMethod
+	 */
+	public function setInitMethod($initMethod) {
+		$this->initMethod = $initMethod;
+	}
+	
 }
