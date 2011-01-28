@@ -19,6 +19,7 @@ class WindLoggerFilter extends WindFilter {
 	public function preHandle($request = null, $response = null) {
 		if (!IS_DEBUG) return;
 		$this->initWindLogger($request);
+		$this->logger->info('-------------------------------request start!!!!--------------------------------');
 	}
 
 	/* (non-PHPdoc)
@@ -26,6 +27,7 @@ class WindLoggerFilter extends WindFilter {
 	 */
 	public function postHandle($request = null, $response = null) {
 		if (!IS_DEBUG) return;
+		$this->logger->info('---------------------------------request end!!!!---------------------------------');
 		if ($this->logger instanceof WindLogger) $this->logger->flush();
 	}
 
