@@ -22,7 +22,6 @@ require_once ('core/WindErrorMessageTest.php');
 require_once ('core/WindLayoutTest.php');
 require_once ('core/WindMessageTest.php');
 require_once ('core/WindUrlManagerTest.php');
-require_once ('core/WindViewTest.php');
 
 class AllCoreTest {
 	
@@ -48,7 +47,6 @@ class AllCoreTest {
 		//$suite->addTestSuite('WindErrorMessageTest');
 		//$suite->addTestSuite('WindMessageTest');
 		//$suite->addTestSuite('WindUrlManagerTest');
-		//$suite->addTestSuite('WindViewTest');
 		return $suite;
 	}
 }

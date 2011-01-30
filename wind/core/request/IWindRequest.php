@@ -15,7 +15,7 @@
  * @package
  */
 interface IWindRequest {
-
+	
 }
 
 

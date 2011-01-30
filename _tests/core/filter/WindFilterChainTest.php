@@ -73,7 +73,6 @@ class WindFilterChainTest extends BaseTestCase {
 		$result = $handle->handle('php');
 		$tmp = ob_get_clean();
 		$this->assertEquals(1, $result);
-		echo $tmp;
 		$except = "php+bi am excute operator!\$a=php,\$b=";
 		$this->assertEquals($tmp, $except);
 	

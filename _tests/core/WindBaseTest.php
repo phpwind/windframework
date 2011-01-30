@@ -65,16 +65,10 @@ class LTest extends BaseTestCase {
 		}
 		$this->fail('Error Exception, in testImportWithException!');
 	}
-	public function testGetInstance() {
-		L::import("WIND:component.parser.WindIniParser", false);
-		$obj = L::getInstance('WindIniParser');
-		$this->assertTrue(is_object($obj) && $obj instanceof WindIniParser);
-	}
 	
 	public function testGetImports() {
-		$this->assertEquals('WindIniParser', L::getImports('WIND:component.parser.WindIniParser'));
-		$this->assertEquals('WindBase', L::getImports('WindBase'));
-		$this->assertEquals('WindSystemConfig', L::getImports('WIND:core.WindSystemConfig'));
+		$className = L::import('WIND:core.config.WindSystemConfig');
+		$this->assertEquals($className, L::getImports('WIND:core.config.WindSystemConfig'));
 	}
 	
 	public function testSetIsAutoLoad() {
@@ -84,7 +78,7 @@ class LTest extends BaseTestCase {
 	}
 	
 	public function testPerLoadInjection() {
-		L::PerLoadInjection(array('PPPPP.wer' => 'pp'));
+		L::PerLoadInjection(array(), array('PPPPP.wer' => 'pp'));
 		$this->assertEquals('pp', L::getImports('PPPPP.wer'));
 	}
 	
@@ -117,146 +111,12 @@ class WTest extends BaseTestCase {
 		parent::tearDown();
 	}
 	public function testApplication() {
-		$this->assertTrue(W::application('test') instanceof WindFrontController);
-		$config = array(
-		   'applications' => array( 'web' => array('class' => 'WIND:core.WindWebApplication'),
-									'command' => array('class' => 'WIND:core.WindCommandApplication')));
-		$this->assertTrue(W::application('test2', $config) instanceof WindFrontController);
+		$config = include(T_P . '/data/config.php');
+		$this->assertTrue(W::application('testApp', $config['wind']) instanceof WindFrontController);
+	}
+
+	public function testIsCompile() {
+		$this->assertTrue(W::ifCompile());
 	}
 }
 
-class CTest extends BaseTestCase {
-	public function setUp() {
-		parent::setUp();
-		C::init(include "data/config.php");
-	}
-	public function tearDown() {
-		parent::tearDown();
-	}
-	public function testIniWithEmpty() {
-		try {
-			C::init(array());
-		} catch(Exception $e) {
-			return;
-		}
-		$this->fail('Error Exception!');
-	}
-	private function checkArray($array, $num, $member = array(), $ifCheck = false) {
-		$this->assertTrue(is_array($array) && count($array) == $num);
-		if (empty($member)) return;
-		foreach ($member as $key => $value) {
-			($ifCheck) ? $this->assertTrue(isset($array[$key]) && $array[$key] == $value) :
-						$this->assertTrue(isset($array[$value]));
-		}
-	}
-	public function getConfig() {
-		$this->checkArray(C::getConfig(), 10);
-		$this->checkArray(C::getConfig('xxx'), 0);
-		$this->checkArray(C::getConfig('applications'), 2);
-		$this->checkArray(C::getConfig('applications', 'web'), 1, array('class' => 'WIND:core.WindWebApplication'), true);
-		$this->checkArray(C::getConfig('applications', 'wa'), 2);
-	}
-	
-	public function testGetModules() {
-		$this->checkArray(C::getModules(), 2);
-		$this->checkArray(C::getModules('modules'), 0);
-		$config = array(
-			'path' => 'actionControllers',
-			'template' => 'default',
-			'controllerSuffix' => 'controller',
-			'actionSuffix' => 'action',
-			'method' => 'run',
-		);
-		$this->checkArray(C::getModules('default'), 5, $config, true);
-		$config = array(
-			'path' => 'otherControllers',
-			'template' => 'wind',
-			'controllerSuffix' => 'controller',
-			'actionSuffix' => 'action',
-			'method' => 'run',
-		);
-		$this->checkArray(C::getModules('other'), 5, $config, true);
-	}
-	
-	public function testGetTemplate() {
-		$this->checkArray(C::getTemplate(), 2);
-		$this->checkArray(C::getTemplate('modules'), 0);
-		$config = array(
-			'dir' => 'template',
-			'default' => 'index',
-			'ext' => 'htm',
-			'resolver' => 'default',
-			'isCache' => '0',
-			'cacheDir' => 'cache',
-			'compileDir' => 'compile',
-		);
-		$this->checkArray(C::getTemplate('default'), 7, $config, true);
-		$config = array(
-			'dir' => 'template',
-			'default' => 'index',
-			'ext' => 'htm',
-			'resolver' => 'default',
-			'isCache' => '0',
-			'cacheDir' => 'cache',
-			'compileDir' => 'compile',
-		);
-		$this->checkArray(C::getTemplate('wind'), 7, $config, true);
-	}
-	
-	public function testGetFilters() {
-		$this->checkArray(C::getFilters(), 1);
-		$this->checkArray(C::getFilters('modules'), 0);
-		$config = array(
-			'class' => 'WIND:core.filter.WindFormFilter',
-		);
-		$this->checkArray(C::getFilters('WindFormFilter'), 1, $config, true);
-	}
-	
-	public function testGetViewerResolvers() {
-		$this->checkArray(C::getViewerResolvers(), 1);
-		$this->checkArray(C::getViewerResolvers('filters'), 0);
-		$config = array(
-			'class' => 'WIND:core.viewer.WindViewer',
-		);
-		$this->checkArray(C::getViewerResolvers('default'), 1, $config, true);
-	}
-	
-	public function testGetRouter() {
-		$this->checkArray(C::getRouter(), 1);
-		$this->checkArray(C::getRouter('filters'), 0);
-		$config = array('parser' => 'url');
-		$this->checkArray(C::getRouter(), 1, $config, true);
-		$this->assertEquals('url', C::getRouter('parser'));
-	}
-	
-	public function testGetRouterParsers() {
-		$this->checkArray(C::getRouterParsers(), 1);
-		$this->checkArray(C::getRouterParsers('filters'), 0);
-		$config = array(
-			'class' => 'WIND:core.router.WindUrlBasedRouter',
-		);
-		$this->checkArray(C::getRouterParsers('url'), 2, $config, true);
-		$config = C::getRouterParsers('url');
-		$check = array(
-				'a' => 'run',
-				'c' => 'index',
-				'm' => 'default',
-			);
-		$this->checkArray($config['rule'], 3, $check, true);
-	}
-	
-	public function testGetApplications() {
-		$this->checkArray(C::getApplications(), 2);
-		$this->checkArray(C::getApplications('filters'), 0);
-		$this->checkArray(C::getApplications(), 2, array('web', 'command'));
-	}
-	
-	public function testGetErrorMessage() {
-		$this->checkArray(C::getErrorMessage(), 1);
-		$this->checkArray(C::getErrorMessage('filters'), 0);
-		$config = array(
-			'class' => 'WIND:core.WindErrorAction',
-		);
-		$this->checkArray(C::getErrorMessage('default'), 1, $config, true);
-	}
-}

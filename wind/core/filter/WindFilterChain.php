@@ -40,7 +40,6 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 	 * @param string $beforFilter
 	 */
 	public function addFilter($filter, $beforFilter = '') {
-		$addIndex = count($this->filters);
 		if ($beforFilter === '') {
 			$this->addInterceptors(array(get_class($filter) => $filter));
 			return true;
