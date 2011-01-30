@@ -141,6 +141,13 @@ class WindClassDefinition extends WindEnableValidateModule {
 		}
 	}
 	
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param array $args
+	 * @throws WindException
+	 * @return NULL|mixed
+	 */
 	private function executeFactoryMethod($args) {
 		if (!($factoryMethod = $this->getFactoryMethod())) return null;
 		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) 
