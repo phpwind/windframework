@@ -6,13 +6,14 @@
  * @license 
  */
 
+L::import('WIND:WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindAction {
+abstract class WindAction extends WindModule {
 
 	protected $request;
 
@@ -25,6 +26,18 @@ abstract class WindAction {
 	public function __construct($request, $response) {
 		$this->request = $request;
 		$this->response = $response;
+	}
+
+	/**
+	 * 根据路由信息重定向执行方法
+	 * 
+	 * @param AbstractWindRouter $handlerAdapter
+	 */
+	public function doAction($handlerAdapter) {
+		$this->beforeAction();
+		$this->run();
+		$this->afterAction();
+		return $this->forward();
 	}
 
 	public function beforeAction() {}
@@ -130,18 +143,6 @@ abstract class WindAction {
 	 */
 	public function setTemplateConfig($templateConfigName = '') {
 		$this->forward()->setTemplateConfig($templateConfigName);
-	}
-
-	/**
-	 * 根据路由信息重定向执行方法
-	 * 
-	 * @param AbstractWindRouter $handlerAdapter
-	 */
-	public function doAction($handlerAdapter) {
-		$this->beforeAction();
-		$this->run();
-		$this->afterAction();
-		return $this->forward();
 	}
 
 	/**

@@ -37,8 +37,11 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		try {
 			$handler = $this->getHandler($request, $response);
 			$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter($request)));
+			
+			$this->render($forward);
 		
 		} catch (WindException $exception) {
+			
 			$this->noActionHandlerFound($request, $response, $exception->getMessage());
 		}
 	}
@@ -52,7 +55,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		
 		$handler = $handlerAdapter->getHandler($request, $response);
 		$handler = $this->windFactory->createInstance($handler, array($request, $response));
-		return $handler;
+		if ($handler instanceof WindAction)
+			return $handler;
+		else
+			throw new WindException('WindAction', WindException::ERROR_CLASS_TYPE_ERROR);
 	}
 
 	/**
@@ -100,8 +106,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 
 	/**
 	 * Enter description here ...
+	 * 
+	 * @param WindForward $forward
 	 */
-	protected function render() {
+	protected function render($forward) {
 
 	}
 

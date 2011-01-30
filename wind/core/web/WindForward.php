@@ -6,6 +6,7 @@
  * @license 
  */
 
+L::import('WIND:core.WindModule');
 /**
  * 操作转发类，将操作句柄转发给下一个操作或者转发给一个视图处理
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,26 +14,29 @@
  * @version $Id$ 
  * @package 
  */
-class WindForward {
-	
+class WindForward extends WindModule {
+
 	/* 模板视图信息 */
 	private $templateName;
+
 	private $templatePath;
+
 	private $templateConfig;
-	
+
 	/* 布局信息 */
 	private $layout = null;
-	
+
 	/* 操作处理请求 */
 	private $action;
+
 	private $actionPath;
-	
+
 	/* 页面重定向请求信息 */
 	private $redirecter = null;
-	
+
 	/* 模板变量信息 */
 	private $vars = array();
-	
+
 	public function setVars($vars, $key = '') {
 		if (!$key) {
 			if (is_object($vars)) $vars = get_object_vars($vars);
@@ -41,7 +45,7 @@ class WindForward {
 			$this->vars[$key] = $vars;
 		return;
 	}
-	
+
 	/**
 	 * 设置视图的逻辑名称
 	 * 
@@ -51,7 +55,7 @@ class WindForward {
 	public function setTemplateName($templateName) {
 		$this->templateName = $templateName;
 	}
-	
+
 	/**
 	 * 设置视图的路径信息
 	 * 
@@ -60,7 +64,7 @@ class WindForward {
 	public function setTemplatePath($templatePath) {
 		$this->templatePath = $templatePath;
 	}
-	
+
 	/**
 	 * 设置模板配置
 	 * 
@@ -69,14 +73,14 @@ class WindForward {
 	public function setTemplateConfig($templateConfigName) {
 		$this->templateConfig = $templateConfigName;
 	}
-	
+
 	/**
 	 * @param WindLayout $layout
 	 */
 	public function setLayout($layout) {
 		$this->layout = $layout;
 	}
-	
+
 	/**
 	 * 设置视图的重定向信息
 	 * 
@@ -85,7 +89,7 @@ class WindForward {
 	public function setRedirect($redirect = '', $args = '') {
 		$this->redirecter = new WindUrlManager($redirect, $args);
 	}
-	
+
 	/**
 	 * @param $action the $action to set
 	 * @author Qiong Wu
@@ -95,7 +99,7 @@ class WindForward {
 		$this->actionPath = $path;
 		if ($isRedirect) $this->setRedirect('', $args);
 	}
-	
+
 	/**
 	 * 返回视图的逻辑名称
 	 * @return string
@@ -103,7 +107,7 @@ class WindForward {
 	public function getTemplateName() {
 		return $this->templateName;
 	}
-	
+
 	/**
 	 * 返回视图的路径信息
 	 * @return string
@@ -111,7 +115,7 @@ class WindForward {
 	public function getTemplatePath() {
 		return $this->templatePath;
 	}
-	
+
 	/**
 	 * 获得Action操作句柄
 	 * @return the $action
@@ -119,7 +123,7 @@ class WindForward {
 	public function getAction() {
 		return $this->action;
 	}
-	
+
 	/**
 	 * 获取Action请求的路径信息
 	 * @return the $actionPath
@@ -127,7 +131,7 @@ class WindForward {
 	public function getActionPath() {
 		return $this->actionPath;
 	}
-	
+
 	/**
 	 * 获取布局对象
 	 * @return WindLayout
@@ -135,7 +139,7 @@ class WindForward {
 	public function getLayout() {
 		return $this->layout;
 	}
-	
+
 	/**
 	 * 获得模板配置名称
 	 * @return the $templateConfig
@@ -143,7 +147,7 @@ class WindForward {
 	public function getTemplateConfig() {
 		return $this->templateConfig;
 	}
-	
+
 	/**
 	 * 获得操作输出数据变量
 	 * @return array
@@ -151,7 +155,7 @@ class WindForward {
 	public function getVars() {
 		return $this->vars;
 	}
-	
+
 	/**
 	 * @return WindRedirecter $redirecter
 	 */
