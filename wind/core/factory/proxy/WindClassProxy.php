@@ -54,7 +54,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param $value
 	 */
 	public function _setProperty($propertyName, $value) {
-		$this->getInstance()->$propertyName = $value;
+		$this->_getInstance()->$propertyName = $value;
 		return true;
 	}
 
@@ -84,7 +84,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param string $propertyName
 	 */
 	public function _getProperty($propertyName) {
-		return $this->getInstance()->$propertyName;
+		return $this->_getInstance()->$propertyName;
 	}
 
 	/**

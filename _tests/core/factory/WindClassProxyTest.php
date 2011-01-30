@@ -12,8 +12,8 @@ class WindClassProxyTest extends BaseTestCase {
 
 	public function testCreatInstance() {
 		list($instance) = $this->createInstance('Persion');
-		$this->assertEquals(get_class($instance->getInstance()), 'Persion');
-		$this->assertEquals($instance->getReflection()->getName(), 'Persion');
+		$this->assertEquals(get_class($instance->_getInstance()), 'Persion');
+		$this->assertEquals($instance->_getReflection()->getName(), 'Persion');
 	}
 
 	public function testProxy() {
@@ -39,7 +39,7 @@ class WindClassProxyTest extends BaseTestCase {
 	public function testGetter() {
 		list($instance, $listener) = $this->createInstance('Persion');
 		$instance->name = 'wuqiong01';
-		$this->assertEquals('wuqiong01', $instance->getInstance()->name);
+		$this->assertEquals('wuqiong01', $instance->_getInstance()->name);
 		
 		$instance->registerEventListener('name', $listener, WindClassProxy::EVENT_TYPE_GETTER);
 		$instance->name = 'wuqiong';
@@ -51,7 +51,7 @@ class WindClassProxyTest extends BaseTestCase {
 	public function testSetter() {
 		list($instance, $listener) = $this->createInstance('Persion');
 		$instance->name = 'wuqiong01';
-		$this->assertEquals('wuqiong01', $instance->getInstance()->name);
+		$this->assertEquals('wuqiong01', $instance->_getInstance()->name);
 		
 		$instance->registerEventListener('name', $listener, WindClassProxy::EVENT_TYPE_SETTER);
 		$instance->name = 'wuqiong';
