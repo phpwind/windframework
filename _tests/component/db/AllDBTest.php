@@ -18,9 +18,9 @@ class AllDBTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllDBTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllDBTest');
 		$suite->addTestSuite('WindMysqlBuilderTest');
-		$suite->addTestSuite('WindMySqlTest');
+		//$suite->addTestSuite('WindMySqlTest');
 		$suite->addTestSuite('WindConnectionManagerTest');
 		/*$suite->addTestSuite('WindMsSqlBuilderTest');
 		$suite->addTestSuite('WindMsSqlTest');*/

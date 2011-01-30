@@ -7,8 +7,7 @@
  */
 //require_once ('component/config/WindConfigParserTest.php');
 require_once ('component/db/AllDBTest.php');
-require_once ('component/form/WindActionFormTest.php');
-require_once ('component/form/WindFormFilterTest.php');
+require_once ('component/form/AllFormTest.php');
 require_once ('component/format/AllFormatTest.php');
 require_once ('component/log/AllLogTest.php');
 require_once ('component/mail/AllMailTest.php');
@@ -24,11 +23,10 @@ class AllComponentTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllComponentTest');
 		//$suite->addTestSuite('WindConfigParserTest');
 		$suite->addTest(ALLDBTest::suite());
-		$suite->addTestSuite('WindActionFormTest');
-		$suite->addTestSuite('WindFormFilterTest');
+		$suite->addTest(ALLFormTest::suite());
 		$suite->addTest(ALLFormatTest::suite());
 		$suite->addTest(AllLogTest::suite());
 		$suite->addTest(AllMailTest::suite());

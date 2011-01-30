@@ -20,7 +20,7 @@ class AllMailTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllMailTest');
 		//$suite->addTestSuite('WindImapTest');
 		//$suite->addTestSuite('WindPop3Test');
 		//$suite->addTestSuite('WindSmtpTest');

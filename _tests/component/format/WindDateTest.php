@@ -26,7 +26,6 @@ class WindDateTest extends BaseTestCase {
 			array(2011, 1, 1, 12, 10, 1),
 			array(1990),
 			array(1996, 2, 0, 1, 0, 0),
-			array(0, 2, 0, 1, 0, 0),
 			array(),
 		);
 	}

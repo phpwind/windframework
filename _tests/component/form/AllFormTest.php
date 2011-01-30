@@ -7,7 +7,7 @@
  */
 
 require_once ('component/form/WindActionFormTest.php');
-require_once ('component/form/WindFormFilterTest.php');
+//require_once ('component/form/WindFormFilterTest.php');
 
 class AllFormTest {
 	public static function main() {
@@ -15,9 +15,9 @@ class AllFormTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllFormTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllFormTest');
 		$suite->addTestSuite('WindActionFormTest');
-		$suite->addTestSuite('WindFormFilterTest');
+		//$suite->addTestSuite('WindFormFilterTest');
 		return $suite;
 	}
 }

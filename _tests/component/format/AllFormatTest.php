@@ -16,7 +16,7 @@ class AllFormatTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllFormatTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllFormatTest');
 		$suite->addTestSuite('WindDateTest');
 		$suite->addTestSuite('WindStringGBKTest');
 		$suite->addTestSuite('WindStringUTF8Test');

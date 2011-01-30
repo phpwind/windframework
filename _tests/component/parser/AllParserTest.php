@@ -16,7 +16,7 @@ class AllParserTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllComponentTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllParserTest');
 		$suite->addTestSuite('WindIniParserTest');
 		$suite->addTestSuite('WindPropertiesParserTest');
 		$suite->addTestSuite('WindXmlParserTest');

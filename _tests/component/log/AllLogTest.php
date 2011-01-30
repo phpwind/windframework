@@ -15,7 +15,7 @@ class AllLogTest {
 	}
 	
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('AllLogTest_Suite');
+		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllLogTest');
 		$suite->addTestSuite('WindDebugTest');
 		$suite->addTestSuite('WindLoggerTest');
 		return $suite;

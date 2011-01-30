@@ -23,20 +23,18 @@ class WindFormFilterTest extends BaseTestCase {
 	public function setUp() {
 		parent::setUp();
 		require_once ('component/form/WindFormFilter.php');
-		require_once ('core/base/WindModule.php');
 		require_once ('component/form/WindActionForm.php');
-		require_once ('core/WindHttpRequest.php');
-		require_once ('core/WindHttpResponse.php');
-		require_once ('core/WindSystemConfig.php');
+		require_once ('core/request/WindHttpRequest.php');
+		require_once ('core/response/WindHttpResponse.php');
+		require_once ('core/config/WindSystemConfig.php');
 		$array = array('extensionConfig' => array('formConfig' => 'TEST:data.formConfig'));
-		$systemConfig = new WindSystemConfig($array);
+		$systemConfig = new WindSystemConfig($array, 'testApp');
 		$_GET['name'] = 'phpwind';
 		$_GET['address'] = 'hz';
 		$_GET['nick'] = 'xiaxia';
 		$_GET['formName'] = 'TestForm';
 		$this->request = new WindHttpRequest();
-		$this->response = new WindHttpResponse();
-		$this->response->setData($systemConfig, 'WindSystemConfig');
+		$this->response = $this->request->getResponse();
 		$dispatcher = new WindWebDispatcher($this->request, $this->response);
 		$dispatcher->module = 'default';
 		$this->response->setDispatcher($dispatcher);

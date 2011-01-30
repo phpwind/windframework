@@ -26,13 +26,16 @@ class WindMySqlBuilderTest extends BaseTestCase {
 	public function tearDown() {
 		parent::tearDown();
 	}
-	
+	private function getDBConfig($parent, $name = '') {
+		$config = include T_P . '/data/db_config.php';
+		return $config[$parent][$name];
+	}
 	public function init() {
 		require_once('component/db/base/IWindDbConfig.php');
 		require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
 		require_once('component/db/drivers/mysql/WindMySql.php');
 		if ($this->WindMySqlBuilder == null) {
-			$this->config = C::getDataBaseConnection('phpwind_8');
+			$this->config = $this->getDBConfig('connections', 'phpwind');
 			$this->adapter = new WindMySql($this->config);
 			$this->WindMySqlBuilder = new WindMySqlBuilder($this->adapter);
 		}

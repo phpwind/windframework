@@ -15,10 +15,13 @@ require_once ('component/db/base/IWindDbConfig.php');
 class WindConnectionManagerTest extends BaseTestCase {
 	private $dbManager = null;
 	private $config = array();
+	private function getDBConfig() {
+		return include (T_P . '/data/db_config.php');
+	}
 	public function init() {
 		require_once ('component/db/WindConnectionManager.php');
 		if ($this->dbManager == null) {
-			$this->config = C::getDataBase();
+			$this->config = $this->getDBConfig();
 			$this->dbManager = new WindConnectionManager($this->config);
 		}
 	}
@@ -33,7 +36,7 @@ class WindConnectionManagerTest extends BaseTestCase {
 	}
 	
 	public static function providerConnection() {
-		return array(array('', ''), array('phpwind_8', ''), array('', IWindDbConfig::CONN_MASTER), 
+		return array(array('', ''), array('phpwind', ''), array('', IWindDbConfig::CONN_MASTER), 
 			array('', IWindDbConfig::CONN_SLAVE));
 	}
 	

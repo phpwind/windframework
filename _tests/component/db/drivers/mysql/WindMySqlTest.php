@@ -21,13 +21,17 @@ class WindMySqlTest extends BaseTestCase {
 	private $deleteSql = "DELETE FROM pw_actions WHERE id = 2";
 	private $config = array();
 	
+	private function getDBConfig($parent, $name = '') {
+		$config = include T_P . '/data/db_config.php';
+		return $config[$parent][$name];
+	}
 	
 	public function init() {
 		require_once('component/db/base/IWindDbConfig.php');
 		require_once('component/db/drivers/mysql/WindMySqlBuilder.php');
 		require_once('component/db/drivers/mysql/WindMySql.php');
 		if ($this->WindMySql == null) {
-			$this->config = C::getDataBaseConnection('phpwind_8');
+			$this->config = $this->getDBConfig('connections', 'phpwind');
 			$this->WindMySql = new WindMySql($this->config);
 		}
 	}
