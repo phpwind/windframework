@@ -26,7 +26,7 @@ class WindSqlExceptionTest extends BaseTestCase {
      	try{
      		throw new WindSqlException('error', WindSqlException::DB_CONN_EMPTY);
      	}catch(Exception $e) {
-     		$this->assertEquals("'error' Database configuration is empty.", $e->getMessage());
+     		$this->assertEquals("Database configuration is empty. 'error' ", $e->getMessage());
      		$this->assertEquals('WindSqlException', get_class($e));
      		return;
      	}

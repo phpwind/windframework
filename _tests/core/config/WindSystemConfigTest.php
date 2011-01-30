@@ -21,6 +21,7 @@ class WindSystemConfigTest extends BaseTestCase {
 		parent::setUp();
 		require_once ('core/config/WindSystemConfig.php');
 		require_once ('core/config/parser/WindConfigParser.php');
+		L::register(T_P, 'TEST');
 		$this->testConfig = include 'data/config.php';
 		$this->config = new WindSystemConfig($this->testConfig['wind'], new WindConfigParser(), 'testApp');
 	}
@@ -34,7 +35,58 @@ class WindSystemConfigTest extends BaseTestCase {
 		}
 	}
 	
-	public function testAppName() {
+	public function testGetConfig() {
+		$this->assertArrayEquals($this->getComponentConfig(), $this->config->getConfig('classes'));
+	}
+	
+	private function getComponentConfig() {
+		return	array(
+			'windWebApp' => array(
+				'path' => 'WIND:core.web.WindWebApplication',
+				'scope' => 'request',
+				'proxy' => 'true',
+			),
+			'windLogger' => array(
+				'path' => 'WIND:component.log.WindLogger',
+				'scope' => 'request',
+				'config' => array(
+					'path' => '',
+				),
+			),
+			'urlBasedRouter' => array(
+				'path' => 'WIND:core.router.WindUrlBasedRouter',
+				'scope' => 'application',
+				'proxy' => 'true',
+				'config' => array(
+					'resource' => 'WIND:urlRouter_config',
+					'suffix' => 'xml',
+				),
+			),
+			'viewResolver' => array(
+				'path' => 'WIND:core.viewer.WindViewer',
+				'scope' => 'request',
+			),
+			'db' => array(
+				'path' => 'WIND:component.db.WindConnectionManager',
+				'scope' => 'singleton',
+			),
+		);
+	}
+	public function testGetConfigParser() {
+		$this->assertTrue($this->config->getConfigParser() instanceof WindConfigParser);
+	}
+	
+	public function testGetCacheName() {
+		$this->assertEquals('testApp_config', $this->config->getCacheName());
+	}
+	
+	public function testGetAppend() {
+		$this->assertFalse($this->config->getAppend());
+		$this->config->setAppend('php');
+		$this->assertEquals('php', $this->config->getAppend());
+	}
+	
+	public function testGetAppName() {
 		$this->assertEquals('testApp', $this->config->getAppName());
 	}
 	
@@ -46,119 +98,57 @@ class WindSystemConfigTest extends BaseTestCase {
 		$this->assertEquals('', $this->config->getRootPath());
 	}
 	
-	public function testGetConfig() {
-		$config = $this->config->getConfig('wind');
-		$this->assertTrue(is_array($config) && count($config) == 0);
-		
+	public function testGetFactory() {
+		$config = $this->config->getFactory();
+		$righ = array('class-definition' => 'components',
+					'class' => 'WIND:core.factory.WindComponentFactory');
+		$this->assertArrayEquals($righ, $config);
+		$this->assertEquals('WIND:core.factory.WindComponentFactory', $this->config->getFactory('class'));
 	}
 	
-	private function checkArray($array, $num, $member = array(), $ifCheck = false) {
-		$this->assertTrue(is_array($array));
-		$this->assertTrue($num == count($array));
-		if (!$member) return;
-		foreach ($member as $key => $value) {
-			($ifCheck) ? $this->assertTrue(isset($array[$key]) && ($array[$key] == $value)) : $this->assertTrue(isset($array[$value]));
-		}
-	}
-	public function testGetModules() {
-		$config = $this->config->getModules();
-		$this->checkArray($config, 2, array('default', 'other'));
-		$this->checkArray($config['default'], 5, array('path' => 'actionControllers', 'template' => 'default', 
-			'controllerSuffix' => 'controller', 'actionSuffix' => 'action', 'method' => 'run'), true);
-		$this->checkArray($config['other'], 5, array('path' => 'otherControllers', 'template' => 'wind', 
-			'controllerSuffix' => 'controller', 'actionSuffix' => 'action', 'method' => 'run'), true);
-	}
-	public function testGetTemplate() {
-		$config = $this->config->getTemplate();
-		$this->checkArray($config, 2, array('default', 'wind'));
-		$this->checkArray($config['default'], 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
-			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
-		$this->checkArray($config['wind'], 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
-			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
-	}
-	public function testGetTemplateByName() {
-		$config = $this->config->getTemplate('default');
-		$this->checkArray($config, 7, array('dir' => 'template', 'default' => 'index', 'ext' => 'htm', 
-			'resolver' => 'default', 'isCache' => '0', 'cacheDir' => 'cache', 'compileDir' => 'compile'), true);
-		$config = $this->config->getTemplate('template');
-		$this->checkArray($config, 0);
-	}
 	public function testGetFilters() {
-		$config = $this->config->getFilters();
-		$this->checkArray($config, 1, array('WindFormFilter'));
-		$this->checkArray($config['WindFormFilter'], 1, array('class' => 'WIND:core.filter.WindFormFilter'), true);
-	}
-	public function testGetFiltersByName() {
-		$config = $this->config->getFilters('WindFormFilter');
-		$this->checkArray($config, 1, array('class' => 'WIND:core.filter.WindFormFilter'), true);
-		
-		$this->checkArray($this->config->getFilters('class'), 0);
-	}
-	public function testGetViewerResolvers() {
-		$config = $this->config->getViewerResolvers();
-		$this->checkArray($config['default'], 1, array('class' => 'WIND:core.viewer.WindViewer'), true);
-	}
-	public function testGetViewerResolversByName() {
-		$config = $this->config->getViewerResolvers('default');
-		$this->assertEquals('WIND:core.viewer.WindViewer', $config['class']);
-		
-		$this->checkArray($this->config->getViewerResolvers('other'), 0);
-	}
-	public function testGetRouter() {
-		$config = $this->config->getRouter();
-		$this->checkArray($config, 1, array('parser' => 'url'), true);
+		$filter = array('class' => 'WIND:core.filter.WindFilterChain',
+					'filter1' => array('class' => 'WIND:core.web.filter.WindLoggerFilter'),);
+		$this->assertArrayEquals($filter, $this->config->getFilters());
+		$this->assertEquals('WIND:core.filter.WindFilterChain', $this->config->getFilters('class'));
 	}
 	
-	public function testGetRouterByName() {
-		$this->assertEquals('url', $this->config->getRouter('parser'));
-		$this->checkArray($this->config->getRouter('parserTwo'), 0);
+	public function testGetRouter() {
+		$router = array('class' => 'urlBasedRouter',);
+		$this->assertArrayEquals($router, $this->config->getRouter());
+		$this->assertEquals('urlBasedRouter', $this->config->getRouter('class'));
 	}
-	public function testGetRouterParsers() {
-		$config = $this->config->getRouterParsers();
-		$this->checkArray($config, 1, array('url'));
-		$this->checkArray($config['url'], 2, array('rule', 'class'));
-		$this->checkArray($config['url']['rule'], 3, array('a' => 'run', 'c' => 'index', 'm' => 'default'), true);
-		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['url']['class']);
+
+	public function testGetModules() {
+		$modules = array('default' => array(
+							'path' => 'actionControllers',
+							'default' => array(
+								'path' => 'template',
+								'ext' => 'htm',
+								'view-resolver' => array(
+									'class' => 'WIND:core.viewer.WindViewer',
+									'is-cache' => 'false',
+									'cache-dir' => 'cache',
+									'compile-dir' => 'compile',
+								),
+							),
+						),
+					);
+		$this->assertArrayEquals($modules, $this->config->getModules());
+		$this->assertEquals($modules['default'], $this->config->getModules('default'));
 	}
-	public function testGetRouterParsersByName() {
-		$config = $this->config->getRouterParsers('url');
-		$this->checkArray($config, 2, array('rule', 'class'));
-		$this->checkArray($config['rule'], 3, array('a' => 'run', 'c' => 'index', 'm' => 'default'), true);
-		$this->assertEquals('WIND:core.router.WindUrlBasedRouter', $config['class']);
-		
-		$this->checkArray($this->config->getRouterParsers('write'), 0);
+	
+	public function testGetTemplate() {
+		throw new PHPUnit_Framework_IncompleteTestError('no complete');
+	}
+	
+	public function testGetViewerResolvers() {
+		throw new PHPUnit_Framework_IncompleteTestError('no complete');
 	}
 	public function testGetApplications() {
-		$config = $this->config->getApplications();
-		$this->checkArray($config, 2, array('web', 'command'));
-		$this->checkArray($config['web'], 1, array('class' => 'WIND:core.WindWebApplication'), true);
-		$this->checkArray($config['command'], 1, array('class' => 'WIND:core.WindCommandApplication'), true);
-	}
-	public function testGetApplicationsByName() {
-		$config = $this->config->getApplications('web');
-		$this->checkArray($config, 1, array('class' => 'WIND:core.WindWebApplication'), true);
-		
-		$this->checkArray($this->config->getApplications('web2.0'), 0);
+		throw new PHPUnit_Framework_IncompleteTestError('no complete');
 	}
 	public function testGetErrorMessage() {
-		$config = $this->config->getErrorMessage();
-		$this->checkArray($config['default'], 1, array('class' => 'WIND:core.WindErrorAction'), true);
-	}
-	public function testGetErrorMessageByName() {
-		$errorConfig = $this->config->getErrorMessage('default');
-		$this->assertEquals('WIND:core.WindErrorAction', $errorConfig['class']);
-		
-		$this->checkArray($this->config->getErrorMessage('errorMessage'), 0);
-	}
-	public function testGetExtensionConfig() {
-		$config = $this->config->getExtensionConfig();
-		$this->checkArray($config, 2, array('formConfig' => 'WIND:component.form.form_config', 
-			'dbConfig' => 'WIND:component.form.db_config'), true);
-	}
-	
-	public function testGetExtensionConfigByName() {
-		$config = $this->config->getExtensionConfig('formConfig');
-		$this->assertEquals('WIND:component.form.form_config', $config);
-		$this->checkArray($this->config->getExtensionConfig('componentConfigs'), 0);
+		throw new PHPUnit_Framework_IncompleteTestError('no complete');
 	}
 }

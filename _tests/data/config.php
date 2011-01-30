@@ -3,13 +3,13 @@
 	'wind' => array(
 		'imports' => array(
 			'components' => array(
-				'resource' => 'WIND:component_config',
+				'resource' => 'TEST:data.component_config',
 				'suffix' => 'xml',
 				'init-delay' => 'false',
 				'is-append' => 'true',
 			),
 			'classes' => array(
-				'resource' => 'WIND:classes_config',
+				'resource' => 'TEST:data.classes_config',
 				'suffix' => 'xml',
 				'init-delay' => 'false',
 				'is-append' => 'true',
