@@ -9,13 +9,13 @@
  */
 
 class WindClassProxyTest extends BaseTestCase {
-
+	
 	public function testCreatInstance() {
 		list($instance) = $this->createInstance('Persion');
 		$this->assertEquals(get_class($instance->_getInstance()), 'Persion');
 		$this->assertEquals($instance->_getReflection()->getName(), 'Persion');
 	}
-
+	
 	public function testProxy() {
 		list($instance, $listener) = $this->createInstance('Persion');
 		$result = $instance->testPersion('a1', 'b1');
@@ -35,7 +35,7 @@ class WindClassProxyTest extends BaseTestCase {
 		$this->assertEquals($listener1->arg1, 'a_pre_a_post');
 		$this->assertEquals($listener1->arg2, 'b_pre_b_post');
 	}
-
+	
 	public function testGetter() {
 		list($instance, $listener) = $this->createInstance('Persion');
 		$instance->name = 'wuqiong01';
@@ -47,7 +47,7 @@ class WindClassProxyTest extends BaseTestCase {
 		$this->assertEquals($_value, 'wuqiong');
 		$this->assertEquals($listener->testB, 'name_postHandle');
 	}
-
+	
 	public function testSetter() {
 		list($instance, $listener) = $this->createInstance('Persion');
 		$instance->name = 'wuqiong01';
@@ -58,7 +58,7 @@ class WindClassProxyTest extends BaseTestCase {
 		$this->assertEquals($listener->test, 'wuqiong_preHandle');
 		$this->assertEquals($listener->testB, 'wuqiong_postHandle');
 	}
-
+	
 	/**
 	 * Enter description here ...
 	 * 
@@ -71,7 +71,7 @@ class WindClassProxyTest extends BaseTestCase {
 		$listener = new Listener();
 		return array($instance, $listener);
 	}
-
+	
 	/**
 	 * Prepares the environment before running a test.
 	 */
@@ -80,7 +80,7 @@ class WindClassProxyTest extends BaseTestCase {
 		require_once 'core/factory/proxy/WindClassProxy.php';
 		require_once 'data/ForWindClassProxy.php';
 	}
-
+	
 	/**
 	 * Cleans up the environment after running a test.
 	 */
@@ -88,7 +88,7 @@ class WindClassProxyTest extends BaseTestCase {
 		
 		parent::tearDown();
 	}
-
+	
 	/**
 	 * Constructs the test case.
 	 */

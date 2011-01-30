@@ -1,17 +1,17 @@
 <?php
 /**
- * @author xiaoxia xu <x_824@sina.com> 2011-1-14
+ * @author xiaoxia xu <x_824@sina.com> 2011-1-30
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
 
-class WindFactoryTest extends BaseTestCase {
+class WindComponentFactoryTest extends BaseTestCase {
 	private $factory = null;
 	public function setUp() {
 		parent::setUp();
-		require_once ('core/factory/WindFactory.php');
-		$this->factory = new WindFactory($this->getTestData());
+		require_once ('core/factory/WindComponentFactory.php');
+		$this->factory = new WindComponentFactory($this->getTestData());
 	}
 	
 	public function tearDown() {
@@ -19,7 +19,6 @@ class WindFactoryTest extends BaseTestCase {
 	}
 	
 	public function testGetInstance() {
-		//$this->assertNull($this->factory->getInstance('xxx'));
 		$this->assertTrue($this->factory->getInstance('ppp', 'default') instanceof WindView);
 	}
 	
@@ -37,21 +36,27 @@ class WindFactoryTest extends BaseTestCase {
 	}
 	
 	public function testGetClassDefinitionByAlias() {
-		//$this->assertNull($this->factory->getClassDefinitionByAlias('xxx'));
-		$this->assertTrue($this->factory->getClassDefinitionByAlias('ppp') instanceof WindClassDefinition);
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('ppp') instanceof WindComponentDefinition);
 	}
 	
 	public function testAddClassDefinitions() {
-		$p = new WindClassDefinition(array('name' => 'kkk', 'path' => 'WIND:core.WindView'));
+		$p = new WindComponentDefinition(array('name' => 'kkk', 'path' => 'WIND:core.WindView'));
 		$this->factory->addClassDefinitions($p);
-		$this->assertTrue($this->factory->getClassDefinitionByAlias('kkk') instanceof WindClassDefinition);
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('kkk') instanceof WindComponentDefinition);
 		
-		$p = new WindClassDefinition(array('name' => 'ooo', 'path' => 'WIND:core.WindView'));
+		$p = new WindComponentDefinition(array('name' => 'ooo', 'path' => 'WIND:core.WindView'));
 		$this->factory->addClassDefinitions(array($p));
-		$this->assertTrue($this->factory->getClassDefinitionByAlias('ooo') instanceof WindClassDefinition);
+		$this->assertTrue($this->factory->getClassDefinitionByAlias('ooo') instanceof WindComponentDefinition);
 	}
 	
 	private function getTestData() {
-		return array('ppp' => array('name' => 'pppp', 'path' => 'WIND:core.WindView'));
+		return array(
+		   'ppp' => array(
+	            'name' => 'pppp',
+				'path' => 'WIND:core.WindView',
+				'resource' = ''
+		   ),
+        )
+		;
 	}
 }

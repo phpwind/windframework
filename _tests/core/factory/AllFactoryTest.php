@@ -7,8 +7,9 @@
  */
 
 include ('core/factory/WindClassProxyTest.php');
-include('core/factory/WindClassDefinitionTest.php');
-include('core/factory/WindFactoryTest.php');
+include ('core/factory/WindClassDefinitionTest.php');
+include ('core/factory/WindComponentFactoryTest.php');
+include ('core/factory/WindFactoryTest.php');
 
 class AllFactoryTest {
 	public static function main() {
@@ -19,6 +20,7 @@ class AllFactoryTest {
 		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllFactoryTest');
 		$suite->addTestSuite('WindClassProxyTest');
 		$suite->addTestSuite('WindClassDefinitionTest');
+		$suite->addTestSuite('WindComponentFactoryTest');
 		$suite->addTestSuite('WindFactoryTest');
 		return $suite;
 	}
