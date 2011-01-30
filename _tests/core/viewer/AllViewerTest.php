@@ -7,6 +7,7 @@
  */
 
 require_once ('core/viewer/WindViewerTest.php');
+require_once ('core/viewer/WindViewTest.php');
 
 class AllViewerTest {
 	public static function main() {
@@ -16,6 +17,7 @@ class AllViewerTest {
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllViewerTest');
 		$suite->addTestSuite('WindViewerTest');
+		$suite->addTestSuite('WindViewTest');
 		return $suite;
 	}
 }

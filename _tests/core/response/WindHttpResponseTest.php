@@ -18,7 +18,7 @@ class WindHttpResponseTest extends BaseTestCase {
 	private $httpResponse;
 	public function setUp() {
 		parent::setUp();
-		require_once('core/WindHttpResponse.php');
+		require_once('core/response/WindHttpResponse.php');
 		require_once('core/exception/WindException.php');
 		$this->httpResponse = WindHttpResponse::getInstance();
 	}

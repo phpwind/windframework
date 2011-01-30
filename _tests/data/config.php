@@ -68,8 +68,18 @@
 			'scope' => 'application',
 			'proxy' => 'true',
 			'config' => array(
-				'resource' => 'WIND:urlRouter_config',
-				'suffix' => 'xml',
+				'module' => array(
+					'url-param' => 'm',
+					'default-value' => 'default',
+				),
+				'controller' => array(
+					'url-param' => 'c',
+					'default-value' => 'index',
+				),
+				'action' => array(
+					'url-param' => 'a',
+					'default-value' => 'run',
+				),
 			),
 		),
 		'viewResolver' => array(

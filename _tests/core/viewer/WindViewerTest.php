@@ -84,8 +84,8 @@ class WindViewerTest extends BaseTestCase {
 	protected function setUp() {
 		parent::setUp();
 		require_once 'core/viewer/WindViewer.php';
-		require_once 'core/WindView.php';
-		require_once 'core/WindLayout.php';
+		require_once 'core/viewer/WindView.php';
+		require_once 'core/viewer/WindLayout.php';
 		$this->viewer = new WindViewer();
 		$this->initViewerWithView();
 	}

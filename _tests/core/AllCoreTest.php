@@ -39,7 +39,7 @@ class AllCoreTest {
 		$suite->addTestSuite('WindHttpRequestTest');
 		$suite->addTestSuite('WindHttpResponseTest');
 		$suite->addTest(AllRouterTest::suite());
-		$suite->addTest(AllViewerTest::suite());
+		//$suite->addTest(AllViewerTest::suite());
 		//$suite->addTest(AllWebTest::suite());
 		
 		$suite->addTestSuite('LTest');

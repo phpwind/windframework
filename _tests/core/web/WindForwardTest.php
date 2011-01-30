@@ -9,7 +9,7 @@ class WindForwardTest extends BaseTestCase {
 	 * 
 	 * @dataProvider providerWithLayout
 	 */
-	public function testLayout($layout) {
+	/*public function testLayout($layout) {
 		$this->windForward->setLayout($layout);
 		$this->assertEquals(get_class($this->windForward->getLayout()), 'WindLayout');
 	}
@@ -19,7 +19,7 @@ class WindForwardTest extends BaseTestCase {
 		$args = array();
 		$args[] = array(new WindLayout());
 		return $args;
-	}
+	}*/
 	
 	/**
 	 * @dataProvider providerWithForwardAction
@@ -89,7 +89,7 @@ class WindForwardTest extends BaseTestCase {
 	
 	protected function setUp() {
 		parent::setUp();
-		require_once 'core/WindForward.php';
+		require_once 'core/web/WindForward.php';
 		$this->windForward = new WindForward();
 	}
 	

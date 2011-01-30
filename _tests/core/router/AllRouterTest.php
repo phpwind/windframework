@@ -6,7 +6,6 @@
  * @license 
  */
 
-require_once ('core/router/WindRouterFactoryTest.php');
 require_once ('core/router/WindUrlBasedRouterTest.php');
 
 class AllRouterTest {
@@ -15,7 +14,6 @@ class AllRouterTest {
 	}
 	public static function suite() {
 		$suite = new PHPUnit_Framework_TestSuite('WindFramework AllRouterTest');
-		//$suite->addTestSuite('WindRouterFactoryTest');
 		$suite->addTestSuite('WindUrlBasedRouterTest');
 		return $suite;
 	}
