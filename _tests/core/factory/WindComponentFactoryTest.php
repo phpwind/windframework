@@ -54,7 +54,6 @@ class WindComponentFactoryTest extends BaseTestCase {
 		   'ppp' => array(
 	            'name' => 'pppp',
 				'path' => 'WIND:core.WindView',
-				'resource' = ''
 		   ),
         )
 		;
