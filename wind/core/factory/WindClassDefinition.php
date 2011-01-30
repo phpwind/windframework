@@ -21,91 +21,91 @@ L::import('WIND:core.WindEnableValidateModule');
  * @package 
  */
 class WindClassDefinition extends WindEnableValidateModule {
-	
+
 	/* 配置信息定义 */
 	const NAME = 'name';
-	
+
 	const PATH = 'path';
-	
+
 	const FACTORY_METHOD = 'factory-method';
-	
+
 	const INIT_METHOD = 'init-method';
-	
+
 	const SCOPE = 'scope';
-	
+
 	const PROPERTIES = 'properties';
-	
+
 	const CONSTRUCTOR_ARG = 'constructor-arg';
-	
+
 	const REF = 'ref';
-	
+
 	const VALUE = 'value';
-	
+
 	/**
 	 * 类名称
 	 * @var string
 	 */
 	protected $className = '';
-	
+
 	/**
 	 * 类别名
 	 * @var string
 	 */
 	protected $alias = '';
-	
+
 	/**
 	 * 类路径
 	 * @var string
 	 */
 	protected $path = '';
-	
+
 	/**
 	 * 类的存储空间
 	 * singleton/prototype/request/session
 	 * @var string
 	 */
 	protected $scope = '';
-	
+
 	/**
 	 * 类自定义的初始化方法
 	 * @var string
 	 */
 	protected $factoryMethod = '';
-	
+
 	/**
 	 * 类设置属性之后的调用处理操作
 	 * @var string
 	 */
 	protected $initMethod = '';
-	
+
 	/**
 	 * 构造参数定义
 	 * @var array
 	 */
 	protected $constructArgs = array();
-	
+
 	/**
 	 * 类属性定义
 	 * @var array
 	 */
 	protected $propertys = array();
-	
+
 	/**
 	 * 类定义
 	 * @var array
 	 */
 	protected $classDefinition;
-	
+
 	/**
 	 * @var prototype
 	 */
 	private $prototype = null;
-	
+
 	/**
 	 * @var instance
 	 */
 	private $instance = null;
-	
+
 	/**
 	 * 根据类定义信息，初始化类对象
 	 * 
@@ -117,7 +117,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 		$this->validate($classDefinition);
 		$this->init($classDefinition);
 	}
-	
+
 	/**
 	 * 通过对象工厂创建单例对象
 	 * 如果用户配置有factory-method项，则调用该组件的该方法生成实例
@@ -140,7 +140,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 				return $this->createInstanceWithSingleton($factory, $args);
 		}
 	}
-	
+
 	/**
 	 * Enter description here ...
 	 * 
@@ -150,8 +150,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 */
 	private function executeFactoryMethod($args) {
 		if (!($factoryMethod = $this->getFactoryMethod())) return null;
-		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) 
-			throw new WindException($this->getClassName() . '->' . $factoryMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) throw new WindException($this->getClassName() . '->' . $factoryMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
 	}
 
