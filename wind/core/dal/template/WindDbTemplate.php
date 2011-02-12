@@ -200,7 +200,7 @@ class WindDbTemplate extends WindTemplate {
 	}
 	
 	/**
-	 * 将数组格工的访问转化为数组
+	 * 将数组格式的访问转化为数组
 	 * @param stdClass $object 对象的初始化
 	 * @param array $value     要绑定到指定对象的值
 	 * @param boolean $colAsProp 是否将数组的列也绑到子对象中
