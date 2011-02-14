@@ -111,7 +111,7 @@ class WindListTest extends BaseTestCase {
 	public function testFixedList(){
 		$list = new WindSortedList(array('key','value'));
 		try{
-			$list->add("haha");
+			$list->add('key',"haha");
 		}catch(WindException $e){
 			$this->assertTrue($list->getIsFixedSize());
 			return true;
