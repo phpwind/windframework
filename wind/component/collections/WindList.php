@@ -122,7 +122,7 @@ class WindList implements IteratorAggregate, ArrayAccess, Countable {
 	 * @return boolean
 	 */
 	public function containAt($index) {
-		return 0 <= $index && $this->count < $index;
+		return 0 <= $index && $this->count > $index;
 	}
 	/**
 	 * 修改WindList中指定索引的项
@@ -156,7 +156,7 @@ class WindList implements IteratorAggregate, ArrayAccess, Countable {
 		if (0 === $index) {
 			return array_shift($this->list);
 		}
-		if ($this->count - 1 === $index) {
+		if ($this->count  === $index) {
 			return array_pop($this->list);
 		}
 		$item = $this->list[$index];

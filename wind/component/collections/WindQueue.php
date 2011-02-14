@@ -82,7 +82,7 @@ class WindQueue implements IteratorAggregate,Countable{
 	 * @param WindQueue $list 要合并的WindQueue集合
 	 * @return boolean
 	 */
-	public function mergeFromList(WindQueue $queue) {
+	public function mergeFromQueue(WindQueue $queue) {
 		foreach ($queue as $value) {
 			$this->enqueue($value);
 		}
@@ -95,6 +95,7 @@ class WindQueue implements IteratorAggregate,Countable{
 	public function clear(){
 		$this->list = array();
 		$this->count = 0;
+		return true;
 	}
 	
 	/**

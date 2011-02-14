@@ -77,7 +77,7 @@ class WindSortedList implements IteratorAggregate, ArrayAccess, Countable {
 	 * @return boolean
 	 */
 	public function contains($key) {
-		$this->containsKey($key);
+		return $this->containsKey($key);
 	}
 	
 	/**
@@ -242,6 +242,20 @@ class WindSortedList implements IteratorAggregate, ArrayAccess, Countable {
 		$this->count = 0;
 		$this->list = array();
 		return true;
+	}
+	/**
+	 * 取得集合是否只读
+	 * @return boolean
+	 */
+	public function getIsReadOnly() {
+		return $this->isReadOnly;
+	}
+	/**
+	 * 取得集合是否是固定大小
+	 * @return boolean
+	 */
+	public function getIsFixedSize(){
+		return $this->isFixedSize;
 	}
 	/**
 	 * 返回集合的总数

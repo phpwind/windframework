@@ -71,13 +71,14 @@ class WindStack implements IteratorAggregate,Countable{
 	public function clear(){
 		$this->count = 0;
 		$this->list = array();
+		return true;
 	}
     /**
 	 * 将数组中的值合并到当前tack队列
 	 * @param array $array 要合并的数组
 	 * @return boolean
 	 */
-	public function mergeFromArray(WindStack $array) {
+	public function mergeFromArray($array) {
 		foreach ($array as $value) {
 			$this->push($value);
 		}
@@ -88,7 +89,7 @@ class WindStack implements IteratorAggregate,Countable{
 	 * @param WindStack $list 要合并的WindStack集合
 	 * @return boolean
 	 */
-	public function mergeFromList(WindStack  $stack) {
+	public function mergeFromStack(WindStack  $stack) {
 		foreach ($stack as $value) {
 			$this->push($value);
 		}
