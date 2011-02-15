@@ -75,9 +75,10 @@ class WindPageCache {
 	/**
 	 * 存储静态化的文件
 	 * @param string $htmFileName 静态化页面文件
+	 * @param string $force 静态文件存在，$force为true就强行写入
 	 * @return boolean
 	 */
-	public function pageStatic($htmFileName) {
+	public function pageStatic($htmFileName,$force = false) {
 		if (!in_array($this->staticSuffix, array('htm', 'html', 'shtml'))) {
 			return false;
 		}
@@ -86,7 +87,7 @@ class WindPageCache {
 			mkdir($path, 0777, true);
 		}
 		$realpath = $path . $htmFileName . '.' . $this->staticSuffix;
-		if (is_file($realpath)) {
+		if (is_file($realpath) && !$force) {
 			return false;
 		}
 		file_put_contents($realpath, $this->content);

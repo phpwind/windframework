@@ -64,7 +64,7 @@ class WindCacheFactory{
 	 * @return IWindCache|Cache|IWindCacheDependency
 	 */
 	public function cacheFactory($name,$type='stored',array $params = array(),$reload = false){
-		$class = L::import('WIND:component.cache.'.$type.$name);
+		$class = L::import('WIND:component.cache.'.$type.'.'.$name);
 		if(false === class_exists($class)){
 			throw new WindException($class.' is not exists');
 		}

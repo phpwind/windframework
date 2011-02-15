@@ -146,14 +146,14 @@ class WindFileCache implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		$this->clearByPath($this->cacheDir, false);
+		return $this->clearByPath($this->cacheDir, false);
 	}
 	
 	/**
 	 * 删除过期缓存
 	 */
 	public function deleteExpiredCache() {
-		$this->clearByPath($this->cacheDir);
+		return $this->clearByPath($this->cacheDir);
 	}
 	
 	/**
