@@ -29,6 +29,31 @@ class WindCacheFactoryTest extends BaseTestCase{
 	}
 	
 	public function testViewCacheFactory(){
-		
+		$cache = $this->cacheFactory->viewFactory('WindPageCache');
+		$this->assertThat($cache,$this->isInstanceOf('WindPageCache'));
 	}
+	
+	public function testDependencyFactory(){
+		$dependency = $this->cacheFactory->dependencyFactory('WindCacheDependency');
+		$this->assertThat($dependency,$this->isInstanceOf('WindCacheDependency'));
+	}
+	
+	public function testStoredCacheFactory(){
+		$cacheDir = dirname(dirname(dirname(__FILE__))).'/data/';
+		$cache = $this->cacheFactory->storedFactory('WindFileCache',array('cachedir'=>$cacheDir));
+		$this->assertThat($cache,$this->isInstanceOf('WindFileCache'));
+	}
+	
+	public function testViewCacheFactoryReload(){
+		$cache = $this->cacheFactory->viewFactory('WindPageCache',array(),true);
+		$this->assertThat($cache,$this->isInstanceOf('WindPageCache'));
+	}
+	
+	public function testViewCacheFactoryTowLoad(){
+		$cache = $this->cacheFactory->viewFactory('WindPageCache');
+		$cache = $this->cacheFactory->viewFactory('WindPageCache');
+		$this->assertThat($cache,$this->isInstanceOf('WindPageCache'));
+	}
+	
+	
 }
