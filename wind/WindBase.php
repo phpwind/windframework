@@ -351,7 +351,7 @@ class L {
 	 */
 	static private function perLoadCoreLibrary() {
 		$imports = L::getImports();
-		self::import('COM:WindPack');
+		self::import('COM:utility.WindPack');
 		$pack = new WindPack();
 		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
 		$fileList = array();
