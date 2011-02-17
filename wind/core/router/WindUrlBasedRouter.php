@@ -21,11 +21,17 @@ L::import('WIND:core.router.AbstractWindRouter');
  */
 class WindUrlBasedRouter extends AbstractWindRouter {
 
-	const URL_RULE = 'url-rule';
+	/* url 路由参数规则 */
+	const URL_RULE = 'url-pattern';
 
 	const URL_PARAM = 'url-param';
 
 	const DEFAULT_VALUE = 'default-value';
+
+	/* url 后缀名参数规则 */
+	const CONTROLLER_SUFFIX = 'controller-suffix';
+
+	const ACTION_SUFFIX = 'action-suffix';
 
 	const URL_RULE_MODULE = 'module';
 
@@ -33,56 +39,36 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 
 	const URL_RULE_ACTION = 'action';
 
-	protected $controllerSuffix = 'Controller';
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::doParser()
 	 */
-	public function doParse($request) {
-		$this->module = $this->getValue($request, $this->module, self::URL_RULE_MODULE);
-		$this->controller = $this->getValue($request, $this->controller, self::URL_RULE_CONTROLLER);
-		$this->action = $this->getValue($request, $this->action, self::URL_RULE_ACTION);
+	public function doParse() {
+		$this->module = $this->getUrlPatternValue($this->request, $this->module, self::URL_RULE_MODULE);
+		$this->controller = $this->getUrlPatternValue($this->request, $this->controller, self::URL_RULE_CONTROLLER);
+		$this->action = $this->getUrlPatternValue($this->request, $this->action, self::URL_RULE_ACTION);
 	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::getHandler()
 	 */
-	public function getHandler($request, $response) {
-		$windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
-		$moduleConfig = $windConfig->getModules($this->getModule());
+	public function getHandler() {
+		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
 		if (!$moduleConfig) {
 			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
 		}
-		$controllerPath = $moduleConfig[WindSystemConfig::PATH] . '.' . ucfirst($this->controller) . $this->controllerSuffix;
+		$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE);
+		$controllerPath = $moduleConfig[WindSystemConfig::PATH] . '.' . ucfirst($this->controller) . $controllerSuffix;
 		if (strpos($controllerPath, ':') === false) {
-			$controllerPath = $windConfig->getAppName() . ':' . $controllerPath;
+			$controllerPath = $this->windSystemConfig->getAppName() . ':' . $controllerPath;
 		}
-		$controllerClassName = L::import($controllerPath);
-		if (!class_exists($controllerClassName)) {
-			throw new WindException($controllerClassName, WindException::ERROR_CLASS_NOT_EXIST);
-		}
-		return $controllerClassName;
+		return $controllerPath;
 	}
 
-	/**
-	 * @param string $action
-	 * @param string $controller
-	 * @param string $module
-	 * @param string $args 
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::buildUrl()
 	 */
-	public function buildUrl($action = '', $controller = '', $module = '') {
-		$keys = array_keys($this->rule);
-		$baseUrl = $this->request->getBaseUrl(true);
-		$script = $this->request->getScript();
-		$url = '';
-		if ($action && $action !== $this->rule[$keys[0]]) $url .= '&' . $keys[0] . '=' . $action;
-		if ($controller && $controller !== $this->rule[$keys[1]]) $url .= '&' . $keys[1] . '=' . $controller;
-		if ($module && $module !== $this->rule[$keys[2]]) $url .= '&' . $keys[2] . '=' . $module;
-		if ($url !== '')
-			$url = $baseUrl . '/' . $script . '?' . trim($url, '&');
-		else
-			$url = $baseUrl . '/' . $script;
-		return $url;
+	public function buildUrl() {
+
 	}
 
 	/**
@@ -91,10 +77,12 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @param urlParam
 	 * @param defaultValue
 	 */
-	private function getValue($request, $defaultValue, $type) {
-		if ($this->getConfig()->getConfig($type, self::URL_PARAM)) {
-			$defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE) ? $this->getConfig()->getConfig($type, self::DEFAULT_VALUE) : $defaultValue;
-			return $request->getAttribute($this->getConfig()->getConfig($type, self::URL_PARAM), $defaultValue);
+	private function getUrlPatternValue($request, $defaultValue, $type) {
+		$_config = $this->getConfig()->getConfig(self::URL_RULE);
+		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
+			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE, $_config);
+			$defaultValue = $_defaultValue ? $_defaultValue : $defaultValue;
+			return $request->getAttribute($_param, $defaultValue);
 		}
 		return $defaultValue;
 	}

@@ -27,26 +27,18 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	/**
 	 * Enter description here ...
-	 * 
-	 * @param WindHttpRequest $request
 	 */
-	abstract public function doParse($request);
+	abstract public function doParse();
 
 	/**
 	 * Enter description here ...
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 */
-	abstract public function getHandler($request, $response);
+	abstract public function getHandler();
 
 	/**
-	 * 根据路由解析，组装URL
-	 * @param string $action
-	 * @param string $controller
-	 * @param string $module
+	 * Enter description here ...
 	 */
-	abstract public function buildUrl($action = '', $controller = '', $module = '');
+	abstract public function buildUrl();
 
 	/**
 	 * 获得业务操作
@@ -67,6 +59,27 @@ abstract class AbstractWindRouter extends WindComponentModule {
 	 */
 	public function getModule() {
 		return $this->module;
+	}
+
+	/**
+	 * @param field_type $action
+	 */
+	public function setAction($action) {
+		$this->action = $action;
+	}
+
+	/**
+	 * @param field_type $controller
+	 */
+	public function setController($controller) {
+		$this->controller = $controller;
+	}
+
+	/**
+	 * @param field_type $module
+	 */
+	public function setModule($module) {
+		$this->module = $module;
 	}
 
 }
