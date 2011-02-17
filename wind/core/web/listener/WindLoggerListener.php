@@ -12,6 +12,14 @@ L::import('WIND:component.log.WindLogger');
  */
 class WindLoggerListener extends WindHandlerInterceptor {
 
+	/**
+	 * Enter description here ...
+	 * @param WindHttpRequest $request
+	 */
+	public function __construct($request) {
+		$this->request = $request;
+	}
+
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
@@ -38,11 +46,11 @@ class WindLoggerListener extends WindHandlerInterceptor {
 	private function getLogger() {
 		if (!isset($this->logger)) {
 			$factory = $this->request->getAttribute(WindFrontController::WIND_FACTORY);
-			$this->logger = $factory->getInstance('windLogger');
+			$this->logger = $factory->getInstance(COMPONENT_LOGGER);
 		}
 		return $this->logger;
 	}
-    
+
 	private function getPreLogMessage($args) {
 		$log = $this->getLogMessage($args);
 		$log['caller'] = ' #[caller]: ' . $log['caller'];
@@ -59,7 +67,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 		$message = 'End ' . $this->event[0] . '->' . $this->event[1];
 		return "{$message}<br/>" . implode("\r\n", $log) . '<br/>';
 	}
-	
+
 	/**
 	 * 获得调用的堆栈信息中回调的方法信息
 	 *
@@ -75,7 +83,7 @@ class WindLoggerListener extends WindHandlerInterceptor {
 			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor'))) continue;
 			$function = isset($trace['function']) ? $trace['function'] : '';
 			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
-			($function == $method) && $flag = true; 
+			($function == $method) && $flag = true;
 			if (!isset($trace['file'])) continue;
 			$info['caller'] = addslashes($trace['file']) . '(' . $trace['line'] . '): ';
 			break;
