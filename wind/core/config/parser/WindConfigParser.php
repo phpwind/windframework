@@ -303,7 +303,7 @@ class WindConfigParser implements IWindConfigParser {
 	 */
 	private function saveConfigFile($filename, $data) {
 		if (!W::ifCompile() || !$filename || !$data) return false;
-		L::import('COM::utility.WindFile');
+		L::import('COM:utility.WindFile');
 		return WindFile::saveData($filename, $data);
 	}
 	

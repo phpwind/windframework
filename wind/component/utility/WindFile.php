@@ -23,17 +23,18 @@ class WindFile{
 	 * @param boolean $ifLock           是否对文件加锁
 	 */
 	public static function saveData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
+		L::import("COM:utility.WindString");
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ( $data as $key => $value ) {
 				if (!preg_match ( '/^\w+$/', $key ))
 					continue;
-				$temp .= "\$" . $key . " = " . self::varExport($value) . ";\r\n";
+				$temp .= "\$" . $key . " = " . WindString::varExport($value) . ";\r\n";
 			}
 			$temp .= "\r\n?>";
 		} else {
 			($isBuildReturn) && $temp .= " return ";
-			$temp .= self::varExport($data) . ";\r\n?>";
+			$temp .= WindString::varExport($data) . ";\r\n?>";
 		}
 		return self::writeover($fileName, $temp, $method, $ifLock);
 	}
