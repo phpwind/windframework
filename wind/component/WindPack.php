@@ -15,6 +15,7 @@
  */
 class WindPack {
 
+	//TODO move to utility
 	const STRIP_SELF = 'stripWhiteSpaceBySelf';
 
 	const STRIP_PHP = 'stripWhiteSpaceByPhp';
