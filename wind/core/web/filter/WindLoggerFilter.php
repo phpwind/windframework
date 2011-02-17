@@ -11,8 +11,6 @@ L::import('WIND:core.filter.WindFilter');
  */
 class WindLoggerFilter extends WindFilter {
 
-	const WIND_LOGGER = 'windLogger';
-
 	/* (non-PHPdoc)
 	 * @see WindFilter::preHandle()
 	 */
@@ -38,12 +36,7 @@ class WindLoggerFilter extends WindFilter {
 	 */
 	private function initWindLogger($request) {
 		$windFactory = $request->getAttribute(WindFrontController::WIND_FACTORY);
-		if ($windFactory instanceof WindFactory) {
-			$this->logger = $windFactory->getInstance(self::WIND_LOGGER);
-		}
-		if (!$this->logger instanceof WindLogger) {
-			throw new WindException('logger', WindException::ERROR_CONFIG_ERROR);
-		}
+		$this->logger = $windFactory->getInstance(COMPONENT_LOGGER);
 	}
 
 }
