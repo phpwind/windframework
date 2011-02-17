@@ -10,7 +10,7 @@
  */
 class WindHandlerInterceptor {
 
-	protected $result;
+	protected $result = null;
 
 	/**
 	 * Enter description here ...
@@ -32,15 +32,17 @@ class WindHandlerInterceptor {
 	 */
 	public function handle() {
 		$args = func_get_args();
-		call_user_func_array(array($this, 'preHandle'), $args);
-		if (null !== ($handler = $this->interceptorChain->getHandler())) {
-			$result = call_user_func_array(array($handler, 'handle'), $args);
-		} else {
-			$result = $this->interceptorChain->execute();
+		$this->result = call_user_func_array(array($this, 'preHandle'), $args);
+		if ($this->result !== null) {
+			return $this->result;
 		}
-		$this->result = $result;
+		if (null !== ($handler = $this->interceptorChain->getHandler())) {
+			$this->result = call_user_func_array(array($handler, 'handle'), $args);
+		} else {
+			$this->result = $this->interceptorChain->execute();
+		}
 		call_user_func_array(array($this, 'postHandle'), $args);
-		return $result;
+		return $this->result;
 	}
 
 	/**
