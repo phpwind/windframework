@@ -15,7 +15,7 @@
  * @version $Id$ 
  * @package 
  */
-interface IWindViewer {
+interface IWindViewerResolver {
 
 	/**
 	 * 设置视图变量信息
@@ -29,18 +29,5 @@ interface IWindViewer {
 	 * 获取模板内容与变量信息
 	 */
 	public function windFetch($template = '');
-
-	/**
-	 * 获得一个视图信息，并初始化解析器
-	 * 
-	 * @param WindView $view
-	 */
-	public function initWithView($view);
-
-	/**
-	 * 获得一个Action操作句柄
-	 * 
-	 */
-	public function doAction($actionHandle = '');
 
 }

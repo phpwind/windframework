@@ -19,66 +19,187 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindView extends WindComponentModule {
 
-	public $templateDir;
+	const TEMPLATE_DIR = 'template-dir';
 
-	public $templateDefault;
+	const TEMPLATE_EXT = 'template-ext';
 
-	public $templateExt;
+	const IS_CACHE = 'is-cache';
 
-	public $templateCacheDir;
+	const CACHE_DIR = 'cache-dir';
 
-	public $templateCompileDir;
+	const COMPILE_DIR = 'compile-dir';
 
-	public $layout = null;
+	const SHARE_VAR = 'share-var';
 
-	private $config = array();
+	protected $templatePath = '';
 
-	private $viewResolver = null;
+	protected $templateExt = '';
+
+	protected $templateName = '';
+
+	protected $isCache = '';
+
+	protected $compileDir = '';
+
+	protected $cacheDir = '';
+
+	protected $shareVar = '';
 
 	/**
-	 * @param string $templateName
-	 * @param WindForward $forward
+	 * 视图解析引擎
+	 *
+	 * @var WindViewerResolver
 	 */
-	public function __construct($templateConfig = '') {}
+	protected $viewResolver = null;
+
+	protected $layout = null;
 
 	/**
-	 * 返回视图解析器对象
+	 * 模板路径解析
+	 * 根据模板的逻辑名称，返回模板的绝对路径信息
 	 * 
-	 * @return WindViewer
+	 * @param string $templateName
+	 * @param string $templateExt
+	 * @return string | false
 	 */
-	public function createViewerResolver() {
-		if ($this->viewResolver === null) {
-			$viewerResolver = C::getViewerResolvers($this->config[IWindConfig::TEMPLATE_RESOLVER]);
-			$className = L::import($viewerResolver[IWindConfig::ROUTER_PARSERS_CLASS]);
-			if (!class_exists($className)) {
-				throw new WindException('viewer resolver ' . $className . ' is not exists in ' . $viewerResolver);
+	public function getViewTemplate($template = '', $ext = '') {
+		$path = $this->getTemplatePath();
+		return $this->parseFilePath($template, $ext, $path);
+	}
+
+	/**
+	 * 模板编译路径解析
+	 * 根据模板的逻辑名称，返回模板的绝对路径信息
+	 * 
+	 * @param string $templateName
+	 * @param string $templateExt
+	 * @return string | false
+	 */
+	public function getCompileFile($template = '', $ext = '') {
+		$path = $this->getCompileDir();
+		return $this->parseFilePath($template, $ext, $path);
+	}
+
+	/**
+	 * 模板缓存路径路径解析
+	 * 根据模板的逻辑名称，返回模板的绝对路径信息
+	 * 
+	 * @param string $templateName
+	 * @param string $templateExt
+	 * @return string | false
+	 */
+	public function getCacheFile($template = '', $ext = '') {
+		$path = $this->getCacheDir();
+		return $this->parseFilePath($template, $ext, $path);
+	}
+
+	/**
+	 * @return WindViewerResolver
+	 */
+	public function getViewResolver() {
+		if ($this->viewResolver !== null) {
+			if ($this->getIsCache() === 'true') {
+				$this->viewResolver->setClassProxy(new WindClassProxy());
+				$this->viewResolver = $this->viewResolver->getClassProxy();
+				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener('a'));
+				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener('b'));
 			}
-			$object = new $className();
-			$this->viewResolver = &$object;
+			$this->viewResolver->setWindView($this);
+			return $this->viewResolver;
+		} else {
+			throw new WindException('getViewResolver()', WindException::ERROR_RETURN_TYPE_ERROR);
 		}
-		$this->viewResolver->initWithView($this);
-		return $this->viewResolver;
 	}
 
 	/**
-	 * 通过WindForward视图信息设置view
-	 * @param WindForward $forward
+	 * Enter description here ...
+	 * @param template
+	 * @param ext
 	 */
-	public function initViewWithForward($forward) {
-		if ($forward->getTemplateName()) $this->templateDefault = $forward->getTemplateName();
-		if ($forward->getTemplatePath()) $this->templateDir = $forward->getTemplatePath();
-		$this->layout = $forward->getLayout();
-		return $this;
+	private function parseFilePath($fileName, $fileExt, $path) {
+		if ($fileName === '') $fileName = $this->getTemplateName();
+		if ($fileExt === '') $fileExt = $this->getTemplateExt();
+		if (!$fileName) return '';
+		
+		if (strrpos($path, ':') === false) {
+			$path = $this->windSystemConfig->getAppName() . ':' . $path;
+		}
+		$filePath = L::getRealPath($path);
+		if ($filePath && !file_exists($filePath)) @mkdir($filePath);
+		return L::getRealPath($path . '.' . $fileName, $fileExt);
 	}
 
 	/**
-	 * @param string $actionHandle
+	 * @return string $templatePath
 	 */
-	public function doAction($actionHandle = '', $path = '') {
-		if (!($this->dispatcher instanceof WindDispatcher)) throw new WindException('do action error.');
-		$forward = new WindForward();
-		$forward->setAction($actionHandle, $path);
-		$this->dispatcher->setForward($forward)->dispatch(true);
+	public function getTemplatePath() {
+		//TODO change templatePath to templateDir
+		if ($this->templatePath === '') {
+			$this->templatePath = $this->getDefaultValue(self::TEMPLATE_DIR);
+		}
+		return $this->templatePath;
+	}
+
+	/**
+	 * @return string $templateExt
+	 */
+	public function getTemplateExt() {
+		if ($this->templateExt === '') {
+			$this->templateExt = $this->getDefaultValue(self::TEMPLATE_EXT);
+		}
+		return $this->templateExt;
+	}
+
+	/**
+	 * @return boolean $isCache
+	 */
+	public function getIsCache() {
+		if ($this->isCache === '') {
+			$this->isCache = $this->getDefaultValue(self::IS_CACHE);
+		}
+		return $this->isCache;
+	}
+
+	/**
+	 * @return string $compileDir
+	 */
+	public function getCompileDir() {
+		if ($this->compileDir === '') {
+			$this->compileDir = $this->getDefaultValue(self::COMPILE_DIR);
+		}
+		return $this->compileDir;
+	}
+
+	/**
+	 * @return string $cacheDir
+	 */
+	public function getCacheDir() {
+		if ($this->cacheDir === '') $this->cacheDir = $this->getDefaultValue(self::CACHE_DIR);
+		return $this->cacheDir;
+	}
+
+	/**
+	 * @return boolean $shareVar
+	 */
+	public function getShareVar() {
+		if ($this->shareVar === '') $this->shareVar = $this->getDefaultValue(self::SHARE_VAR);
+		return $this->shareVar;
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param string $type
+	 */
+	private function getDefaultValue($type) {
+		return $this->getConfig()->getConfig($type, WindSystemConfig::VALUE);
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::getWriteTableForGetterAndSetter()
+	 */
+	protected function getWriteTableForGetterAndSetter() {
+		return array('templatePath', 'templateExt', 'templateName', 'isCache', 'compileDir', 'cacheDir', 'viewResolver', 
+			'layout');
 	}
 
 }
