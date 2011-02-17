@@ -15,13 +15,10 @@ L::import('WIND:core.base.WindAction');
  */
 abstract class WindController extends WindAction {
 
-	public function run() {}
-
 	/* (non-PHPdoc)
-	 * @see WindAction::nameResolved()
+	 * @see WindAction::resolvedActionMethod()
 	 */
-	public function doAction($handlerAdapter) {
-		$this->beforeAction();
+	protected function resolvedActionMethod($handlerAdapter) {
 		$action = $handlerAdapter->getAction();
 		if ($action === 'doAction') {
 			throw new WindException('The action method ' . $action . ' is protected.');
@@ -30,8 +27,6 @@ abstract class WindController extends WindAction {
 			throw new WindException('The action method ' . $action . ' is not exist.');
 		}
 		call_user_func_array(array($this, $action), array());
-		$this->afterAction();
-		return $this->forward();
 	}
 
 }

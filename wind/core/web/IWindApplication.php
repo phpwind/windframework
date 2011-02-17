@@ -11,21 +11,17 @@
 interface IWindApplication {
 
 	/**
-	 * Enter description here ...
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
+	 * 请求处理
 	 */
-	public function processRequest($request, $response);
+	public function processRequest();
 
 	/**
-	 * Enter description here ...
+	 * 请求转发
 	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
+	 * @param WindForward $forward
 	 */
-	public function doDispatch($request, $response);
-	
+	public function doDispatch($forward);
+
 }
 
 ?>

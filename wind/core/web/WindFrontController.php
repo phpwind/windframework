@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.web.AbstractWindServer');
+L::import('WIND:core.AbstractWindServer');
 /**
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
  * 
@@ -28,11 +28,13 @@ class WindFrontController extends AbstractWindServer {
 
 	const WIND_FACTORY = 'WIND:core.factory.WindComponentFactory';
 
+	const WIND_ERRORHANDLER = 'WIND:core.web.WindErrorHandler';
+
 	protected $windSystemConfig = null;
 
 	protected $windFactory = null;
 
-	protected $windUrlPathHelper = null;
+	protected $windErrorHandler = null;
 
 	/**
 	 * Enter description here ...
@@ -70,9 +72,6 @@ class WindFrontController extends AbstractWindServer {
 		L::import('WIND:core.config.parser.WindConfigParser');
 		$configParser = new WindConfigParser();
 		$this->windSystemConfig = new WindSystemConfig($config, $configParser, $appName);
-		//TODO register all apps
-		
-
 		L::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
 	}
 
@@ -80,48 +79,36 @@ class WindFrontController extends AbstractWindServer {
 	 * @see wind/core/base/WindServer#process()
 	 */
 	protected function process(WindHttpRequest $request, WindHttpResponse $response) {
-		//TODO set logger
 		try {
 			$this->getWindFactory()->request = $request;
 			$this->getWindFactory()->response = $response;
+			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
+			$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
 			
 			$appName = $this->getWindConfig()->getAppClass();
-			if (null === ($application = $this->getWindFactory()->getInstance($appName))) {
+			$application = $this->getWindFactory()->getInstance($appName);
+			if (null === $application) {
 				throw new WindException('application', WindException::ERROR_CLASS_NOT_EXIST);
-			}
-			
-			if (IS_DEBUG && $application instanceof WindClassProxy) {
-				$application->registerEventListener('processRequest', new WindLoggerListener());
-				$application->registerEventListener('doDispatch', new WindLoggerListener());
 			}
 			
 			$this->getWindFactory()->application = $application;
 			
-			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
-			$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
-			
+			//TODO change args of application->processRequest as an component object
 			$filterChain = $this->getFilterChain();
 			$filterChain->setCallBack(array($application, 'processRequest'), array($request, $response));
 			$filterChain->getHandler()->handle($request, $response);
 		
 		} catch (WindException $exception) {
 			echo $exception->getMessage();
-		
-		//$response->sendError(WindHttpResponse::SC_NOT_FOUND, $exception->getMessage());
 		}
 	}
 
 	/**
-	 * Enter description here ...
 	 * @return WindFilterChain
 	 */
 	private function getFilterChain() {
 		$filterChainPath = $this->getWindConfig()->getFilters(WindSystemConfig::CLASS_PATH);
-		$filterChainClass = L::import($filterChainPath);
-		if (!class_exists($filterChainClass)) {
-			throw new WindException($filterChainClass, WindException::ERROR_CLASS_NOT_EXIST);
-		}
-		return $this->getWindFactory()->createInstance($filterChainClass, array($this->getWindConfig()->getFilters()));
+		return $this->getWindFactory()->createInstance($filterChainPath, array($this->getWindConfig()->getFilters()));
 	}
 
 	/* (non-PHPdoc)

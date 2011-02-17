@@ -6,27 +6,23 @@
  * @license 
  */
 
-L::import('WIND:WindModule');
+L::import('WIND:WindComponentModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindAction extends WindModule {
+abstract class WindAction extends WindComponentModule {
 
-	protected $request;
+	protected $forward = null;
 
-	protected $response;
+	protected $urlHelper = null;
 
 	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
+	 * 默认的操作处理方法
 	 */
-	public function __construct($request, $response) {
-		$this->request = $request;
-		$this->response = $response;
-	}
+	public function run() {}
 
 	/**
 	 * 根据路由信息重定向执行方法
@@ -35,47 +31,59 @@ abstract class WindAction extends WindModule {
 	 */
 	public function doAction($handlerAdapter) {
 		$this->beforeAction();
-		$this->run();
+		$this->setDefaultTemplateName($handlerAdapter);
+		$this->resolvedActionMethod($handlerAdapter);
 		$this->afterAction();
-		return $this->forward();
+		
+		return $this->getForward();
 	}
 
-	public function beforeAction() {}
+	/**
+	 * Action操作预处理方法，返回boolean型值
+	 * 
+	 * @return boolean
+	 */
+	public function beforeAction() {
+		return true;
+	}
 
-	abstract public function run();
-
+	/**
+	 * Action操作后处理方法，在执行完Action后执行
+	 * 
+	 * @return null
+	 */
 	public function afterAction() {}
 
 	/**
-	 * 请求另一个操作处理
+	 * 重定向一个请求到另外的Action
 	 * 
-	 * @param string $actionHandle
-	 * @param string $path
+	 * @param string $action
+	 * @param string $controller
+	 * @param array $args
+	 * @param boolean $isRedirect
 	 */
-	public function forwardAction($actionHandle = '', $path = '', $isRedirect = false) {
-		$this->forward()->setAction($actionHandle, $path, $isRedirect);
+	public function forwardAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
+		$this->getForward()->forwardAnotherAction($action, $controller, $args, $isRedirect);
 	}
 
 	/**
-	 * 请求一个重定向Action
-	 * 
-	 * @param string $actionHandle
-	 * @param string $path
-	 * @param mixed string | array $args
+	 * 请求重定向到另外一个Url
 	 */
-	public function forwardRedirectAction($actionHandle = '', $path = '', $args = '') {
-		$this->forward()->setAction($actionHandle, $path, true, $args);
+	public function forwardRedirect($url) {
+		$this->getForward()->setIsRedirect(true);
+		$this->getForward()->setUrl($url);
 	}
 
 	/* 数据处理 */
 	
 	/**
 	 * 设置模板数据
+	 * 
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
 	public function setOutput($data, $key = '') {
-		$this->forward()->setVars($data, $key);
+		$this->getForward()->setVars($data, $key);
 	}
 
 	/**
@@ -83,6 +91,7 @@ abstract class WindAction extends WindModule {
 	 * 如果输入了回调方法则返回数组:
 	 * 第一个值：value
 	 * 第二个值：验证结果
+	 * 
 	 * @param string $name input name
 	 * @param string $type input type (GET POST COOKIE)
 	 * @param string $callback | validation for input
@@ -93,6 +102,43 @@ abstract class WindAction extends WindModule {
 			return $this->getInputWithArray($name, $type);
 		else
 			return $this->getInputWithString($name, $type, $callback);
+	}
+
+	/* 模板处理 */
+	/**
+	 * 设置页面模板
+	 * 
+	 * @param string $template
+	 */
+	public function setTemplate($template) {
+		$this->getForward()->getWindView()->setTemplateName($template);
+	}
+
+	/**
+	 * 设置模板路径
+	 * 
+	 * @param string $templatePath
+	 */
+	public function setTemplatePath($templatePath) {
+		$this->getForward()->getWindView()->setTemplatePath($templatePath);
+	}
+
+	/**
+	 * 设置模板扩展名称
+	 * 
+	 * @param string $templateExt
+	 */
+	public function setTemplateExt($templateExt) {
+		$this->getForward()->getWindView()->setTemplateExt($templateExt);
+	}
+
+	/**
+	 * 设置页面布局
+	 * 
+	 * @param WindLayout $layout
+	 */
+	public function setLayout($layout) {
+		$this->getForward()->getWindView()->setLayout($layout);
 	}
 
 	/* 错误处理 */
@@ -117,43 +163,59 @@ abstract class WindAction extends WindModule {
 		$this->error->sendError();
 	}
 
-	/* 模板处理 */
-	
 	/**
-	 * 设置页面模板
-	 * @param string $template
+	 * 返回UrlHelper对象
+	 * 
+	 * @return WindUrlHelper
 	 */
-	public function setTemplate($template = '') {
-		if ($template) $this->forward()->setTemplateName($template);
+	public function getUrlHelper() {
+		if ($this->urlHelper === null) {
+			throw new WindException('urlHelper', WindException::ERROR_CLASS_NOT_EXIST);
+		}
+		return $this->urlHelper;
 	}
 
 	/**
-	 * 设置页面布局
-	 * 
-	 * @param WindLayout $layout
+	 * @param WindUrlHelper $urlHelper
 	 */
-	public function setLayout($layout = '') {
-		$this->forward()->setLayout($layout);
-	}
-
-	/**
-	 * 设置模板配置--提供多套模板路径机制
-	 * 
-	 * @param string $templateConfigName
-	 */
-	public function setTemplateConfig($templateConfigName = '') {
-		$this->forward()->setTemplateConfig($templateConfigName);
+	public function setUrlHelper($urlHelper) {
+		$this->urlHelper = $urlHelper;
 	}
 
 	/**
 	 * @return WindForward
 	 */
-	public function forward() {
-		if (!isset($this->forward)) {
-			L::import('WIND:core.WindForward');
-			$this->forward = new WindForward();
+	public function getForward() {
+		if ($this->forward === null) {
+			throw new WindException('windForward', WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		return $this->forward;
+	}
+
+	/**
+	 * @param field_type $forward
+	 */
+	public function setForward($forward) {
+		$this->forward = $forward;
+	}
+
+	/**
+	 * 设置默认的模板名称
+	 * 
+	 * @param WindUrlBasedRouter $handlerAdapter
+	 */
+	protected function setDefaultTemplateName($handlerAdapter) {
+		$_temp = $handlerAdapter->getAction() . '_' . $handlerAdapter->getController();
+		$this->setTemplate($_temp);
+	}
+
+	/**
+	 * 获得Action处理方法
+	 * 
+	 * @param AbstractWindRouter $handlerAdapter
+	 */
+	protected function resolvedActionMethod($handlerAdapter) {
+		call_user_func_array(array($this, 'run'), array());
 	}
 
 	/**
@@ -198,4 +260,5 @@ abstract class WindAction extends WindModule {
 		}
 		return $result;
 	}
+
 }

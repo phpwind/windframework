@@ -5,173 +5,83 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-abstract class WindDispatcher {
 
-	public $action;
-
-	public $controller;
-
-	public $module;
-
-	public $forward = null;
-
-	public $router = null;
-
-	protected $modules;
-
-	protected $immediately = false;
-
-	protected $request = null;
-
-	protected $response = null;
-
-	protected $application = null;
-
-	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 * @param WindFrontController $frontController
-	 */
-	public function __construct($request, $response) {
-		$this->request = $request;
-		$this->response = $response;
-	}
+L::import('WIND:core.WindComponentModule');
+/**
+ * 请求分发
+ *
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$
+ * @package 
+ */
+class WindDispatcher extends WindComponentModule {
 
 	/**
 	 * 请求分发处理
 	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	public function dispatch($immediately = false) {
-		if (($redirecter = $this->forward->getRedirecter()) !== null)
-			$this->dispatchWithRedirect($redirecter);
-		elseif (($action = $this->forward->getAction()) !== null) {
-			$this->immediately = $immediately;
-			$this->dispatchWithAction($action);
-		} else
-			$this->dispatchWithTemplate();
-	}
-
-	/**
 	 * @param WindForward $forward
 	 */
-	public function setForward($forward) {
-		$this->forward = $forward;
-		$this->setAction($forward->getAction());
-		if (!($path = $forward->getActionPath())) return $this;
-		if (($pos = strrpos($path, '.')) !== false) {
-			$this->setModule(substr($path, 0, $pos));
-			$path = substr($path, $pos + 1);
-		}
-		$this->setController($path);
-		return $this;
-	}
-
-	/**
-	 * @param WindRouter $router
-	 * @return WindDispatcher
-	 */
-	public function initWithRouter($router) {
-		$this->setModule($router->getModule());
-		$this->setController($router->getController());
-		$this->setAction($router->getAction());
-		$this->router = $router;
-		return $this;
-	}
-
-	/**
-	 * 返回处理操作句柄
-	 * @return array($className,$method)
-	 */
-	public function getActionHandle() {
-		$moduleConfig = $this->modules[$this->module];
-		$module = $moduleConfig[IWindConfig::MODULE_PATH];
-		$suffix = ucfirst($moduleConfig[IWindConfig::MODULE_CONTROLLER_SUFFIX]);
-		$method = $this->action ? $this->action : $moduleConfig[IWindConfig::MODULE_METHOD];
-		$path = $module . '.' . $this->controller . $suffix;
-		$className = L::import($module . '.' . ucfirst($this->controller) . $suffix);
-		if (!$className) {
-			$suffix = ucfirst($moduleConfig[IWindConfig::MODULE_ACTION_SUFFIX]);
-			$className = L::import($path . ucfirst($this->action) . $suffix);
-			$method = $moduleConfig[IWindConfig::MODULE_METHOD];
-		}
-		if (!class_exists($className) || !in_array($method, get_class_methods($className))) return array(null, null);
-		return array($className, $method);
+	public function dispatch($forward) {
+		if ($forward->getIsRedirect())
+			$this->dispatchWithRedirect($forward);
+		elseif ($forward->getIsReAction()) {
+			$this->dispatchWithAction($forward);
+		} else
+			$this->render($forward);
 	}
 
 	/**
 	 * 请求分发一个重定向请求
-	 * @param WindRedirecter $redirecter
+	 * 
+	 * @param WindForward $forward
 	 */
-	protected function dispatchWithRedirect($redirecter) {
-		$redirect = $redirecter->buildUrl(array($this->router, 'buildUrl'), array($this->action, $this->controller, 
-			$this->module));
-		$this->response->sendRedirect($redirect);
+	protected function dispatchWithRedirect($forward) {
+		$_url = $forward->getUrl();
+		//TODO check $_url
+		$urlHelper = $this->windFactory->getInstance(COMPONENT_URLHELPER);
+		if (!$_url && $forward->getIsReAction()) {
+			/* @var $urlHelper WindUrlHelper */
+			$_url = $urlHelper->createUrl($forward->getAction(), $forward->getController(), $forward->getArgs());
+		}
+		$_url = $urlHelper->checkUrl($_url);
+		$this->response->sendRedirect($_url);
 	}
 
 	/**
 	 * 请求分发一个操作请求
-	 * @param String $action
+	 * @param WindForward $forward
 	 */
-	protected function dispatchWithAction($action) {
-		if (!($this->application instanceof WindApplication)) {
-			throw new WindException('dispatch action failed.');
-		}
-		$this->application->processRequest($this->request, $this->response);
+	protected function dispatchWithAction($forward) {
+		if (!$_a = $forward->getAction()) throw new WindException('Incorrect action value ' . $_a . ' .');
+		
+		/* @var $_router WindUrlBasedRouter */
+		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);
+		$_router->setAction($_a);
+		
+		list($_c, $_m) = W::resolveController($forward->getController());
+		$_c && $_router->setController($_c);
+		$_m && $_router->setModule($_m);
+		
+		$appName = $this->windSystemConfig->getAppClass();
+		$application = $this->windFactory->getInstance($appName);
+		$application->processRequest();
 	}
 
 	/**
-	 * 请求分发一个模板请求
+	 * 进行视图渲染
 	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
+	 * @param WindForward $forward
 	 */
-	protected function dispatchWithTemplate() {
-
-	}
-
-	/**
-	 * 设置Controller
-	 * @param string $controller
-	 */
-	private function setController($controller) {
-		if (($pos = strrpos(strtolower($controller), 'controller')) !== false) $controller = substr($controller, 0, $pos);
-		$this->controller = $controller;
-	}
-
-	/**
-	 * 设置Action
-	 * @param string $action
-	 */
-	private function setAction($action) {
-		if (($pos = strrpos(strtolower($action), 'action')) !== false) $action = substr($action, 0, $pos);
-		$this->action = $action;
-	}
-
-	/**
-	 * 根据module的路径信息获取module名称
-	 * 
-	 * @param path
-	 * @param pos
-	 */
-	private function setModule($module) {
-		$this->modules = $this->response->getData('WindSystemConfig')->getModules();
-		if (key_exists($module, $this->modules)) {
-			$this->module = $module;
+	protected function render($forward) {
+		if ($forward && null !== ($windView = $forward->getWindView())) {
+			if ($windView->getTemplateName() === '') return;
+			$viewResolver = $windView->getViewResolver();
+			$viewResolver->windAssign($forward->getVars());
+			
+			$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
 		} else {
-			foreach ($this->modules as $key => $value) {
-				if ($module == $value[IWindConfig::MODULE_PATH]) $this->module = $key;
-			}
+			throw new WindException('unable to create the object with forward.');
 		}
 	}
-
-	/**
-	 * @param $application the $application to set
-	 * @author Qiong Wu
-	 */
-	public function setApplication($application) {
-		$this->application = $application;
-	}
-
 }

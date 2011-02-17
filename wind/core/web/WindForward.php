@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindModule');
+L::import('WIND:core.WindComponentModule');
 /**
  * 操作转发类，将操作句柄转发给下一个操作或者转发给一个视图处理
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,29 +14,73 @@ L::import('WIND:core.WindModule');
  * @version $Id$ 
  * @package 
  */
-class WindForward extends WindModule {
+class WindForward extends WindComponentModule {
 
-	/* 模板视图信息 */
-	private $templateName;
+	/**
+	 * 模板视图信息
+	 *
+	 * @var WindView
+	 */
+	private $windView = null;
 
-	private $templatePath;
-
-	private $templateConfig;
-
-	/* 布局信息 */
-	private $layout = null;
-
-	/* 操作处理请求 */
-	private $action;
-
-	private $actionPath;
-
-	/* 页面重定向请求信息 */
-	private $redirecter = null;
-
-	/* 模板变量信息 */
+	/**
+	 * 模板变量信息
+	 *
+	 * @var array
+	 */
 	private $vars = array();
 
+	/**
+	 * 是否为Action请求
+	 *
+	 * @var boolean
+	 */
+	private $isReAction = false;
+
+	/**
+	 * 是否是重定向请求
+	 *
+	 * @var boolean
+	 */
+	private $isRedirect = false;
+
+	/**
+	 * 跳转链接
+	 *
+	 * @var string
+	 */
+	private $url = '';
+
+	private $action = '';
+
+	private $controller = '';
+
+	private $args = '';
+
+	/**
+	 * 将请求重定向到另外一个Action操作
+	 * 
+	 * @param string $action | $action 操作
+	 * @param string $controller | controller 路径 , controller 为空是则指向当前的控制器
+	 * @param array $args | 参数
+	 * @param boolean $isRedirect | 是否重定向
+	 * 
+	 * @return null
+	 */
+	public function forwardAnotherAction($action = 'run', $controller = '', $args = array(), $isRedirect = '') {
+		$this->setIsReAction(true);
+		$this->setAction($action);
+		$this->setController($controller);
+		$this->setArgs($args);
+		$isRedirect !== '' && $this->setIsRedirect($isRedirect);
+	}
+
+	/**
+	 * 设置页面模板变量
+	 * 
+	 * @param string|array|object $vars
+	 * @param string $key
+	 */
 	public function setVars($vars, $key = '') {
 		if (!$key) {
 			if (is_object($vars)) $vars = get_object_vars($vars);
@@ -47,77 +91,70 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * 设置视图的逻辑名称
-	 * 
-	 * @param string $name
+	 * @return WindView $windView
 	 */
-	
-	public function setTemplateName($templateName) {
-		$this->templateName = $templateName;
+	public function getWindView() {
+		if ($this->windView === null) {
+			$module = $this->windFactory->getInstance(COMPONENT_ROUTER)->getModule();
+			$moduleConfig = $this->windSystemConfig->getModules($module);
+			$view = $this->windSystemConfig->getConfig('view', WindSystemConfig::CLASS_PATH, (array) $moduleConfig);
+			if (!$view) throw new WindException('unable to get the config for view.');
+			
+			$this->windView = $this->windFactory->getInstance($view);
+		}
+		return $this->windView;
 	}
 
 	/**
-	 * 设置视图的路径信息
-	 * 
-	 * @param string $path
+	 * @return the $isRedirect
 	 */
-	public function setTemplatePath($templatePath) {
-		$this->templatePath = $templatePath;
+	public function getIsRedirect() {
+		return $this->isRedirect;
 	}
 
 	/**
-	 * 设置模板配置
-	 * 
-	 * @param string $templateConfigName
+	 * @param boolean $isRedirect
 	 */
-	public function setTemplateConfig($templateConfigName) {
-		$this->templateConfig = $templateConfigName;
+	public function setIsRedirect($isRedirect) {
+		$this->isRedirect = $isRedirect;
 	}
 
 	/**
-	 * @param WindLayout $layout
+	 * @return the $isReAction
 	 */
-	public function setLayout($layout) {
-		$this->layout = $layout;
+	public function getIsReAction() {
+		return $this->isReAction;
 	}
 
 	/**
-	 * 设置视图的重定向信息
-	 * 
-	 * @param string $redirect
+	 * @param boolean $isReAction
 	 */
-	public function setRedirect($redirect = '', $args = '') {
-		$this->redirecter = new WindUrlManager($redirect, $args);
+	public function setIsReAction($isReAction) {
+		$this->isReAction = $isReAction;
 	}
 
 	/**
-	 * @param $action the $action to set
-	 * @author Qiong Wu
+	 * @return the $vars
 	 */
-	public function setAction($action, $path = '', $isRedirect = false, $args = '') {
-		$this->action = $action;
-		$this->actionPath = $path;
-		if ($isRedirect) $this->setRedirect('', $args);
+	public function getVars() {
+		return $this->vars;
 	}
 
 	/**
-	 * 返回视图的逻辑名称
-	 * @return string
+	 * @return the $url
 	 */
-	public function getTemplateName() {
-		return $this->templateName;
+	public function getUrl() {
+		return $this->url;
 	}
 
 	/**
-	 * 返回视图的路径信息
-	 * @return string
+	 * @param string $url
 	 */
-	public function getTemplatePath() {
-		return $this->templatePath;
+	public function setUrl($url) {
+		$this->url = $url;
 	}
 
 	/**
-	 * 获得Action操作句柄
 	 * @return the $action
 	 */
 	public function getAction() {
@@ -125,42 +162,38 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * 获取Action请求的路径信息
-	 * @return the $actionPath
+	 * @return the $controller
 	 */
-	public function getActionPath() {
-		return $this->actionPath;
+	public function getController() {
+		return $this->controller;
 	}
 
 	/**
-	 * 获取布局对象
-	 * @return WindLayout
+	 * @return the $args
 	 */
-	public function getLayout() {
-		return $this->layout;
+	public function getArgs() {
+		return $this->args;
 	}
 
 	/**
-	 * 获得模板配置名称
-	 * @return the $templateConfig
+	 * @param field_type $action
 	 */
-	public function getTemplateConfig() {
-		return $this->templateConfig;
+	public function setAction($action) {
+		$this->action = $action;
 	}
 
 	/**
-	 * 获得操作输出数据变量
-	 * @return array
+	 * @param field_type $controller
 	 */
-	public function getVars() {
-		return $this->vars;
+	public function setController($controller) {
+		$this->controller = $controller;
 	}
 
 	/**
-	 * @return WindRedirecter $redirecter
+	 * @param field_type $args
 	 */
-	public function getRedirecter() {
-		return $this->redirecter;
+	public function setArgs($args) {
+		$this->args = $args;
 	}
 
 }

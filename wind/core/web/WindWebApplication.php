@@ -8,6 +8,7 @@
 
 L::import('WIND:core.WindComponentModule');
 L::import('WIND:core.web.IWindApplication');
+L::import('WIND:core.factory.WindComponentDefinition');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -16,49 +17,95 @@ L::import('WIND:core.web.IWindApplication');
  */
 class WindWebApplication extends WindComponentModule implements IWindApplication {
 
+	private $errorHandler = null;
+
+	private $dispatcher = null;
+
 	/* (non-PHPdoc)
 	 * @see IWindApplication::processRequest()
 	 */
-	public function processRequest($request, $response) {
+	public function processRequest() {
 		try {
-			$this->windConfig = $request->getAttribute(WindFrontController::WIND_CONFIG);
-			$this->windFactory = $request->getAttribute(WindFrontController::WIND_FACTORY);
+			//add log
+			if (IS_DEBUG) {
+				/* @var $logger WindLogger */
+				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+				$logger->debug('do processRequest of ' . get_class($this));
+			}
 			
-			$this->doDispatch($request, $response);
-		} catch (WindException $exception) {
+			$handler = $this->getHandler();
+			$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter()));
+			if ($forward === null) {
+				throw new WindException('doAction', WindException::ERROR_RETURN_TYPE_ERROR);
+			}
+			
+			$this->doDispatch($forward);
+		
+		} catch (WindSqlException $windSqlException) {
+			$this->noActionHandlerFound($windSqlException->getMessage());
+		
+		} catch (WindViewException $windViewException) {
 
+		} catch (WindException $exception) {
+			$this->noActionHandlerFound($exception->getMessage());
 		}
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindApplication::doDispatch()
 	 */
-	public function doDispatch($request, $response) {
-		try {
-			$handler = $this->getHandler($request, $response);
-			$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter($request)));
-			
-			$this->render($forward);
-		
-		} catch (WindException $exception) {
-			
-			$this->noActionHandlerFound($request, $response, $exception->getMessage());
+	public function doDispatch($forward) {
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->info('do doDispatch of ' . get_class($this));
 		}
+		
+		$this->dispatcher->dispatch($forward);
 	}
 
 	/**
+	 * 获得Action处理句柄
+	 * 
 	 * @param WindHttpRequest $request
 	 */
-	protected function getHandler($request, $response) {
-		$handlerAdapter = $this->getHandlerAdapter($request);
+	protected function getHandler() {
+		$handlerAdapter = $this->getHandlerAdapter();
+		$handlerAdapter->doParse();
+		
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
+		}
+		
 		$this->checkReprocess($handlerAdapter->getController() . '_' . $handlerAdapter->getAction());
 		
-		$handler = $handlerAdapter->getHandler($request, $response);
-		$handler = $this->windFactory->createInstance($handler, array($request, $response));
-		if ($handler instanceof WindAction)
-			return $handler;
-		else
-			throw new WindException('WindAction', WindException::ERROR_CLASS_TYPE_ERROR);
+		$handler = $handlerAdapter->getHandler();
+		$definition = new WindComponentDefinition();
+		$definition->setPath($handler);
+		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
+		$definition->setProxy('true');
+		$definition->setAlias($handler);
+		$definition->setPropertys(array('forward' => array('ref' => COMPONENT_FORWARD), 
+			'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
+		
+		$this->windFactory->addClassDefinitions($definition);
+		$actionHandler = $this->windFactory->getInstance($handler);
+		
+		//TODO 添加过滤链
+		
+
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->debug('ActionHandler: ' . $handler);
+		}
+		
+		return $actionHandler;
 	}
 
 	/**
@@ -68,9 +115,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @param WindHttpResponse $response
 	 * @param string $message
 	 */
-	protected function noActionHandlerFound($request, $response, $message) {
-		//TODO
-		$response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
+	protected function noActionHandlerFound($message) {
+		$this->response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
 	}
 
 	/**
@@ -90,27 +136,26 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @param request
 	 * @return AbstractWindRouter
 	 */
-	protected function getHandlerAdapter($request) {
-		$routerAlias = $this->windConfig->getRouter(WindSystemConfig::CLASS_PATH);
+	protected function getHandlerAdapter() {
+		$routerAlias = $this->windSystemConfig->getRouter(WindSystemConfig::CLASS_PATH);
 		if (null === $this->getAttribute($routerAlias)) {
 			$router = $this->windFactory->getInstance($routerAlias);
-			if (IS_DEBUG && $router instanceof WindClassProxy) {
-				$router->registerEventListener('doParse', new WindLoggerListener());
-				$router->registerEventListener('getHandler', new WindLoggerListener());
-				$router->registerEventListener('buildUrl', new WindLoggerListener());
-			}
-			$router->doParse($request);
 		}
 		return $this->getAttribute($routerAlias);
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
-	 * @param WindForward $forward
+	 * @param field_type $errorHandler
 	 */
-	protected function render($forward) {
+	public function setErrorHandler($errorHandler) {
+		$this->errorHandler = $errorHandler;
+	}
 
+	/**
+	 * @param field_type $dispatcher
+	 */
+	public function setDispatcher($dispatcher) {
+		$this->dispatcher = $dispatcher;
 	}
 
 }
