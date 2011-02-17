@@ -23,11 +23,16 @@ class WindException extends Exception {
 
 	const ERROR_CLASS_METHOD_NOT_EXIST = '102';
 
+	const ERROR_OBJECT_NOT_EXIST = '103';
+
 	/* 参数错误 */
 	const ERROR_PARAMETER_TYPE_ERROR = '110';
 
 	/* 配置错误 */
 	const ERROR_CONFIG_ERROR = '120';
+
+	/* 返回值类型错误 */
+	const ERROR_RETURN_TYPE_ERROR = '130';
 
 	private $innerException = null;
 
@@ -91,9 +96,11 @@ class WindException extends Exception {
 	protected function messageMapper($code) {
 		$messages = array(self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
-			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
+			self::ERROR_CLASS_METHOD_NOT_EXIST => 'Unable to access the method \'$message\' in current class , or the method is not exist.', 
+			self::ERROR_OBJECT_NOT_EXIST => 'Unable to access the object in current class \'$message\' ', 
 			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.', 
-			self::ERROR_CLASS_METHOD_NOT_EXIST => '\'$message\' Unable to access the method in the class , or the method is not exist.');
+			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
+			self::ERROR_RETURN_TYPE_ERROR => 'Incorrect return type for \'$message\'.');
 		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
