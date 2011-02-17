@@ -1,61 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
 	<!-- import external config source file -->
-	<!--<imports> <import name='classes' resource='WIND:classes_config' suffix='xml' 
-		init-delay='false' is-append='true' /> </imports> -->
+	<imports>
+		<import name='components' resource='WIND:components_config'
+			suffix='xml' init-delay='false' is-append='true' />
+		<import name='classes' resource='WIND:components_config'
+			suffix='xml' init-delay='false' is-append='true' />
+		<import name='actionChain' resource='WIND:components_config'
+			suffix='xml' init-delay='false' is-append='true' />
+	</imports>
 
 
 	<!-- web application definitions, you can define application more than one. -->
 	<web-apps>
 		<web-app name='windApp1' class='windWebApp' root-path=''>
-			<factory class-definition='components'
+			<factory class-definition='classes'
 				class='WIND:core.factory.WindComponentFactory' />
 			<filters class='WIND:core.filter.WindFilterChain'>
 				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
+				<filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
 			</filters>
 			<router class='urlBasedRouter' />
 			<modules>
 				<module name='default' path='actionControllers'>
-					<template name='default' path='template' ext='htm'>
-						<view-resolver class='WIND:core.viewer.WindViewer'>
-							<is-cache>false</is-cache>
-							<cache-dir>cache</cache-dir>
-							<compile-dir>compile</compile-dir>
-						</view-resolver>
-					</template>
+					<view class='windView' />
 				</module>
 			</modules>
 		</web-app>
 	</web-apps>
-
-	<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/request/session/application" 
-		proxy=''> -->
-	<!-- <property property-name='' ref/value=''> -->
-	<!-- <constructor-arg ref/value=''> -->
-	<!-- <import resource=''> -->
-	<!-- </component> -->
-
-	<components>
-		<component name='windWebApp' path='WIND:core.web.WindWebApplication'
-			scope='request' proxy='true'>
-		</component>
-		<component name='windLogger' path='WIND:component.log.WindLogger'
-			scope='request'>
-			<config path='' />
-		</component>
-		<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
-			scope="application" proxy='true'>
-			<config>
-				<module url-param='m' default-value='default' />
-				<controller url-param='c' default-value='index' />
-				<action url-param='a' default-value='run' />
-			</config>
-		</component>
-		<component name='viewResolver' path='WIND:core.viewer.WindViewer'
-			scope='request'>
-		</component>
-		<component name='db' path='WIND:component.db.WindConnectionManager'
-			scope='singleton'></component>
-	</components>
 
 </WIND>

@@ -15,6 +15,17 @@
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 !defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.php');
 
+/* 组件定义名称 */
+!defined('COMPONENT_WEBAPP') && define('COMPONENT_WEBAPP', 'windWebApp');
+!defined('COMPONENT_ERRORHANDLER') && define('COMPONENT_ERRORHANDLER', 'errorHandler');
+!defined('COMPONENT_LOGGER') && define('COMPONENT_LOGGER', 'windLogger');
+!defined('COMPONENT_FORWARD') && define('COMPONENT_FORWARD', 'forward');
+!defined('COMPONENT_ROUTER') && define('COMPONENT_ROUTER', 'urlBasedRouter');
+!defined('COMPONENT_URLHELPER') && define('COMPONENT_URLHELPER', 'urlHelper');
+!defined('COMPONENT_VIEW') && define('COMPONENT_VIEW', 'windView');
+!defined('COMPONENT_VIEWRESOLVER') && define('COMPONENT_VIEWRESOLVER', 'viewResolver');
+!defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
+
 /**
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -32,15 +43,6 @@ class W {
 	static public function application($appName, $config = '') {
 		self::initWindFramework();
 		return new WindFrontController($appName, $config);
-	}
-
-	/**
-	 * 根据appName获得App
-	 * @param string $appName
-	 * @return 
-	 */
-	public static function getApp($appName) {
-		return self::$apps[$appName];
 	}
 
 	/**
@@ -63,8 +65,6 @@ class W {
 		self::checkEnvironment();
 		self::systemRegister();
 		self::loadBaseLib();
-	
-		//		self::initErrorHandle();
 	}
 
 	/**
@@ -82,14 +82,6 @@ class W {
 		L::registerAutoloader();
 		L::register(WIND_PATH, 'WIND');
 		L::register(WIND_PATH . 'component' . D_S, 'COM');
-	}
-
-	/**
-	 * 初始化错误处理
-	 */
-	private static function initErrorHandle() {
-		if (IS_DEBUG) return;
-		set_error_handler(array('WindErrorHandle', 'errorHandle'));
 	}
 
 	/**
@@ -114,6 +106,28 @@ class W {
 				L::register($appConfig['rootPath'], $appName);
 			}
 		}
+	}
+
+	/**
+	 * 解析ControllerPath
+	 * 返回解析后的controller信息，controller，module，app
+	 * 
+	 * @param string $controllerPath
+	 * @return array
+	 */
+	static public function resolveController($controllerPath) {
+		$_m = $_c = '';
+		if (!$controllerPath) return array($_c, $_m);
+		if (($pos = strpos($controllerPath, ':')) !== false) {
+			$controllerPath = substr($controllerPath, $pos + 1);
+		}
+		if (($pos = strrpos($controllerPath, '.')) !== false) {
+			$_m = substr($controllerPath, 0, $pos);
+			$_c = substr($controllerPath, $pos + 1);
+		} else {
+			$_c = $controllerPath;
+		}
+		return array($_c, $_m);
 	}
 
 }
@@ -195,10 +209,13 @@ class L {
 						self::import($_filePath, $autoInclude, $recursivePackage);
 					}
 				} else {
-					if (($pos = strrpos($file, '.')) === false)
+					if (($pos = strrpos($file, '.')) === false) {
 						$fileName = $file;
-					else
-						$fileName = substr($file, 0, $pos);
+					} else {
+						if (substr($file, $pos + 1) === self::$_extensions) {
+							$fileName = substr($file, 0, $pos);
+						}
+					}
 					self::setImport($fileName, $filePath . '.' . $fileName, $autoInclude);
 				}
 			}
@@ -262,11 +279,13 @@ class L {
 
 	/**
 	 * 加载框架核心库文件
+	 * 通过重定义这里预加载的类可以更改打包类库的大小
 	 * 
-	 * @return
+	 * @return null
 	 */
 	static public function loadCoreLibrary() {
 		self::import('WIND:core.*', true, true);
+		
 		if (!IS_DEBUG && W::ifCompile()) self::perLoadCoreLibrary();
 	}
 
