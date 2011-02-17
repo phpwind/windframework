@@ -20,6 +20,22 @@ abstract class WindComponentModule extends WindModule {
 
 	private $_config = null;
 
+	protected $request;
+
+	protected $response;
+
+	protected $windSystemConfig;
+
+	protected $windFactory;
+
+	/**
+	 * Enter description here ...
+	 */
+	protected function getAutoSetProperty() {
+		return array('request' => 'IWindRequest', 'response' => 'IWindResponse', 
+			'windSystemConfig' => 'WindSystemConfig', 'windFactory' => 'WindFactory');
+	}
+
 	/**
 	 * Enter description here ...
 	 */

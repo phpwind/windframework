@@ -6,18 +6,13 @@
  * @license 
  */
 
-L::import('WIND:core.WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindServer extends WindModule {
-
-	private $request;
-
-	private $response;
+abstract class AbstractWindServer {
 
 	const METHOD_DELETE = "DELETE";
 
@@ -33,41 +28,55 @@ abstract class WindServer extends WindModule {
 
 	const METHOD_TRACE = "TRACE";
 
+	private $request;
+
+	private $response;
+
+	/**
+	 * @throws Exception
+	 */
 	public function __construct() {
 		try {
-			L::import('WIND:core.request.WindHttpRequest');
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
-		
 		} catch (Exception $exception) {
 			throw new Exception('init action servlet failed!!');
 		}
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
+	 * 执行操作
 	 * @throws Exception
 	 */
 	public function run() {
+		if ($this->request === null || $this->response === null) {
+			throw new Exception('init action servlet failed!!');
+		}
 		$this->beforeProcess();
-		if ($this->request === null || $this->response === null) throw new Exception('init action servlet failed!!');
-		
 		$this->service($this->request, $this->response);
-		$this->response->sendResponse();
 		$this->afterProcess();
+		$this->response->sendResponse();
 	}
 
+	/**
+	 * Enter description here ...
+	 */
 	protected function beforeProcess() {}
 
-	abstract function process();
-
+	/**
+	 * Enter description here ...
+	 */
 	protected function afterProcess() {}
+
+	/**
+	 * 执行请求的操作
+	 */
+	abstract protected function process(WindHttpRequest $request, WindHttpResponse $response);
 
 	/**
 	 * Receives standard HTTP requests from the public
 	 * <code>service</code> method and dispatches
-	 * them to the <code>do</code><i>XXX</i> methods defined in 
+	 * them to the action methods defined in 
 	 * this class.There's no need to override this method.
 	 * 
 	 * @param WindHttpRequest $request
