@@ -16,13 +16,14 @@ L::import('WIND:core.config.WindConfig');
  */
 class WindSystemConfig extends WindConfig {
 
+	/* 通用配置 */
 	const CLASS_PATH = 'class';
 
 	const PATH = 'path';
 
-	/**
-	 * import 外部配置文件包含
-	 * */
+	const VALUE = 'value';
+
+	/* import 外部配置文件包含 */
 	const IMPORTS = 'imports';
 
 	const IMPORTS_RESOURCE = 'resource';
@@ -31,9 +32,7 @@ class WindSystemConfig extends WindConfig {
 
 	const IMPORTS_IS_APPEND = 'is-append';
 
-	/*
-	 * app 相关配置
-	 * */
+	/* app 相关配置 */
 	const WEB_APPS = 'web-apps';
 
 	const WEB_APP_ROOT_PATH = 'root-path';
@@ -49,43 +48,6 @@ class WindSystemConfig extends WindConfig {
 	const WEB_APP_MODULE = 'modules';
 
 	const WEB_APP_TEMPLATE = 'template';
-
-	/**
-	 * 应用的入口地址
-	 */
-	const ERROR = 'error';
-
-	const ERROR_ERRORACTION = 'errorAction';
-
-	/**
-	 * 模板相关配置信息
-	 * 1.模板文件存放路径
-	 * 2.默认的模板文件名称
-	 * 3.模板文件后缀名
-	 * 4.视图解析器
-	 * 5.模板文件的缓存路径
-	 * 6.模板编译路径
-	 */
-	const TEMPLATE = 'templates';
-
-	const TEMPLATE_DIR = 'dir';
-
-	const TEMPLATE_DEFAULT = 'default';
-
-	const TEMPLATE_EXT = 'ext';
-
-	const TEMPLATE_RESOLVER = 'resolver';
-
-	const TEMPLATE_ISCACHE = 'isCache';
-
-	const TEMPLATE_CACHE_DIR = 'cacheDir';
-
-	const TEMPLATE_COMPILER_DIR = 'compileDir';
-
-	/**
-	 * 模板引擎配置信息
-	 */
-	const VIEWER_RESOLVERS = 'viewerResolvers';
 
 	protected $appName = '';
 
