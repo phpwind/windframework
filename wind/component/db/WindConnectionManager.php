@@ -14,14 +14,18 @@ L::import('WIND:component.db.base.IWindDbConfig');
  * @version $Id$ 
  * @package 
  */
-class WindConnectionManager {
-	
+class WindConnectionManager extends WindComponentModule {
+
 	private $config = array();
+
 	private $drivers = array();
+
 	private $builders = array();
+
 	private $linked = array();
+
 	private $connection = null;
-	
+
 	public function __construct(array $config = array()) {
 		if ($config && (!isset($config[IWindDbConfig::CONNECTIONS]) || !isset($config[IWindDbConfig::DRIVERS]) || !isset($config[IWindDbConfig::BUILDERS]))) {
 			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
@@ -30,7 +34,7 @@ class WindConnectionManager {
 		$this->drivers = isset($config[IWindDbConfig::DRIVERS]) ? $config[IWindDbConfig::DRIVERS] : C::getDataBaseDriver();
 		$this->builders = isset($config[IWindDbConfig::BUILDERS]) ? $config[IWindDbConfig::BUILDERS] : C::getDataBaseBuilder();
 	}
-	
+
 	/**
 	 * 添加数据库配置
 	 * @param array $config
@@ -42,7 +46,7 @@ class WindConnectionManager {
 		}
 		$this->config[$identify] = $config;
 	}
-	
+
 	/**
 	 * 添加数据库驱动
 	 * @param array $config 驱动配置
@@ -54,7 +58,7 @@ class WindConnectionManager {
 		}
 		$this->drivers[$driver] = $config;
 	}
-	
+
 	/**
 	 * 添加sql语句生成器
 	 * @param array $config 生成器配置
@@ -66,7 +70,7 @@ class WindConnectionManager {
 		}
 		$this->builders[$builder] = $config;
 	}
-	
+
 	/**
 	 * 取得数据库服务器
 	 * @param string $identify 数据库标识
@@ -89,22 +93,23 @@ class WindConnectionManager {
 		}
 		return $this->connection = $this->linked[$identify];
 	}
-	
+
 	/**
 	 * 取得主服务器
 	 * @return WindDbAdapter
 	 */
 	public function getMasterConnection() {
-		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_MASTER) : $this->getConnection('','');
+		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_MASTER) : $this->getConnection('', '');
 	}
-	
+
 	/**
 	 * 取得从服务器
 	 * @return WindDbAdapter
 	 */
 	public function getSlaveConnection() {
-		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_SLAVE) : $this->getConnection('','');
+		return 1 < count($this->config) ? $this->getConnection('', IWindDbConfig::CONN_SLAVE) : $this->getConnection('', '');
 	}
+
 	/**
 	 * 取得配置里面的数据库信息
 	 * @param string $name
@@ -113,6 +118,7 @@ class WindConnectionManager {
 	public function getConfig($name = '', $subname = '') {
 		return $name ? $subname ? $this->config[$name][$subname] : $this->config[$name] : $this->config;
 	}
+
 	/**
 	 * 取得配置里面的驱动
 	 * @param string $name
@@ -121,7 +127,7 @@ class WindConnectionManager {
 	public function getDriver($name = '', $subname = '') {
 		return $name ? $subname ? $this->drivers[$name][$subname] : $this->drivers[$name] : $this->drivers;
 	}
-	
+
 	/**
 	 * 取得配置里面的生成器
 	 * @param string $name
@@ -130,6 +136,7 @@ class WindConnectionManager {
 	public function getBuilder($name = '', $subname = '') {
 		return $name ? $subname ? $this->builders[$name][$subname] : $this->builders[$name] : $this->builders;
 	}
+
 	/**
 	 * 随机取得数据库配置
 	 * @param string $type 是否是主从服务器
@@ -140,7 +147,7 @@ class WindConnectionManager {
 		$config = (empty($masterSlave) || empty($type)) ? $this->config : $masterSlave[$type];
 		return $this->getConfigIdentifyByPostion($config, mt_rand(0, count($config) - 1));
 	}
-	
+
 	/**
 	 * 查看是是否要主从数据库设置，并按主从配置返回数据库配置信息
 	 * @return array
@@ -148,13 +155,14 @@ class WindConnectionManager {
 	private function getMasterSlave() {
 		$array = array();
 		foreach ($this->config as $key => $value) {
-			if (isset($value[IWindDbConfig::CONN_TYPE]) && in_array($value[IWindDbConfig::CONN_TYPE], array(IWindDbConfig::CONN_MASTER, IWindDbConfig::CONN_SLAVE))) {
+			if (isset($value[IWindDbConfig::CONN_TYPE]) && in_array($value[IWindDbConfig::CONN_TYPE], array(
+				IWindDbConfig::CONN_MASTER, IWindDbConfig::CONN_SLAVE))) {
 				$array[$value[IWindDbConfig::CONN_TYPE]][$key] = $value;
 			}
 		}
 		return $array;
 	}
-	
+
 	/**
 	 *根据config的pos返回key
 	 * @param array $config 数据库配置
