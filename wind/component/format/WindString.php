@@ -25,6 +25,7 @@ class WindString {
 	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = 'UTF-8', $dot = false) {
+		//TODO 
 		if (in_array($charset, array('utf-8', 'UTF-8', 'utf8', 'UTF8'))) {
 			return self::utf8_substr($string, $start, $length, $dot);
 		} else {
