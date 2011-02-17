@@ -11,7 +11,7 @@ L::import('WIND:core.factory.IWindClassProxy');
  */
 class WindClassProxy implements IWindClassProxy {
 
-	private $_attribute = array();
+	protected $_attributes = array();
 
 	protected $_className = '';
 
@@ -71,7 +71,10 @@ class WindClassProxy implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
+		
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_SETTER, $propertyName);
+		if (empty($listeners)) return call_user_func_array(array($this, '_setProperty'), array($propertyName, $value));
+		
 		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_setProperty'), array($propertyName, $value));
@@ -98,7 +101,10 @@ class WindClassProxy implements IWindClassProxy {
 		if (!$property || !$property->isPublic()) {
 			throw new WindException('undefined property name. ');
 		}
+		
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_GETTER, $propertyName);
+		if (empty($listeners)) return call_user_func_array(array($this, '_getProperty'), array($propertyName));
+		
 		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_getProperty'), array($propertyName));
@@ -113,11 +119,8 @@ class WindClassProxy implements IWindClassProxy {
 	 * @throws WindException
 	 */
 	public function __call($methodName, $args) {
-		$method = $this->_getReflection()->getMethod($methodName);
-		if (!$method || !$method->isPublic()) {
-			throw new WindException('undefined method name in ' . $this->_getReflection()->getName());
-		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_METHOD, $methodName);
+		if (empty($listeners)) return call_user_func_array(array($this->_getInstance(), $methodName), $args);
 		
 		$interceptorChain = $this->_getInterceptorChain($methodName);
 		$interceptorChain->addInterceptors($listeners);
@@ -156,14 +159,14 @@ class WindClassProxy implements IWindClassProxy {
 	 * Enter description here ...
 	 */
 	private function _getInterceptorChain($event = '') {
-		$interceptorChain = call_user_func_array(array(new ReflectionClass(L::import($this->_interceptorChain)), 
-			'newInstance'), array());
-		if ($interceptorChain instanceof WindComponentModule) {
+		$interceptorChain = WindFactory::createInstance($this->_interceptorChain);
+		if ($interceptorChain && $interceptorChain instanceof WindHandlerInterceptorChain) {
 			$interceptorChain->setAttribute($this->_getAttribute());
 			$interceptorChain->setAttribute('instance', $this->_getInstance());
 			$interceptorChain->setAttribute('event', array($this->_getClassName(), $event));
-		}
-		return $interceptorChain;
+			return $interceptorChain;
+		} else
+			throw new WindException('unable to create interceptorChain.');
 	}
 
 	/**
@@ -175,29 +178,6 @@ class WindClassProxy implements IWindClassProxy {
 			$listener = $this->_listener[$type][$subType];
 		}
 		return $listener;
-	}
-
-	/**
-	 * Enter description here ...
-	 */
-	private function _getAttribute($alias = '') {
-		if ($alias === '')
-			return $this->_attribute;
-		else
-			return isset($this->_attribute[$alias]) ? $this->_attribute[$alias] : null;
-	}
-
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param string $alias
-	 * @param object $object
-	 */
-	public function _setAttribute($alias, $object = null) {
-		if (is_array($alias))
-			$this->_attribute += $alias;
-		elseif (is_string($alias))
-			$this->_attribute[$alias] = $object;
 	}
 
 	/* (non-PHPdoc)
@@ -244,6 +224,32 @@ class WindClassProxy implements IWindClassProxy {
 	public function _setClassPath($classPath) {
 		$this->_setClassName(L::import($classPath));
 		$this->_classPath = $classPath;
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param unknown_type $alias
+	 * @return multitype:|Ambigous <NULL, multitype:>
+	 */
+	public function _getAttribute($alias = '') {
+		if ($alias === '')
+			return $this->_attributes;
+		else
+			return isset($this->_attributes[$alias]) ? $this->_attributes[$alias] : null;
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param unknown_type $alias
+	 * @param unknown_type $object
+	 */
+	public function _setAttribute($alias, $object = null) {
+		if (is_array($alias))
+			$this->_attributes += $alias;
+		elseif (is_string($alias))
+			$this->_attributes[$alias] = $object;
 	}
 
 }
