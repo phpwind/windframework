@@ -1,13 +1,20 @@
 <?php
 /**
- * @author xiaoxia xu <x_824@sina.com> 2010-11-26
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ * tags
  */
 
-class Common {
-	/**
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ */
+class WindFile{
+/**
 	 * 保存文件
 	 * @param string $fileName          保存的文件名
 	 * @param mixed $data               保存的数据
@@ -30,37 +37,6 @@ class Common {
 		}
 		return self::writeover($fileName, $temp, $method, $ifLock);
 	}
-	/**
-	 * 变量导出为字符串
-	 *
-	 * @param mixed $input 变量
-	 * @param string $indent 缩进
-	 * @return string
-	 */
-	public static function varExport($input, $indent = '') {
-		switch (gettype($input)) {
-			case 'string':
-				return "'" . str_replace(array("\\", "'"), array("\\\\", "\'"), $input) . "'";
-			case 'array':
-				$output = "array(\r\n";
-				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . self::varExport($key, $indent . "\t") . ' => ' . self::varExport($value, $indent . "\t");
-					$output .= ",\r\n";
-				}
-				$output .= $indent . ')';
-				return $output;
-			case 'boolean':
-				return $input ? 'true' : 'false';
-			case 'NULL':
-				return 'NULL';
-			case 'integer':
-			case 'double':
-			case 'float':
-				return "'" . (string) $input . "'";
-		}
-		return 'NULL';
-	}
-	
 	/**
 	 * 写文件
 	 *
