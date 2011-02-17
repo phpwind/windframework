@@ -14,6 +14,7 @@
  * @package 
  */
 class WindSecurity {
+
 	/**
 	 * html转换输出
 	 * @param $param
@@ -22,6 +23,7 @@ class WindSecurity {
 	public static function escapeHTML($str) {
 		return htmlspecialchars($str, ENT_QUOTES);
 	}
+
 	/**
 	 * 过滤标签
 	 * @param $param
@@ -30,7 +32,7 @@ class WindSecurity {
 	public static function stripTags($str, $allowTags = "") {
 		return strip_tags($str, $allowTags);
 	}
-	
+
 	/**
 	 * 对cookie/post/get方式的值添加反斜线
 	 * @param string $str
@@ -42,7 +44,7 @@ class WindSecurity {
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * 对从db或者file里面读取的内容添加反斜线
 	 * @return string
@@ -53,7 +55,7 @@ class WindSecurity {
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * 添加反斜线,转义字符
 	 * @param array $array 要处理的数组
@@ -70,7 +72,7 @@ class WindSecurity {
 		}
 		return addslashes($str);
 	}
-	
+
 	/**
 	 * 对数组的值添加反斜线
 	 * @param array $array 要处理的数组
@@ -90,7 +92,7 @@ class WindSecurity {
 		}
 		return $array;
 	}
-	
+
 	/**
 	 * 去除反 斜线
 	 * @param array $array
@@ -105,7 +107,7 @@ class WindSecurity {
 		}
 		return $args;
 	}
-	
+
 	/**
 	 * 路径转换
 	 * @param $fileName
@@ -118,6 +120,7 @@ class WindSecurity {
 		}
 		return $fileName;
 	}
+
 	/**
 	 * 私用路径转换
 	 * @param string  $fileName
@@ -133,15 +136,18 @@ class WindSecurity {
 		}
 		return true;
 	}
+
 	/**
 	 * 目录转换
 	 * @param string $dir
 	 * @return string
 	 */
 	public static function escapeDir($dir) {
-		$dir = strtr($dir, array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', ';' => ''));
+		$dir = strtr($dir, array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', 
+			';' => ''));
 		return rtrim(preg_replace('/(\/){2,}|(\\\){1,}/', '/', $dir), '/');
 	}
+
 	/**
 	 * 通用多类型转换
 	 * @param  mixed $value
@@ -159,6 +165,7 @@ class WindSecurity {
 		}
 		return $value;
 	}
+
 	/**
 	 * 字符转换
 	 * @param string $string
@@ -171,7 +178,7 @@ class WindSecurity {
 		return preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/', '/&(?!(#[0-9]+|[a-z]+);)/is'), array('', 
 			'&amp;'), $string);
 	}
-	
+
 	/**
 	 * 该函数可用于转义拥有特殊意义的字符，比如 SQL 中的 ( )、[ ] 以及 *。
 	 * @param string $string
