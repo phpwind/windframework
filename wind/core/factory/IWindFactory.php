@@ -34,6 +34,6 @@ interface IWindFactory {
 	 * @param array $args	| 类参数信息
 	 * @return Object | 返回的类类型的实例对象
 	 */
-	public function createInstance($className, $args = array());
+	static public function createInstance($className, $args = array());
 
 }

@@ -24,6 +24,9 @@ class WindComponentDefinition extends WindClassDefinition {
 
 	const SUFFIX = 'suffix';
 
+	/* 是否支持隐藏变量 */
+	const HIDDEN_PRO = 'hidden-pro';
+
 	/* 配置缓存 */
 	const CONFIG_CACHE = 'wind_components_config';
 
@@ -40,6 +43,11 @@ class WindComponentDefinition extends WindClassDefinition {
 	 */
 	protected $proxy = '';
 
+	protected $hiddenPro = '';
+
+	/**
+	 * @var array
+	 */
 	protected $config = array();
 
 	/* (non-PHPdoc)
@@ -57,8 +65,22 @@ class WindComponentDefinition extends WindClassDefinition {
 			$windConfig = new WindConfig($this->config);
 		}
 		$instance->setConfig($windConfig);
+		$this->setHiddenProperty($instance, $factory);
 		$this->setProxyForClass($instance, $factory);
 		return $instance;
+	}
+
+	/**
+	 * 设置组件对象的隐藏属性
+	 */
+	protected function setHiddenProperty($instance, $factory) {
+		if ($this->getHiddenPro() === 'false') return;
+		if (isset($factory->request)) {
+			$instance->windSystemConfig = $factory->request->getAttribute(WindFrontController::WIND_CONFIG);
+			$instance->windFactory = $factory->request->getAttribute(WindFrontController::WIND_FACTORY);
+			$instance->request = $factory->request;
+		}
+		if (isset($factory->response)) $instance->response = $factory->response;
 	}
 
 	/**
@@ -68,16 +90,12 @@ class WindComponentDefinition extends WindClassDefinition {
 	 * @param WindFactory $factory
 	 */
 	protected function setProxyForClass($instance, $factory) {
-		if (!$instance instanceof WindModule) return;
 		if (!($proxyPath = $this->getProxy()) || $proxyPath === 'false') return;
-		$proxyPath = $proxyPath === 'true' ? $this->proxyClass : $this->getProxy();
+		$proxyPath = ($proxyPath === 'true' || $proxyPath === true) ? $this->proxyClass : $this->getProxy();
 		$proxyClass = L::import($proxyPath);
 		if (!class_exists($proxyClass)) return;
 		
-		$proxyClass = new $proxyClass();
-		if (isset($factory->request)) $proxyClass->_setAttribute('request', $factory->request);
-		if (isset($factory->response)) $proxyClass->_setAttribute('response', $factory->response);
-		if (isset($factory->application)) $proxyClass->_setAttribute('application', $factory->application);
+		$proxyClass = $factory->createInstance($proxyClass);
 		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
 	}
 
@@ -91,6 +109,9 @@ class WindComponentDefinition extends WindClassDefinition {
 		}
 		if (isset($classDefinition[self::PROXY])) {
 			$this->setProxy($classDefinition[self::PROXY]);
+		}
+		if (isset($classDefinition[self::HIDDEN_PRO])) {
+			$this->setHiddenPro($classDefinition[self::HIDDEN_PRO]);
 		}
 	}
 
@@ -106,6 +127,20 @@ class WindComponentDefinition extends WindClassDefinition {
 	 */
 	public function setProxy($proxy) {
 		$this->proxy = $proxy;
+	}
+
+	/**
+	 * @return the $hiddenPro
+	 */
+	public function getHiddenPro() {
+		return $this->hiddenPro;
+	}
+
+	/**
+	 * @param field_type $hiddenPro
+	 */
+	public function setHiddenPro($hiddenPro) {
+		$this->hiddenPro = $hiddenPro;
 	}
 
 }

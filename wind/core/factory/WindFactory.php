@@ -58,10 +58,13 @@ class WindFactory implements IWindFactory {
 	/* (non-PHPdoc)
 	 * @see AbstractWindFactory::createInstance()
 	 */
-	public function createInstance($className, $args = array()) {
+	static public function createInstance($className, $args = array()) {
+		if (!$className) return null;
+		if (strpos($className, ':') !== false) $className = L::import($className);
 		if (!$className || !class_exists($className)) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
+		
 		$reflection = new ReflectionClass($className);
 		if ($reflection->isAbstract() || $reflection->isInterface()) return null;
 		return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
@@ -87,8 +90,7 @@ class WindFactory implements IWindFactory {
 	public function getClassDefinitionByAlias($classAlias) {
 		if (!isset($this->classAlias[$classAlias]) && isset($this->_classDefinitions[$classAlias])) {
 			$definition = $this->_classDefinitions[$classAlias];
-			$className = L::import($this->classDefinitionType);
-			$classDefinition = self::createInstance($className, array($definition));
+			$classDefinition = self::createInstance($this->classDefinitionType, array($definition));
 			$classDefinition->setAlias($classAlias);
 			$this->addClassDefinitions($classDefinition);
 			return $classDefinition;

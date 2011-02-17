@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindEnableValidateModule');
+L::import('WIND:core.WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * 
@@ -20,7 +20,7 @@ L::import('WIND:core.WindEnableValidateModule');
  * @version $Id$ 
  * @package 
  */
-class WindClassDefinition extends WindEnableValidateModule {
+class WindClassDefinition extends WindModule {
 
 	/* 配置信息定义 */
 	const NAME = 'name';
@@ -40,6 +40,13 @@ class WindClassDefinition extends WindEnableValidateModule {
 	const REF = 'ref';
 
 	const VALUE = 'value';
+
+	/* 支持的类命名空间 */
+	const SCOPE_SINGLETON = 'singleton';
+
+	const SCOPE_PROTOTYPE = 'prototype';
+
+	const SCOPE_REQUEST = 'request';
 
 	/**
 	 * 类名称
@@ -113,8 +120,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 */
 	public function __construct($classDefinition = array()) {
 		L::import('WIND:component.validator.WindValidator');
-		$this->registerValidator(new WindValidator());
-		$this->validate($classDefinition);
 		$this->init($classDefinition);
 	}
 
@@ -139,19 +144,6 @@ class WindClassDefinition extends WindEnableValidateModule {
 			default:
 				return $this->createInstanceWithSingleton($factory, $args);
 		}
-	}
-
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param array $args
-	 * @throws WindException
-	 * @return NULL|mixed
-	 */
-	private function executeFactoryMethod($args) {
-		if (!($factoryMethod = $this->getFactoryMethod())) return null;
-		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) throw new WindException($this->getClassName() . '->' . $factoryMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
-		return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
 	}
 
 	/**
@@ -188,10 +180,9 @@ class WindClassDefinition extends WindEnableValidateModule {
 	protected function createInstanceWithPrototype($factory, $args) {
 		if ($this->prototype === null) {
 			$instance = $this->createInstance($factory, $args);
-			if (($instance instanceof WindModule) && (null !== ($proxy = $instance->getClassProxy())))
-				$this->prototype = $proxy;
-			else
-				$this->prototype = $instance;
+			$instance = $this->setPrototype($instance);
+			$this->setProperties($this->getPropertys(), $factory, $instance);
+			$this->executeInitMethod($instance);
 		}
 		return clone $this->prototype;
 	}
@@ -220,10 +211,22 @@ class WindClassDefinition extends WindEnableValidateModule {
 			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		}
 		$instance = $factory->createInstance($this->getClassName(), $args);
-		if ($instance === null) return null;
-		$this->setProperties($this->getPropertys(), $factory, $instance);
-		$this->executeInitMethod($instance);
 		return $instance;
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param instance
+	 * @param proxy
+	 */
+	private function setPrototype($instance) {
+		if ($this->prototype === null) {
+			if (($instance instanceof WindModule) && (null !== ($proxy = $instance->getClassProxy())))
+				$this->prototype = &$proxy;
+			else
+				$this->prototype = &$instance;
+		}
+		return $this->prototype;
 	}
 
 	/**
@@ -251,27 +254,24 @@ class WindClassDefinition extends WindEnableValidateModule {
 				$_temp[$key] = $factory->getInstance($subDefinition[self::REF]);
 			elseif (isset($subDefinition[self::VALUE]))
 				$_temp[$key] = $subDefinition[self::VALUE];
-			if ($instance !== null && is_array($key)) {
-				$instance->$key = $_temp[$key];
+			if ($instance !== null) {
+				call_user_func_array(array($instance, 'set' . ucfirst(trim($key, '_'))), array($_temp[$key]));
 			}
 		}
 		return $_temp;
 	}
 
 	/**
-	 * 返回配置对象
-	 * validator : required/not-required
-	 * @return multitype:multitype:string  
+	 * Enter description here ...
+	 * 
+	 * @param array $args
+	 * @throws WindException
+	 * @return NULL|mixed
 	 */
-	protected function validateRules() {
-		$rules[] = $this->buildValidateRule(self::NAME, 'isRequired', '');
-		$rules[] = $this->buildValidateRule(self::PATH, 'isRequired', '');
-		$rules[] = $this->buildValidateRule(self::SCOPE, 'isRequired', 'singleton');
-		$rules[] = $this->buildValidateRule(self::INIT_METHOD, 'isRequired', '');
-		$rules[] = $this->buildValidateRule(self::FACTORY_METHOD, 'isRequired', '');
-		$rules[] = $this->buildValidateRule(self::PROPERTIES, 'isRequired', array());
-		$rules[] = $this->buildValidateRule(self::CONSTRUCTOR_ARG, 'isRequired', array());
-		return $rules;
+	private function executeFactoryMethod($args) {
+		if (!($factoryMethod = $this->getFactoryMethod())) return null;
+		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) throw new WindException($this->getClassName() . '->' . $factoryMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
 	}
 
 	/**
@@ -279,17 +279,14 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @param array $classDefinition
 	 */
 	protected function init($classDefinition) {
-		$className = L::import($classDefinition[self::PATH]);
-		if (!$className) throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
-		
-		$this->setClassName($className);
-		$this->setAlias($classDefinition[self::NAME]);
-		$this->setPath($classDefinition[self::PATH]);
-		$this->setScope($classDefinition[self::SCOPE]);
-		$this->setFactoryMethod($classDefinition[self::FACTORY_METHOD]);
-		$this->setInitMethod($classDefinition[self::INIT_METHOD]);
-		$this->setPropertys($classDefinition[self::PROPERTIES]);
-		$this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
+		if (empty($classDefinition)) return;
+		if (isset($classDefinition[self::NAME])) $this->setAlias($classDefinition[self::NAME]);
+		if (isset($classDefinition[self::PATH])) $this->setPath($classDefinition[self::PATH]);
+		if (isset($classDefinition[self::SCOPE])) $this->setScope($classDefinition[self::SCOPE]);
+		if (isset($classDefinition[self::FACTORY_METHOD])) $this->setFactoryMethod($classDefinition[self::FACTORY_METHOD]);
+		if (isset($classDefinition[self::INIT_METHOD])) $this->setInitMethod($classDefinition[self::INIT_METHOD]);
+		if (isset($classDefinition[self::PROPERTIES])) $this->setPropertys($classDefinition[self::PROPERTIES]);
+		if (isset($classDefinition[self::CONSTRUCTOR_ARG])) $this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
 		$this->setClassDefinition($classDefinition);
 	}
 
@@ -297,6 +294,9 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @return the $className
 	 */
 	public function getClassName() {
+		if (!$this->className) {
+			$this->className = L::import($this->getPath());
+		}
 		return $this->className;
 	}
 
@@ -379,7 +379,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @author Qiong Wu
 	 */
 	public function setConstructArgs($constructArgs) {
-		if (is_array($constructArgs) && !empty($constructArgs)) $this->constructArgs = $constructArgs;
+		if (is_array($constructArgs) && !empty($constructArgs)) $this->constructArgs += $constructArgs;
 	}
 
 	/**
@@ -387,7 +387,7 @@ class WindClassDefinition extends WindEnableValidateModule {
 	 * @author Qiong Wu
 	 */
 	public function setPropertys($propertys) {
-		if (is_array($propertys) && !empty($propertys)) $this->propertys = $propertys;
+		if (is_array($propertys) && !empty($propertys)) $this->propertys += $propertys;
 	}
 
 	/**
