@@ -23,17 +23,11 @@ class WindHttpResponse implements IWindResponse {
 
 	private $_body = array();
 
-	private $_data = array();
-
 	private $_headers = array();
 
 	private $_isRedirect = false;
 
 	private $_status = '';
-
-	private $_dispatcher = null;
-
-	private static $_instance = null;
 
 	/*
      * Server status codes; see RFC 2068.
@@ -437,10 +431,6 @@ class WindHttpResponse implements IWindResponse {
 		return null;
 	}
 
-	public function clearBody() {
-		$this->_body = array();
-	}
-
 	/**
 	 * 是否已经发送了响应头部
 	 */
@@ -458,6 +448,13 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function getHeaders() {
 		return $this->_headers;
+	}
+
+	/**
+	 * 清理响应体信息
+	 */
+	public function clearBody() {
+		$this->_body = array();
 	}
 
 	/**
@@ -479,56 +476,6 @@ class WindHttpResponse implements IWindResponse {
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);
 		return $filtered;
-	}
-
-	/**
-	 * 返回一个WhttpResponse单例对象
-	 * @return WindHttpResponse
-	 */
-	static function &getInstance() {
-		if (self::$_instance == null) {
-			$class = __CLASS__;
-			self::$_instance = new $class();
-		}
-		return self::$_instance;
-	}
-
-	public function setDispatcher($dispatcher = null) {
-		$this->_dispatcher = $dispatcher;
-	}
-
-	/**
-	 * @return WindDispatcher
-	 */
-	public function getDispatcher() {
-		return $this->_dispatcher;
-	}
-
-	/**
-	 * @return the $_data
-	 */
-	public function getData($key = '') {
-		if ($key === '') {
-			return $this->_data;
-		} else {
-			$key = strtolower($key);
-			return isset($this->_data[$key]) ? $this->_data[$key] : '';
-		}
-	}
-
-	/**
-	 * @param $_data the $_data to set
-	 * @author Qiong Wu
-	 */
-	public function setData($data, $key = '') {
-		if ($key === '') {
-			if (is_object($data)) $data = get_object_vars($data);
-			if (is_array($data)) $this->_data += $data;
-		} else {
-			$key = strtolower($key);
-			$this->_data[$key] = $data;
-		}
-		return;
 	}
 
 }
