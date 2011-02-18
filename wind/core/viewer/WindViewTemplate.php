@@ -34,8 +34,8 @@ class WindViewTemplate extends WindComponentModule {
 		//TODO compile template content
 		
 
-		L::import('WIND:component.utility.WindUtility');
-		WindUtility::writeover($compileFile, $_output);
+		L::import('WIND:component.utility.WindFile');
+		WindFile::writeover($compileFile, $_output);
 		
 		return $_output;
 	}
