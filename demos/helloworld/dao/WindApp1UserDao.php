@@ -13,8 +13,15 @@ L::import('WIND.core.dao.AbstractWindDao');
 class WindApp1UserDao extends AbstractWindDao {
 
 	public function findUserById($userId) {
+
+		//print_r($this->queryBySql("select * from pw_members"));
+		print_r($this->getMasterConnection()->getSqlBuilder());
+		
+	
+
 		
 	}	
+
 
 	public function getCacheMethods() {
 		return array('findUserById');
