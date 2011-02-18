@@ -21,8 +21,6 @@ class WindDaoFactory {
 
 	protected $dbConnections = array();
 
-	protected static $instance = null;
-
 	/**
 	 * Enter description here ...
 	 * 
@@ -79,16 +77,6 @@ class WindDaoFactory {
 	 */
 	public function setDaoResource($daoResource) {
 		$this->daoResource = $daoResource;
-	}
-
-	/**
-	 * @return WindDaoFactory
-	 */
-	public static function getFactory() {
-		if (self::$instance === null) {
-			self::$instance = new WindDaoFactory();
-		}
-		return self::$instance;
 	}
 
 }
