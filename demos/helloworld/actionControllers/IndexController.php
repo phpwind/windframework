@@ -13,15 +13,22 @@
  * @package
  */
 class IndexController extends WindController {
-	
+
 	public function run() {
-		$this->setOutput('content vars.', 'test');
-		$this->setTemplate('index_run');
+		$this->setOutput(array('var1' => 'hello world from IndexController.'));
+		$this->setTemplate('helloworld');
+		L::import('WIND:core.dao.WindDaoFactory');
+		$dao = WindDaoFactory::getFactory()->instantiateDao('WINDAPP1:dao.windApp1UserDao');
+		$dao->findUserById('1');
 	}
-	
+
+	public function redirect() {
+		$this->forwardRedirect('http://www.baidu.com');
+	}
+
 	public function add() {
 		echo 'hello i am add.';
-		$this->setTemplate('index_run');
+		$this->setTemplate('read');
 	}
 
 }

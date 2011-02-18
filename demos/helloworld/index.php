@@ -18,11 +18,16 @@ require_once (FREAMWORK_PATH . '/wind.php');
 
 /*$_GET['formName'] = 'userForm';
 $_POST['username'] = 'asssss';*/
-W::application('test')->run();
+W::application('windApp1')->run();
 //W::application('test', R_P . 'config.xml')->run();
 //W::application('test', R_P . 'config.php')->run();
 //W::application('test', R_P . 'config.ini')->run();
 //W::application('test', R_P . 'config.properties')->run();
-echo microtime(true) - $start;
+
 echo '<br>';
-echo memory_get_usage()/1024/1024;
+echo '<br>';
+echo '<br>';
+echo 'TIME: ', microtime(true) - $start;
+echo '<br>';
+echo 'MEMORY: ', memory_get_usage() / 1024 / 1024;
+

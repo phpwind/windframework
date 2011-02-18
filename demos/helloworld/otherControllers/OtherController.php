@@ -8,8 +8,9 @@
 class OtherController extends WindController {
 	
 	public function header() {
-		$this->setOutput(array('test1'=>'header vers.'));
-		$this->setTemplate('header');
+//		$this->setOutput(array('test1'=>'header vers.'));
+//		$this->setTemplate('header');
+		echo 'aaaa';
 	}
 	
 	public function footer(){
