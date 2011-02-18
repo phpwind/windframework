@@ -101,8 +101,7 @@ class WindView extends WindComponentModule {
 			if ($this->getIsCache() === 'true') {
 				$this->viewResolver->setClassProxy(new WindClassProxy());
 				$this->viewResolver = $this->viewResolver->getClassProxy();
-				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener('a'));
-				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener('b'));
+				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener($this));
 			}
 			$this->viewResolver->setWindView($this);
 			return $this->viewResolver;
