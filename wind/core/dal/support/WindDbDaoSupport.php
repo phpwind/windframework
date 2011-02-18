@@ -8,11 +8,11 @@
  */
 
 class WindDbDaoSupport extends WindDaoSupport {
-	
+
 	public function init() {
-		
+
 	}
-	
+
 	/* 
 	 * @return WindDbTemplate
 	 */
@@ -22,5 +22,5 @@ class WindDbDaoSupport extends WindDaoSupport {
 		}
 		return $this->template;
 	}
-	
+
 }
