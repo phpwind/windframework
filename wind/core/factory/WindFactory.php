@@ -37,7 +37,7 @@ class WindFactory implements IWindFactory {
 	 * 
 	 * @param string $configFile
 	 */
-	public function __construct($classDefinitions) {
+	public function __construct($classDefinitions = array()) {
 		$this->loadClassDefinitions($classDefinitions);
 	}
 

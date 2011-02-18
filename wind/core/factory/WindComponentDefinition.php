@@ -143,4 +143,18 @@ class WindComponentDefinition extends WindClassDefinition {
 		$this->hiddenPro = $hiddenPro;
 	}
 
+	/**
+	 * @return the $config
+	 */
+	public function getConfig() {
+		return $this->config;
+	}
+
+	/**
+	 * @param array $config
+	 */
+	public function setConfig($config) {
+		$this->config = $config;
+	}
+
 }
