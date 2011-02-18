@@ -12,14 +12,14 @@ L::import('WIND:core.filter.WindHandlerInterceptor');
  */
 class WindViewCacheListener extends WindHandlerInterceptor {
 
-	private $windWind = null;
+	private $windView = null;
 
 	/**
 	 * Enter description here ...
 	 * @param WindView $windView
 	 */
 	function __construct($windView) {
-		$this->windWind = $windView;
+		$this->windView = $windView;
 	}
 
 	/* (non-PHPdoc)
