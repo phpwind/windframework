@@ -13,8 +13,8 @@ L::import('WIND.core.dao.AbstractWindDao');
 class WindApp1UserDao extends AbstractWindDao {
 
 	public function findUserById($userId) {
-
-	}
+		
+	}	
 
 	public function getCacheMethods() {
 		return array('findUserById');
