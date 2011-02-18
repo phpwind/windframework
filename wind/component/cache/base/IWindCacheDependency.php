@@ -16,22 +16,26 @@
  * @version $Id$ 
  * @package 
  */
-interface IWindCacheDependency{
+interface IWindCacheDependency {
+
 	/**
 	 * 注入依赖
 	 * @param IWindCache $cache
 	 */
 	public function injectDependent(IWindCache $cache);
+
 	/**
 	 * CacheDependency 对象是否已更改
 	 * @return boolean
 	 */
-	public function hasChanged ();
+	public function hasChanged();
+
 	/**
 	 * 获取依赖项的上次更改时间
 	 * @return string
 	 */
 	public function getLastModified();
+
 	/**
 	 * 标记依赖项的上次更改时间。 
 	 */

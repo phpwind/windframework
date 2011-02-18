@@ -1,53 +1,45 @@
 <?php
-/**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
+
 L::import('WIND:component.cache.base.IWindCache');
 /**
  * php加速器缓存
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindApcCache implements IWindCache{
-	
+class WindApcCache implements IWindCache {
+
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheData = $this->fetch($key);
-		if(false === empty($cacheData)){
+		if (false === empty($cacheData)) {
 			$this->error("The cache already exists");
 		}
-		return apc_store($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return apc_store($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheData = $this->fetch($key);
-		if(empty($cacheData)){
+		if (empty($cacheData)) {
 			$this->error("The cache does not exist");
 		}
-		return apc_store($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
@@ -65,7 +57,6 @@ class WindApcCache implements IWindCache{
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
@@ -79,7 +70,6 @@ class WindApcCache implements IWindCache{
 		return $data;
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
@@ -87,7 +77,6 @@ class WindApcCache implements IWindCache{
 		return apc_delete($key);
 	}
 
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
 	 */
@@ -105,7 +94,7 @@ class WindApcCache implements IWindCache{
 		apc_clear_cache();
 		return apc_clear_cache('user');
 	}
-	
+
 	/**
 	 * 错误处理
 	 * @param string $message
@@ -114,7 +103,7 @@ class WindApcCache implements IWindCache{
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
-	
+
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()

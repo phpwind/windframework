@@ -1,11 +1,4 @@
 <?php
-/**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
 
 /**
  * 页面缓存
@@ -15,31 +8,38 @@
  * @package 
  */
 class WindPageCache {
+
 	/**
 	 * @var string 静态化的目录
 	 */
 	public $htmCacheDir = './htm';
+
 	/**
 	 * @var string 模板目录
 	 */
 	public $tplDir = './tpl';
+
 	/**
 	 * @var string 模板变量的左定界符
 	 */
 	public $lDelimiter = '{';
+
 	/**
 	 * @var string 模板变量的右定界符
 	 */
 	public $rDelimiter = '}';
+
 	/**
 	 * 静态文件后缀
 	 * @var string
 	 */
 	public $staticSuffix = 'htm';
+
 	/**
 	 * @var string 模板内容
 	 */
 	protected $content = '';
+
 	/**
 	 * 加载模板文件
 	 * @param string $tplname
@@ -59,6 +59,7 @@ class WindPageCache {
 		ob_end_clean();
 		return true;
 	}
+
 	/**
 	 * 替换模板变量
 	 * @param string $tplvar
@@ -72,13 +73,14 @@ class WindPageCache {
 		$this->content = str_replace($this->lDelimiter . $tplvar . $this->rDelimiter, $value, $this->content);
 		return true;
 	}
+
 	/**
 	 * 存储静态化的文件
 	 * @param string $htmFileName 静态化页面文件
 	 * @param string $force 静态文件存在，$force为true就强行写入
 	 * @return boolean
 	 */
-	public function pageStatic($htmFileName,$force = false) {
+	public function pageStatic($htmFileName, $force = false) {
 		if (!in_array($this->staticSuffix, array('htm', 'html', 'shtml'))) {
 			return false;
 		}
@@ -94,6 +96,7 @@ class WindPageCache {
 		return true;
 	
 	}
+
 	/**
 	 * 取得模板内容
 	 * @return string
@@ -101,6 +104,7 @@ class WindPageCache {
 	public function getContent() {
 		return $this->content;
 	}
+
 	/**
 	 * 清理静态缓存文件
 	 * @param int $expires 过期时间 ,单位为秒
@@ -121,6 +125,7 @@ class WindPageCache {
 		return true;
 	
 	}
+
 	/**
 	 * 获取文件后缀
 	 * @param string $filename
