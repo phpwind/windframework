@@ -254,6 +254,7 @@ abstract class AbstractWindDao extends WindModule {
 	 * @param stdClass $object 对象的初始化
 	 * @param array $value     要绑定到指定对象的值
 	 * @param boolean $colAsProp 是否将数组的列也绑到子对象中
+	 * @author Qian Su
 	 * @return stdClass
 	 */
 	public function bindValueToObject(stdClass $object, array $value, $colAsProp = true) {
