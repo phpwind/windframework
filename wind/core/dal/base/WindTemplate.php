@@ -7,6 +7,6 @@
  * tags
  */
 
-abstract class WindTemplate  {
-	
+abstract class WindTemplate {
+
 }
