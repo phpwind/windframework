@@ -104,7 +104,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 		$compileFile = $this->getWindView()->getCompileFile($template);
 		$this->getWindTemplate()->render($templateFile, $compileFile, $this->getWindView());
 		
-		if (!@include $compileFile) {
+		if (!include $compileFile) {
 			throw new WindViewException($template, WindViewException::VIEW_NOT_EXIST);
 		}
 	}
