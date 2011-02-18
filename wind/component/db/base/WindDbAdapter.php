@@ -70,12 +70,24 @@ abstract class WindDbAdapter {
 	protected $config = array();
 	
 	/**
+	 * @var array 自身的数据库驱动配置信息
+	 */
+	protected $driver = array();
+	/**
+	 * @var array 自身的sql语句组装器信息
+	 */
+	protected $builder =  array();
+	/**
 	 * 初始化配置
 	 * @param array $config
+	 * @param array $driver
+	 * @param array $builder
 	 */
-	public function __construct($config) {
+	public function __construct(array $config,array $driver = array(),array $builder = array()) {
 		$this->parseConfig($config);
 		$this->connect();
+		$this->driver = $driver;
+		$this->builder = $builder;
 	}
 	
 	/**
@@ -83,7 +95,7 @@ abstract class WindDbAdapter {
 	 * @param array $config 数据库配置
 	 * @return array 返回解析后的数据库配置
 	 */
-	final protected function parseConfig($config) {
+	final protected function parseConfig(array $config) {
 		return $this->checkConfig($config);
 	}
 	/**
@@ -91,7 +103,7 @@ abstract class WindDbAdapter {
 	 * @param array $config 数据库配置
 	 * @return array
 	 */
-	final private function checkConfig($config) {
+	final private function checkConfig(array $config) {
 		if (empty($config) || (!is_array($config) && !is_string($config))) {
 			throw new WindSqlException('', WindSqlException::DB_CONN_EMPTY);
 		}
@@ -177,8 +189,7 @@ abstract class WindDbAdapter {
 	 */
 	final public function getSqlBuilder($builderConfig = array()) {
 		if (empty($this->sqlBuilder)) {
-			$driverConfig = C::getDataBaseDriver($this->config[IWindDbConfig::CONN_DRIVER]);
-			$builderConfig = $builderConfig ? $builderConfig : C::getDataBaseBuilder($driverConfig[IWindDbConfig::DRIVER_BUILDER]);
+			$builderConfig = $builderConfig ? $builderConfig : $this->builder;
 			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS];
 			$class = L::import($builderClass);
 			if (false === class_exists($class)) {

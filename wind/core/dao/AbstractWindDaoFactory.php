@@ -47,6 +47,7 @@ abstract class AbstractWindDaoFactory {
 		foreach ($daoInstance->getCacheMethods() as $classMethod) {
 			$daoInstance->registerEventListener($classMethod, $listener);
 		}
+		$daoInstance->attachConfigToDbHandle();
 		return $daoInstance;
 	}
 
