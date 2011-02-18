@@ -27,7 +27,7 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		//TODO 读缓存
-		print_r($this->event);
+//		print_r($this->event);
 	}
 
 	/* (non-PHPdoc)
@@ -35,7 +35,7 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 */
 	public function postHandle() {
 		//TODO 写缓存
-		print_r($this->event);
+//		print_r($this->event);
 	}
 
 }

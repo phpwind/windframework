@@ -38,7 +38,7 @@ abstract class AbstractWindDaoFactory {
 		$className = L::import($_path);
 		
 		$daoInstance = WindFactory::createInstance($className);
-//		$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
+		$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 		if (!$daoInstance->getIsDataCache()) return $daoInstance;
 		
 		$daoInstance->setClassProxy(new WindClassProxy());
@@ -62,7 +62,7 @@ abstract class AbstractWindDaoFactory {
 			$factory->addClassDefinitions($defintion);
 			$this->dbConnections[$_dbClass] = $factory->getInstance($defintion->getAlias());
 		}
-		return $this->dbConnections[$daoObject->dbClass];
+		return $this->dbConnections[$_dbClass];
 	}
 
 	/**
