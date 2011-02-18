@@ -16,7 +16,7 @@ L::import('WIND:component.db.base.IWindDbConfig');
  */
 class WindConnectionManager extends WindComponentModule {
 
-	private $config = array();
+	private $config = array('1');
 
 	private $drivers = array();
 
@@ -27,12 +27,12 @@ class WindConnectionManager extends WindComponentModule {
 	private $connection = null;
 
 	public function __construct(array $config = array()) {
-		if ($config && (!isset($config[IWindDbConfig::CONNECTIONS]) || !isset($config[IWindDbConfig::DRIVERS]) || !isset($config[IWindDbConfig::BUILDERS]))) {
+		/*if ($config && (!isset($config[IWindDbConfig::CONNECTIONS]) || !isset($config[IWindDbConfig::DRIVERS]) || !isset($config[IWindDbConfig::BUILDERS]))) {
 			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
 		}
 		$this->config = isset($config[IWindDbConfig::CONNECTIONS]) ? $config[IWindDbConfig::CONNECTIONS] : c::getDataBaseConnection();
 		$this->drivers = isset($config[IWindDbConfig::DRIVERS]) ? $config[IWindDbConfig::DRIVERS] : C::getDataBaseDriver();
-		$this->builders = isset($config[IWindDbConfig::BUILDERS]) ? $config[IWindDbConfig::BUILDERS] : C::getDataBaseBuilder();
+		$this->builders = isset($config[IWindDbConfig::BUILDERS]) ? $config[IWindDbConfig::BUILDERS] : C::getDataBaseBuilder();*/
 	}
 
 	/**
@@ -115,9 +115,9 @@ class WindConnectionManager extends WindComponentModule {
 	 * @param string $name
 	 * @return mixed
 	 */
-	public function getConfig($name = '', $subname = '') {
+	/*public function getConfig($name = '', $subname = '') {
 		return $name ? $subname ? $this->config[$name][$subname] : $this->config[$name] : $this->config;
-	}
+	}*/
 
 	/**
 	 * 取得配置里面的驱动
