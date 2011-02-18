@@ -17,8 +17,8 @@ class IndexController extends WindController {
 	public function run() {
 		$this->setOutput(array('var1' => 'hello world from IndexController.'));
 		$this->setTemplate('helloworld');
-		L::import('WIND:core.dao.WindDaoFactory');
-		$dao = WindDaoFactory::getFactory()->instantiateDao('WINDAPP1:dao.windApp1UserDao');
+		L::import('WINDAPP1:dao.WindApp1DaoFactory');
+		$dao = WindApp1DaoFactory::getFactory()->instantiateDao('WINDAPP1:dao.windApp1UserDao');
 		$dao->findUserById('1');
 	}
 
