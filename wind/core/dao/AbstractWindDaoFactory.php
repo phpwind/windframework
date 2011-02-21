@@ -26,29 +26,32 @@ abstract class AbstractWindDaoFactory {
 	 * 
 	 * @param string $className
 	 */
-	public function instantiateDao($className) {
-		$_path = '';
-		if (strpos($className, ":") !== false || strpos($className, ".") !== false) {
-			$_path = $className;
-		} elseif ($this->getDaoResource()) {
-			$_path = $this->getDaoResource() . '.' . $className;
-		} else {
-			$_path = $className;
+	public function getDao($className) {
+		try {
+			$_path = '';
+			if (strpos($className, ":") !== false || strpos($className, ".") !== false) {
+				$_path = $className;
+			} elseif ($this->getDaoResource()) {
+				$_path = $this->getDaoResource() . '.' . $className;
+			} else {
+				$_path = $className;
+			}
+			$className = L::import($_path);
+			
+			$daoInstance = WindFactory::createInstance($className);
+			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
+			if (!$daoInstance->getIsDataCache()) return $daoInstance;
+			
+			$daoInstance->setClassProxy(new WindClassProxy());
+			$daoInstance = $daoInstance->getClassProxy();
+			$listener = new WindDaoCacheListener($daoInstance);
+			foreach ($daoInstance->getCacheMethods() as $classMethod) {
+				$daoInstance->registerEventListener($classMethod, $listener);
+			}
+			return $daoInstance;
+		} catch (Exception $exception) {
+			throw new WindDaoException($exception->getMessage());
 		}
-		$className = L::import($_path);
-		
-		$daoInstance = WindFactory::createInstance($className);
-		$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
-		if (!$daoInstance->getIsDataCache()) return $daoInstance;
-		
-		$daoInstance->setClassProxy(new WindClassProxy());
-		$daoInstance = $daoInstance->getClassProxy();
-		$listener = new WindDaoCacheListener($daoInstance);
-		foreach ($daoInstance->getCacheMethods() as $classMethod) {
-			$daoInstance->registerEventListener($classMethod, $listener);
-		}
-		$daoInstance->attachConfigToDbHandle();
-		return $daoInstance;
 	}
 
 	/**
