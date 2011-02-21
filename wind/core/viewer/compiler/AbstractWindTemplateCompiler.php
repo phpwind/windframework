@@ -12,11 +12,9 @@ L::import('WIND:core.filter.WindHandlerInterceptor');
  */
 abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 
-	protected $tagContent = '';
+	protected $tags = array();
 
 	protected $windViewTemplate = null;
-
-	protected $tagKey = '';
 
 	/**
 	 * 初始化标签解析器
@@ -24,9 +22,8 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 * @param string $tagContent
 	 * @param WindViewTemplate $windViewTemplate
 	 */
-	public function __construct($tagContent, $key, $windViewTemplate) {
-		$this->tagContent = $tagContent;
-		$this->tagKey = $key;
+	public function __construct($tags, $windViewTemplate) {
+		$this->tags = $tags;
 		$this->windViewTemplate = $windViewTemplate;
 	}
 
@@ -36,15 +33,18 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 * @param WindViewTemplate $windViewTemplate | 模板编译引擎
 	 * @return string | 输出编译后结果
 	 */
-	abstract public function compile();
+	abstract public function compile($key, $content);
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
 		if ($this->windViewTemplate === null) return;
-		$_output = $this->compile();
-		$this->windViewTemplate->setCompiledBlockData($this->tagKey, $_output);
+		foreach ($this->tags as $key => $value) {
+			if (!$value[0] || !$value[1]) continue;
+			$_output = $this->compile($value[0], $value[1]);
+			$this->windViewTemplate->setCompiledBlockData($value[0], $_output);
+		}
 	}
 
 	/* (non-PHPdoc)
