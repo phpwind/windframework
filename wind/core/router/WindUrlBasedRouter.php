@@ -68,9 +68,23 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::buildUrl()
 	 */
 	public function buildUrl() {
-
+		$module = $this->getUrlParamConfig(self::URL_RULE_MODULE);
+		$controller = $this->getUrlParamConfig(self::URL_RULE_CONTROLLER);
+		$action = $this->getUrlParamConfig(self::URL_RULE_ACTION);
+		$url = '?' . $module . '=' . $this->getModule();
+		$url .= '&' . $controller . '=' . $this->getController();
+		$url .= '&' . $action . '=' . $this->getAction();
+		return $url;
 	}
-
+    
+	private function getUrlParamConfig($type) {
+		$_config = $this->getConfig()->getConfig(self::URL_RULE);
+		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
+			return $_param;
+		}
+		return $type;
+	}
+	
 	/**
 	 * Enter description here ...
 	 * @param request

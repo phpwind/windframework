@@ -21,6 +21,8 @@ class WindUrlHelper extends WindComponentModule {
 	const ROUTE_SUFFIX = 'route-suffix';
 
 	const ROUTE_PARAM = 'route-param';
+	
+	const REWRITE = true;
 
 	protected $routeSuffix = '';
 
@@ -29,21 +31,119 @@ class WindUrlHelper extends WindComponentModule {
 	protected $urlPattern = '';
 
 	protected $windRouter = null;
+	
+	public function isRewrite() {
+		return self::REWRITE;
+	}
 
 	/**
 	 * 解析Url
+	 * 
+	 * 没有配置解析规则，直接返回
+	 * 获得则匹配RequestUri，与用户配置的url正则匹配
+	 * 同时设置到超全局变量$_GET中
 	 */
 	public function parseUrl() {
-		//TODO
+		if ((($uri = $this->request->getServer('QUERY_STRING')) == '') || !$this->isRewrite()) return;
+		if (($pattern = $this->getUrlPattern()) == '') return;
+		if (count($match = $this->matchPattern($uri, $pattern)) == 0) ;//return;
+		$_GET = array_merge($_GET, $match);
+		var_dump($this->createUrl('run', 'index', array('p'=> 'p1', 'name'=>'xx')));
 	}
-
+	
+	/**
+	 * 执行匹配
+	 * 
+	 * 获得匹配的结果
+	 * @return array 返回匹配的结果
+	 */
+	private function matchPattern($uri, $pattern) {
+		$seperator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
+		$uri = explode($seperator, $uri);
+		if (strcasecmp($pattern, "=&") != 0) $params = $this->parseUrlToParams($uri, $seperator, $pattern[0]);
+		if (strrpos($uri[count($uri)-1], '.' . $this->getRouteSuffix()) !== false) {
+			$mca = rtrim(array_pop($uri), '.' . $this->getRouteSuffix());
+			if ($mca == '') return $params;
+			$mca = explode('-', $mca);
+			(count($mca) == 2) && array_unshift($mca, '');
+			$mcaConfig = array();
+			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_MODULE);
+			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_CONTROLLER);
+			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_ACTION);
+			$params = array_merge($params, array_combine($mcaConfig, $mca));
+		}
+		return $params;
+	}
+	
+	/**
+	 * 获得配置
+	 * 
+	 * 获得用户对于module  controller action的对应配置（url-parmar)
+	 * 
+	 * @param string $type 查找类型（module,controller,action);
+	 * @param string $type 返回用户对应的设置，如果不存在则返回本身
+	 */
+	private function getUrlParamConfig($type) {
+		$_config = $this->getWindRouter()->getConfig()->getConfig(WindUrlBasedRouter::URL_RULE);
+		if ($_param = $this->getConfig()->getConfig($type, WindUrlBasedRouter::URL_PARAM, $_config)) {
+			return $_param;
+		}
+		return $type;
+	}
+	
+	private function buildRewriteURL($params, $mca) {
+		(($pattern = $this->getUrlPattern()) == '') && $pattern = '=&';
+		$seprator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
+		$url = '';
+		foreach ($params as $key => $value) {
+			$url .= $key . $pattern[0] . $value . $seprator;
+		}
+		$mca = $this->parseUrlToParams(explode('&', trim($mca, '?')), '&', '=');
+		$mca = implode('-', $mca) . '.' . $this->getRouteSuffix();
+		return $url . $mca;
+	}
+	
+    private function parseUrlToParams($url, $seprator = '',  $keyAsValue = '=') {
+    	$params = array();
+    	if ($seprator == $keyAsValue) {
+    		$n = count($url);
+    		for($i = 0; $i < $n/2; $i++) {
+    			$k = 2 * $i;
+    			$v = $k + 1;
+    			isset($url[$v]) && $params[$url[$k]] = $url[$v];
+    		}
+    		return $params;
+    	}
+		foreach ((array)$url as $key => $value) {
+			(strpos($value, $keyAsValue) !== false) && list($key, $value) = explode($keyAsValue, $value);
+			$params[$key] = $value;
+		}
+		return $params;
+    }
+    
 	/**
 	 * 返回Url地址
 	 * 
 	 * @return string
 	 */
 	public function createUrl($action, $controller, $params = array()) {
-		//TODO
+		$this->getWindRouter()->setAction($action);
+		$this->getWindRouter()->setController($controller);
+		$url = $this->getWindRouter()->buildUrl();
+		if ($this->isRewrite()) {
+			$url = $this->buildRewriteURL($params, $url);
+		} else {
+			$url .= '&' . $this->buildParams($params);
+		}
+		return $url;
+	}
+	
+	private function buildParams($params) {
+		$url = '';
+		foreach ((array)$params as $key => $value) {
+			$url .= $key . '=' . $value . '&';
+		}
+		return trim($url, '&');
 	}
 
 	/**
