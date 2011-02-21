@@ -74,6 +74,7 @@
 	</component>
 	<component name='template' path='WIND:core.viewer.WindViewTemplate'
 		scope='prototype' hidden-pro='false'>
+		<config resource='WIND:core.viewer.viewTemplateConfig' suffix='xml' />
 	</component>
 	
 </components>
