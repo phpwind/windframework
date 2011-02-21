@@ -70,15 +70,12 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	}
 	
 	public function setCacheConfig(array $servers=array()){
-		$hasServer = false;
+		$servers = $servers ? $servers : $this->getConfig()->getConfig();
 		foreach ($servers as $server) {
 			if(is_array($server)){
 				$hasServer = true;
 				$this->addServer($server);
 			}
-		}
-		if(false === $hasServer){
-			$this->addServer();
 		}
 		if (isset($servers[self::COMPRESS])) {
 			$this->compress = MEMCACHE_COMPRESSED;
@@ -94,7 +91,7 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 * 添加memached服务器
 	 * @param array $server
 	 */
-	public function addServer(array $server = array()) {
+	public function addServer(array $server) {
 		if (!isset($server[self::HOST])) {
 			$server[self::HOST] = '127.0.0.1';
 		}
