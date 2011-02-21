@@ -12,9 +12,14 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindViewTemplate extends WindComponentModule {
 
-	public $left_delimiter = "<?php";
+	protected $leftDelimiter = "<!--{";
 
-	public $right_delimiter = "?>";
+	protected $rightDelimiter = "}-->";
+
+	/* 编译结果缓存 */
+	protected $blockKey = "<pw-wind key='$' />";
+
+	protected $compiledBlockData = array();
 
 	/**
 	 * 进行视图渲染
@@ -39,16 +44,13 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param string $content
 	 */
 	private function compile($content) {
-		//TODO 
-		$content = preg_replace_callback('/\?\>(.|\n)*?\<\?php/i', array($this, 'subCompile'), $content);
+		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php', '?>'), $content);
+		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
+		$content = preg_replace_callback('/<\?php(.|\n)*?\?>/', array($this, 'doCompileInternal'), $content);
 		
-		return $content;
-	}
-
-	/**
-	 * 编译匹配结果
-	 */
-	private function subCompile($content) {
+		foreach ((array) $this->compiledBlockData as $key => $value) {
+			$content = str_replace($this->getBlockKey($key), '<?php' . $value . '?>', $content);
+		}
 		return $content;
 	}
 
@@ -95,6 +97,65 @@ class WindViewTemplate extends WindComponentModule {
 	private function cacheCompileResult($compileFile, $content) {
 		L::import('WIND:component.utility.WindFile');
 		WindFile::writeover($compileFile, $content);
+	}
+
+	/**
+	 * 处理匹配到的脚本定界符内部的处理脚本，并进行编译处理
+	 * @param string $content
+	 */
+	private function doCompileInternal($content) {
+		$_content = $content[0];
+		$_content = str_replace(array('<?php', '?>'), array('', ''), $_content);
+		return $this->saveCompileBlock($_content);
+	}
+
+	/**
+	 * 处理匹配到的脚本定界符外部的处理脚本，并进行编译处理
+	 * @param string $content
+	 */
+	private function doCompileExternal($content) {
+		$_content = $content[0];
+		
+		return $_content;
+	}
+
+	/**
+	 * 将编译好的内容缓存在变量中
+	 * @param string $content
+	 */
+	private function saveCompileBlock($content) {
+		L::import('WIND:component.utility.WindUtility');
+		$key = WindUtility::generateRandStr(50);
+		if (key_exists($key, $this->compiledBlockData)) {
+			return $this->saveCompileBlock($content);
+		}
+		$this->compiledBlockData[$key] = $content;
+		return $this->getBlockKey($key);
+	}
+
+	/**
+	 * 获得块存储变量值
+	 * @param string $key
+	 * @return string|mixed
+	 */
+	private function getBlockKey($key) {
+		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
+		return str_replace('$', $key, $this->blockKey);
+	}
+
+	/**
+	 * @return the $leftDelimiter
+	 */
+	protected function getLeftDelimiter() {
+		$this->leftDelimiter = trim($this->leftDelimiter);
+		return $this->leftDelimiter;
+	}
+
+	/**
+	 * @return the $rightDelimiter
+	 */
+	protected function getRightDelimiter() {
+		return $this->rightDelimiter;
 	}
 
 }
