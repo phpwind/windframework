@@ -44,9 +44,9 @@
 			<property name='windRouter' ref='urlBasedRouter' />
 		</properties>
 		<config>
-			<url-pattern value='' />
-			<route-suffix value='php' />
-			<route-param value='r' />
+			<url-pattern value="/"/>
+			<route-suffix value='htm' />
+			<route-param value='' />
 		</config>
 	</component>
 

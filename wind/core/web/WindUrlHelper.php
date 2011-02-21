@@ -48,7 +48,6 @@ class WindUrlHelper extends WindComponentModule {
 		if (($pattern = $this->getUrlPattern()) == '') return;
 		if (count($match = $this->matchPattern($uri, $pattern)) == 0) ;//return;
 		$_GET = array_merge($_GET, $match);
-		var_dump($this->createUrl('run', 'index', array('p'=> 'p1', 'name'=>'xx')));
 	}
 	
 	/**
@@ -100,7 +99,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		$mca = $this->parseUrlToParams(explode('&', trim($mca, '?')), '&', '=');
 		$mca = implode('-', $mca) . '.' . $this->getRouteSuffix();
-		return $url . $mca;
+		return $seprator . $url . $mca;
 	}
 	
     private function parseUrlToParams($url, $seprator = '',  $keyAsValue = '=') {
@@ -130,10 +129,12 @@ class WindUrlHelper extends WindComponentModule {
 		$this->getWindRouter()->setAction($action);
 		$this->getWindRouter()->setController($controller);
 		$url = $this->getWindRouter()->buildUrl();
+		$server = $this->request->getServer('PHP_SELF');
 		if ($this->isRewrite()) {
-			$url = $this->buildRewriteURL($params, $url);
+			$server = substr($server, 0, strrpos($server, '/'));
+			$url = $server . $this->buildRewriteURL($params, $url);
 		} else {
-			$url .= '&' . $this->buildParams($params);
+			$url = $server . $url . '&' . $this->buildParams($params);
 		}
 		return $url;
 	}
