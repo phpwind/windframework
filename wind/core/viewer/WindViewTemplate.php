@@ -12,11 +12,9 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindViewTemplate extends WindComponentModule {
 
-	private $reCompile = '';
+	public $left_delimiter = "<?php";
 
-	public $left_delimiter = "{";
-
-	public $right_delimiter = "}";
+	public $right_delimiter = "?>";
 
 	/**
 	 * 进行视图渲染
@@ -26,27 +24,31 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param WindView $windView
 	 */
 	public function render($templateFile, $compileFile, $windView) {
-		$_output = null;
-		if (!$windView->getCompileDir()) return $_output;
-		$this->checkReCompile($templateFile, $compileFile);
-		if (!$this->reCompile) return $_output;
+		if (!$windView->getCompileDir()) {
+			throw new WindViewException('compile dir is not exist \'' . $windView->getCompileDir() . '\' .');
+		}
+		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
-		//TODO compile template content
-		
-
-		L::import('WIND:component.utility.WindFile');
-		WindFile::writeover($compileFile, $_output);
-		
+		$_output = $this->compile($_output);
+		$this->cacheCompileResult($compileFile, $_output);
 		return $_output;
 	}
 
 	/**
 	 * 对模板内容进行编译
-	 * 
 	 * @param string $content
 	 */
 	private function compile($content) {
 		//TODO 
+		$content = preg_replace_callback('/\?\>(.|\n)*?\<\?php/i', array($this, 'subCompile'), $content);
+		
+		return $content;
+	}
+
+	/**
+	 * 编译匹配结果
+	 */
+	private function subCompile($content) {
 		return $content;
 	}
 
@@ -63,28 +65,36 @@ class WindViewTemplate extends WindComponentModule {
 			}
 			fclose($fp);
 		} else
-			throw new WindViewException('Unable to open the template file.');
+			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
+		
 		return $_output;
 	}
 
 	/**
 	 * 检查是否需要重新编译
 	 * 
-	 * @param unknown_type $templateFile
-	 * @param unknown_type $compileFile
+	 * @param string $templateFile
+	 * @param string $compileFile
 	 */
 	private function checkReCompile($templateFile, $compileFile) {
-		$this->reCompile = false;
-		$compileFileModifyTime = @filemtime($compileFile);
-		if ($compileFileModifyTime === false) {
-			$this->reCompile = true;
-			return;
+		$_reCompile = false;
+		if (false === ($compileFileModifyTime = @filemtime($compileFile)))
+			$_reCompile = true;
+		else {
+			$templateFileModifyTime = @filemtime($templateFile);
+			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
 		}
-		$templateFileModifyTime = @filemtime($templateFile);
-		if ((int) $templateFileModifyTime >= $compileFileModifyTime) {
-			$this->reCompile = true;
-		}
-		return;
+		return $_reCompile;
+	}
+
+	/**
+	 * 将编译结果进行缓存
+	 * @param string $compileFile | 编译缓存文件
+	 * @param string $content | 模板内容
+	 */
+	private function cacheCompileResult($compileFile, $content) {
+		L::import('WIND:component.utility.WindFile');
+		WindFile::writeover($compileFile, $content);
 	}
 
 }
