@@ -13,7 +13,7 @@ L::import('WIND:core.filter.WindHandlerInterceptor');
 class WindDaoCacheListener extends WindHandlerInterceptor {
 
 	private $daoObject = null;
-
+	
 	/**
 	 * Enter description here ...
 	 * @param WindView $windView
@@ -26,17 +26,23 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		//TODO 读缓存
-//		print_r($this->event);
+		$args = func_get_args();
+		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler IWindCache */
+		$result = $cacheHandler->batchFetch($args);
+		return 1 < count($args) ? empty($result) ? null : $result : $result[$args[0]];
+		
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		//TODO 写缓存
-//		print_r($this->event);
+		$args = func_get_args();
+		$cacheHandler = $this->daoObject->getCacheHandler();
+		$cacheHandler->add($args[0],$args[1],$args[2]);
 	}
+	
+	
 
 }
 

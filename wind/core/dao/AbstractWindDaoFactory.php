@@ -20,6 +20,8 @@ abstract class AbstractWindDaoFactory {
 	protected $daoResource = '';
 
 	protected $dbConnections = array();
+	
+	protected $caches = array();
 
 	/**
 	 * Enter description here ...
@@ -41,7 +43,7 @@ abstract class AbstractWindDaoFactory {
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
-			
+			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
 			$daoInstance = $daoInstance->getClassProxy();
 			$listener = new WindDaoCacheListener($daoInstance);
@@ -67,6 +69,17 @@ abstract class AbstractWindDaoFactory {
 			$this->dbConnections[$_dbClass] = $factory->getInstance($defintion->getAlias());
 		}
 		return $this->dbConnections[$_dbClass];
+	}
+	
+	protected function createCacheHandler($daoObject){
+		$_cacheClass = $daoObject->getCacheClass();
+		if (!isset($this->caches[$_cacheClass])) {
+			$factory = new WindComponentFactory();
+			$defintion = $daoObject->getCacheDefinition();
+			$factory->addClassDefinitions($defintion);
+			$this->caches[$_cacheClass] = $factory->getInstance($defintion->getAlias());
+		}
+		return $this->caches[$_cacheClass];
 	}
 
 	/**
