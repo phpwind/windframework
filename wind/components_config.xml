@@ -75,10 +75,5 @@
 	<component name='template' path='WIND:core.viewer.WindViewTemplate'
 		scope='prototype' hidden-pro='false'>
 	</component>
-
-	<!-- db -->
-	<component name='db' path='WIND:component.db.WindConnectionManager'
-		scope='singleton'>
-		<config resource='WIND:component.db.db_config' suffix='xml' />
-	</component>
+	
 </components>

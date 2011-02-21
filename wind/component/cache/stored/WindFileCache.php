@@ -9,53 +9,43 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindFileCache implements IWindCache {
-
+class WindFileCache extends WindComponentModule implements IWindCache {
+	
 	/**
 	 * @var string 缓存目录
 	 */
 	protected $cacheDir;
-
+	
 	/**
 	 * @var string 缓存后缀
 	 */
 	protected $cacheFileSuffix = '.bin';
-
+	
 	/**
 	 * @var int 缓存多级目录。最好不要超3层目录
 	 */
 	protected $cacheDirectoryLevel = 0;
-
+	
 	/**
 	 * @var string key的安全码
 	 */
 	private $securityCode = '';
-
-	const CACHEDIR = 'cachedir';
-
+	
+	const CACHEDIR = 'cache-dir';
+	
 	const SUFFIX = 'suffix';
-
+	
 	const LEVEL = 'level';
-
+	
 	const SECURITY = 'security';
-
+	
 	/**
 	 * 初始化文件缓存配置
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
-		$this->setCacheDir($config[self::CACHEDIR]);
-		if (isset($config[self::SUFFIX])) {
-			$this->cacheFileSuffix = $config[self::SUFFIX];
-		}
-		if (isset($config[self::LEVEL])) {
-			$this->cacheDirectoryLevel = (int) $config[self::LEVEL];
-		}
-		if (isset($config[self::SECURITY])) {
-			$this->securityCode = $config[self::SECURITY];
-		}
+		$config && $this->checkCacheConfig($config);
 	}
-
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -68,7 +58,7 @@ class WindFileCache implements IWindCache {
 		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
@@ -77,7 +67,7 @@ class WindFileCache implements IWindCache {
 		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
@@ -90,7 +80,7 @@ class WindFileCache implements IWindCache {
 		$data = $this->storeData($value, $expires, $denpendency);
 		return $this->writeToFile($cacheFile, $data, $expires);
 	}
-
+	
 	/*
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
@@ -108,20 +98,20 @@ class WindFileCache implements IWindCache {
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
 	public function batchFetch(array $keys) {
 		$data = array();
 		foreach ($keys as $key) {
-			if ('' != ($value = $this->fetch($key))) {
+			if (null !== ($value = $this->fetch($key))) {
 				$data[$key] = $value;
 			}
 		}
 		return $data;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
@@ -132,7 +122,7 @@ class WindFileCache implements IWindCache {
 		}
 		return false;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
 	 */
@@ -142,21 +132,21 @@ class WindFileCache implements IWindCache {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
 		return $this->clearByPath($this->cacheDir, false);
 	}
-
+	
 	/**
 	 * 删除过期缓存
 	 */
 	public function deleteExpiredCache() {
 		return $this->clearByPath($this->cacheDir);
 	}
-
+	
 	/**
 	 * 错误处理
 	 * @param string $message
@@ -165,13 +155,14 @@ class WindFileCache implements IWindCache {
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
-
+	
 	/**
 	 * 获取缓存文件名。
 	 * @param string $key
 	 * @return string
 	 */
 	public function getCacheFileName($key) {
+		$this->checkCacheConfig();
 		$filename = $key . '_' . substr(sha1($key . $this->securityCode), 0, 5) . '.' . ltrim($this->cacheFileSuffix, '.');
 		if ($this->cacheDirectoryLevel > 0) {
 			$root = $this->cacheDir;
@@ -188,7 +179,23 @@ class WindFileCache implements IWindCache {
 		}
 		return $this->cacheDir . $filename;
 	}
-
+	
+	public function checkCacheConfig(array $config = array()) {
+		if(empty($this->cacheDir)){
+			$config = $config ? $config : $this->getConfig()->getConfig();
+			$this->setCacheDir($config[self::CACHEDIR]);
+			if (isset($config[self::SUFFIX])) {
+				$this->cacheFileSuffix = $config[self::SUFFIX];
+			}
+			if (isset($config[self::LEVEL])) {
+				$this->cacheDirectoryLevel = (int) $config[self::LEVEL];
+			}
+			if (isset($config[self::SECURITY])) {
+				$this->securityCode = $config[self::SECURITY];
+			}
+		}
+	}
+	
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()
@@ -202,7 +209,7 @@ class WindFileCache implements IWindCache {
 		}
 		return serialize($data);
 	}
-
+	
 	/**
 	 * 写入文件缓存
 	 * @param string $file 缓存文件名
@@ -220,7 +227,7 @@ class WindFileCache implements IWindCache {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * 从文件中读取缓存内容
 	 * @param string $file 缓存文件名
@@ -228,7 +235,7 @@ class WindFileCache implements IWindCache {
 	 */
 	protected function getFromFile($file) {
 		if (false === is_file($file)) {
-			$this->error('The cache does not exist');
+			return null;
 		}
 		if (($mtime = filemtime($file)) > time() || !$mtime) {
 			$data = unserialize(file_get_contents($file));
@@ -236,9 +243,9 @@ class WindFileCache implements IWindCache {
 		} else if ($mtime > 0) {
 			unlink($file);
 		}
-		return array();
+		return null;
 	}
-
+	
 	/**
 	 * 按目录删除缓存文件
 	 * @param string $path 目录
@@ -265,7 +272,7 @@ class WindFileCache implements IWindCache {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * 设置缓存目录
 	 * @param string $dir
@@ -279,7 +286,7 @@ class WindFileCache implements IWindCache {
 		}
 		$this->cacheDir = rtrim(realpath($dir), '\\/') . DIRECTORY_SEPARATOR;
 	}
-
+	
 	public function __destruct() {
 		$this->deleteExpiredCache();
 	}
