@@ -97,15 +97,17 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @param template
 	 */
 	protected function render($template) {
-		//extract template vars
-		@extract((array) $this->templateVars, EXTR_REFS);
-		
 		$templateFile = $this->getWindView()->getViewTemplate($template);
+		if (!file_exists($templateFile)) {
+			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
+		}
 		$compileFile = $this->getWindView()->getCompileFile($template);
 		$this->getWindTemplate()->render($templateFile, $compileFile, $this->getWindView());
 		
+		//extract template vars
+		@extract((array) $this->templateVars, EXTR_REFS);
 		if (!include $compileFile) {
-			throw new WindViewException($template, WindViewException::VIEW_NOT_EXIST);
+			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
 	}
 
