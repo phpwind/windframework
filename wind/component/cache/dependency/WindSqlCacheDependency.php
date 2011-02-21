@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import('WIND:component.cache.dependency.WindCacheDependency');
 /**
  * 监视特定的数据库表，以便在该表发生更改时，自动从 Cache 中删除与该表关联的项。数据库表发生更改时，将自动删除缓存项
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,6 +14,6 @@
  * @version $Id$ 
  * @package 
  */
-class WindSqlCacheDependeny extends WindCacheDependency{
+class WindSqlCacheDependency extends WindCacheDependency{
 	
 }

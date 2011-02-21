@@ -14,37 +14,34 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindXCache  extends WindComponentModule implements IWindCache{
+class WindXCache extends WindComponentModule implements IWindCache {
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		if(xcache_isset($key)){
+		if (xcache_isset($key)) {
 			$this->error("The cache already exists");
 		}
-		return xcache_set($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return xcache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return xcache_set($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return xcache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		if(false === xcache_isset($key)){
+		if (false === xcache_isset($key)) {
 			$this->error("The cache does not exist");
 		}
-		return xcache_set($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return xcache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
@@ -54,15 +51,16 @@ class WindXCache  extends WindComponentModule implements IWindCache{
 		if (empty($data) || !is_array($data)) {
 			return $data;
 		}
-		if (isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY] instanceof IWindCacheDependency) {
-			if ($data[self::DEPENDENCY]->hasChanged()) {
+		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
+			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
+			$dependency = unserialize($data[self::DEPENDENCY]); /* @var $dependency IWindCacheDependency*/
+			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
 				$this->delete($key);
 				return null;
 			}
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
@@ -76,7 +74,6 @@ class WindXCache  extends WindComponentModule implements IWindCache{
 		}
 		return $data;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
@@ -84,7 +81,6 @@ class WindXCache  extends WindComponentModule implements IWindCache{
 	public function delete($key) {
 		return xcache_unset($key);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
@@ -95,13 +91,13 @@ class WindXCache  extends WindComponentModule implements IWindCache{
 		}
 		return true;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		for($i=0, $max=xcache_count(XC_TYPE_VAR); $i<$max; $i++){
-			if(false === xcache_clear_cache(XC_TYPE_VAR, $i)){
+		for ($i = 0, $max = xcache_count(XC_TYPE_VAR); $i < $max; $i++) {
+			if (false === xcache_clear_cache(XC_TYPE_VAR, $i)) {
 				return false;
 			}
 		}
@@ -129,7 +125,8 @@ class WindXCache  extends WindComponentModule implements IWindCache{
 		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent($this);
-			$data[self::DEPENDENCY] = $denpendency;
+			$data[self::DEPENDENCY] = serialize($denpendency);
+			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
 		return serialize($data);
 	}

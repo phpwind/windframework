@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<memcache>
+<cache>
 		<server name='phpwind'>
 			<host>127.0.0.1</host>
 			<port>11211</port>
@@ -9,4 +9,6 @@
 			<port>11211</port>
 		</server>
 		<security>true</security>
-</memcache>
+		<expires>330</expires>
+		<dependency>Wind:component.cache.dependency.WindSqlCacheDependency</dependency>
+</cache>

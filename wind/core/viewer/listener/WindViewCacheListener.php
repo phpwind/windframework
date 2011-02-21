@@ -25,16 +25,18 @@ class WindViewCacheListener extends WindHandlerInterceptor {
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
-	public function preHandle($templateName = '') {
-		echo $templateName;
-		echo $templateName;
+	public function preHandle() {
+		echo '<pre>';
+		//print_r($this->windView);
+		echo '<br/>';
+		
 		//TODO 读缓存
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
-	public function postHandle($templateName = '') {
+	public function postHandle() {
 		//TODO 写缓存
 	}
 }

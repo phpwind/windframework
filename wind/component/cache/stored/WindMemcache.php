@@ -153,13 +153,15 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 		if(!is_array($data)){
 			return $data;
 		}
-		if(isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY] instanceof IWindCacheDependency){
-			if($data[self::DEPENDENCY]->hasChanged()){
+		if(isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])){
+			L::import('Wind:component.cache.dependency.'.$data[self::DEPENDENCYCLASS]);
+			$dependency = unserialize($data[self::DEPENDENCY]);/* @var $dependency IWindCacheDependency*/
+			if(($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()){
 				$this->delete($key);
-				return '';
+				return null;
 			}
 		}
-		return isset($data[self::DATA]) ? $data[self::DATA] : '';
+		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
 	
 	/*
@@ -215,9 +217,10 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 */
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA=>$value, self::EXPIRES=> $expires,self::STORETIME=>time());
-		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
+		if ($denpendency && (($denpendency instanceof IWindCacheDependency))){			
 			$denpendency->injectDependent($this);
-			$data[self::DEPENDENCY] = $denpendency;
+			$data[self::DEPENDENCY] = serialize($denpendency);
+			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
 		return $data;
 	}

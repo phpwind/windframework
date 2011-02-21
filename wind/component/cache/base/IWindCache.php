@@ -21,11 +21,13 @@ interface IWindCache {
 	 * @var string 标志缓存依赖
 	 */
 	const DEPENDENCY = 'dependency';
+	
+	const  DEPENDENCYCLASS = 'dependencyclass';
 
 	/**
 	 * @var string 标志过期时间
 	 */
-	const EXPIRES = 'EXPIRES';
+	const EXPIRES = 'expires';
 
 	/**
 	 * @var string 标志存储时间
