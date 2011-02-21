@@ -12,6 +12,14 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindViewTemplate extends WindComponentModule {
 
+	const SUPPORT_TAGS = 'support-tags';
+
+	const TAG = 'tag';
+
+	const REGEX = 'regex';
+
+	const COMPILER = 'compiler';
+
 	protected $leftDelimiter = "<!--{";
 
 	protected $rightDelimiter = "}-->";
@@ -20,6 +28,15 @@ class WindViewTemplate extends WindComponentModule {
 	protected $blockKey = "<pw-wind key='$' />";
 
 	protected $compiledBlockData = array();
+
+	/**
+	 * 模板编译器支持的标签信息
+	 *
+	 * @var array('targName','args info')
+	 */
+	protected $_compilerCache = array();
+
+	protected $windHandlerInterceptorChain = null;
 
 	/**
 	 * 进行视图渲染
@@ -32,6 +49,7 @@ class WindViewTemplate extends WindComponentModule {
 		if (!$windView->getCompileDir()) {
 			throw new WindViewException('compile dir is not exist \'' . $windView->getCompileDir() . '\' .');
 		}
+		
 		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
 		$_output = $this->compile($_output);
@@ -43,15 +61,66 @@ class WindViewTemplate extends WindComponentModule {
 	 * 对模板内容进行编译
 	 * @param string $content
 	 */
-	private function compile($content) {
+	protected function compile($content) {
 		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php', '?>'), $content);
 		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
-		$content = preg_replace_callback('/<\?php(.|\n)*?\?>/', array($this, 'doCompileInternal'), $content);
-		
+		$content = preg_replace_callback('/<\?php(.|\n)*?\?>/i', array($this, 'doCompile'), $content);
+		$content = $this->registerTags($content);
+		if ($this->windHandlerInterceptorChain !== null) {
+			$this->windHandlerInterceptorChain->getHandler()->handle();
+		}
 		foreach ((array) $this->compiledBlockData as $key => $value) {
-			$content = str_replace($this->getBlockKey($key), '<?php' . $value . '?>', $content);
+			$content = str_replace($this->getBlockTag($key), '<?php' . $value . '?>', $content);
 		}
 		return $content;
+	}
+
+	/**
+	 * 注册支持的标签
+	 */
+	private function registerTags($content) {
+		$tags = $this->getConfig()->getConfig(self::SUPPORT_TAGS);
+		if (empty($tags)) return $content;
+		foreach ((array) $tags as $key => $value) {
+			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
+			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
+			if (!$compiler || !$tag) continue;
+			$regex = '<' . $tag . ' />';
+			$content = $this->creatTagCompiler($content, $compiler, $regex);
+		}
+		return $this->creatTagCompiler($content, 'WIND:core.viewer.compiler.WindTemplateCompilerDefault', '/{*(\s*\$\w+\s*)}*/i');
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param content
+	 * @param compiler
+	 * @param regex
+	 */
+	private function creatTagCompiler($content, $compiler, $regex) {
+		$content = preg_replace_callback($regex, array($this, 'registerCompiler'), $content);
+		if ($this->windHandlerInterceptorChain === null) {
+			L::import('WIND:core.filter.WindHandlerInterceptorChain');
+			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
+		}
+		$_compilerClass = L::import($compiler);
+		if (!class_exists($_compilerClass)) return $content;
+		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this));
+		$this->_compilerCache = array();
+		return $content;
+	}
+
+	/**
+	 * 注册标签解析器
+	 * @param string $content
+	 */
+	private function registerCompiler($content) {
+		$_content = $content[0];
+		if (!$_content) return '';
+		
+		$key = $this->getCompiledBlockKey();
+		$this->_compilerCache[] = array($key, $_content);
+		return $this->getBlockTag($key);
 	}
 
 	/**
@@ -103,10 +172,12 @@ class WindViewTemplate extends WindComponentModule {
 	 * 处理匹配到的脚本定界符内部的处理脚本，并进行编译处理
 	 * @param string $content
 	 */
-	private function doCompileInternal($content) {
+	private function doCompile($content) {
 		$_content = $content[0];
 		$_content = str_replace(array('<?php', '?>'), array('', ''), $_content);
-		return $this->saveCompileBlock($_content);
+		$key = $this->getCompiledBlockKey();
+		$this->setCompiledBlockData($key, $_content);
+		return $this->getBlockTag($key);
 	}
 
 	/**
@@ -120,33 +191,31 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * 将编译好的内容缓存在变量中
-	 * @param string $content
-	 */
-	private function saveCompileBlock($content) {
-		L::import('WIND:component.utility.WindUtility');
-		$key = WindUtility::generateRandStr(50);
-		if (key_exists($key, $this->compiledBlockData)) {
-			return $this->saveCompileBlock($content);
-		}
-		$this->compiledBlockData[$key] = $content;
-		return $this->getBlockKey($key);
-	}
-
-	/**
 	 * 获得块存储变量值
 	 * @param string $key
 	 * @return string|mixed
 	 */
-	private function getBlockKey($key) {
+	private function getBlockTag($key) {
 		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
 		return str_replace('$', $key, $this->blockKey);
 	}
 
 	/**
+	 * 获得块存储变量值
+	 */
+	protected function getCompiledBlockKey() {
+		L::import('WIND:component.utility.WindUtility');
+		$key = WindUtility::generateRandStr(50);
+		if (key_exists($key, $this->compiledBlockData)) {
+			return $this->getCompiledBlockKey();
+		}
+		return $key;
+	}
+
+	/**
 	 * @return the $leftDelimiter
 	 */
-	protected function getLeftDelimiter() {
+	public function getLeftDelimiter() {
 		$this->leftDelimiter = trim($this->leftDelimiter);
 		return $this->leftDelimiter;
 	}
@@ -154,8 +223,25 @@ class WindViewTemplate extends WindComponentModule {
 	/**
 	 * @return the $rightDelimiter
 	 */
-	protected function getRightDelimiter() {
+	public function getRightDelimiter() {
 		return $this->rightDelimiter;
+	}
+
+	/**
+	 * @return the $compiledBlockData
+	 */
+	public function getCompiledBlockData($key) {
+		if ($key)
+			return isset($this->compiledBlockData[$key]) ? $this->compiledBlockData[$key] : '';
+		else
+			return $this->compiledBlockData;
+	}
+
+	/**
+	 * @param field_type $compiledBlockData
+	 */
+	public function setCompiledBlockData($key, $compiledBlockData) {
+		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
 	}
 
 }
