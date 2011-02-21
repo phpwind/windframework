@@ -82,6 +82,14 @@ abstract class AbstractWindDao extends WindModule {
 	}
 	
 	
+	/**
+	 * @param string $cacheKey 要写的缓存key
+	 * @return array(value,$expires,$dependency)
+	 */
+	public function writeCacheCallBack($cacheKey){
+		
+	}
+	
 
 }
 

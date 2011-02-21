@@ -11,7 +11,7 @@ L::import('WIND:core.filter.WindHandlerInterceptor');
  * @package 
  */
 class WindDaoCacheListener extends WindHandlerInterceptor {
-
+	
 	private $daoObject = null;
 	
 	/**
@@ -21,28 +21,29 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	function __construct($instance) {
 		$this->daoObject = $instance;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
 		$args = func_get_args();
-		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler IWindCache */
+		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler IWindCache */
 		$result = $cacheHandler->batchFetch($args);
 		return 1 < count($args) ? empty($result) ? null : $result : $result[$args[0]];
-		
+	
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
 		$args = func_get_args();
-		$cacheHandler = $this->daoObject->getCacheHandler();
-		$cacheHandler->add($args[0],$args[1],$args[2]);
+		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler IWindCache */
+		foreach ($args as $key) {
+			list($value, $expired, $dependency) = $this->daoObject->writeCacheCallBack($key);
+			$cacheHandler->add($key, $value, $expired, $dependency);
+		}
 	}
-	
-	
 
 }
 
