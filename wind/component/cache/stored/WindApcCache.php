@@ -9,8 +9,8 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindApcCache implements IWindCache {
-
+class WindApcCache extends WindComponentModule implements IWindCache {
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -21,14 +21,14 @@ class WindApcCache implements IWindCache {
 		}
 		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
@@ -39,7 +39,7 @@ class WindApcCache implements IWindCache {
 		}
 		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
@@ -56,7 +56,7 @@ class WindApcCache implements IWindCache {
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
@@ -69,14 +69,14 @@ class WindApcCache implements IWindCache {
 		}
 		return $data;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
 		return apc_delete($key);
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
 	 */
@@ -86,7 +86,7 @@ class WindApcCache implements IWindCache {
 		}
 		return true;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
@@ -94,7 +94,7 @@ class WindApcCache implements IWindCache {
 		apc_clear_cache();
 		return apc_clear_cache('user');
 	}
-
+	
 	/**
 	 * 错误处理
 	 * @param string $message
@@ -103,7 +103,11 @@ class WindApcCache implements IWindCache {
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
+	
+	public function setCacheConfig(array $config = array()) {
 
+	}
+	
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()

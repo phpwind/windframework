@@ -77,7 +77,9 @@ abstract class AbstractWindDaoFactory {
 			$factory = new WindComponentFactory();
 			$defintion = $daoObject->getCacheDefinition();
 			$factory->addClassDefinitions($defintion);
-			$this->caches[$_cacheClass] = $factory->getInstance($defintion->getAlias());
+			$cacheHander = $factory->getInstance($defintion->getAlias());
+			$cacheHander->setCacheConfig($cacheHander->getConfig()->getConfig());
+			$this->caches[$_cacheClass] = $cacheHander;
 		}
 		return $this->caches[$_cacheClass];
 	}

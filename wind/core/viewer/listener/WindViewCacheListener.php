@@ -26,6 +26,8 @@ class WindViewCacheListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle($templateName = '') {
+		echo $templateName;
+		echo $templateName;
 		//TODO 读缓存
 	}
 

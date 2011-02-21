@@ -15,39 +15,36 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindEaccelerator implements IWindCache{
+class WindEaccelerator  extends WindComponentModule implements IWindCache {
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheData = $this->fetch($key);
-		if(false === empty($cacheData)){
+		if (false === empty($cacheData)) {
 			$this->error("The cache already exists");
 		}
-		return eaccelerator_put($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return eaccelerator_put($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheData = $this->fetch($key);
-		if(empty($cacheData)){
+		if (empty($cacheData)) {
 			$this->error("The cache does not exist");
 		}
-		return eaccelerator_put($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
@@ -65,7 +62,6 @@ class WindEaccelerator implements IWindCache{
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
@@ -79,7 +75,6 @@ class WindEaccelerator implements IWindCache{
 		}
 		return $data;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
@@ -87,7 +82,6 @@ class WindEaccelerator implements IWindCache{
 	public function delete($key) {
 		return eaccelerator_rm($key);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
@@ -98,16 +92,20 @@ class WindEaccelerator implements IWindCache{
 		}
 		return true;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
 		eaccelerator_gc();
 		$cacheKeys = eaccelerator_list_keys();
-		foreach($cacheKeys as $key){
+		foreach ($cacheKeys as $key) {
 			$this->delete(substr($key['name'], 1));
 		}
+	}
+	
+	public function setCacheConfig(array $config = array()) {
+
 	}
 	
 	/**
@@ -132,4 +130,6 @@ class WindEaccelerator implements IWindCache{
 		}
 		return serialize($data);
 	}
+	
+	
 }

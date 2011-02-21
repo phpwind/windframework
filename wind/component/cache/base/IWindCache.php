@@ -99,5 +99,11 @@ interface IWindCache {
 	 * 清空所有缓存
 	 */
 	public function flush();
+	
+	/**
+	 * 设置缓存config
+	 * @param array $config
+	 */
+	public function setCacheConfig(array $config = array());
 
 }

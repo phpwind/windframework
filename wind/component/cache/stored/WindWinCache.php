@@ -14,35 +14,32 @@ L::import('WIND:component.cache.base.IWindCache');
  * @package 
  */
 
-class WindWinCache implements IWindCache{
+class WindWinCache  extends WindComponentModule  implements IWindCache {
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return wincache_ucache_add($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return wincache_ucache_add($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return wincache_ucache_set($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return wincache_ucache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$cacheData = $this->fetch($key);
-		if(empty($cacheData)){
+		if (empty($cacheData)) {
 			$this->error("The cache does not exist");
 		}
-		return wincache_ucache_set($key,$this->storeData($value,$expires,$denpendency),$expires);
+		return wincache_ucache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
@@ -60,7 +57,6 @@ class WindWinCache implements IWindCache{
 		}
 		return isset($data[self::DATA]) ? $data[self::DATA] : null;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
@@ -74,7 +70,6 @@ class WindWinCache implements IWindCache{
 		}
 		return $data;
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
@@ -82,7 +77,6 @@ class WindWinCache implements IWindCache{
 	public function delete($key) {
 		return wincache_ucache_delete($key);
 	}
-
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
@@ -93,7 +87,7 @@ class WindWinCache implements IWindCache{
 		}
 		return true;
 	}
-
+	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
@@ -108,6 +102,10 @@ class WindWinCache implements IWindCache{
 	 */
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
+	}
+	
+	public function setCacheConfig(array $config = array()) {
+
 	}
 	
 	/* 

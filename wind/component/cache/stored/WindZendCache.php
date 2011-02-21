@@ -13,7 +13,7 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindZendCache implements IWindCache{
+class WindZendCache  extends WindComponentModule implements IWindCache{
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
@@ -102,6 +102,10 @@ class WindZendCache implements IWindCache{
 	 */
 	public function flush() {
 		return zend_shm_cache_clear();
+	}
+	
+	public function setCacheConfig(array $config = array()) {
+
 	}
 	
 	/**

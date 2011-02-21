@@ -13,7 +13,7 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindDbCache implements IWindCache {
+class WindDbCache extends WindComponentModule implements IWindCache {
 	/**
 	 * @var WindConnectionManager 分布式管理
 	 */
@@ -133,6 +133,10 @@ class WindDbCache implements IWindCache {
 	
 	public function deleteExpiredCache() {
 		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('expires !=0 AND expires < :expires', array(':expires' => time()))->delete();
+	}
+	
+	public function setCacheConfig(array $config = array()){
+		
 	}
 	
 	/**

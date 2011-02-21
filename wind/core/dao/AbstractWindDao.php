@@ -18,7 +18,7 @@ abstract class AbstractWindDao extends WindModule {
 	
 	protected $dbDefinition = null;
 	
-	protected $cacheClass = 'WIND:component.cache.stored.WindFileCache';
+	protected $cacheClass = 'WIND:component.cache.stored.WindMemcache';
 	
 	protected $cacheConfig = 'WIND:component.cache.cache_config';
 	
@@ -87,7 +87,7 @@ abstract class AbstractWindDao extends WindModule {
 	 * @return array(value,$expires,$dependency)
 	 */
 	public function writeCacheCallBack($cacheKey){
-		
+		return array('',0,null);
 	}
 	
 

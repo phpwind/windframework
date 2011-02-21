@@ -44,7 +44,7 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
-		$config && $this->checkCacheConfig($config);
+		$config && $this->setCacheConfig($config);
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
@@ -162,7 +162,6 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 	 * @return string
 	 */
 	public function getCacheFileName($key) {
-		$this->checkCacheConfig();
 		$filename = $key . '_' . substr(sha1($key . $this->securityCode), 0, 5) . '.' . ltrim($this->cacheFileSuffix, '.');
 		if ($this->cacheDirectoryLevel > 0) {
 			$root = $this->cacheDir;
@@ -180,19 +179,17 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 		return $this->cacheDir . $filename;
 	}
 	
-	public function checkCacheConfig(array $config = array()) {
-		if(empty($this->cacheDir)){
-			$config = $config ? $config : $this->getConfig()->getConfig();
-			$this->setCacheDir($config[self::CACHEDIR]);
-			if (isset($config[self::SUFFIX])) {
-				$this->cacheFileSuffix = $config[self::SUFFIX];
-			}
-			if (isset($config[self::LEVEL])) {
-				$this->cacheDirectoryLevel = (int) $config[self::LEVEL];
-			}
-			if (isset($config[self::SECURITY])) {
-				$this->securityCode = $config[self::SECURITY];
-			}
+	public function setCacheConfig(array $config = array()) {
+		$config = $config ? $config : $this->getConfig()->getConfig();
+		$this->setCacheDir($config[self::CACHEDIR]);
+		if (isset($config[self::SUFFIX])) {
+			$this->cacheFileSuffix = $config[self::SUFFIX];
+		}
+		if (isset($config[self::LEVEL])) {
+			$this->cacheDirectoryLevel = (int) $config[self::LEVEL];
+		}
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
 		}
 	}
 	

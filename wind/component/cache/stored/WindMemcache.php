@@ -13,7 +13,7 @@ L::import ( 'WIND:component.cache.base.IWindCache' );
  * @version $Id$ 
  * @package 
  */
-class WindMemcache implements IWindCache {
+class WindMemcache extends WindComponentModule implements IWindCache {
 	
 	/**
 	 * @var string key的安全码
@@ -64,6 +64,12 @@ class WindMemcache implements IWindCache {
 	 */
 	public function __construct(array $servers = array()) {
 		$this->cache = new Memcache();
+		if($servers){
+			$this->setCacheConfig();
+		}
+	}
+	
+	public function setCacheConfig(array $servers=array()){
 		$hasServer = false;
 		foreach ($servers as $server) {
 			if(is_array($server)){

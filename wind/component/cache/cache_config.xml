@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cache>
-	<cache-dir>E:\www\bbs\wind\demos\helloworld\compile\cache</cache-dir>
-</cache>
+<memcache>
+		<server name='phpwind'>
+			<host>127.0.0.1</host>
+			<port>11211</port>
+		</server>
+		<server name='cac'>
+			<host>127.0.0.1</host>
+			<port>11211</port>
+		</server>
+		<security>true</security>
+</memcache>

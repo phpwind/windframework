@@ -14,7 +14,7 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindXCache implements IWindCache{
+class WindXCache  extends WindComponentModule implements IWindCache{
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
@@ -108,6 +108,9 @@ class WindXCache implements IWindCache{
 		return true;
 	}
 	
+	public function setCacheConfig(array $config = array()) {
+
+	}
 	/**
 	 * 错误处理
 	 * @param string $message
