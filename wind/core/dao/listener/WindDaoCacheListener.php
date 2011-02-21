@@ -41,7 +41,6 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 		$dependencyPath = $config[IWindCache::DEPENDENCY];
 		$dependency = null;
 		if($dependencyPath){
-			$className = L::import($dependencyPath);
 			$dependency = WindFactory::createInstance(L::import($dependencyPath));
 		}
 		$cacheHandler->add($this->generateKey(func_get_args()), $this->result, (int)$config[IWindCache::EXPIRES], $dependency);
