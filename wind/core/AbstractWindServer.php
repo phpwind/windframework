@@ -52,21 +52,27 @@ abstract class AbstractWindServer {
 		if ($this->request === null || $this->response === null) {
 			throw new Exception('init action servlet failed!!');
 		}
-		$this->beforeProcess();
+		$this->beforeProcess($this->request, $this->response);
 		$this->service($this->request, $this->response);
-		$this->afterProcess();
+		$this->afterProcess($this->request, $this->response);
 		$this->response->sendResponse();
 	}
 
 	/**
-	 * Enter description here ...
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 */
-	protected function beforeProcess() {}
+	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
+
+	}
 
 	/**
-	 * Enter description here ...
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 */
-	protected function afterProcess() {}
+	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
+
+	}
 
 	/**
 	 * 执行请求的操作
