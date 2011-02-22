@@ -16,7 +16,9 @@ class WindTemplateCompilerInternal extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
+		//TODO php脚本特别解析
 		
+
 		return $content;
 	}
 
