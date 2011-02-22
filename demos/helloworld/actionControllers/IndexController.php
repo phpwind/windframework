@@ -18,8 +18,9 @@ class IndexController extends WindController {
 		$this->setOutput(array('var1' => 'hello world from IndexController.'));
 		$this->setTemplate('helloworld');
 		L::import('WINDAPP1:dao.WindApp1DaoFactory');
-		$dao = WindApp1DaoFactory::getFactory()->instantiateDao('WINDAPP1:dao.windApp1UserDao');
-		$dao->findUserById('1');
+		$dao = WindApp1DaoFactory::getFactory()->getDao('WINDAPP1:dao.windApp1UserDao');
+		$result = $dao->findUserById(1);
+		print_r($result);
 	}
 
 	public function redirect() {
@@ -30,5 +31,7 @@ class IndexController extends WindController {
 		echo 'hello i am add.';
 		$this->setTemplate('read');
 	}
+	
+
 
 }
