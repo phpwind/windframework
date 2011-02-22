@@ -15,25 +15,29 @@ L::import('WIND:component.db.base.IWindDbConfig');
  * @package 
  */
 class WindConnectionManager extends WindComponentModule {
+
 	/**
 	 * @var array 数据库配置
 	 */
 	private $config = array();
+
 	/**
 	 * @var array 数据库连接池
 	 */
 	private $linked = array();
+
 	/**
 	 * @var WindDbAdapter
 	 */
 	private $connection = null;
+
 	public function __construct(array $config = array()) {
 		if ($config) {
 			$this->checkDbConfig($config);
 			$this->config = $config;
 		}
 	}
-	
+
 	/**
 	 * 取得数据库服务器
 	 * @param string $identify 数据库标识
@@ -62,7 +66,7 @@ class WindConnectionManager extends WindComponentModule {
 		}
 		return $this->connection = $this->linked[$identify];
 	}
-	
+
 	/**
 	 * 取得主服务器
 	 * @return WindDbAdapter
@@ -70,7 +74,7 @@ class WindConnectionManager extends WindComponentModule {
 	public function getMasterConnection() {
 		return 1 < count($this->config[IWindDbConfig::CONNECTIONS]) ? $this->getConnection('', IWindDbConfig::CONN_MASTER) : $this->getConnection('', '');
 	}
-	
+
 	/**
 	 * 取得从服务器
 	 * @return WindDbAdapter
@@ -78,15 +82,15 @@ class WindConnectionManager extends WindComponentModule {
 	public function getSlaveConnection() {
 		return 1 < count($this->config[IWindDbConfig::CONNECTIONS]) ? $this->getConnection('', IWindDbConfig::CONN_SLAVE) : $this->getConnection('', '');
 	}
-	
+
 	/**
 	 * 取得当前正在执行的数据库操作句柄
 	 * @return WindDbAdapter
 	 */
-	public function getCurrentConnection(){
+	public function getCurrentConnection() {
 		return $this->connection;
 	}
-	
+
 	public function getDbConfig() {
 		if (empty($this->config)) {
 			$config = $this->getConfig()->getConfig();
@@ -95,6 +99,7 @@ class WindConnectionManager extends WindComponentModule {
 		}
 		return $this->config;
 	}
+
 	/**
 	 * 设置db配置
 	 * @param array $config
@@ -104,7 +109,7 @@ class WindConnectionManager extends WindComponentModule {
 			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
 		}
 	}
-	
+
 	/**
 	 * 随机取得数据库配置
 	 * @param string $type 是否是主从服务器
@@ -116,7 +121,7 @@ class WindConnectionManager extends WindComponentModule {
 		$connections = (empty($masterSlave) || empty($type)) ? $connections : $masterSlave[$type];
 		return $this->getConfigIdentifyByPostion($connections, mt_rand(0, count($connections) - 1));
 	}
-	
+
 	/**
 	 * 查看是是否要主从数据库设置，并按主从配置返回数据库配置信息
 	 * @return array
@@ -131,7 +136,7 @@ class WindConnectionManager extends WindComponentModule {
 		}
 		return $array;
 	}
-	
+
 	/**
 	 *根据config的pos返回key
 	 * @param array $config 数据库配置
