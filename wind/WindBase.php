@@ -336,7 +336,7 @@ class L {
 	}
 
 	static private function setIncludePath($path) {
-		if (empty(self::$_includePaths) || self::$_includePaths === null) {
+		if (empty(self::$_includePaths)) {
 			self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
 			if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
 		}
