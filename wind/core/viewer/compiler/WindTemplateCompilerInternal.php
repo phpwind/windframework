@@ -10,15 +10,14 @@ L::import('WIND:core.viewer.compiler.AbstractWindTemplateCompiler');
  * @version $Id$
  * @package 
  */
-class WindTemplateCompilerDefault extends AbstractWindTemplateCompiler {
+class WindTemplateCompilerInternal extends AbstractWindTemplateCompiler {
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		$_output = $content;
-		$_output = preg_replace(array('/{\s*/i', '/\s*}/i'), array(' echo ', ';'), $_output);
-		return '<?php' . $_output . '?>';
+		
+		return $content;
 	}
 
 }

@@ -12,6 +12,10 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindViewTemplate extends WindComponentModule {
 
+	const COMPILER_ECHO = 'WIND:core.viewer.compiler.WindTemplateCompilerEcho';
+
+	const COMPILER_INTERNAL = 'WIND:core.viewer.compiler.WindTemplateCompilerInternal';
+
 	const SUPPORT_TAGS = 'support-tags';
 
 	const TAG = 'tag';
@@ -49,7 +53,6 @@ class WindViewTemplate extends WindComponentModule {
 		if (!$windView->getCompileDir()) {
 			throw new WindViewException('compile dir is not exist \'' . $windView->getCompileDir() . '\' .');
 		}
-		
 		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
 		$_output = $this->compile($_output);
@@ -63,17 +66,13 @@ class WindViewTemplate extends WindComponentModule {
 	 */
 	protected function compile($content) {
 		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php', '?>'), $content);
-		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
-		$content = preg_replace_callback('/<\?php(.|\n)*?\?>/i', array($this, 'doCompile'), $content);
 		$content = $this->registerTags($content);
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
 		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
 			if (!$key) continue;
-			$_data = $value[0];
-			if ($value[1]) $_data = '<?php' . ($_data ? $_data : ' ') . '?>';
-			$content = str_replace($this->getBlockTag($key), $_data, $content);
+			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
 		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
 		return $content;
@@ -85,8 +84,8 @@ class WindViewTemplate extends WindComponentModule {
 	 * @return string 
 	 */
 	private function registerTags($content) {
+		$content = $this->creatTagCompiler($content, self::COMPILER_INTERNAL, '/<\?php(.|\n)*?\?>/i');
 		$tags = $this->getConfig()->getConfig(self::SUPPORT_TAGS);
-		if (empty($tags)) return $content;
 		foreach ((array) $tags as $key => $value) {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
@@ -94,7 +93,8 @@ class WindViewTemplate extends WindComponentModule {
 			$regex = '/<(' . $tag . ')(\s|>)+(.)+?(\/>[^"\']|<\/\1>){1}/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex);
 		}
-		return $this->creatTagCompiler($content, 'WIND:core.viewer.compiler.WindTemplateCompilerDefault', '/{*(\s*\$\w+\s*)}*/i');
+		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*(\s*\$\w+\s*)}*/i');
+		return $content;
 	}
 
 	/**
@@ -155,9 +155,11 @@ class WindViewTemplate extends WindComponentModule {
 	 */
 	private function checkReCompile($templateFile, $compileFile) {
 		$_reCompile = false;
-		if (false === ($compileFileModifyTime = @filemtime($compileFile)))
+		if (IS_DEBUG) {
 			$_reCompile = true;
-		else {
+		} elseif (false === ($compileFileModifyTime = @filemtime($compileFile))) {
+			$_reCompile = true;
+		} else {
 			$templateFileModifyTime = @filemtime($templateFile);
 			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
 		}
@@ -170,36 +172,19 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
+		if (!$compileFile || !file_exists($compileFile) || empty($content)) return;
 		L::import('WIND:component.utility.WindFile');
 		WindFile::writeover($compileFile, $content);
 	}
 
 	/**
-	 * 处理匹配到的脚本定界符内部的处理脚本，并进行编译处理
-	 * @param string $content
-	 */
-	private function doCompile($content) {
-		$_content = $content[0];
-		$_content = str_replace(array('<?php', '?>'), array('', ''), $_content);
-		$key = $this->getCompiledBlockKey();
-		$this->setCompiledBlockData($key, $_content);
-		return $this->getBlockTag($key);
-	}
-
-	/**
-	 * 处理匹配到的脚本定界符外部的处理脚本，并进行编译处理
-	 * @param string $content
-	 */
-	private function doCompileExternal($content) {
-		$_content = $content[0];
-		
-		return $_content;
-	}
-
-	/**
-	 * 获得块存储变量值
-	 * @param string $key
-	 * @return string|mixed
+	 * 对模板块存储进行标签处理
+	 * 将Key串 'HhQWFLtU0LSA3nLPLHHXMtTP3EfMtN3FsxLOR1nfYC5OiZTQri' 处理为
+	 * <pw-wind key='HhQWFLtU0LSA3nLPLHHXMtTP3EfMtN3FsxLOR1nfYC5OiZTQri' />
+	 * 在模板中进行位置标识
+	 * 
+	 * @param string $key | 索引
+	 * @return string|mixed | 处理后结果
 	 */
 	private function getBlockTag($key) {
 		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
@@ -207,7 +192,8 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * 获得块存储变量值
+	 * 获得切分后块编译缓存Key值,Key值为一个50位的随机字符串,当产生重复串时继续查找
+	 * @return string
 	 */
 	protected function getCompiledBlockKey() {
 		L::import('WIND:component.utility.WindUtility');
@@ -219,7 +205,8 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * @return the $leftDelimiter
+	 * 返回左侧定界符，去掉两侧空白符
+	 * @return string $leftDelimiter
 	 */
 	public function getLeftDelimiter() {
 		$this->leftDelimiter = trim($this->leftDelimiter);
@@ -227,14 +214,17 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * @return the $rightDelimiter
+	 * 返回右侧定界符，去掉两侧空白符
+	 * @return string $rightDelimiter
 	 */
 	public function getRightDelimiter() {
 		return $this->rightDelimiter;
 	}
 
 	/**
-	 * @return the $compiledBlockData
+	 * 返回编译后结果，根据Key值检索编译后结果，并返回
+	 * @param string $key
+	 * @return string
 	 */
 	public function getCompiledBlockData($key = '') {
 		if ($key)
@@ -244,13 +234,13 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * 设置编译后数据缓存
-	 * @param string $key
-	 * @param string $compiledBlockData
-	 * @param boolean $isTag
+	 * 根据key值保存编译后的模板块
+	 * @param string $key | 索引
+	 * @param string $compiledBlockData | 编译结果
+	 * @param boolean $isTag | 再结果处理时是否添加php脚本定界符 true 添加 ，flase 不添加
 	 */
-	public function setCompiledBlockData($key, $compiledBlockData, $isTag = true) {
-		if ($key) $this->compiledBlockData[$key] = array($compiledBlockData, $isTag);
+	public function setCompiledBlockData($key, $compiledBlockData) {
+		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
 	}
 
 }
