@@ -98,10 +98,10 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param content
-	 * @param compiler
-	 * @param regex
+	 * 创建标签解析器类
+	 * @param string content | 模板内容
+	 * @param string compiler | 标签编译器
+	 * @param string regex	| 正则表达式
 	 */
 	private function creatTagCompiler($content, $compiler, $regex) {
 		$content = preg_replace_callback($regex, array($this, 'registerCompiler'), $content);
@@ -127,24 +127,6 @@ class WindViewTemplate extends WindComponentModule {
 		$key = $this->getCompiledBlockKey();
 		$this->_compilerCache[] = array($key, $_content);
 		return $this->getBlockTag($key);
-	}
-
-	/**
-	 * 获得模板文件内容，目前只支持本地文件获取
-	 * 
-	 * @param string $templateFile
-	 */
-	private function getTemplateFileContent($templateFile) {
-		$_output = '';
-		if ($fp = @fopen($templateFile, 'r')) {
-			while (!feof($fp)) {
-				$_output .= fgets($fp, 4096);
-			}
-			fclose($fp);
-		} else
-			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
-		
-		return $_output;
 	}
 
 	/**
@@ -202,6 +184,24 @@ class WindViewTemplate extends WindComponentModule {
 			return $this->getCompiledBlockKey();
 		}
 		return $key;
+	}
+
+	/**
+	 * 获得模板文件内容，目前只支持本地文件获取
+	 * 
+	 * @param string $templateFile
+	 */
+	private function getTemplateFileContent($templateFile) {
+		$_output = '';
+		if ($fp = @fopen($templateFile, 'r')) {
+			while (!feof($fp)) {
+				$_output .= fgets($fp, 4096);
+			}
+			fclose($fp);
+		} else
+			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
+		
+		return $_output;
 	}
 
 	/**
