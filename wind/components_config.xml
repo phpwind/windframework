@@ -44,9 +44,9 @@
 			<property name='windRouter' ref='urlBasedRouter' />
 		</properties>
 		<config>
-			<url-pattern value="/"/>
+			<url-pattern value="-/"/>
 			<route-suffix value='htm' />
-			<route-param value='' />
+			<route-param value='r' />
 		</config>
 	</component>
 

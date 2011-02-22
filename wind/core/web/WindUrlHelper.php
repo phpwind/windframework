@@ -15,63 +15,165 @@
  * @package 
  */
 class WindUrlHelper extends WindComponentModule {
-
+	
 	const URL_PATTERN = 'url-pattern';
-
+	
 	const ROUTE_SUFFIX = 'route-suffix';
-
+	
 	const ROUTE_PARAM = 'route-param';
 	
-	const REWRITE = true;
-
+	const REWRITE = TRUE;
+	const ROUTE_SEPARATOR = '_';
+	
 	protected $routeSuffix = '';
-
+	
 	protected $routeParam = '';
-
+	
 	protected $urlPattern = '';
-
+	
 	protected $windRouter = null;
 	
 	public function isRewrite() {
 		return self::REWRITE;
 	}
-
+	
 	/**
 	 * 解析Url
 	 * 
 	 * 没有配置解析规则，直接返回
-	 * 获得则匹配RequestUri，与用户配置的url正则匹配
+	 * 获得则匹配RequestUri，根据用户的配置分隔符分割信息
 	 * 同时设置到超全局变量$_GET中
 	 */
 	public function parseUrl() {
 		if ((($uri = $this->request->getServer('QUERY_STRING')) == '') || !$this->isRewrite()) return;
 		if (($pattern = $this->getUrlPattern()) == '') return;
-		if (count($match = $this->matchPattern($uri, $pattern)) == 0) ;//return;
-		$_GET = array_merge($_GET, $match);
+		$seperator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
+		$uri = explode($seperator, $uri);
+		if (strcasecmp($pattern, "=&") != 0) $params = $this->parseUrlToParams($uri, $seperator, $pattern[0]);
+		$_GET = array_merge($_GET, $params);
+		$this->matchRouter(array_pop($uri));
+		var_dump($_GET);
+		var_dump($this->createUrl('index', 'run', array('p' => 'value', 'name' => 'xxx', 'params' => array('key1' => 'value1', 'key2' => array('value')))));
+		exit();
 	}
+	
+	/**
+	 * 构造返回Url地址
+	 * 
+	 *    将根据是否开启url重写来分别构造相对应的url
+	 *    
+	 * @param string $action 执行的操作
+	 * @param string $controller 执行的controller
+	 * @param array $params 附带的参数
+	 * @return string
+	 */
+	public function createUrl($action, $controller, $params = array()) {
+		$this->getWindRouter()->setAction($action);
+		$this->getWindRouter()->setController($controller);
+		$url = $this->getWindRouter()->buildUrl();
+		$server = $this->request->getServer('PHP_SELF');
+		if ($this->isRewrite()) {
+			$server = substr($server, 0, strrpos($server, '/'));
+			$url = $server . $this->buildRewriteURL($params, $url);
+		} else {
+			$url = $server . $url . '&' . $this->buildUrl($params);
+		}
+		return $url;
+	}
+	
 	
 	/**
 	 * 执行匹配
 	 * 
 	 * 获得匹配的结果
-	 * @return array 返回匹配的结果
+	 * 对于路由信息，
+	 * 如果没有路由信息，则表示缺省
+	 * 如果路由中只有一个值，则代表缺省的是m和a
+	 * 如果路由中只有两个值，则代表缺省的是m
+	 * 
+	 * @param string 待分析匹配的路由信息
 	 */
-	private function matchPattern($uri, $pattern) {
-		$seperator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
-		$uri = explode($seperator, $uri);
-		if (strcasecmp($pattern, "=&") != 0) $params = $this->parseUrlToParams($uri, $seperator, $pattern[0]);
-		if (strrpos($uri[count($uri)-1], '.' . $this->getRouteSuffix()) !== false) {
-			$mca = rtrim(array_pop($uri), '.' . $this->getRouteSuffix());
-			if ($mca == '') return $params;
-			$mca = explode('-', $mca);
-			(count($mca) == 2) && array_unshift($mca, '');
-			$mcaConfig = array();
-			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_MODULE);
-			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_CONTROLLER);
-			$mcaConfig[] = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_ACTION);
-			$params = array_merge($params, array_combine($mcaConfig, $mca));
+	private function matchRouter($mca) {
+		$mca = trim(rtrim($mca, '.' . $this->getRouteSuffix()));
+		if ($mca == '') return;
+		$mca = explode(self::ROUTE_SEPARATOR, $mca);
+		$m = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_MODULE);
+		$c = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_CONTROLLER);
+		$a = $this->getUrlParamConfig(WindUrlBasedRouter::URL_RULE_ACTION);
+		if (count($mca) == 1) {
+			$_GET[$c] = $mca[0];
+		} elseif (count($mca) == 2) {
+			$_GET[$c] = $mca[0];
+			$_GET[$a] = $mca[1];
+		} else {
+			($mca[0]) && $_GET[$m] = $mca[0];
+			($mca[1]) && $_GET[$c] = $mca[1];
+			($mca[2]) && $_GET[$a] = $mca[2];
+		}
+		return;
+	}
+	
+	/**
+	 * 解析uri参数成key-value关联数组形式
+	 * 
+	 * 如果key-value和参数之间，两种的分隔符相同，则采用配对匹配的模式，如果不相同，则对每一对key-value的值进行再次解析
+	 * 
+	 * 如果key是字符串，则直接赋值，
+	 * 如果key是数组：
+	 * 如果key的数组没有键值，则采用数组索引自增的方式
+	 * 如果key的数组拥有键值，则将该键值作为key来传递
+	 * 
+	 * @param array $url
+	 * @param string $seprator
+	 * @param string $keyAsValue
+	 * @return array
+	 */
+	private function parseUrlToParams($url, $seprator = '', $keyAsValue = '=') {
+		$params = array();
+		if ($seprator == $keyAsValue) {
+			$n = count($url);
+			for ($i = 0; $i < $n / 2; $i++) {
+				$k = 2 * $i;
+				$v = $k + 1;
+				if (isset($url[$v])) {
+					$this->parseKey($params, $url[$k], $url[$v]);
+				}
+			}
+			return $params;
+		}
+		foreach ((array) $url as $key => $value) {
+			if (strpos($value, $keyAsValue) === false) continue;
+			list($key, $value) = explode($keyAsValue, $value);
+			$this->parseKey($params, $key, $value);
 		}
 		return $params;
+	}
+	
+	/**
+	 * 解析url的parama信息中的key值
+	 * 
+	 * 如果key值不存在'[',']'字符，则该key为字符串，直接返回
+	 * 如果key值存在，并且'['和']'之前没有字符，则表示该key是将是一个数组，并且键值自增，返回array($key)
+	 * 如果key值存在，并且'['和']'之前有字符，则表示该key是一个数组，并且'['和']'其中的字符是该数组中的键值,返回array(key值, 键值)
+	 * 
+	 * //TODO 需要考虑多维数组的情况
+	 * @param string $key
+	 * @return string|array 返回匹配的结果
+	 */
+	private function parseKey(&$params, $key, $value) {
+		if (($pos = strpos($key, '[')) === false || ($pos2 = strpos($key, ']', $pos + 1)) === false) {
+			$params[$key] = $value;
+			return ;
+		}
+		$name = substr($key, 0, $pos);
+		if ($pos2 === $pos + 1) {
+			$params[$name][] = $value;
+			return;
+		} else {
+			$key = substr($key, $pos + 1, $pos2 - $pos - 1);
+			$params[$name][$key] = $value;
+			return;
+		}
 	}
 	
 	/**
@@ -90,63 +192,71 @@ class WindUrlHelper extends WindComponentModule {
 		return $type;
 	}
 	
-	private function buildRewriteURL($params, $mca) {
+	/**
+	 * 获得分割符
+	 * 
+	 * @return array array(key-value分割符，参数之间分隔符)
+	 */
+	private function getSeparator() {
 		(($pattern = $this->getUrlPattern()) == '') && $pattern = '=&';
-		$seprator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
+		$separator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
+		return array($pattern[0], $separator);
+	}
+	
+	/**
+	 * 构造重写的url
+	 *
+	 * @param array $params
+	 * @param string $routerInfo
+	 * @return string 返回重写后的url
+	 */
+	private function buildRewriteURL($params, $routerInfo) {
+		$separator = $this->getSeparator();
 		$url = '';
 		foreach ($params as $key => $value) {
-			$url .= $key . $pattern[0] . $value . $seprator;
+			$url .= $this->buildKey($key, $value, $separator[0], $separator[1]) . $separator[1];
 		}
-		$mca = $this->parseUrlToParams(explode('&', trim($mca, '?')), '&', '=');
-		$mca = implode('-', $mca) . '.' . $this->getRouteSuffix();
-		return $seprator . $url . $mca;
+		$routerInfo = $this->parseUrlToParams(explode('&', trim($routerInfo, '?')), '&', '=');
+		$routerInfo = implode(self::ROUTE_SEPARATOR, $routerInfo) . '.' . $this->getRouteSuffix();
+		return $separator[1] . $url . $routerInfo;
 	}
 	
-    private function parseUrlToParams($url, $seprator = '',  $keyAsValue = '=') {
-    	$params = array();
-    	if ($seprator == $keyAsValue) {
-    		$n = count($url);
-    		for($i = 0; $i < $n/2; $i++) {
-    			$k = 2 * $i;
-    			$v = $k + 1;
-    			isset($url[$v]) && $params[$url[$k]] = $url[$v];
-    		}
-    		return $params;
-    	}
-		foreach ((array)$url as $key => $value) {
-			(strpos($value, $keyAsValue) !== false) && list($key, $value) = explode($keyAsValue, $value);
-			$params[$key] = $value;
-		}
-		return $params;
-    }
-    
 	/**
-	 * 返回Url地址
+	 * 构造url的辅助函数
 	 * 
-	 * @return string
+	 *  支持数组的传递(建议最多传递一维)
+	 *
+	 * @param string $parentKey  key 
+	 * @param string $parentValue key对应的值
+	 * @param string $keyAsValue  key-value的分隔符
+	 * @param string $separator   参数之间的分割符
+	 * @param boolean $flag   标志
+	 * @return string 
 	 */
-	public function createUrl($action, $controller, $params = array()) {
-		$this->getWindRouter()->setAction($action);
-		$this->getWindRouter()->setController($controller);
-		$url = $this->getWindRouter()->buildUrl();
-		$server = $this->request->getServer('PHP_SELF');
-		if ($this->isRewrite()) {
-			$server = substr($server, 0, strrpos($server, '/'));
-			$url = $server . $this->buildRewriteURL($params, $url);
-		} else {
-			$url = $server . $url . '&' . $this->buildParams($params);
+	private function buildKey($parentKey, $parentValue, $keyAsValue, $separator, $flag = false) {
+		$flag && $parentKey = '[' . $parentKey . ']';
+		if (!is_array($parentValue))  return $parentKey . $keyAsValue . urlencode($parentValue);
+		$keys = array();
+		foreach ($parentValue as $key => $value) {
+			$keys[] = $parentKey . $this->buildKey($key, $value, $keyAsValue, $separator, true);
 		}
-		return $url;
+		return implode($separator, $keys);
 	}
 	
-	private function buildParams($params) {
+	/**
+	 * 构造普通的url
+	 * 
+	 * @param array $params
+	 * @return string 
+	 */
+	private function buildUrl($params, $flag = false) {
 		$url = '';
 		foreach ((array)$params as $key => $value) {
-			$url .= $key . '=' . $value . '&';
+			$url .= $this->buildKey($key, $value, '=', '&') . '&';
 		}
 		return trim($url, '&');
 	}
-
+	
 	/**
 	 * 检查Url地址的正确性，并返回正确的URL地址
 	 * 
@@ -158,7 +268,7 @@ class WindUrlHelper extends WindComponentModule {
 
 		return $url;
 	}
-
+	
 	/**
 	 * @return the $routeSuffix
 	 */
@@ -168,7 +278,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->routeSuffix;
 	}
-
+	
 	/**
 	 * @return the $routeParam
 	 */
@@ -178,7 +288,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->routeParam;
 	}
-
+	
 	/**
 	 * @return the $urlPattern
 	 */
@@ -188,35 +298,35 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->urlPattern;
 	}
-
+	
 	/**
 	 * @param field_type $routeSuffix
 	 */
 	public function setRouteSuffix($routeSuffix) {
 		$this->routeSuffix = $routeSuffix;
 	}
-
+	
 	/**
 	 * @param field_type $routeParam
 	 */
 	public function setRouteParam($routeParam) {
 		$this->routeParam = $routeParam;
 	}
-
+	
 	/**
 	 * @param field_type $urlPattern
 	 */
 	public function setUrlPattern($urlPattern) {
 		$this->urlPattern = $urlPattern;
 	}
-
+	
 	/**
 	 * @return the $windRouter
 	 */
 	public function getWindRouter() {
 		return $this->windRouter;
 	}
-
+	
 	/**
 	 * @param field_type $windRouter
 	 */
