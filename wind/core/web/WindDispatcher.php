@@ -38,7 +38,7 @@ class WindDispatcher extends WindComponentModule {
 	 */
 	protected function dispatchWithRedirect($forward) {
 		$_url = $forward->getUrl();
-		//TODO check $_url
+		//TODO check $_url 在urlHelper中添加url检测方法，检查是否是一个正确的Url形式，包括包含不包含域名等
 		$urlHelper = $this->windFactory->getInstance(COMPONENT_URLHELPER);
 		if (!$_url && $forward->getIsReAction()) {
 			/* @var $urlHelper WindUrlHelper */
