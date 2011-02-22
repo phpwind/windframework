@@ -15,7 +15,7 @@ class WindTemplateCompilerInclude extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-
+		return $content;
 	}
 
 }

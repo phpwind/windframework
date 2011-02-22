@@ -43,7 +43,7 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 		foreach ($this->tags as $key => $value) {
 			if (!$value[0] || !$value[1]) continue;
 			$_output = $this->compile($value[0], $value[1]);
-			$this->windViewTemplate->setCompiledBlockData($value[0], $_output);
+			$this->windViewTemplate->setCompiledBlockData($value[0], $_output, false);
 		}
 	}
 

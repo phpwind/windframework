@@ -69,14 +69,20 @@ class WindViewTemplate extends WindComponentModule {
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
-		foreach ((array) $this->compiledBlockData as $key => $value) {
-			$content = str_replace($this->getBlockTag($key), '<?php' . $value . '?>', $content);
+		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
+			if (!$key) continue;
+			$_data = $value[0];
+			if ($value[1]) $_data = '<?php' . ($_data ? $_data : ' ') . '?>';
+			$content = str_replace($this->getBlockTag($key), $_data, $content);
 		}
+		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
 		return $content;
 	}
 
 	/**
-	 * 注册支持的标签
+	 * 注册支持的标签并返回注册后的模板内容
+	 * @param string $content
+	 * @return string 
 	 */
 	private function registerTags($content) {
 		$tags = $this->getConfig()->getConfig(self::SUPPORT_TAGS);
@@ -85,7 +91,7 @@ class WindViewTemplate extends WindComponentModule {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
 			if (!$compiler || !$tag) continue;
-			$regex = '<' . $tag . ' />';
+			$regex = '/<(' . $tag . ')(\s|>)+(.)+?(\/>[^"\']|<\/\1>){1}/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex);
 		}
 		return $this->creatTagCompiler($content, 'WIND:core.viewer.compiler.WindTemplateCompilerDefault', '/{*(\s*\$\w+\s*)}*/i');
@@ -230,7 +236,7 @@ class WindViewTemplate extends WindComponentModule {
 	/**
 	 * @return the $compiledBlockData
 	 */
-	public function getCompiledBlockData($key) {
+	public function getCompiledBlockData($key = '') {
 		if ($key)
 			return isset($this->compiledBlockData[$key]) ? $this->compiledBlockData[$key] : '';
 		else
@@ -238,10 +244,13 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * @param field_type $compiledBlockData
+	 * 设置编译后数据缓存
+	 * @param string $key
+	 * @param string $compiledBlockData
+	 * @param boolean $isTag
 	 */
-	public function setCompiledBlockData($key, $compiledBlockData) {
-		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
+	public function setCompiledBlockData($key, $compiledBlockData, $isTag = true) {
+		if ($key) $this->compiledBlockData[$key] = array($compiledBlockData, $isTag);
 	}
 
 }

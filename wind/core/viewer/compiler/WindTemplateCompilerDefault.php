@@ -18,7 +18,7 @@ class WindTemplateCompilerDefault extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		$_output = $content;
 		$_output = preg_replace(array('/{\s*/i', '/\s*}/i'), array(' echo ', ';'), $_output);
-		return $_output;
+		return '<?php' . $_output . '?>';
 	}
 
 }
