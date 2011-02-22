@@ -52,9 +52,6 @@ class WindUrlHelper extends WindComponentModule {
 		if (strcasecmp($pattern, "=&") != 0) $params = $this->parseUrlToParams($uri, $seperator, $pattern[0]);
 		$_GET = array_merge($_GET, $params);
 		$this->matchRouter(array_pop($uri));
-		var_dump($_GET);
-		var_dump($this->createUrl('index', 'run', array('p' => 'value', 'name' => 'xxx', 'params' => array('key1' => 'value1', 'key2' => array('value')))));
-		exit();
 	}
 	
 	/**
