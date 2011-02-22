@@ -114,7 +114,7 @@ class WindFrontController extends AbstractWindServer {
 	/* (non-PHPdoc)
 	 * @see AbstractWindServer::afterProcess()
 	 */
-	protected function afterProcess() {
+	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
 		restore_error_handler();
 	}
 
