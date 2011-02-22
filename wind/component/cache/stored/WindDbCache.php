@@ -17,7 +17,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	/**
 	 * @var WindConnectionManager 分布式管理
 	 */
-	protected $distributed = null;
+	protected $dbHandler = null;
 	/**
 	 * @var string 安全code
 	 */
@@ -27,19 +27,31 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	protected $table = 'pw_cache';
 	
-	const SECURITY = 'security';
-	const CACHETABLE = 'cachetable';
+	/**
+	 * @var string 缓存表的键字段
+	 */
+	protected $keyField = 'key';
+	/**
+	 * @var string 缓存表的值字段
+	 */
+	protected $valueField = 'value';
+	/**
+	 * @var string 缓存表过期时间字段
+	 */
+	protected $expireField = 'expire';
 	
-	public function __construct(array $config = array(),WindConnectionManager $distributed = null) {
-		if($distributed){
-			$this->setDistributed($distributed);
-		}
-		if($config){
-			$this->setCacheConfig($config);
+	const CACHETABLE = 'cachetable';
+	const NAME = 'name';
+	const KEY = 'key';
+	const VALUE = 'value';
+	const EXPIRE = 'expire';
+	const FIELD = 'field';
+	
+	public function __construct(WindConnectionManager $dbHandler = null) {
+		if($dbHandler){
+			$this->setDbHandler($dbHandler);
 		}
 	}
-	
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -79,8 +91,8 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
-		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field('value')->where('key = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
-		$data = unserialize($data['value']);
+		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
+		$data = unserialize($data[$this->valueField]);
 		if(isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])){
 			L::import('Wind:component.cache.dependency.'.$data[self::DEPENDENCYCLASS]);
 			$dependency = unserialize($data[self::DEPENDENCY]);/* @var $dependency IWindCacheDependency*/
@@ -99,15 +111,15 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 		foreach ($keys as $key => $value) {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
-		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field('value', 'key')->where('key = :key ', array(':key' => $keys))->select()->getAllRow();
+		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->keyField.' = :key ', array(':key' => $keys))->select()->getAllRow();
 		$result = $changed = array();
 		foreach ($data as $_data) {
-			$_data = unserialize($_data['value']);
+			$_data = unserialize($_data[$this->valueField]);
 			if (isset($_data[self::DEPENDENCY]) && $_data[self::DEPENDENCY] instanceof IWindCacheDependency) {
 				if ($_data[self::DEPENDENCY]->hasChanged()) {
-					$changed[] = $_data['key'];
+					$changed[] = $_data[$this->keyField];
 				} else {
-					$result[$_data['key']] = $_data[self::DATA];
+					$result[$_data[$this->keyField]] = $_data[self::DATA];
 				}
 			}
 		}
@@ -119,7 +131,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('key = :key ', array(':key' => $this->buildSecurityKey($key)))->delete();
+		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->delete();
 	}
 	
 	/* 
@@ -129,7 +141,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 		foreach ($keys as $key => $value) {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('key in (:key) ', array(':key' => $keys))->delete();
+		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' in (:key) ', array(':key' => $keys))->delete();
 	}
 	
 	/* 
@@ -140,11 +152,11 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	}
 	
 	public function deleteExpiredCache() {
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('expires !=0 AND expires < :expires', array(':expires' => time()))->delete();
+		return @$this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->expireField.' !=0 AND '.$this->expireField.' < :expires', array(':expires' => time()))->delete();
 	}
 	
-	public function setDistributed(WindConnectionManager $distributed){
-		$this->distributed = $distributed;
+	public function setDbHandler(WindConnectionManager $dbHandler){
+		$this->dbHandler = $dbHandler;
 	}
 	
 	/* 
@@ -153,11 +165,17 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	public function setConfig($config) {
 		parent::setConfig($config);
 		$config = $config->getConfig();
+		if(false === isset($config[self::CACHETABLE])){
+			throw new WindException('The cache table is not exist');
+		}
+		$tableConfig = $config[self::CACHETABLE];
+		$this->table = isset($tableConfig[self::NAME]) ? $tableConfig[self::NAME] : 'pw_cache';
+		$field = $tableConfig[self::FIELD];
+		$this->keyField = isset($field[self::KEY]) ? $field[self::KEY] : 'key';
+		$this->valueField = isset($field[self::VALUE]) ? $field[self::VALUE] : 'value';
+		$this->expireField = isset($field[self::EXPIRE]) ? $field[self::EXPIRE] : 'expire';
 		if(isset($config[self::SECURITY])){
 			$this->securityCode = $config[self::SECURITY];
-		}
-		if(isset($config[self::cachetable])){
-			$this->table = $config[self::cachetable];
 		}
 	}
 	/**
@@ -178,8 +196,11 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @return boolean
 	 */
 	protected function store($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = $this->storeData($value, $expires, $denpendency);
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->field('key', 'value', 'expires')->data($key, $data, $expires)->insert();
+		$data = addslashes($this->storeData($value, $expires, $denpendency));
+		if($expires){
+			$expires += time();
+		}
+		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->field($this->keyField, $this->valueField, $this->expireField)->data($this->buildSecurityKey($key), $data, $expires)->insert();
 	}
 	
 	/**
@@ -192,7 +213,10 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	protected function update($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$data = $this->storeData($value, $expires, $denpendency);
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set('value = :value,expires = :expires', array(':value' => $data, ':expires' => $expires))->where('key=:key', array(':key' => $this->buildSecurityKey($key)))->update();
+		if($expires){
+			$expires += time();
+		}
+		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->valueField.' = :value,'.$this->expireField.' = :expires', array(':value' => $data, ':expires' => $expires))->where($this->keyField.'=:key', array(':key' => $this->buildSecurityKey($key)))->update();
 	}
 	
 	/* 
@@ -215,7 +239,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @return WindDbAdapter
 	 */
 	private function getMasterConnection() {
-		return $this->distributed->getMasterConnection();
+		return $this->dbHandler->getMasterConnection();
 	}
 	
 	/**
@@ -223,7 +247,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @return WindDbAdapter
 	 */
 	private function getSlaveConnection() {
-		return $this->distributed->getSlaveConnection();
+		return $this->dbHandler->getSlaveConnection();
 	}
 	
 	/**
@@ -232,7 +256,7 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 * @return string
 	 */
 	private function buildSecurityKey($key) {
-		return substr(md5($key . $this->securityCode), 0, 5);
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 	
 	public function __destruct() {

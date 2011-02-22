@@ -15,11 +15,15 @@ L::import('WIND:component.cache.base.IWindCache');
  * @package 
  */
 class WindXCache extends WindComponentModule implements IWindCache {
-	
+	/**
+	 * @var string 安全code
+	 */
+	protected $securityCode = '';
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
 	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+		$key = $this->buildSecurityKey($key);
 		if (xcache_isset($key)) {
 			$this->error("The cache already exists");
 		}
@@ -30,13 +34,14 @@ class WindXCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return xcache_set($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return xcache_set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
 	 */
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+		$key = $this->buildSecurityKey($key);
 		if (false === xcache_isset($key)) {
 			$this->error("The cache does not exist");
 		}
@@ -47,6 +52,7 @@ class WindXCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
+		$key = $this->buildSecurityKey($key);
 		$data = unserialize(xcache_get($key));
 		if (empty($data) || !is_array($data)) {
 			return $data;
@@ -79,7 +85,7 @@ class WindXCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return xcache_unset($key);
+		return xcache_unset($this->buildSecurityKey($key));
 	}
 	
 	/* 
@@ -113,6 +119,17 @@ class WindXCache extends WindComponentModule implements IWindCache {
 	}
 	
 	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
+		}
+	}
+	
+	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()
 	 * @return string
@@ -125,5 +142,14 @@ class WindXCache extends WindComponentModule implements IWindCache {
 			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
 		return serialize($data);
+	}
+	
+	/**
+	 * 生成安全的key
+	 * @param string $key
+	 * @return string
+	 */
+	private function buildSecurityKey($key) {
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 }

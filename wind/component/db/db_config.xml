@@ -17,7 +17,7 @@
 			<user>root</user>
 			<password>suqian0512h</password>
 			<port>3306</port>
-			<name>phpwind_8beta</name>
+			<name>phpwind_8</name>
 		</connection>
 	</connections>
 	<drivers>

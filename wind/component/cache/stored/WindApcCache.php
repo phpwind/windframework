@@ -10,7 +10,10 @@ L::import('WIND:component.cache.base.IWindCache');
  * @package 
  */
 class WindApcCache extends WindComponentModule implements IWindCache {
-	
+	/**
+	 * @var string 安全code
+	 */
+	protected $securityCode = '';
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -19,14 +22,14 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 		if (false === empty($cacheData)) {
 			$this->error("The cache already exists");
 		}
-		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return apc_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return apc_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
@@ -37,13 +40,14 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 		if (empty($cacheData)) {
 			$this->error("The cache does not exist");
 		}
-		return apc_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return apc_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
+		$key = $this->buildSecurityKey($key);
 		$data = unserialize(apc_fetch($key));
 		if (empty($data) || !is_array($data)) {
 			return $data;
@@ -76,7 +80,7 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return apc_delete($key);
+		return apc_delete($this->buildSecurityKey($key));
 	}
 	
 	/* 
@@ -105,6 +109,18 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
+	
+	
+	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
+		}
+	}
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()
@@ -119,4 +135,13 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 		}
 		return serialize($data);
 	}
+	/**
+	 * 生成安全的key
+	 * @param string $key
+	 * @return string
+	 */
+	private function buildSecurityKey($key) {
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
+	}
+	
 }

@@ -40,8 +40,8 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	const RETRY = 'retry';
 	const STATUS = 'status';
 	const FCALLBACK = 'fcallback';
-	const SECURITY = 'security';
 	const COMPRESS = 'compress';
+	const SERVERCONFIG = 'servers';
 	
 	/**
 	 * 
@@ -179,10 +179,14 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	public function setConfig($config) {
 		parent::setConfig($config);
 		$config = $config->getConfig();
-		foreach ($config as $config) {
-			if (is_array($config)) {
+		if(false === isset($config[self::SERVERCONFIG])){
+			throw new WindException('The server config is not exist');
+		}
+		$servers = $config[self::SERVERCONFIG];
+		foreach ($servers as $server) {
+			if (is_array($server)) {
 				$hasServer = true;
-				$this->addServer($config);
+				$this->addServer($server);
 			}
 		}
 		if (isset($config[self::COMPRESS])) {
@@ -207,7 +211,7 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 * @return string
 	 */
 	private function buildSecurityKey($key) {
-		return substr(sha1(md5($key) . $this->securityCode), 0, 5);
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 	
 	/* 

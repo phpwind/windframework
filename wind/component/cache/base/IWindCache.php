@@ -15,8 +15,6 @@
  * @package 
  */
 interface IWindCache {
-
-	
 	/**
 	 * @var string 标志缓存依赖
 	 */
@@ -41,7 +39,10 @@ interface IWindCache {
 	 * @var string 标志存储数据
 	 */
 	const DATA = 'data';
-
+	/**
+	 * @var string 安全码
+	 */
+	const SECURITY = 'security';
 	/**
 	 * 设置缓存，如果$key不存在，设置缓存，否则，抛出异常。
 	 * @param string $key 保存缓存数据的键。

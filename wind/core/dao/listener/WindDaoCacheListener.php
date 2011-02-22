@@ -22,17 +22,20 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 		$this->daoObject = $instance;
 	}
 	
-	/* (non-PHPdoc)
+	/*
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
 		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler IWindCache */
+		if('WindDbCache' === get_class($cacheHandler)){
+			$cacheHandler->setDbHandler($this->daoObject->getDbHandler());
+		}
 		$result = $cacheHandler->fetch($this->generateKey( func_get_args()));
 		return empty($result) ? null : $result;
 	
 	}
 	
-	/* (non-PHPdoc)
+	/* 
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {

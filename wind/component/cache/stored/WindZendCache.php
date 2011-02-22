@@ -14,7 +14,10 @@ L::import('WIND:component.cache.base.IWindCache');
  * @package 
  */
 class WindZendCache extends WindComponentModule implements IWindCache {
-	
+	/**
+	 * @var string 安全code
+	 */
+	protected $securityCode = '';
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -23,14 +26,14 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 		if (false === empty($data)) {
 			$this->error("The cache already exists");
 		}
-		return zend_shm_cache_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return zend_shm_cache_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return zend_shm_cache_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return zend_shm_cache_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
@@ -41,13 +44,14 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 		if (empty($data)) {
 			$this->error("The cache does not exist");
 		}
-		return zend_shm_cache_store($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return zend_shm_cache_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
+		$key = $this->buildSecurityKey($key);
 		$data = unserialize(zend_shm_cache_fetch($key));
 		if (empty($data) || !is_array($data)) {
 			return $data;
@@ -80,7 +84,7 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return zend_shm_cache_delete($key);
+		return zend_shm_cache_delete($this->buildSecurityKey($key));
 	}
 	
 	/* 
@@ -109,6 +113,17 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 	}
 	
 	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
+		}
+	}
+	
+	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()
 	 * @return string
@@ -121,5 +136,14 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
 		return serialize($data);
+	}
+	
+	/**
+	 * 生成安全的key
+	 * @param string $key
+	 * @return string
+	 */
+	private function buildSecurityKey($key) {
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 }

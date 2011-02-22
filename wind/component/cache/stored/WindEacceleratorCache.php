@@ -16,7 +16,10 @@ L::import('WIND:component.cache.base.IWindCache');
  * @package 
  */
 class WindEaccelerator extends WindComponentModule implements IWindCache {
-	
+	/**
+	 * @var string 安全code
+	 */
+	protected $securityCode = '';
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -25,14 +28,14 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 		if (false === empty($cacheData)) {
 			$this->error("The cache already exists");
 		}
-		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return eaccelerator_put($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return eaccelerator_put($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
@@ -43,13 +46,14 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 		if (empty($cacheData)) {
 			$this->error("The cache does not exist");
 		}
-		return eaccelerator_put($key, $this->storeData($value, $expires, $denpendency), $expires);
+		return eaccelerator_put($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
+		$key = $this->buildSecurityKey($key);
 		$data = unserialize(eaccelerator_get($key));
 		if (empty($data) || !is_array($data)) {
 			return $data;
@@ -82,7 +86,7 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return eaccelerator_rm($key);
+		return eaccelerator_rm($this->buildSecurityKey($key));
 	}
 	
 	/* 
@@ -113,6 +117,16 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
+	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
+		}
+	}
 	
 	/* 
 	 * 获取存储的数据
@@ -127,6 +141,15 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
 		return serialize($data);
+	}
+	
+	/**
+	 * 生成安全的key
+	 * @param string $key
+	 * @return string
+	 */
+	private function buildSecurityKey($key) {
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 
 }

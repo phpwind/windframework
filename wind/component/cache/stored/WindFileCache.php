@@ -33,19 +33,9 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 	
 	const CACHEDIR = 'cache-dir';
 	
-	const SUFFIX = 'suffix';
+	const SUFFIX = 'cache-suffix';
 	
-	const LEVEL = 'level';
-	
-	const SECURITY = 'security';
-	
-	/**
-	 * 初始化文件缓存配置
-	 * @param array $config
-	 */
-	public function __construct(array $config = array()) {
-		$config && $this->setCacheConfig($config);
-	}
+	const LEVEL = 'cache-level';
 	/* 
 	 * @see wind/component/cache/base/IWindCache#add()
 	 */
@@ -164,7 +154,7 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 	 * @return string
 	 */
 	public function getCacheFileName($key) {
-		$filename = $key . '_' . substr(sha1($key . $this->securityCode), 0, 5) . '.' . ltrim($this->cacheFileSuffix, '.');
+		$filename = $this->buildSecurityKey($key) . '.' . ltrim($this->cacheFileSuffix, '.');
 		if ($this->cacheDirectoryLevel > 0) {
 			$root = $this->cacheDir;
 			for ($i = $this->cacheDirectoryLevel; $i > 0; --$i) {
@@ -266,7 +256,7 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
 				$this->clearByPath($fullPath, $ifexpiled);
-			} else if (($ifexpiled && $mtime = filemtime($fullPath) && $mtime < time()) || !$ifexpiled) {
+			} else if (($ifexpiled && ($mtime = filemtime($fullPath)) && $mtime < time()) || !$ifexpiled) {
 				unlink($fullPath);
 			}
 		}
@@ -292,6 +282,14 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 		$this->cacheDir = rtrim(realpath($dir), '\\/') . DIRECTORY_SEPARATOR;
 	}
 	
+	/**
+	 * 生成安全的key
+	 * @param string $key
+	 * @return string
+	 */
+	private function buildSecurityKey($key) {
+		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
+	}
 	public function __destruct() {
 		$this->deleteExpiredCache();
 	}
