@@ -6,18 +6,9 @@
  * @license 
  */
 
-class WindErrorHandler extends WindComponentModule {
+class WindErrorHandler {
 
-	private $errorAction;
-
-	/**
-	 * @param Exception $exception
-	 */
-	static public function exceptionHandle($exception) {
-		$message = 'Uncaught exception';
-		echo self::buildErrorMessage($exception->getMessage(), $exception->getFile(), $exception->getLine(), $message);
-		echo $exception->getTraceAsString();
-	}
+	private $response = null;
 
 	/**
 	 * @param string $errno
@@ -25,42 +16,18 @@ class WindErrorHandler extends WindComponentModule {
 	 * @param string $errfile
 	 * @param string $errline
 	 */
-	static public function errorHandle($errno, $errstr, $errfile, $errline) {
-		switch ($errno) {
-			case E_ERROR:
-				echo self::buildErrorMessage($errstr, $errfile, $errline, 'ERROR');
-				exit();
-				break;
-			case E_USER_ERROR:
-				echo self::buildErrorMessage($errstr, $errfile, $errline, 'ERROR');
-				exit();
-				break;
-			case E_WARNING:
-				echo self::buildMessage($errstr, $errfile, $errline, 'WARNING');
-				exit();
-				break;
-			case E_USER_WARNING:
-				echo self::buildMessage($errstr, $errfile, $errline, 'WARNING');
-				break;
-			case E_NOTICE:
-				//echo self::buildMessage($errstr, $errfile, $errline, 'NOTICE');
-				break;
-			case E_USER_NOTICE:
-				//echo self::buildMessage($errstr, $errfile, $errline, 'NOTICE');
-				break;
-			default:
-				break;
-		}
+	public function errorHandle($errno, $errstr, $errfile, $errline) {
+		
 	}
 
-	static public function buildErrorMessage($errstr, $errfile, $errline, $type = '') {
+	public function buildErrorMessage($errstr, $errfile, $errline, $type = '') {
 		$message = self::buildMessage($errstr, $errfile, $errline, $type);
 		$message .= "PHP " . PHP_VERSION . "(" . PHP_OS . ")\n";
 		$message .= "Aborting...\n";
 		return $message;
 	}
 
-	static public function buildMessage($errstr, $errfile, $errline, $type = '') {
+	public function buildMessage($errstr, $errfile, $errline, $type = '') {
 		$message = "Error Type: $type\nError Message: $errstr\n";
 		$message .= "Info: on line $errline in file $errfile \n";
 		return $message;
