@@ -6,7 +6,6 @@
  * @license 
  */
 
-defined('LOG_PATH') or define('LOG_PATH', COMPILE_PATH . 'log/');
 /**
  * 日志记录
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,14 +13,9 @@ defined('LOG_PATH') or define('LOG_PATH', COMPILE_PATH . 'log/');
  * @version $Id$ 
  * @package
  */
-/**
- * 
- * @modify xiaoxia xu <x_824@sina.com>
- * @version $Id$ 2011-01-21 
- * @package
- */
 class WindLogger extends WindComponentModule {
 
+	const LOG_DIR = 'log-dir';
 	/*错误类型*/
 	const INFO = 0;
 
@@ -111,10 +105,11 @@ class WindLogger extends WindComponentModule {
 	 * @return bool
 	 */
 	public function clearFiles($time = 0) {
-		if (!is_int($time) || 0 > intval($time) || !is_dir(LOG_PATH)) return false;
-		$dir = dir(LOG_PATH);
+		$logDir = $this->getLogConfig(self::LOG_DIR);
+		if (!is_int($time) || 0 > intval($time) || !is_dir($logDir)) return false;
+		$dir = dir($logDir);
 		while (false != ($file = $dir->read())) {
-			$file = LOG_PATH . $file;
+			$file = $logDir . $file;
 			is_file($file) ? (microtime(true) - filectime($file)) > $time && @unlink($file) : '';
 		}
 		$dir->close();
@@ -284,16 +279,25 @@ class WindLogger extends WindComponentModule {
 	 * @return string 
 	 */
 	private function getFileName() {
-		$this->createFolder(LOG_PATH);
+		$logDir = $this->getLogConfig(self::LOG_DIR);
+		$this->createFolder($logDir);
 		$size = 1024 * 50;
-		$filename = LOG_PATH . date("Y_m_d") . '.log';
+		$filename = $logDir . date("Y_m_d") . '.log';
 		if (is_file($filename) && $size <= filesize($filename)) {
 			for ($i = 100; $counter = 100 - $i, $i >= 0; $i--) {
-				$filename = LOG_PATH . date("Y_m_d_{$counter}") . '.log';
+				$filename = $logDir . date("Y_m_d_{$counter}") . '.log';
 				if (!is_file($filename) || $size > filesize($filename)) break;
 			}
 		}
 		return $filename;
+	}
+	
+	private function getLogConfig($name = '',$subname = ''){
+		$config = $this->getConfig()->getConfig();
+		if($name){
+			return $subname ? $config[$subname] : $config[$name]; 
+		}
+		return $config;
 	}
 }
 
