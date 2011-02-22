@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import ( 'WIND:component.cache.base.IWindCache' );
+L::import('WIND:component.cache.base.IWindCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -42,49 +42,28 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	const FCALLBACK = 'fcallback';
 	const SECURITY = 'security';
 	const COMPRESS = 'compress';
-
+	
 	/**
 	 * 
 	 * @example array(
-	 * 		array(
-	 * 			'host'=>'localhost',
-	 * 			'port'=>11211
-	 * 			'pconn'=>true
-	 *      ),
-	 *      array(
-	 *      	'host'=>'localhost',
-	 * 			'port'=>11212
-	 * 			'pconn'=>false
-	 *      ),
-	 *      'compress'=>true,
-	 *      'security'=>'1x2aao@'
+	 * array(
+	 * 'host'=>'localhost',
+	 * 'port'=>11211
+	 * 'pconn'=>true
+	 * ),
+	 * array(
+	 * 'host'=>'localhost',
+	 * 'port'=>11212
+	 * 'pconn'=>false
+	 * ),
+	 * 'compress'=>true,
+	 * 'security'=>'1x2aao@'
 	 * 
 	 * )
 	 * @param array $servers memcache 服务器配置
 	 */
-	public function __construct(array $servers = array()) {
+	public function __construct() {
 		$this->cache = new Memcache();
-		if($servers){
-			$this->setCacheConfig();
-		}
-	}
-	
-	public function setCacheConfig(array $servers=array()){
-		$servers = $servers ? $servers : $this->getConfig()->getConfig();
-		foreach ($servers as $server) {
-			if(is_array($server)){
-				$hasServer = true;
-				$this->addServer($server);
-			}
-		}
-		if (isset($servers[self::COMPRESS])) {
-			$this->compress = MEMCACHE_COMPRESSED;
-		}else{
-			$this->compress = 0;
-		}
-		if(isset($servers[self::SECURITY])){
-			$this->securityCode = $servers[self::SECURITY];
-		}
 	}
 	
 	/**
@@ -134,7 +113,7 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$key = $this->buildSecurityKey($key);
 		$data = $this->storeData($value, $expires, $denpendency);
-		return $this->cache->set($key, $data, $this->compress, (int)$expires);
+		return $this->cache->set($key, $data, $this->compress, (int) $expires);
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#replace()
@@ -142,21 +121,21 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
 		$key = $this->buildSecurityKey($key);
 		$data = $this->storeData($value, $expires, $denpendency);
-		return $this->cache->replace($key, $data, $this->compress,(int)$expires);
+		return $this->cache->replace($key, $data, $this->compress, (int) $expires);
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function fetch($key) {
 		$key = $this->buildSecurityKey($key);
-		$data = $this->cache->get($key,$this->compress);
-		if(!is_array($data)){
+		$data = $this->cache->get($key, $this->compress);
+		if (!is_array($data)) {
 			return $data;
 		}
-		if(isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])){
-			L::import('Wind:component.cache.dependency.'.$data[self::DEPENDENCYCLASS]);
-			$dependency = unserialize($data[self::DEPENDENCY]);/* @var $dependency IWindCacheDependency*/
-			if(($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()){
+		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
+			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
+			$dependency = unserialize($data[self::DEPENDENCY]); /* @var $dependency IWindCacheDependency*/
+			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
 				$this->delete($key);
 				return null;
 			}
@@ -169,8 +148,8 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 */
 	public function batchFetch(array $keys) {
 		$data = array();
-		foreach($keys as $key){
-			if('' != ($value = $this->fetch($key))){
+		foreach ($keys as $key) {
+			if ('' != ($value = $this->fetch($key))) {
 				$data[$key] = $value;
 			}
 		}
@@ -188,12 +167,33 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 * @see wind/component/cache/base/IWindCache#batchDelete()
 	 */
 	public function batchDelete(array $keys) {
-		foreach($keys as $key){
+		foreach ($keys as $key) {
 			$this->delete($key);
 		}
 		return true;
 	}
 	
+	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		foreach ($config as $config) {
+			if (is_array($config)) {
+				$hasServer = true;
+				$this->addServer($config);
+			}
+		}
+		if (isset($config[self::COMPRESS])) {
+			$this->compress = MEMCACHE_COMPRESSED;
+		} else {
+			$this->compress = 0;
+		}
+		if (isset($config[self::SECURITY])) {
+			$this->securityCode = $config[self::SECURITY];
+		}
+	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
@@ -206,8 +206,8 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 * @param string $key
 	 * @return string
 	 */
-	private function buildSecurityKey($key){
-		return substr(sha1(md5($key).$this->securityCode),0,5);
+	private function buildSecurityKey($key) {
+		return substr(sha1(md5($key) . $this->securityCode), 0, 5);
 	}
 	
 	/* 
@@ -216,8 +216,8 @@ class WindMemcache extends WindComponentModule implements IWindCache {
 	 * @return array
 	 */
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = array(self::DATA=>$value, self::EXPIRES=> $expires,self::STORETIME=>time());
-		if ($denpendency && (($denpendency instanceof IWindCacheDependency))){			
+		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
+		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent($this);
 			$data[self::DEPENDENCY] = serialize($denpendency);
 			$data[self::DEPENDENCYCLASS] = get_class($denpendency);

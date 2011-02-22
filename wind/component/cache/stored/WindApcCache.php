@@ -105,11 +105,6 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 	public function error($message, $type = E_USER_ERROR) {
 		trigger_error($message, $type);
 	}
-	
-	public function setCacheConfig(array $config = array()) {
-
-	}
-	
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()

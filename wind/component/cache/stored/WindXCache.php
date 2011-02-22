@@ -103,10 +103,6 @@ class WindXCache extends WindComponentModule implements IWindCache {
 		}
 		return true;
 	}
-	
-	public function setCacheConfig(array $config = array()) {
-
-	}
 	/**
 	 * 错误处理
 	 * @param string $message

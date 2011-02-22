@@ -105,11 +105,6 @@ class WindEaccelerator extends WindComponentModule implements IWindCache {
 			$this->delete(substr($key['name'], 1));
 		}
 	}
-	
-	public function setCacheConfig(array $config = array()) {
-
-	}
-	
 	/**
 	 * 错误处理
 	 * @param string $message

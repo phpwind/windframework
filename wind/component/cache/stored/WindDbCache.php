@@ -27,10 +27,16 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	protected $table = 'pw_cache';
 	
-	public function __construct(WindConnectionManager $distributed, $table = 'pw_cache', $securityCode = '') {
-		$this->distributed = $distributed;
-		$this->securityCode = $securityCode;
-		$this->table = $table;
+	const SECURITY = 'security';
+	const CACHETABLE = 'cachetable';
+	
+	public function __construct(array $config = array(),WindConnectionManager $distributed = null) {
+		if($distributed){
+			$this->setDistributed($distributed);
+		}
+		if($config){
+			$this->setCacheConfig($config);
+		}
 	}
 	
 	
@@ -137,10 +143,23 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where('expires !=0 AND expires < :expires', array(':expires' => time()))->delete();
 	}
 	
-	public function setCacheConfig(array $config = array()){
-		
+	public function setDistributed(WindConnectionManager $distributed){
+		$this->distributed = $distributed;
 	}
 	
+	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
+		if(isset($config[self::SECURITY])){
+			$this->securityCode = $config[self::SECURITY];
+		}
+		if(isset($config[self::cachetable])){
+			$this->table = $config[self::cachetable];
+		}
+	}
 	/**
 	 * 错误处理
 	 * @param string $message

@@ -16,12 +16,15 @@
  */
 interface IWindCache {
 
-	//存储数据
+	
 	/**
 	 * @var string 标志缓存依赖
 	 */
 	const DEPENDENCY = 'dependency';
 	
+	/**
+	 * @var string 缓存依赖的类名称
+	 */
 	const  DEPENDENCYCLASS = 'dependencyclass';
 
 	/**
@@ -101,11 +104,5 @@ interface IWindCache {
 	 * 清空所有缓存
 	 */
 	public function flush();
-	
-	/**
-	 * 设置缓存config
-	 * @param array $config
-	 */
-	public function setCacheConfig(array $config = array());
 
 }

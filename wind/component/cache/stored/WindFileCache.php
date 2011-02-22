@@ -181,8 +181,13 @@ class WindFileCache extends WindComponentModule implements IWindCache {
 		return $this->cacheDir . $filename;
 	}
 	
-	public function setCacheConfig(array $config = array()) {
-		$config = $config ? $config : $this->getConfig()->getConfig();
+	
+	/* 
+	 * @see wind/core/WindComponentModule#setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$config = $config->getConfig();
 		$this->setCacheDir($config[self::CACHEDIR]);
 		if (isset($config[self::SUFFIX])) {
 			$this->cacheFileSuffix = $config[self::SUFFIX];

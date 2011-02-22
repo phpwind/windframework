@@ -32,10 +32,13 @@ abstract class AbstractWindDao extends WindModule {
 	 * @var WindConnectionManager 分布式管理与数据库驱动工厂
 	 */
 	protected $dbHandler = null;
-
+	
+	/**
+	 * @var IWindCache 缓存操作句柄
+	 */
 	protected $cacheHandler = null;
-
-	/* (non-PHPdoc)
+	
+	/* 
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	protected function getWriteTableForGetterAndSetter() {

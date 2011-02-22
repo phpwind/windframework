@@ -99,11 +99,6 @@ class WindZendCache extends WindComponentModule implements IWindCache {
 	public function flush() {
 		return zend_shm_cache_clear();
 	}
-	
-	public function setCacheConfig(array $config = array()) {
-
-	}
-	
 	/**
 	 * 错误处理
 	 * @param string $message
