@@ -1,7 +1,6 @@
 <?php
 
 L::import('WIND:core.factory.proxy.WindClassProxy');
-L::import('WIND:core.factory.WindComponentFactory');
 /**
  * Dao工厂
  * 
@@ -17,14 +16,16 @@ L::import('WIND:core.factory.WindComponentFactory');
  */
 abstract class AbstractWindDaoFactory {
 
+	protected $factory = null;
+
 	protected $daoResource = '';
 
 	protected $dbConnections = array();
-	
+
 	protected $caches = array();
 
 	/**
-	 * Enter description here ...
+	 * 返回Dao类实例
 	 * 
 	 * @param string $className
 	 */
@@ -43,6 +44,7 @@ abstract class AbstractWindDaoFactory {
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
+			
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
 			$daoInstance = $daoInstance->getClassProxy();
@@ -63,25 +65,40 @@ abstract class AbstractWindDaoFactory {
 	protected function createDbHandler($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
 		if (!isset($this->dbConnections[$_dbClass])) {
-			$factory = new WindComponentFactory();
+			$this->createFactory();
 			$defintion = $daoObject->getDbDefinition();
-			$factory->addClassDefinitions($defintion);
-			$this->dbConnections[$_dbClass] = $factory->getInstance($defintion->getAlias());
+			$this->factory->addClassDefinitions($defintion);
+			$this->dbConnections[$_dbClass] = $this->factory->getInstance($defintion->getAlias());
 		}
 		return $this->dbConnections[$_dbClass];
 	}
-	
-	protected function createCacheHandler($daoObject){
+
+	/**
+	 * 返回Cache对象
+	 * @param AbstractWindDao $daoObject
+	 * @return multitype:
+	 */
+	protected function createCacheHandler($daoObject) {
 		$_cacheClass = $daoObject->getCacheClass();
 		if (!isset($this->caches[$_cacheClass])) {
-			$factory = new WindComponentFactory();
+			$this->createFactory();
 			$defintion = $daoObject->getCacheDefinition();
-			$factory->addClassDefinitions($defintion);
-			$cacheHander = $factory->getInstance($defintion->getAlias());
-			$cacheHander->setCacheConfig();
+			$this->factory->addClassDefinitions($defintion);
+			$cacheHander = $this->factory->getInstance($defintion->getAlias());
 			$this->caches[$_cacheClass] = $cacheHander;
 		}
 		return $this->caches[$_cacheClass];
+	}
+
+	/**
+	 * Enter description here ...
+	 */
+	private function createFactory() {
+		if ($this->factory === null) {
+			L::import('WIND:core.factory.WindComponentFactory');
+			$this->factory = new WindComponentFactory();
+		}
+		return $this->factory;
 	}
 
 	/**
