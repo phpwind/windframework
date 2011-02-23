@@ -43,9 +43,9 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::doParser()
 	 */
 	public function doParse() {
-		$this->module = $this->getUrlPatternValue($this->request, $this->module, self::URL_RULE_MODULE);
-		$this->controller = $this->getUrlPatternValue($this->request, $this->controller, self::URL_RULE_CONTROLLER);
-		$this->action = $this->getUrlPatternValue($this->request, $this->action, self::URL_RULE_ACTION);
+		$this->module = $this->getUrlParamValue(self::URL_RULE_MODULE, $this->request, $this->module);
+		$this->controller = $this->getUrlParamValue(self::URL_RULE_CONTROLLER, $this->request, $this->controller);
+		$this->action = $this->getUrlParamValue(self::URL_RULE_ACTION, $this->request, $this->action);
 	}
 
 	/* (non-PHPdoc)
@@ -68,33 +68,26 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::buildUrl()
 	 */
 	public function buildUrl() {
-		$module = $this->getUrlParamConfig(self::URL_RULE_MODULE);
-		$controller = $this->getUrlParamConfig(self::URL_RULE_CONTROLLER);
-		$action = $this->getUrlParamConfig(self::URL_RULE_ACTION);
+		$module = $this->getUrlParamValue(self::URL_RULE_MODULE);
+		$controller = $this->getUrlParamValue(self::URL_RULE_CONTROLLER);
+		$action = $this->getUrlParamValue(self::URL_RULE_ACTION);
 		$url = '?' . $module . '=' . $this->getModule();
 		$url .= '&' . $controller . '=' . $this->getController();
 		$url .= '&' . $action . '=' . $this->getAction();
 		return $url;
 	}
-    
-	private function getUrlParamConfig($type) {
-		//TODO 重构该方法，合并该方法和getUrlPatternValue中的相同职责
-		$_config = $this->getConfig()->getConfig(self::URL_RULE);
-		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
-			return $_param;
-		}
-		return $type;
-	}
-	
+
 	/**
 	 * Enter description here ...
-	 * @param request
 	 * @param urlParam
+	 * @param request
 	 * @param defaultValue
+	 * @return string 
 	 */
-	private function getUrlPatternValue($request, $defaultValue, $type) {
+	private function getUrlParamValue($type, $request = null, $defaultValue = '') {
 		$_config = $this->getConfig()->getConfig(self::URL_RULE);
 		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
+			if (!is_null($request)) return $_param;
 			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE, $_config);
 			$defaultValue = $_defaultValue ? $_defaultValue : $defaultValue;
 			return $request->getAttribute($_param, $defaultValue);
