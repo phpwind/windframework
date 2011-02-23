@@ -68,7 +68,7 @@ class WindUrlHelper extends WindComponentModule {
 		$this->getWindRouter()->setAction($action);
 		$this->getWindRouter()->setController($controller);
 		$url = $this->getWindRouter()->buildUrl();
-		$server = $this->request->getServer('PHP_SELF');
+		$server = $this->getUrlServer();
 		if ($this->isRewrite()) {
 			$server = substr($server, 0, strrpos($server, '/'));
 			$url = $server . $this->buildRewriteURL($params, $url);
@@ -78,6 +78,18 @@ class WindUrlHelper extends WindComponentModule {
 		return $url;
 	}
 	
+	/**
+	 * 返回域名及请求路径
+	 *  
+	 *  @param boolean $hasPath 是否含有路径信息
+	 *  @return string 
+	 */
+	private function getUrlServer($hasPath = true) {
+		list($protocol, ) = explode('/', $this->request->getProtocol());
+		$protocol = strtolower($protocol) . '://' . $this->request->getServer('SERVER_NAME');
+		($hasPath) && $protocol .= $this->request->getServer('PHP_SELF');
+		return $protocol;
+	}
 	
 	/**
 	 * 执行匹配
@@ -258,11 +270,14 @@ class WindUrlHelper extends WindComponentModule {
 	 * 检查Url地址的正确性，并返回正确的URL地址
 	 * 
 	 * @param string $url
+	 * @return string $url
 	 */
 	public function checkUrl($url) {
-		//TODO
-		
-
+		list($protocal, $serverName) = explode('://', $this->getUrlServer(false));
+		$pos1 = stripos($url, $protocal);
+		$pos2 = stripos($url, $serverName);
+		if (false === $pos1 && false === $pos2) return $protocal . '://' . $serverName . '/' . ltrim($url, '/');
+		if (false === $pos1) return $protocal . '://' . ltrim($url, '/');
 		return $url;
 	}
 	
