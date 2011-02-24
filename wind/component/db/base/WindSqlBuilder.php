@@ -629,7 +629,7 @@ abstract class WindSqlBuilder {
 		} elseif (is_float($value)) {
 			$value = (float) $value;
 		} elseif (is_object($value)) {
-			$value = serialize($value);
+			$value = addslashes(serialize($value));
 		}
 		return $this->sqlFillSpace($value);
 	}
