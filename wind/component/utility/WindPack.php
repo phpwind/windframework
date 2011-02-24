@@ -242,7 +242,7 @@ class WindPack {
 			case 'php':
 				$content = '<?php' . $replace . $content . '?>';
 			default:
-				;
+				$content = '<?php' . $replace . $content . '?>';
 		}
 		return $content;
 	}
