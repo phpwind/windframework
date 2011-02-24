@@ -9,8 +9,7 @@
  * @package 
  */
 interface IWindDbTemplate {
-	
-	
+
 }
 
 ?>

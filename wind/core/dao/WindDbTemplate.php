@@ -8,14 +8,9 @@
  * @version $Id$
  * @package 
  */
-class WindDbTemplate {
+class WindDbTemplate implements IWindDbTemplate {
 
 	private $connection = null;
-	
-	public function find(){
-		$this->connection->query();
-		$this->connection->getSqlBuiler();
-	}
 
 }
 
