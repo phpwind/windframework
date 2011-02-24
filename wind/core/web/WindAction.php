@@ -19,6 +19,8 @@ abstract class WindAction extends WindComponentModule {
 
 	protected $urlHelper = null;
 
+	protected $error = null;
+
 	/**
 	 * 默认的操作处理方法
 	 */
@@ -30,29 +32,29 @@ abstract class WindAction extends WindComponentModule {
 	 * @param AbstractWindRouter $handlerAdapter
 	 */
 	public function doAction($handlerAdapter) {
-		$this->beforeAction();
+		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$this->resolvedActionMethod($handlerAdapter);
-		$this->afterAction();
+		$this->afterAction($handlerAdapter);
 		
 		return $this->getForward();
 	}
 
 	/**
 	 * Action操作预处理方法，返回boolean型值
-	 * 
+	 * @param AbstractWindRouter $handlerAdapter
 	 * @return boolean
 	 */
-	public function beforeAction() {
+	public function beforeAction($handlerAdapter) {
 		return true;
 	}
 
 	/**
 	 * Action操作后处理方法，在执行完Action后执行
-	 * 
+	 * @param AbstractWindRouter $handlerAdapter
 	 * @return null
 	 */
-	public function afterAction() {}
+	public function afterAction($handlerAdapter) {}
 
 	/**
 	 * 重定向一个请求到另外的Action
@@ -150,17 +152,36 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $key
 	 */
 	public function addError($message, $key = '') {
-		$this->error->addError($message, $key);
+		$this->getError()->addError($message, $key);
 	}
 
 	/**
+	 * 发送一个错误
+	 * 
 	 * @param string $message
 	 * @param string $key
 	 */
 	public function sendError($message = '', $key = '', $errorAction = '') {
 		$this->addError($message, $key);
-		$this->error->setErrorAction($errorAction);
-		$this->error->sendError();
+		$this->getError()->setErrorAction($errorAction);
+		$this->getError()->sendError();
+	}
+
+	/**
+	 * @return the $error
+	 */
+	protected function getError() {
+		if ($this->error === null) {
+			throw new WindException('errorMessage', WindException::ERROR_CLASS_NOT_EXIST);
+		}
+		return $this->error;
+	}
+
+	/**
+	 * @param field_type $error
+	 */
+	protected function setError($error) {
+		$this->error = $error;
 	}
 
 	/**
