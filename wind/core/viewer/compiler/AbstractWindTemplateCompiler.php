@@ -35,6 +35,33 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 */
 	abstract public function compile($key, $content);
 
+	/**
+	 * 解析属性值
+	 * @param string $content
+	 */
+	protected function compileProperty($content) {
+		foreach ($this->getProperties() as $value) {
+			if (!$value) continue;
+			preg_match('/(' . $value . '\s*=\s*[\'\"\s]*)([^\'\"\s])+?(?=[\'\"\s])/i', $content, $result);
+			$this->$value = trim(str_replace($result[1], '', $result[0]));
+		}
+	}
+
+	/**
+	 * 解析标签体
+	 * @param string $content
+	 */
+	protected function compileContent($content) {
+
+	}
+
+	/**
+	 * 返回该标签支持的属性信息
+	 */
+	protected function getProperties() {
+		return array();
+	}
+
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
@@ -42,6 +69,7 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 		if ($this->windViewTemplate === null) return;
 		foreach ($this->tags as $key => $value) {
 			if (!$value[0] || !$value[1]) continue;
+			$this->compileProperty($value[1]);
 			$_output = $this->compile($value[0], $value[1]);
 			$this->windViewTemplate->setCompiledBlockData($value[0], $_output);
 		}
@@ -63,6 +91,13 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {}
+
+	/**
+	 * @return WindViewTemplate $windViewTemplate
+	 */
+	protected function getWindViewTemplate() {
+		return $this->windViewTemplate;
+	}
 
 }
 
