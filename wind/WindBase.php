@@ -371,6 +371,7 @@ class L {
 !defined('COMPONENT_VIEW') && define('COMPONENT_VIEW', 'windView');
 !defined('COMPONENT_VIEWRESOLVER') && define('COMPONENT_VIEWRESOLVER', 'viewResolver');
 !defined('COMPONENT_TEMPLATE') && define('COMPONENT_TEMPLATE', 'template');
+!defined('COMPONENT_ERRORMESSAGE') && define('COMPONENT_ERRORMESSAGE', 'errorMessage');
 !defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
 
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
