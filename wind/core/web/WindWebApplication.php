@@ -72,7 +72,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 */
 	protected function getHandler() {
 		$handlerAdapter = $this->getHandlerAdapter();
-		$handlerAdapter->doParse();
 		
 		//add log
 		if (IS_DEBUG) {
@@ -140,6 +139,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$routerAlias = $this->windSystemConfig->getRouter(WindSystemConfig::CLASS_PATH);
 		if (null === $this->getAttribute($routerAlias)) {
 			$router = $this->windFactory->getInstance($routerAlias);
+			$router->doParse();
 		}
 		return $this->getAttribute($routerAlias);
 	}
