@@ -41,12 +41,12 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	public function postHandle() {
 		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler AWindCache */
 		$config = $cacheHandler->getConfig()->getConfig();
-		$dependencyPath = $config[AWindCache::DEPENDENCY];
+		$dependencyPath = $config[IWindCache::DEPENDENCY];
 		$dependency = null;
 		if($dependencyPath){
 			$dependency = WindFactory::createInstance(L::import($dependencyPath));
 		}
-		$cacheHandler->set($this->generateKey(func_get_args()), $this->result, (int)$config[AWindCache::EXPIRES], $dependency);
+		$cacheHandler->set($this->generateKey(func_get_args()), $this->result, (int)$config[IWindCache::EXPIRES], $dependency);
 	}
 	
 	public function generateKey($args){
