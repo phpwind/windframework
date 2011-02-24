@@ -14,6 +14,8 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbConfig = 'WIND:component.db.db_config';
 
+	protected $dbTemplateClass = 'WIND:core.dao.WindDbTemplate';
+
 	protected $dbConfigSuffix = 'xml';
 
 	protected $dbDefinition = null;
@@ -24,20 +26,18 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $cacheConfigSuffix = 'xml';
 
-	protected $cacheDefinition = null;
-
 	protected $isDataCache = true;
 
 	/**
 	 * @var WindConnectionManager 分布式管理与数据库驱动工厂
 	 */
 	protected $dbHandler = null;
-	
+
 	/**
 	 * @var IWindCache 缓存操作句柄
 	 */
 	protected $cacheHandler = null;
-	
+
 	/* 
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
@@ -50,17 +50,14 @@ abstract class AbstractWindDao extends WindModule {
 	 * @return WindComponentDefinition
 	 */
 	public function getDbDefinition() {
-		if ($this->dbDefinition === null) {
-			L::import('WIND:core.factory.WindComponentDefinition');
-			$definition = new WindComponentDefinition();
-			$definition->setPath($this->dbClass);
-			$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
-			$definition->setAlias($this->dbClass);
-			$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig, 
-				WindComponentDefinition::SUFFIX => $this->dbConfigSuffix));
-			$this->dbDefinition = $definition;
-		}
-		return $this->dbDefinition;
+		L::import('WIND:core.factory.WindComponentDefinition');
+		$definition = new WindComponentDefinition();
+		$definition->setPath($this->dbClass);
+		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
+		$definition->setAlias($this->dbClass);
+		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig, 
+			WindComponentDefinition::SUFFIX => $this->dbConfigSuffix));
+		return $definition;
 	}
 
 	/**
@@ -68,17 +65,21 @@ abstract class AbstractWindDao extends WindModule {
 	 * @return WindComponentDefinition
 	 */
 	public function getCacheDefinition() {
-		if ($this->cacheDefinition === null) {
-			L::import('WIND:core.factory.WindComponentDefinition');
-			$definition = new WindComponentDefinition();
-			$definition->setPath($this->cacheClass);
-			$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
-			$definition->setAlias($this->cacheClass);
-			$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig, 
-				WindComponentDefinition::SUFFIX => $this->cacheConfigSuffix));
-			$this->cacheDefinition = $definition;
-		}
-		return $this->cacheDefinition;
+		L::import('WIND:core.factory.WindComponentDefinition');
+		$definition = new WindComponentDefinition();
+		$definition->setPath($this->cacheClass);
+		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
+		$definition->setAlias($this->cacheClass);
+		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig, 
+			WindComponentDefinition::SUFFIX => $this->cacheConfigSuffix));
+		return $definition;
+	}
+
+	/**
+	 * @return the $dbTemplateClass
+	 */
+	public function getDbTemplateClass() {
+		return $this->dbTemplateClass;
 	}
 
 	/**

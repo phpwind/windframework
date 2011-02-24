@@ -68,7 +68,10 @@ abstract class AbstractWindDaoFactory {
 			$this->createFactory();
 			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
-			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
+			$_connection = $this->windFactory->getInstance($defintion->getAlias());
+			$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
+			if ($_dbTemplate !== null) $_dbTemplate->setConnection($_connection);
+			$this->dbConnections[$_dbClass] = $_dbTemplate;
 		}
 		return $this->dbConnections[$_dbClass];
 	}

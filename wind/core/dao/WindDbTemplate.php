@@ -12,6 +12,20 @@ class WindDbTemplate implements IWindDbTemplate {
 
 	private $connection = null;
 
+	/**
+	 * @return the $connection
+	 */
+	protected function getConnection() {
+		return $this->connection;
+	}
+
+	/**
+	 * @param object $connection
+	 */
+	protected function setConnection($connection) {
+		$this->connection = $connection;
+	}
+
 }
 
 ?>

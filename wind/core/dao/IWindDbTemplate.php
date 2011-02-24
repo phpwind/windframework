@@ -9,7 +9,12 @@
  * @package 
  */
 interface IWindDbTemplate {
-	
+
+	/**
+	 * 设置db链接对象
+	 * @param object $connection
+	 */
+	protected function setConnection($connection);
 }
 
 ?>
