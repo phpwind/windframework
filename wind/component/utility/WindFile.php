@@ -1,10 +1,9 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-16
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2110 phpwind.com
+ * @license 
  */
 
 /**
@@ -184,7 +183,7 @@ class WindFile{
 	 * @return resource 返回一个目录句柄
 	 */
 	public static function openDir($dir,$context = null){
-		return opendir($dir,$context);
+		return is_resource($context) ? opendir($dir,$context) : opendir($dir);
 	}
 	
 	/**
