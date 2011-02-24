@@ -47,7 +47,7 @@
 			<property name='windRouter' ref='urlBasedRouter' />
 		</properties>
 		<config>
-			<url-pattern value="-/"/>
+			<url-pattern value="-/" />
 			<route-suffix value='htm' />
 			<route-param value='r' />
 		</config>
@@ -79,5 +79,9 @@
 		scope='prototype'>
 		<config resource='WIND:core.viewer.viewTemplateConfig' suffix='xml' />
 	</component>
-	
+
+	<!-- error -->
+	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
+		scope='prototype'></component>
+
 </components>
