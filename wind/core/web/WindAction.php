@@ -227,7 +227,7 @@ abstract class WindAction extends WindComponentModule {
 	 */
 	private function getInputWithString($name, $type = '', $callback = array()) {
 		$value = '';
-		switch ($type) {
+		switch (strtolower($type)) {
 			case 'form':
 				$value = $this->response->getData($name);
 				break;

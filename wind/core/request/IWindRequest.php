@@ -15,7 +15,9 @@
  * @package
  */
 interface IWindRequest {
-	
+	const INPUT_TYPE_GET = 'get';
+	const INPUT_TYPE_POST = 'post';
+	const INPUT_TYPE_COOKIE = 'cookie';
 }
 
 
