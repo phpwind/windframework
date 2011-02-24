@@ -40,6 +40,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			}
 			
 			$this->doDispatch($forward);
+		} catch (WindActionException $actionException) {
+			print_r($actionException->getError());
 		
 		} catch (WindSqlException $windSqlException) {
 			$this->noActionHandlerFound($windSqlException->getMessage());
@@ -88,8 +90,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
 		$definition->setProxy('true');
 		$definition->setAlias($handler);
-		$definition->setPropertys(array('forward' => array('ref' => COMPONENT_FORWARD), 
-			'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
+		$definition->setPropertys(array('error' => array('ref' => COMPONENT_ERRORMESSAGE), 
+			'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
 		
 		$this->windFactory->addClassDefinitions($definition);
 		$actionHandler = $this->windFactory->getInstance($handler);

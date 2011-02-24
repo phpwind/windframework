@@ -136,8 +136,9 @@ abstract class WindAction extends WindComponentModule {
 
 	/**
 	 * 设置页面布局
+	 * 可以是一个布局对象或者一个布局文件
 	 * 
-	 * @param WindLayout $layout
+	 * @param WindLayout|string $layout
 	 */
 	public function setLayout($layout) {
 		$this->getForward()->getWindView()->setLayout($layout);
