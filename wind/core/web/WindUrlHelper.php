@@ -103,6 +103,7 @@ class WindUrlHelper extends WindComponentModule {
 	 * @param string 待分析匹配的路由信息
 	 */
 	private function matchRouter($mca) {
+		if (strrpos($mca, '.' . $this->getRouteSuffix()) === false) return;
 		$mca = trim(rtrim($mca, '.' . $this->getRouteSuffix()));
 		if ($mca == '') return;
 		$mca = explode(self::ROUTE_SEPARATOR, $mca);
