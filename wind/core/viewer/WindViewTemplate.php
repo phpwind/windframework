@@ -1,6 +1,9 @@
 <?php
 
 L::import('WIND:core.WindComponentModule');
+L::import('WIND:component.utility.WindUtility');
+L::import('WIND:component.utility.WindFile');
+
 /**
  * 模板类
  * 职责：进行模板编译渲染
@@ -47,15 +50,12 @@ class WindViewTemplate extends WindComponentModule {
 	 * 
 	 * @param string $templateFile | 模板文件
 	 * @param string $compileFile | 编译后生成的文件
-	 * @param WindView $windView
+	 * @param WindViewerResolver $windViewerResolver
 	 */
-	public function render($templateFile, $compileFile, $windView) {
-		if (!$windView->getCompileDir()) {
-			throw new WindViewException('compile dir is not exist \'' . $windView->getCompileDir() . '\' .');
-		}
+	public function compile($templateFile, $compileFile, $windViewerResolver) {
 		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
-		$_output = $this->compile($_output);
+		$_output = $this->doCompile($_output, $windViewerResolver);
 		$this->cacheCompileResult($compileFile, $_output);
 		return $_output;
 	}
@@ -63,10 +63,11 @@ class WindViewTemplate extends WindComponentModule {
 	/**
 	 * 对模板内容进行编译
 	 * @param string $content
+	 * @param WindViewerResolver $windViewerResolver
 	 */
-	protected function compile($content) {
+	protected function doCompile($content, $windViewerResolver = null) {
 		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php', '?>'), $content);
-		$content = $this->registerTags($content);
+		$content = $this->registerTags($content, $windViewerResolver);
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
@@ -81,19 +82,20 @@ class WindViewTemplate extends WindComponentModule {
 	/**
 	 * 注册支持的标签并返回注册后的模板内容
 	 * @param string $content
+	 * @param WindViewerResolver $windViewerResolver
 	 * @return string 
 	 */
-	private function registerTags($content) {
-		$content = $this->creatTagCompiler($content, self::COMPILER_INTERNAL, '/<\?php(.|\n)*?\?>/i');
+	private function registerTags($content, $windViewerResolver = null) {
+		$content = $this->creatTagCompiler($content, self::COMPILER_INTERNAL, '/<\?php(.|\n)*?\?>/i', $windViewerResolver);
 		$tags = $this->getConfig()->getConfig(self::SUPPORT_TAGS);
 		foreach ((array) $tags as $key => $value) {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
 			if (!$compiler || !$tag) continue;
 			$regex = '/<(' . $tag . ')(\s|>)+(.)+?(\/>[^"\']|<\/\1>){1}/i';
-			$content = $this->creatTagCompiler($content, $compiler, $regex);
+			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
-		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*(\s*(\w+\()*\$(\w)+(\-\>\w+(\(.*\))*)*(\[.*\])*(\-\>\w+(\(.*\))*)*\s*)([);])*}*/i');
+		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*(\s*(\w+\()*\$(\w)+(\-\>\w+(\(.*\))*)*(\[.*\])*(\-\>\w+(\(.*\))*)*\s*)([);])*}*/i', $windViewerResolver);
 		return $content;
 	}
 
@@ -102,8 +104,9 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param string content | 模板内容
 	 * @param string compiler | 标签编译器
 	 * @param string regex	| 正则表达式
+	 * @param WindViewerResolver $windViewerResolver
 	 */
-	private function creatTagCompiler($content, $compiler, $regex) {
+	private function creatTagCompiler($content, $compiler, $regex, $windViewerResolver = null) {
 		$content = preg_replace_callback($regex, array($this, 'registerCompiler'), $content);
 		if ($this->windHandlerInterceptorChain === null) {
 			L::import('WIND:core.filter.WindHandlerInterceptorChain');
@@ -111,7 +114,7 @@ class WindViewTemplate extends WindComponentModule {
 		}
 		$_compilerClass = L::import($compiler);
 		if (!class_exists($_compilerClass)) return $content;
-		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this));
+		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->request, $this->response));
 		$this->_compilerCache = array();
 		return $content;
 	}
@@ -154,8 +157,7 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile || !file_exists($compileFile) || empty($content)) return;
-		L::import('WIND:component.utility.WindFile');
+		if (!$compileFile || empty($content)) return;
 		WindFile::writeover($compileFile, $content);
 	}
 
@@ -178,7 +180,6 @@ class WindViewTemplate extends WindComponentModule {
 	 * @return string
 	 */
 	protected function getCompiledBlockKey() {
-		L::import('WIND:component.utility.WindUtility');
 		$key = WindUtility::generateRandStr(50);
 		if (key_exists($key, $this->compiledBlockData)) {
 			return $this->getCompiledBlockKey();
@@ -242,7 +243,6 @@ class WindViewTemplate extends WindComponentModule {
 	public function setCompiledBlockData($key, $compiledBlockData) {
 		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
 	}
-
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<support-tags>
-		<tag name='include' tag='include'
-			compiler='WIND:core.viewer.compiler.WindTemplateCompilerInclude' />
+		<tag name='template' tag='template'
+			compiler='WIND:core.viewer.compiler.WindTemplateCompilerTemplate' />
 	</support-tags>
 </config>

@@ -16,15 +16,26 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 
 	protected $windViewTemplate = null;
 
+	protected $windViewerResolver = null;
+
+	protected $request = null;
+
+	protected $response = null;
+
 	/**
 	 * 初始化标签解析器
-	 * 
 	 * @param string $tagContent
 	 * @param WindViewTemplate $windViewTemplate
+	 * @param WindViewerResolver $windViewerResolver
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 */
-	public function __construct($tags, $windViewTemplate) {
+	public function __construct($tags, $windViewTemplate, $windViewerResolver, $request, $response) {
 		$this->tags = $tags;
 		$this->windViewTemplate = $windViewTemplate;
+		$this->windViewerResolver = $windViewerResolver;
+		$this->request = $request;
+		$this->response = $response;
 	}
 
 	/**

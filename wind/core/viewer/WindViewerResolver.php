@@ -93,21 +93,31 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	}
 
 	/**
-	 * 加载视图模板文件
-	 * @param template
+	 * 编译模板并返回编译后模板名称
+	 * @return string
 	 */
-	protected function render($template) {
-		$templateFile = $this->getWindView()->getViewTemplate($template);
+	public function compile($template, $suffix = '') {
+		$templateFile = $this->getWindView()->getViewTemplate($template, $suffix);
 		if (!file_exists($templateFile)) {
 			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
+		if (!$this->getWindView()->getCompileDir()) return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
-		$this->getWindTemplate()->render($templateFile, $compileFile, $this->getWindView());
+		$this->getWindTemplate()->compile($templateFile, $compileFile, $this);
+		return $compileFile;
+	}
+
+	/**
+	 * 加载视图模板文件
+	 * @param template
+	 */
+	public function render($template) {
+		$_tmp = $this->compile($template);
 		
 		//extract template vars
 		@extract((array) $this->templateVars, EXTR_REFS);
-		if (!include $compileFile) {
-			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
+		if (!include $_tmp) {
+			throw new WindViewException($_tmp, WindViewException::VIEW_NOT_EXIST);
 		}
 	}
 

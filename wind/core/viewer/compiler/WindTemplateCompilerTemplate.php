@@ -9,7 +9,7 @@ L::import('WIND:core.viewer.compiler.AbstractWindTemplateCompiler');
  * @version $Id$
  * @package 
  */
-class WindTemplateCompilerInclude extends AbstractWindTemplateCompiler {
+class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 
 	protected $source = '';
 
@@ -24,11 +24,7 @@ class WindTemplateCompilerInclude extends AbstractWindTemplateCompiler {
 		if (!empty($result)) {
 			$content = '<?php include(' . $this->source . '); ?>';
 		} else {
-			if (false === strpos($this->source, ':')) {
-				$appName = $this->getWindViewTemplate()->getWindSystemConfig()->getAppName();
-				$this->source = $appName . ':' . $this->source;
-			}
-			$content = '<?php include(\'' . addslashes(L::getRealPath($this->source, $this->suffix)) . '\'); ?>';
+			$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source)) . '\'); ?>';
 		}
 		return $content;
 	}
