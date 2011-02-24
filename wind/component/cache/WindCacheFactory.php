@@ -29,8 +29,8 @@ class WindCacheFactory {
 	 * @param boolean $reload 是否重新加载缓存类
 	 * @return IWindCache
 	 */
-	public function storedFactory($cache, $config = array(), $reload = false) {
-		return $this->cacheFactory($cache, 'stored', $config, $reload);
+	public function strategyFactory($cache, $config = array(), $reload = false) {
+		return $this->cacheFactory($cache, 'strategy', $config, $reload);
 	}
 	/**
 	 * 获取缓存依赖
@@ -51,7 +51,7 @@ class WindCacheFactory {
 	 * @param boolean $reload 是否重新加载缓存类
 	 * @return IWindCache|Cache|IWindCacheDependency
 	 */
-	public function cacheFactory($name, $type = 'stored', array $params = array(), $reload = false) {
+	public function cacheFactory($name, $type = 'strategy', array $params = array(), $reload = false) {
 		$class = L::import('WIND:component.cache.' . $type . '.' . $name);
 		if (false === class_exists($class)) {
 			throw new WindException($class . ' is not exists');

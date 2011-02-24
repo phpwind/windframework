@@ -159,7 +159,7 @@ abstract class AWindCache extends WindComponentModule {
 	
 	/* 
 	 * 获取存储的数据
-	 * @see wind/component/cache/stored/IWindCache#set()
+	 * @see wind/component/cache/strategy/IWindCache#set()
 	 * @return string
 	 */
 	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
