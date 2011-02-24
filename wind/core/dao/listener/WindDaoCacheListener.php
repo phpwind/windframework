@@ -26,11 +26,11 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler IWindCache */
+		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler AWindCache */
 		if('WindDbCache' === get_class($cacheHandler)){
 			$cacheHandler->setDbHandler($this->daoObject->getDbHandler());
 		}
-		$result = $cacheHandler->fetch($this->generateKey( func_get_args()));
+		$result = $cacheHandler->get($this->generateKey( func_get_args()));
 		return empty($result) ? null : $result;
 	
 	}
@@ -39,14 +39,14 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler IWindCache */
+		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler AWindCache */
 		$config = $cacheHandler->getConfig()->getConfig();
-		$dependencyPath = $config[IWindCache::DEPENDENCY];
+		$dependencyPath = $config[AWindCache::DEPENDENCY];
 		$dependency = null;
 		if($dependencyPath){
 			$dependency = WindFactory::createInstance(L::import($dependencyPath));
 		}
-		$cacheHandler->add($this->generateKey(func_get_args()), $this->result, (int)$config[IWindCache::EXPIRES], $dependency);
+		$cacheHandler->set($this->generateKey(func_get_args()), $this->result, (int)$config[AWindCache::EXPIRES], $dependency);
 	}
 	
 	public function generateKey($args){
