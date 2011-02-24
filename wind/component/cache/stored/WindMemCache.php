@@ -7,14 +7,14 @@
  * tags
  */
 L::import('WIND:component.cache.stored.AWindCache');
-L::import('WIND:component.utility.WindMemcache');
+L::import('WIND:component.utility.WindUMemcache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindMemcacheCache extends AWindCache {
+class WindMemCache extends AWindCache {
 	
 	/**
 	 * @var WindMemcache memcache缓存操作句柄
@@ -33,12 +33,9 @@ class WindMemcacheCache extends AWindCache {
 	 * @var string 取得memcache配置项
 	 */
 	const SERVERCONFIG = 'servers';
-	/**
-	 * 
-	 * @param array $servers memcache 服务器配置
-	 */
+	
 	public function __construct() {
-		$this->memcache = new WindMemcache();
+		$this->memcache = new WindUMemcache();
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
@@ -50,35 +47,13 @@ class WindMemcacheCache extends AWindCache {
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function get($key) {
-		return $this->getDataFromMeta($key, $this->memcache->get($this->buildSecurityKey($key), $this->compress));
+		return $this->getDataFromMeta($key, unserialize($this->memcache->get($this->buildSecurityKey($key), $this->compress)));
 	}
-	
-	/*
-	 * @see wind/component/cache/base/IWindCache#batchFetch()
-	 */
-	public function batchGet(array $keys) {
-		$data = array();
-		foreach ($keys as $key) {
-			$data[$key] = $this->fetch($key);
-		}
-		return $data;
-	}
-	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
 		return $this->memcache->delete($this->buildSecurityKey($key));
-	}
-	
-	/* 
-	 * @see wind/component/cache/base/IWindCache#batchDelete()
-	 */
-	public function batchDelete(array $keys) {
-		foreach ($keys as $key) {
-			$this->delete($key);
-		}
-		return true;
 	}
 	
 	/* 
@@ -113,7 +88,7 @@ class WindMemcacheCache extends AWindCache {
 		if (!isset($_config[self::SERVERCONFIG]) || !is_array($_config[self::SERVERCONFIG])) {
 			throw new WindException('The server config is not exist');
 		}
-		$this->memcache->addServers($_config[self::SERVERCONFIG]);
+		$this->memcache->setServers($_config[self::SERVERCONFIG]);
 		$this->compress = isset($_config[self::COMPRESS]) ? MEMCACHE_COMPRESSED : 0;
 	}
 

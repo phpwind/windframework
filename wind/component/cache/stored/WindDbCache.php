@@ -1,10 +1,9 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-16
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2110 phpwind.com
+ * @license 
  */
 L::import('WIND:component.cache.stored.AWindCache');
 /**
@@ -39,7 +38,7 @@ class WindDbCache extends AWindCache {
 	/**
 	 * @var boolean 数据过期策略
 	 */
-	protected $expirestrage = false;
+	protected $expirestrage = true;
 	
 	const CACHETABLE = 'cachetable';
 	const NAME = 'name';

@@ -1,12 +1,12 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-16
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2110 phpwind.com
+ * @license 
  */
 L::import('WIND:component.cache.stored.AWindCache');
+L::import('WIND:component.utility.WindUXCache');
 /**
  * xcache加速缓存
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -15,56 +15,39 @@ L::import('WIND:component.cache.stored.AWindCache');
  * @package 
  */
 class WindXCache extends AWindCache {
+	
+	/**
+	 * @var WindUXCache
+	 */
+	protected $xcache = null;
+	
+	public function __construct(){
+		$this->xcache = new WindUXCache();
+	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return xcache_set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
+		return $this->xcache->set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function get($key) {
-		return $this->getDataFromMeta($key, unserialize(xcache_get($this->buildSecurityKey($key))));
-	}
-	
-	/* 
-	 * @see wind/component/cache/base/IWindCache#batchFetch()
-	 */
-	public function batchGet(array $keys) {
-		$data = array();
-		foreach ($keys as $key) {
-			$data[$key] = $this->fetch($key);
-		}
-		return $data;
+		return $this->getDataFromMeta($key, unserialize($this->xcache->get($this->buildSecurityKey($key))));
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return xcache_unset($this->buildSecurityKey($key));
-	}
-	
-	/* 
-	 * @see wind/component/cache/base/IWindCache#batchDelete()
-	 */
-	public function batchDelete(array $keys) {
-		foreach ($keys as $key) {
-			$this->delete($key);
-		}
-		return true;
+		return $this->xcache->delete($this->buildSecurityKey($key));
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		for ($i = 0, $max = xcache_count(XC_TYPE_VAR); $i < $max; $i++) {
-			if (false === xcache_clear_cache(XC_TYPE_VAR, $i)) {
-				return false;
-			}
-		}
-		return true;
+		return $this->xcache->flush();
 	}
 }

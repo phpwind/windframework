@@ -64,39 +64,50 @@ abstract class AWindCache extends WindComponentModule {
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
-	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null);
+	public abstract function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null);
 	/**
 	 * 获取指定缓存
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return mixed
 	 */
-	public function get($key);
+	public abstract function get($key);
 	
 	/**
 	 * 通过key批量获取缓存数据
 	 * @param array $keys
 	 * @return array
 	 */
-	public function batchGet(array $keys);
+	public function batchGet(array $keys){
+		$data = array();
+		foreach ($keys as $key) {
+			$data[$key] = $this->get($key);
+		}
+		return $data;
+	}
 	
 	/**
 	 * 删除缓存数据
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return string
 	 */
-	public function delete($key);
+	public abstract function delete($key);
 	
 	/**
 	 * 通过key批量删除缓存数据
 	 * @param array $keys
 	 * @return boolean
 	 */
-	public function batchDelete(array $keys);
+	public function batchDelete(array $keys){
+		foreach ($keys as $key) {
+			$this->delete($key);
+		}
+		return true;
+	}
 	
 	/**
 	 * 清空所有缓存
 	 */
-	public function flush();
+	public abstract function flush();
 	
 	/**
 	 * @param WindConfig $config
@@ -105,10 +116,10 @@ abstract class AWindCache extends WindComponentModule {
 		parent::setConfig($config);
 		$_config = is_object($config) ? $config->getConfig() : $config;
 		if (isset($_config[self::SECURITY])) {
-			$this->securityCode = $config[self::SECURITY];
+			$this->securityCode = $_config[self::SECURITY];
 		}
 		if (isset($_config[self::KEYPREFIX])) {
-			$this->prefix = $config[self::KEYPREFIX];
+			$this->prefix = $_config[self::KEYPREFIX];
 		}
 	}
 	

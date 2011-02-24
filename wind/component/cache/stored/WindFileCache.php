@@ -41,18 +41,8 @@ class WindFileCache extends AWindCache {
 	/*
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
-	public function fetch($key) {
+	public function get($key) {
 		return $this->getDataFromMeta($key, $this->readData($this->getRealCacheKey($key)));
-	}
-	/* 
-	 * @see wind/component/cache/base/IWindCache#batchFetch()
-	 */
-	public function batchGet(array $keys) {
-		$data = array();
-		foreach ($keys as $key) {
-			$data[$key] = $this->fetch($key);
-		}
-		return $data;
 	}
 	
 	/* 
@@ -64,16 +54,6 @@ class WindFileCache extends AWindCache {
 			return WindFile::deleteFile($cacheFile);
 		}
 		return false;
-	}
-	
-	/* 
-	 * @see wind/component/cache/base/IWindCache#batchDelete()
-	 */
-	public function batchDelete(array $keys) {
-		foreach ($keys as $key) {
-			$this->delete($key);
-		}
-		return true;
 	}
 	
 	/**
