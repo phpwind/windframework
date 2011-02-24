@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log' . D_S);
 /**
  * 日志记录
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,8 +14,6 @@
  * @package
  */
 class WindLogger extends WindComponentModule {
-
-	const LOG_DIR = 'log-dir';
 
 	/*错误类型*/
 	const INFO = 0;
@@ -32,8 +30,6 @@ class WindLogger extends WindComponentModule {
 	 * @var int
 	 */
 	const FLUSH = 100;
-
-	private $logs = array();
 
 	/**
 	 * 添加info级别的日志信息
@@ -106,7 +102,7 @@ class WindLogger extends WindComponentModule {
 	 * @return bool
 	 */
 	public function clearFiles($time = 0) {
-		$logDir = $this->getLogConfig(self::LOG_DIR);
+		$logDir = $this->getLogDir();
 		if (!is_int($time) || 0 > intval($time) || !is_dir($logDir)) return false;
 		$dir = dir($logDir);
 		while (false != ($file = $dir->read())) {
@@ -280,7 +276,7 @@ class WindLogger extends WindComponentModule {
 	 * @return string 
 	 */
 	private function getFileName() {
-		$logDir = $this->getLogConfig(self::LOG_DIR);
+		$logDir = $this->getLogDir();
 		$this->createFolder($logDir);
 		$size = 1024 * 50;
 		$filename = $logDir . date("Y_m_d") . '.log';
@@ -293,13 +289,13 @@ class WindLogger extends WindComponentModule {
 		return $filename;
 	}
 
-	private function getLogConfig($name = '', $subname = '') {
-		$config = $this->getConfig()->getConfig();
-		if ($name) {
-			return $subname ? $config[$subname] : $config[$name];
-		}
-		return $config;
+	/**
+	 * @return the $logDir
+	 */
+	protected function getLogDir() {
+		return LOG_DIR;
 	}
+
 }
 
 	
