@@ -55,6 +55,19 @@ class WindView extends WindComponentModule {
 	protected $layout = null;
 
 	/**
+	 * 设置布局对象
+	 * @param WindLayout|string $layout
+	 */
+	public function setLayout($layout) {
+		if (is_string($layout) && !empty($layout)) {
+			L::import('WIND:core.viewer.WindLayout');
+			$this->layout = new WindLayout($layout);
+		
+		} elseif ($layout instanceof WindLayout)
+			$this->layout = $layout;
+	}
+
+	/**
 	 * 模板路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
 	 * 

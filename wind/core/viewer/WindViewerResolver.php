@@ -46,13 +46,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	protected $templateVars = array();
 
 	/**
-	 * 模板布局对象
-	 *
-	 * @var WindLayout
-	 */
-	protected $layout = null;
-
-	/**
 	 * 立即输出模板内容
 	 * 
 	 * @param string $template
@@ -134,8 +127,8 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @return array()
 	 */
 	private function parserLayout() {
-		if ($this->layout === null) return null;
-		return $this->layout->parserLayout($this->templatePath, $this->templateExt, $this->templateName);
+		if (null === $layout = $this->getWindView()->getLayout()) return null;
+		return $layout->parserLayout($this->templatePath, $this->templateExt, $this->templateName);
 	}
 
 	/**

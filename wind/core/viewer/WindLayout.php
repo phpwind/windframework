@@ -28,6 +28,13 @@ class WindLayout {
 	private $tplName = '';
 
 	/**
+	 * @param string $layoutFile
+	 */
+	public function __construct($layoutFile = '') {
+		$this->setLayoutFile($layoutFile);
+	}
+
+	/**
 	 * 设置layout布局文件
 	 * 可以为一个布局文件的逻辑名称，如：layout.mainLayout
 	 * 则程序会在模板路径下面寻找layout目录下的mainLayout布局文件，后缀名和模板的后缀名保持一致
@@ -62,13 +69,4 @@ class WindLayout {
 		if ($segment) $this->segments[] = $segment;
 	}
 
-	/**
-	 * 设置当前内容模板
-	 * 
-	 * @deprecated
-	 */
-	private function setContent($tplName = '') {
-		$tplName && $this->tplName = $tplName;
-		$this->setSegments($this->tplName);
-	}
 }
