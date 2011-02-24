@@ -15,17 +15,16 @@ class WindDbTemplate implements IWindDbTemplate {
 	/**
 	 * @return the $connection
 	 */
-	protected function getConnection() {
+	public function getConnection() {
 		return $this->connection;
 	}
 
 	/**
 	 * @param object $connection
 	 */
-	protected function setConnection($connection) {
+	public function setConnection($connection) {
 		$this->connection = $connection;
 	}
-
 }
 
 ?>

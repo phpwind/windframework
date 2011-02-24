@@ -13,13 +13,13 @@ interface IWindDbTemplate {
 	/**
 	 * 返回数据库连接句柄
 	 */
-	protected function getConnection();
+	public function getConnection();
 
 	/**
 	 * 设置db链接对象
 	 * @param object $connection
 	 */
-	protected function setConnection($connection);
+	public function setConnection($connection);
 }
 
 ?>
