@@ -13,18 +13,7 @@
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-!defined('COMPILE_IMPORT_PATH') && define('COMPILE_IMPORT_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.php');
-
-/* 组件定义名称 */
-!defined('COMPONENT_WEBAPP') && define('COMPONENT_WEBAPP', 'windWebApp');
-!defined('COMPONENT_ERRORHANDLER') && define('COMPONENT_ERRORHANDLER', 'errorHandler');
-!defined('COMPONENT_LOGGER') && define('COMPONENT_LOGGER', 'windLogger');
-!defined('COMPONENT_FORWARD') && define('COMPONENT_FORWARD', 'forward');
-!defined('COMPONENT_ROUTER') && define('COMPONENT_ROUTER', 'urlBasedRouter');
-!defined('COMPONENT_URLHELPER') && define('COMPONENT_URLHELPER', 'urlHelper');
-!defined('COMPONENT_VIEW') && define('COMPONENT_VIEW', 'windView');
-!defined('COMPONENT_VIEWRESOLVER') && define('COMPONENT_VIEWRESOLVER', 'viewResolver');
-!defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
+!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.library');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -89,8 +78,8 @@ class W {
 	 * 包括基础的抽象类和接口
 	 */
 	private static function loadBaseLib() {
-		if (!IS_DEBUG && is_file(COMPILE_IMPORT_PATH)) {
-			return include COMPILE_IMPORT_PATH;
+		if (!IS_DEBUG && is_file(COMPILE_LIBRARY_PATH)) {
+			return include COMPILE_LIBRARY_PATH;
 		} else
 			L::loadCoreLibrary();
 	}
@@ -347,7 +336,7 @@ class L {
 	}
 
 	/**
-	 * Enter description here ...
+	 * 预加载核心类库
 	 */
 	static private function perLoadCoreLibrary() {
 		$imports = L::getImports();
@@ -359,7 +348,7 @@ class L {
 			$_key = self::getRealPath($key, self::$_extensions);
 			$fileList[$_key] = array($key, $value);
 		}
-		$pack->packFromFileList($fileList, COMPILE_IMPORT_PATH, WindPack::STRIP_PHP, true);
+		$pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 	}
 
 	/**
@@ -372,5 +361,23 @@ class L {
 
 }
 
+/* 组件定义名称 */
+!defined('COMPONENT_WEBAPP') && define('COMPONENT_WEBAPP', 'windWebApp');
+!defined('COMPONENT_ERRORHANDLER') && define('COMPONENT_ERRORHANDLER', 'errorHandler');
+!defined('COMPONENT_LOGGER') && define('COMPONENT_LOGGER', 'windLogger');
+!defined('COMPONENT_FORWARD') && define('COMPONENT_FORWARD', 'forward');
+!defined('COMPONENT_ROUTER') && define('COMPONENT_ROUTER', 'urlBasedRouter');
+!defined('COMPONENT_URLHELPER') && define('COMPONENT_URLHELPER', 'urlHelper');
+!defined('COMPONENT_VIEW') && define('COMPONENT_VIEW', 'windView');
+!defined('COMPONENT_VIEWRESOLVER') && define('COMPONENT_VIEWRESOLVER', 'viewResolver');
+!defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
 
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
+
+
+
+
+
+
+
+
