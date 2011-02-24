@@ -27,7 +27,7 @@
 	<component name='windLogger' path='WIND:component.log.WindLogger'
 		scope='request'>
 		<config>
-			<log-dir>E:\www\bbs\wind\demos\helloworld\compile\log\</log-dir>
+			<log-dir></log-dir>
 		</config>
 	</component>
 
