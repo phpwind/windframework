@@ -15,28 +15,29 @@
  * @package 
  */
 class WindUrlHelper extends WindComponentModule {
-	
+
 	const URL_PATTERN = 'url-pattern';
-	
+
 	const ROUTE_SUFFIX = 'route-suffix';
-	
+
 	const ROUTE_PARAM = 'route-param';
-	
+
 	const REWRITE = TRUE;
+
 	const ROUTE_SEPARATOR = '_';
-	
+
 	protected $routeSuffix = '';
-	
+
 	protected $routeParam = '';
-	
+
 	protected $urlPattern = '';
-	
+
 	protected $windRouter = null;
-	
+
 	public function isRewrite() {
 		return self::REWRITE;
 	}
-	
+
 	/**
 	 * 解析Url
 	 * 
@@ -53,12 +54,12 @@ class WindUrlHelper extends WindComponentModule {
 		$_GET = array_merge($_GET, $params);
 		$this->matchRouter(array_pop($uri));
 	}
-	
+
 	/**
 	 * 构造返回Url地址
 	 * 
-	 *    将根据是否开启url重写来分别构造相对应的url
-	 *    
+	 * 将根据是否开启url重写来分别构造相对应的url
+	 * 
 	 * @param string $action 执行的操作
 	 * @param string $controller 执行的controller
 	 * @param array $params 附带的参数
@@ -77,12 +78,12 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $url;
 	}
-	
+
 	/**
 	 * 返回域名及请求路径
-	 *  
-	 *  @param boolean $hasPath 是否含有路径信息
-	 *  @return string 
+	 * 
+	 * @param boolean $hasPath 是否含有路径信息
+	 * @return string 
 	 */
 	private function getUrlServer($hasPath = true) {
 		list($protocol, ) = explode('/', $this->request->getProtocol());
@@ -90,7 +91,7 @@ class WindUrlHelper extends WindComponentModule {
 		($hasPath) && $protocol .= $this->request->getServer('PHP_SELF');
 		return $protocol;
 	}
-	
+
 	/**
 	 * 执行匹配
 	 * 
@@ -122,7 +123,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return;
 	}
-	
+
 	/**
 	 * 解析uri参数成key-value关联数组形式
 	 * 
@@ -158,7 +159,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $params;
 	}
-	
+
 	/**
 	 * 解析url的parama信息中的key值
 	 * 
@@ -173,7 +174,7 @@ class WindUrlHelper extends WindComponentModule {
 	private function parseKey(&$params, $key, $value) {
 		if (($pos = strpos($key, '[')) === false || ($pos2 = strpos($key, ']', $pos + 1)) === false) {
 			$params[$key] = $value;
-			return ;
+			return;
 		}
 		$name = substr($key, 0, $pos);
 		if ($pos2 === $pos + 1) {
@@ -185,7 +186,7 @@ class WindUrlHelper extends WindComponentModule {
 			return;
 		}
 	}
-	
+
 	/**
 	 * 获得配置
 	 * 
@@ -201,7 +202,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $type;
 	}
-	
+
 	/**
 	 * 获得分割符
 	 * 
@@ -212,7 +213,7 @@ class WindUrlHelper extends WindComponentModule {
 		$separator = isset($pattern[1]) ? $pattern[1] : $pattern[0];
 		return array($pattern[0], $separator);
 	}
-	
+
 	/**
 	 * 构造重写的url
 	 *
@@ -230,11 +231,11 @@ class WindUrlHelper extends WindComponentModule {
 		$routerInfo = implode(self::ROUTE_SEPARATOR, $routerInfo) . '.' . $this->getRouteSuffix();
 		return $separator[1] . $url . $routerInfo;
 	}
-	
+
 	/**
 	 * 构造url的辅助函数
 	 * 
-	 *  支持数组的传递(建议最多传递一维)
+	 * 支持数组的传递(建议最多传递一维)
 	 *
 	 * @param string $parentKey  key 
 	 * @param string $parentValue key对应的值
@@ -245,14 +246,14 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	private function buildKey($parentKey, $parentValue, $keyAsValue, $separator, $flag = false) {
 		$flag && $parentKey = '[' . $parentKey . ']';
-		if (!is_array($parentValue))  return $parentKey . $keyAsValue . urlencode($parentValue);
+		if (!is_array($parentValue)) return $parentKey . $keyAsValue . urlencode($parentValue);
 		$keys = array();
 		foreach ($parentValue as $key => $value) {
 			$keys[] = $parentKey . $this->buildKey($key, $value, $keyAsValue, $separator, true);
 		}
 		return implode($separator, $keys);
 	}
-	
+
 	/**
 	 * 构造普通的url
 	 * 
@@ -261,12 +262,12 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	private function buildUrl($params, $flag = false) {
 		$url = '';
-		foreach ((array)$params as $key => $value) {
+		foreach ((array) $params as $key => $value) {
 			$url .= $this->buildKey($key, $value, '=', '&') . '&';
 		}
 		return trim($url, '&');
 	}
-	
+
 	/**
 	 * 检查Url地址的正确性，并返回正确的URL地址
 	 * 
@@ -281,7 +282,7 @@ class WindUrlHelper extends WindComponentModule {
 		if (false === $pos1) return $protocal . '://' . ltrim($url, '/');
 		return $url;
 	}
-	
+
 	/**
 	 * @return the $routeSuffix
 	 */
@@ -291,7 +292,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->routeSuffix;
 	}
-	
+
 	/**
 	 * @return the $routeParam
 	 */
@@ -301,7 +302,7 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->routeParam;
 	}
-	
+
 	/**
 	 * @return the $urlPattern
 	 */
@@ -311,35 +312,35 @@ class WindUrlHelper extends WindComponentModule {
 		}
 		return $this->urlPattern;
 	}
-	
+
 	/**
 	 * @param field_type $routeSuffix
 	 */
 	public function setRouteSuffix($routeSuffix) {
 		$this->routeSuffix = $routeSuffix;
 	}
-	
+
 	/**
 	 * @param field_type $routeParam
 	 */
 	public function setRouteParam($routeParam) {
 		$this->routeParam = $routeParam;
 	}
-	
+
 	/**
 	 * @param field_type $urlPattern
 	 */
 	public function setUrlPattern($urlPattern) {
 		$this->urlPattern = $urlPattern;
 	}
-	
+
 	/**
 	 * @return the $windRouter
 	 */
 	public function getWindRouter() {
 		return $this->windRouter;
 	}
-	
+
 	/**
 	 * @param field_type $windRouter
 	 */
