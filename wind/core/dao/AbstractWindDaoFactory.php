@@ -16,7 +16,7 @@ L::import('WIND:core.factory.proxy.WindClassProxy');
  */
 abstract class AbstractWindDaoFactory {
 
-	protected $factory = null;
+	protected $windFactory = null;
 
 	protected $daoResource = '';
 
@@ -67,8 +67,8 @@ abstract class AbstractWindDaoFactory {
 		if (!isset($this->dbConnections[$_dbClass])) {
 			$this->createFactory();
 			$defintion = $daoObject->getDbDefinition();
-			$this->factory->addClassDefinitions($defintion);
-			$this->dbConnections[$_dbClass] = $this->factory->getInstance($defintion->getAlias());
+			$this->windFactory->addClassDefinitions($defintion);
+			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
 		return $this->dbConnections[$_dbClass];
 	}
@@ -83,8 +83,8 @@ abstract class AbstractWindDaoFactory {
 		if (!isset($this->caches[$_cacheClass])) {
 			$this->createFactory();
 			$defintion = $daoObject->getCacheDefinition();
-			$this->factory->addClassDefinitions($defintion);
-			$cacheHander = $this->factory->getInstance($defintion->getAlias());
+			$this->windFactory->addClassDefinitions($defintion);
+			$cacheHander = $this->windFactory->getInstance($defintion->getAlias());
 			$this->caches[$_cacheClass] = $cacheHander;
 		}
 		return $this->caches[$_cacheClass];
@@ -94,11 +94,11 @@ abstract class AbstractWindDaoFactory {
 	 * Enter description here ...
 	 */
 	private function createFactory() {
-		if ($this->factory === null) {
+		if ($this->windFactory === null) {
 			L::import('WIND:core.factory.WindComponentFactory');
-			$this->factory = new WindComponentFactory();
+			$this->windFactory = new WindComponentFactory();
 		}
-		return $this->factory;
+		return $this->windFactory;
 	}
 
 	/**
@@ -114,8 +114,6 @@ abstract class AbstractWindDaoFactory {
 	public function setDaoResource($daoResource) {
 		$this->daoResource = $daoResource;
 	}
-
-	abstract public function getFactory();
 
 }
 
