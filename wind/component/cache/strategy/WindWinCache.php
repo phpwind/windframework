@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.stored.AWindCache');
+L::import('WIND:component.cache.strategy.AWindCache');
 L::import('WIND:component.utility.WindUWinCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:component.cache.stored.AWindCache');
+L::import('WIND:component.cache.strategy.AWindCache');
 L::import('WIND:component.utility.WindFile');
 
 /**
