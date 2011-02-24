@@ -68,9 +68,9 @@ class WindDbCache extends AWindCache {
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
-	public function get($key) {
+	public function get($key) {echo $key;
 		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
-		return $this->getDataFromMeta($key, unserialize(unserialize($data[$this->valueField])));
+		return $this->getDataFromMeta($key, unserialize($data[$this->valueField]));
 	}
 	
 	/* 
