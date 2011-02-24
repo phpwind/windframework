@@ -32,19 +32,6 @@ class WindCacheFactory {
 	public function storedFactory($cache, $config = array(), $reload = false) {
 		return $this->cacheFactory($cache, 'stored', $config, $reload);
 	}
-
-	/**
-	 * 获取视图型缓存
-	 * @param string $cache 缓存名称
-	 * @param string $type 缓存类别
-	 * @param array $config 缓存配置
-	 * @param boolean $reload 是否重新加载缓存类
-	 * @return Cache
-	 */
-	public function viewFactory($cache, $config = array(), $reload = false) {
-		return $this->cacheFactory($cache, 'view', $config, $reload);
-	}
-
 	/**
 	 * 获取缓存依赖
 	 * @param string $dependency 缓存依赖名称

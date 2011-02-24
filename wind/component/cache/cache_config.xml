@@ -20,6 +20,7 @@
 				<value>cache</value>
 				<expire>time</expire>
 			</field>
+			<expirestrage></expirestrage>
 		</cachetable>
 		<!--文件缓存配置-->
 		<cache-dir>E:\www\bbs\wind\demos\helloworld\compile\cache</cache-dir>

@@ -6,22 +6,18 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.base.IWindCache');
+L::import('WIND:component.cache.stored.AWindCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindDbCache extends WindComponentModule implements IWindCache {
+class WindDbCache extends AWindCache {
 	/**
 	 * @var WindConnectionManager 分布式管理
 	 */
 	protected $dbHandler = null;
-	/**
-	 * @var string 安全code
-	 */
-	protected $securityCode = '';
 	/**
 	 * @var string 缓存表
 	 */
@@ -40,27 +36,23 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	protected $expireField = 'expire';
 	
+	/**
+	 * @var boolean 数据过期策略
+	 */
+	protected $expirestrage = false;
+	
 	const CACHETABLE = 'cachetable';
 	const NAME = 'name';
 	const KEY = 'key';
 	const VALUE = 'value';
 	const EXPIRE = 'expire';
 	const FIELD = 'field';
+	const EXPIRESTRAGE = 'expirestrage';
 	
 	public function __construct(WindConnectionManager $dbHandler = null) {
-		if($dbHandler){
-			$this->setDbHandler($dbHandler);
-		}
+		$dbHandler && $this->setDbHandler($dbHandler);
 	}
-	/* 
-	 * @see wind/component/cache/base/IWindCache#add()
-	 */
-	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		if ($this->fetch($key)) {
-			$this->error("The cache already exists");
-		}
-		$this->store($key, $value, $expires, $denpendency);
-	}
+	
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
@@ -75,43 +67,21 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#replace()
-	 */
-	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		if ($this->fetch($key)) {
-			return $this->update($key, $value, $expires, $denpendency);
-		} else {
-			$this->error("The cache does not exist");
-			return false;
-		}
-		return true;
-	}
-	
-	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
-	public function fetch($key) {
+	public function get($key) {
 		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
-		$data = unserialize($data[$this->valueField]);
-		if(isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])){
-			L::import('Wind:component.cache.dependency.'.$data[self::DEPENDENCYCLASS]);
-			$dependency = unserialize($data[self::DEPENDENCY]);/* @var $dependency IWindCacheDependency*/
-			if(($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()){
-				$this->delete($key);
-				return null;
-			}
-		}
-		return isset($data[self::DATA]) ? $data[self::DATA] : '';
+		return $this->getDataFromMeta($key, unserialize(unserialize($data[$this->valueField])));
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
-	public function batchFetch(array $keys) {
+	public function batchGet(array $keys) {
 		foreach ($keys as $key => $value) {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
-		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->keyField.' = :key ', array(':key' => $keys))->select()->getAllRow();
+		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->keyField.' in ( :key ) ', array(':key' => $keys))->select()->getAllRow();
 		$result = $changed = array();
 		foreach ($data as $_data) {
 			$_data = unserialize($_data[$this->valueField]);
@@ -151,6 +121,9 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->delete();
 	}
 	
+	/**
+	 * 删除过期数据
+	 */
 	public function deleteExpiredCache() {
 		return @$this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->expireField.' !=0 AND '.$this->expireField.' < :expires', array(':expires' => time()))->delete();
 	}
@@ -164,27 +137,17 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$config = $config->getConfig();
-		if(false === isset($config[self::CACHETABLE])){
+		$_config = is_object($config) ? $config->getConfig() : $config;
+		if(false === isset($_config[self::CACHETABLE])){
 			throw new WindException('The cache table is not exist');
 		}
-		$tableConfig = $config[self::CACHETABLE];
+		$tableConfig = $_config[self::CACHETABLE];
 		$this->table = isset($tableConfig[self::NAME]) ? $tableConfig[self::NAME] : 'pw_cache';
 		$field = $tableConfig[self::FIELD];
 		$this->keyField = isset($field[self::KEY]) ? $field[self::KEY] : 'key';
 		$this->valueField = isset($field[self::VALUE]) ? $field[self::VALUE] : 'value';
 		$this->expireField = isset($field[self::EXPIRE]) ? $field[self::EXPIRE] : 'expire';
-		if(isset($config[self::SECURITY])){
-			$this->securityCode = $config[self::SECURITY];
-		}
-	}
-	/**
-	 * 错误处理
-	 * @param string $message
-	 * @param int $type
-	 */
-	public function error($message, $type = E_USER_ERROR) {
-		trigger_error($message, $type);
+		$this->expirestrage = isset($field[self::EXPIRESTRAGE]) ? (bool)$field[self::EXPIRESTRAGE] : true;
 	}
 	
 	/**
@@ -218,22 +181,6 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 		}
 		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->valueField.' = :value,'.$this->expireField.' = :expires', array(':value' => $data, ':expires' => $expires))->where($this->keyField.'=:key', array(':key' => $this->buildSecurityKey($key)))->update();
 	}
-	
-	/* 
-	 * 获取存储的数据
-	 * @see wind/component/cache/stored/IWindCache#set()
-	 * @return string
-	 */
-	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
-		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
-			$denpendency->injectDependent($this);
-			$data[self::DEPENDENCY] = serialize($denpendency);
-			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
-		}
-		return serialize($data);
-	}
-	
 	/**
 	 * 获取写缓存的数据库
 	 * @return WindDbAdapter
@@ -248,15 +195,6 @@ class WindDbCache extends WindComponentModule implements IWindCache {
 	 */
 	private function getSlaveConnection() {
 		return $this->dbHandler->getSlaveConnection();
-	}
-	
-	/**
-	 * 生成安全的key
-	 * @param string $key
-	 * @return string
-	 */
-	private function buildSecurityKey($key) {
-		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 	
 	public function __destruct() {

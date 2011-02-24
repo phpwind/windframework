@@ -8,24 +8,25 @@
  */
 L::import('WIND:component.cache.stored.AWindCache');
 /**
- * xcache加速缓存
+ * Eaccelerator是一款php加速器、优化器、编码器及动态内容缓存。
+ * WindEaccelerator实现Eaccelerator动态内容缓存功能。
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindXCache extends AWindCache {
+class WindEacceleratorCache extends AWindCache {
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return xcache_set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
+		return eaccelerator_put($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
 	}
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
 	public function get($key) {
-		return $this->getDataFromMeta($key, unserialize(xcache_get($this->buildSecurityKey($key))));
+		return $this->getDataFromMeta($key, unserialize(eaccelerator_get($this->buildSecurityKey($key))));
 	}
 	
 	/* 
@@ -43,7 +44,7 @@ class WindXCache extends AWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return xcache_unset($this->buildSecurityKey($key));
+		return eaccelerator_rm($this->buildSecurityKey($key));
 	}
 	
 	/* 
@@ -60,11 +61,10 @@ class WindXCache extends AWindCache {
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		for ($i = 0, $max = xcache_count(XC_TYPE_VAR); $i < $max; $i++) {
-			if (false === xcache_clear_cache(XC_TYPE_VAR, $i)) {
-				return false;
-			}
+		eaccelerator_gc();
+		$cacheKeys = eaccelerator_list_keys();
+		foreach ($cacheKeys as $key) {
+			$this->delete(substr($key['name'], 1));
 		}
-		return true;
 	}
 }

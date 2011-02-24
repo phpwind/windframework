@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.base.IWindCacheDependency');
+L::import('WIND:component.cache.dependency.IWindCacheDependency');
 /**
  * 缓存依赖基类
  * the last known user to change this file in the repository  <$LastChangedBy$>

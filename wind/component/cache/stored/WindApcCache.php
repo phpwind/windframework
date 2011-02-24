@@ -1,6 +1,12 @@
 <?php
-
-L::import('WIND:component.cache.base.IWindCache');
+/**
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @version $Id$ 
+ * @package 
+ * tags
+ */
+L::import('WIND:component.cache.stored.AWindCache');
 /**
  * php加速器缓存
  * 
@@ -9,21 +15,8 @@ L::import('WIND:component.cache.base.IWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindApcCache extends WindComponentModule implements IWindCache {
-	/**
-	 * @var string 安全code
-	 */
-	protected $securityCode = '';
-	/* 
-	 * @see wind/component/cache/base/IWindCache#add()
-	 */
-	public function add($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$cacheData = $this->fetch($key);
-		if (false === empty($cacheData)) {
-			$this->error("The cache already exists");
-		}
-		return apc_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
-	}
+class WindApcCache extends AWindCache {
+	
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
@@ -33,45 +26,19 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#replace()
-	 */
-	public function replace($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$cacheData = $this->fetch($key);
-		if (empty($cacheData)) {
-			$this->error("The cache does not exist");
-		}
-		return apc_store($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
-	}
-	
-	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
-	public function fetch($key) {
-		$key = $this->buildSecurityKey($key);
-		$data = unserialize(apc_fetch($key));
-		if (empty($data) || !is_array($data)) {
-			return $data;
-		}
-		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
-			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
-			$dependency = unserialize($data[self::DEPENDENCY]); /* @var $dependency IWindCacheDependency*/
-			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
-				$this->delete($key);
-				return null;
-			}
-		}
-		return isset($data[self::DATA]) ? $data[self::DATA] : null;
+	public function get($key) {
+		return $this->getDataFromMeta($key, unserialize(apc_fetch($this->buildSecurityKey($key))));
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#batchFetch()
 	 */
-	public function batchFetch(array $keys) {
+	public function batchGet(array $keys) {
 		$data = array();
 		foreach ($keys as $key) {
-			if ('' != ($value = $this->fetch($key))) {
-				$data[$key] = $value;
-			}
+			$data[$key] = $this->fetch($key);
 		}
 		return $data;
 	}
@@ -99,49 +66,6 @@ class WindApcCache extends WindComponentModule implements IWindCache {
 	public function flush() {
 		apc_clear_cache();
 		return apc_clear_cache('user');
-	}
-	
-	/**
-	 * 错误处理
-	 * @param string $message
-	 * @param int $type
-	 */
-	public function error($message, $type = E_USER_ERROR) {
-		trigger_error($message, $type);
-	}
-	
-	
-	/* 
-	 * @see wind/core/WindComponentModule#setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		$config = $config->getConfig();
-		if (isset($config[self::SECURITY])) {
-			$this->securityCode = $config[self::SECURITY];
-		}
-	}
-	/* 
-	 * 获取存储的数据
-	 * @see wind/component/cache/stored/IWindCache#set()
-	 * @return string
-	 */
-	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
-		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
-			$denpendency->injectDependent($this);
-			$data[self::DEPENDENCY] = serialize($denpendency);
-			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
-		}
-		return serialize($data);
-	}
-	/**
-	 * 生成安全的key
-	 * @param string $key
-	 * @return string
-	 */
-	private function buildSecurityKey($key) {
-		return  $key . '_' . substr(sha1($key . $this->securityCode), 0, 5);
 	}
 	
 }
