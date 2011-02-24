@@ -59,13 +59,12 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 */
 	public function windFetch($template = '') {
 		ob_start();
-		if (($segments = $this->parserLayout()) == null) {
-			$this->render($template);
-		} else {
+		if (null !== $segments = $this->parserLayout($template))
 			foreach ($segments as $value) {
-				$this->render($template);
+				$this->render($value);
 			}
-		}
+		else
+			$this->render($template);
 		return ob_get_clean();
 	}
 
@@ -115,20 +114,15 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	}
 
 	/**
-	 * 获得模板变量名称
-	 */
-	private function getTemplateVarName() {
-		$varName = $this->templateName ? $this->templateName : 'default';
-		return $varName;
-	}
-
-	/**
 	 * 如果存在布局文件则解析布局信息
 	 * @return array()
 	 */
-	private function parserLayout() {
+	private function parserLayout($template) {
 		if (null === $layout = $this->getWindView()->getLayout()) return null;
-		return $layout->parserLayout($this->templatePath, $this->templateExt, $this->templateName);
+		if (!$template) $template = $this->getWindView()->getTemplateName();
+		$layout->setDir($this->getWindView()->getTemplatePath());
+		$layout->setSuffix($this->getWindView()->getTemplateExt());
+		return $layout->parserLayout($template);
 	}
 
 	/**

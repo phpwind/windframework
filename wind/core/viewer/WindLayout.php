@@ -25,13 +25,58 @@ class WindLayout {
 
 	private $layoutFile = '';
 
+	private $dir = '';
+
+	private $suffix = '';
+
 	private $tplName = '';
 
 	/**
 	 * @param string $layoutFile
 	 */
-	public function __construct($layoutFile = '') {
+	public function __construct($layoutFile = '', $dir = '', $suffix = '') {
 		$this->setLayoutFile($layoutFile);
+		$this->setDir($dir);
+		$this->setSuffix($suffix);
+	}
+
+	/**
+	 * 解析layout布局文件
+	 */
+	public function parserLayout($tplName) {
+		$this->tplName = $tplName;
+		if ($this->getLayoutFile() === '') {
+			$this->setSegments();
+		} else {
+			$_filePath = $this->getLayoutFile();
+			if (false !== strpos($_filePath, D_S)) {
+				include $_filePath;
+			} elseif ($this->getDir()) {
+				$_filePath = $this->getDir() . '.' . $_filePath;
+				$file = L::getRealPath($this->getDir() . '.' . $this->getLayoutFile(), $this->getSuffix());
+				if (!include $file) throw new WindViewException('the layout file ' . $file . ' is not exists.');
+			}
+		}
+		return $this->segments;
+	}
+
+	/**
+	 * 设置切片文件
+	 * 
+	 * @param string $segment
+	 */
+	private function setSegments($segment = '') {
+		if ($segment === '')
+			$this->segments[] = $this->tplName;
+		else
+			$this->segments[] = $segment;
+	}
+
+	/**
+	 * @return the $layoutFile
+	 */
+	protected function getLayoutFile() {
+		return $this->layoutFile;
 	}
 
 	/**
@@ -46,27 +91,31 @@ class WindLayout {
 	}
 
 	/**
-	 * 解析layout布局文件
+	 * @return the $dir
 	 */
-	public function parserLayout($dirName = '', $ext = '', $content = '') {
-		if ($this->layoutFile) {
-			$this->tplName = $content;
-			$dirName && $dirName = $dirName . '.';
-			$ext === '' && $ext = 'htm';
-			$file = L::getRealPath($dirName . $this->layoutFile);
-			$file = $file . '.' . $ext;
-			if (!@include $file) throw new WindException('the layout file ' . $file . ' is not exists.');
-		}
-		return $this->segments;
+	public function getDir() {
+		return $this->dir;
 	}
 
 	/**
-	 * 设置切片文件
-	 * 
-	 * @param string $segment
+	 * @return the $suffix
 	 */
-	private function setSegments($segment) {
-		if ($segment) $this->segments[] = $segment;
+	public function getSuffix() {
+		return $this->suffix;
+	}
+
+	/**
+	 * @param field_type $dir
+	 */
+	public function setDir($dir) {
+		$this->dir = $dir;
+	}
+
+	/**
+	 * @param field_type $suffix
+	 */
+	public function setSuffix($suffix) {
+		$this->suffix = $suffix;
 	}
 
 }
