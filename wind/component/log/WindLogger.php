@@ -16,6 +16,7 @@
 class WindLogger extends WindComponentModule {
 
 	const LOG_DIR = 'log-dir';
+
 	/*错误类型*/
 	const INFO = 0;
 
@@ -291,11 +292,11 @@ class WindLogger extends WindComponentModule {
 		}
 		return $filename;
 	}
-	
-	private function getLogConfig($name = '',$subname = ''){
+
+	private function getLogConfig($name = '', $subname = '') {
 		$config = $this->getConfig()->getConfig();
-		if($name){
-			return $subname ? $config[$subname] : $config[$name]; 
+		if ($name) {
+			return $subname ? $config[$subname] : $config[$name];
 		}
 		return $config;
 	}
