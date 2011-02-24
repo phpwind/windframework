@@ -26,9 +26,6 @@
 	<!-- logger -->
 	<component name='windLogger' path='WIND:component.log.WindLogger'
 		scope='request'>
-		<config>
-			<log-dir></log-dir>
-		</config>
 	</component>
 
 	<!-- forward -->
