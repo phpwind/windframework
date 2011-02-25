@@ -10,7 +10,7 @@
  */
 class WindDbTemplate implements IWindDbTemplate {
 
-	private $connectionManage = null;
+	private $connection = null;
 
 	/**
 	 * 获得数据库链接
