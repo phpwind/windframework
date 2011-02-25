@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-	<modules>
-		<module name='default'>
-			<path>controllers</path>
-			<controllerSuffix>controller</controllerSuffix>
-		</module>
-		<module name='other'>
-			<path>otherControllers</path>
-			<controllerSuffix>controller</controllerSuffix>
-		</module>
-	</modules>
-	<filters>
-		<filter name="WindFormFilter">
-			<class>WIND:component.form.WindFormFilter</class>
-		</filter>
-	</filters>
-	<templates>
-		<template>
-			<dir>templates</dir>
-			<default></default>
-			<ext>html</ext>
-			<resolver>default</resolver>
-			<isCache>false</isCache>
-			<cacheDir>cache</cacheDir>
-			<compileDir>compile</compileDir>
-		</template>
-	</templates>
-	<extensionConfig>
-		<config name='formConfig'>form_config</config>
-	</extensionConfig>
+<!-- import external config source file -->
+	<imports>
+		<import name='components' resource='FORMDEMO:component'
+			suffix='xml' init-delay='false' is-append='true' />
+	</imports>
+	
+	<web-apps>
+		<web-app name='formdemo' class='windWebApp' root-path=''>
+			<factory class-definition='components'
+				class='WIND:core.factory.WindComponentFactory' />
+			<filters class='WIND:core.filter.WindFilterChain'>
+				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
+			</filters>
+			<router class='urlBasedRouter' />
+			<modules>
+				<module name='default' path='controllers'>
+					<controller-suffix value='Controller' />
+					<view class='windView' />
+				</module>
+				<module name='other' path='otherControllers'>
+					<controller-suffix value='Controller' />
+					<view class='windView' />
+				</module>
+			</modules>
+		</web-app>
+	</web-apps>
 </WIND>
