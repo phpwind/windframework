@@ -19,6 +19,7 @@
 			<router class='urlBasedRouter' />
 			<modules>
 				<module name='default' path='actionControllers'>
+					<controller-suffix value='Controller' />
 					<view class='windView' />
 				</module>
 			</modules>
