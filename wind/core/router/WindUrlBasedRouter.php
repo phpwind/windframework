@@ -54,19 +54,22 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::getHandler()
 	 */
 	public function getHandler() {
-		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-		if (!$moduleConfig)
-			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
-		
 		if ($this->getController() === 'error') {
 			$controllerPath = $this->errorHandle;
 		} else {
 			$controllerSuffix = '';
+			$_modulePath = '';
 			if ($this->modulePath === '') {
-				$this->modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
-			}
-			$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
-			$controllerPath = $this->modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
+				$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
+				if ($moduleConfig) {
+					$_modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
+					$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
+				} else
+					$_modulePath = $this->getModule();
+			
+			} else
+				$_modulePath = $this->modulePath;
+			$controllerPath = $_modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
 		}
 		if (strpos($controllerPath, ':') === false)
 			$controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
