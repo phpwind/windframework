@@ -17,26 +17,15 @@ class WindErrorMessage implements IWindErrorMessage {
 
 	private $error = array();
 
-	private $errorAction = '';
+	private $errorAction = 'run';
 
-	private $errorController = '';
+	private $errorController = 'WIND:core.web.WindErrorHandler';
 
 	/* (non-PHPdoc)
 	 * @see IWindErrorMessage::sendError()
 	 */
 	public function sendError() {
-		$error = implode(',', $this->error);
-	}
-
-	/**
-	 * 设置错误处理方法
-	 * 
-	 * @param string $action
-	 * @param string $controller
-	 */
-	public function setErrorAction($action, $controller) {
-		$this->errorAction = $action;
-		$this->errorController = $controller;
+		throw new WindActionException($this);
 	}
 
 	/* (non-PHPdoc)
@@ -61,10 +50,41 @@ class WindErrorMessage implements IWindErrorMessage {
 	 */
 	public function addError($error, $key = '') {
 		if ($key === '') {
-			if (is_object($error)) $error = get_object_vars($error);
+			if (is_string($error))
+				$this->error[] = $error;
+			elseif (is_object($error))
+				$error = get_object_vars($error);
 			if (is_array($error)) $this->error += $error;
 		} else
 			$this->error[$key] = $error;
+	}
+
+	/**
+	 * @return the $errorAction
+	 */
+	public function getErrorAction() {
+		return $this->errorAction;
+	}
+
+	/**
+	 * @return the $errorController
+	 */
+	public function getErrorController() {
+		return $this->errorController;
+	}
+
+	/**
+	 * @param field_type $errorAction
+	 */
+	public function setErrorAction($errorAction) {
+		if ($errorAction) $this->errorAction = $errorAction;
+	}
+
+	/**
+	 * @param field_type $errorController
+	 */
+	public function setErrorController($errorController) {
+		if ($errorController) $this->errorController = $errorController;
 	}
 
 }

@@ -41,15 +41,20 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			
 			$this->doDispatch($forward);
 		} catch (WindActionException $actionException) {
-			print_r($actionException->getError());
-		
+			$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
+			$_tmp = $actionException->getError();
+			$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController(), $_tmp->getError(), false);
+			$this->doDispatch($forward);
+			
 		} catch (WindSqlException $windSqlException) {
 			$this->noActionHandlerFound($windSqlException->getMessage());
 		
 		} catch (WindViewException $windViewException) {
 
 		} catch (WindException $exception) {
-			$this->noActionHandlerFound($exception->getMessage());
+			echo $exception->getMessage();
+		
+		//$this->noActionHandlerFound($exception->getMessage());
 		}
 	}
 
@@ -91,7 +96,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
 		$definition->setProxy('true');
 		$definition->setAlias($handler);
-		$definition->setPropertys(array('error' => array('ref' => COMPONENT_ERRORMESSAGE), 
+		$definition->setPropertys(array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
 			'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
 		
 		$this->windFactory->addClassDefinitions($definition);
@@ -119,18 +124,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 */
 	protected function noActionHandlerFound($message) {
 		$this->response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
-	}
-
-	/**
-	 * 判断是否是重复提交，再一次请求中，不允许连续重复请求两次获两次以上某个操作
-	 * 
-	 * @param string $key
-	 */
-	protected function checkReprocess($key = '') {
-		if (isset($this->process) && $this->process === $key) {
-			throw new WindException('Duplicate request \'' . $key . '\'');
-		}
-		$this->process = $key;
 	}
 
 	/**

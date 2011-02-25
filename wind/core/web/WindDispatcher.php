@@ -17,12 +17,15 @@ L::import('WIND:core.WindComponentModule');
  */
 class WindDispatcher extends WindComponentModule {
 
+	protected $oldRouter = null;
+
 	/**
 	 * 请求分发处理
-	 * 
 	 * @param WindForward $forward
 	 */
 	public function dispatch($forward) {
+		$this->oldRouter = clone $this->windFactory->getInstance(COMPONENT_ROUTER);
+		
 		if ($forward->getIsRedirect())
 			$this->dispatchWithRedirect($forward);
 		elseif ($forward->getIsReAction()) {
@@ -33,7 +36,6 @@ class WindDispatcher extends WindComponentModule {
 
 	/**
 	 * 请求分发一个重定向请求
-	 * 
 	 * @param WindForward $forward
 	 */
 	protected function dispatchWithRedirect($forward) {
@@ -46,9 +48,10 @@ class WindDispatcher extends WindComponentModule {
 		}
 		$_url = $urlHelper->checkUrl($_url);
 		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);
-		if ($_router === null) throw new WindException('router', WindException::ERROR_CLASS_NOT_EXIST);
-		
 		$_router->reParse();
+		if (!$this->checkProcess($_router)) {
+			throw new WindException('Duplicate request ' . $_router->getAction() . '_' . $_router->getController() . '.' . $_router->getModule());
+		}
 		$this->response->sendRedirect($_url);
 	}
 
@@ -57,15 +60,17 @@ class WindDispatcher extends WindComponentModule {
 	 * @param WindForward $forward
 	 */
 	protected function dispatchWithAction($forward) {
-		if (!$_a = $forward->getAction()) throw new WindException('Incorrect action value ' . $_a . ' .');
+		$_a = $forward->getAction();
+		list($_c, $_m) = W::resolveController($forward->getController());
 		
 		/* @var $_router WindUrlBasedRouter */
 		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);
-		$_router->setAction($_a);
-		
-		list($_c, $_m) = W::resolveController($forward->getController());
+		$_a && $_router->setAction($_a);
 		$_c && $_router->setController($_c);
 		$_m && $_router->setModule($_m);
+		if (!$this->checkProcess($_router)) {
+			throw new WindException('Duplicate request ' . $_router->getAction() . '_' . $_router->getController() . '.' . $_router->getModule());
+		}
 		
 		$appName = $this->windSystemConfig->getAppClass();
 		$application = $this->windFactory->getInstance($appName);
@@ -73,8 +78,20 @@ class WindDispatcher extends WindComponentModule {
 	}
 
 	/**
+	 * 检查请求是否是重复请求
+	 * @param AbstractWindRouter $router
+	 * @param string $action
+	 * @param string $controller
+	 */
+	protected function checkProcess($router) {
+		if ($router->getAction() !== $this->oldRouter->getAction()) return true;
+		if ($router->getController() !== $this->oldRouter->getController()) return true;
+		if ($router->getModule() !== $this->oldRouter->getModule()) return true;
+		return false;
+	}
+
+	/**
 	 * 进行视图渲染
-	 * 
 	 * @param WindForward $forward
 	 */
 	protected function render($forward) {

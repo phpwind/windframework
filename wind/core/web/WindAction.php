@@ -19,7 +19,7 @@ abstract class WindAction extends WindComponentModule {
 
 	protected $urlHelper = null;
 
-	protected $error = null;
+	protected $errorMessage = null;
 
 	/**
 	 * 默认的操作处理方法
@@ -109,7 +109,6 @@ abstract class WindAction extends WindComponentModule {
 	/* 模板处理 */
 	/**
 	 * 设置页面模板
-	 * 
 	 * @param string $template
 	 */
 	public function setTemplate($template) {
@@ -118,7 +117,6 @@ abstract class WindAction extends WindComponentModule {
 
 	/**
 	 * 设置模板路径
-	 * 
 	 * @param string $templatePath
 	 */
 	public function setTemplatePath($templatePath) {
@@ -127,7 +125,6 @@ abstract class WindAction extends WindComponentModule {
 
 	/**
 	 * 设置模板扩展名称
-	 * 
 	 * @param string $templateExt
 	 */
 	public function setTemplateExt($templateExt) {
@@ -137,7 +134,6 @@ abstract class WindAction extends WindComponentModule {
 	/**
 	 * 设置页面布局
 	 * 可以是一个布局对象或者一个布局文件
-	 * 
 	 * @param WindLayout|string $layout
 	 */
 	public function setLayout($layout) {
@@ -148,41 +144,44 @@ abstract class WindAction extends WindComponentModule {
 	
 	/**
 	 * 添加错误信息
-	 * 
 	 * @param string $message
 	 * @param string $key
 	 */
 	public function addError($message, $key = '') {
-		$this->getError()->addError($message, $key);
+		$this->getErrorMessage()->addError($message, $key);
 	}
 
 	/**
 	 * 发送一个错误
-	 * 
 	 * @param string $message
 	 * @param string $key
+	 * @param string $errorAction
+	 * @param string $errorController
 	 */
-	public function sendError($message = '', $key = '', $errorAction = '') {
+	public function sendError($message = '', $key = '', $errorAction = '', $errorController = '') {
 		$this->addError($message, $key);
-		$this->getError()->setErrorAction($errorAction);
-		$this->getError()->sendError();
+		$this->getErrorMessage()->setErrorAction($errorAction);
+		$this->getErrorMessage()->setErrorController($errorController);
+		$this->getErrorMessage()->sendError();
 	}
 
 	/**
-	 * @return the $error
+	 * 返回一个错误处理对象
+	 * @return WindErrorMessage $errorMessage
 	 */
-	protected function getError() {
-		if ($this->error === null) {
-			throw new WindException('errorMessage', WindException::ERROR_CLASS_NOT_EXIST);
+	public function getErrorMessage() {
+		if ($this->errorMessage === null) {
+			throw new WindException(__CLASS__ . '::getError(), Actually get a null', WindException::ERROR_RETURN_TYPE_ERROR);
 		}
-		return $this->error;
+		return $this->errorMessage;
 	}
 
 	/**
-	 * @param field_type $error
+	 * 设置错误处理对象
+	 * @param WindErrorMessage $errorMessage
 	 */
-	protected function setError($error) {
-		$this->error = $error;
+	public function setErrorMessage($errorMessage) {
+		$this->errorMessage = $errorMessage;
 	}
 
 	/**

@@ -6,9 +6,14 @@
  * @license 
  */
 
-class WindErrorHandler {
+class WindErrorHandler extends WindAction {
 
-	private $response = null;
+	/* (non-PHPdoc)
+	 * @see WindAction::run()
+	 */
+	public function run() {
+		
+	}
 
 	/**
 	 * @param string $errno
