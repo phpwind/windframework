@@ -43,15 +43,24 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * 更新数据
 	 * @param string $table 更新的数据表
 	 * @param array $data	更新的数据
-	 * @param srting $where	更新的条件
-	 * @param array $wValue	条件中的变量
-	 * @param array $order	order 信息
-	 * @param num $limit	limit 信息
+	 * @param srting $condition	更新的条件
+	 * array(
+	 * 'where' => '',  查询的条件
+	 * 'whereValue' => array(),  查询条件中的变量值
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'limit' => '' 查询的数量
+	 * )
 	 * @return bool
 	 */
-	public function update($table, $data, $where = '', $wValue = array(), $order = array(), $limit = 0) {
+	public function update($table, $data, $condition = array()) {
+		$condition = $this->cookCondition($condition);
 		$db = $this->getConnection();
-		$result = $db->getSqlBuilder()->from($table)->set($data)->where($where, $wValue)->order($order)->limit($limit)->update();
+		$result = $db->getSqlBuilder()->from($table)
+									  ->set($data)
+									  ->where($condition['where'], $condition['whereValue'])
+									  ->order($condition['order'])
+									  ->limit($condition['limit'])
+									  ->update();
 		return $result;
 	}
 
@@ -66,7 +75,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	public function updateByField($table, $data, $filed, $value) {
 		if (!$this->checkFiled($filed)) return false;
-		return $this->update($table, $data, "$filed = ?", $value);
+		return $this->update($table, $data, array('where' => "$filed = ?", 'whereValue' => $value));
 	}
 
 	/**
@@ -102,14 +111,22 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * 删除数据
 	 * 
 	 * @param string $table 更新的数据表
-	 * @param string $where	条件
-	 * @param array $value	条件中的变量
-	 * @param array $order	order信息
-	 * @param ini $limit	limit信息
+	 * @param srting $condition	更新的条件
+	 * array(
+	 * 'where' => '',  查询的条件
+	 * 'whereValue' => array(),  查询条件中的变量值
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'limit' => '' 查询的数量
+	 * )
 	 * @return bool
 	 */
-	public function delete($table, $where, $value = array(), $order = array(), $limit = 0) {
-		$result = $this->getConnection()->getSqlBuilder()->from($table)->where($where, $value)->order($order)->limit($limit)->delete();
+	public function delete($table, $condition) {
+		$condition = $this->cookCondition($condition);
+		$result = $this->getConnection()->getSqlBuilder()->from($table)
+										->where($condition['where'], $condition['whereValue'])
+										->order($condition['order'])
+										->limit($condition['limit'])
+										->delete();
 		return $result;
 	}
 
@@ -123,7 +140,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	public function deleteByField($table, $filed, $value) {
 		if (!$this->checkFiled($filed)) return array();
-		return $this->delete($table, "$filed = ?", $value);
+		return $this->delete($table, array('where' => "$filed = ?", 'whereValue' => $value));
 	}
 
 	/**
@@ -132,11 +149,11 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @param array $condition
 	 * array(
 	 * 'field' => '*' 查询的字段
-	 * 'where' => '',  查询的条件
-	 * 'params' => array(),  查询条件中的变量值
+	 * 'where' => '' | array(),  查询的条件
+	 * 'whereValue' => array(),  查询条件中的变量值
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
-	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'havingValue' => array(),  having条件中的变量值
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * )
 	 * @param array $config	独立配置信息
@@ -147,9 +164,9 @@ class WindDbTemplate implements IWindDbTemplate {
 		$db = $this->getConnection();
 		$query = $db->getSqlBuilder()->from($table)
 		                             ->field($condition['field'])
-		                             ->where($condition['where'], $condition['params'])
+		                             ->where($condition['where'], $condition['whereValue'])
 		                             ->group($condition['group'])
-		                             ->having($condition['having'], $condition['havingValues'])
+		                             ->having($condition['having'], $condition['havingValue'])
 		                             ->order($condition['order'])
 		                             ->limit(1)
 		                             ->select();
@@ -166,7 +183,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	public function findByField($table, $filed, $value, $config = array()) {
 		if (!$this->checkFiled($filed)) return array();
-		return $this->find($table, array('where' => "$filed = ?", 'params' => $value), $config);
+		return $this->find($table, array('where' => "$filed = ?", 'whereValue' => $value), $config);
 	}
 
 	/**
@@ -175,10 +192,10 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * array(
 	 * 'field' => '*' 查询的字段
 	 * 'where' => '',  查询的条件
-	 * 'params' => array(),  查询条件中的变量值
+	 * 'whereValue' => array(),  查询条件中的变量值
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
-	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'havingValue' => array(),  having条件中的变量值
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * 'limit' => '' 查询的数量
 	 * 'offset'=> '' 和limit配合使用
@@ -192,9 +209,9 @@ class WindDbTemplate implements IWindDbTemplate {
 		$db = $this->getConnection();
 		$query = $db->getSqlBuilder()->from($table)
 									 ->field($condition['field'])
-									 ->where($condition['where'], $condition['params'])
+									 ->where($condition['where'], $condition['whereValue'])
 									 ->group($condition['group'])
-									 ->having($condition['having'], $condition['havingValues'])
+									 ->having($condition['having'], $condition['havingValue'])
 									 ->order($condition['order'])
 									 ->limit($condition['limit'], $condition['offset'])
 									 ->select();
@@ -210,10 +227,10 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * array(
 	 * 'field' => '*' 查询的字段
 	 * 'where' => '',  查询的条件
-	 * 'params' => array(),  查询条件中的变量值
+	 * 'whereValue' => array(),  查询条件中的变量值
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
-	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'havingValue' => array(),  having条件中的变量值
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * )
 	 * @param array $config	独立配置信息
@@ -233,8 +250,9 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @return array
 	 */
 	private function cookCondition($condition) {
-		$defaultValue = array('field' => '*', 'where' => '', 'params' => array(), 'group' => array(), 
-		                'order' => array(), 'limit' => null, 'offset' => null, 'having' => '', 'havingValues' => array());
+		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 
+		                      'group' => array(),  'order' => array(), 'limit' => null, 
+		                      'offset' => null, 'having' => '', 'havingValue' => array());
 		return array_merge($defaultValue, $condition);
 	}
 
