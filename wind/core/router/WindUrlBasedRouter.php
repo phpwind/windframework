@@ -64,8 +64,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 			$controllerSuffix = '';
 			if ($this->modulePath === '') {
 				$this->modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
-				$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
 			}
+			$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
 			$controllerPath = $this->modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
 		}
 		if (strpos($controllerPath, ':') === false)

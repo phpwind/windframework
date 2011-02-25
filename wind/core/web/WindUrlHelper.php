@@ -224,13 +224,14 @@ class WindUrlHelper extends WindComponentModule {
 	 * @return string 返回重写后的url
 	 */
 	private function buildRewriteURL($params, $routerInfo) {
-		$separator = $this->getSeparator();
-		$url = '';
-		foreach ($params as $key => $value) {
-			$url .= $this->buildKey($key, $value, $separator[0], $separator[1]) . $separator[1];
-		}
 		$routerInfo = $this->parseUrlToParams(explode('&', trim($routerInfo, '?')), '&', '=');
 		$routerInfo = implode(self::ROUTE_SEPARATOR, $routerInfo) . '.' . $this->getRouteSuffix();
+		$separator = $this->getSeparator();
+		if (empty($params)) return $separator[1] . $routerInfo;
+		$url = '';
+		foreach ((array)$params as $key => $value) {
+			$url .= $this->buildKey($key, $value, $separator[0], $separator[1]) . $separator[1];
+		}
 		return $separator[1] . $url . $routerInfo;
 	}
 
@@ -247,7 +248,7 @@ class WindUrlHelper extends WindComponentModule {
 	 * @return string 
 	 */
 	private function buildKey($parentKey, $parentValue, $keyAsValue, $separator, $flag = false) {
-		$flag && $parentKey = '[' . $parentKey . ']';
+		$flag && $parentKey = is_numeric($parentKey) ? '[]' : '[' . $parentKey . ']';
 		if (!is_array($parentValue)) return $parentKey . $keyAsValue . urlencode($parentValue);
 		$keys = array();
 		foreach ($parentValue as $key => $value) {
@@ -262,10 +263,11 @@ class WindUrlHelper extends WindComponentModule {
 	 * @param array $params
 	 * @return string 
 	 */
-	private function buildUrl($params, $flag = false) {
+	private function buildUrl($params) {
+		if (empty($params)) return '';
 		$url = '';
 		foreach ((array) $params as $key => $value) {
-			$url .= $this->buildKey($key, $value, '=', '&') . '&';
+			$url .= $this->buildKey($key, $value, '=', '&', false) . '&';
 		}
 		return trim($url, '&');
 	}
