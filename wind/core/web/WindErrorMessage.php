@@ -6,7 +6,6 @@
  * @license
  */
 
-L::import('WIND:core.WindMessage');
 L::import('WIND:core.web.IWindErrorMessage');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
