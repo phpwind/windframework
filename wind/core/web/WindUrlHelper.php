@@ -22,7 +22,7 @@ class WindUrlHelper extends WindComponentModule {
 
 	const ROUTE_PARAM = 'route-param';
 
-	const REWRITE = TRUE;
+	const REWRITE = false;
 
 	const ROUTE_SEPARATOR = '_';
 
