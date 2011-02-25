@@ -19,7 +19,7 @@ class WindErrorMessage implements IWindErrorMessage {
 
 	private $errorAction = 'run';
 
-	private $errorController = 'WIND:core.web.WindErrorHandler';
+	private $errorController = 'error';
 
 	/* (non-PHPdoc)
 	 * @see IWindErrorMessage::sendError()
@@ -54,7 +54,8 @@ class WindErrorMessage implements IWindErrorMessage {
 				$this->error[] = $error;
 			elseif (is_object($error))
 				$error = get_object_vars($error);
-			if (is_array($error)) $this->error += $error;
+			if (is_array($error))
+				$this->error += $error;
 		} else
 			$this->error[$key] = $error;
 	}
@@ -77,14 +78,16 @@ class WindErrorMessage implements IWindErrorMessage {
 	 * @param field_type $errorAction
 	 */
 	public function setErrorAction($errorAction) {
-		if ($errorAction) $this->errorAction = $errorAction;
+		if ($errorAction)
+			$this->errorAction = $errorAction;
 	}
 
 	/**
 	 * @param field_type $errorController
 	 */
 	public function setErrorController($errorController) {
-		if ($errorController) $this->errorController = $errorController;
+		if ($errorController)
+			$this->errorController = $errorController;
 	}
 
 }

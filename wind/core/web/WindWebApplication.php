@@ -43,9 +43,9 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		} catch (WindActionException $actionException) {
 			$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
 			$_tmp = $actionException->getError();
-			$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController(), $_tmp->getError(), false);
+			$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController(), $_tmp->getError(), true);
 			$this->doDispatch($forward);
-			
+		
 		} catch (WindSqlException $windSqlException) {
 			$this->noActionHandlerFound($windSqlException->getMessage());
 		
@@ -87,8 +87,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
 			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
 		}
-		
-		$this->checkReprocess($handlerAdapter->getController() . '_' . $handlerAdapter->getAction());
 		
 		$handler = $handlerAdapter->getHandler();
 		$definition = new WindComponentDefinition();

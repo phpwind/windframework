@@ -66,9 +66,10 @@ class WindUrlHelper extends WindComponentModule {
 	 * @return string
 	 */
 	public function createUrl($action, $controller, $params = array()) {
-		//TODO 添加controller解析
 		$action && $this->getWindRouter()->setAction($action);
-		$controller && $this->getWindRouter()->setController($controller);
+		list($_c, $_m) = W::resolveController($controller);
+		$_c && $this->getWindRouter()->setController($_c);
+		$_m && $this->getWindRouter()->setModule($_m);
 		$url = $this->getWindRouter()->buildUrl();
 		$server = $this->getUrlServer();
 		if ($this->isRewrite()) {
@@ -336,7 +337,7 @@ class WindUrlHelper extends WindComponentModule {
 	}
 
 	/**
-	 * @return the $windRouter
+	 * @return AbstractWindRouter $windRouter
 	 */
 	public function getWindRouter() {
 		return $this->windRouter;
