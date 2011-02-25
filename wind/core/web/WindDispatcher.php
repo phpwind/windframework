@@ -45,6 +45,10 @@ class WindDispatcher extends WindComponentModule {
 			$_url = $urlHelper->createUrl($forward->getAction(), $forward->getController(), $forward->getArgs());
 		}
 		$_url = $urlHelper->checkUrl($_url);
+		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);
+		if ($_router === null) throw new WindException('router', WindException::ERROR_CLASS_NOT_EXIST);
+		
+		$_router->reParse();
 		$this->response->sendRedirect($_url);
 	}
 

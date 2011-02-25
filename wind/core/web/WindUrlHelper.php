@@ -66,8 +66,8 @@ class WindUrlHelper extends WindComponentModule {
 	 * @return string
 	 */
 	public function createUrl($action, $controller, $params = array()) {
-		$this->getWindRouter()->setAction($action);
-		$this->getWindRouter()->setController($controller);
+		$action && $this->getWindRouter()->setAction($action);
+		$controller && $this->getWindRouter()->setController($controller);
 		$url = $this->getWindRouter()->buildUrl();
 		$server = $this->getUrlServer();
 		if ($this->isRewrite()) {
