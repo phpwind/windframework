@@ -36,7 +36,13 @@
 	<!-- urlBasedRouter -->
 	<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
 		scope="application">
-		<config resource='WIND:core.router.router_config' suffix='xml' />
+		<config>
+			<url-pattern>
+				<module url-param='m' default-value='default' />
+				<controller url-param='c' default-value='index' />
+				<action url-param='a' default-value='run' />
+			</url-pattern>
+		</config>
 	</component>
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
 		scope='singleton'>
