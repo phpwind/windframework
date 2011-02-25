@@ -14,13 +14,13 @@ interface IWindDbTemplate {
 	 * 
 	 * @param array $condition
 	 * array(
-	 * 'where' => 查询的条件
-	 * 'params' => 查询条件中的变量值
-	 * 'group' => group关键字的列名
-	 * 'field' => 查询的字段
-	 * 'having' => having关键字的列名
-	 * 'havingValues' => having条件中的变量值
-	 * 'order' => 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'field' => '*' 查询的字段
+	 * 'where' => '' | array(),  查询的条件
+	 * 'params' => array(),  查询条件中的变量值
+	 * 'group' => array(),  group关键字的列名
+	 * 'having' => '', having关键字的列名
+	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * )
 	 * @param array $config	独立配置信息
 	 * @return array
@@ -31,15 +31,15 @@ interface IWindDbTemplate {
 	 * 查询多条
 	 * @param array $condition
 	 * array(
-	 * 'field' => 查询的字段
-	 * 'where' => 查询的条件
-	 * 'params' => 查询条件中的变量值
-	 * 'group' => group关键字的列名
-	 * 'having' => having关键字的列名
-	 * 'havingValues' => having条件中的变量值
-	 * 'order' => 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
-	 * 'limit' => 查询的数量
-	 * 'offset'=>和limit配合使用
+	 * 'field' => '*' 查询的字段
+	 * 'where' => '',  查询的条件
+	 * 'params' => array(),  查询条件中的变量值
+	 * 'group' => array(),  group关键字的列名
+	 * 'having' => '', having关键字的列名
+	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'limit' => '' 查询的数量
+	 * 'offset'=> '' 和limit配合使用
 	 * )
 	 * @param bool $ifCount	是否需要统计总个数
 	 * @param array $config	数据库独立配置信息
@@ -134,11 +134,13 @@ interface IWindDbTemplate {
 	 * 统计个数
 	 * @param array $condition
 	 * array(
-	 * 'where' => 查询的条件
-	 * 'params' => 查询条件中的变量值
-	 * 'having' => having关键字的列名
-	 * 'havingValues' => having条件中的变量值
-	 * 'order' => 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'field' => '*' 查询的字段
+	 * 'where' => '',  查询的条件
+	 * 'params' => array(),  查询条件中的变量值
+	 * 'group' => array(),  group关键字的列名
+	 * 'having' => '', having关键字的列名
+	 * 'havingValues' => array(),  having条件中的变量值
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * )
 	 * @param array $config	独立配置信息
 	 * @return int
