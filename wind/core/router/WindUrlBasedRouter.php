@@ -39,10 +39,11 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 
 	const URL_RULE_ACTION = 'action';
 
+	
 	/* (non-PHPdoc)
-	 * @see AbstractWindRouter::doParser()
+	 * @see AbstractWindRouter::parse()
 	 */
-	public function doParse() {
+	public function parse() {
 		$this->module = $this->getUrlParamValue(self::URL_RULE_MODULE, $this->request, $this->module);
 		$this->controller = $this->getUrlParamValue(self::URL_RULE_CONTROLLER, $this->request, $this->controller);
 		$this->action = $this->getUrlParamValue(self::URL_RULE_ACTION, $this->request, $this->action);

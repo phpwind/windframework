@@ -25,10 +25,12 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	protected $module = 'default';
 
+	protected $reParse = true;
+
 	/**
 	 * Enter description here ...
 	 */
-	abstract public function doParse();
+	abstract public function parse();
 
 	/**
 	 * Enter description here ...
@@ -39,6 +41,23 @@ abstract class AbstractWindRouter extends WindComponentModule {
 	 * Enter description here ...
 	 */
 	abstract public function buildUrl();
+
+	/**
+	 * Enter description here ...
+	 */
+	public function doParse() {
+		if ($this->reParse) {
+			$this->parse();
+			$this->reParse = false;
+		}
+	}
+
+	/**
+	 * 重新进行解析
+	 */
+	public function reParse() {
+		$this->reParse = true;
+	}
 
 	/**
 	 * 获得业务操作
