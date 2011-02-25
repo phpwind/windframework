@@ -53,7 +53,8 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param WindViewerResolver $windViewerResolver
 	 */
 	public function compile($templateFile, $compileFile, $windViewerResolver) {
-		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
+		if (!$this->checkReCompile($templateFile, $compileFile))
+			return null;
 		$_output = $this->getTemplateFileContent($templateFile);
 		$_output = $this->doCompile($_output, $windViewerResolver);
 		$this->cacheCompileResult($compileFile, $_output);
@@ -66,13 +67,14 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param WindViewerResolver $windViewerResolver
 	 */
 	protected function doCompile($content, $windViewerResolver = null) {
-		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php', '?>'), $content);
+		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php ', '?>'), $content);
 		$content = $this->registerTags($content, $windViewerResolver);
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
 		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
-			if (!$key) continue;
+			if (!$key)
+				continue;
 			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
 		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
@@ -91,11 +93,14 @@ class WindViewTemplate extends WindComponentModule {
 		foreach ((array) $tags as $key => $value) {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
-			if (!$compiler || !$tag) continue;
+			if (!$compiler || !$tag)
+				continue;
 			$regex = '/<(' . $tag . ')(\s|>)+(.)+?(\/>[^"\']|<\/\1>){1}/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
-		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*(\s*(\w+\()*\$(\w)+(\-\>\w+(\(.*\))*)*(\[.*\])*(\-\>\w+(\(.*\))*)*\s*)([);])*}*/i', $windViewerResolver);
+		//{*\s*[{\$](\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?[\s\)\]}]
+		//{*(\s*(\w+\()*\$(\w)+(\-\>\w+(\(.*\))*)*(\[.*\])*(\-\>\w+(\(.*\))*)*\s*)([);])*}*
+		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*\s*[{\$](\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?[\s\)\]}]/i', $windViewerResolver);
 		return $content;
 	}
 
@@ -113,7 +118,8 @@ class WindViewTemplate extends WindComponentModule {
 			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
 		}
 		$_compilerClass = L::import($compiler);
-		if (!class_exists($_compilerClass)) return $content;
+		if (!class_exists($_compilerClass))
+			return $content;
 		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->request, $this->response));
 		$this->_compilerCache = array();
 		return $content;
@@ -125,7 +131,8 @@ class WindViewTemplate extends WindComponentModule {
 	 */
 	private function registerCompiler($content) {
 		$_content = $content[0];
-		if (!$_content) return '';
+		if (!$_content)
+			return '';
 		
 		$key = $this->getCompiledBlockKey();
 		$this->_compilerCache[] = array($key, $_content);
@@ -146,7 +153,8 @@ class WindViewTemplate extends WindComponentModule {
 			$_reCompile = true;
 		} else {
 			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
+			if ((int) $templateFileModifyTime >= $compileFileModifyTime)
+				$_reCompile = true;
 		}
 		return $_reCompile;
 	}
@@ -157,7 +165,8 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile || empty($content)) return;
+		if (!$compileFile || empty($content))
+			return;
 		WindFile::writeover($compileFile, $content);
 	}
 
@@ -171,7 +180,8 @@ class WindViewTemplate extends WindComponentModule {
 	 * @return string|mixed | 处理后结果
 	 */
 	private function getBlockTag($key) {
-		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
+		if (!$this->blockKey)
+			return '<pw-wind key=\'' . $key . '\' />';
 		return str_replace('$', $key, $this->blockKey);
 	}
 
@@ -241,7 +251,8 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param boolean $isTag | 再结果处理时是否添加php脚本定界符 true 添加 ，flase 不添加
 	 */
 	public function setCompiledBlockData($key, $compiledBlockData) {
-		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
+		if ($key)
+			$this->compiledBlockData[$key] = $compiledBlockData;
 	}
 }
 

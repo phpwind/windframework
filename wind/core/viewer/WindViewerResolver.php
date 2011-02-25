@@ -26,24 +26,26 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 
 	/**
 	 * 模板信息
-	 *
 	 * @var WindView
 	 */
 	protected $windView = null;
 
 	/**
 	 * 模板类
-	 *
 	 * @var WindViewTemplate
 	 */
 	protected $windTemplate = null;
 
 	/**
 	 * 模板输出的变量
-	 *
 	 * @var array
 	 */
 	protected $templateVars = array();
+
+	/**
+	 * @var WindUrlHelper
+	 */
+	protected $urlHelper = null;
 
 	/**
 	 * 立即输出模板内容
@@ -80,8 +82,10 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 			$this->templateVars[$key] = $vars;
 			return;
 		}
-		if (is_object($vars)) $vars = get_object_vars($vars);
-		if (is_array($vars)) $this->templateVars += $vars;
+		if (is_object($vars))
+			$vars = get_object_vars($vars);
+		if (is_array($vars))
+			$this->templateVars += $vars;
 	}
 
 	/**
@@ -93,7 +97,8 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 		if (!file_exists($templateFile)) {
 			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
-		if (!$this->getWindView()->getCompileDir()) return $templateFile;
+		if (!$this->getWindView()->getCompileDir())
+			return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
 		$this->getWindTemplate()->compile($templateFile, $compileFile, $this);
 		return $compileFile;
@@ -118,8 +123,10 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @return array()
 	 */
 	private function parserLayout($template) {
-		if (null === $layout = $this->getWindView()->getLayout()) return null;
-		if (!$template) $template = $this->getWindView()->getTemplateName();
+		if (null === $layout = $this->getWindView()->getLayout())
+			return null;
+		if (!$template)
+			$template = $this->getWindView()->getTemplateName();
 		$layout->setDir($this->getWindView()->getTemplatePath());
 		$layout->setSuffix($this->getWindView()->getTemplateExt());
 		return $layout->parserLayout($template);
@@ -149,7 +156,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	protected function getWriteTableForGetterAndSetter() {
-		return array('windView', 'windTemplate');
+		return array('windView', 'windTemplate', 'urlHelper');
 	}
 
 }
