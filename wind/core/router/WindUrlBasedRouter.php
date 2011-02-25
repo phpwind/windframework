@@ -31,6 +31,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	/* url 后缀名参数规则 */
 	const CONTROLLER_SUFFIX = 'controller-suffix';
 
+	const ERROR_HANDLER = 'error-handler';
+
 	const ACTION_SUFFIX = 'action-suffix';
 
 	const URL_RULE_MODULE = 'module';
@@ -53,18 +55,21 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 */
 	public function getHandler() {
 		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-		if (!$moduleConfig) {
+		if (!$moduleConfig)
 			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
+		
+		if ($this->getController() === 'error') {
+			$controllerPath = $this->errorHandle;
+		} else {
+			$controllerSuffix = '';
+			if ($this->modulePath === '') {
+				$this->modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
+				$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
+			}
+			$controllerPath = $this->modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
 		}
-		$controllerSuffix = '';
-		if ($this->modulePath === '') {
-			$this->modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
-			$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
-		}
-		$controllerPath = $this->modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
-		if (strpos($controllerPath, ':') === false) {
+		if (strpos($controllerPath, ':') === false)
 			$controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
-		}
 		return $controllerPath;
 	}
 
@@ -91,7 +96,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	private function getUrlParamValue($type, $request = null, $defaultValue = '') {
 		$_config = $this->getConfig()->getConfig(self::URL_RULE);
 		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
-			if (is_null($request)) return $_param;
+			if (is_null($request))
+				return $_param;
 			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE, $_config);
 			$defaultValue = $_defaultValue ? $_defaultValue : $defaultValue;
 			return $request->getAttribute($_param, $defaultValue);

@@ -19,6 +19,8 @@ L::import('WIND:core.WindComponentModule');
  */
 abstract class AbstractWindRouter extends WindComponentModule {
 
+	protected $errorHandle = 'WIND:core.web.WindErrorHandler';
+
 	protected $action = 'run';
 
 	protected $controller = 'index';
