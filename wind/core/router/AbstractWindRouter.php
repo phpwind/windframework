@@ -29,6 +29,8 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	protected $modulePath = '';
 
+	protected $appName = '';
+
 	protected $reParse = true;
 
 	/**
@@ -54,6 +56,7 @@ abstract class AbstractWindRouter extends WindComponentModule {
 			$this->parse();
 			$this->reParse = false;
 		}
+		$this->destroy();
 	}
 
 	/**
@@ -102,12 +105,28 @@ abstract class AbstractWindRouter extends WindComponentModule {
 	 * @param string $module
 	 */
 	public function setModule($module) {
-		if (false !== strpos($module, ':') || false !== strpos($module, '.')) {
+		if (false !== $pos = strpos($module, ':')) {
+			$this->appName = substr($module, 0, $pos);
+			$this->modulePath = substr($module, $pos + 1);
+			if (false === strpos($this->modulePath, '.')) {
+				$this->module = $this->modulePath;
+				$this->modulePath = '';
+			}
+		} elseif (false !== strpos($module, '.')) {
 			$this->modulePath = $module;
 		} else {
 			$this->module = $module;
 			$this->modulePath = '';
+			$this->appName = '';
 		}
+	}
+
+	/**
+	 * 销毁缓存
+	 */
+	protected function destroy() {
+		$this->modulePath = '';
+		$this->appName = '';
 	}
 
 }
