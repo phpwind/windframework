@@ -5,24 +5,28 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.db.base.WindDbAdapter');
+L::import('WIND:component.db.drivers.AbstractWindDbAdapter');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindMySql extends WindDbAdapter {
+class WindMySql extends AbstractWindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#connect()
 	 */
 	protected function connect() {
-		if (!is_resource($this->connection) || $this->config[IWindDbConfig::CONN_FORCE]) {
-			$this->connection = $this->config[IWindDbConfig::CONN_PCONN] ? mysql_pconnect($this->config[IWindDbConfig::CONN_HOST], $this->config[IWindDbConfig::CONN_USER], $this->config[IWindDbConfig::CONN_PASS]) : mysql_connect($this->config[IWindDbConfig::CONN_HOST], $this->config[IWindDbConfig::CONN_USER], $this->config[IWindDbConfig::CONN_PASS], $this->config[IWindDbConfig::CONN_FORCE]);
-			$this->changeDB($this->config[IWindDbConfig::CONN_NAME]);
-			$this->setCharSet($this->config[IWindDbConfig::CONN_CHAR]);
+		if (!is_resource($this->connection) || $this->config[IWindDbConfig::FORCE]) {
+			$host = isset($this->config[IWindDbConfig::PORT]) ? $this->config[IWindDbConfig::HOST] . ':' . $this->config[IWindDbConfig::PORT] : $this->config[IWindDbConfig::HOST];
+			$user = $this->config[IWindDbConfig::USER];
+			$pass = $this->config[IWindDbConfig::PASS];
+			$pconnect = ('true' === $this->config[IWindDbConfig::PCONNECT] );
+			$this->connection = $pconnect ? mysql_pconnect($host, $user, $pass) : mysql_connect($host, $user, $pass, $this->config[IWindDbConfig::FORCE]);
+			$this->changeDB($this->config[IWindDbConfig::NAME]);
+			$this->setCharset($this->config[IWindDbConfig::CHARSET]);
 		} else {
-			$this->changeDB($this->config[IWindDbConfig::CONN_NAME]);
+			$this->changeDB($this->config[IWindDbConfig::NAME]);
 		}
 		return $this->connection;
 	}
@@ -59,7 +63,7 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException('', WindSqlException::DB_EMPTY);
 		}
 		$this->query('SHOW TABLES FROM ' . $schema);
-		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
+		return $this->getAllRow(IWindDbConfig::ASSOC);
 	}
 	
 	/* (non-PHPdoc)
@@ -70,13 +74,13 @@ class WindMySql extends WindDbAdapter {
 			throw new WindSqlException('', WindSqlException::DB_TABLE_EMPTY);
 		}
 		$this->query('SHOW COLUMNS FROM ' . $table);
-		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
+		return $this->getAllRow(IWindDbConfig::ASSOC);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getAllRow($fetch_type = IWindDbConfig::ASSOC) {
 		if (!is_resource($this->query)) {
 			throw new WindSqlException('', WindSqlException::DB_QUERY_LINK_EMPTY);
 		}
@@ -93,7 +97,7 @@ class WindMySql extends WindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindDbAdapter#getRow()
 	 */
-	public function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getRow($fetch_type = IWindDbConfig::ASSOC) {
 		return mysql_fetch_array($this->query, $fetch_type);
 	}
 	
@@ -162,7 +166,7 @@ class WindMySql extends WindDbAdapter {
 	 * @param string | int $key 数据库连接标识
 	 * @return boolean
 	 */
-	public function setCharSet($charset) {
+	public function setCharset($charset) {
 		$version = (int) substr($this->getVersion(), 0, 1);
 		if ($version > 4) {
 			$this->query("SET NAMES '" . $charset . "'");

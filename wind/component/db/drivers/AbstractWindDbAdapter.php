@@ -6,14 +6,14 @@
  * @license 
  */
 L::import('WIND:component.exception.WindSqlException');
-L::import('WIND:component.db.base.IWindDbConfig');
+L::import('WIND:component.db.drivers.IWindDbConfig');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindDbAdapter {
+abstract class AbstractWindDbAdapter {
 	
 	/**
 	 * @var string 前次执行的sqly语句
@@ -27,19 +27,6 @@ abstract class WindDbAdapter {
 	 * @var int 前句执行sql时的错误代码
 	 */
 	protected $last_errcode = 0;
-	
-	/**
-	 * @var string 数据库字符集
-	 */
-	protected $charset = 'gbk';
-	/**
-	 * @var boolean 是否强制连接
-	 */
-	protected $force = false;
-	/**
-	 * @var boolean 是否永久连接
-	 */
-	protected $pconnect = false;
 	/**
 	 * @var int 事务记数器
 	 */
@@ -96,25 +83,13 @@ abstract class WindDbAdapter {
 	 * @return array 返回解析后的数据库配置
 	 */
 	final protected function parseConfig(array $config) {
-		return $this->checkConfig($config);
-	}
-	/**
-	 * 验证config操作
-	 * @param array $config 数据库配置
-	 * @return array
-	 */
-	final private function checkConfig(array $config) {
-		if (empty($config) || (!is_array($config) && !is_string($config))) {
-			throw new WindSqlException('', WindSqlException::DB_CONN_EMPTY);
-		}
-		if (empty($config[IWindDbConfig::CONN_DRIVER]) || empty($config[IWindDbConfig::CONN_HOST]) || empty($config[IWindDbConfig::CONN_NAME]) || empty($config[IWindDbConfig::CONN_USER]) || empty($config[IWindDbConfig::CONN_PASS])) {
-			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
-		}
-		$config[IWindDbConfig::CONN_HOST] = isset($config[IWindDbConfig::CONN_PORT]) ? $config[IWindDbConfig::CONN_HOST] . ':' . $config[IWindDbConfig::CONN_PORT] : $config[IWindDbConfig::CONN_HOST];
-		$config[IWindDbConfig::CONN_PCONN] = isset($config[IWindDbConfig::CONN_PCONN]) ? $config[IWindDbConfig::CONN_PCONN] : $this->pconnect;
-		$config[IWindDbConfig::CONN_FORCE] = isset($config[IWindDbConfig::CONN_FORCE]) ? $config[IWindDbConfig::CONN_FORCE] : $this->force;
-		$config[IWindDbConfig::CONN_CHAR] = isset($config[IWindDbConfig::CONN_CHAR]) ? $config[IWindDbConfig::CONN_CHAR] : $this->charset;
-		return $this->config = $config;
+		$defautConfig = array(
+			IWindDbConfig::PCONNECT => false,
+			IWindDbConfig::FORCE => false,
+			IWindDbConfig::CHARSET =>'gbk',
+			
+		);
+		$this->config = array_merge($defautConfig,$config);
 	}
 	
 	/**
@@ -132,14 +107,14 @@ abstract class WindDbAdapter {
 	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
-	public abstract function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC);
+	public abstract function getAllRow($fetch_type = IWindDbConfig::ASSOC);
 	
 	/**
 	 * 取得查询的单条结果集
 	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
-	public abstract function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC);
+	public abstract function getRow($fetch_type = IWindDbConfig::ASSOC);
 	/**
 	 * 开始事务点
 	 */
@@ -190,7 +165,7 @@ abstract class WindDbAdapter {
 	final public function getSqlBuilder($builderConfig = array()) {
 		if (empty($this->sqlBuilder)) {
 			$builderConfig = $builderConfig ? $builderConfig : $this->builder;
-			$builderClass = $builderConfig[IWindDbConfig::BUILDER_CLASS];
+			$builderClass = $builderConfig[IWindDbConfig::CLASSNAME];
 			$class = L::import($builderClass);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_BUILDER_NOT_EXIST);
@@ -243,15 +218,6 @@ abstract class WindDbAdapter {
 	}
 	
 	/**
-	 * 字符处理
-	 * @param string $value
-	 * @return string
-	 */
-	public function escapeString($value) {
-		return " '" . $value . "' ";
-	}
-	
-	/**
 	 * 返回DataBase连接
 	 * @return resoruce
 	 */
@@ -280,7 +246,7 @@ abstract class WindDbAdapter {
 	 * @return string:
 	 */
 	final public function getSchema() {
-		return $this->config[IWindDbConfig::CONN_NAME];
+		return $this->config[IWindDbConfig::NAME];
 	}
 	
 	/**
@@ -288,7 +254,7 @@ abstract class WindDbAdapter {
 	 * @return string;
 	 */
 	final public function getDriver() {
-		return $this->config[IWindDbConfig::CONN_DRIVER];
+		return $this->config[IWindDbConfig::DRIVER];
 	}
 	
 	public function __destruct() {

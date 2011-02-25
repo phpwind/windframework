@@ -5,21 +5,25 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.db.base.WindDbAdapter');
+L::import('WIND:component.drivers.AbstractWindDbAdapter');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindMsSql extends WindDbAdapter {
+class WindMsSql extends AbstractWindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#connect()
 	 */
 	protected function connect() {
-		if (!is_resource($this->connection) || $this->config[IWindDbConfig::CONN_FORCE]) {
-			$this->connection = $this->config[IWindDbConfig::CONN_PCONN] ? mssql_pconnect($this->config[IWindDbConfig::CONN_HOST], $this->config[IWindDbConfig::CONN_USER], $this->config[IWindDbConfig::CONN_PASS]) : mssql_connect($this->config[IWindDbConfig::CONN_HOST], $this->config[IWindDbConfig::CONN_USER], $this->config[IWindDbConfig::CONN_PASS], $this->config[IWindDbConfig::CONN_FORCE]);
-			$this->changeDB($this->config[IWindDbConfig::CONN_NAME]);
+		if (!is_resource($this->connection) || ($this->config[IWindDbConfig::FORCE])) {
+			$host = isset($this->config[IWindDbConfig::PORT]) ? $this->config[IWindDbConfig::HOST] . ':' . $this->config[IWindDbConfig::PORT] : $this->config[IWindDbConfig::HOST];
+			$user = $this->config[IWindDbConfig::USER];
+			$pass = $this->config[IWindDbConfig::PASS];
+			$pconnect = ('true' === $this->config[IWindDbConfig::PCONNECT] );
+			$this->connection = $pconnect ? mssql_pconnect($host, $user, $pass) : mssql_connect($host, $user, $pass, $this->config[IWindDbConfig::FORCE]);
+			$this->changeDB($this->config[IWindDbConfig::NAME]);
 		}
 		return $this->connection;
 	}
@@ -60,7 +64,7 @@ class WindMsSql extends WindDbAdapter {
 			throw new WindSqlException('', WindSqlException::DB_EMPTY);
 		}
 		$this->query("SELECT name,object_id FROM {$schema}.sys.all_objects WHERE type = 'U'");
-		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
+		return $this->getAllRow(IWindDbConfig::ASSOC);
 	}
 	
 	/* (non-PHPdoc)
@@ -73,13 +77,13 @@ class WindMsSql extends WindDbAdapter {
 		$this->query('SELECT b.name Field,b.max_length,b.precision,b.scale,b.is_nullable,b.is_identity FROM sys.objects a 
 					  INNER JOIN sys.all_columns b ON a.object_id = b.object_id 
 					  INNER JOIN sys.types c ON b.system_type_id = c.system_type_id where a.name =  ' . $this->escapeString($table));
-		return $this->getAllRow(IWindDbConfig::RESULT_ASSOC);
+		return $this->getAllRow(IWindDbConfig::ASSOC);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getAllRow($fetch_type = IWindDbConfig::ASSOC) {
 		if (!is_resource($this->query)) {
 			throw new WindSqlException('', WindSqlException::DB_QUERY_LINK_EMPTY);
 		}
@@ -96,7 +100,7 @@ class WindMsSql extends WindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/component/db/base/WindDbAdapter#getRow()
 	 */
-	public function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getRow($fetch_type = IWindDbConfig::ASSOC) {
 		return mssql_fetch_array($this->query, $fetch_type);
 	}
 	

@@ -6,24 +6,14 @@
  * @license 
  */
 L::import('WIND:component.exception.WindSqlException');
-L::import('WIND:component.db.base.IWindDbConfig');
+L::import('WIND:component.db.drivers.IWindDbConfig');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-abstract class WindSqlBuilder {
-	
-	/**
-	 * @var array 运算表达式
-	 */
-	protected static $compare = array('gt' => '>', 'egt' => '>=', 'lt' => '<', 'elt' => '<=', 'eq' => '=', 
-		'neq' => '!=', 'in' => 'IN', 'notin' => 'NOT IN', 'notlike' => 'NOT LIKE', 'like' => 'LIKE');
-	/**
-	 * @var array 逻辑运算符
-	 */
-	protected static $logic = array('and' => self::SQL_AND, 'or' => self::SQL_OR, 'xor' => self::SQL_XOR);
+abstract class AbstractWindSqlBuilder {
 	/**
 	 * @var array 分组条件
 	 */
@@ -32,8 +22,8 @@ abstract class WindSqlBuilder {
 	/**
 	 * @var array 连接类型
 	 */
-	protected static $joinType = array(self::INNER => self::SQL_INNER, self::LEFT => self::SQL_LEFT, 
-		self::RIGHT => self::SQL_RIGHT, self::FULL => self::SQL_FULL, self::CROSS => self::SQL_CROSS);
+	protected static $joinType = array(self::INNER => 'INNER', self::LEFT => 'LEFT', 
+		self::RIGHT => 'RIGHT', self::FULL => 'FULL', self::CROSS => 'CROSS');
 	
 	const LG = '(';
 	const RG = ')';
@@ -55,44 +45,12 @@ abstract class WindSqlBuilder {
 	const FULL = 'full';
 	const CROSS = 'cross';
 	const DATA = 'data';
-	
-	const SQL_SELECT = 'SELECT ';
-	const SQL_INSERT = 'INSERT ';
-	const SQL_UPDATE = 'UPDATE ';
-	const SQL_DELETE = 'DELETE ';
-	const SQL_REPLACE = 'REPLACE ';
-	const SQL_FROM = 'FROM ';
-	const SQL_INNER = 'INNER ';
-	const SQL_LEFT = 'LEFT ';
-	const SQL_RIGHT = 'RIGTH ';
-	const SQL_FULL = 'FULL ';
-	const SQL_CROSS = 'CROSS ';
-	const SQL_JOIN = 'JOIN ';
-	const SQL_WHERE = 'WHERE ';
-	const SQL_DISTINCT = 'DISTINCT ';
-	const SQL_GROUP = 'GROUP BY ';
-	const SQL_ORDER = 'ORDER BY ';
-	const SQL_HAVING = 'HAVING ';
-	const SQL_AND = 'AND ';
-	const SQL_IN = 'IN ';
-	const SQL_AS = 'AS ';
-	const SQL_OR = 'OR ';
-	const SQL_XOR = 'XOR ';
-	const SQL_ON = 'ON ';
-	const SQL_SET = 'SET ';
-	const SQL_VALUES = 'VALUES ';
-	const SQL_LIMIT = 'LIMIT ';
-	const SQL_OFFSET = 'OFFSET ';
-	const SQL_ASC = 'ASC ';
-	const SQL_DESC = 'DESC ';
-	const SQL_ALLFIELD = '* ';
-	
 	/**
 	 * @var array sql语句组装器
 	 */
 	protected $sql = array();
 	/**
-	 * @var WindDbAdapter db操作
+	 * @var AbstractWindDbAdapter db操作
 	 */
 	public $connection = null;
 	
@@ -101,7 +59,7 @@ abstract class WindSqlBuilder {
 	 */
 	public function __construct($adapter = null) {
 		if ($adapter) {
-			if (false === ($adapter instanceof WindDbAdapter) || strtr(get_class($this), array('Builder' => '')) != get_class($adapter)) {
+			if (false === ($adapter instanceof AbstractWindDbAdapter) || strtr(get_class($this), array('Builder' => '')) != get_class($adapter)) {
 				throw new WindSqlException('', WindSqlException::DB_DRIVER_BUILDER_NOT_MATCH);
 			}
 			$this->connection = $adapter;
@@ -125,7 +83,7 @@ abstract class WindSqlBuilder {
 	 * @return WindSqlBuilder
 	 */
 	public function distinct($flag = true) {
-		$this->sql[self::DISTINCT] = $flag ? self::SQL_DISTINCT : '';
+		$this->sql[self::DISTINCT] = $flag ? 'DISTINCT ' : '';
 		return $this;
 	}
 	/**
@@ -360,8 +318,8 @@ abstract class WindSqlBuilder {
 			}
 			if (is_array($config) && is_string($table)) {
 				$table = $this->getAlias($table, $config[2], $config[3]);
-				$joinWhere = $config[1] ? self::SQL_ON . $config[1] : '';
-				$condition = self::$joinType[$config[0]] . self::SQL_JOIN . $table . $joinWhere;
+				$joinWhere = $config[1] ? 'ON ' . $config[1] : '';
+				$condition = self::$joinType[$config[0]] . ' JOIN ' . $table . $joinWhere;
 				$joinContidion .= $joinContidion ? ' ' . $condition : $condition;
 			}
 		}
@@ -376,7 +334,7 @@ abstract class WindSqlBuilder {
 			return '';
 		}
 		$where = is_array($this->sql[self::WHERE]) ? implode(' ', $this->sql[self::WHERE]) : $this->sql[self::WHERE];
-		return $where ? $this->sqlFillSpace(self::SQL_WHERE . $where) : '';
+		return $where ? $this->sqlFillSpace('WHERE ' . $where) : '';
 	}
 	/**
 	 * 解析分组
@@ -387,7 +345,7 @@ abstract class WindSqlBuilder {
 			return '';
 		}
 		$group = is_array($this->sql[self::GROUP]) ? implode(',', $this->sql[self::GROUP]) : $this->sql[self::GROUP];
-		return $group ? $this->sqlFillSpace(self::SQL_GROUP . $group) : '';
+		return $group ? $this->sqlFillSpace('GROUP BY ' . $group) : '';
 	}
 	/**
 	 * 解析排序
@@ -400,12 +358,12 @@ abstract class WindSqlBuilder {
 		$orderby = '';
 		if (is_array($this->sql[self::ORDER])) {
 			foreach ($this->sql[self::ORDER] as $key => $value) {
-				$orderby .= ($orderby ? ',' : '') . (is_string($key) ? $key . ' ' . ($value ? self::SQL_DESC : self::SQL_ASC) : $value);
+				$orderby .= ($orderby ? ',' : '') . (is_string($key) ? $key . ' ' . ($value ? 'DESC ' : 'ASC ') : $value);
 			}
 		} else {
 			$orderby = $this->sql[self::ORDER];
 		}
-		return $orderby ? $this->sqlFillSpace(self::SQL_ORDER . $orderby) : '';
+		return $orderby ? $this->sqlFillSpace('ORDER BY ' . $orderby) : '';
 	}
 	/**
 	 * 解析对分组的过滤语句
@@ -416,7 +374,7 @@ abstract class WindSqlBuilder {
 			return '';
 		}
 		$having = is_array($this->sql[self::HAVING]) ? implode(' ', $this->sql[self::HAVING]) : $this->sql[self::HAVING];
-		return $having ? $this->sqlFillSpace(self::SQL_HAVING . $having) : '';
+		return $having ? $this->sqlFillSpace('HAVING ' . $having) : '';
 	}
 	/**
 	 * 解析分页查询
@@ -435,7 +393,7 @@ abstract class WindSqlBuilder {
 		if (isset($this->sql[self::OFFSET]) && is_array($this->sql[self::OFFSET])) {
 			$this->sql[self::OFFSET] = array_pop($this->sql[self::OFFSET]);
 		}
-		return $this->sqlFillSpace(($sql = $this->sql[self::LIMIT] > 0 ? self::SQL_LIMIT . $this->sql[self::LIMIT] . ' ' : '') ? $this->sql[self::OFFSET] > 0 ? $sql . self::SQL_OFFSET . $this->sql[self::OFFSET] : $sql : '');
+		return $this->sqlFillSpace(($sql = $this->sql[self::LIMIT] > 0 ? 'LIMIT ' . $this->sql[self::LIMIT] . ' ' : '') ? $this->sql[self::OFFSET] > 0 ? $sql . 'OFFSET ' . $this->sql[self::OFFSET] : $sql : '');
 	}
 	/**
 	 * 解析更新数据
@@ -551,7 +509,7 @@ abstract class WindSqlBuilder {
 	
 	/**
 	 * 执行数据库select操作
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function select() {
 		$this->verifyAdapter();
@@ -582,7 +540,7 @@ abstract class WindSqlBuilder {
 	 * @param int $fetch_type 类型
 	 * @return array
 	 */
-	public function getAllRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getAllRow($fetch_type = IWindDbConfig::ASSOC) {
 		$this->verifyAdapter();
 		return $this->connection->getAllRow($fetch_type);
 	}
@@ -592,16 +550,21 @@ abstract class WindSqlBuilder {
 	 * @param int $fetch_type 类型
 	 * @return array
 	 */
-	public function getRow($fetch_type = IWindDbConfig::RESULT_ASSOC) {
+	public function getRow($fetch_type = IWindDbConfig::ASSOC) {
 		$this->verifyAdapter();
 		return $this->connection->getRow($fetch_type);
 	}
 	
+	public function getAffectedRows(){
+		$this->verifyAdapter();
+		return $this->connection->getAffectedRows();
+	}
+	
 	public function verifyAdapter() {
-		if (empty($this->connection)) {
-			throw new WindSqlException('', WindSqlException::DB_ADAPTER_NOT_EXIST);
+		if ($this->connection instanceof AbstractWindDbAdapter) {
+			return true;
 		}
-		return true;
+		throw new WindSqlException('', WindSqlException::DB_ADAPTER_NOT_EXIST);
 	}
 	
 	/**
@@ -612,7 +575,7 @@ abstract class WindSqlBuilder {
 	 * @return string
 	 */
 	public function getAlias($name, $alias = '', $schema = '') {
-		$name = $alias ? $name . ' ' . self::SQL_AS . $alias : $name;
+		$name = $alias ? $name . ' AS ' . $alias : $name;
 		return $this->sqlFillSpace($schema ? $schema . '.' . $name : $name);
 	}
 	
@@ -734,7 +697,7 @@ abstract class WindSqlBuilder {
 	 * @return mixed
 	 */
 	private function trueWhere($where, $value = array(), $logic = true) {
-		return $this->parsePlaceHolder($where, $value, $this->sqlFillSpace($logic ? self::SQL_AND : self::SQL_OR));
+		return $this->parsePlaceHolder($where, $value, $this->sqlFillSpace($logic ? 'AND ' : 'OR '));
 	}
 	
 	/**
@@ -782,9 +745,9 @@ abstract class WindSqlBuilder {
 		}
 		if (isset($this->sql[$whereType]) && $this->sql[$whereType]) {
 			if ($logic) {
-				$_where .= self::SQL_AND . $where;
+				$_where .= 'AND ' . $where;
 			} else {
-				$_where .= self::SQL_OR . $where;
+				$_where .= 'OR ' . $where;
 			}
 		} else {
 			$_where[] = $where;

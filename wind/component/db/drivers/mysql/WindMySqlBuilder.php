@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.db.base.WindSqlBuilder');
+L::import('WIND:component.db.drivers.AbstractWindSqlBuilder');
 /**
  * mysql常用sql语句组装器
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -13,13 +13,13 @@ L::import('WIND:component.db.base.WindSqlBuilder');
  * @version $Id$ 
  * @package 
  */
-final class WindMySqlBuilder extends WindSqlBuilder {
+final class WindMySqlBuilder extends AbstractWindSqlBuilder {
 	
 	/* (non-PHPdoc)
 	 * @see wind/base/WSqlBuilder#getInsertSql()
 	 */
 	public function getInsertSql() {
-		$sql = sprintf(self::SQL_INSERT . '%s(%s)' . self::SQL_VALUES . '%s', $this->buildFrom(), $this->buildField(), $this->buildData());
+		$sql = sprintf('INSERT %s(%s) VALUES %s', $this->buildFrom(), $this->buildField(), $this->buildData());
 		$this->reset();
 		return $sql;
 	}
@@ -28,7 +28,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getUpdateSql()
 	 */
 	public function getUpdateSql() {
-		$sql = sprintf(self::SQL_UPDATE . '%s' . self::SQL_SET . '%s%s%s%s', $this->buildFrom(), $this->buildSet(), $this->buildWhere(), $this->buildOrder(), $this->buildLimit());
+		$sql = sprintf('UPDATE %s SET %s%s%s%s', $this->buildFrom(), $this->buildSet(), $this->buildWhere(), $this->buildOrder(), $this->buildLimit());
 		$this->reset();
 		return $sql;
 	}
@@ -37,7 +37,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getDeleteSql()
 	 */
 	public function getDeleteSql() {
-		$sql = sprintf(self::SQL_DELETE . ' ' . self::SQL_FROM . '%s%s%s%s', $this->buildFrom(), $this->buildWhere(), $this->buildOrder(), $this->buildLimit());
+		$sql = sprintf('DELETE FROM %s%s%s%s', $this->buildFrom(), $this->buildWhere(), $this->buildOrder(), $this->buildLimit());
 		$this->reset();
 		return $sql;
 	}
@@ -46,7 +46,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getSelectSql()
 	 */
 	public function getSelectSql() {
-		$sql = sprintf(self::SQL_SELECT . '%s%s' . self::SQL_FROM . '%s%s%s%s%s%s%s', $this->buildDistinct(), $this->buildField(), $this->buildFROM(), $this->buildJoin(), $this->buildWhere(), $this->buildGroup(), $this->buildHaving(), $this->buildOrder(), $this->buildLimit());
+		$sql = sprintf('SELECT %s%s FROM %s%s%s%s%s%s%s', $this->buildDistinct(), $this->buildField(), $this->buildFROM(), $this->buildJoin(), $this->buildWhere(), $this->buildGroup(), $this->buildHaving(), $this->buildOrder(), $this->buildLimit());
 		$this->reset();
 		return $sql;
 	}
@@ -55,7 +55,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getReplaceSql()
 	 */
 	public function getReplaceSql() {
-		$sql = sprintf(self::SQL_REPLACE . '%s(%s)' . self::SQL_VALUES . '%s', $this->buildFROM(), $this->buildField(), $this->buildData());
+		$sql = sprintf('REPLACE %s(%s) VALUES %s', $this->buildFROM(), $this->buildField(), $this->buildData());
 		$this->reset();
 		return $sql;
 	}
@@ -64,7 +64,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 * @see wind/base/WSqlBuilder#getReplaceSql()
 	 */
 	public function getLastInsertIdSql() {
-		return sprintf(self::SQL_SELECT . '%s', 'LAST_INSERT_ID() AS insertId');
+		return sprintf('SELECT ' . '%s', 'LAST_INSERT_ID() AS insertId');
 	}
 	
 	/* (non-PHPdoc)
@@ -72,7 +72,7 @@ final class WindMySqlBuilder extends WindSqlBuilder {
 	 */
 	public function getAffectedSql($ifquery = true) {
 		$rows = $ifquery ? 'FOUND_ROWS()' : 'ROW_COUNT()';
-		return sprintf(self::SQL_SELECT . '%s', "$rows AS afftectedRows");
+		return sprintf('SELECT ' . '%s', "$rows AS afftectedRows");
 	}
 	
 	/* (non-PHPdoc)

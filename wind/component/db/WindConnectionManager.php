@@ -6,7 +6,7 @@
  * @license 
  */
 L::import('WIND:component.exception.WindSqlException');
-L::import('WIND:component.db.base.IWindDbConfig');
+L::import('WIND:component.db.drivers.IWindDbConfig');
 /**
  * 实现分步式数据库操作管理及由静态工厂返回相应的数据库适配器
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -20,7 +20,7 @@ class WindConnectionManager extends WindComponentModule {
 	 */
 	private $linked = array();
 	/**
-	 * @var WindDbAdapter
+	 * @var AbstractWindDbAdapter
 	 */
 	private $connection = null;
 	/**
@@ -29,7 +29,7 @@ class WindConnectionManager extends WindComponentModule {
 	 * @param string $type 是否是主从
 	 * @return resource
 	 */
-	public function getConnection($identify = '', $type = IWindDbConfig::CONN_MASTER) {
+	public function getConnection($identify = '', $type = IWindDbConfig::MASTER) {
 		$connections = $this->getConnections();
 		$drivers = $this->getDrivers();
 		$builders = $this->getBuilders();
@@ -39,12 +39,12 @@ class WindConnectionManager extends WindComponentModule {
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if (empty($this->linked[$identify])) {
 			$dbConfig = $connections[$identify];
-			$driver = $drivers[$dbConfig[IWindDbConfig::CONN_DRIVER]];
-			$class = L::import($driver[IWindDbConfig::DRIVER_CLASS]);
+			$driver = $drivers[$dbConfig[IWindDbConfig::DRIVER]];
+			$class = L::import($driver[IWindDbConfig::CLASSNAME]);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
 			}
-			$builder = $builders[$driver[IWindDbConfig::DRIVER_BUILDER]];
+			$builder = $builders[$driver[IWindDbConfig::BUILDER]];
 			$this->linked[$identify] = new $class($dbConfig, $driver, $builder);
 		}
 		return $this->connection = $this->linked[$identify];
@@ -54,14 +54,14 @@ class WindConnectionManager extends WindComponentModule {
 	 * @return WindDbAdapter
 	 */
 	public function getMasterConnection() {
-		return 1 < count($this->getConnections()) ? $this->getConnection('', IWindDbConfig::CONN_MASTER) : $this->getConnection('', '');
+		return 1 < count($this->getConnections()) ? $this->getConnection('', IWindDbConfig::MASTER) : $this->getConnection('', '');
 	}
 	/**
 	 * 取得从服务器
 	 * @return WindDbAdapter
 	 */
 	public function getSlaveConnection() {
-		return 1 < count($this->getConnections()) ? $this->getConnection('', IWindDbConfig::CONN_SLAVE) : $this->getConnection('', '');
+		return 1 < count($this->getConnections()) ? $this->getConnection('', IWindDbConfig::SLAVE) : $this->getConnection('', '');
 	}
 
 	/**
@@ -141,9 +141,9 @@ class WindConnectionManager extends WindComponentModule {
 	private function getMasterSlave() {
 		$array = array();
 		foreach ($this->getConnections() as $key => $value) {
-			if (isset($value[IWindDbConfig::CONN_TYPE]) && in_array($value[IWindDbConfig::CONN_TYPE], array(
-				IWindDbConfig::CONN_MASTER, IWindDbConfig::CONN_SLAVE))) {
-				$array[$value[IWindDbConfig::CONN_TYPE]][$key] = $value;
+			if (isset($value[IWindDbConfig::TYPE]) && in_array($value[IWindDbConfig::TYPE], array(
+				IWindDbConfig::MASTER, IWindDbConfig::SLAVE))) {
+				$array[$value[IWindDbConfig::TYPE]][$key] = $value;
 			}
 		}
 		return $array;
