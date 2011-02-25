@@ -61,6 +61,7 @@ abstract class AbstractWindDaoFactory {
 	/**
 	 * 获取DBHandler
 	 * @param AbstractWindDao $daoObject
+	 * @return AbstractWindDbAdapter
 	 */
 	protected function createDbHandler($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
@@ -79,7 +80,7 @@ abstract class AbstractWindDaoFactory {
 	/**
 	 * 返回Cache对象
 	 * @param AbstractWindDao $daoObject
-	 * @return multitype:
+	 * @return AbstractWindCache
 	 */
 	protected function createCacheHandler($daoObject) {
 		$_cacheClass = $daoObject->getCacheClass();

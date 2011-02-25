@@ -20,7 +20,8 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbDefinition = null;
 
-	protected $cacheClass = 'WIND:component.cache.strategy.WindApcCache';
+
+	protected $cacheClass = 'WIND:component.cache.strategy.WindDbCache';
 
 	protected $cacheConfig = 'WIND:component.cache.cache_config';
 
@@ -34,7 +35,7 @@ abstract class AbstractWindDao extends WindModule {
 	protected $dbHandler = null;
 
 	/**
-	 * @var IWindCache 缓存操作句柄
+	 * @var AbstractWindCache 缓存操作句柄
 	 */
 	protected $cacheHandler = null;
 
