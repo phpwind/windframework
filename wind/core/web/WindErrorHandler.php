@@ -10,13 +10,18 @@ class WindErrorHandler extends WindAction {
 
 	protected $error = array();
 
-	protected $backUrl = '';
+	protected $urlReferer = '';
 
 	/* (non-PHPdoc)
 	 * @see WindAction::beforeAction()
 	 */
 	public function beforeAction($handlerAdapter) {
 		$this->error = $this->getInput('error');
+		if ($this->request->getUrlReferer())
+			$this->urlReferer = $this->request->getUrlReferer();
+		else
+			$this->urlReferer = $this->request->getBaseUrl();
+		
 		return true;
 	}
 
@@ -24,7 +29,8 @@ class WindErrorHandler extends WindAction {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		echo $this->error[0];
+		echo array_pop($this->error);
+		echo $this->urlReferer;
 		exit();
 	}
 

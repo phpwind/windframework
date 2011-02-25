@@ -49,9 +49,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		} catch (WindViewException $windViewException) {
 
 		} catch (WindException $exception) {
-			echo $exception->getMessage();
-		
-		//$this->noActionHandlerFound($exception->getMessage());
+			$this->noActionHandlerFound($windSqlException->getMessage());
+			
 		}
 	}
 
@@ -128,8 +127,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	protected function sendErrorMessage($actionException) {
 		$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
 		$_tmp = $actionException->getError();
-		$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController(), array(
-			'error' => $_tmp->getError()), false);
+		$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController());
+		$this->request->setAttribute('error', $_tmp->getError());
 		$this->doDispatch($forward);
 	}
 
