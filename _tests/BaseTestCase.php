@@ -6,6 +6,7 @@ define('IS_DEBUG', true);
 define('COMPILE_PATH', T_P . '/data/compile/');
 include 'WindBase.php';
 L::register(T_P, 'TEST');
+
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
