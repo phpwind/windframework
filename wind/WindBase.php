@@ -107,10 +107,7 @@ class W {
 	static public function resolveController($controllerPath) {
 		$_m = $_c = '';
 		if (!$controllerPath) return array($_c, $_m);
-		if (($pos = strpos($controllerPath, ':')) !== false) {
-			$controllerPath = substr($controllerPath, $pos + 1);
-		}
-		if (($pos = strrpos($controllerPath, '.')) !== false) {
+		if (false !== ($pos = strrpos($controllerPath, '.'))) {
 			$_m = substr($controllerPath, 0, $pos);
 			$_c = substr($controllerPath, $pos + 1);
 		} else {
