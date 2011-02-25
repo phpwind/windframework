@@ -114,7 +114,7 @@ interface IWindDbTemplate {
 	 * )
 	 * @return bool
 	 */
-	public function update($table, $data, $condition);
+	public function update($table, $data, $condition = array());
 	
 	/**
 	 * 通过字段更新
