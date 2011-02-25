@@ -80,7 +80,7 @@ abstract class AbstractWindSqlBuilder {
 	/**
 	 * 是否包含重复的值
 	 * @param boolean $flag
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function distinct($flag = true) {
 		$this->sql[self::DISTINCT] = $flag ? 'DISTINCT ' : '';
@@ -89,7 +89,7 @@ abstract class AbstractWindSqlBuilder {
 	/**
 	 * 要查询的字段
 	 * @param mixed $field
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function field($field) {
 		$params = func_num_args();
@@ -103,7 +103,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询内联表的字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function join($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::INNER, $table, $joinWhere, $alias, $fields, $schema);
@@ -115,8 +115,8 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询内联表的字段
 	 * @param string $schema 数据库
-	 * @see wind/component/db/base/WindSqlBuilder#join()
-	 * @return WindSqlBuilder
+	 * @see wind/component/db/drivers/WindSqlBuilder#join()
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function innerJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::INNER, $table, $joinWhere, $alias, $fields, $schema);
@@ -128,7 +128,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询左联表的字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function leftJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::LEFT, $table, $joinWhere, $alias, $fields, $schema);
@@ -140,7 +140,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询右联表的字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function rightJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::RIGHT, $table, $joinWhere, $alias, $fields, $schema);
@@ -152,7 +152,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询全联表的字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function fullJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::FULL, $table, $joinWhere, $alias, $fields, $schema);
@@ -164,7 +164,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $alias 表别名
 	 * @param string|array $fields 要查询交叉联表的字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function crossJoin($table, $joinWhere, $alias = '', $fields = '', $schema = '') {
 		return $this->assembleJoin(self::CROSS, $table, $joinWhere, $alias, $fields, $schema);
@@ -174,7 +174,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string|array $where 查询条件
 	 * @param string|array $value 条件对应的值
 	 * @param boolean $group  是否启用分组
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function where($where, $value = array(), $group = '') {
 		return $this->assembleWhere($where, self::WHERE, $value, true, $group);
@@ -184,7 +184,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string|array $where 查询条件
 	 * @param string|array $value 条件对应的值
 	 * @param boolean $group 是否启用分组
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function orWhere($where, $value = array(), $group = '') {
 		return $this->assembleWhere($where, self::WHERE, $value, false, $group);
@@ -192,7 +192,7 @@ abstract class AbstractWindSqlBuilder {
 	/**
 	 * 查询分组
 	 * @param string|array $group 要分组的字段名
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function group($group) {
 		$params = func_num_args();
@@ -204,7 +204,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string|array $having 过滤条件
 	 * @param string|array $value  条件对应的值
 	 * @param boolean $group  是否启用分组
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function having($having, $value = array(), $group = '') {
 		return $this->assembleWhere($having, self::HAVING, $value, true, $group);
@@ -214,7 +214,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string|array $having 过滤条件
 	 * @param string|array $value  条件对应的值
 	 * @param boolean $group  是否启用分组
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function orHaving($having, $value = array(), $group = '') {
 		return $this->assembleWhere($having, self::HAVING, $value, false, $group);
@@ -231,9 +231,9 @@ abstract class AbstractWindSqlBuilder {
 	}
 	/**
 	 * 分页查询
-	 * @param unknown_type $limit  偏移量
-	 * @param unknown_type $offset 起始值 
-	 * @return WindSqlBuilder
+	 * @param int $limit  偏移量
+	 * @param int $offset 起始值 
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function limit($limit, $offset = '') {
 		$this->assembleSql((int) $limit, self::LIMIT);
@@ -243,7 +243,7 @@ abstract class AbstractWindSqlBuilder {
 	/**
 	 * 解析insert值
 	 * @param string $data
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function data($data) {
 		$params = func_num_args();
@@ -256,7 +256,7 @@ abstract class AbstractWindSqlBuilder {
 	 * 解析update值
 	 * @param string|array $field
 	 * @param string|array $value
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function set($field, $value = array()) {
 		$realSet = $this->parsePlaceHolder($field, $value, ',');
