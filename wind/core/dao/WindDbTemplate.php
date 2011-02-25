@@ -253,7 +253,7 @@ class WindDbTemplate implements IWindDbTemplate {
 		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 
 		                      'group' => array(),  'order' => array(), 'limit' => null, 
 		                      'offset' => null, 'having' => '', 'havingValue' => array());
-		return array_merge($defaultValue, $condition);
+		return array_merge($defaultValue, (array)$condition);
 	}
 
 	/**
