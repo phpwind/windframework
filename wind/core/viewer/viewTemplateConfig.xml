@@ -3,7 +3,5 @@
 	<support-tags>
 		<tag name='template' tag='template'
 			compiler='WIND:core.viewer.compiler.WindTemplateCompilerTemplate' />
-		<tag name='script' tag='script'
-			compiler='WIND:core.viewer.compiler.WindTemplateCompilerScript' />
 	</support-tags>
 </config>
