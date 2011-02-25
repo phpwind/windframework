@@ -41,7 +41,7 @@ class WindErrorHandler extends WindAction {
 	 * @param string $errline
 	 */
 	public function errorHandle($errno, $errstr, $errfile, $errline) {
-
+		
 	}
 
 }
