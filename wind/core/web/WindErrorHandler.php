@@ -8,11 +8,24 @@
 
 class WindErrorHandler extends WindAction {
 
+	protected $error = array();
+
+	protected $backUrl = '';
+
+	/* (non-PHPdoc)
+	 * @see WindAction::beforeAction()
+	 */
+	public function beforeAction($handlerAdapter) {
+		$this->error = $this->getInput('error');
+		return true;
+	}
+
 	/* (non-PHPdoc)
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		$this->getInput($name);
+		echo $this->error[0];
+		exit();
 	}
 
 	/**
