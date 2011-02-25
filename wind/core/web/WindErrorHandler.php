@@ -12,7 +12,7 @@ class WindErrorHandler extends WindAction {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		
+		$this->getInput($name);
 	}
 
 	/**
