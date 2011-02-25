@@ -18,7 +18,7 @@ class WindConnectionManager extends WindComponentModule {
 	/**
 	 * @var array 数据库连接池
 	 */
-	private $linked = array();
+	public $linked = array();
 	/**
 	 * @var AbstractWindDbAdapter
 	 */

@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 L::import('WIND:component.utility.WindFile');
 
 /**
@@ -10,7 +10,7 @@ L::import('WIND:component.utility.WindFile');
  * @version $Id$ 
  * @package 
  */
-class WindFileCache extends AWindCache {
+class WindFileCache extends AbstractWindCache {
 	
 	/**
 	 * @var string 缓存目录

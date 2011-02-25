@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 L::import('WIND:component.utility.WindUZendCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,7 +14,7 @@ L::import('WIND:component.utility.WindUZendCache');
  * @version $Id$ 
  * @package 
  */
-class WindZendCache extends AWindCache {
+class WindZendCache extends AbstractWindCache {
 	/**
 	 * @var WindUZendCache
 	 */

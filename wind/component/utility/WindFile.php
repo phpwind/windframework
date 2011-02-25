@@ -83,10 +83,7 @@ class WindFile{
 			}
 		}
 		self::closeDir($handle);
-		if (false === $ifexpiled) {
-			self::deleteDir($path);
-			!file_exists($this->cacheDir) && mkdir($this->cacheDir, 0777, true);
-		}
+		false === $ifexpiled && self::deleteDir($path);
 		return true;
 	}
 	

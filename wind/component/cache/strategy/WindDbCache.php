@@ -5,18 +5,18 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-class WindDbCache extends AWindCache {
+class WindDbCache extends AbstractWindCache {
 	/**
 	 * @var WindConnectionManager 分布式管理
 	 */
-	protected $dbHandler = null;
+	protected $dbHandler;
 	/**
 	 * @var string 缓存表
 	 */
@@ -46,7 +46,7 @@ class WindDbCache extends AWindCache {
 	const VALUE = 'value';
 	const EXPIRE = 'expire';
 	const FIELD = 'field';
-	const EXPIRESTRAGE = 'expirestrage';
+	const STRAGE = 'expirestrage';
 	
 	public function __construct(WindConnectionManager $dbHandler = null) {
 		$dbHandler && $this->setDbHandler($dbHandler);
@@ -57,8 +57,9 @@ class WindDbCache extends AWindCache {
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		if ($this->fetch($key)) {
-			return $this->update($key, $value, $expires, $denpendency);
+		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->expireField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
+		if ($data) {
+			return !$this->expirestrage && '0' === $data[$this->expireField] ? null : $this->update($key, $value, $expires, $denpendency);
 		} else {
 			return $this->store($key, $value, $expires, $denpendency);
 		}
@@ -68,8 +69,12 @@ class WindDbCache extends AWindCache {
 	/* 
 	 * @see wind/component/cache/base/IWindCache#fetch()
 	 */
-	public function get($key) {echo $key;
-		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
+	public function get($key) {
+		if($this->expirestrage){
+			$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
+		}else{
+			$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField)->where($this->expireField.' != 0 AND '.$this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
+		}
 		return $this->getDataFromMeta($key, unserialize($data[$this->valueField]));
 	}
 	
@@ -80,7 +85,11 @@ class WindDbCache extends AWindCache {
 		foreach ($keys as $key => $value) {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
-		$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->keyField.' in ( :key ) ', array(':key' => $keys))->select()->getAllRow();
+		if(true === $this->expirestrage){
+			$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->keyField.' in ( :key ) ', array(':key' => $keys))->select()->getAllRow();
+		}else{
+			$data = $this->getSlaveConnection()->getSqlBuilder()->from($this->table)->field($this->valueField, $this->keyField)->where($this->expireField.' != 0 AND '.$this->keyField.' in ( :key ) ', array(':key' => $keys))->select()->getAllRow();
+		}
 		$result = $changed = array();
 		foreach ($data as $_data) {
 			$_data = unserialize($_data[$this->valueField]);
@@ -100,7 +109,11 @@ class WindDbCache extends AWindCache {
 	 * @see wind/component/cache/base/IWindCache#delete()
 	 */
 	public function delete($key) {
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->delete();
+		if($this->expirestrage){
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->delete();
+		}else{
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->update();
+		}
 	}
 	
 	/* 
@@ -110,21 +123,33 @@ class WindDbCache extends AWindCache {
 		foreach ($keys as $key => $value) {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' in (:key) ', array(':key' => $keys))->delete();
+		if($this->expirestrage){
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->keyField.' in (:key) ', array(':key' => $keys))->delete();
+		}else{
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->where($this->keyField.' in (:key) ', array(':key' => $keys))->update();
+		}
 	}
 	
 	/* 
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		return $this->getMasterConnection()->getSqlBuilder()->from($this->table)->delete();
+		if($this->expirestrage){
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->delete();
+		}else{
+			 $this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->update();
+		}
 	}
 	
 	/**
 	 * 删除过期数据
 	 */
 	public function deleteExpiredCache() {
-		return @$this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->expireField.' !=0 AND '.$this->expireField.' < :expires', array(':expires' => time()))->delete();
+		if($this->expirestrage){
+		 	$this->getMasterConnection()->getSqlBuilder()->from($this->table)->where($this->expireField.' !=0 AND '.$this->expireField.' < :expires', array(':expires' => time()))->delete();
+		}else{
+			$this->getMasterConnection()->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->where($this->expireField.' < :expires', array(':expires' => time()))->update();
+		}
 	}
 	
 	public function setDbHandler(WindConnectionManager $dbHandler){
@@ -137,16 +162,13 @@ class WindDbCache extends AWindCache {
 	public function setConfig($config) {
 		parent::setConfig($config);
 		$_config = is_object($config) ? $config->getConfig() : $config;
-		if(false === isset($_config[self::CACHETABLE])){
-			throw new WindException('The cache table is not exist');
-		}
 		$tableConfig = $_config[self::CACHETABLE];
-		$this->table = isset($tableConfig[self::NAME]) ? $tableConfig[self::NAME] : 'pw_cache';
+		$this->expirestrage = 'true' === $tableConfig[self::STRAGE];
+		$this->table = $tableConfig[self::NAME];
 		$field = $tableConfig[self::FIELD];
-		$this->keyField = isset($field[self::KEY]) ? $field[self::KEY] : 'key';
-		$this->valueField = isset($field[self::VALUE]) ? $field[self::VALUE] : 'value';
-		$this->expireField = isset($field[self::EXPIRE]) ? $field[self::EXPIRE] : 'expire';
-		$this->expirestrage = isset($field[self::EXPIRESTRAGE]) ? (bool)$field[self::EXPIRESTRAGE] : true;
+		$this->keyField = $field[self::KEY];
+		$this->valueField = $field[self::VALUE];
+		$this->expireField = $field[self::EXPIRE];
 	}
 	
 	/**
@@ -182,7 +204,7 @@ class WindDbCache extends AWindCache {
 	}
 	/**
 	 * 获取写缓存的数据库
-	 * @return WindDbAdapter
+	 * @return AbstractWindDbAdapter
 	 */
 	private function getMasterConnection() {
 		return $this->dbHandler->getMasterConnection();
@@ -190,14 +212,16 @@ class WindDbCache extends AWindCache {
 	
 	/**
 	 *  获取读缓存的数据库
-	 * @return WindDbAdapter
+	 * @return AbstractWindDbAdapter
 	 */
 	private function getSlaveConnection() {
 		return $this->dbHandler->getSlaveConnection();
 	}
 	
 	public function __destruct() {
-		$this->deleteExpiredCache();
+		if( null !== $this->dbHandler){
+			$this->deleteExpiredCache();
+		}
 	}
 
 }

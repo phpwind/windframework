@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 L::import('WIND:component.utility.WindUWinCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,7 +14,7 @@ L::import('WIND:component.utility.WindUWinCache');
  * @package 
  */
 
-class WindWinCache extends AWindCache {
+class WindWinCache extends AbstractWindCache {
 	/**
 	 * @var WindUWinCache
 	 */

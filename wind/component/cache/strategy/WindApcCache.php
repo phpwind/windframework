@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 L::import('WIND:component.utility.WindApc');
 /**
  * php加速器缓存
@@ -15,7 +15,7 @@ L::import('WIND:component.utility.WindApc');
  * @version $Id$ 
  * @package 
  */
-class WindApcCache extends AWindCache {
+class WindApcCache extends AbstractWindCache {
 	
 	/**
 	 * @var WindApc

@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.strategy.AWindCache');
+L::import('WIND:component.cache.strategy.AbstractWindCache');
 L::import('WIND:component.utility.WindUMemcache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,7 +14,7 @@ L::import('WIND:component.utility.WindUMemcache');
  * @version $Id$ 
  * @package 
  */
-class WindMemCache extends AWindCache {
+class WindMemCache extends AbstractWindCache {
 	
 	/**
 	 * @var WindMemcache memcache缓存操作句柄
