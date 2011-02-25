@@ -76,6 +76,7 @@
 		scope='prototype' hidden-pro='false'>
 		<properties>
 			<property name='windTemplate' ref='template' />
+			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
 	<component name='template' path='WIND:core.viewer.WindViewTemplate'
