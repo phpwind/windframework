@@ -98,8 +98,6 @@ class WindViewTemplate extends WindComponentModule {
 			$regex = '/<(' . $tag . ')(\s|>)+(.)+?(\/>[^"\']|<\/\1>){1}/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
-		//{*\s*[{\$](\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?[\s\)\]}]
-		//{*(\s*(\w+\()*\$(\w)+(\-\>\w+(\(.*\))*)*(\[.*\])*(\-\>\w+(\(.*\))*)*\s*)([);])*}*
 		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, '/{*\s*[{\$](\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?[\s\)\]}]/i', $windViewerResolver);
 		return $content;
 	}
