@@ -18,7 +18,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		$_output = $content;
 		$_output = preg_replace(array('/^[\n\s{]+/i', '/[\n\s}]+$/i'), array('', ''), $_output);
-		return '<?php echo ' . $_output . ';?>';
+		return ' <?php echo ' . $_output . ';?> ';
 	}
 
 }
