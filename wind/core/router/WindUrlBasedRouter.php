@@ -70,6 +70,13 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 		}
 		if (strpos($controllerPath, ':') === false)
 			$controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
+		
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->debug('do getHandler of ' . __CLASS__);
+		}
 		return $controllerPath;
 	}
 
