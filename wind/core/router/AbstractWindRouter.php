@@ -25,6 +25,8 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	protected $module = 'default';
 
+	protected $modulePath = '';
+
 	protected $reParse = true;
 
 	/**
@@ -74,31 +76,36 @@ abstract class AbstractWindRouter extends WindComponentModule {
 	}
 
 	/**
-	 * 获得一组应用入口
+	 * 返回一组应用入口
 	 */
 	public function getModule() {
 		return $this->module;
 	}
 
 	/**
-	 * @param field_type $action
+	 * @param string $action
 	 */
 	public function setAction($action) {
 		$this->action = $action;
 	}
 
 	/**
-	 * @param field_type $controller
+	 * @param string $controller
 	 */
 	public function setController($controller) {
 		$this->controller = $controller;
 	}
 
 	/**
-	 * @param field_type $module
+	 * @param string $module
 	 */
 	public function setModule($module) {
-		$this->module = $module;
+		if (false !== strpos($module, ':') || false !== strpos($module, '.')) {
+			$this->modulePath = $module;
+		} else {
+			$this->module = $module;
+			$this->modulePath = '';
+		}
 	}
 
 }

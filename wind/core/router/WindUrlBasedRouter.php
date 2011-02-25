@@ -39,14 +39,13 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 
 	const URL_RULE_ACTION = 'action';
 
-	
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::parse()
 	 */
 	public function parse() {
-		$this->module = $this->getUrlParamValue(self::URL_RULE_MODULE, $this->request, $this->module);
-		$this->controller = $this->getUrlParamValue(self::URL_RULE_CONTROLLER, $this->request, $this->controller);
-		$this->action = $this->getUrlParamValue(self::URL_RULE_ACTION, $this->request, $this->action);
+		$this->setModule($this->getUrlParamValue(self::URL_RULE_MODULE, $this->request, $this->module));
+		$this->setController($this->getUrlParamValue(self::URL_RULE_CONTROLLER, $this->request, $this->controller));
+		$this->setAction($this->getUrlParamValue(self::URL_RULE_ACTION, $this->request, $this->action));
 	}
 
 	/* (non-PHPdoc)
@@ -57,10 +56,14 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 		if (!$moduleConfig) {
 			throw new WindException('Incorrect module config. undefined module ' . $this->getModule());
 		}
-		$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE);
-		$controllerPath = $moduleConfig[WindSystemConfig::PATH] . '.' . ucfirst($this->controller) . $controllerSuffix;
+		$controllerSuffix = '';
+		if ($this->modulePath === '') {
+			$this->modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
+			$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
+		}
+		$controllerPath = $this->modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
 		if (strpos($controllerPath, ':') === false) {
-			$controllerPath = $this->windSystemConfig->getAppName() . ':' . $controllerPath;
+			$controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
 		}
 		return $controllerPath;
 	}
