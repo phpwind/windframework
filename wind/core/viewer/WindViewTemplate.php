@@ -1,9 +1,7 @@
 <?php
 
-L::import('WIND:core.WindComponentModule');
+L::import('WIND:core.viewer.AbstractWindViewTemplate');
 L::import('WIND:component.utility.WindUtility');
-L::import('WIND:component.utility.WindFile');
-
 /**
  * 模板类
  * 职责：进行模板编译渲染
@@ -13,23 +11,9 @@ L::import('WIND:component.utility.WindFile');
  * @version $Id$
  * @package 
  */
-class WindViewTemplate extends WindComponentModule {
+class WindViewTemplate extends AbstractWindViewTemplate {
 
 	const COMPILER_ECHO = 'WIND:core.viewer.compiler.WindTemplateCompilerEcho';
-
-	const COMPILER_INTERNAL = 'WIND:core.viewer.compiler.WindTemplateCompilerInternal';
-
-	const SUPPORT_TAGS = 'support-tags';
-
-	const TAG = 'tag';
-
-	const REGEX = 'regex';
-
-	const COMPILER = 'compiler';
-
-	protected $leftDelimiter = "<!--{";
-
-	protected $rightDelimiter = "}-->";
 
 	/* 编译结果缓存 */
 	protected $blockKey = "<pw-wind key='$' />";
@@ -45,26 +29,8 @@ class WindViewTemplate extends WindComponentModule {
 
 	protected $windHandlerInterceptorChain = null;
 
-	/**
-	 * 进行视图渲染
-	 * 
-	 * @param string $templateFile | 模板文件
-	 * @param string $compileFile | 编译后生成的文件
-	 * @param WindViewerResolver $windViewerResolver
-	 */
-	public function compile($templateFile, $compileFile, $windViewerResolver) {
-		if (!$this->checkReCompile($templateFile, $compileFile))
-			return null;
-		$_output = $this->getTemplateFileContent($templateFile);
-		$_output = $this->doCompile($_output, $windViewerResolver);
-		$this->cacheCompileResult($compileFile, $_output);
-		return $_output;
-	}
-
-	/**
-	 * 对模板内容进行编译
-	 * @param string $content
-	 * @param WindViewerResolver $windViewerResolver
+	/* (non-PHPdoc)
+	 * @see AbstractWindViewTemplate::doCompile()
 	 */
 	protected function doCompile($content, $windViewerResolver = null) {
 		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php ', '?>'), $content);
@@ -73,12 +39,31 @@ class WindViewTemplate extends WindComponentModule {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
 		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
-			if (!$key)
-				continue;
-			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
+			if ($key)
+				$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
 		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
 		return $content;
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindViewTemplate::getTags()
+	 */
+	protected function getTags() {
+		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', '/<\?php(.|\n)*?\?>/i');
+		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
+		$_tags += (array) parent::getTags();
+		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/({)*({\@)*(\$)*[\@\$](\s)*(\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?\s*}*/i');
+		return $_tags;
+	}
+
+	/**
+	 * 创建tag配置
+	 * @param string $tag
+	 * @param string $class
+	 */
+	private function createTag($tag, $class, $pattern = '') {
+		return array(self::TAG => $tag, self::PATTERN => $pattern, self::COMPILER => $class);
 	}
 
 	/**
@@ -88,19 +73,16 @@ class WindViewTemplate extends WindComponentModule {
 	 * @return string 
 	 */
 	private function registerTags($content, $windViewerResolver = null) {
-		$content = $this->creatTagCompiler($content, self::COMPILER_INTERNAL, '/<\?php(.|\n)*?\?>/i', $windViewerResolver);
-		$tags = $this->getConfig()->getConfig(self::SUPPORT_TAGS);
-		foreach ((array) $tags as $key => $value) {
+		foreach ((array) $this->getTags() as $key => $value) {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
+			$regex = isset($value[self::PATTERN]) ? $value[self::PATTERN] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
 			if (!$compiler || !$tag)
 				continue;
-			$regex = '/<(' . $tag . ')(\s|>)+(.|\n)*?(\/>[^"\']|<\/\1>){1}/i';
+			if ($regex === '')
+				$regex = '/<(' . $tag . ')(\s|>)+(.|\n)*?(\/>[^"\']|<\/\1>){1}/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
-		//{*\s*[{\$](\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?[\s\)\]}]
-		$regex = '/({)*({\@)*(\$)*[\@\$](\s)*(\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?\s*}*/i';
-		$content = $this->creatTagCompiler($content, self::COMPILER_ECHO, $regex, $windViewerResolver);
 		return $content;
 	}
 
@@ -112,7 +94,7 @@ class WindViewTemplate extends WindComponentModule {
 	 * @param WindViewerResolver $windViewerResolver
 	 */
 	private function creatTagCompiler($content, $compiler, $regex, $windViewerResolver = null) {
-		$content = preg_replace_callback($regex, array($this, 'registerCompiler'), $content);
+		$content = preg_replace_callback($regex, array($this, '_creatTagCompiler'), $content);
 		if ($this->windHandlerInterceptorChain === null) {
 			L::import('WIND:core.filter.WindHandlerInterceptorChain');
 			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
@@ -126,10 +108,11 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * 注册标签解析器
+	 * 将标签匹配到的模板内容设置到缓存中，并返回标识位到模板中进行内容站位
 	 * @param string $content
+	 * @return string|Ambigous <string, mixed>
 	 */
-	private function registerCompiler($content) {
+	private function _creatTagCompiler($content) {
 		$_content = $content[0];
 		if (!$_content)
 			return '';
@@ -137,37 +120,6 @@ class WindViewTemplate extends WindComponentModule {
 		$key = $this->getCompiledBlockKey();
 		$this->_compilerCache[] = array($key, $_content);
 		return $this->getBlockTag($key);
-	}
-
-	/**
-	 * 检查是否需要重新编译
-	 * 
-	 * @param string $templateFile
-	 * @param string $compileFile
-	 */
-	private function checkReCompile($templateFile, $compileFile) {
-		$_reCompile = false;
-		if (IS_DEBUG) {
-			$_reCompile = true;
-		} elseif (false === ($compileFileModifyTime = @filemtime($compileFile))) {
-			$_reCompile = true;
-		} else {
-			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime)
-				$_reCompile = true;
-		}
-		return $_reCompile;
-	}
-
-	/**
-	 * 将编译结果进行缓存
-	 * @param string $compileFile | 编译缓存文件
-	 * @param string $content | 模板内容
-	 */
-	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile || empty($content))
-			return;
-		WindFile::writeover($compileFile, $content);
 	}
 
 	/**
@@ -198,41 +150,6 @@ class WindViewTemplate extends WindComponentModule {
 	}
 
 	/**
-	 * 获得模板文件内容，目前只支持本地文件获取
-	 * 
-	 * @param string $templateFile
-	 */
-	private function getTemplateFileContent($templateFile) {
-		$_output = '';
-		if ($fp = @fopen($templateFile, 'r')) {
-			while (!feof($fp)) {
-				$_output .= fgets($fp, 4096);
-			}
-			fclose($fp);
-		} else
-			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
-		
-		return $_output;
-	}
-
-	/**
-	 * 返回左侧定界符，去掉两侧空白符
-	 * @return string $leftDelimiter
-	 */
-	public function getLeftDelimiter() {
-		$this->leftDelimiter = trim($this->leftDelimiter);
-		return $this->leftDelimiter;
-	}
-
-	/**
-	 * 返回右侧定界符，去掉两侧空白符
-	 * @return string $rightDelimiter
-	 */
-	public function getRightDelimiter() {
-		return $this->rightDelimiter;
-	}
-
-	/**
 	 * 返回编译后结果，根据Key值检索编译后结果，并返回
 	 * @param string $key
 	 * @return string
@@ -254,6 +171,7 @@ class WindViewTemplate extends WindComponentModule {
 		if ($key)
 			$this->compiledBlockData[$key] = $compiledBlockData;
 	}
+
 }
 
 ?>
