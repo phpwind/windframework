@@ -79,7 +79,7 @@
 			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
-	<component name='template' path='WIND:core.viewer.WindViewTemplate'
+	<component name='template' path='WIND:core.viewer.compiler.WindViewTemplate'
 		scope='prototype'>
 		<config resource='WIND:core.viewer.viewTemplateConfig' suffix='xml' />
 	</component>
