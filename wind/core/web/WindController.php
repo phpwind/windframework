@@ -20,13 +20,10 @@ abstract class WindController extends WindAction {
 	 */
 	protected function resolvedActionMethod($handlerAdapter) {
 		$action = $handlerAdapter->getAction();
-		$action = 'do' . ucfirst($action);
-		if ($action === 'doAction') {
-			throw new WindException('The action method ' . $action . ' is protected.');
-		}
-		if (!in_array($action, get_class_methods(get_class($this)))) {
-			throw new WindException('The action method ' . $action . ' is not exist.');
-		}
+		if ($action !== 'run')
+			$action = 'do' . ucfirst($action);
+		if ($action === 'doAction' || !in_array($action, get_class_methods(get_class($this))))
+			throw new WindException('The action method ' . $action . ' is protected or not exist.');
 		call_user_func_array(array($this, $action), array());
 	}
 
