@@ -29,7 +29,7 @@ class W {
 	 * @throws WindException
 	 * @return WindFrontController
 	 */
-	static public function application($appName, $config = '') {
+	static public function application($appName = '', $config = '') {
 		self::initWindFramework();
 		return new WindFrontController($appName, $config);
 	}
@@ -106,7 +106,8 @@ class W {
 	 */
 	static public function resolveController($controllerPath) {
 		$_m = $_c = '';
-		if (!$controllerPath) return array($_c, $_m);
+		if (!$controllerPath)
+			return array($_c, $_m);
 		if (false !== ($pos = strrpos($controllerPath, '.'))) {
 			$_m = substr($controllerPath, 0, $pos);
 			$_c = substr($controllerPath, $pos + 1);
@@ -153,7 +154,8 @@ class L {
 				self::$_namespace[$name] = $path;
 			}
 		}
-		if ($includePath) self::setIncludePath($path);
+		if ($includePath)
+			self::setIncludePath($path);
 	}
 
 	/**
@@ -173,8 +175,10 @@ class L {
 	 * @return string|null
 	 */
 	static public function import($filePath, $autoInclude = true, $recursivePackage = false) {
-		if (!$filePath) return false;
-		if ($className = self::isImported($filePath)) return $className;
+		if (!$filePath)
+			return false;
+		if ($className = self::isImported($filePath))
+			return $className;
 		
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
@@ -187,7 +191,8 @@ class L {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealPath($filePath);
-			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
+			if (!$dh = opendir($dirPath))
+				throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dirPath . D_S . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
@@ -220,7 +225,8 @@ class L {
 	 * @return null
 	 */
 	static public function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className])) $path = self::$_classes[$className];
+		if (isset(self::$_classes[$className]))
+			$path = self::$_classes[$className];
 		if ($path === '') {
 			throw new Exception('auto load ' . $className . ' failed.');
 		}
@@ -236,7 +242,8 @@ class L {
 	 * @return
 	 */
 	public static function registerAutoloader() {
-		if (!self::$_isAutoLoad) return;
+		if (!self::$_isAutoLoad)
+			return;
 		if (function_exists('spl_autoload_register')) {
 			spl_autoload_register('L::autoLoad');
 		} else
@@ -258,8 +265,10 @@ class L {
 			$filePath = substr($filePath, $pos + 1);
 		}
 		$filePath = str_replace('.', D_S, $filePath);
-		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
-		if ($ext) $filePath .= '.' . $ext;
+		if ($namespace)
+			$filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
+		if ($ext)
+			$filePath .= '.' . $ext;
 		return $filePath;
 	}
 
@@ -272,7 +281,8 @@ class L {
 	static public function loadCoreLibrary() {
 		self::import('WIND:core.*', true, true);
 		
-		if (!IS_DEBUG && W::ifCompile()) self::perLoadCoreLibrary();
+		if (!IS_DEBUG && W::ifCompile())
+			self::perLoadCoreLibrary();
 	}
 
 	/**
@@ -284,7 +294,8 @@ class L {
 	static public function perLoadInjection($packList = array(), $classes = array()) {
 		if (!empty($classes)) {
 			foreach ($classes as $key => $value) {
-				if (!self::isImported($key)) self::$_imports[$key] = $value;
+				if (!self::isImported($key))
+					self::$_imports[$key] = $value;
 			}
 		} else {
 			$imports = array();
@@ -297,8 +308,10 @@ class L {
 	}
 
 	static private function isImported($path) {
-		if (key_exists($path, self::$_imports)) return self::$_imports[$path];
-		if (in_array($path, self::$_imports)) return $path;
+		if (key_exists($path, self::$_imports))
+			return self::$_imports[$path];
+		if (in_array($path, self::$_imports))
+			return $path;
 		return false;
 	}
 
@@ -307,13 +320,15 @@ class L {
 	}
 
 	static private function getRootPath($namespace = '') {
-		if ($namespace === '') $namespace = W::getCurrentApp();
+		if ($namespace === '')
+			$namespace = W::getCurrentApp();
 		$namespace = strtolower($namespace);
 		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
 
 	static private function setImport($className, $classPath, $autoInclude) {
-		if (self::isImported($className)) return;
+		if (self::isImported($className))
+			return;
 		self::$_imports[$classPath] = $className;
 		if (self::$_isAutoLoad && $autoInclude)
 			self::$_classes[$className] = $classPath;
@@ -324,7 +339,8 @@ class L {
 	static private function setIncludePath($path) {
 		if (empty(self::$_includePaths)) {
 			self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-			if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+			if (($pos = array_search('.', self::$_includePaths, true)) !== false)
+				unset(self::$_includePaths[$pos]);
 		}
 		array_unshift(self::$_includePaths, $path);
 		if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
