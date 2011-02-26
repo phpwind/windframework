@@ -49,7 +49,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		} catch (WindViewException $windViewException) {
 
 		} catch (WindException $exception) {
-			$this->noActionHandlerFound($windSqlException->getMessage());
+			$this->noActionHandlerFound($exception->getMessage());
 			
 		}
 	}
