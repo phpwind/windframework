@@ -10,14 +10,20 @@
  */
 class WindDbTemplate implements IWindDbTemplate {
 
-	private $connection = null;
-
+	/**
+	 * @var WindConnectionManager
+	 */
+	private $connectionManager = null;
+	
+	public function getConnectionManager(){
+		return $this->connectionManager;
+	}
 	/**
 	 * 获得数据库链接
 	 * @return the $connection
 	 */
 	public function getConnection() {
-		return $this->connection->getConnection();
+		return $this->connectionManager->getConnection();
 	}
 
 	/**
@@ -25,7 +31,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @param object $connection
 	 */
 	public function setConnection($connection) {
-		$this->connection = $connection;
+		$this->connectionManager = $connection;
 	}
 
 	/**
