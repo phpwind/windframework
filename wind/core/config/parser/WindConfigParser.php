@@ -135,7 +135,7 @@ class WindConfigParser implements IWindConfigParser {
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias) return $result;
 		$config[$alias] = $result;
-		$append && is_file($cacheFielName) && $this->saveConfigFile($cacheFileName, $config);
+		$append && is_file($cacheFileName) && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
 	
