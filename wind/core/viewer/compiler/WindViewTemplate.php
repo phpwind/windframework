@@ -50,10 +50,12 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @see AbstractWindViewTemplate::getTags()
 	 */
 	protected function getTags() {
-		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', '/<\?php(.|\n)*?\?>/i');
+		$_tmp = '/<\?php(.|\n)*?\?>/i';
+		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', $_tmp);
 		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
 		$_tags += (array) parent::getTags();
-		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/({)*({\@)*(\$)*[\@\$](\s)*(\w+(\-\>\w+)*(\(.*\))*(\[.*\])*(\-\>\w+)*(\[.*\])*(\(.*\))*)+?\s*}*/i');
+		$_tmp = '/(\$|{\@\s*|{\s*\$|{\@\s*\$)\w+((\-\>\w+)*(\(([^\)])*\))*(\[([^\]])*\])*)*\s*}*/i';
+		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', $_tmp);
 		return $_tags;
 	}
 
