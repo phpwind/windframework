@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.viewer.compiler.AbstractWindTemplateCompiler');
+L::import('WIND:core.viewer.AbstractWindTemplateCompiler');
 
 /**
  * Enter description here ...
