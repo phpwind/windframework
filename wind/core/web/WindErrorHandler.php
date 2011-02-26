@@ -30,7 +30,6 @@ class WindErrorHandler extends WindAction {
 	 */
 	public function run() {
 		echo 'ErrorMessage:' . array_pop($this->error);
-		echo $this->urlReferer;
 		exit();
 	}
 

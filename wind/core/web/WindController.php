@@ -23,7 +23,7 @@ abstract class WindController extends WindAction {
 		if ($action !== 'run')
 			$action = 'do' . ucfirst($action);
 		if ($action === 'doAction' || !in_array($action, get_class_methods(get_class($this))))
-			throw new WindException('The action method ' . $action . ' is protected or not exist.');
+			$this->sendError('The action method ' . $action . ' is protected or not exist.');
 		call_user_func_array(array($this, $action), array());
 	}
 
