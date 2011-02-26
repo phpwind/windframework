@@ -38,7 +38,7 @@ abstract class WindAction extends WindComponentModule {
 			$this->resolvedActionMethod($handlerAdapter);
 			$this->afterAction($handlerAdapter);
 		} catch (WindException $exception) {
-			$this->getErrorMessage()->sendError($exception->getMessage());
+			$this->sendError($exception->getMessage());
 		}
 		if ($this->getErrorMessage()->getError())
 			$this->getErrorMessage()->sendError();
