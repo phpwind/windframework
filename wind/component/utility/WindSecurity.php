@@ -114,7 +114,7 @@ class WindSecurity {
 	 */
 	public static function escapePath($fileName, $ifCheck = true) {
 		if (!self::_escapePath($fileName, $ifCheck)) {
-			exit('Forbidden');
+			throw new WindException('file name is illegal');
 		}
 		return $fileName;
 	}

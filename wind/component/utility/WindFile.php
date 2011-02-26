@@ -49,18 +49,35 @@ class WindFile{
 	 * @return int 返回写入的字节数
 	 */
 	public static function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
-		$tmpname = strtolower($fileName);
-		$tmparray = array(':\/\/', "\0");
-		$tmparray[] = '..';
-		if (str_replace($tmparray, '', $tmpname) != $tmpname) return false;
+		L::import("COM:utility.WindSecurity");
+		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
-		if (!$handle = @fopen($fileName, $method)) return false;
+		if (!$handle = fopen($fileName, $method)) return false;
 		$ifLock && flock($handle, LOCK_EX);
 		$writeCheck = fwrite($handle, $data);
 		$method == 'rb+' && ftruncate($handle, strlen($data));
 		fclose($handle);
-		$ifChmod && @chmod($fileName, 0777);
+		$ifChmod && chmod($fileName, 0777);
 		return $writeCheck;
+	}
+	
+	/**
+	 * 读取文件
+	 *
+	 * @param string $fileName 文件绝对路径
+	 * @param string $method 读取模式
+	 * @return string
+	 */
+	public function readover($fileName, $method = 'rb') {
+		L::import("COM:utility.WindSecurity");
+		$fileName = WindSecurity::escapePath($fileName);
+		$data = '';
+		if (false !== ($handle = fopen($fileName, $method))) {
+			flock($handle, LOCK_SH);
+			$data = fread($handle, filesize($fileName));
+			fclose($handle);
+		}
+		return $data;
 	}
 	
 	/**
@@ -87,14 +104,7 @@ class WindFile{
 		return true;
 	}
 	
-	/**
-	 * 读取文件内容
-	 * @param string $filename
-	 * @return string
-	 */
-	public static function readover($filename){
-		return file_get_contents($filename);
-	}
+	
 	
 	/**
 	 * 获取文件修改时间
