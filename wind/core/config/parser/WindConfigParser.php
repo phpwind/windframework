@@ -126,7 +126,7 @@ class WindConfigParser implements IWindConfigParser {
 		$append = !$append ? '' : trim($append);
 		$alias && $cacheFileName = ($append ? $this->buildCacheFilePath($append) : $this->buildCacheFilePath($alias));
 		if ($alias) {
-			$config = $append ? $this->getCacheContent($cacheFileName) : $this->getCacheContent($cacheFileName);
+			$append && $config = $this->getCacheContent($cacheFileName);
 			if (isset($config[$alias]) && !$this->needCompiled()) {
 				return $config[$alias];
 			}
@@ -135,7 +135,7 @@ class WindConfigParser implements IWindConfigParser {
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias) return $result;
 		$config[$alias] = $result;
-		$alias && $this->saveConfigFile($cacheFileName, $config);
+		$append && is_file($cacheFielName) && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
 	
@@ -146,9 +146,6 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array 缓存文件内容
 	 */
 	private function getCacheContent($file) {
-		/*if ($isThrowFileNoExistsException && !$tmp) {
-			throw new WindException("The file is not exists!");
-		}*/
 		$content = array();
 		if (is_file($file)) $content = include ($file);
 		return  is_array($content) ?  $content : array();
