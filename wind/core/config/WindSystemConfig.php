@@ -72,7 +72,8 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function initConfig($config) {
 		if (!is_array($config)) {
-			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
+			if ($this->getConfigParser() === null)
+				throw new WindException('configParser is null.');
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
 		$this->setConfig($config);
@@ -111,7 +112,8 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getRootPath($appName = '') {
-		if ($appName === '') $appName = $this->appName;
+		if ($appName === '')
+			$appName = $this->appName;
 		
 		$propertyName = $appName . '_RootPath';
 		if (!isset($this->$propertyName)) {
@@ -199,7 +201,7 @@ class WindSystemConfig extends WindConfig {
 	 */
 	protected function checkWindConfig() {
 		if (!$this->getConfig(self::WEB_APPS, $this->appName)) {
-			throw new WindException('config error.');
+			throw new WindException('Unable to load app config for ' . $this->appName);
 		}
 	}
 
@@ -212,7 +214,8 @@ class WindSystemConfig extends WindConfig {
 	protected function parseImport($name) {
 		if (!isset($this->imports[$name])) {
 			$imports = $this->getConfig(self::IMPORTS);
-			if (!isset($imports[$name])) return array();
+			if (!isset($imports[$name]))
+				return array();
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
