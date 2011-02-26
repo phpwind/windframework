@@ -104,7 +104,7 @@ class WindForward extends WindComponentModule {
 				throw new WindException('unable to get the config for view.');
 			
 			$this->windView = $this->windFactory->getInstance($view);
-			$_viewConfig = isset($moduleConfig[WIND_CONFIG_CONFIG]) ? $moduleConfig[WIND_CONFIG_CONFIG] : array();
+			$_viewConfig = $this->windView->getConfig()->getConfig('view', WIND_CONFIG_CONFIG, $moduleConfig);
 			if ($_viewConfig)
 				$this->windView->getConfig()->setConfig($_viewConfig, true);
 		}
