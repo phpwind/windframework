@@ -390,6 +390,12 @@ class L {
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 
 
+//**********配置*******通用常量定义***************************************
+define('WIND_CONFIG_CONFIG', 'config');
+define('WIND_CONFIG_CLASS', 'class');
+define('WIND_CONFIG_CLASSPATH', 'path');
+define('WIND_CONFIG_RESOURCE', 'resource');
+
 
 
 
