@@ -100,7 +100,7 @@ class WindConfig extends WindModule {
 		if (!is_array($config))
 			throw new WindException('config error.');
 		if ($merage)
-			array_merge($this->config, $config);
+			$this->config = array_merge($this->config, $config);
 		else
 			$this->config = $config;
 	}
