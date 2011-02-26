@@ -42,7 +42,7 @@ class WindFrontController extends AbstractWindServer {
 	 * @param WindConfig $windConfig
 	 * @param WindFactory $windFactory
 	 */
-	public function __construct($appName = '', $config = array()) {
+	public function __construct($appName, $config = array()) {
 		parent::__construct();
 		$this->initWindConfig($appName, $config);
 		$this->initWindFactory();
@@ -71,7 +71,7 @@ class WindFrontController extends AbstractWindServer {
 	protected function initWindConfig($appName, $config) {
 		L::import('WIND:core.config.parser.WindConfigParser');
 		$configParser = new WindConfigParser();
-		$this->windSystemConfig = new WindSystemConfig($config, $configParser, $appName);
+		$this->windSystemConfig = new WindSystemConfig($config, $configParser, ($appName ? $appName : 'default'));
 		L::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
 	}
 
