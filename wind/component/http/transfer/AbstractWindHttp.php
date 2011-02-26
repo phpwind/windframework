@@ -11,7 +11,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class WindHttp {
+abstract class AbstractWindHttp {
 	
 	/**  
 	 * @var WindHttp 单例 对象

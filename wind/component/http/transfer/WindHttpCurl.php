@@ -5,14 +5,14 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.http.base.WindHttp');
+L::import('WIND:component.http.transfer.AbstractWindHttp');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-final class WindHttpCurl extends WindHttp {
+final class WindHttpCurl extends AbstractWindHttp {
 	
 	protected function __construct($url = '', $timeout = 5) {
 		parent::__construct($url, $timeout);

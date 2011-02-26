@@ -5,14 +5,14 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.http.transfer.AbstractWindHttp');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
-final class WindHttpStream extends WindHttp {
+final class WindHttpStream extends AbstractWindHttp {
 	const HTTP = 'http';
 	const HTTPS = 'https';
 	const FTP = 'ftp';
