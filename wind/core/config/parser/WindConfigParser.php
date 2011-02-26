@@ -97,7 +97,7 @@ class WindConfigParser implements IWindConfigParser {
 		$parseFormat = $this->getConfigFormat($configPath);
 		$config[self::WIND_ROOT] = $this->doParser($configPath, $parseFormat);
 		$config[self::WIND_ROOT] = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $config[self::WIND_ROOT]);
-		$alias && $this->saveConfigFile($cacheFile, $config);
+		$alias && $this->needCompiled() && $this->saveConfigFile($cacheFile, $config);
 		return $config[self::WIND_ROOT];
 	}
 	
@@ -135,7 +135,7 @@ class WindConfigParser implements IWindConfigParser {
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias) return $result;
 		$config[$alias] = $result;
-		$append && is_file($cacheFileName) && $this->saveConfigFile($cacheFileName, $config);
+		$append && $this->needCompiled() && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
 	
@@ -261,7 +261,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean  		 false:需要进行解析， true：不需要进行解析，直接读取缓存文件
 	 */
 	private function needCompiled() {
-		if (IS_DEBUG || !W::ifCompile()) return true;
+		if (IS_DEBUG && W::ifCompile() && is_dir(COMPILE_PATH)) return true;
 		return false;
 	}
 	
