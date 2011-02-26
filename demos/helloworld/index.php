@@ -18,11 +18,12 @@ require_once (FREAMWORK_PATH . '/wind.php');
 
 /*$_GET['formName'] = 'userForm';
 $_POST['username'] = 'asssss';*/
-W::application('windApp1')->run();
+W::application()->run();
 //W::application('test', R_P . 'config.xml')->run();
 //W::application('test', R_P . 'config.php')->run();
 //W::application('test', R_P . 'config.ini')->run();
 //W::application('test', R_P . 'config.properties')->run();
+
 
 echo '<br>';
 echo '<br>';
@@ -30,4 +31,22 @@ echo '<br>';
 echo 'TIME: ', microtime(true) - $start;
 echo '<br>';
 echo 'MEMORY: ', memory_get_usage() / 1024 / 1024;
+
+//class Test {
+//
+//	public function compile($content) {
+//		$content = preg_replace_callback('/h/i', array($this, 'subCompile'), $content);
+//		
+//		return $content;
+//	}
+//
+//	public function subCompile($content) {
+//		return 'm';
+//	}
+//}
+//
+//$str = 'hello world Hello world';
+//$test = new Test();
+//echo '<br>';
+//print $test->compile($str);
 
