@@ -83,8 +83,10 @@ class WindForward extends WindComponentModule {
 	 */
 	public function setVars($vars, $key = '') {
 		if (!$key) {
-			if (is_object($vars)) $vars = get_object_vars($vars);
-			if (is_array($vars)) $this->vars += $vars;
+			if (is_object($vars))
+				$vars = get_object_vars($vars);
+			if (is_array($vars))
+				$this->vars += $vars;
 		} else
 			$this->vars[$key] = $vars;
 		return;
@@ -98,9 +100,13 @@ class WindForward extends WindComponentModule {
 			$module = $this->windFactory->getInstance(COMPONENT_ROUTER)->getModule();
 			$moduleConfig = $this->windSystemConfig->getModules($module);
 			$view = $this->windSystemConfig->getConfig('view', WindSystemConfig::CLASS_PATH, (array) $moduleConfig);
-			if (!$view) throw new WindException('unable to get the config for view.');
+			if (!$view)
+				throw new WindException('unable to get the config for view.');
 			
 			$this->windView = $this->windFactory->getInstance($view);
+			$_viewConfig = isset($moduleConfig[WIND_CONFIG_CONFIG]) ? $moduleConfig[WIND_CONFIG_CONFIG] : array();
+			if ($_viewConfig)
+				$this->windView->getConfig()->setConfig($_viewConfig, true);
 		}
 		return $this->windView;
 	}

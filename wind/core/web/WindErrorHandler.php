@@ -29,7 +29,7 @@ class WindErrorHandler extends WindAction {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		echo array_pop($this->error);
+		echo 'ErrorMessage:' . array_pop($this->error);
 		echo $this->urlReferer;
 		exit();
 	}
@@ -41,7 +41,7 @@ class WindErrorHandler extends WindAction {
 	 * @param string $errline
 	 */
 	public function errorHandle($errno, $errstr, $errfile, $errline) {
-		
+
 	}
 
 }
