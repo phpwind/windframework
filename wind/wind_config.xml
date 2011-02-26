@@ -9,7 +9,7 @@
 
 	<!-- web application definitions, you can define application more than one. -->
 	<web-apps>
-		<web-app name='windApp1' class='windWebApp' root-path=''>
+		<web-app name='default' class='windWebApp' root-path=''>
 			<factory class-definition='components'
 				class='WIND:core.factory.WindComponentFactory' />
 			<filters class='WIND:core.filter.WindFilterChain'>
@@ -20,20 +20,6 @@
 			<modules>
 				<module name='default' path='actionControllers'>
 					<controller-suffix value='Controller' />
-					<view class='windView' />
-				</module>
-			</modules>
-		</web-app>
-		<web-app name='windApp2' class='windWebApp' root-path=''>
-			<factory class-definition='components'
-				class='WIND:core.factory.WindComponentFactory' />
-			<filters class='WIND:core.filter.WindFilterChain'>
-				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
-				<filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
-			</filters>
-			<router class='urlBasedRouter' />
-			<modules>
-				<module name='default' path='actionControllers'>
 					<view class='windView' />
 				</module>
 			</modules>
