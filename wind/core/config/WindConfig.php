@@ -45,14 +45,17 @@ class WindConfig extends WindModule {
 	 * @return string
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $config = array()) {
-		if (!$config) $config = $this->config;
-		if ($configName === '') return $config;
+		if (!$config)
+			$config = $this->config;
+		if ($configName === '')
+			return $config;
 		
 		$_config = array();
 		if (isset($config[$configName])) {
 			$_config = $config[$configName];
 		}
-		if ($subConfigName === '') return $_config;
+		if ($subConfigName === '')
+			return $_config;
 		
 		$_subConfig = array();
 		if (is_array($_config) && isset($_config[$subConfigName])) {
@@ -93,9 +96,13 @@ class WindConfig extends WindModule {
 	 * @param $config the $config to set
 	 * @author Qiong Wu
 	 */
-	protected function setConfig($config) {
-		if (!is_array($config)) throw new WindException('config error.');
-		$this->config = $config;
+	public function setConfig($config, $merage = false) {
+		if (!is_array($config))
+			throw new WindException('config error.');
+		if ($merage)
+			array_merge($this->config, $config);
+		else
+			$this->config = $config;
 	}
 
 	/**
@@ -110,7 +117,8 @@ class WindConfig extends WindModule {
 	 * @author Qiong Wu
 	 */
 	public function setConfigParser($configParser) {
-		if ($this->configParser || $configParser == null) return;
+		if ($this->configParser || $configParser == null)
+			return;
 		$this->configParser = $configParser;
 	}
 
