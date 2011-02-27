@@ -16,7 +16,13 @@
 				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
 				<filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
 			</filters>
-			<router class='urlBasedRouter' />
+			<router class='urlBasedRouter'>
+				<config>
+					<module url-param='m' default-value='default' />
+					<controller url-param='c' default-value='index' />
+					<action url-param='a' default-value='run' />
+				</config>
+			</router>
 			<modules>
 				<module name='default' path='actionControllers'>
 					<controller-suffix value='Controller' />
