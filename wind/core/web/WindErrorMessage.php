@@ -21,6 +21,15 @@ class WindErrorMessage implements IWindErrorMessage {
 
 	private $errorController = 'error';
 
+	/**
+	 * @param string $message
+	 */
+	public function __construct($message = '', $errorAction = 'run', $errorController = 'error') {
+		$this->addError($message);
+		$this->setErrorAction($errorAction);
+		$this->setErrorController($errorController);
+	}
+
 	/* (non-PHPdoc)
 	 * @see IWindErrorMessage::sendError()
 	 */
@@ -49,6 +58,9 @@ class WindErrorMessage implements IWindErrorMessage {
 	 * @see IWindErrorMessage::addError()
 	 */
 	public function addError($error, $key = '') {
+		if (!$error)
+			return;
+		
 		if ($key === '') {
 			if (is_string($error))
 				$this->error[] = $error;
