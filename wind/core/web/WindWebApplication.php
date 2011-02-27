@@ -50,7 +50,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 
 		} catch (WindException $exception) {
 			$this->noActionHandlerFound($exception->getMessage());
-			
+		
 		}
 	}
 
@@ -138,9 +138,13 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @return AbstractWindRouter
 	 */
 	protected function getHandlerAdapter() {
-		$routerAlias = $this->windSystemConfig->getRouter(WindSystemConfig::CLASS_PATH);
+		$routerConfig = $this->windSystemConfig->getRouter();
+		$routerAlias = isset($routerConfig[WIND_CONFIG_CLASS]) ? $routerConfig[WIND_CONFIG_CLASS] : '';
 		if (null === $this->getAttribute($routerAlias)) {
+			/* @var $router AbstractWindRouter */
 			$router = $this->windFactory->getInstance($routerAlias);
+			$_config = isset($routerConfig[WIND_CONFIG_CONFIG]) ? $routerConfig[WIND_CONFIG_CONFIG] : array();
+			$router->getConfig()->setConfig($_config, true);
 		}
 		return $this->getAttribute($routerAlias);
 	}
