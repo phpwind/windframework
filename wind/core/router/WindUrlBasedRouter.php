@@ -22,8 +22,6 @@ L::import('WIND:core.router.AbstractWindRouter');
 class WindUrlBasedRouter extends AbstractWindRouter {
 
 	/* url 路由参数规则 */
-	const URL_RULE = 'url-pattern';
-
 	const URL_PARAM = 'url-param';
 
 	const DEFAULT_VALUE = 'default-value';
@@ -104,11 +102,10 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @return string 
 	 */
 	private function getUrlParamValue($type, $request = null, $defaultValue = '') {
-		$_config = $this->getConfig()->getConfig(self::URL_RULE);
-		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM, $_config)) {
+		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM)) {
 			if (is_null($request))
 				return $_param;
-			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE, $_config);
+			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE);
 			$defaultValue = $_defaultValue ? $_defaultValue : $defaultValue;
 			return $request->getAttribute($_param, $defaultValue);
 		}
