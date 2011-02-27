@@ -37,11 +37,9 @@
 	<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
 		scope="application">
 		<config>
-			<url-pattern>
-				<module url-param='m' default-value='default' />
-				<controller url-param='c' default-value='index' />
-				<action url-param='a' default-value='run' />
-			</url-pattern>
+			<module url-param='m' default-value='default' />
+			<controller url-param='c' default-value='index' />
+			<action url-param='a' default-value='run' />
 		</config>
 	</component>
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
