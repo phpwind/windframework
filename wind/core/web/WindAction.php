@@ -227,7 +227,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param WindUrlBasedRouter $handlerAdapter
 	 */
 	protected function setDefaultTemplateName($handlerAdapter) {
-		$_temp = $handlerAdapter->getAction() . '_' . $handlerAdapter->getController();
+		$_temp = $handlerAdapter->getController() . '_' . $handlerAdapter->getAction();
 		$this->setTemplate($_temp);
 	}
 
