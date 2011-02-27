@@ -144,7 +144,8 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			/* @var $router AbstractWindRouter */
 			$router = $this->windFactory->getInstance($routerAlias);
 			$_config = isset($routerConfig[WIND_CONFIG_CONFIG]) ? $routerConfig[WIND_CONFIG_CONFIG] : array();
-			$router->getConfig()->setConfig($_config, true);
+			if ($_config)
+				$router->getConfig()->setConfig($_config, true);
 		}
 		return $this->getAttribute($routerAlias);
 	}
