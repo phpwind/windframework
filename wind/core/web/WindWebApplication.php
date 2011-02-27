@@ -74,50 +74,44 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @param WindHttpRequest $request
 	 */
 	protected function getHandler() {
-		$handlerAdapter = $this->getHandlerAdapter();
-		$handlerAdapter->doParse();
-		
-		//add log
-		if (IS_DEBUG) {
-			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
-		}
-		
-		$handler = $handlerAdapter->getHandler();
-		$definition = new WindComponentDefinition();
-		$definition->setPath($handler);
-		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
-		$definition->setProxy('true');
-		$definition->setAlias($handler);
-		$definition->setPropertys(array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
-			'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
-		
-		$this->windFactory->addClassDefinitions($definition);
-		$actionHandler = $this->windFactory->getInstance($handler);
-		
-		//TODO 添加过滤链
-		
+		try {
+			$handlerAdapter = $this->getHandlerAdapter();
+			$handlerAdapter->doParse();
+			
+			//add log
+			if (IS_DEBUG) {
+				/* @var $logger WindLogger */
+				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+				$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
+			}
+			
+			$handler = $handlerAdapter->getHandler();
+			$definition = new WindComponentDefinition();
+			$definition->setPath($handler);
+			$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
+			$definition->setProxy('true');
+			$definition->setAlias($handler);
+			$definition->setPropertys(array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
+				'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
+			
+			$this->windFactory->addClassDefinitions($definition);
+			$actionHandler = $this->windFactory->getInstance($handler);
+			
+			//TODO 添加过滤链
+			
 
-		//add log
-		if (IS_DEBUG) {
-			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->debug('ActionHandler: ' . $handler);
+			//add log
+			if (IS_DEBUG) {
+				/* @var $logger WindLogger */
+				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+				$logger->debug('ActionHandler: ' . $handler);
+			}
+		
+		} catch (WindException $exception) {
+			throw new WindActionException($exception->getMessage());
 		}
 		
 		return $actionHandler;
-	}
-
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 * @param string $message
-	 */
-	protected function noActionHandlerFound($message) {
-		$this->response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
 	}
 
 	/**
@@ -127,6 +121,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	protected function sendErrorMessage($actionException) {
 		$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
 		$_tmp = $actionException->getError();
+		if (is_string($_tmp)) {
+			L::import('WIND:core.web.WindErrorMessage');
+			$_tmp = new WindErrorMessage($_tmp);
+		}
 		$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController());
 		$this->request->setAttribute('error', $_tmp->getError());
 		$this->doDispatch($forward);
@@ -148,6 +146,17 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 				$router->getConfig()->setConfig($_config, true);
 		}
 		return $this->getAttribute($routerAlias);
+	}
+
+	/**
+	 * Enter description here ...
+	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
+	 * @param string $message
+	 */
+	protected function noActionHandlerFound($message) {
+		$this->response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
 	}
 
 	/**
