@@ -20,12 +20,24 @@ abstract class WindComponentModule extends WindModule {
 
 	private $_config = null;
 
+	/**
+	 * @var WindHttpRequest
+	 */
 	protected $request;
 
+	/**
+	 * @var WindHttpResponse
+	 */
 	protected $response;
 
+	/**
+	 * @var WindSystemConfig
+	 */
 	protected $windSystemConfig;
 
+	/**
+	 * @var WindFactory
+	 */
 	protected $windFactory;
 
 	/**
