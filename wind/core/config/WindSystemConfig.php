@@ -115,8 +115,8 @@ class WindSystemConfig extends WindConfig {
 		if ($appName === '')
 			$appName = $this->appName;
 		
-		$propertyName = $appName . '_RootPath';
-		if (!isset($this->$propertyName)) {
+		$_tmp = $appName . '_RootPath';
+		if (!isset($this->$_tmp)) {
 			$appConfig = $this->getConfig(self::WEB_APPS, $appName);
 			if (isset($appConfig[self::WEB_APP_ROOT_PATH]) && !empty($appConfig[self::WEB_APP_ROOT_PATH]))
 				$rootPath = $appConfig[self::WEB_APP_ROOT_PATH];
@@ -124,9 +124,9 @@ class WindSystemConfig extends WindConfig {
 				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
 			
 		//TODO 绝对路径相对路径判断，相对于webroot，支持自定义路径
-			$this->$propertyName = $rootPath;
+			$this->$_tmp = $rootPath;
 		}
-		return $this->$propertyName;
+		return $this->$_tmp;
 	}
 
 	/**
