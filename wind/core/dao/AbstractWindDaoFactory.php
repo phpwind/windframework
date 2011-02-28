@@ -1,6 +1,7 @@
 <?php
 
 L::import('WIND:core.factory.proxy.WindClassProxy');
+L::import('WIND:core.factory.AbstractWindFactory');
 /**
  * Dao工厂
  * 
@@ -14,7 +15,7 @@ L::import('WIND:core.factory.proxy.WindClassProxy');
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindDaoFactory {
+abstract class AbstractWindDaoFactory extends AbstractWindFactory {
 
 	protected $windFactory = null;
 
@@ -43,7 +44,8 @@ abstract class AbstractWindDaoFactory {
 			
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
-			if (!$daoInstance->getIsDataCache()) return $daoInstance;
+			if (!$daoInstance->getIsDataCache())
+				return $daoInstance;
 			
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
@@ -66,12 +68,13 @@ abstract class AbstractWindDaoFactory {
 	protected function createDbHandler($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
 		if (!isset($this->dbConnections[$_dbClass])) {
-			$this->createFactory();
+			$this->createWindFactory();
 			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
 			$_connection = $this->windFactory->getInstance($defintion->getAlias());
 			$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
-			if ($_dbTemplate !== null) $_dbTemplate->setConnection($_connection);
+			if ($_dbTemplate !== null)
+				$_dbTemplate->setConnection($_connection);
 			$this->dbConnections[$_dbClass] = $_dbTemplate;
 		}
 		return $this->dbConnections[$_dbClass];
@@ -85,7 +88,7 @@ abstract class AbstractWindDaoFactory {
 	protected function createCacheHandler($daoObject) {
 		$_cacheClass = $daoObject->getCacheClass();
 		if (!isset($this->caches[$_cacheClass])) {
-			$this->createFactory();
+			$this->createWindFactory();
 			$defintion = $daoObject->getCacheDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
 			$cacheHander = $this->windFactory->getInstance($defintion->getAlias());
@@ -95,9 +98,9 @@ abstract class AbstractWindDaoFactory {
 	}
 
 	/**
-	 * Enter description here ...
+	 * @return WindFactory
 	 */
-	private function createFactory() {
+	private function createWindFactory() {
 		if ($this->windFactory === null) {
 			L::import('WIND:core.factory.WindComponentFactory');
 			$this->windFactory = new WindComponentFactory();
