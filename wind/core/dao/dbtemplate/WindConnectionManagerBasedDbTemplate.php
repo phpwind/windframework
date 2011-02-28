@@ -236,7 +236,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
 		$result = $db->getAllRow();
 		if (!$ifCount) return $result;
-		$count = $this->count($table, $condition, $config);
+		$count = $this->count($condition, $table, $config);
 		return array($result, $count);
 	}
 
@@ -255,9 +255,10 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return int
 	 */
-	public function count($condition, $table, $config = array()) {
+	public function count($condition, $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$condition['field'] = ' COUNT(*) as total';
+		$table = trim($table) ? trim($table) : $this->table;
 		$result = $this->find($condition, $table, $config);
 		return (int) $result['total'];
 	}

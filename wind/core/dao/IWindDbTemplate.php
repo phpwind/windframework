@@ -151,7 +151,7 @@ interface IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return int
 	 */
-	public function count($condition, $table, $config = array());
+	public function count($condition, $table = '', $config = array());
 
 	
 	/**
