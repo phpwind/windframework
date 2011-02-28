@@ -97,7 +97,7 @@ class WindConfigParser implements IWindConfigParser {
 		$parseFormat = $this->getConfigFormat($configPath);
 		$config[self::WIND_ROOT] = $this->doParser($configPath, $parseFormat);
 		$config[self::WIND_ROOT] = $this->mergeConfig($this->doParser($this->getWindConfigPath($parseFormat), $parseFormat), $config[self::WIND_ROOT]);
-		$alias && $this->needCompiled() && $this->saveConfigFile($cacheFile, $config);
+		$alias && $this->saveConfigFile($cacheFile, $config);
 		return $config[self::WIND_ROOT];
 	}
 	
@@ -135,7 +135,7 @@ class WindConfigParser implements IWindConfigParser {
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias) return $result;
 		$config[$alias] = $result;
-		$append && $this->needCompiled() && $this->saveConfigFile($cacheFileName, $config);
+		$append && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
 	
@@ -299,7 +299,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean 			  保存成功则返回true,保存失败则返回false
 	 */
 	private function saveConfigFile($filename, $data) {
-		if (!W::ifCompile() || !$filename || !$data) return false;
+		if (!W::ifCompile() || !$filename || !$data || !is_dir(COMPILE_PATH)) return false;
 		L::import('COM:utility.WindFile');
 		return WindFile::saveData($filename, $data);
 	}
