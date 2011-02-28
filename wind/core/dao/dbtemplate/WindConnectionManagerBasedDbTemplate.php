@@ -66,14 +66,14 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @return the $tableName
 	 */
 	public function getTableName() {
-		return $this->tableName;
+		return $this->tableNameName;
 	}
 
 	/**
 	 * @param field_type $tableName
 	 */
 	public function setTableName($tableName) {
-		$this->tableName = $tableName;
+		$this->tableNameName = $tableName;
 	}
 
 	/**
@@ -103,7 +103,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function update($data, $condition = array(), $table = '') {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getDbHandler();
-		$table = trim($table) ? trim($table) : $this->tableName;
+		$table = trim($table) ? trim($table) : $this->tableNameName;
 		$result = $db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
 		return $result;
 	}
@@ -132,7 +132,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function insert($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
-		$table = trim($table) ? trim($table) : $this->table;
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$db = $this->getDbHandler();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->insert();
 		return $db->getLastInsertId();
@@ -147,7 +147,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function replace($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
-		$table = trim($table) ? trim($table) : $this->table;
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$db = $this->getDbHandler();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->replace();
 		return $db->getAffectedRows();
@@ -168,7 +168,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function delete($condition, $table = '') {
 		$condition = $this->cookCondition($condition);
-		$table = trim($table) ? trim($table) : $this->table;
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$result = $this->getDbHandler()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
 		return $result;
 	}
@@ -204,7 +204,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function find($condition = array(), $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
-		$table = trim($table) ? trim($table) : $this->table;
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$db = $this->getDbHandler();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
 		return $db->getRow($query);
@@ -243,7 +243,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function findAll($condition = array(), $ifCount = false, $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
-		$table = trim($table) ? trim($table) : $this->table;
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$db = $this->getDbHandler();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
 		$result = $db->getAllRow();
@@ -270,7 +270,6 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function count($condition, $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$condition['field'] = ' COUNT(*) as total';
-		$table = trim($table) ? trim($table) : $this->table;
 		$result = $this->find($condition, $table, $config);
 		return (int) $result['total'];
 	}
