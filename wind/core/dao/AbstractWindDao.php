@@ -14,7 +14,7 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbConfig = 'WIND:component.db.db_config';
 
-	protected $dbTemplateClass = 'WIND:core.dao.WindDbTemplate';
+	protected $dbTemplateClass = 'WIND:core.dao.dbtemplate.WindConnectionManagerBasedDbTemplate';
 
 	protected $dbConfigSuffix = 'xml';
 
