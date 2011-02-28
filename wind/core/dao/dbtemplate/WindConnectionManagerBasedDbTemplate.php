@@ -102,10 +102,10 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function update($data, $condition = array(), $table = '') {
 		$condition = $this->cookCondition($condition);
-		$db = $this->getDbHandler();
 		$table = trim($table) ? trim($table) : $this->tableNameName;
-		$result = $db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
-		return $result;
+		$db = $this->getDbHandler();
+		$db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
+		return $db->getAffectedRows();
 	}
 
 	/**
@@ -169,8 +169,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function delete($condition, $table = '') {
 		$condition = $this->cookCondition($condition);
 		$table = trim($table) ? trim($table) : $this->tableName;
-		$result = $this->getDbHandler()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
-		return $result;
+		$db = $this->getDbHandler();
+		$db->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
+		return $db->getAffectedRows();
 	}
 
 	/**
