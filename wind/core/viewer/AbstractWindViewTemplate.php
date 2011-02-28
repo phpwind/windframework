@@ -89,7 +89,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile || empty($content))
+		if (!$compileFile)
 			return;
 		WindFile::writeover($compileFile, $content);
 	}
