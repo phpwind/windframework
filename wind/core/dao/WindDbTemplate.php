@@ -10,14 +10,18 @@
  */
 class WindDbTemplate implements IWindDbTemplate {
 
+	//TODO 添加 table 属性作为表名称，将表名称参数$table放到方法访问的最后，可以传也可以不传
+	
+
 	/**
 	 * @var WindConnectionManager
 	 */
 	private $connectionManager = null;
-	
-	public function getConnectionManager(){
+
+	public function getConnectionManager() {
 		return $this->connectionManager;
 	}
+
 	/**
 	 * 获得数据库链接
 	 * @return the $connection
@@ -61,12 +65,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function update($table, $data, $condition = array()) {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getConnection();
-		$result = $db->getSqlBuilder()->from($table)
-									  ->set($data)
-									  ->where($condition['where'], $condition['whereValue'])
-									  ->order($condition['order'])
-									  ->limit($condition['limit'])
-									  ->update();
+		$result = $db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
 		return $result;
 	}
 
@@ -80,7 +79,8 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @return bool 
 	 */
 	public function updateByField($table, $data, $filed, $value) {
-		if (!$this->checkFiled($filed)) return false;
+		if (!$this->checkFiled($filed))
+			return false;
 		return $this->update($table, $data, array('where' => "$filed = ?", 'whereValue' => $value));
 	}
 
@@ -128,11 +128,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	public function delete($table, $condition) {
 		$condition = $this->cookCondition($condition);
-		$result = $this->getConnection()->getSqlBuilder()->from($table)
-										->where($condition['where'], $condition['whereValue'])
-										->order($condition['order'])
-										->limit($condition['limit'])
-										->delete();
+		$result = $this->getConnection()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
 		return $result;
 	}
 
@@ -145,7 +141,8 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @return bool
 	 */
 	public function deleteByField($table, $filed, $value) {
-		if (!$this->checkFiled($filed)) return array();
+		if (!$this->checkFiled($filed))
+			return array();
 		return $this->delete($table, array('where' => "$filed = ?", 'whereValue' => $value));
 	}
 
@@ -168,14 +165,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function find($table, $condition = array(), $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getConnection();
-		$query = $db->getSqlBuilder()->from($table)
-		                             ->field($condition['field'])
-		                             ->where($condition['where'], $condition['whereValue'])
-		                             ->group($condition['group'])
-		                             ->having($condition['having'], $condition['havingValue'])
-		                             ->order($condition['order'])
-		                             ->limit(1)
-		                             ->select();
+		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
 		return $db->getRow($query);
 	}
 
@@ -188,7 +178,8 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @return array
 	 */
 	public function findByField($table, $filed, $value, $config = array()) {
-		if (!$this->checkFiled($filed)) return array();
+		if (!$this->checkFiled($filed))
+			return array();
 		return $this->find($table, array('where' => "$filed = ?", 'whereValue' => $value), $config);
 	}
 
@@ -213,16 +204,10 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function findAll($table, $condition = array(), $ifCount = false, $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getConnection();
-		$query = $db->getSqlBuilder()->from($table)
-									 ->field($condition['field'])
-									 ->where($condition['where'], $condition['whereValue'])
-									 ->group($condition['group'])
-									 ->having($condition['having'], $condition['havingValue'])
-									 ->order($condition['order'])
-									 ->limit($condition['limit'], $condition['offset'])
-									 ->select();
+		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
 		$result = $db->getAllRow();
-		if (!$ifCount) return $result;
+		if (!$ifCount)
+			return $result;
 		$count = $this->count($table, $condition, $config);
 		return array($result, $count);
 	}
@@ -246,7 +231,7 @@ class WindDbTemplate implements IWindDbTemplate {
 		$condition = $this->cookCondition($condition);
 		$condition['field'] = ' COUNT(*) as total';
 		$result = $this->find($table, $condition, $config);
-		return (int)$result['total'];
+		return (int) $result['total'];
 	}
 
 	/**
@@ -256,10 +241,9 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @return array
 	 */
 	private function cookCondition($condition) {
-		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 
-		                      'group' => array(),  'order' => array(), 'limit' => null, 
-		                      'offset' => null, 'having' => '', 'havingValue' => array());
-		return array_merge($defaultValue, (array)$condition);
+		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 'group' => array(), 'order' => array(), 
+			'limit' => null, 'offset' => null, 'having' => '', 'havingValue' => array());
+		return array_merge($defaultValue, (array) $condition);
 	}
 
 	/**
@@ -271,7 +255,8 @@ class WindDbTemplate implements IWindDbTemplate {
 	private function parseData($data) {
 		$key = array_keys($data);
 		$tmp_data = $field = array();
-		if (!is_string($key[0])) return array($field, $data);
+		if (!is_string($key[0]))
+			return array($field, $data);
 		
 		$rows = count($data[$key[0]]);
 		for ($i = 0; $i < $rows; $i++) {
