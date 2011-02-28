@@ -20,7 +20,6 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbDefinition = null;
 
-
 	protected $cacheClass = 'WIND:component.cache.strategy.WindDbCache';
 
 	protected $cacheConfig = 'WIND:component.cache.cache_config';
@@ -90,6 +89,20 @@ abstract class AbstractWindDao extends WindModule {
 	 */
 	public function getCacheMethods() {
 		return array();
+	}
+
+	/**
+	 * @return IWindDbTemplate $dbHandler
+	 */
+	protected function getDbHandler() {
+		return $this->dbHandler;
+	}
+
+	/**
+	 * @param IWindDbTemplate $dbHandler
+	 */
+	protected function setDbHandler($dbHandler) {
+		$this->dbHandler = $dbHandler;
 	}
 
 }
