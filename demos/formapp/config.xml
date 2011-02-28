@@ -2,7 +2,7 @@
 <WIND>
 <!-- import external config source file -->
 	<imports>
-		<import name='components' resource='FORMDEMO:component'
+		<import name='components' resource='WIND:components_config'
 			suffix='xml' init-delay='false' is-append='true' />
 	</imports>
 	
@@ -17,11 +17,29 @@
 			<modules>
 				<module name='default' path='controllers'>
 					<controller-suffix value='Controller' />
-					<view class='windView' />
+					<view class='windView'>
+						<config>
+							<template-dir value='templates' />
+							<template-ext value='html' />
+							<share-var value='false' />
+							<is-cache value='true' />
+							<cache-dir value='cache' />
+							<compile-dir value='compile.template' />
+						</config>
+					</view>
 				</module>
 				<module name='other' path='otherControllers'>
 					<controller-suffix value='Controller' />
-					<view class='windView' />
+					<view class='windView'>
+						<config>
+							<template-dir value='templates' />
+							<template-ext value='html' />
+							<share-var value='false' />
+							<is-cache value='true' />
+							<cache-dir value='cache' />
+							<compile-dir value='compile.template' />
+						</config>
+					</view>
 				</module>
 			</modules>
 		</web-app>
