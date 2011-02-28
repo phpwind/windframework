@@ -1,4 +1,7 @@
 <?php
+/**
+ * 
+ */
 
 L::import('WIND:core.dao.IWindDbTemplate');
 /**
@@ -11,32 +14,54 @@ L::import('WIND:core.dao.IWindDbTemplate');
  */
 class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 
-	//TODO 添加 table 属性作为表名称，将表名称参数$table放到方法访问的最后，可以传也可以不传
-	
-
 	/**
 	 * @var WindConnectionManager
 	 */
 	private $connectionManager = null;
 
+	/**
+	 * 设置查询的表名
+	 * 
+	 * @var string
+	 */
+	private $tableName = '';
+
+	/**
+	 * 获得数据库链接管理
+	 * @return WindConnectionManager
+	 */
 	public function getConnectionManager() {
 		return $this->connectionManager;
 	}
 
 	/**
+	 * 设置数据库链接管理
+	 * @param WindConnectionManager $connection
+	 */
+	public function setConnectionManager($connection) {
+		$this->connectionManager = $connection;
+	}
+
+	/**
 	 * 获得数据库链接
-	 * @return the $connection
+	 * @return WindDbAdapter $connection
 	 */
 	public function getConnection() {
 		return $this->connectionManager->getConnection();
 	}
 
 	/**
-	 * 设置数据库链接
-	 * @param object $connection
+	 * @return the $tableName
 	 */
-	public function setConnection($connection) {
-		$this->connectionManager = $connection;
+	public function getTableName() {
+		return $this->tableName;
+	}
+
+	/**
+	 * @param field_type $tableName
+	 */
+	public function setTableName($tableName) {
+		$this->tableName = $tableName;
 	}
 
 	/**
@@ -63,9 +88,10 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * )
 	 * @return bool
 	 */
-	public function update($table, $data, $condition = array()) {
+	public function update($data, $condition = array(), $table = '') {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getConnection();
+		$table = trim($table) ? trim($table) : $this->tableName;
 		$result = $db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
 		return $result;
 	}
@@ -79,10 +105,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param string $value	该字段的值
 	 * @return bool 
 	 */
-	public function updateByField($table, $data, $filed, $value) {
-		if (!$this->checkFiled($filed))
-			return false;
-		return $this->update($table, $data, array('where' => "$filed = ?", 'whereValue' => $value));
+	public function updateByField($data, $filed, $value, $table = '') {
+		if (!$this->checkFiled($filed)) return false;
+		return $this->update($data, array('where' => "$filed = ?", 'whereValue' => $value), $table);
 	}
 
 	/**
@@ -93,8 +118,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function insert($table, $data, $field = array()) {
+	public function insert($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
+		$table = trim($table) ? trim($table) : $this->table;
 		$db = $this->getConnection();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->insert();
 		return $db->getLastInsertId();
@@ -107,8 +133,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function replace($table, $data, $field = array()) {
+	public function replace($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
+		$table = trim($table) ? trim($table) : $this->table;
 		$db = $this->getConnection();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->replace();
 		return $db->getAffectedRows();
@@ -127,8 +154,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * )
 	 * @return bool
 	 */
-	public function delete($table, $condition) {
+	public function delete($condition, $table = '') {
 		$condition = $this->cookCondition($condition);
+		$table = trim($table) ? trim($table) : $this->table;
 		$result = $this->getConnection()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
 		return $result;
 	}
@@ -141,10 +169,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param string $value 该字段的值
 	 * @return bool
 	 */
-	public function deleteByField($table, $filed, $value) {
-		if (!$this->checkFiled($filed))
-			return array();
-		return $this->delete($table, array('where' => "$filed = ?", 'whereValue' => $value));
+	public function deleteByField($filed, $value, $table = '') {
+		if (!$this->checkFiled($filed)) return array();
+		return $this->delete(array('where' => "$filed = ?", 'whereValue' => $value), $table);
 	}
 
 	/**
@@ -163,8 +190,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return array
 	 */
-	public function find($table, $condition = array(), $config = array()) {
+	public function find($condition = array(), $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
+		$table = trim($table) ? trim($table) : $this->table;
 		$db = $this->getConnection();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
 		return $db->getRow($query);
@@ -178,10 +206,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return array
 	 */
-	public function findByField($table, $filed, $value, $config = array()) {
-		if (!$this->checkFiled($filed))
-			return array();
-		return $this->find($table, array('where' => "$filed = ?", 'whereValue' => $value), $config);
+	public function findByField($filed, $value, $table = '', $config = array()) {
+		if (!$this->checkFiled($filed)) return array();
+		return $this->find(array('where' => "$filed = ?", 'whereValue' => $value), $table, $config);
 	}
 
 	/**
@@ -202,13 +229,13 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	数据库独立配置信息
 	 * @return array() | array($result,$count)
 	 */
-	public function findAll($table, $condition = array(), $ifCount = false, $config = array()) {
+	public function findAll($condition = array(), $ifCount = false, $table, $config = array()) {
 		$condition = $this->cookCondition($condition);
+		$table = trim($table) ? trim($table) : $this->table;
 		$db = $this->getConnection();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
 		$result = $db->getAllRow();
-		if (!$ifCount)
-			return $result;
+		if (!$ifCount) return $result;
 		$count = $this->count($table, $condition, $config);
 		return array($result, $count);
 	}
@@ -228,10 +255,10 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return int
 	 */
-	public function count($table, $condition, $config = array()) {
+	public function count($condition, $table, $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$condition['field'] = ' COUNT(*) as total';
-		$result = $this->find($table, $condition, $config);
+		$result = $this->find($condition, $table, $config);
 		return (int) $result['total'];
 	}
 
@@ -256,8 +283,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	private function parseData($data) {
 		$key = array_keys($data);
 		$tmp_data = $field = array();
-		if (!is_string($key[0]))
-			return array($field, $data);
+		if (!is_string($key[0])) return array($field, $data);
 		
 		$rows = count($data[$key[0]]);
 		for ($i = 0; $i < $rows; $i++) {
