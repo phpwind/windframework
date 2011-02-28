@@ -11,9 +11,9 @@ L::import('WIND:core.filter.WindHandlerInterceptor');
  * @package 
  */
 class WindDaoCacheListener extends WindHandlerInterceptor {
-	
+
 	private $daoObject = null;
-	
+
 	/**
 	 * Enter description here ...
 	 * @param WindView $windView
@@ -21,38 +21,38 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	function __construct($instance) {
 		$this->daoObject = $instance;
 	}
-	
+
 	/*
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
+		//TODO 对于缓存而言不知道只获取独立的链接句柄就可以
 		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler AbstractWindCache */
-		if('WindDbCache' === get_class($cacheHandler)){
-			$cacheHandler->setDbHandler($this->daoObject->getDbHandler()->getConnectionManager());
+		if ('WindDbCache' === get_class($cacheHandler)) {
+			//$cacheHandler->setDbHandler($this->daoObject->getDbHandler()->getConnectionManager());
 		}
-		$result = $cacheHandler->get($this->generateKey( func_get_args()));
+		$result = $cacheHandler->get($this->generateKey(func_get_args()));
 		return empty($result) ? null : $result;
-	
 	}
-	
+
 	/* 
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		$cacheHandler = $this->daoObject->getCacheHandler();/* @var $cacheHandler AbstractWindCache */
+		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler AbstractWindCache */
 		$config = $cacheHandler->getConfig()->getConfig();
 		$dependencyPath = $config[AbstractWindCache::DEPENDENCY];
 		$dependency = null;
-		if($dependencyPath){
+		if ($dependencyPath) {
 			$dependency = WindFactory::createInstance(L::import($dependencyPath));
 		}
-		$cacheHandler->set($this->generateKey(func_get_args()), $this->result, (int)$config[AbstractWindCache::EXPIRES], $dependency);
+		$cacheHandler->set($this->generateKey(func_get_args()), $this->result, (int) $config[AbstractWindCache::EXPIRES], $dependency);
 	}
-	
-	public function generateKey($args){
-		return $this->event[0].'-'.$this->event[1].'-'.(is_array($args[0]) ? $args[0][0] : $args[0]);
+
+	public function generateKey($args) {
+		return $this->event[0] . '-' . $this->event[1] . '-' . (is_array($args[0]) ? $args[0][0] : $args[0]);
 	}
-	
+
 }
 
 ?>
