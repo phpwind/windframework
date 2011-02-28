@@ -38,7 +38,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * 设置数据库链接管理
 	 * @param WindConnectionManager $connection
 	 */
-	public function setConnectionManager($connection) {
+	public function setConnection($connection) {
 		$this->connectionManager = $connection;
 	}
 
