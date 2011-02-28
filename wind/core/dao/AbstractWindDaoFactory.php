@@ -1,7 +1,6 @@
 <?php
 
 L::import('WIND:core.factory.proxy.WindClassProxy');
-L::import('WIND:core.factory.AbstractWindFactory');
 /**
  * Dao工厂
  * 
@@ -15,7 +14,7 @@ L::import('WIND:core.factory.AbstractWindFactory');
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindDaoFactory extends AbstractWindFactory {
+abstract class AbstractWindDaoFactory {
 
 	protected $windFactory = null;
 
