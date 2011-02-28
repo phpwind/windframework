@@ -13,7 +13,7 @@
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . 'libreary');
+!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.libreary');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
