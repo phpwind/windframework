@@ -41,15 +41,27 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function setConnection($connection) {
 		$this->connectionManager = $connection;
 	}
-
+    
+	/**
+	 * 添加一个链接
+	 *
+	 * @param unknown_type $connection
+	 */
+	public function addConnection($connection) {
+		//TODO
+	}
+	
 	/**
 	 * 获得数据库链接
 	 * @return WindDbAdapter $connection
 	 */
 	public function getConnection() {
+		return $this->connectionManager;
+	}
+    
+	public function getDbHandler() {
 		return $this->connectionManager->getConnection();
 	}
-
 	/**
 	 * @return the $tableName
 	 */
@@ -72,7 +84,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @return resource|bool  数据库句柄
 	 */
 	public function query($sql, $config = array()) {
-		return $this->getConnection()->query($sql);
+		return $this->getDbHandler()->query($sql);
 	}
 
 	/**
@@ -90,7 +102,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 */
 	public function update($data, $condition = array(), $table = '') {
 		$condition = $this->cookCondition($condition);
-		$db = $this->getConnection();
+		$db = $this->getDbHandler();
 		$table = trim($table) ? trim($table) : $this->tableName;
 		$result = $db->getSqlBuilder()->from($table)->set($data)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->update();
 		return $result;
@@ -121,7 +133,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function insert($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
 		$table = trim($table) ? trim($table) : $this->table;
-		$db = $this->getConnection();
+		$db = $this->getDbHandler();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->insert();
 		return $db->getLastInsertId();
 	}
@@ -136,7 +148,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function replace($data, $field = array(), $table = '') {
 		empty($field) && list($field, $data) = $this->parseData($data);
 		$table = trim($table) ? trim($table) : $this->table;
-		$db = $this->getConnection();
+		$db = $this->getDbHandler();
 		$db->getSqlBuilder()->from($table)->field($field)->data($data)->replace();
 		return $db->getAffectedRows();
 	}
@@ -157,7 +169,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function delete($condition, $table = '') {
 		$condition = $this->cookCondition($condition);
 		$table = trim($table) ? trim($table) : $this->table;
-		$result = $this->getConnection()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
+		$result = $this->getDbHandler()->getSqlBuilder()->from($table)->where($condition['where'], $condition['whereValue'])->order($condition['order'])->limit($condition['limit'])->delete();
 		return $result;
 	}
 
@@ -193,7 +205,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function find($condition = array(), $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$table = trim($table) ? trim($table) : $this->table;
-		$db = $this->getConnection();
+		$db = $this->getDbHandler();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
 		return $db->getRow($query);
 	}
@@ -232,7 +244,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function findAll($condition = array(), $ifCount = false, $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$table = trim($table) ? trim($table) : $this->table;
-		$db = $this->getConnection();
+		$db = $this->getDbHandler();
 		$query = $db->getSqlBuilder()->from($table)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
 		$result = $db->getAllRow();
 		if (!$ifCount) return $result;
