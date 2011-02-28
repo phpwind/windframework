@@ -25,7 +25,7 @@ interface IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return array
 	 */
-	public function find($table, $condition = array(), $config = array());
+	public function find($condition = array(), $table = '', $config = array());
    
 	/**
 	 * 查询多条
@@ -45,7 +45,7 @@ interface IWindDbTemplate {
 	 * @param array $config	数据库独立配置信息
 	 * @return array() | array($result,$count)
 	 */
-	public function findAll($table, $condition = array(), $ifCount = false, $config = array());
+	public function findAll($condition = array(), $ifCount = false, $table = '', $config = array());
 	
 	/**
 	 * 通过某一字段查询
@@ -55,7 +55,7 @@ interface IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return array
 	 */
-	public function findByField($table, $filed, $value, $config = array());
+	public function findByField($filed, $value, $table = '', $config = array());
 	
 	/**
 	 * 插入一条数据
@@ -65,7 +65,7 @@ interface IWindDbTemplate {
 	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function insert($table, $data, $field = array());
+	public function insert($data, $field = array(), $table = '') ;
    
 	/**
 	 * 删除数据
@@ -80,7 +80,7 @@ interface IWindDbTemplate {
 	 * )
 	 * @return bool
 	 */
-	public function delete($table, $condition);
+	public function delete($condition, $table = '');
 	
 	/**
 	 * 通过某个字段删除数据
@@ -90,7 +90,7 @@ interface IWindDbTemplate {
 	 * @param string $value 该字段的值
 	 * @return bool
 	 */
-	public function deleteByField($table, $filed, $value);
+	public function deleteByField($filed, $value, $table = '');
 	
 	/**
 	 * 更新一条数据
@@ -99,7 +99,7 @@ interface IWindDbTemplate {
 	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function replace($table, $data, $field = array());
+	public function replace($data, $field = array(), $table = '');
     
 	/**
 	 * 更新数据
@@ -114,7 +114,7 @@ interface IWindDbTemplate {
 	 * )
 	 * @return bool
 	 */
-	public function update($table, $data, $condition = array());
+	public function update($data, $condition = array(), $table = '');
 	
 	/**
 	 * 通过字段更新
@@ -125,7 +125,7 @@ interface IWindDbTemplate {
 	 * @param string $value	该字段的值
 	 * @return bool 
 	 */
-	public function updateByField($table, $data, $filed, $value);
+	public function updateByField($data, $filed, $value, $table = '');
     
 	/**
 	 * 执行一条sql语句
@@ -134,7 +134,7 @@ interface IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return resource|bool  数据库句柄
 	 */
-	public function query($sql, $config = array());
+	public function query($sql, $config = array()) ;
 	
 	/**
 	 * 统计个数
@@ -151,7 +151,7 @@ interface IWindDbTemplate {
 	 * @param array $config	独立配置信息
 	 * @return int
 	 */
-	public function count($table, $condition, $config = array());
+	public function count($condition, $table, $config = array());
 
 	
 	/**

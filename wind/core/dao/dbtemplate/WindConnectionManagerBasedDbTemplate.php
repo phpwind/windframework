@@ -30,7 +30,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * 获得数据库链接管理
 	 * @return WindConnectionManager
 	 */
-	public function getConnectionManager() {
+	private function getConnectionManager() {
 		return $this->connectionManager;
 	}
 
@@ -229,7 +229,7 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $config	数据库独立配置信息
 	 * @return array() | array($result,$count)
 	 */
-	public function findAll($condition = array(), $ifCount = false, $table, $config = array()) {
+	public function findAll($condition = array(), $ifCount = false, $table = '', $config = array()) {
 		$condition = $this->cookCondition($condition);
 		$table = trim($table) ? trim($table) : $this->table;
 		$db = $this->getConnection();
