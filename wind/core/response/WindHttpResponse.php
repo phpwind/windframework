@@ -298,7 +298,7 @@ class WindHttpResponse implements IWindResponse {
 	const SC_HTTP_VERSION_NOT_SUPPORTED = 505;
 
 	/**
-	 * 设置响应头信息，如果已经设置过同名的响应头，该方法将用心的设置取代原来的头字段
+	 * 设置响应头信息，如果已经设置过同名的响应头，该方法将用新的设置取代原来的头字段
 	 * 
 	 * @param string $name 响应头的名称
 	 * @param string $value 响应头的字段取值
