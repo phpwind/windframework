@@ -1,5 +1,6 @@
 <?php
 
+L::import('WIND:core.dao.IWindDbTemplate');
 /**
  * Enter description here ...
  *
