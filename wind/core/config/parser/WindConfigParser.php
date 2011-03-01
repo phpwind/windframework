@@ -334,6 +334,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return string 			 返回缓存文件的$fileName的绝对路径
 	 */
 	private function buildCacheFilePath($fileName) {
+		//TODO 用框架中统一的路径构造方法 getRealPath
 		return rtrim(COMPILE_PATH, '/') . D_S . strtolower($fileName) . '.php';
 	}
 
