@@ -82,26 +82,35 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 			$this->templateVars[$key] = $vars;
 			return;
 		}
-		if (is_object($vars))
-			$vars = get_object_vars($vars);
-		if (is_array($vars))
-			$this->templateVars += $vars;
+		if (is_object($vars)) $vars = get_object_vars($vars);
+		if (is_array($vars)) $this->templateVars += $vars;
 	}
 
 	/**
 	 * 编译模板并返回编译后模板名称
+	 * @param string $template
+	 * @param string $suffix
+	 * @param boolean $output
 	 * @return string
 	 */
-	public function compile($template, $suffix = '') {
+	public function compile($template, $suffix = '', $output = false) {
 		$templateFile = $this->getWindView()->getViewTemplate($template, $suffix);
 		if (!file_exists($templateFile)) {
 			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
-		if (!$this->getWindView()->getCompileDir())
-			return $templateFile;
+		if (!$this->getWindView()->getCompileDir()) return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
-		$this->getWindTemplate()->compile($templateFile, $compileFile, $this);
-		return $compileFile;
+		$_output = $this->getWindTemplate()->compile($templateFile, $compileFile, $this);
+		if ($output === false) return $compileFile;
+		if ($_output !== null) return array($compileFile, $_output);
+		if ($fp = @fopen($compileFile, 'r')) {
+			while (!feof($fp))
+				$_output .= fgets($fp, 4096);
+			fclose($fp);
+		} else
+			throw new WindViewException('Unable to open the template file \'' . $compileFile . '\'.');
+		
+		return array($compileFile, $_output);
 	}
 
 	/**
@@ -123,10 +132,8 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @return array()
 	 */
 	private function parserLayout($template) {
-		if (null === $layout = $this->getWindView()->getLayout())
-			return null;
-		if (!$template)
-			$template = $this->getWindView()->getTemplateName();
+		if (null === $layout = $this->getWindView()->getLayout()) return null;
+		if (!$template) $template = $this->getWindView()->getTemplateName();
 		$layout->setDir($this->getWindView()->getTemplatePath());
 		$layout->setSuffix($this->getWindView()->getTemplateExt());
 		return $layout->parserLayout($template);

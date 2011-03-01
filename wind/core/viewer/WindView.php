@@ -129,8 +129,8 @@ class WindView extends WindComponentModule {
 	 * @param ext
 	 */
 	private function parseFilePath($fileName, $fileExt, $path) {
-		if ($fileName === '') $fileName = $this->getTemplateName();
-		if ($fileExt === '') $fileExt = $this->getTemplateExt();
+		if (!$fileName) $fileName = $this->getTemplateName();
+		if (!$fileExt) $fileExt = $this->getTemplateExt();
 		if (!$fileName) return '';
 		
 		if (strrpos($path, ':') === false) {

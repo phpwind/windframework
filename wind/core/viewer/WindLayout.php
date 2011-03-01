@@ -54,7 +54,9 @@ class WindLayout {
 			} elseif ($this->getDir()) {
 				$_filePath = $this->getDir() . '.' . $_filePath;
 				$file = L::getRealPath($this->getDir() . '.' . $this->getLayoutFile(), $this->getSuffix());
-				if (!include $file) throw new WindViewException('the layout file ' . $file . ' is not exists.');
+				if (!include $file) {
+					throw new WindException('the layout file ' . $file . ' is not exists.');
+				}
 			}
 		}
 		return $this->segments;

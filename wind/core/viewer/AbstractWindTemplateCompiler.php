@@ -59,18 +59,14 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	}
 
 	/**
-	 * 解析标签体
-	 * @param string $content
-	 */
-	protected function compileContent($content) {
-
-	}
-
-	/**
 	 * 返回该标签支持的属性信息
 	 */
 	protected function getProperties() {
 		return array();
+	}
+
+	protected function preCompile() {
+
 	}
 
 	/* (non-PHPdoc)
@@ -78,12 +74,21 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		if ($this->windViewTemplate === null) return;
+		$this->preCompile();
 		foreach ($this->tags as $key => $value) {
 			if (!$value[0] || !$value[1]) continue;
 			$this->compileProperty($value[1]);
 			$_output = $this->compile($value[0], $value[1]);
 			$this->windViewTemplate->setCompiledBlockData($value[0], $_output);
 		}
+		$this->postCompile();
+	}
+
+	/**
+	 * 编译后处理结果
+	 */
+	protected function postCompile() {
+
 	}
 
 	/* (non-PHPdoc)
