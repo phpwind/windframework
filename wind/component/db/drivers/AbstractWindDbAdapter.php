@@ -104,10 +104,11 @@ abstract class AbstractWindDbAdapter {
 	public abstract function query($sql);
 	/**
 	 * 取得查询的所有结果集
+	 * @param string $resultIndex 结果集索引
 	 * @param int $fetch_type 提取结果集类型
 	 * @return array
 	 */
-	public abstract function getAllRow($fetch_type = IWindDbConfig::ASSOC);
+	public abstract function getAllRow($resultIndex = null,$fetch_type = IWindDbConfig::ASSOC);
 	
 	/**
 	 * 取得查询的单条结果集

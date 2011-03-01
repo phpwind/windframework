@@ -83,7 +83,7 @@ class WindMsSql extends AbstractWindDbAdapter {
 	/* (non-PHPdoc)
 	 * @see wind/base/WDbAdapter#getAllRow()
 	 */
-	public function getAllRow($fetch_type = IWindDbConfig::ASSOC) {
+	public function getAllRow($resultIndex = null,$fetch_type = IWindDbConfig::ASSOC) {
 		if (!is_resource($this->query)) {
 			throw new WindSqlException('', WindSqlException::DB_QUERY_LINK_EMPTY);
 		}
@@ -91,8 +91,12 @@ class WindMsSql extends AbstractWindDbAdapter {
 			throw new WindSqlException('', WindSqlException::DB_QUERY_FETCH_ERROR);
 		}
 		$result = array();
-		while (($record = mssql_fetch_array($this->query, $fetch_type))) {
-			$result[] = $record;
+		while (false !== ($record = mssql_fetch_array($this->query, $fetch_type))) {
+			if($resultIndex && isset($record[$resultIndex])){
+				$result[$record[$resultIndex]] = $record;
+			}else{
+				$result[] = $record;
+			}
 		}
 		return $result;
 	}
