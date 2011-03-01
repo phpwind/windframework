@@ -60,7 +60,7 @@ abstract class AbstractWindDaoFactory {
 	}
 
 	/**
-	 * 获取DBHandler
+	 * 返回DbHandler
 	 * @param AbstractWindDao $daoObject
 	 * @return AbstractWindDbAdapter
 	 */
@@ -70,13 +70,12 @@ abstract class AbstractWindDaoFactory {
 			$this->createWindFactory();
 			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
-			$_connection = $this->windFactory->getInstance($defintion->getAlias());
-			$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
-			if ($_dbTemplate !== null)
-				$_dbTemplate->setConnection($_connection);
-			$this->dbConnections[$_dbClass] = $_dbTemplate;
+			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
-		return $this->dbConnections[$_dbClass];
+		$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
+		if ($_dbTemplate !== null)
+			$_dbTemplate->setConnection($this->dbConnections[$_dbClass]);
+		return $_dbTemplate;
 	}
 
 	/**
