@@ -57,7 +57,6 @@
 	<!-- windView -->
 	<component name='windView' path='WIND:core.viewer.WindView'
 		scope='prototype'>
-		<!--<config resource='WIND:core.viewer.view_config' suffix='xml' /> -->
 		<config>
 			<template-dir value='template' />
 			<template-ext value='htm' />
@@ -79,7 +78,7 @@
 	</component>
 	<component name='template' path='WIND:core.viewer.compiler.WindViewTemplate'
 		scope='prototype'>
-		<config resource='WIND:core.viewer.viewTemplateConfig' suffix='xml' />
+		<config resource='WIND:config.viewTemplateConfig' suffix='xml' />
 	</component>
 
 	<!-- error -->
