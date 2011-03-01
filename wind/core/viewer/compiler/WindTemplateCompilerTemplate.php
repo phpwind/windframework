@@ -13,7 +13,9 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 
 	protected $source = '';
 
-	protected $suffix = 'htm';
+	protected $suffix = '';
+
+	protected $load = '';
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
@@ -21,11 +23,14 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		if (!isset($this->source)) return $content;
 		preg_match('/[\$\(\/\\]/i', $this->source, $result);
-		if (!empty($result)) {
+		if (empty($result)) {
+			if ($this->load === 'false') {
+				$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source), $this->suffix) . '\'); ?>';
+			} else
+				$content = $this->windViewerResolver->compile($this->source, $this->suffix, true);
+		} else
 			$content = '<?php include(' . $this->source . '); ?>';
-		} else {
-			$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source)) . '\'); ?>';
-		}
+		
 		return $content;
 	}
 
@@ -33,7 +38,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */
 	public function getProperties() {
-		return array('source', 'suffix');
+		return array('source', 'suffix', 'load');
 	}
 
 }
