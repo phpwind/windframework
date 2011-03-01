@@ -94,14 +94,14 @@ abstract class AbstractWindDao extends WindModule {
 	/**
 	 * @return IWindDbTemplate $dbHandler
 	 */
-	protected function getDbHandler() {
+	public function getDbHandler() {
 		return $this->dbHandler;
 	}
 
 	/**
 	 * @param IWindDbTemplate $dbHandler
 	 */
-	protected function setDbHandler($dbHandler) {
+	public function setDbHandler($dbHandler) {
 		$this->dbHandler = $dbHandler;
 	}
 
