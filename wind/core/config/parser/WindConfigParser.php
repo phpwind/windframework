@@ -20,46 +20,46 @@ L::import('WIND:core.config.parser.IWindConfigParser');
  * @package
  */
 class WindConfigParser implements IWindConfigParser {
-	
+
 	const ISMERGE = 'isMerge';
-	
+
 	/**
 	 * 配置文件支持的格式白名单
 	 */
 	const CONFIG_XML = 'XML';
-	
+
 	const CONFIG_PHP = 'PHP';
-	
+
 	const CONFIG_INI = 'INI';
-	
+
 	const CONFIG_PROPERTIES = 'PROPERTIES';
-	
+
 	const WIND_ROOT = 'wind';
-	
+
 	/**
 	 * 框架缺省配置文件的名字
 	 * @var string $defaultConfig 
 	 */
-	private $windConfig = 'wind_config';
-	
+	private $windConfig = 'WIND:config.wind_config';
+
 	/**
 	 * 配置解析对象队列
 	 * @var array object $configParser
 	 */
 	private $configParsers = array();
-	
+
 	/**
 	 * 配置文件解析出来的数据编码
 	 * @var string $encoding
 	 */
 	private $encoding = 'UTF-8';
-	
+
 	/**
 	 * ISMERGE的有效值范围
 	 * @var array $mergeValue
 	 */
 	private $mergeValue = array('true', '1');
-	
+
 	/**
 	 * 初始化
 	 * 设置解析数据输出的编码方式
@@ -68,7 +68,7 @@ class WindConfigParser implements IWindConfigParser {
 	public function __construct($outputEncoding = 'UTF-8') {
 		$this->encoding = $outputEncoding;
 	}
-	
+
 	/**
 	 * 解析文件，保存缓存，返回解析结果
 	 * 
@@ -90,7 +90,8 @@ class WindConfigParser implements IWindConfigParser {
 		if ($alias) {
 			$cacheFile = $this->buildCacheFilePath($alias);
 			$config = $this->getCacheContent($cacheFile);
-			if (isset($config[self::WIND_ROOT]) && !$this->needCompiled()) return $config[self::WIND_ROOT];
+			if (isset($config[self::WIND_ROOT]) && !$this->needCompiled())
+				return $config[self::WIND_ROOT];
 		}
 		$config = (array) $config;
 		$configPath = trim($configPath);
@@ -100,7 +101,7 @@ class WindConfigParser implements IWindConfigParser {
 		$alias && $this->saveConfigFile($cacheFile, $config);
 		return $config[self::WIND_ROOT];
 	}
-	
+
 	/**
 	 * 解析组件的配置文件
 	 * 
@@ -131,14 +132,16 @@ class WindConfigParser implements IWindConfigParser {
 				return $config[$alias];
 			}
 		}
-		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
+		if (!($configPath = trim($configPath)))
+			throw new WindException('Please input the file path!');
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if (!$alias) return $result;
+		if (!$alias)
+			return $result;
 		$config[$alias] = $result;
 		$append && $this->saveConfigFile($cacheFileName, $config);
 		return $result;
 	}
-	
+
 	/**
 	 * 获得缓存文件内容
 	 * 
@@ -147,10 +150,11 @@ class WindConfigParser implements IWindConfigParser {
 	 */
 	private function getCacheContent($file) {
 		$content = array();
-		if (is_file($file)) $content = include ($file);
-		return  is_array($content) ?  $content : array();
+		if (is_file($file))
+			$content = include ($file);
+		return is_array($content) ? $content : array();
 	}
-	
+
 	/**
 	 * 创建配置文件解析器
 	 * 
@@ -175,7 +179,7 @@ class WindConfigParser implements IWindConfigParser {
 				break;
 		}
 	}
-	
+
 	/**
 	 * 执行解析并返回解析结果
 	 * 接收一个配置文件路径，根据路径信息初始化配置解析器，并解析该配置
@@ -185,15 +189,18 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array			    返回解析结果
 	 */
 	private function doParser($configFile, $type) {
-		if (!$configFile) return array();
-		if (!is_file($configFile)) throw new WindException('The file <' . $configFile . '> is not exists');
-		if ($type == 'PHP') return include ($configFile);
+		if (!$configFile)
+			return array();
+		if (!is_file($configFile))
+			throw new WindException('The file <' . $configFile . '> is not exists');
+		if ($type == 'PHP')
+			return include ($configFile);
 		if (!isset($this->configParsers[$type])) {
 			$this->configParsers[$type] = $this->createParser($type);
 		}
 		return $this->configParsers[$type]->parse($configFile);
 	}
-	
+
 	/**
 	 * 合并配置文件
 	 * 
@@ -205,10 +212,12 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array  				合并后的配置
 	 */
 	private function mergeConfig($defaultConfig, $appConfig) {
-		if (!$defaultConfig || !is_array($defaultConfig)) return array();
+		if (!$defaultConfig || !is_array($defaultConfig))
+			return array();
 		list($defaultConfig, $mergeTags) = $this->getMergeTags($defaultConfig);
 		
-		if (!$appConfig || !is_array($appConfig)) return $defaultConfig;
+		if (!$appConfig || !is_array($appConfig))
+			return $defaultConfig;
 		list($appConfig) = $this->getMergeTags($appConfig);
 		
 		foreach ($defaultConfig as $key => $value) {
@@ -222,13 +231,14 @@ class WindConfigParser implements IWindConfigParser {
 			}
 		}
 		
-		if (!($difKeys = array_diff(array_keys($appConfig), array_keys($defaultConfig)))) return $defaultConfig;
+		if (!($difKeys = array_diff(array_keys($appConfig), array_keys($defaultConfig))))
+			return $defaultConfig;
 		foreach ($difKeys as $key) {
 			$defaultConfig[$key] = $appConfig[$key];
 		}
 		return $defaultConfig;
 	}
-	
+
 	/**
 	 * 获得isMerge属性的标签，同时将该属性删除
 	 * 
@@ -246,7 +256,7 @@ class WindConfigParser implements IWindConfigParser {
 		}
 		return array($params, $mergeTags);
 	}
-	
+
 	/**
 	 * 返回是否需要执行解析
 	 * 
@@ -261,10 +271,11 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean  		 false:需要进行解析， true：不需要进行解析，直接读取缓存文件
 	 */
 	private function needCompiled() {
-		if (IS_DEBUG && W::ifCompile() && is_dir(COMPILE_PATH)) return true;
+		if (IS_DEBUG && W::ifCompile() && is_dir(COMPILE_PATH))
+			return true;
 		return false;
 	}
-	
+
 	/**
 	 * 获得文件的后缀，决定采用的是哪种配置格式，
 	 * 如果传递的文件配置格式不在支持范围内，则抛出异常
@@ -273,14 +284,15 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean           : true  解析文件格式成功，解析失败则抛出异常
 	 */
 	private function getConfigFormat($configPath) {
-		if ($configPath === '') return self::CONFIG_XML;
+		if ($configPath === '')
+			return self::CONFIG_XML;
 		$format = strtoupper(trim(strrchr($configPath, '.'), '.'));
 		if (!in_array($format, $this->getConfigFormatList())) {
 			throw new WindException("The format of the config file doesn't sopported yet!");
 		}
 		return $format;
 	}
-	
+
 	/**
 	 * 判断数值是否在IsMerge的可用范围内
 	 * 
@@ -290,7 +302,7 @@ class WindConfigParser implements IWindConfigParser {
 	private function checkCanMerge($value) {
 		return in_array(strtolower(trim($value)), $this->mergeValue);
 	}
-	
+
 	/**
 	 * 保存成文件
 	 * 
@@ -299,11 +311,12 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean 			  保存成功则返回true,保存失败则返回false
 	 */
 	private function saveConfigFile($filename, $data) {
-		if (!W::ifCompile() || !$filename || !$data || !is_dir(COMPILE_PATH)) return false;
+		if (!W::ifCompile() || !$filename || !$data || !is_dir(COMPILE_PATH))
+			return false;
 		L::import('COM:utility.WindFile');
 		return WindFile::saveData($filename, $data);
 	}
-	
+
 	/**
 	 * 获得默认配置文件的路径
 	 * 
@@ -311,9 +324,9 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return string 	获得默认配置文件的路径
 	 */
 	private function getWindConfigPath($parseFormat) {
-		return WIND_PATH . $this->windConfig . '.' . strtolower($parseFormat);
+		return L::getRealPath($this->windConfig, strtolower($parseFormat));
 	}
-	
+
 	/**
 	 * 构造文件的路径
 	 * 
@@ -323,7 +336,7 @@ class WindConfigParser implements IWindConfigParser {
 	private function buildCacheFilePath($fileName) {
 		return rtrim(COMPILE_PATH, '/') . D_S . strtolower($fileName) . '.php';
 	}
-	
+
 	/**
 	 * 获得支持解析的配置文件格式的白名单
 	 * 
@@ -332,7 +345,7 @@ class WindConfigParser implements IWindConfigParser {
 	private function getConfigFormatList() {
 		return array(self::CONFIG_XML, self::CONFIG_PHP, self::CONFIG_INI, self::CONFIG_PROPERTIES);
 	}
-	
+
 	/**
 	 * 析构函数
 	 * 
