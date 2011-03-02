@@ -23,7 +23,7 @@ class WindLayout {
 	 * @param string $layoutFile
 	 */
 	public function __construct($layoutFile = '') {
-		$this->layoutFile = $layoutFile;
+		$this->setLayoutFile($layoutFile);
 	}
 
 	/**
@@ -49,4 +49,19 @@ class WindLayout {
 		if (!$template) $template = $this->viewer->getWindView()->getTemplateName();
 		if ($template) $this->viewer->displayWindFetch($template);
 	}
+
+	/**
+	 * @return the $layoutFile
+	 */
+	protected function getLayoutFile() {
+		return $this->layoutFile;
+	}
+
+	/**
+	 * @param field_type $layoutFile
+	 */
+	protected function setLayoutFile($layoutFile) {
+		$this->layoutFile = $layoutFile;
+	}
+
 }

@@ -52,19 +52,22 @@ class WindView extends WindComponentModule {
 	 */
 	protected $viewResolver = null;
 
-	protected $layout = null;
+	/**
+	 * 布局文件
+	 *
+	 * @var string
+	 */
+	protected $layout = '';
 
 	/**
 	 * 设置布局对象
 	 * @param WindLayout|string $layout
 	 */
 	public function setLayout($layout) {
-		if (is_string($layout) && !empty($layout)) {
-			L::import('WIND:core.viewer.WindLayout');
-			$this->layout = new WindLayout($layout);
-		
-		} elseif ($layout instanceof WindLayout)
+		if (is_string($layout) && !empty($layout))
 			$this->layout = $layout;
+		elseif ($layout instanceof WindLayout)
+			$this->layout = $layout->getLayoutFile();
 	}
 
 	/**
