@@ -39,8 +39,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
 		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
-			if ($key)
-				$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
+			if ($key) $content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
 		/*$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);*/
 		return $content;
@@ -79,10 +78,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$regex = isset($value[self::PATTERN]) ? $value[self::PATTERN] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
-			if (!$compiler || !$tag)
-				continue;
-			if ($regex === '')
-				$regex = '/<(' . $tag . ')(\s|>)+(.|\n)*?(\/>[^"\']|<\/\1>){1}/i';
+			if (!$compiler || !$tag) continue;
+			if ($regex === '') $regex = '/<(' . preg_quote($tag) . ')[^<>\n]*(\/>|>[^<>]*<\/\1>)/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
 		return $content;
@@ -102,8 +99,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
 		}
 		$_compilerClass = L::import($compiler);
-		if (!class_exists($_compilerClass))
-			return $content;
+		if (!class_exists($_compilerClass)) return $content;
 		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->request, $this->response));
 		$this->_compilerCache = array();
 		return $content;
@@ -116,8 +112,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 */
 	private function _creatTagCompiler($content) {
 		$_content = $content[0];
-		if (!$_content)
-			return '';
+		if (!$_content) return '';
 		
 		$key = $this->getCompiledBlockKey();
 		$this->_compilerCache[] = array($key, $_content);
@@ -134,8 +129,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return string|mixed | 处理后结果
 	 */
 	private function getBlockTag($key) {
-		if (!$this->blockKey)
-			return '<pw-wind key=\'' . $key . '\' />';
+		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
 		return str_replace('$', $key, $this->blockKey);
 	}
 
@@ -170,8 +164,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @param boolean $isTag | 再结果处理时是否添加php脚本定界符 true 添加 ，flase 不添加
 	 */
 	public function setCompiledBlockData($key, $compiledBlockData) {
-		if ($key)
-			$this->compiledBlockData[$key] = $compiledBlockData;
+		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
 	}
 
 }

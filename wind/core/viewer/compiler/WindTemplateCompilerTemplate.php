@@ -23,6 +23,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
+		echo $content;
 		if (!isset($this->source)) return $content;
 		preg_match('/[\$\(\/\\]/i', $this->source, $result);
 		if (empty($result)) {
@@ -30,6 +31,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 				$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source, $this->suffix)) . '\'); ?>';
 			} else {
 				list($compileFile, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, true);
+				
 				$this->includeFiles .= $this->source . ':' . filemtime($compileFile) . ' ';
 			}
 		} else
