@@ -70,9 +70,8 @@
 		</properties>
 	</component>
 	<component name='viewResolver' path='WIND:core.viewer.WindViewerResolver'
-		scope='prototype' hidden-pro='false'>
+		scope='prototype'>
 		<properties>
-			<property name='windTemplate' ref='template' />
 			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
