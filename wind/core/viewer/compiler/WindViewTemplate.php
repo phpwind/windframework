@@ -42,7 +42,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			if ($key)
 				$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
-		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
+		/*$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);*/
 		return $content;
 	}
 
@@ -54,7 +54,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', $_tmp);
 		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
 		$_tags += (array) parent::getTags();
-		$_tmp = '/(\$|{\@\s*|{\s*\$|{\@\s*\$)\w+((\-\>\w+)*(\(([^\)])*\))*(\[([^\]])*\])*)*\s*}*/i';
+		$_tmp = '/(\$|{\@\s*|{\s*\$|{\@\s*\$)\w+((\-\>\w+)*(\(([^\)])*\))*(\[([^\]])*\])*)*[\s;]*}*/i';
 		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', $_tmp);
 		return $_tags;
 	}
@@ -112,7 +112,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	/**
 	 * 将标签匹配到的模板内容设置到缓存中，并返回标识位到模板中进行内容站位
 	 * @param string $content
-	 * @return string|Ambigous <string, mixed>
+	 * @return string|Ambigous --><string, mixed>
 	 */
 	private function _creatTagCompiler($content) {
 		$_content = $content[0];

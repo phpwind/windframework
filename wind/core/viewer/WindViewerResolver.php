@@ -60,13 +60,11 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @see IWindViewerResolver::windFetch()
 	 */
 	public function windFetch($template = '') {
+		if (!$template && null !== $layout = $this->getWindView()->getLayout()) {
+			return $layout->parse($this);
+		}
 		ob_start();
-		if (null !== $segments = $this->parserLayout($template))
-			foreach ($segments as $value) {
-				$this->render($value);
-			}
-		else
-			$this->render($template);
+		$this->render($template);
 		return ob_get_clean();
 	}
 
@@ -96,7 +94,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	public function compile($template, $suffix = '', $output = false) {
 		$templateFile = $this->getWindView()->getViewTemplate($template, $suffix);
 		if (!file_exists($templateFile)) {
-			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
+			throw new WindException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
 		if (!$this->getWindView()->getCompileDir()) return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
@@ -119,7 +117,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 */
 	public function render($template) {
 		$_tmp = $this->compile($template);
-		
 		//extract template vars
 		@extract((array) $this->templateVars, EXTR_REFS);
 		if (!include $_tmp) {
@@ -133,10 +130,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 */
 	private function parserLayout($template) {
 		if (null === $layout = $this->getWindView()->getLayout()) return null;
-		if (!$template) $template = $this->getWindView()->getTemplateName();
-		$layout->setDir($this->getWindView()->getTemplatePath());
-		$layout->setSuffix($this->getWindView()->getTemplateExt());
-		return $layout->parserLayout($template);
+		return $layout->getLayoutFile();
 	}
 
 	/**
@@ -163,7 +157,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	protected function getWriteTableForGetterAndSetter() {
-		return array('windView', 'windTemplate', 'urlHelper');
+		return array('windView', 'windTemplate', 'urlHelper', 'templateVars');
 	}
 
 }

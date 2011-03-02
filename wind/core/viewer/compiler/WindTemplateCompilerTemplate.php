@@ -15,7 +15,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 
 	protected $suffix = '';
 
-	protected $load = '';
+	protected $load = 'true';
 
 	protected $includeFiles = '';
 
@@ -27,7 +27,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 		preg_match('/[\$\(\/\\]/i', $this->source, $result);
 		if (empty($result)) {
 			if ($this->load === 'false') {
-				$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source), $this->suffix) . '\'); ?>';
+				$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source, $this->suffix)) . '\'); ?>';
 			} else {
 				list($compileFile, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, true);
 				$this->includeFiles .= $this->source . ':' . filemtime($compileFile) . ' ';

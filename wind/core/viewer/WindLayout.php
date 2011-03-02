@@ -17,107 +17,36 @@
  */
 class WindLayout {
 
-	/**
-	 * 布局信息
-	 * @var $_segments
-	 */
-	private $segments = array();
-
 	private $layoutFile = '';
-
-	private $dir = '';
-
-	private $suffix = '';
-
-	private $tplName = '';
 
 	/**
 	 * @param string $layoutFile
 	 */
-	public function __construct($layoutFile = '', $dir = '', $suffix = '') {
-		$this->setLayoutFile($layoutFile);
-		$this->setDir($dir);
-		$this->setSuffix($suffix);
-	}
-
-	/**
-	 * 解析layout布局文件
-	 */
-	public function parserLayout($tplName) {
-		$this->tplName = $tplName;
-		if ($this->getLayoutFile() === '') {
-			$this->setSegments();
-		} else {
-			$_filePath = $this->getLayoutFile();
-			if (false !== strpos($_filePath, D_S)) {
-				include $_filePath;
-			} elseif ($this->getDir()) {
-				$_filePath = $this->getDir() . '.' . $_filePath;
-				$file = L::getRealPath($this->getDir() . '.' . $this->getLayoutFile(), $this->getSuffix());
-				if (!include $file) {
-					throw new WindException('the layout file ' . $file . ' is not exists.');
-				}
-			}
-		}
-		return $this->segments;
-	}
-
-	/**
-	 * 设置切片文件
-	 * 
-	 * @param string $segment
-	 */
-	private function setSegments($segment = '') {
-		if ($segment === '')
-			$this->segments[] = $this->tplName;
-		else
-			$this->segments[] = $segment;
-	}
-
-	/**
-	 * @return the $layoutFile
-	 */
-	protected function getLayoutFile() {
-		return $this->layoutFile;
-	}
-
-	/**
-	 * 设置layout布局文件
-	 * 可以为一个布局文件的逻辑名称，如：layout.mainLayout
-	 * 则程序会在模板路径下面寻找layout目录下的mainLayout布局文件，后缀名和模板的后缀名保持一致
-	 * 
-	 * @param string $layout
-	 */
-	public function setLayoutFile($layoutFile) {
+	public function __construct($layoutFile = '') {
 		$this->layoutFile = $layoutFile;
 	}
 
 	/**
-	 * @return the $dir
+	 * 解析layout布局文件
+	 * @param WindViewerResolver $windViewerResolver
 	 */
-	public function getDir() {
-		return $this->dir;
+	public function parse($windViewerResolver) {
+		if (!$windViewerResolver) return '';
+		$this->viewer = $windViewerResolver;
+		if (!$this->layoutFile) throw new WindException('layout file is required.');
+		$layoutFile = $windViewerResolver->compile($this->layoutFile);
+		ob_start();
+		if (!include $layoutFile) throw new WindException('Incorrect layout file ' . $layoutFile);
+		return ob_get_clean();
 	}
 
-	/**
-	 * @return the $suffix
-	 */
-	public function getSuffix() {
-		return $this->suffix;
+	private function setSegments($segment = '') {
+		$this->getContent($segment);
 	}
 
-	/**
-	 * @param field_type $dir
-	 */
-	public function setDir($dir) {
-		$this->dir = $dir;
+	private function getContent($template = '') {
+		if (!isset($this->viewer)) return;
+		if (!$template) $template = $this->viewer->getWindView()->getTemplateName();
+		if ($template) $this->viewer->displayWindFetch($template);
 	}
-
-	/**
-	 * @param field_type $suffix
-	 */
-	public function setSuffix($suffix) {
-		$this->suffix = $suffix;
-	}
-
 }
