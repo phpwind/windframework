@@ -124,10 +124,19 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 		}
 	}
 
+	/**
+	 * 向上继承，布局切片设置
+	 * @param string $segment
+	 * @deprecated
+	 */
 	private function setSegments($segment = '') {
 		$this->getContent($segment);
 	}
 
+	/**
+	 * 当前模板内容
+	 * @param string $template
+	 */
 	private function getContent($template = '') {
 		if (!$template) $template = $this->getWindView()->getTemplateName();
 		if ($template) $this->displayWindFetch($template);
