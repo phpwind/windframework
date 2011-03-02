@@ -52,7 +52,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::getHandler()
 	 */
 	public function getHandler() {
-		if ($this->getController() === 'windError') {
+		if (!strcasecmp($this->getController(), 'windError')) {
 			$controllerPath = $this->errorHandle;
 		} else {
 			$controllerSuffix = '';
@@ -69,8 +69,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 				$_modulePath = $this->modulePath;
 			$controllerPath = $_modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
 		}
-		if (strpos($controllerPath, ':') === false)
-			$controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
+		if (strpos($controllerPath, ':') === false) $controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
 		
 		//add log
 		if (IS_DEBUG) {
@@ -103,8 +102,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 */
 	private function getUrlParamValue($type, $request = null, $defaultValue = '') {
 		if ($_param = $this->getConfig()->getConfig($type, self::URL_PARAM)) {
-			if (is_null($request))
-				return $_param;
+			if (is_null($request)) return $_param;
 			$_defaultValue = $this->getConfig()->getConfig($type, self::DEFAULT_VALUE);
 			$defaultValue = $_defaultValue ? $_defaultValue : $defaultValue;
 			return $request->getAttribute($_param, $defaultValue);
