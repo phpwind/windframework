@@ -115,7 +115,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * 加载视图模板文件
 	 * @param template
 	 */
-	public function render($template) {
+	protected function render($template) {
 		$_tmp = $this->compile($template);
 		//extract template vars
 		@extract((array) $this->templateVars, EXTR_REFS);
