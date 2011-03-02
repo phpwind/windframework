@@ -6,7 +6,7 @@
  * @license 
  */
 
-class WindErrorHandler extends WindAction {
+class WindErrorHandler extends WindController {
 
 	protected $error = array();
 
