@@ -52,7 +52,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::getHandler()
 	 */
 	public function getHandler() {
-		if ($this->getController() === 'error') {
+		if ($this->getController() === 'windError') {
 			$controllerPath = $this->errorHandle;
 		} else {
 			$controllerSuffix = '';
