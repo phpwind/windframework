@@ -518,7 +518,7 @@ class WindHttpRequest implements IWindRequest {
 		if ($this->_response === null) {
 			L::import('WIND:core.response.WindHttpResponse');
 			$this->_response = new WindHttpResponse();
-			$this->_response->setHeader('Content-type', 'text/html;charset=utf-8');
+			$this->_response->addHeader('Content-type', 'text/html;charset=utf-8');
 		}
 		return $this->_response;
 	}
