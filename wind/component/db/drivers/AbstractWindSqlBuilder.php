@@ -804,11 +804,11 @@ abstract class AbstractWindSqlBuilder {
 			return $this->parseArrayPlaceHolder($text, $replace, $separators);
 		}
 		if ($text && is_string($text)) {
-			list($ifmatch, $text) = $this->parseUnFixedPlaceHolder($text, $replace, $separators);
+			list($ifmatch, $text) = $this->parseUnFixedPlaceHolder($text, $replace);
 			if ($ifmatch) {
 				return $text;
 			} else {
-				list(, $text) = $this->parseFixedPlaceHolder($text, $replace, $separators);
+				list(, $text) = $this->parseFixedPlaceHolder($text, $replace);
 			}
 			return $text;
 		}
@@ -841,17 +841,16 @@ abstract class AbstractWindSqlBuilder {
 	 * 按固定的方式解析占位符
 	 * @param mixed $text 包含占位符的文本
 	 * @param mixed $replace 将占位符替换成指定的值
-	 * @param mixed $separators 分隔符
 	 * @return mixed 返回解析后的文本
 	 */
-	private function parseFixedPlaceHolder($text, $replace = array(), $separators = ',') {
+	private function parseFixedPlaceHolder($text, $replace = array()) {
 		if (0 < (int) ($ifmatch = preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(\?)/i', $text, $matches))) {
 			$replace = is_array($replace) ? $replace : array($replace);
 			foreach ($matches[1] as $key => $match) {
 				if (in_array(strtoupper(trim($matches[2][$key])), array('IN', 'NOT IN'))) {
 					$replace[$key] = is_array($replace[$key]) ? $replace[$key] : array($replace[$key]);
 					array_walk($replace[$key], array($this, 'escapeString'));
-					$_replace = $match . self::LG . implode($separators, $replace[$key]) . self::RG;
+					$_replace = $match . self::LG . implode(', ', $replace[$key]) . self::RG;
 				} else {
 					$_replace = $match . $this->escapeString($replace[$key]);
 				}
@@ -864,10 +863,9 @@ abstract class AbstractWindSqlBuilder {
 	 * 按灵活的方式解析占位符
 	 * @param mixed $text 包含占位符的文本
 	 * @param mixed $replace 将占位符替换成指定的值
-	 * @param mixed $separators 分隔符
 	 * @return mixed 返回解析后的文本
 	 */
-	private function parseUnFixedPlaceHolder($text, $replace = array(), $separators = ',') {
+	private function parseUnFixedPlaceHolder($text, $replace = array()) {
 		if (0 < (int) ($ifmatch = preg_match_all('/([\w\d_\.`]+[\t ]*(>|<|!=|<>|>=|<=|=|like|in|not[\t ]+in)[\t ]*)(:[\w\d_\.]+)/i', $text, $matches))) {
 			if (!is_array($replace)) {
 				$tmp = explode('=', $replace);
@@ -877,7 +875,7 @@ abstract class AbstractWindSqlBuilder {
 				$_trueKey = $matches[3][$key];
 				if (in_array(strtoupper(trim($matches[2][$key])), array('IN', 'NOT IN'))) {
 					array_walk($replace[$_trueKey], array($this, 'escapeString'));
-					$_replace = $match . self::LG . implode($separators, $replace[$_trueKey]) . self::RG;
+					$_replace = $match . self::LG . implode(', ', $replace[$_trueKey]) . self::RG;
 				} else {
 					$_replace = $match . $this->escapeString($replace[$_trueKey]);
 				}
