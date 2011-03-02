@@ -23,7 +23,6 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		echo $content;
 		if (!isset($this->source)) return $content;
 		preg_match('/[\$\(\/\\]/i', $this->source, $result);
 		if (empty($result)) {

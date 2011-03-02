@@ -38,8 +38,9 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
 		}
-		foreach (array_reverse($this->getCompiledBlockData()) as $key => $value) {
-			if ($key) $content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
+		foreach (array_reverse($this->compiledBlockData) as $key => $value) {
+			if (!$key) continue;
+			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
 		/*$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);*/
 		return $content;

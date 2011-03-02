@@ -31,12 +31,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	protected $windView = null;
 
 	/**
-	 * 模板类
-	 * @var WindViewTemplate
-	 */
-	protected $windTemplate = null;
-
-	/**
 	 * 模板输出的变量
 	 * @var array
 	 */
@@ -98,7 +92,10 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 		}
 		if (!$this->getWindView()->getCompileDir()) return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
-		$_output = $this->getWindTemplate()->compile($templateFile, $compileFile, $this);
+		$_windTemplate = $this->windFactory->getInstance(COMPONENT_TEMPLATE);
+		if ($_windTemplate) {
+			$_output = $_windTemplate->compile($templateFile, $compileFile, $this);
+		}
 		if ($output === false) return $compileFile;
 		if ($_output !== null) return array($compileFile, $_output);
 		if ($fp = @fopen($compileFile, 'r')) {
@@ -150,16 +147,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 			return $this->windView;
 		else
 			throw new WindException('WindView', WindException::ERROR_RETURN_TYPE_ERROR);
-	}
-
-	/**
-	 * @return WindViewTemplate $windTemplate
-	 */
-	public function getWindTemplate() {
-		if ($this->windTemplate !== null)
-			return $this->windTemplate;
-		else
-			throw new WindException('getWindTemplate', WindException::ERROR_RETURN_TYPE_ERROR);
 	}
 
 	/* (non-PHPdoc)
