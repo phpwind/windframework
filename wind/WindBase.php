@@ -269,6 +269,7 @@ class L {
 	 * @return null
 	 */
 	static public function loadCoreLibrary() {
+		self::import('WIND:component.utility.WindUtility');
 		self::import('WIND:core.*', true, true);
 		
 		if (!IS_DEBUG && W::ifCompile()) self::perLoadCoreLibrary();
