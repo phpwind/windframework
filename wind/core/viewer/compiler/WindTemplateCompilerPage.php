@@ -17,7 +17,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		echo 'asdfasdfadsf';
+		
 	}
 
 }
