@@ -29,8 +29,9 @@ abstract class WindController extends WindAction {
 
 	/**
 	 * 实现表单验证规则
+	 * @param string $type
 	 */
-	public function validatorFormRule() {
+	public function validatorFormRule($type) {
 		return array();
 	}
 
@@ -40,4 +41,5 @@ abstract class WindController extends WindAction {
 	public function getValidatorClass() {
 		return $this->validatorClass;
 	}
+
 }
