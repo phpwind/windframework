@@ -393,7 +393,7 @@ abstract class AbstractWindSqlBuilder {
 		if (isset($this->sql[self::OFFSET]) && is_array($this->sql[self::OFFSET])) {
 			$this->sql[self::OFFSET] = array_pop($this->sql[self::OFFSET]);
 		}
-		return $this->sqlFillSpace(($sql = $this->sql[self::LIMIT] > 0 ? 'LIMIT ' . $this->sql[self::LIMIT] . ' ' : '') ? $this->sql[self::OFFSET] > 0 ? $sql . 'OFFSET ' . $this->sql[self::OFFSET] : $sql : '');
+		return $this->sqlFillSpace(($sql = isset($this->sql[self::LIMIT])  ? 'LIMIT ' . (int)$this->sql[self::LIMIT] . ' ' : '') ? isset($this->sql[self::OFFSET])  ? $sql . 'OFFSET ' . (int)$this->sql[self::OFFSET] : $sql : '');
 	}
 	/**
 	 * 解析更新数据
