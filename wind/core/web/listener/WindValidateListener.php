@@ -21,7 +21,7 @@ class WindValidateListener extends WindHandlerInterceptor {
 
 	private $validatorClass = '';
 
-	private $errorMessage = null;
+	private $defaultMessage = '验证失败';
 
 	/**
 	 * @param WindHttpRequest $request
@@ -47,7 +47,7 @@ class WindValidateListener extends WindHandlerInterceptor {
 			array_unshift($args, $value);
 			if (call_user_func_array(array($this->getValidator(), $rule['validator']), (array) $args) === false) {
 				if (null === $rule['default'])
-					$errorMessage->addError($key . ': ' . $rule['message'], $key);
+					$errorMessage->addError(($rule['message'] ? $rule['message'] : $this->defaultMessage), $key);
 				else
 					$value = $rule['default'];
 			}
