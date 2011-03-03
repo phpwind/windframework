@@ -17,14 +17,6 @@ class WindFormController extends WindAction {
 	public function getFormClass() {
 		return $this->formClass;
 	}
-
-	/**
-	 * @param field_type $formClass
-	 */
-	public function setFormClass($formClass) {
-		$this->formClass = $formClass;
-	}
-
 }
 
 ?>
