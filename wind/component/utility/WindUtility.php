@@ -9,7 +9,7 @@
  * @package 
  */
 class WindUtility {
-	
+
 	/**
 	 * 获得随机数字符串
 	 * 
@@ -30,7 +30,7 @@ class WindUtility {
 		}
 		return $randstr;
 	}
-	
+
 	/**
 	 * 分页函数
 	 * @param $page		当前页
@@ -76,7 +76,7 @@ class WindUtility {
 	 */
 	static public function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
 		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
-			'message' => ($message ? $message : $this->_defaultMessage));
+			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
 }
 
