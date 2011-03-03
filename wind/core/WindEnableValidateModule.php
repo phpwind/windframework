@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindModule');
+L::import('WIND:core.WindComponentModule');
 /**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
@@ -15,7 +15,7 @@ L::import('WIND:core.WindModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WindEnableValidateModule extends WindModule {
+abstract class WindEnableValidateModule extends WindComponentModule {
 
 	protected $_validator = null;
 
