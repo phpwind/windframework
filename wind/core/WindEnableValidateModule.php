@@ -23,7 +23,7 @@ abstract class WindEnableValidateModule extends WindModule {
 
 	private $_errors = array();
 
-	private $_defaultMessage = '验证失败';
+	private $_defaultMessage = 'the field validate fail.';
 
 	/**
 	 * 返回验证规则
@@ -64,7 +64,6 @@ abstract class WindEnableValidateModule extends WindModule {
 	/**
 	 * 验证数组类型的输入
 	 * @param array $input
-	 * @param array $rules
 	 */
 	private function validateArray(&$input) {
 		$rules = $this->validateRules();
@@ -72,14 +71,28 @@ abstract class WindEnableValidateModule extends WindModule {
 			$validator = $rule['validator'];
 			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : '';
 			if ($this->getValidator()->$validator($_input) === false) {
-				if ($rule['default'] === null) throw new WindException('the field ' . $rule['field'] . ' validate fail.');
+				if ($rule['default'] === null) throw new WindException($rule['field'] . ': ' . $rule['message']);
 				$input[$rule['field']] = $rule['default'];
 			}
 		}
 	}
-
-	private function validateObject(&$input, $rules) {
-		//TODO 仿照validateArray实现该方法
+    
+	/**
+	 * 验证对象类型的输入
+	 * @param object $input 传入需要验证的数据
+	 */
+	private function validateObject(&$input) {
+   		 $rules = $this->validateRules();
+   		 foreach ((array) $rules as $rule) {
+   		     $validator = $rule['validator'];
+   		     $key = $rule['field'];
+   		     $_input = $input->$key ? $input->$key : '';
+   		     $arg = (array)$rule['arg'];
+   		     array_unshift($arg, $_input);
+   		     if (call_user_func_array(array($this->getValidator(), $validator), $arg) !== false) continue;
+	         if ($rule['default'] === null) throw new WindException($key . ': ' . $rule['message']);
+             $input->$key = $rule['default'];
+   		 }
 	}
 
 	/**
