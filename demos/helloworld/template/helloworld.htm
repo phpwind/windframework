@@ -1,0 +1,27 @@
+<!-- 调用子模板 -->
+<template source='read' />
+<form name='FROM'>
+<ul>
+	<!--{for($i=1;$i<10;$i++):}-->
+	<li><input name='test[]' value='{$i}' type="hidden" />
+	hello!!!!!!!!</li>
+	<!--{endfor;}-->
+</ul>
+</form>
+<a href='{$this->getUrlHelper()->createUrl("add")}'
+	onclick="createUrl(this)">hello world</a>
+$var1 {$var1} {@$var1}
+<script language='javascript' type="text/javascript">
+	function createUrl(url) {
+		try{
+			
+		}catch(exception){alert('{$var1}');
+		}
+		var _var = document.FROM;
+		alert(_var.test[]);
+		window.location.href = url + 'b=a';
+		return false;
+	}
+</script>
+
+
