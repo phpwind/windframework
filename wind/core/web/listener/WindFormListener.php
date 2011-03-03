@@ -32,7 +32,6 @@ class WindFormListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		//TODO 实现基于表单对象的表单验证机制，错误处理，表单对象集成WindEnableValidateModule
 		$className = L::import($this->formPath);
 		if (!class_exists($className)) throw new WindException('the form \'' . $this->formPath . '\' is not exists!');
 		$form = new $className();
@@ -47,8 +46,8 @@ class WindFormListener extends WindHandlerInterceptor {
 		}
 		call_user_func_array(array($form, 'validate'), array($form));
 		if (($error = $form->getErrors())) {
-			$this->errorMessage = new WindErrorMessage($error);
-			$this->errorMessage->sendError();
+		    $errorMessage = new WindErrorMessage($error);
+		    $errorMessage->sendError();
 		}
 		$this->request->setAttribute('formData', $form);
 	}

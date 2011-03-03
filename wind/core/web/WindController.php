@@ -40,5 +40,4 @@ abstract class WindController extends WindAction {
 	public function getValidatorClass() {
 		return $this->validatorClass;
 	}
-
 }

@@ -16,6 +16,8 @@ class WindValidateListener extends WindHandlerInterceptor {
 	private $request = null;
 
 	private $validateRules = array();
+	
+	private $validator = null;
 
 	private $validatorClass = '';
 
@@ -36,8 +38,32 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		//TODO 实现基于验证规则的表单验证机制，错误处理
+		$errorMessage = new WindErrorMessage();
+		foreach ((array)$this->validateRules as $rule) {
+		    $key = $rule['field'];
+		    $value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost($key);
+		    $args = $rule['args'];
+		    array_unshift($args, $value);
+		    if (call_user_func_array(array($this->getValidator(), $rule['validator']), (array)$args) !== false) {
+    		    continue;
+		    }
+		    if (null === $rule['default']) {
+		        $errorMessage->addError($key . ': ' . $rule['message'], $key);
+		        continue;
+    		}
+		    $this->request->setAttribute($key, $rule['default']);
+		}
+		if ($errorMessage->getError()) $errorMessage->sendError();
+	}
 	
+	private function getValidator() {
+	    if ($this->validator === null) {
+			$_className = L::import($this->validatorClass);
+			L::import('WIND:core.factory.WindFactory');
+			$this->validator = WindFactory::createInstance($_className);
+			if ($this->validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
+		}
+		return $this->validator;
 	}
 
 	/* (non-PHPdoc)

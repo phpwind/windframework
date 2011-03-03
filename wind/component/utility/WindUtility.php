@@ -64,6 +64,20 @@ class WindUtility {
 		return $pages;
 	}
 
+	/**
+	 * 通用组装测试验证规则
+	 * 
+	 * @param string $field	| 验证字段名称
+	 * @param string $validator | 验证方法
+	 * @param array $args       | 参数
+	 * @param string $default	| 默认值
+	 * @param string $message	| 错误信息
+	 * @return array
+	 */
+	static public function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
+		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
+			'message' => ($message ? $message : $this->_defaultMessage));
+	}
 }
 
 ?>
