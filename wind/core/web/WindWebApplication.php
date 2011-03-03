@@ -98,8 +98,16 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			$actionHandler = $this->windFactory->getInstance($handler);
 			
 			//TODO 添加过滤链
+			if ($actionHandler->_getInstance() instanceof WindFormController) {
+				if ($formClassPath = $actionHandler->getFormClass()) {
+					$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath));
+				}
+			} elseif ($actionHandler->_getInstance() instanceof WindController) {
+				if ($rules = $actionHandler->validatorFormRule()) {
+					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
+				}
+			}
 			
-
 			//add log
 			if (IS_DEBUG) {
 				/* @var $logger WindLogger */

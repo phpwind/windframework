@@ -7,14 +7,24 @@ L::import('WIND:core.base.WindAction');
  * @version $Id$
  * @package 
  */
-class WindFormController extends WindController {
+class WindFormController extends WindAction {
+
+	protected $formClass = '';
 
 	/**
-	 * 返回处理form的Action完整方法名称
+	 * @return the $formClass
 	 */
-	public function getFormAction() {
-		return array();
+	public function getFormClass() {
+		return $this->formClass;
 	}
+
+	/**
+	 * @param field_type $formClass
+	 */
+	public function setFormClass($formClass) {
+		$this->formClass = $formClass;
+	}
+
 }
 
 ?>

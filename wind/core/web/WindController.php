@@ -15,6 +15,8 @@ L::import('WIND:core.base.WindAction');
  */
 abstract class WindController extends WindAction {
 
+	protected $validatorClass = 'WIND:component.utility.WindValidator';
+
 	/* (non-PHPdoc)
 	 * @see WindAction::resolvedActionMethod()
 	 */
@@ -30,6 +32,13 @@ abstract class WindController extends WindAction {
 	 */
 	public function validatorFormRule() {
 		return array();
+	}
+
+	/**
+	 * @return the $validatorClass
+	 */
+	public function getValidatorClass() {
+		return $this->validatorClass;
 	}
 
 }
