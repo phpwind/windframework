@@ -64,7 +64,6 @@ class WindFactory implements IWindFactory {
 		if (!$className || !class_exists($className)) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		
 		$reflection = new ReflectionClass($className);
 		if ($reflection->isAbstract() || $reflection->isInterface()) return null;
 		return call_user_func_array(array($reflection, 'newInstance'), (array) $args);

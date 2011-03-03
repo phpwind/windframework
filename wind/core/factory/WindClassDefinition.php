@@ -119,7 +119,6 @@ class WindClassDefinition extends WindModule {
 	 * @param array $classDefinition
 	 */
 	public function __construct($classDefinition = array()) {
-		L::import('WIND:component.validator.WindValidator');
 		$this->init($classDefinition);
 	}
 
