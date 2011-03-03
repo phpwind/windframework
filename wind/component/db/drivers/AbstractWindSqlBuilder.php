@@ -678,7 +678,7 @@ abstract class AbstractWindSqlBuilder {
 				if (!in_array($key, $fvalues)) {
 					$field[] = $key;
 				}
-				if (is_array($value)) {
+				if (is_array($value) && $rows > 1) {
 					$tmp_data[$i][] = $this->escapeString($value[$i]);
 					unset($data[$key][$i]);
 				} else {
