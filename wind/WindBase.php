@@ -48,7 +48,6 @@ class W {
 	 * 环境检查
 	 * 系统信息注册
 	 * 加载基础Lib库
-	 * 初始化错误处理句柄
 	 */
 	public static function initWindFramework() {
 		self::checkEnvironment();
