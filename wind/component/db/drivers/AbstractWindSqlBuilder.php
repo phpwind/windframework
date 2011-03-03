@@ -667,6 +667,7 @@ abstract class AbstractWindSqlBuilder {
 		}
 		$key = array_keys($data);
 		if (!is_string($key[0])) {
+			array_walk($data,array($this, 'escapeString'));
 			return array($data, array());
 		}
 		$tmp_data = $field = array();
@@ -678,10 +679,10 @@ abstract class AbstractWindSqlBuilder {
 					$field[] = $key;
 				}
 				if (is_array($value)) {
-					$tmp_data[$i][] = $value[$i];
+					$tmp_data[$i][] = $this->escapeString($value[$i]);
 					unset($data[$key][$i]);
 				} else {
-					$tmp_data[] = $value;
+					$tmp_data[] = $this->escapeString($value);
 				}
 			}
 		}
