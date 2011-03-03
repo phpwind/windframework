@@ -16,7 +16,7 @@ class WindValidateListener extends WindHandlerInterceptor {
 	private $request = null;
 
 	private $validateRules = array();
-	
+
 	private $validator = null;
 
 	private $validatorClass = '';
@@ -39,25 +39,34 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		$errorMessage = new WindErrorMessage();
-		foreach ((array)$this->validateRules as $rule) {
-		    $key = $rule['field'];
-		    $value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost($key);
-		    $args = $rule['args'];
-		    array_unshift($args, $value);
-		    if (call_user_func_array(array($this->getValidator(), $rule['validator']), (array)$args) !== false) {
-    		    continue;
-		    }
-		    if (null === $rule['default']) {
-		        $errorMessage->addError($key . ': ' . $rule['message'], $key);
-		        continue;
-    		}
-		    $this->request->setAttribute($key, $rule['default']);
+		$_input = new stdClass();
+		foreach ((array) $this->validateRules as $rule) {
+			$key = $rule['field'];
+			$value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost($key);
+			$args = $rule['args'];
+			array_unshift($args, $value);
+			if (call_user_func_array(array($this->getValidator(), $rule['validator']), (array) $args) === false) {
+				if (null === $rule['default'])
+					$errorMessage->addError($key . ': ' . $rule['message'], $key);
+				else
+					$value = $rule['default'];
+			}
+			$this->request->setAttribute($key, $value);
+			$_input->$key = $value;
 		}
-		if ($errorMessage->getError()) $errorMessage->sendError();
+		if ($errorMessage->getError())
+			$errorMessage->sendError();
+		else
+			$this->request->setAttribute('inputData', $_input);
 	}
-	
+
+	/**
+	 * 返回validator对象
+	 * @throws WindException
+	 * @return WindValidator
+	 */
 	private function getValidator() {
-	    if ($this->validator === null) {
+		if ($this->validator === null) {
 			$_className = L::import($this->validatorClass);
 			L::import('WIND:core.factory.WindFactory');
 			$this->validator = WindFactory::createInstance($_className);
