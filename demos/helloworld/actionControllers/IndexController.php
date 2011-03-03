@@ -6,15 +6,15 @@
  * @license
  */
 
-L::import('WIND:core.web.WindController');
+L::import('WIND:core.web.WindFormController');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package
  */
-class IndexController extends WindController {
-
+class IndexController extends WindFormController {
+    protected $formClass = 'actionControllers.actionForm.IndexRunForm';
 	public function run() {
 		$this->setLayout('layout');
 		$this->setOutput(array('var1' => 'hello world from IndexController.'));
