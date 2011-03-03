@@ -35,7 +35,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			
 			$handler = $this->getHandler();
 			$forward = call_user_func_array(array($handler, 'doAction'), array($this->getHandlerAdapter()));
-			
 			if ($forward === null) {
 				throw new WindException('doAction', WindException::ERROR_RETURN_TYPE_ERROR);
 			}
@@ -104,8 +103,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 					$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath));
 				}
 			} elseif ($actionHandler->_getInstance() instanceof WindController) {
-				if ($rules = $actionHandler->validatorFormRule()) {
-					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
+				$rules = (array) $actionHandler->validatorFormRule();
+				$currentRules = isset($rules[$handlerAdapter->getAction()]) ? $rules[$handlerAdapter->getAction()] : array();
+				if ($currentRules) {
+					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $currentRules, $actionHandler->getValidatorClass()));
 				}
 			}
 			
