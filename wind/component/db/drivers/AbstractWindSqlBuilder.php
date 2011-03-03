@@ -588,7 +588,7 @@ abstract class AbstractWindSqlBuilder {
 		if (is_int($value)) {
 			$value = (int) $value;
 		} elseif (is_string($value)) {
-			$value = " '" . $value . "' ";
+			$value = " '" . addslashes($value) . "' ";
 		} elseif (is_float($value)) {
 			$value = (float) $value;
 		} elseif (is_object($value) || is_array($value)) {
