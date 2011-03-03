@@ -591,7 +591,7 @@ abstract class AbstractWindSqlBuilder {
 			$value = " '" . $value . "' ";
 		} elseif (is_float($value)) {
 			$value = (float) $value;
-		} elseif (is_object($value)) {
+		} elseif (is_object($value) || is_array($value)) {
 			$value = addslashes(serialize($value));
 		}
 		return $this->sqlFillSpace($value);
