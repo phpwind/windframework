@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindComponentModule');
+L::import('WIND:core.WindModule');
 /**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
@@ -15,11 +15,15 @@ L::import('WIND:core.WindComponentModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WindEnableValidateModule extends WindComponentModule {
+abstract class WindEnableValidateModule extends WindModule {
 
-	protected $_validator = null;
+	protected $_validatorClass = 'WIND:component.utility.WindValidator';
 
-	protected $_errors = array();
+	private $_validator = null;
+
+	private $_errors = array();
+
+	private $_defaultMessage = '验证失败';
 
 	/**
 	 * 返回验证规则
@@ -32,17 +36,29 @@ abstract class WindEnableValidateModule extends WindComponentModule {
 	}
 
 	/**
+	 * 组装测试规则
+	 * @param string $field	| 验证字段名称
+	 * @param string $validator | 验证方法
+	 * @param array $args | 参数
+	 * @param string $default	| 默认值
+	 * @param string $message	| 错误信息
+	 * @return array
+	 */
+	protected function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
+		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
+			'message' => ($message ? $message : $this->_defaultMessage));
+	}
+
+	/**
 	 * 验证方法
 	 * 
 	 * @param array|WindModule $input
 	 */
 	protected function validate(&$input) {
-		if (!$input) return;
-		if ($this->_validator === null) return;
 		if (is_array($input))
-			$this->validateArray($input, $this->validateRules());
+			$this->validateArray($input);
 		elseif (is_object($input))
-			$this->validateObject($input, $this->validateRules());
+			$this->validateObject($input);
 	}
 
 	/**
@@ -50,7 +66,8 @@ abstract class WindEnableValidateModule extends WindComponentModule {
 	 * @param array $input
 	 * @param array $rules
 	 */
-	private function validateArray(&$input, $rules) {
+	private function validateArray(&$input) {
+		$rules = $this->validateRules();
 		foreach ((array) $rules as $rule) {
 			$validator = $rule['validator'];
 			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : '';
@@ -66,10 +83,10 @@ abstract class WindEnableValidateModule extends WindComponentModule {
 	}
 
 	/**
-	 * @param WindValidator $windValidator
+	 * @param WindValidator $validator
 	 */
-	protected function registerValidator($windValidator) {
-		$this->_validator = $windValidator;
+	protected function setValidator($validator) {
+		$this->_validator = $validator;
 	}
 
 	/**
@@ -77,19 +94,13 @@ abstract class WindEnableValidateModule extends WindComponentModule {
 	 * @return WindValidator 
 	 */
 	protected function getValidator() {
+		if ($this->_validator === null) {
+			$_className = L::import($this->_validatorClass);
+			L::import('WIND:core.factory.WindFactory');
+			$this->_validator = WindFactory::createInstance($_className);
+			if ($this->_validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
+		}
 		return $this->_validator;
-	}
-
-	/**
-	 * 组装测试规则
-	 * @param string $field	| 验证字段名称
-	 * @param string $validator | 验证方法
-	 * @param string $default	| 默认值
-	 * @param string $message	| 错误信息
-	 * @return array
-	 */
-	protected function buildValidateRule($field, $validator, $default = null, $message = '') {
-		return array('field' => $field, 'validator' => $validator, 'default' => $default, 'message' => $message);
 	}
 
 }
