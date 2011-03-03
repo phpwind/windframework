@@ -16,6 +16,9 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 
 	protected $windViewTemplate = null;
 
+	/**
+	 * @var WindViewerResolver
+	 */
 	protected $windViewerResolver = null;
 
 	protected $request = null;
