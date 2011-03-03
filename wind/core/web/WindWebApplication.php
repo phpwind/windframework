@@ -103,10 +103,9 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 					$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath));
 				}
 			} elseif ($actionHandler->_getInstance() instanceof WindController) {
-				$rules = (array) $actionHandler->validatorFormRule();
-				$currentRules = isset($rules[$handlerAdapter->getAction()]) ? $rules[$handlerAdapter->getAction()] : array();
-				if ($currentRules) {
-					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $currentRules, $actionHandler->getValidatorClass()));
+				$rules = (array) $actionHandler->validatorFormRule($handlerAdapter->getAction());
+				if ($rules) {
+					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
 				}
 			}
 			
