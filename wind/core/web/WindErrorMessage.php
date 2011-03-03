@@ -19,7 +19,7 @@ class WindErrorMessage implements IWindErrorMessage {
 
 	private $errorAction = 'run';
 
-	private $errorController = 'windError';
+	private $errorController = 'windErrorHandler';
 
 	/**
 	 * @param string $message
