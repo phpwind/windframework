@@ -1,7 +1,6 @@
 <?php
 
 L::import('WIND:core.viewer.AbstractWindViewTemplate');
-L::import('WIND:component.utility.WindUtility');
 /**
  * 模板类
  * 职责：进行模板编译渲染
