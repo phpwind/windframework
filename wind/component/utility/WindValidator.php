@@ -239,7 +239,7 @@ class WindValidator {
 	 * @return boolean
 	 */
 	public function isLegalLength($string, $length, $charset = 'utf8') {
-		L::import('WIND:component.format.WindString');
+		L::import('WIND:component.utility.WindString');
 		return WindString::strlen($string, $charset) > (int) $length;
 	}
 
