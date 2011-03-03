@@ -17,6 +17,8 @@ class WindFormListener extends WindHandlerInterceptor {
 
 	private $formPath = '';
 
+	private $errorMessage = null;
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param string $formPath
@@ -30,7 +32,7 @@ class WindFormListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-
+		//TODO 实现基于表单对象的表单验证机制，错误处理，表单对象集成WindEnableValidateModule
 	}
 
 	/* (non-PHPdoc)

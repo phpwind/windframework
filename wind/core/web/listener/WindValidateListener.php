@@ -19,6 +19,8 @@ class WindValidateListener extends WindHandlerInterceptor {
 
 	private $validatorClass = '';
 
+	private $errorMessage = null;
+
 	/**
 	 * @param WindHttpRequest $request
 	 * @param array $validateRules
@@ -34,7 +36,7 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		
+		//TODO 实现基于验证规则的表单验证机制，错误处理
 		print_r($this->validateRules);
 		echo $this->validatorClass;
 	}
