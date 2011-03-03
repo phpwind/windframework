@@ -37,8 +37,7 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		//TODO 实现基于验证规则的表单验证机制，错误处理
-		print_r($this->validateRules);
-		echo $this->validatorClass;
+	
 	}
 
 	/* (non-PHPdoc)
