@@ -22,6 +22,9 @@ abstract class WindAction extends WindComponentModule {
 	 */
 	protected $urlHelper = null;
 
+	/**
+	 * @var WindErrorMessage
+	 */
 	protected $errorMessage = null;
 
 	/**
