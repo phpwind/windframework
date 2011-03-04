@@ -409,7 +409,7 @@ class WindHttpResponse implements IWindResponse {
 	 * 发送响应内容
 	 */
 	public function sendBody() {
-		if ($this->_isAjax) echo "<?xml version=\"1.0\" encoding=\"$db_charset\"?><ajax><![CDATA[";
+		if ($this->_isAjax) echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><ajax><![CDATA[";
 		foreach ($this->_body as $content)
 			echo $content;
 		if ($this->_isAjax) echo "]]></ajax>";
