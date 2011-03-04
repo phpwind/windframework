@@ -17,8 +17,6 @@ L::import('WIND:core.factory.WindComponentDefinition');
  */
 class WindWebApplication extends WindComponentModule implements IWindApplication {
 
-	private $errorHandler = null;
-
 	private $dispatcher = null;
 
 	/* (non-PHPdoc)
