@@ -37,6 +37,7 @@ abstract class WindAction extends WindComponentModule {
 		$this->resolvedActionMethod($handlerAdapter);
 		$this->afterAction($handlerAdapter);
 		if ($this->getErrorMessage()->getError()) $this->getErrorMessage()->sendError();
+		if ($this->request->getIsAjaxRequest()) $this->setLayout('');
 		return $this->getForward();
 	}
 
