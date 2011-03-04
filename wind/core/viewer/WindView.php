@@ -64,10 +64,11 @@ class WindView extends WindComponentModule {
 	 * @param WindLayout|string $layout
 	 */
 	public function setLayout($layout) {
-		if (is_string($layout) && !empty($layout))
-			$this->layout = $layout;
-		elseif ($layout instanceof WindLayout)
+		if ($layout instanceof WindLayout)
 			$this->layout = $layout->getLayoutFile();
+		else
+			$this->layout = $layout;
+	
 	}
 
 	/**
