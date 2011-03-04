@@ -19,6 +19,7 @@
 			<router class='urlBasedRouter' />
 			<modules>
 				<module name='default' path='actionControllers'>
+					<error-handler class='WIND:core.web.WindErrorHandler'/>
 					<controller-suffix value='Controller' />
 					<view class='windView' />
 				</module>
