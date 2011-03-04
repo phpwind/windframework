@@ -67,57 +67,57 @@ class WindDate {
 		$this->time = mktime($hours, $minutes, $second, $month, $day, $year);
 	}
 	/**
-	 * 获取该月的天数
+	 * 获取当前时间所在月的天数
 	 * @return string 
 	 */
 	public function getDaysInMonth() {
 		return date('t', $this->time);
 	}
 	/**
-	 * 获取该年的天数 
+	 * 获取当前时间所在年的天数 
 	 * @return int 如果是闰年返回366否则返回365
 	 */
 	public function getDaysInYear() {
 		return $this->isLeapYear() ? 366 : 365;
 	}
 	/**
-	 * 所表示的日期是该年中的第几天。
+	 * 所表示当前日期是该年中的第几天。
 	 * @return int 返回时该年中的第几天
 	 */
 	public function getDayOfYear() {
 		return date('z', $this->time) + 1;
 	}
 	/**
-	 * 表示的日期为该月中的第几天。 
+	 * 表示当前日期为该月中的第几天。 
 	 * @return int 
 	 */
 	public function getDayOfMonth() {
 		return date('j', $this->time);
 	}
 	/**
-	 * 表示的日期是该星期中的第几天。
+	 * 表示当前日期是该星期中的第几天。
 	 * @return int 
 	 */
 	public function getDayOfWeek() {
 		return date('w', $this->time) + 1;
 	}
 	/**
-	 * 判断日期所在年的第几周 
+	 * 判断当前日期所在年的第几周 
 	 * @return int
 	 */
 	public function getWeekOfYear() {
 		return date('W', $this->time);
 	}
 	/**
-	 * 获取年份
-	 * @param boolean $flag 是否返回四位格式的年份或是两位格式的年份
+	 * 获取当前日期的年份
+	 * @param boolean $format 是否返回四位格式的年份或是两位格式的年份
 	 * @return string
 	 */
 	public function getYear($format = true) {
 		return  date($format ? 'Y' : 'y', $this->time);
 	}
 	/**
-	 * 获取月份
+	 * 获当前日期的取月份
 	 * @param int $display 显示类型
 	 * @return string
 	 */
@@ -132,7 +132,7 @@ class WindDate {
 		return date('n', $this->time);
 	}
 	/**
-	 * 获取天数
+	 * 获取当前日期的天数
 	 * @param string $display 显示类型
 	 * @return string 
 	 */
@@ -147,7 +147,7 @@ class WindDate {
 		return date('j', $this->time);
 	}
 	/**
-	 * 获取星期
+	 * 获取当前日期的星期
 	 * @param string $display 显示类型
 	 * @return string
 	 */
@@ -160,7 +160,7 @@ class WindDate {
 		return date('N', $this->time);
 	}
 	/**
-	 * 获取12小时制时间
+	 * 获取当前日期的12小时制时间
 	 * @param string $display 显示类型
 	 * @return string
 	 */
@@ -173,7 +173,7 @@ class WindDate {
 		return date('h', $this->time);
 	}
 	/**
-	 * 获取24小时制时间
+	 * 获取当前日期的24小时制时间
 	 * @param string $display 显示类型
 	 * @return string
 	 */
@@ -186,28 +186,28 @@ class WindDate {
 		return date('H', $this->time);
 	}
 	/**
-	 * 获取分钟
+	 * 获取当前日期的分钟
 	 * @return string
 	 */
 	public function getMinutes() {
 		return date('i', $this->time);
 	}
 	/**
-	 * 获取秒数
+	 * 获取当前日期的秒数
 	 * @return string
 	 */
 	public function getSeconds() {
 		return date('s', $this->time);
 	}
 	/**
-	 * 获取本地时区
+	 * 获取当前日期的本地时区
 	 * @return string
 	 */
 	public function getLocalTimeZone() {
 		return date('T', $this->time);
 	}
 	/**
-	 * 重新设置时间
+	 * 重新设置当前日期与时间
 	 * @param string | int  $time  
 	 */
 	public function setTime($time) {
@@ -216,7 +216,7 @@ class WindDate {
 		}
 	}
 	/**
-	 * 取得当前时间
+	 * 取得当前日期时间对象
 	 * @return WindDate
 	 */
 	public function getNow() {
