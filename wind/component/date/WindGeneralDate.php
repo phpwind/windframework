@@ -12,7 +12,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindDateCalc {
+class WindGeneralDate {
 	/**
 	 * 获取时区
 	 * @return string
