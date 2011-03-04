@@ -29,6 +29,8 @@ class WindHttpResponse implements IWindResponse {
 
 	private $_status = '';
 
+	private $_isAjax = false;
+
 	/*
      * Server status codes; see RFC 2068.
      * Status code (100) indicating the client can continue.
@@ -407,9 +409,10 @@ class WindHttpResponse implements IWindResponse {
 	 * 发送响应内容
 	 */
 	public function sendBody() {
-		foreach ($this->_body as $content) {
+		if ($this->_isAjax) echo "<?xml version=\"1.0\" encoding=\"$db_charset\"?><ajax><![CDATA[";
+		foreach ($this->_body as $content)
 			echo $content;
-		}
+		if ($this->_isAjax) echo "]]></ajax>";
 	}
 
 	/**
@@ -478,4 +481,17 @@ class WindHttpResponse implements IWindResponse {
 		return $filtered;
 	}
 
+	/**
+	 * @return the $_isAjax
+	 */
+	public function getIsAjax() {
+		return $this->_isAjax;
+	}
+
+	/**
+	 * @param field_type $_isAjax
+	 */
+	public function setIsAjax($_isAjax) {
+		$this->_isAjax = $_isAjax;
+	}
 }
