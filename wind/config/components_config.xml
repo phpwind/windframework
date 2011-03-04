@@ -12,12 +12,8 @@
 	<component name='windWebApp' path='WIND:core.web.WindWebApplication'
 		scope='request'>
 		<properties>
-			<property name='errorHandler' ref='errorHandler' />
 			<property name='dispatcher' ref='dispatcher' />
 		</properties>
-	</component>
-	<component name='errorHandler' path='WIND:core.web.WindErrorHandler'
-		scope='prototype'>
 	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
 		scope='prototype'>
