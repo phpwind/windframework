@@ -41,7 +41,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			if (!$key) continue;
 			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
-		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
+		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', "\r\n", $content);
 		return $content;
 	}
 
@@ -50,8 +50,11 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 */
 	protected function getTags() {
 		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', '/<\?php(.|\n)*?\?>/i');
+		/*标签体增加在该位置*/
 		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
 		$_tags['page'] = $this->createTag('page', 'WIND:core.viewer.compiler.WindTemplateCompilerPage');
+		$_tags['action'] = $this->createTag('action', 'WIND:core.viewer.compiler.WindTemplateCompilerAction');
+		/*标签解析结束*/
 		$_tags += (array) parent::getTags();
 		$_tags['expression'] = $this->createTag('expression', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/({@|{\$)[^{@=\n]*}/i');
 		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
