@@ -41,7 +41,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			if (!$key) continue;
 			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 		}
-		/*$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);*/
+		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', '', $content);
 		return $content;
 	}
 
