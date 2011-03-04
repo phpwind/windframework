@@ -10,7 +10,7 @@
 class WindEncoder {
 	
 	/**
-	 * @param unknown_type $var
+	 * @param mixed $var
 	 * @return string
 	 */
 	public static function encode($value) {
