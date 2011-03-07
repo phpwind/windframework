@@ -123,7 +123,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasIpv4($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/(\d+)\.(\d+)\.(\d+)\.(\d+)/', $string, $matches, $ifAll);
+		return self::validateByRegExp('/((25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string, $matches, $ifAll);
 	}
 	/**
 	 * 验证是否是合法的IP
@@ -131,15 +131,41 @@ class WindValidator {
 	 * @return boolean
 	 */
 	public function isIpv4($string) {
-		return 0 < preg_match('/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/', $string);
+		return 0 < preg_match('/(?:(?:25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string);
 	}
 	
-	public function hasIpv6(){
-		
+	public function hasIpv6($string, &$matches = array(), $ifAll = false){
+		return self::validateByRegExp('/\A((([a-f0-9]{1,4}:){6}|
+										::([a-f0-9]{1,4}:){5}|
+										([a-f0-9]{1,4})?::([a-f0-9]{1,4}:){4}|
+										(([a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::([a-f0-9]{1,4}:){3}|
+										(([a-f0-9]{1,4}:){0,2}[a-f0-9]{1,4})?::([a-f0-9]{1,4}:){2}|
+										(([a-f0-9]{1,4}:){0,3}[a-f0-9]{1,4})?::[a-f0-9]{1,4}:|
+										(([a-f0-9]{1,4}:){0,4}[a-f0-9]{1,4})?::
+									)([a-f0-9]{1,4}:[a-f0-9]{1,4}|
+										(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}
+										([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+									)|((([a-f0-9]{1,4}:){0,5}[a-f0-9]{1,4})?::[a-f0-9]{1,4}|
+										(([a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?::
+									)
+								)\Z/ix', $string, $matches, $ifAll);
 	}
 	
-	public function isIpv6(){
-		
+	public function isIpv6($string){
+		return 0 < preg_match('/\A(?:(?:(?:[a-f0-9]{1,4}:){6}|
+										::(?:[a-f0-9]{1,4}:){5}|
+										(?:[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){4}|
+										(?:(?:[a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){3}|
+										(?:(?:[a-f0-9]{1,4}:){0,2}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){2}|
+										(?:(?:[a-f0-9]{1,4}:){0,3}[a-f0-9]{1,4})?::[a-f0-9]{1,4}:|
+										(?:(?:[a-f0-9]{1,4}:){0,4}[a-f0-9]{1,4})?::
+									)(?:[a-f0-9]{1,4}:[a-f0-9]{1,4}|
+										(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}
+										(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+									)|(?:(?:(?:[a-f0-9]{1,4}:){0,5}[a-f0-9]{1,4})?::[a-f0-9]{1,4}|
+										(?:(?:[a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?::
+									)
+								)\Z/ix',$string);
 	}
 	/**
 	 * 验证是否有客户端脚本
@@ -164,7 +190,6 @@ class WindValidator {
 	 * @param string $value
 	 */
 	public function isEmpty($value) {
-		$value = trim($value);
 		return empty($value);
 	}
 	/**
