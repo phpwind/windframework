@@ -124,7 +124,6 @@ class WindMail {
     	/* @var $sender IWindSendMail */
     	$sender = new $class($config);
     	$sender->send($this);
-    	unset($sender);
     	return true;
     }
 	/**
