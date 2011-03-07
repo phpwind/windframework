@@ -63,6 +63,12 @@ abstract class WindModule {
 		}
 	}
 
+	public function __clone() {
+		foreach ($this->getCloneProperty() as $value) {
+			$this->$value = clone $this->$value;
+		}
+	}
+
 	/**
 	 * Enter description here ...
 	 * 
@@ -116,6 +122,10 @@ abstract class WindModule {
 	 * 设置自动实现Getter/Setter方法的属性名称
 	 */
 	protected function getWriteTableForGetterAndSetter() {
+		return array();
+	}
+
+	protected function getCloneProperty() {
 		return array();
 	}
 
