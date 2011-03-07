@@ -1,14 +1,27 @@
 <?php
 /**
+ * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-3
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2110 phpwind.com
+ * @license 
+ */
+
+/**
+ * json解码
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author	 Michal Migurski <mike-json@teczno.com>
+ * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
+ * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
  * @version $Id$ 
  * @package 
  * tags
  */
-
 class WindDecoder {
-	
+	const JSON_SLICE = 1;
+	const JSON_IN_STR = 2;
+	const JSON_IN_ARR = 4;
+	const JSON_IN_OBJ = 8;
+	const JSON_IN_CMT = 16;
 	public static function decode($str, $useArray = true) {
 		$str = strtolower(self::reduceString($str));
 		if ('true' == $str) {
@@ -19,179 +32,13 @@ class WindDecoder {
 			return null;
 		} elseif (is_numeric($str)) {
 			return (float)$str == (integer)$str ? (integer) $str : (float) $str;
-		}elseif(preg_match('/^("|\').+(\1)$/s', $str, $m) && $m[1] == $m[2]){
+		}elseif(preg_match('/^("|\').+(\1)$/s', $str, $matche) && $matche[1] == $matche[2]){
 			return self::jsonToString($str);
+		}elseif(preg_match('/^\[.*\]$/s', $str) || preg_match('/^\{.*\}$/s', $str)){
+			return $useArray ? self::jsonToArray($str) : self::jsonToObject($str);
 		}
-		switch (strtolower($str)) {
-			case 'true':
-				return true;
-			case 'false':
-				return false;
-			case 'null':
-				return null;
-			default:
-				if (is_numeric($str)) {
-				} elseif (true) {
-					
-				} elseif (preg_match('/^\[.*\]$/s', $str) || preg_match('/^\{.*\}$/s', $str)) {
-					// array, or object notation
-					if ($str{0} == '[') {
-						$stk = array(self::JSON_IN_ARR);
-						$arr = array();
-					} else {
-						if ($useArray) {
-							$stk = array(self::JSON_IN_OBJ);
-							$obj = array();
-						} else {
-							$stk = array(self::JSON_IN_OBJ);
-							$obj = new stdClass();
-						}
-					}
-					
-					array_push($stk, array('what' => self::JSON_SLICE, 'where' => 0, 'delim' => false));
-					
-					$chrs = substr($str, 1, -1);
-					$chrs = self::reduceString($chrs);
-					
-					if ($chrs == '') {
-						if (reset($stk) == self::JSON_IN_ARR) {
-							return $arr;
-						
-						} else {
-							return $obj;
-						
-						}
-					}
-					
-					//print("\nparsing {$chrs}\n");
-					
-
-					$strlen_chrs = strlen($chrs);
-					
-					for ($c = 0; $c <= $strlen_chrs; ++$c) {
-						
-						$top = end($stk);
-						$substr_chrs_c_2 = substr($chrs, $c, 2);
-						
-						if (($c == $strlen_chrs) || (($chrs{$c} == ',') && ($top['what'] == self::JSON_SLICE))) {
-							// found a comma that is not inside a string, array, etc.,
-							// OR we've reached the end of the character list
-							$slice = substr($chrs, $top['where'], ($c - $top['where']));
-							array_push($stk, array('what' => self::JSON_SLICE, 'where' => ($c + 1), 
-								'delim' => false));
-							//print("Found split at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
-							
-
-							if (reset($stk) == self::JSON_IN_ARR) {
-								// we are in an array, so just push an element onto the stack
-								array_push($arr, self::decode($slice, $useArray));
-							
-							} elseif (reset($stk) == self::JSON_IN_OBJ) {
-								// we are in an object, so figure
-								// out the property name and set an
-								// element in an associative array,
-								// for now
-								if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
-									// "name":value pair
-									$key = self::decode($parts[1], $useArray);
-									$val = self::decode($parts[2], $useArray);
-									
-									if ($useArray) {
-										$obj[$key] = $val;
-									} else {
-										$obj->$key = $val;
-									}
-								} elseif (preg_match('/^\s*(\w+)\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
-									// name:value pair, where name is unquoted
-									$key = $parts[1];
-									$val = self::decode($parts[2], $useArray);
-									
-									if ($useArray) {
-										$obj[$key] = $val;
-									} else {
-										$obj->$key = $val;
-									}
-								}
-							
-							}
-						
-						} elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != self::JSON_IN_STR)) {
-							// found a quote, and we are not inside a string
-							array_push($stk, array('what' => self::JSON_IN_STR, 
-								'where' => $c, 'delim' => $chrs{$c}));
-							//print("Found start of string at {$c}\n");
-						
-
-						} elseif (($chrs{$c} == $top['delim']) && ($top['what'] == self::JSON_IN_STR) && (($chrs{$c - 1} != "\\") || ($chrs{$c - 1} == "\\" && $chrs{$c - 2} == "\\"))) {
-							// found a quote, we're in a string, and it's not escaped
-							array_pop($stk);
-							//print("Found end of string at {$c}: ".substr($chrs, $top['where'], (1 + 1 + $c - $top['where']))."\n");
-						
-
-						} elseif (($chrs{$c} == '[') && in_array($top['what'], array(self::JSON_SLICE, 
-							self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
-							// found a left-bracket, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_ARR, 
-								'where' => $c, 'delim' => false));
-							//print("Found start of array at {$c}\n");
-						
-
-						} elseif (($chrs{$c} == ']') && ($top['what'] == self::JSON_IN_ARR)) {
-							// found a right-bracket, and we're in an array
-							array_pop($stk);
-							//print("Found end of array at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
-						
-
-						} elseif (($chrs{$c} == '{') && in_array($top['what'], array(self::JSON_SLICE, 
-							self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
-							// found a left-brace, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_OBJ, 
-								'where' => $c, 'delim' => false));
-							//print("Found start of object at {$c}\n");
-						
-
-						} elseif (($chrs{$c} == '}') && ($top['what'] == self::JSON_IN_OBJ)) {
-							// found a right-brace, and we're in an object
-							array_pop($stk);
-							//print("Found end of object at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
-						
-
-						} elseif (($substr_chrs_c_2 == '/*') && in_array($top['what'], array(self::JSON_SLICE, 
-							self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
-							// found a comment start, and we are in an array, object, or slice
-							array_push($stk, array('what' => self::JSON_IN_CMT, 
-								'where' => $c, 'delim' => false));
-							$c++;
-							//print("Found start of comment at {$c}\n");
-						
-
-						} elseif (($substr_chrs_c_2 == '*/') && ($top['what'] == self::JSON_IN_CMT)) {
-							// found a comment end, and we're in one now
-							array_pop($stk);
-							$c++;
-							
-							for ($i = $top['where']; $i <= $c; ++$i)
-								$chrs = substr_replace($chrs, ' ', $i, 1);
-							
-						//print("Found end of comment at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
-						
-
-						}
-					
-					}
-					
-					if (reset($stk) == self::JSON_IN_ARR) {
-						return $arr;
-					
-					} elseif (reset($stk) == self::JSON_IN_OBJ) {
-						return $obj;
-					
-					}
-				
-				}
-		}
+		return false;
 	}
-	
 	protected static function jsonToString($string) {
 		$delim = substr($string, 0, 1);
 		$chrs = substr($string, 1, -1);
@@ -243,13 +90,74 @@ class WindDecoder {
 		}
 		return $decodeStr;
 	}
-	
-	protected static function jsonToArray() {
-
+	protected static function jsonToArray($str) {
+		return self::complexConvert($str,true);
 	}
-	
-	protected static function jsonToObject() {
-
+	protected static function jsonToObject($str) {
+		return self::complexConvert($str,false);
+	}
+	protected static function complexConvert($str,$useArray = true){
+		if ('[' == $str{0}) {
+			$stk = array(self::JSON_IN_ARR);
+			$arr = array();
+		} else {
+			$obj = $useArray ? array() : new stdClass();
+			$stk = array(self::JSON_IN_OBJ);
+		}
+		array_push($stk, array('what' => self::JSON_SLICE, 'where' => 0, 'delim' => false));
+		$chrs = substr($str, 1, -1);
+		$chrs = self::reduceString($chrs);
+		if ('' == $chrs) {
+			return self::JSON_IN_ARR == reset($stk) ? $arr : $obj;
+		}
+		for ($c = 0,$length = strlen($chrs); $c <= $length; ++$c) {
+			$top = end($stk);
+			$substr_chrs_c_2 = substr($chrs, $c, 2);
+			if (($c == $length) || (($chrs{$c} == ',') && ($top['what'] == self::JSON_SLICE))) {
+				$slice = substr($chrs, $top['where'], ($c - $top['where']));
+				array_push($stk, array('what' => self::JSON_SLICE, 'where' => ($c + 1), 'delim' => false));
+				if (reset($stk) == self::JSON_IN_ARR) {
+					array_push($arr, self::decode($slice, $useArray));
+				} elseif (reset($stk) == self::JSON_IN_OBJ) {
+					if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
+						$key = self::decode($parts[1], $useArray);
+						$useArray ? $obj[$key] = self::decode($parts[2], $useArray) : $obj->$key = self::decode($parts[2], $useArray);
+					} elseif (preg_match('/^\s*(\w+)\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
+						$useArray ? $obj[$parts[1]] = self::decode($parts[2], $useArray) : $obj->$parts[1] = self::decode($parts[2], $useArray);
+					}
+				}
+			
+			} elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != self::JSON_IN_STR)) {
+				array_push($stk, array('what' => self::JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
+			} elseif (($chrs{$c} == $top['delim']) && ($top['what'] == self::JSON_IN_STR) && (($chrs{$c - 1} != "\\") || ($chrs{$c - 1} == "\\" && $chrs{$c - 2} == "\\"))) {
+				array_pop($stk);
+			} elseif (($chrs{$c} == '[') && in_array($top['what'], array(self::JSON_SLICE, 
+				self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
+				array_push($stk, array('what' => self::JSON_IN_ARR, 'where' => $c, 'delim' => false));
+			} elseif (($chrs{$c} == ']') && ($top['what'] == self::JSON_IN_ARR)) {
+				array_pop($stk);
+			} elseif (($chrs{$c} == '{') && in_array($top['what'], array(self::JSON_SLICE, 
+				self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
+				array_push($stk, array('what' => self::JSON_IN_OBJ, 'where' => $c, 'delim' => false));
+			} elseif (($chrs{$c} == '}') && ($top['what'] == self::JSON_IN_OBJ)) {
+				array_pop($stk);
+			} elseif (($substr_chrs_c_2 == '/*') && in_array($top['what'], array(self::JSON_SLICE, 
+				self::JSON_IN_ARR, self::JSON_IN_OBJ))) {
+				array_push($stk, array('what' => self::JSON_IN_CMT, 'where' => ++$c, 'delim' => false));
+			} elseif (($substr_chrs_c_2 == '*/') && ($top['what'] == self::JSON_IN_CMT)) {
+				array_pop($stk);
+				for ($i = $top['where']; $i <= ++$c; ++$i){
+					$chrs = substr_replace($chrs, ' ', $i, 1);
+				}
+			}
+		
+		}
+		if (self::JSON_IN_ARR == reset($stk)) {
+			return $arr;
+		} elseif (self::JSON_IN_OBJ == reset($stk)) {
+			return $obj;
+		}
+		return false;
 	}
 	
 	protected static function unicodeToUTF8(&$str) {
@@ -270,26 +178,15 @@ class WindDecoder {
 	}
 	
 	protected static function reduceString($str) {
-		$str = preg_replace(array(
-
-		// eliminate single line comments in '// ...' form
+		return trim(preg_replace(array(
 		'#^\s*//(.+)$#m', 
-
-		// eliminate multi-line comments in '/* ... */' form, at start of string
 		'#^\s*/\*(.+)\*/#Us', 
-
-		// eliminate multi-line comments in '/* ... */' form, at end of string
 		'#/\*(.+)\*/\s*$#Us'), 
-
-		'', $str);
-		
-		// eliminate extraneous space
-		return trim($str);
+		'', $str));
 	}
 	
 	protected static function utf16beToUTF8(&$str) {
-		$uni = unpack('n*', $str);
-		return self::unicodeToUTF8($uni);
+		return self::unicodeToUTF8(unpack('n*', $str));
 	}
 
 }
