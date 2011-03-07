@@ -7,13 +7,38 @@
  */
 
 /**
+ * 文件工具类
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
 class WindFile{
-/**
+	/**
+	 * @var string 以读的方式打开文件，具有较强的平台移植性
+	 */
+	const READ = 'rb';
+	/**
+	 * @var string 以读写的方式打开文件，具有较强的平台移植性
+	 */
+	const READWRITE = 'rb+';
+	/**
+	 * @var string 以写的方式打开文件，具有较强的平台移植性
+	 */
+	const WRITE = 'wb';
+	/**
+	 * @var string 以读写的方式打开文件，具有较强的平台移植性
+	 */
+	const WRITEREAD='wb+';
+	/**
+	 * @var string 以追加写入方式打开文件，具有较强的平台移植性
+	 */
+	const APPEND_WRITE = 'ab';
+	/**
+	 * @var string 以追加读写入方式打开文件，具有较强的平台移植性
+	 */
+	const APPEND_WRITEREAD = 'ab+';
+	/**
 	 * 保存文件
 	 * @param string $fileName          保存的文件名
 	 * @param mixed $data               保存的数据
@@ -21,21 +46,21 @@ class WindFile{
 	 * @param string $method            打开文件方式
 	 * @param boolean $ifLock           是否对文件加锁
 	 */
-	public static function saveData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
+	public static function savePhpData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
 		L::import("COM:utility.WindString");
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ( $data as $key => $value ) {
 				if (!preg_match ( '/^\w+$/', $key ))
 					continue;
-				$temp .= "\$" . $key . " = " . WindString::varExport($value) . ";\r\n";
+				$temp .= "\$" . $key . " = " . WindString::varToString($value) . ";\r\n";
 			}
 			$temp .= "\r\n?>";
 		} else {
 			($isBuildReturn) && $temp .= " return ";
-			$temp .= WindString::varExport($data) . ";\r\n?>";
+			$temp .= WindString::varToString($data) . ";\r\n?>";
 		}
-		return self::writeover($fileName, $temp, $method, $ifLock);
+		return self::write($fileName, $temp, $method, $ifLock);
 	}
 	/**
 	 * 写文件
@@ -48,14 +73,14 @@ class WindFile{
 	 * @param bool $ifChmod 是否将文件属性改为可读写
 	 * @return int 返回写入的字节数
 	 */
-	public static function writeover($fileName, $data, $method = 'rb+', $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
+	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
 		L::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
 		if (!$handle = fopen($fileName, $method)) return false;
 		$ifLock && flock($handle, LOCK_EX);
 		$writeCheck = fwrite($handle, $data);
-		$method == 'rb+' && ftruncate($handle, strlen($data));
+		$method == self::READWRITE && ftruncate($handle, strlen($data));
 		fclose($handle);
 		$ifChmod && chmod($fileName, 0777);
 		return $writeCheck;
@@ -68,7 +93,7 @@ class WindFile{
 	 * @param string $method 读取模式
 	 * @return string
 	 */
-	public function readover($fileName, $method = 'rb') {
+	public function read($fileName, $method = self::READ) {
 		L::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		$data = '';
@@ -79,181 +104,134 @@ class WindFile{
 		}
 		return $data;
 	}
-	
 	/**
 	 * 按目录删除文件
-	 * @param string $path 目录
+	 * @param string  $dir 目录
 	 * @param boolean $ifexpiled 是否过期
 	 * @return boolean
 	 */
-	public static function clearByPath($path, $ifexpiled = true) {
-		if (false === ($handle = self::openDir($path))) {
+	public static function clearDir($dir, $ifexpiled = true) {
+		if (false === ($handle = opendir($dir))) {
 			return false;
 		}
-		while (false !== ($file = self::readDir($handle))) {
+		while (false !== ($file = readdir($handle))) {
 			if ('.' === $file[0] || '..' === $file[0]) continue;
-			$fullPath = $path . DIRECTORY_SEPARATOR . $file;
-			if (self::isDir($fullPath)) {
-				$this->clearByPath($fullPath, $ifexpiled);
-			} else if (($ifexpiled && ($mtime =  self::getFileModifyTime($fullPath)) && $mtime < time()) || !$ifexpiled) {
-				self::deleteFile($fullPath);
+			$fullPath = $dir . DIRECTORY_SEPARATOR . $file;
+			if (is_dir($fullPath)) {
+				$this->clearDir($fullPath, $ifexpiled);
+			} else if (($ifexpiled && ($mtime =  filemtime($fullPath)) && $mtime < time()) || !$ifexpiled) {
+				self::delFile($fullPath);
 			}
 		}
-		self::closeDir($handle);
-		false === $ifexpiled && self::deleteDir($path);
+		closedir($handle);
+		false === $ifexpiled && rmdir($dir);
 		return true;
 	}
-	
-	
-	
 	/**
-	 * 获取文件修改时间
-	 * @param int $filename
-	 * @return number
+	 * 批量删除文件
+	 * @param string $path
+	 * @param string $delDir
+	 * @param int $level
+	 * @return string
 	 */
-	public static function getFileModifyTime($filename){
-		return filemtime($filename);
+	public static function delFiles($path, $delDir = false, $level = 0){	
+		$path = rtrim($path, DIRECTORY_SEPARATOR);
+		if (!$handler = opendir($path)){
+			return false;
+		}
+		while(false !== ($filename = readdir($handler))){
+			if ("." != $filename  && ".." != $filename){
+				if (is_dir($path.DIRECTORY_SEPARATOR.$filename)){
+					if (substr($filename, 0, 1) != '.'){
+						self::delFiles($path.DIRECTORY_SEPARATOR.$filename, $delDir, $level + 1);
+					}				
+				}else{
+					self::delFile($path.DIRECTORY_SEPARATOR.$filename);
+				}
+			}
+		}
+		closedir($handler);
+		true == $delDir && $level > 0 && rmdir($path);
+		return true;
+	}
+	/**
+	 * 取得文件的mime类型
+	 * @param string $fileName 文件名
+	 * @return string
+	 */
+	public static function getMimeType($fileName){
+		$suffix = self::getFileSuffix($fileName);
+		$mimes = require rtrim(WIND_PATH,D_S).D_S.'config/WindMimeTypes.php';
+		if(isset($mimes[$suffix])){
+			return is_array($mimes[$suffix]) ? current($mimes[$suffix]) : $mimes[$suffix];
+		}else{
+			throw new WindException('Sorry, can not find the corresponding mime type of the file');
+		}
+		return false;
+	}
+	/**
+	 * 取得目录的迭代
+	 * @param string $dir 目录名
+	 * @return DirectoryIterator
+	 */
+	public static function getDirectoryIterator($dir){
+		return new DirectoryIterator($dir);
 	}
 	
 	/**
-	 * 设置文件修改时间
-	 * @param string $filename
-	 * @param int $mtime
-	 * @return boolean
+	 * 取得文件信息
+	 * @param unknown_type $fileName
+	 * @return string|number
 	 */
-	public static function setFileModifyTime($filename,$mtime){
-		return touch($filename,$mtime);
+	public static function getFileInfo($fileName){
+		if (false === is_file($fileName)){
+			return array();
+		}
+		$fileInfo['name'] = substr(strrchr($fileName, DIRECTORY_SEPARATOR), 1);
+		$fileInfo['path'] = $fileName;
+		$fileInfo['size'] = filesize($fileName);
+		$fileInfo['ctime'] = filectime($fileName);
+		$fileInfo['atime'] = fileatime($fileName);
+		$fileInfo['mtime'] = filemtime($fileName);
+		$fileInfo['readable'] = is_readable($fileName);	
+		$fileInfo['writable'] = is_writable($fileName);
+		$fileInfo['executable'] = is_executable($fileName);
+		$fileInfo['right'] = fileperms($fileName);
+		$fileInfo['group'] = filegroup($fileName);
+		$fileInfo['owner'] = fileowner($fileName);
+		$fileInfo['mime'] = self::getMimeType($fileName);
+		return $fileInfo;
 	}
 	
 	/**
-	 * 设置文件权限
-	 * @param string $filename
-	 * @param int $right
-	 * @return boolean
+	 * 取得目录信息
+	 * @param unknown_type $dir
+	 * @return string|multitype:
 	 */
-	public static function setFileRight($filename,$right = 0777){
-		return chmod($filename,$right);
+	public static function getDirectoryInfo($dir){
+		if(false !== is_dir($dir)){
+			return array();
+		}
+		return  stat($dir);
 	}
-	
 	/**
 	 * 删除文件
 	 * @param string $filename
 	 * @return boolean
 	 */
-	public static function deleteFile($filename){
+	public static function delFile($filename){
 		return unlink($filename);
 	}
 	
+	
 	/**
-	 * 判断是否是一个文件
+	 * 取得文件后缀
 	 * @param string $filename
-	 * @return boolean
-	 */
-	public static function isFile($filename){
-		return is_file($filename);
-	}
-	
-	/**
-	 * 判断是否是一个目录
-	 * @param string $dir
-	 * @return boolean
-	 */
-	public static function isDir($dir){
-		return is_dir($dir);
-	}
-	
-	/**
-	 * 创建一个目录
-	 * @param string $dir 目录名称
-	 * @param int $mode 目录权限
-	 * @param boolean $recursive 是否递归创建
-	 * @param resource $context 目录的上下文信息
-	 * @return boolean
-	 */
-	public static function createDir($dir,$mode = null,$recursive = null,$context =null ){
-		return mkdir($dir,$mode,$recursive,$context);
-	}
-	
-	/**
-	 * 删除一个目录
-	 * @param string $dir 
-	 * @return boolean
-	 */
-	public static function deleteDir($dir){
-		return rmdir($dir);
-	}
-	
-	/**
-	 * 打开一个目录句柄
-	 * @param string $dir 目录名称
-	 * @param resource $context 目录的上下文信息
-	 * @return resource 返回一个目录句柄
-	 */
-	public static function openDir($dir,$context = null){
-		return is_resource($context) ? opendir($dir,$context) : opendir($dir);
-	}
-	
-	/**
-	 * 从目录中读取文件和文件夹
-	 * @param resource $dirHandler
 	 * @return string
 	 */
-	public static function readdir($dirHandler){
-		return readdir($dirHandler);
+	public function getFileSuffix($filename){
+		$filename = explode($filename,'.');
+		return $filename[count($filename)-1];
 	}
-	
-	/**
-	 * 关闭当前目录
-	 * @param resource $dirHandler
-	 */
-	public static function closeDir($dirHandler){
-		return closedir($dirHandler);
-	}
-	
-	/**
-	 * 重新指向一个目录
-	 * @param resource $dirHandler
-	 * @return boolean
-	 */
-	public static function rewindDir($dirHandler){
-		return rewind($dirHandler);
-	}
-	
-	/**
-	 * 判断一个文件是否可写
-	 * @param string $filename
-	 * @return boolean
-	 */
-	public static function isWrite($filename){
-		return is_writable($filename);
-	}
-	
-	/**
-	 * 判断一个文件是否可读
-	 * @param string $filename
-	 * @return boolean
-	 */
-	public static function isRead($filename){
-		return is_readable($filename);
-	}
-	
-	/**
-	 * 判断一个文件是否可执行
-	 * @param string $filename
-	 * @return boolean
-	 */
-	public static function isExecutable($filename){
-		return is_executable($filename);
-	}
-	
-	/**
-	 * 判断文件是否存在
-	 * @param string $file
-	 * @return boolean
-	 */
-	public static function fileExists($file){
-		return file_exists($file);
-	}
-	
 	
 }

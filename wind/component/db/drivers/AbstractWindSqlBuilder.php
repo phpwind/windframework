@@ -358,7 +358,12 @@ abstract class AbstractWindSqlBuilder {
 		$orderby = '';
 		if (is_array($this->sql[self::ORDER])) {
 			foreach ($this->sql[self::ORDER] as $key => $value) {
-				$orderby .= ($orderby ? ',' : '') . (is_string($key) ? $key . ' ' . ($value ? 'DESC ' : 'ASC ') : $value);
+				if(true === $value || 'DESC' === strtoupper($value)){
+					$order = 'DESC';
+				}elseif(false === $value  || 'ASC' === strtoupper($value)){
+					$order = 'ASC';
+				}
+				$orderby .= ($orderby ? ',' : '') . (is_string($key) ? $key . ' ' . $order : $value);
 			}
 		} else {
 			$orderby = $this->sql[self::ORDER];

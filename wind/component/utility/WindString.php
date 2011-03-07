@@ -14,7 +14,8 @@
  * @package 
  */
 class WindString {
-	
+	const UTF8 = 'utf8';
+	const GBK = 'gbk';
 	/**
 	 * 截取字符串
 	 * @param string $string 要截取的字符串编码
@@ -24,29 +25,96 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号
 	 * @return string 截取后的字串
 	 */
-	public static function substr($string, $start, $length, $charset = 'UTF-8', $dot = false) {
-		//TODO 
-		if (in_array($charset, array('utf-8', 'UTF-8', 'utf8', 'UTF8'))) {
-			return self::utf8_substr($string, $start, $length, $dot);
-		} else {
-			return self::gbk_substr($string, $start, $length, $dot);
-		}
+	public static function substr($string, $start, $length, $charset = self::UTF8, $dot = false) {
+		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr($string, $start, $length, $dot);
 	}
-	
 	/**
 	 * 求取字符串长度
 	 * @param string $string  要计算的字符串编码
 	 * @param string $charset 原始编码
 	 * @return int
 	 */
-	public static function strlen($string, $charset = 'UTF-8') {
+	public static function strlen($string, $charset = self::UTF8) {
 		$len = strlen($string);
 		$i = $count = 0;
 		while ($i < $len) {
-			ord($string[$i]) > 129 ? in_array($charset, array('utf-8', 'UTF-8', 'utf8', 'UTF8')) ? $i += 3 : $i += 2 : $i++;
+			ord($string[$i]) > 129 ? self::UTF8 == $charset ? $i += 3 : $i += 2 : $i++;
 			$count++;
 		}
 		return $count;
+	}
+	/**
+	 * 将变量的值转换为字符串
+	 *
+	 * @param mixed $input 变量
+	 * @param string $indent 缩进
+	 * @return string
+	 */
+	public static function varToString($input, $indent = '') {
+		switch (gettype($input)) {
+			case 'string':
+				return "'" . str_replace(array("\\", "'"), array("\\\\", "\\'"), $input) . "'";
+			case 'array':
+				$output = "array(\r\n";
+				foreach ($input as $key => $value) {
+					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString($value, $indent . "\t");
+					$output .= ",\r\n";
+				}
+				$output .= $indent . ')';
+				return $output;
+			case 'boolean':
+				return $input ? 'true' : 'false';
+			case 'NULL':
+				return 'NULL';
+			case 'integer':
+			case 'double':
+			case 'float':
+				return "'" . (string) $input . "'";
+		}
+		return 'NULL';
+	}
+	
+	public static function jsonEncode($value) {
+		if (!function_exists('json_encode')) {
+			L::import('Wind:component.json.WindEncoder');
+			return WindDecoder::decode($value);
+		}
+		return json_encode($value);
+	}
+	
+	public static function jsonDecode($value) {
+		if (!function_exists('json_decode')) {
+			L::import('Wind:component.json.WindEncoder');
+			return WindEncoder::encode($value);
+		}
+		return json_decode($value);
+	}
+	
+	public static function jsonSimpleEncode($var) {
+		switch (gettype($var)) {
+			case 'boolean':
+				return $var ? 'true' : 'false';
+			case 'NULL':
+				return 'null';
+			case 'integer':
+				return (int) $var;
+			case 'double':
+			case 'float':
+				return (float) $var;
+			case 'string':
+				return '"' . addslashes(str_replace(array("\n", "\r", "\t"), '', addcslashes($var, '\\"'))) . '"';
+			case 'array':
+				if (count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
+					$properties = array();
+					foreach ($var as $name => $value) {
+						$properties[] = self::jsonSimpleEncode(strval($name)) . ':' . self::jsonSimpleEncode($value);
+					}
+					return '{' . join(',', $properties) . '}';
+				}
+				$elements = array_map(array('WindString', 'jsonSimpleEncode'), $var);
+				return '[' . join(',', $elements) . ']';
+		}
+		return false;
 	}
 	
 	/**
@@ -118,7 +186,7 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号
 	 * @return string
 	 */
-	function gbk_substr($string, $start, $length = null, $dot = false) {
+	public static function gbk_substr($string, $start, $length = null, $dot = false) {
 		if (empty($string) || !is_int($start) || ($length && !is_int($length))) {
 			return '';
 		}
@@ -162,36 +230,5 @@ class WindString {
 			$count++;
 		}
 		return $count;
-	}
-	
-	/**
-	 * 变量导出为字符串
-	 *
-	 * @param mixed $input 变量
-	 * @param string $indent 缩进
-	 * @return string
-	 */
-	public static function varExport($input, $indent = '') {
-		switch (gettype($input)) {
-			case 'string':
-				return "'" . str_replace(array("\\", "'"), array("\\\\", "\'"), $input) . "'";
-			case 'array':
-				$output = "array(\r\n";
-				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . self::varExport($key, $indent . "\t") . ' => ' . self::varExport($value, $indent . "\t");
-					$output .= ",\r\n";
-				}
-				$output .= $indent . ')';
-				return $output;
-			case 'boolean':
-				return $input ? 'true' : 'false';
-			case 'NULL':
-				return 'NULL';
-			case 'integer':
-			case 'double':
-			case 'float':
-				return "'" . (string) $input . "'";
-		}
-		return 'NULL';
 	}
 }

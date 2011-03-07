@@ -30,82 +30,6 @@ class WindSecurity {
 	public static function stripTags($str, $allowTags = "") {
 		return strip_tags($str, $allowTags);
 	}
-	
-	/**
-	 * 对cookie/post/get方式的值添加反斜线
-	 * @param string $str
-	 * @return string
-	 */
-	public static function addSlashesFromGPC($str) {
-		if (!get_magic_quotes_gpc()) {
-			$str = addslashes($str);
-		}
-		return $str;
-	}
-	
-	/**
-	 * 对从db或者file里面读取的内容添加反斜线
-	 * @return string
-	 */
-	public static function addSlashesFromDF($str) {
-		if (!get_magic_quotes_runtime()) {
-			$str = addslashes($str);
-		}
-		return $str;
-	}
-	
-	/**
-	 * 添加反斜线,转义字符
-	 * @param array $array 要处理的数组
-	 * @param boolean $gpc 是否是get/cookie/post传递过来的值
-	 * @param boolean $df  是否是database/file传递过来的值
-	 * @return string
-	 */
-	public static function addSlashesFromString($str, $gpc = false, $df = false) {
-		if (false === $gpc && true === $df) {
-			return self::addSlashesFromDF($str);
-		}
-		if (false === $df && true === $gpc) {
-			return self::addSlashesFromGPC($str);
-		}
-		return addslashes($str);
-	}
-	
-	/**
-	 * 对数组的值添加反斜线
-	 * @param array $array 要处理的数组
-	 * @param boolean $gpc 是否是get/cookie/post传递过来的值
-	 * @param boolean $df  是否是database/file传递过来的值
-	 * @return string
-	 */
-	public static function addSlashesFromArray(&$array, $gpc = false, $df = false) {
-		if (is_array($array)) {
-			foreach ($array as $key => $value) {
-				if (is_array($value)) {
-					self::addSlashesFromArray($array[$key]);
-				} else {
-					$array[$key] = self::addSlashesFromString($value, $gpc, $df);
-				}
-			}
-		}
-		return $array;
-	}
-	
-	/**
-	 * 去除反 斜线
-	 * @param array $array
-	 * @return string
-	 */
-	public static function stripSlashes($args) {
-		if (!$args) return $args;
-		if (is_string($args)) return stripslashes($args);
-		if (!is_array($args)) return $args;
-		foreach ($args as $key => $value) {
-			$args[$key] = self::stripSlashes($value);
-		}
-		return $args;
-	}
-	
 	/**
 	 * 路径转换
 	 * @param $fileName
@@ -117,21 +41,6 @@ class WindSecurity {
 			throw new WindException('file name is illegal');
 		}
 		return $fileName;
-	}
-	/**
-	 * 私用路径转换
-	 * @param string  $fileName
-	 * @param boolean $ifCheck
-	 * @return boolean
-	 */
-	private static function _escapePath($fileName, $ifCheck = true) {
-		$tmpname = strtolower($fileName);
-		$tmparray = array('://' => '', "\0" => '');
-		$ifCheck && $tmparray['..'] = '';
-		if (strtr($tmpname, $tmparray) != $tmpname) {
-			return false;
-		}
-		return true;
 	}
 	/**
 	 * 目录转换
@@ -179,5 +88,99 @@ class WindSecurity {
 	 */
 	public static function quotemeta($string) {
 		return quotemeta($string);
+	}
+	/**
+	 * 对字符串转义
+	 * @param string $value
+	 * @return string
+	 */
+	public function checkInputValue($value, $key = '') {
+		if (is_int($value)) {
+			$value = (int) $value;
+		} elseif (is_string($value)) {
+			$value = " '" . addslashes($value) . "' ";
+		} elseif (is_float($value)) {
+			$value = (float) $value;
+		} elseif (is_object($value) || is_array($value)) {
+			$value = " '" . addslashes(serialize($value)). "' ";
+		}
+		return $value;
+	}
+	/**
+	 * 对cookie/post/get方式的值添加反斜线
+	 * @param string $str
+	 * @return string
+	 */
+	public static function addSlashesForInput($str) {
+		if (!get_magic_quotes_gpc()) {
+			$str = addslashes($str);
+		}
+		return $str;
+	}
+	
+	/**
+	 * 对从db或者file里面读取的内容添加反斜线
+	 * @return string
+	 */
+	public static function addSlashesForOutput($str) {
+		if (!get_magic_quotes_runtime()) {
+			$str = addslashes($str);
+		}
+		return $str;
+	}
+	
+	/**
+	 * 添加反斜线,转义字符
+	 * @param mixed $value 要处理的数组
+	 * @param boolean $gpc 是否是get/cookie/post传递过来的值
+	 * @param boolean $df  是否是database/file传递过来的值
+	 * @return string
+	 */
+	public static function addSlashes($value, $gpc = false, $df = false) {
+		if (!$value || (!is_array($value) && !is_string($value) && !($value instanceof Traversable) )) {
+			return $value;
+		}
+		if(is_string($value)){
+			if (false === $gpc && true === $df) {
+				return self::addSlashesForOutput($value);
+			}
+			if (false === $df && true === $gpc) {
+				return self::addSlashesForInput($value);
+			}
+			return addslashes($value);
+		}
+		foreach($value as $key=>$_value){
+			$value[$key] == self::addSlashes($value,$gpc,$df);
+		}
+		return $value;
+	}
+	/**
+	 * 去除反 斜线
+	 * @param mixed $array
+	 * @return string
+	 */
+	public static function stripSlashes($value) {
+		if (!$value) return $value;
+		if (is_string($value)) return stripslashes($value);
+		if (!is_array($value) || !($value instanceof Traversable)) return $value;
+		foreach ($value as $key => $_value) {
+			$value[$key] = self::stripSlashes($_value);
+		}
+		return $value;
+	}
+	/**
+	 * 私用路径转换
+	 * @param string  $fileName
+	 * @param boolean $ifCheck
+	 * @return boolean
+	 */
+	private static function _escapePath($fileName, $ifCheck = true) {
+		$tmpname = strtolower($fileName);
+		$tmparray = array('://' => '', "\0" => '');
+		$ifCheck && $tmparray['..'] = '';
+		if (strtr($tmpname, $tmparray) != $tmpname) {
+			return false;
+		}
+		return true;
 	}
 }

@@ -50,8 +50,8 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function delete($key) {
 		$cacheFile = $this->getRealCacheKey($key);
-		if (WindFile::isFile($cacheFile)) {
-			return WindFile::deleteFile($cacheFile);
+		if (is_file($cacheFile)) {
+			return WindFile::delFile($cacheFile);
 		}
 		return false;
 	}
@@ -60,8 +60,8 @@ class WindFileCache extends AbstractWindCache {
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		if (WindFile::clearByPath($this->cacheDir, false)) {
-			!WindFile::fileExists($this->cacheDir) && WindFile::createDir($this->cacheDir, 0777, true);
+		if (WindFile::clearDir($this->cacheDir, false)) {
+			!file_exists($this->cacheDir) && mkdir($this->cacheDir, 0777, true);
 		}
 	}
 	
@@ -69,7 +69,7 @@ class WindFileCache extends AbstractWindCache {
 	 * 删除过期缓存
 	 */
 	public function deleteExpiredCache() {
-		return WindFile::clearByPath($this->cacheDir, true);
+		return WindFile::clearDir($this->cacheDir, true);
 	}
 	/**
 	 * 获取缓存文件名。
@@ -86,8 +86,8 @@ class WindFileCache extends AbstractWindCache {
 				}
 				$root .= $key[$i] . DIRECTORY_SEPARATOR;
 			}
-			if (false === WindFile::isDir($root)) {
-				WindFile::createDir($root, 0777, true);
+			if (false === is_dir($root)) {
+				mkdir($root, 0777, true);
 			}
 			return $root . $filename;
 		}
@@ -116,10 +116,10 @@ class WindFileCache extends AbstractWindCache {
 	 * @return boolean
 	 */
 	protected function writeData($file, $data, $mtime = 0) {
-		if (WindFile::writeover($file, $data) == strlen($data)) {
+		if (WindFile::write($file, $data) == strlen($data)) {
 			$mtime += $mtime ? time() : 0;
-			WindFile::setFileRight($file, 0777);
-			return WindFile::setFileModifyTime($file, $mtime);
+			chmod($file, 0777);
+			return touch($file, $mtime);
 		}
 		return false;
 	}
@@ -130,13 +130,13 @@ class WindFileCache extends AbstractWindCache {
 	 * @return mixed
 	 */
 	protected function readData($file) {
-		if (false === WindFile::isFile($file)) {
+		if (false === is_file($file)) {
 			return null;
 		}
-		if (($mtime = WindFile::getFileModifyTime($file)) > time() || !$mtime) {
-			return unserialize(WindFile::readover($file));
+		if (($mtime = filemtime($file)) > time() || !$mtime) {
+			return unserialize(WindFile::read($file));
 		} else if (0 < $mtime) {
-			WindFile::deleteFile($file);
+			WindFile::delFile($file);
 		}
 		return null;
 	}
@@ -145,13 +145,13 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	private function setCacheDir($dir) {
-		if (false === WindFile::isDir($dir)) {
+		if (false === is_dir($dir)) {
 			throw new WindException('cache dir must be a directory');
 		}
-		if (false === WindFile::isWrite($dir)) {
+		if (false === is_writable($dir)) {
 			throw new WindException('cache dir must be a writable directory');
 		}
-		$this->cacheDir = rtrim(realpath($dir), '\\/') . DIRECTORY_SEPARATOR;
+		$this->cacheDir = rtrim($dir, '\\/') . DIRECTORY_SEPARATOR;
 	}
 	
 	public function __destruct() {
