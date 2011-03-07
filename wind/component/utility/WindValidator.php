@@ -164,7 +164,8 @@ class WindValidator {
 	 * @param string $value
 	 */
 	public function isEmpty($value) {
-		return empty(trim($value));
+		$value = trim($value);
+		return empty($value);
 	}
 	/**
 	 * 验证是否是非负整数
@@ -200,6 +201,9 @@ class WindValidator {
 		return is_array($array);
 	}
 	
+	public function isRequired($value){
+		return !self::isEmpty($value);
+	}
 	/**
 	 * 判断一个值是否在指定数组中
 	 * @param mixed $needle
