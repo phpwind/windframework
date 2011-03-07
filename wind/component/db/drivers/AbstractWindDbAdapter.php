@@ -160,8 +160,7 @@ abstract class AbstractWindDbAdapter {
 	/**
 	 * 返回sqlBuilder生成器
 	 * @param array builderConfig 生成器配置
-	 * @return WindSqlBuilder
-	 * @todo 重构获取sqlbuilder方式
+	 * @return AbstractWindSqlBuilder
 	 */
 	final public function getSqlBuilder($builderConfig = array()) {
 		if (empty($this->sqlBuilder)) {
