@@ -36,7 +36,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			if ($forward === null) {
 				throw new WindException('doAction', WindException::ERROR_RETURN_TYPE_ERROR);
 			}
-			
 			$this->doDispatch($forward);
 		} catch (WindActionException $actionException) {
 			$this->sendErrorMessage($actionException);
@@ -94,6 +93,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			
 			$this->windFactory->addClassDefinitions($definition);
 			$actionHandler = $this->windFactory->getInstance($handler);
+			$actionHandler->beforeAction($handlerAdapter);
 			
 			//TODO 添加过滤链
 			if ($actionHandler->_getInstance() instanceof WindFormController) {
@@ -101,8 +101,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 					$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath));
 				}
 			} elseif ($actionHandler->_getInstance() instanceof WindController) {
-				$rules = (array) $actionHandler->validatorFormRule($handlerAdapter->getAction());
-				if ($rules) {
+				if ($rules = (array) $actionHandler->validatorFormRule($handlerAdapter->getAction())) {
+					if (!isset($rules['errorMessage'])) {
+						$rules['errorMessage'] = $actionHandler->getErrorMessage();
+					}
 					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
 				}
 			}
