@@ -27,9 +27,10 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		//TODO 对于缓存而言不知道只获取独立的链接句柄就可以
-		$cacheHandler = $this->daoObject->getCacheHandler(); /* @var $cacheHandler AbstractWindCache */
+		/* @var $cacheHandler AbstractWindCache */
+		$cacheHandler = $this->daoObject->getCacheHandler();
 		if ('WindDbCache' === get_class($cacheHandler)) {
-			//$cacheHandler->setDbHandler($this->daoObject->getDbHandler()->getConnectionManager());
+			$cacheHandler->setDbHandler($this->daoObject->getDbHandler());
 		}
 		$result = $cacheHandler->get($this->generateKey(func_get_args()));
 		return empty($result) ? null : $result;
