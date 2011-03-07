@@ -101,9 +101,10 @@ class WindDispatcher extends WindComponentModule {
 			if ($windView->getTemplateName() === '') return;
 			$viewResolver = $windView->getViewResolver();
 			$viewResolver->windAssign($forward->getVars());
-			if ($this->display)
+			if ($this->display) {
 				$viewResolver->displayWindFetch();
-			else
+				$this->setAttribute('viewCache', array($windView->getTemplateName(), $forward->getVars()));
+			} else
 				$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
 		} else
 			throw new WindException('unable to create the object with forward.');
