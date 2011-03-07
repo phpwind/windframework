@@ -21,7 +21,6 @@ class WindDispatcher extends WindComponentModule {
 
 	protected $display = false;
 
-	protected $template = '';
 
 	/**
 	 * 请求分发处理
@@ -107,11 +106,8 @@ class WindDispatcher extends WindComponentModule {
 				$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
 				return;
 			}
-			if ($this->template === '') {
-				$viewResolver->displayWindFetch();
-				$this->setAttribute('viewCache', array($windView->getTemplateName(), $forward->getVars()));
-			} else
-				$this->setAttribute('viewCache', array($this->template, $forward->getVars()));
+			$viewResolver->displayWindFetch();
+			$this->setAttribute('viewCache', array($windView->getTemplateName(), $forward->getVars()));
 		} else
 			throw new WindException('unable to create the object with forward.');
 	}
@@ -120,7 +116,7 @@ class WindDispatcher extends WindComponentModule {
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	public function getWriteTableForGetterAndSetter() {
-		return array('display', 'template');
+		return array('display');
 	}
 
 	/**
