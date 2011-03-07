@@ -23,9 +23,20 @@ class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		$_content = '<?php ';
-		$_content .= '$this->doSubAction("' . $this->action . '","' . $this->controller . '");';
-		return $_content . ' ?>';
+		$_content = '<?php ' . $this->getScript() . ' ?>' . "\r\n";
+		return $_content;
+	}
+
+	public function getScript() {
+		$_tmp .= '$_tpl_forward = $this->windFactory->getInstance(COMPONENT_FORWARD);'.
+		'$_tpl_forward->forwardAnotherAction(\''.$this->action.'\', \''.$this->controller.'\');'.
+		'$_tpl_appName = $this->windSystemConfig->getAppClass();'.
+		'$_tpl_app = $this->windFactory->getInstance($_tpl_appName);'.
+		'$_tpl_app->getDispatcher()->setDisplay(true);'.
+		'$_tpl_app->doDispatch($_tpl_forward);'.
+		'list($viewName, $tplVars) = $_tpl_app->getDispatcher()->getAttribute("viewCache");'.
+		'$this->windAssign($tplVars, $viewName);';
+		return $_tmp;
 	}
 
 	/* (non-PHPdoc)
