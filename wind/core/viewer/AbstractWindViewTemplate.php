@@ -40,8 +40,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	 * @param WindViewerResolver $windViewerResolver
 	 */
 	public function compile($templateFile, $compileFile, $windViewerResolver) {
-		if (!$this->checkReCompile($templateFile, $compileFile))
-			return null;
+		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
 		$_output = $this->doCompile($_output, $windViewerResolver);
 		$this->cacheCompileResult($compileFile, $_output);
@@ -89,8 +88,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile)
-			return;
+		if (!$compileFile) return;
 		WindFile::write($compileFile, $content);
 	}
 
@@ -108,8 +106,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 			$_reCompile = true;
 		} else {
 			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime)
-				$_reCompile = true;
+			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
 		}
 		return $_reCompile;
 	}
