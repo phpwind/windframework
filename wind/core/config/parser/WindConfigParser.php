@@ -314,7 +314,7 @@ class WindConfigParser implements IWindConfigParser {
 		if (!W::ifCompile() || !$filename || !$data || !is_dir(COMPILE_PATH))
 			return false;
 		L::import('COM:utility.WindFile');
-		return WindFile::saveData($filename, $data);
+		return WindFile::savePhpData($filename, $data);
 	}
 
 	/**

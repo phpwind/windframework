@@ -91,7 +91,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	private function cacheCompileResult($compileFile, $content) {
 		if (!$compileFile)
 			return;
-		WindFile::writeover($compileFile, $content);
+		WindFile::write($compileFile, $content);
 	}
 
 	/**
