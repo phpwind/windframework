@@ -39,7 +39,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 				'$_tplPagePer=(int)' . $this->per . ';' .
 				'$_tplPageTotal=(int)' . $this->total . ';' .
 				'$_tplPageCurrent=(int)' . $this->page . ';' .
-				'$_tplPageUrl=(string)\'' . addslashes($this->url) . '\';' .
+				'$_tplPageUrl=(string)"' . addslashes($this->url) . '";' .
 				'if ($_tplPageCount > 0 && $_tplPagePer > 0) {' .
 					'$_tplTmpPageTotal = ceil($_tplPageCount / $_tplPagePer);' .
 					'if ($_tplPageTotal > $_tplTmpPageTotal) $_tplPageTotal = $_tplTmpPageTotal;' .
