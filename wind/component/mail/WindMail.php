@@ -111,6 +111,22 @@ class WindMail {
     const DIS_ATTACHMENT = 'attachment';
     const DIS_INLINE = 'inline';
     const LINELENGTH = 72;
+    
+    const SEND_SMTP = 'smtp';
+    const SEND_PHP = 'php';
+    const SEND_SEND = 'send';
+    
+    public function send($type = self::SEND_SMTP,$config = array()){
+    	if(!in_array($type,array(self::SEND_SMTP,self::SEND_PHP,self::SEND_SEND))){
+    		throw new WindException('There is no way that you want to send e-mail');
+    	}
+    	$class = L::import('Wind:component.mail.sender.Wind'.ucfirst($type).'Mail');
+    	/* @var $sender IWindSendMail */
+    	$sender = new $class($config);
+    	$sender->send($this);
+    	unset($sender);
+    	return true;
+    }
 	/**
 	 * 创建邮件头
 	 * @return string
@@ -237,8 +253,8 @@ class WindMail {
 	 */
 	public function setDate($date = null,$ifchinese = true){
 		if(!$date){
-			L::import ( 'WIND:component.format.WindDate' );
-			$date = $ifchinese ? WindDate::getChineseDate() : WindDate::getRFCDate();
+			L::import ( 'WIND:component.date.WindGeneralDate' );
+			$date = $ifchinese ? WindGeneralDate::getChinaDate() : WindGeneralDate::getRFCDate();
 		}
 		$this->setMailHeader(self::DATE,$date );
 	}

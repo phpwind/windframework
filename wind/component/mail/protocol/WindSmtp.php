@@ -16,6 +16,9 @@ L::import ( 'WIND:component.mail.protocol.WindSocket' );
  */
 class WindSmtp {
 	const CRLF = "\r\n";
+	/**
+	 * @var WindSocket
+	 */
 	protected $smtp = null;
 	protected $request = array();
 	protected $resonse = array();
@@ -151,7 +154,6 @@ class WindSmtp {
 	 * 关闭smtp服务器
 	 */
 	public function close() {
-		$this->quit();
 		$this->smtp->close();
 		$this->smtp = null;
 	}
@@ -189,18 +191,16 @@ class WindSmtp {
 			$response .= $_response;
 			$this->resonse[] = $_response;
 			list($code, $info) = preg_split('/([\s-]+)/', $_response, 2);
-			(null === $code || !in_array($code, $expect)) && $this->error($info);
+			if(null === $code || !in_array($code, $expect))  throw new WindException($info);
 			if (" " == substr($_response, 3, 1)) {
 				break;
 			}
 		}
-		empty($response) && $this->error('No response');
+		if(empty($response)) throw new WindException('No response');
 		return $response;
 	}
 	
-	public function error($error, $type = E_USER_ERROR) {
-		trigger_error($error, $type);
-	}
+	
 	
 	public function __destruct() {
 		if ($this->smtp) {

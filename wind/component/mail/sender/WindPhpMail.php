@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import('WIND:component.mail.sender.IWindSendMail');
 /**
  * 使用php内部函数发送邮件
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindPhpMail{
+class WindPhpMail implements IWindSendMail{
 	
 	public function send(WindMail $mail){
 		$recipients = $mail->getRecipients();

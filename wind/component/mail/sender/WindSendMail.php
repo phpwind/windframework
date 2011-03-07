@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-
+L::import('WIND:component.mail.sender.IWindSendMail');
 /**
  * 使用sendmail发送邮件
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,7 +14,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindSendMail{
+class WindSendMail implements IWindSendMail{
 	/**
 	 * @var string sendmail命令路径
 	 */
@@ -31,12 +31,12 @@ class WindSendMail{
 	 * @param string $sendMail 工作进程
 	 * @param string $sender 发送者
 	 */
-	public function __construct($sendMail = null,$sender=null){
-		if($sendMail){
-			$this->sendMail = $sendMail;
+	public function __construct(array $config=null){
+		if(isset($config['sendMail'])){
+			$this->sendMail = $config['sendMail'];
 		}
-		if($sender){
-			$this->sender = $sender;
+		if(isset($config['sender'])){
+			$this->sender = $config['sender'];
 		}
 	}
 	/**

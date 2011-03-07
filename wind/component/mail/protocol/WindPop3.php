@@ -202,10 +202,10 @@ class WindPop3 {
 	public function response($multi = false, $timeout = null) {
 		$ok = $this->responseLine($timeout);
 		if (empty($ok) || !is_string($ok)) {
-			$this->error('Read Failed');
+			throw new WindException('Read Failed');
 		}
 		if ('+OK' !== substr($ok, 0, 3)) {
-			$this->error('Request Failed!Pleae See Failed Info:' . $ok);
+			throw new WindException('Request Failed!Pleae See Failed Info:' . $ok);
 		}
 		if (true === $multi) {
 			$response = '';
@@ -224,7 +224,7 @@ class WindPop3 {
 				$response = $ok;
 			}
 		}
-		empty($response) && $this->error('No response');
+		if(empty($response)) throw new WindException('No response');
 		return $response;
 	}
 	
@@ -248,10 +248,6 @@ class WindPop3 {
 			$content = $content[1];
 		}
 		return array($headers,$content);
-	}
-	
-	public function error($error, $type = E_USER_ERROR) {
-		trigger_error($error, $type);
 	}
 	
 	public function __destruct() {

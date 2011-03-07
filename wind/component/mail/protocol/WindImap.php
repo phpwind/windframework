@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import ( 'WIND:component.mail.protocol.WindSocket' );
+L::import('WIND:component.mail.protocol.WindSocket');
 /**
  * imap协议封装
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -616,7 +616,7 @@ class WindImap {
 		while ('' != ($_response = $this->responseLine($timeout))) {
 			list($tag, $status, $info) = explode(' ', $_response, 3);
 			if (in_array($status, array('NO', "BAD"))) {
-				$this->error($_response);
+				throw new WindException($_response);
 			}
 			$response .= $_response;
 			$this->resonse[] = $_response;
@@ -624,7 +624,7 @@ class WindImap {
 				break;
 			}
 		}
-		empty($response) && $this->error('No response');
+		if (empty($response)) throw new WindException('No response');
 		return $response;
 	}
 	
@@ -650,10 +650,6 @@ class WindImap {
 	 */
 	public function getTag() {
 		return self::TAG . $this->tag;
-	}
-	
-	public function error($error, $type = E_USER_ERROR) {
-		trigger_error($error, $type);
 	}
 	
 	public function __destruct() {

@@ -6,6 +6,7 @@
  * @package 
  * tags
  */
+L::import('WIND:component.mail.sender.IWindSendMail');
 L::import ( 'WIND:component.mail.protocol.WindSmtp' );
 /**
  * 邮件发送
@@ -14,7 +15,7 @@ L::import ( 'WIND:component.mail.protocol.WindSmtp' );
  * @version $Id$ 
  * @package 
  */
-class WindSmtpSend{
+class WindSmtpMail implements IWindSendMail{
 	/**
 	 * @var WindSmtp 邮件发送服务器
 	 */
@@ -36,11 +37,20 @@ class WindSmtpSend{
 	 */
 	protected $password = '';
 	
-	public function __construct($host,$port,$name = 'localhost',$auth = true){
-		$this->auth = true;
-		$this->name = $name;
-		$this->smtp = new WindSmtp($host,$port);
+	public function __construct(array $config){
+		$defautConfig = array('host'=>'127.0.0.1','port'=>'25','name'=>'localhost','auth'=>true);
+		$config = array_merge($defautConfig,$config);
+		if(!isset($config['host']) || !isset($config['port'])){
+			throw new WindException('The mail host or port is not exist');
+		}
+		if($config['auth'] && (!isset($config['user']) || !isset($config['password']))){
+			throw new WindException('In the verification mode, the user name and password is blank or wrong');
+		}
+		$this->auth = $config['auth'];
+		$this->name = $config['name'];
+		$this->smtp = new WindSmtp($config['host'],$config['port']);
 		$this->smtp->open();
+		$this->setAuthParams($config['user'],$config['password']);
 	}
 	
 	/**
