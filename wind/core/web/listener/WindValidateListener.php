@@ -38,9 +38,15 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		$errorMessage = new WindErrorMessage();
+		if (!isset($this->validateRules['errorMessage']))
+			$errorMessage = new WindErrorMessage();
+		else {
+			$errorMessage = $this->validateRules['errorMessage'];
+			unset($this->validateRules['errorMessage']);
+		}
 		$_input = new stdClass();
 		foreach ((array) $this->validateRules as $rule) {
+			if (!is_array($rule)) continue;
 			$key = $rule['field'];
 			$value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost($key);
 			$args = $rule['args'];
