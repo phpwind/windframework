@@ -203,7 +203,6 @@ class WindView extends WindComponentModule {
 	}
 
 	/**
-	 * Enter description here ...
 	 * @param string $type
 	 */
 	private function getDefaultValue($type) {
@@ -216,6 +215,13 @@ class WindView extends WindComponentModule {
 	protected function getWriteTableForGetterAndSetter() {
 		return array('templatePath', 'templateExt', 'templateName', 'isCache', 'compileDir', 'cacheDir', 'viewResolver', 
 			'layout');
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::getCloneProperty()
+	 */
+	protected function getCloneProperty() {
+		return array('viewResolver');
 	}
 
 }

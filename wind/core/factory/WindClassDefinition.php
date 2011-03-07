@@ -179,9 +179,9 @@ class WindClassDefinition extends WindModule {
 	protected function createInstanceWithPrototype($factory, $args) {
 		if ($this->prototype === null) {
 			$instance = $this->createInstance($factory, $args);
-			$instance = $this->setPrototype($instance);
 			$this->setProperties($this->getPropertys(), $factory, $instance);
 			$this->executeInitMethod($instance);
+			$this->setPrototype($instance);
 		}
 		return clone $this->prototype;
 	}
@@ -210,6 +210,7 @@ class WindClassDefinition extends WindModule {
 			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		}
 		$instance = $factory->createInstance($this->getClassName(), $args);
+		
 		return $instance;
 	}
 
@@ -221,11 +222,10 @@ class WindClassDefinition extends WindModule {
 	private function setPrototype($instance) {
 		if ($this->prototype === null) {
 			if (($instance instanceof WindModule) && (null !== ($proxy = $instance->getClassProxy())))
-				$this->prototype = &$proxy;
+				$this->prototype = $proxy;
 			else
-				$this->prototype = &$instance;
+				$this->prototype = $instance;
 		}
-		return $this->prototype;
 	}
 
 	/**

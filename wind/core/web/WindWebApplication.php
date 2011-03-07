@@ -17,7 +17,7 @@ L::import('WIND:core.factory.WindComponentDefinition');
  */
 class WindWebApplication extends WindComponentModule implements IWindApplication {
 
-	private $dispatcher = null;
+	protected $dispatcher = null;
 
 	/* (non-PHPdoc)
 	 * @see IWindApplication::processRequest()
@@ -164,18 +164,11 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$this->response->sendError(WindHttpResponse::SC_NOT_FOUND, $message);
 	}
 
-	/**
-	 * @param field_type $errorHandler
+	/* (non-PHPdoc)
+	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
-	public function setErrorHandler($errorHandler) {
-		$this->errorHandler = $errorHandler;
-	}
-
-	/**
-	 * @param field_type $dispatcher
-	 */
-	public function setDispatcher($dispatcher) {
-		$this->dispatcher = $dispatcher;
+	public function getWriteTableForGetterAndSetter() {
+		return array('dispatcher');
 	}
 
 }

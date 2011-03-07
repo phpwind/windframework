@@ -19,19 +19,21 @@ class WindDispatcher extends WindComponentModule {
 
 	protected $oldRouter = null;
 
+	protected $display = false;
+
 	/**
 	 * 请求分发处理
 	 * @param WindForward $forward
 	 */
 	public function dispatch($forward) {
 		$this->oldRouter = clone $this->windFactory->getInstance(COMPONENT_ROUTER);
-		
 		if ($forward->getIsRedirect())
 			$this->dispatchWithRedirect($forward);
-		elseif ($forward->getIsReAction()) {
+		elseif ($forward->getIsReAction())
 			$this->dispatchWithAction($forward);
-		} else
+		else
 			$this->render($forward);
+		$this->destroy();
 	}
 
 	/**
@@ -99,10 +101,26 @@ class WindDispatcher extends WindComponentModule {
 			if ($windView->getTemplateName() === '') return;
 			$viewResolver = $windView->getViewResolver();
 			$viewResolver->windAssign($forward->getVars());
-			
-			$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
-		} else {
+			if ($this->display)
+				$viewResolver->displayWindFetch();
+			else
+				$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
+		} else
 			throw new WindException('unable to create the object with forward.');
-		}
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::getWriteTableForGetterAndSetter()
+	 */
+	public function getWriteTableForGetterAndSetter() {
+		return array('display');
+	}
+
+	/**
+	 * 注销当前dispatcher状态
+	 */
+	protected function destroy() {
+		$this->display = false;
+		$this->oldRouter = null;
 	}
 }
