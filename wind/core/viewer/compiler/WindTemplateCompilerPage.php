@@ -13,10 +13,15 @@ L::import('WIND:core.viewer.AbstractWindTemplateCompiler');
  */
 class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	protected $tpl = '';
+
 	protected $url = '';
+
 	protected $total = '0';
+
 	protected $page = '1';
+
 	protected $count = '0';
+
 	protected $per = '0';
 	
 	/* (non-PHPdoc)
@@ -62,7 +67,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	}
 
 	private function parsePageTags($content) {
-		$arrPageTags = array('$Total', '$Page', '$Url');
+		$arrPageTags = array('$total', '$page', '$url');
 		$arrPageVars = array('$_tplPageTotal', '$_tplPageCurrent', '$_tplPageUrl');
 		return str_ireplace($arrPageTags, $arrPageVars, $content);
 	}
