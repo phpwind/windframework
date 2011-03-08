@@ -21,7 +21,6 @@ class WindDispatcher extends WindComponentModule {
 
 	protected $display = false;
 
-
 	/**
 	 * 请求分发处理
 	 * @param WindForward $forward
@@ -101,13 +100,11 @@ class WindDispatcher extends WindComponentModule {
 		if ($forward && null !== ($windView = $forward->getWindView())) {
 			if ($windView->getTemplateName() === '') return;
 			$viewResolver = $windView->getViewResolver();
-			$viewResolver->windAssign($forward->getVars());
-			if ($this->display === false) {
+			$this->response->setData($forward->getVars(), $windView->getTemplateName());
+			if ($this->display === false)
 				$this->response->setBody($viewResolver->windFetch(), $windView->getTemplateName());
-				return;
-			}
-			$viewResolver->displayWindFetch();
-			$this->setAttribute('viewCache', array($windView->getTemplateName(), $forward->getVars()));
+			else
+				$viewResolver->displayWindFetch();
 		} else
 			throw new WindException('unable to create the object with forward.');
 	}
