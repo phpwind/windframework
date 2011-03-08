@@ -19,7 +19,7 @@ class WindDbSession extends AbstractWindUserSession {
 	}
 	
 	public static  function close(){
-		
+		return true;
 	}
 	public static  function write($name,$value){
 		
