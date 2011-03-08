@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-class WindCurlUpload implements AbstractWindUpload{
+class WindCurlUpload extends AbstractWindUpload{
 	
 	public function upload($name, $newName, $path) {
 		

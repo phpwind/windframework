@@ -14,6 +14,11 @@ L::import ( 'WIND:component.upload.AbstractWindUpload');
  * @version $Id$ 
  * @package 
  */
-class WindFormUpload implements AbstractWindUpload{
+class WindFormUpload extends AbstractWindUpload{
+	
+	public function upload($name, $newName, $path) {
+		
+	}
+
 	
 }

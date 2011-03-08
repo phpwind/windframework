@@ -19,5 +19,5 @@ abstract class AbstractWindUpload{
 	 * @param string $newName
 	 * @param string $path
 	 */
-	public function upload($name, $newName, $path);
+	public abstract function upload($name, $newName, $path);
 }
