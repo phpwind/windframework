@@ -6,7 +6,7 @@
  * @license 
  */
 L::import('WIND:component.cache.strategy.AbstractWindCache');
-L::import('WIND:component.utility.WindUXCache');
+L::import('WIND:component.cache.operator.WindUXCache');
 /**
  * xcache加速缓存
  * the last known user to change this file in the repository  <$LastChangedBy$>

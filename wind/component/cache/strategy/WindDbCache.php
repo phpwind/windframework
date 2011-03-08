@@ -48,7 +48,7 @@ class WindDbCache extends AbstractWindCache {
 	const FIELD = 'field';
 	const STRAGE = 'expirestrage';
 	
-	public function __construct(WindConnectionManager $dbHandler = null) {
+	public function __construct(AbstractWindDbAdapter $dbHandler = null) {
 		$dbHandler && $this->setDbHandler($dbHandler);
 	}
 	

@@ -6,7 +6,7 @@
  * @license 
  */
 L::import('WIND:component.cache.strategy.AbstractWindCache');
-L::import('WIND:component.utility.WindUWinCache');
+L::import('WIND:component.cache.operator.WindUWinCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>

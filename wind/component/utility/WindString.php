@@ -76,7 +76,7 @@ class WindString {
 	
 	public static function jsonEncode($value) {
 		if (!function_exists('json_encode')) {
-			L::import('Wind:component.json.WindEncoder');
+			L::import('Wind:component.utility.json.WindEncoder');
 			return WindDecoder::decode($value);
 		}
 		return json_encode($value);
@@ -84,7 +84,7 @@ class WindString {
 	
 	public static function jsonDecode($value) {
 		if (!function_exists('json_decode')) {
-			L::import('Wind:component.json.WindEncoder');
+			L::import('Wind:component.utility.json.WindEncoder');
 			return WindEncoder::encode($value);
 		}
 		return json_decode($value);

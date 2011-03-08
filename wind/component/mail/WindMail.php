@@ -252,8 +252,8 @@ class WindMail {
 	 */
 	public function setDate($date = null,$ifchinese = true){
 		if(!$date){
-			L::import ( 'WIND:component.date.WindGeneralDate' );
-			$date = $ifchinese ? WindGeneralDate::getChinaDate() : WindGeneralDate::getRFCDate();
+			L::import ( 'WIND:component.utility.date.WindDate' );
+			$date = $ifchinese ? WindDate::getChinaDate() : WindDate::getRFCDate();
 		}
 		$this->setMailHeader(self::DATE,$date );
 	}

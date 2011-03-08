@@ -6,7 +6,7 @@
  * @license 
  */
 L::import('WIND:component.cache.strategy.AbstractWindCache');
-L::import('WIND:component.utility.WindApc');
+L::import('WIND:component.cache.operator.WindApc');
 /**
  * php加速器缓存
  * 

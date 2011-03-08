@@ -6,266 +6,243 @@
  * @license 
  */
 /**
- * 日期的换算与计算
+ * 是将日期转化为一个对象去操作
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
+ * tags
  */
 class WindGeneralDate {
 	/**
-	 * 获取时区
-	 * @return string
+	 * @var int 填充展示
 	 */
-	public static function getTimeZone() {
-		return function_exists('date_default_timezone_get') ? date_default_timezone_get() : date('e');
+	const FILL = 0;
+	/**
+	 * @var int 数字展示
+	 */
+	const DIGIT = 1;
+	/**
+	 * @var int 文本展示
+	 */
+	const TEXT = 2;
+	/**
+	 * @var string 默认格式化
+	 */
+	const DEFAULT_FORMAT = 'Y-m-d H:i:s';
+	/**
+	 * @var int unix时间戳
+	 */
+	private $time = 0;
+	
+	/**
+	 * 根据输入的日期格式转化为时间戳进行属性time初始化
+	 * 
+	 * mktime函数，在只有输入一个年份的时候，就会默认转化为上一年的最后一天，输入一个月份并且缺省输入day的时候，
+	 * 会转化为上个月的最后一天。所以这种情况需要注意。
+	 * 如果该构造函数没有参数传入的时候，得到的日期不是期望的当前日期，而是上两年的11月的30日
+	 * 
+	 * 如果月份为空：如果年份为空，则取当前月份；否则取1
+	 * 如果日期为空：如果年份为空，则取当前日期，否则取1
+	 * 如果小时为空：如果年份为空，则取当前小时
+	 * 如果分为空：如果年份为空，则取当前分
+	 * 如果秒为空：如果年份为空，则取当前秒
+	 * 如果年份为空：取当前年份
+	 * 
+	 * @param int $year     年
+	 * @param int $month    月
+	 * @param int $day      日
+	 * @param int $hours    小时
+	 * @param int $minutes  分
+	 * @param int $second   秒
+	 */
+	public function __construct($year = null, $month = null, $day = null, $hours = null, $minutes = null, $second = null) {
+		$time = time();
+		!$month && ((!$year) ? $month = date('m', $time) : $month = 1);
+		!$day && ((!$year) ? $day = date('d', $time) : $day = 1);
+		!$hours && !$year && $hours = date('H', $time);
+		!$minutes && !$year && $minutes = date('i', $time);
+		!$second && !$year && $second = date('s', $time);
+		!$year && $year = date('Y', $time);
+		$this->time = mktime($hours, $minutes, $second, $month, $day, $year);
 	}
 	/**
-	 * 设置时区
-	 * @param string $timezone 时区
-	 */
-	public static function setTimezone($timezone) {
-		function_exists('date_default_timezone_set') ? date_default_timezone_set($timezone) : putenv("TZ={$timezone}");
-	}
-	/**
-	 * 格式化输出
-	 * @param string $format 格式化
-	 * @param int $dateTime unix时间戳
-	 * @return string
-	 */
-	public static function format($format = null, $dateTime = null) {
-		return date($format ? $format : 'Y-m-d H:i:s', self::getTimeStamp($dateTime));
-	}
-	/**
-	 * 获取日期的某部分
-	 * @param string $interval 字符串表达式 ,时间间隔类型
-	 * @param mixed $dateTime 表示日期的文字
-	 * @return string 返回日期的某部分
-	 */
-	public static function datePart($interval, $dateTime = null) {
-		return date($interval, self::getTimeStamp($dateTime));
-	}
-	/**
-	 * 获取两个日期的差
-	 * @param string $interval 返回两个日期差的间隔类型
-	 * @param mixed $startDateTime 开始日期
-	 * @param mixed $endDateTime   结束日期
+	 * 获取当前时间所在月的天数
 	 * @return string 
 	 */
-	public static function dateDiff($interval, $startDateTime, $endDateTime) {
-		$diff = self::getTimeStamp($endDateTime) - self::getTimeStamp($startDateTime);
-		$retval = 0;
-		switch ($interval) {
-			case "y":
-				$retval = bcdiv($diff, (60 * 60 * 24 * 365));break;
-			case "m":
-				$retval = bcdiv($diff, (60 * 60 * 24 * 30));break;
-			case "w":
-				$retval = bcdiv($diff, (60 * 60 * 24 * 7));break;
-			case "d":
-				$retval = bcdiv($diff, (60 * 60 * 24));break;
-			case "h":
-				$retval = bcdiv($diff, (60 * 60));break;
-			case "n":
-				$retval = bcdiv($diff, 60);break;
-			case "s":
-			default:$retval = $diff;break;
-		}
-		return $retval;
+	public function getDaysInMonth() {
+		return date('t', $this->time);
 	}
 	/**
-	 * 返回向指定日期追加指定间隔类型的一段时间间隔后的日期  
-	 * @param string $interval 字符串表达式，是所要加上去的时间间隔类型。
-	 * @param int $value 数值表达式，是要加上的时间间隔的数目。其数值可以为正数（得到未来的日期），也可以为负数（得到过去的日期）。 
-	 * @param string $dateTime 表示日期的文字，这一日期还加上了时间间隔。 
-	 * @param mixed $format 格式化输出
-	 * @return string 返回追加后的时间
+	 * 获取当前时间所在年的天数 
+	 * @return int 如果是闰年返回366否则返回365
 	 */
-	public static function dateAdd($interval, $value, $dateTime, $format = null) {
-		$date = getdate(self::getTimeStamp($dateTime));
-		switch ($interval) {
-			case "y":
-				$date["year"] += $value;break;
-			case "q":
-				$date["mon"] += ($value * 3);break;
-			case "m":
-				$date["mon"] += $value;break;
-			case "w":
-				$date["mday"] += ($value * 7);break;
-			case "d":
-				$date["mday"] += $value;break;
-			case "h":
-				$date["hours"] += $value;break;
-			case "n":
-				$date["minutes"] += $value;break;
-			case "s":
-			default:$date["seconds"] += $value;break;
-		}
-		return self::format($format, mktime($date["hours"], $date["minutes"], $date["seconds"], $date["mon"], $date["mday"], $date["year"]));
+	public function getDaysInYear() {
+		return $this->isLeapYear() ? 366 : 365;
 	}
 	/**
-	 * 得到一年中每个月真实的天数
-	 * @param string $year 需要获得的月份天数的年份
-	 * @return array 每月的天数组成的数组
+	 * 所表示当前日期是该年中的第几天。
+	 * @return int 返回时该年中的第几天
 	 */
-	public static function getRealDaysInMonthsOfYear($year) {
-		$months = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-		if (self::isLeapYear($year)) {
-			$months[1] = 29;
-		}
-		return $months;
+	public function getDayOfYear() {
+		return date('z', $this->time) + 1;
 	}
 	/**
-	 * 获取该月的天数
-	 * @param int $month 月份
-	 * @param int $year 年份
-	 * @return int
-	 */
-	public static function getDaysInMonth($month, $year) {
-		if (1 > $month || 12 < $month) {
-			return 0;
-		}
-		if (!($daysInmonths = self::getRealDaysInMonthsOfYear($year))) {
-			return 0;
-		}
-		return $daysInmonths[$month - 1];
-	}
-	/**
-	 * 获取该年的天数 
+	 * 表示当前日期为该月中的第几天。 
 	 * @return int 
 	 */
-	public static function getDaysInYear($year) {
-		return self::isLeapYear($year) ? 366 : 365;
+	public function getDayOfMonth() {
+		return date('j', $this->time);
 	}
 	/**
-	 * 取得RFC格式的日期与时间
-	 * @return string
+	 * 表示当前日期是该星期中的第几天。
+	 * @return int 
 	 */
-	public static function getRFCDate($date = null) {
-		$time = $date ? is_int($date) ? $date : strtotime($date) : time();
-		$tz = date('Z', $time);
-		$tzs = ($tz < 0) ? '-' : '+';
-		$tz = abs($tz);
-		$tz = (int) ($tz / 3600) * 100 + ($tz % 3600) / 60;
-		return sprintf("%s %s%04d", date('D, j M Y H:i:s', $time), $tzs, $tz);
+	public function getDayOfWeek() {
+		return date('w', $this->time) + 1;
 	}
 	/**
-	 * 取得中国日期时间
-	 * @return string
+	 * 判断当前日期所在年的第几周 
+	 * @return int
 	 */
-	public static function getChinaDate() {
-		list($y, $m, $d, $w, $h, $_h, $i) = explode(' ', date('Y n j w G g i'));
-		return sprintf('%s年%s月%s日(%s) %s%s:%s', $y, $m, $d, self::getChinaWeek($w), self::getPeriodOfTime($h), $_h, $i);
+	public function getWeekOfYear() {
+		return date('W', $this->time);
 	}
 	/**
-	 * 取得中国的星期
-	 * @param int $week 处国人的星期，是一个数值
+	 * 获取当前日期的年份
+	 * @param boolean $format 是否返回四位格式的年份或是两位格式的年份
 	 * @return string
 	 */
-	public static function getChinaWeek($week = null) {
-		$week = $week ? $week : (int) date('w', time());
-		$weekMap = array("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
-		return $weekMap[$week];
+	public function getYear($format = true) {
+		return  date($format ? 'Y' : 'y', $this->time);
 	}
 	/**
-	 * 取得一天中的时段
-	 * @param int $hour 小时
+	 * 获当前日期的取月份
+	 * @param int $display 显示类型
 	 * @return string
 	 */
-	public static function getPeriodOfTime($hour = null) {
-		$hour = $hour ? $hour : (int) date('G', time());
-		$period = '';
-		if (0 <= $hour && 6 > $hour) {
-			$period = '凌晨';
-		} elseif (6 <= $hour && 8 > $hour) {
-			$period = '早上';
-		} elseif (8 <= $hour && 11 > $hour) {
-			$period = '上午';
-		} elseif (11 <= $hour && 13 > $hour) {
-			$period = '中午';
-		} elseif (13 <= $hour && 15 > $hour) {
-			$period = '响午';
-		} elseif (15 <= $hour && 18 > $hour) {
-			$period = '下午';
-		} elseif (18 <= $hour && 20 > $hour) {
-			$period = '傍晚';
-		} elseif (20 <= $hour && 22 > $hour) {
-			$period = '晚上';
-		} elseif (22 <= $hour && 23 >= $hour) {
-			$period = '深夜';
+	public function getMonth($display = self::FILL) {
+		if(self::FILL == $display){
+			return date('m', $this->time);	
+		}elseif(self::DIGIT == $display){
+			return date('n', $this->time);
+		}elseif(self::TEXT == $display){
+			return date('M', $this->time);
 		}
-		return $period;
+		return date('n', $this->time);
 	}
 	/**
-	 * 获取UTC日期格式
-	 * @param mixed $dateTime
+	 * 获取当前日期的天数
+	 * @param string $display 显示类型
+	 * @return string 
+	 */
+	public function getDay($display = self::FILL) {
+		if(self::FILL == $display){
+			return date('d', $this->time);	
+		}elseif(self::DIGIT == $display){
+			return date('j', $this->time);
+		}elseif(self::TEXT == $display){
+			return date('jS', $this->time);
+		}
+		return date('j', $this->time);
+	}
+	/**
+	 * 获取当前日期的星期
+	 * @param string $display 显示类型
 	 * @return string
 	 */
-	public static function getUTCDate($dateTime = null) {
-		$oldTimezone = self::getTimezone();
-		if ('UTC' !== strtoupper($oldTimezone)) {
-			self::setTimezone('UTC');
+	public function getWeek($display = self::FILL) {
+		if(self::FILL == $display || self::DIGIT == $display){
+			return date('w', $this->time);
+		}elseif(self::TEXT == $display){
+			return date('D', $this->time);
 		}
-		$date = date('D, d M y H:i:s e',self::getTimeStamp($dateTime));
-		if ('UTC' !== strtoupper($oldTimezone)) {
-			self::setTimezone($oldTimezone);
-		}
-		return $date;
+		return date('N', $this->time);
 	}
 	/**
-	 * 获取微秒数
-	 * @return number
+	 * 获取当前日期的12小时制时间
+	 * @param string $display 显示类型
+	 * @return string
 	 */
-	public static function getMicroTime() {
-		 return  array_sum(explode(' ', microtime()));
+	public function get12Hours($display = self::FILL){
+		if(self::FILL == $display){
+			return date('h', $this->time);
+		}elseif(self::DIGIT == $display){
+			return date('g', $this->time);;
+		}
+		return date('h', $this->time);
+	}
+	/**
+	 * 获取当前日期的24小时制时间
+	 * @param string $display 显示类型
+	 * @return string
+	 */
+	public function get24Hours($display = self::FILL){
+		if(self::FILL == $display){
+			return date('H', $this->time);
+		}elseif(self::DIGIT == $display){
+			return date('G', $this->time);;
+		}
+		return date('H', $this->time);
+	}
+	/**
+	 * 获取当前日期的分钟
+	 * @return string
+	 */
+	public function getMinutes() {
+		return date('i', $this->time);
+	}
+	/**
+	 * 获取当前日期的秒数
+	 * @return string
+	 */
+	public function getSeconds() {
+		return date('s', $this->time);
+	}
+	/**
+	 * 获取当前日期的本地时区
+	 * @return string
+	 */
+	public function getLocalTimeZone() {
+		return date('T', $this->time);
+	}
+	/**
+	 * 重新设置当前日期与时间
+	 * @param string | int  $time  
+	 */
+	public function setTime($time) {
+		if (is_int($time) || (is_string($time)&& ($time = strtotime($time)))) {
+			$this->time = $time;
+		}
+	}
+	/**
+	 * 取得当前日期时间对象
+	 * @return WindDate
+	 */
+	public function getNow() {
+		$date = getdate($this->time);
+		return new self($date["year"], $date["mon"], $date["mday"], $date["hours"], $date["minutes"], $date["seconds"]);
+	}
+	/**
+	 * 对象转化为字符串，魔术方法
+	 * @return string 
+	 */
+	public function __toString() {
+		return $this->toString();
+	}
+	/**
+	 * 格式化时间输出
+	 * @param string $format 需要输出的格式
+	 * @return string 
+	 */
+	public function toString($format = null) {
+		return date($format ? $format : self::DEFAULT_FORMAT, $this->time);
 	}
 	/**
 	 * 判断是否是闰年
-	 * @param int $year
-	 * @return string
+	 * @return string  返回1或是0
 	 */
-	public static function isLeapYear($year) {
-		if (0 == $year % 4 && 0 != $year % 100 || 0 == $year % 400) {
-			return true;
-		}
-		return false;
-	}
-	public static function getTimeStamp($dateTime = null){
-		return $dateTime ? is_int($dateTime) ? $dateTime : strtotime($dateTime) : time();
-	}
-	
-	/**
-	 * @param int $time 当前时间戳
-	 * @param int $timestamp 比较的时间戳
-	 * @param string $format 格式化当前时间戳
-	 * @param array $type 要返回的时间类型
-	 * @return array
-	 */
-	public static function getLastDate($time,$timestamp = null,$format = null,$type = 1) {
-		$timelang = array('second' => '秒前', 'yesterday' => '昨天', 'hour' => '小时前', 'minute' => '分钟前', 'qiantian' =>'前天');
-		$timestamp = $timestamp ? $timestamp : time();
-		$compareTime = strtotime(self::format('Y-m-d',$timestamp));
-		$currentTime = strtotime(self::format('Y-m-d',$time));
-		$decrease = $timestamp - $time;
-		$result = self::format($format,$time);
-		if (0 >= $decrease) {
-			return 1 == $type ? array(self::format('Y-m-d',$time), $result) : array(self::format('Y-m-d m-d H:i',$time), $result);
-		}
-		if ($currentTime == $compareTime) {
-			if (1 == $type) {
-				if (60 >= $decrease) {
-					return array($decrease . $timelang['second'], $result);
-				}
-				return 3600 >= $decrease ? array(ceil($decrease / 60) . $timelang['minute'], $result) : array(ceil($decrease / 3600) . $timelang['hour'], $result);
-			} 
-			return array(self::format('H:i',$time), $result);
-		} elseif ($currentTime == $compareTime - 86400) {
-			return 1 == $type ? array($timelang['yesterday'] . " " . self::format('H:i',$time), $result) : array(self::format('m-d H:i', $time), $result);
-		} elseif ($currentTime == $compareTime - 172800) {
-			return 1 == $type ? array($timelang['qiantian'] . " " . self::format('H:i',$time), $result) : array(self::format('m-d H:i',$time), $result);
-		} elseif (strtotime(self::format('Y',$time)) == strtotime(self::format('Y',$timestamp))) {
-			return 1 == $type ? array(self::format('m-d',$time), $result) : array(self::format('m-d H:i',$time), $result);
-		} 
-		return 1 == $type ?  array(self::format('Y-m-d',$time), $result) : array(self::format('Y-m-d m-d H:i',$time), $result);
+	public function isLeapYear() {
+		return date('L', $this->time);
 	}
 }
