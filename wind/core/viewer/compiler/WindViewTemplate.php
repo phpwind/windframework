@@ -15,7 +15,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	const COMPILER_ECHO = 'WIND:core.viewer.compiler.WindTemplateCompilerEcho';
 
 	/* 编译结果缓存 */
-	protected $blockKey = "<pw-wind key='$' />";
+	protected $blockKey = "<pw-wind key='\$' />";
 
 	protected $compiledBlockData = array();
 
