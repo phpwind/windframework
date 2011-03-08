@@ -7,6 +7,7 @@
  */
 L::import('WIND:component.http.session.AbstractWindUserSession');
 /**
+ * 数据库会话存储机制,可以实现统一登陆
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
@@ -21,6 +22,7 @@ class WindDbSession extends AbstractWindUserSession {
 	public static  function close(){
 		return true;
 	}
+	
 	public static  function write($name,$value){
 		
 	}
