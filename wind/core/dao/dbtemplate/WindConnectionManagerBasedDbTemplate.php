@@ -34,8 +34,8 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	public function getConnection() {
 		return $this->connectionManager;
 	}
-
-	public function getDbHandler() {
+   
+	private function getDbHandler() {
 		return $this->connectionManager->getConnection();
 	}
 
