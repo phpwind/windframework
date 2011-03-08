@@ -6,15 +6,14 @@
  * @license
  */
 
-L::import('WIND:core.web.WindFormController');
+L::import('WIND:core.web.WindController');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package
- */
-class IndexController extends WindFormController {
-    protected $formClass = 'actionControllers.actionForm.IndexRunForm';
+ */ 
+class IndexController extends WindController {
 	public function run() {
 		$this->setLayout('layout');
 		$this->setOutput(array('var1' => 'hello world from IndexController.'));
@@ -30,7 +29,11 @@ class IndexController extends WindFormController {
 	public function delete() {
 		echo 'hahahahahaha';
 	}
-
+   
+	public function doHeader() {
+	    $this->setOutput(array('a' => 'aaaaaa'));
+	    $this->setTemplate('header');
+	}
 	public function add() {
 		echo 'hello i am add.';
 		$this->forwardAction('delete', '', '', true);
