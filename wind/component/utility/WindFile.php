@@ -161,7 +161,7 @@ class WindFile{
 	 */
 	public static function getMimeType($fileName){
 		$suffix = self::getFileSuffix($fileName);
-		$mimes = require rtrim(WIND_PATH,D_S).D_S.'config/WindMimeTypes.php';
+		$mimes = require rtrim(WIND_PATH,D_S).D_S.'component/utility/WindMimeTypes.php';
 		if(isset($mimes[$suffix])){
 			return is_array($mimes[$suffix]) ? current($mimes[$suffix]) : $mimes[$suffix];
 		}else{
