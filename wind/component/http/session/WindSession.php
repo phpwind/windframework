@@ -164,7 +164,7 @@ class WindSession implements IteratorAggregate, ArrayAccess, Countable {
 	 * @return string
 	 */
 	public function setSessionId($id) {
-		return session_id();
+		return session_id($id);
 	}
 	
 	/**
