@@ -1,4 +1,4 @@
-<?php
+<!--<?php
 
 L::import('WIND:core.viewer.AbstractWindTemplateCompiler');
 
@@ -16,6 +16,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
+		//TODO 支持模板变量标签{@header:a}
 		$_output = $content;
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $_output);
 		return '<?php echo ' . $_output . ';?>';
