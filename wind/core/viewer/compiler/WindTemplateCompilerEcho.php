@@ -16,10 +16,17 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		//TODO 支持模板变量标签{@header:a}
 		$_output = $content;
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $_output);
+		$_output = $this->compileVarShare($_output);
 		return '<?php echo ' . $_output . ';?>';
+	}
+	private function compileVarShare($input) {
+	    $input = trim($input);
+	    if (strpos($input, '$') !== false || strpos($input, ':') === false) return $input;
+	    list($templateName, $var) = explode(':', $input);
+	    $input = '$this->getVar(\'' . $templateName . '\', \'' . $var .'\')';
+	    return $input;
 	}
 
 }
