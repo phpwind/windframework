@@ -92,11 +92,11 @@ class WindFrontController extends AbstractWindServer {
 			}
 			
 			$this->getWindFactory()->application = $application;
-			
-			//TODO change args of application->processRequest as an component object
-			$filterChain = $this->getFilterChain();
-			$filterChain->setCallBack(array($application, 'processRequest'), array($request, $response));
-			$filterChain->getHandler()->handle($request, $response);
+			if (null !== $filterChain = $this->getFilterChain()) {
+				$filterChain->setCallBack(array($application, 'processRequest'), array());
+				$filterChain->getHandler()->handle($request, $response);
+			} else
+				$application->processRequest();
 		
 		} catch (WindException $exception) {
 			echo $exception->getMessage();
@@ -123,6 +123,12 @@ class WindFrontController extends AbstractWindServer {
 	 * @see AbstractWindServer::afterProcess()
 	 */
 	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->flush();
+		}
 		restore_error_handler();
 	}
 
