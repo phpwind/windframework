@@ -28,7 +28,7 @@
 		<cache-suffix>.txt</cache-suffix>
 		<!--通用配置-->
 		<security>true</security>
-		<expires>10</expires>
+		<expires>20</expires>
 		<!--
 		<dependency>Wind:component.cache.dependency.WindSqlCacheDependency</dependency>
 		-->

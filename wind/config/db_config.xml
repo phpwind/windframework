@@ -9,7 +9,7 @@
 			<password>suqian0512h</password>
 			<port>3306</port>
 			<name>phpwind_8</name>
-			<charset>utf-8</charset>
+			<charset>utf8</charset>
 		</connection>
 		<connection name="connection2">
 			<driver>mysql</driver>
@@ -19,6 +19,7 @@
 			<password>suqian0512h</password>
 			<port>3306</port>
 			<name>phpwind_8</name>
+			<charset>utf8</charset>
 		</connection>
 	</connections>
 	<drivers>

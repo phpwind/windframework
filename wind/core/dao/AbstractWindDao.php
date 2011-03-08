@@ -12,7 +12,7 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbClass = 'WIND:component.db.WindConnectionManager';
 
-	protected $dbConfig = 'WIND:component.db.db_config';
+	protected $dbConfig = 'WIND:config.db_config';
 
 	protected $dbTemplateClass = 'WIND:core.dao.dbtemplate.WindConnectionManagerBasedDbTemplate';
 
@@ -22,14 +22,14 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $cacheClass = 'WIND:component.cache.strategy.WindDbCache';
 
-	protected $cacheConfig = 'WIND:component.cache.cache_config';
+	protected $cacheConfig = 'WIND:config.cache_config';
 
 	protected $cacheConfigSuffix = 'xml';
 
 	protected $isDataCache = true;
 
 	/**
-	 * @var WindDbTemplate 分布式管理与数据库驱动工厂
+	 * @var IWindDbTemplate 分布式管理与数据库驱动工厂
 	 */
 	protected $dbHandler = null;
 
