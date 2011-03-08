@@ -40,7 +40,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * 框架缺省配置文件的名字
 	 * @var string $defaultConfig 
 	 */
-	private $windConfig = 'WIND:config.wind_config';
+	private $windConfig = 'WIND:wind_config';
 
 	/**
 	 * 配置解析对象队列
