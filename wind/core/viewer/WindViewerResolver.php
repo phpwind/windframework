@@ -31,12 +31,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	protected $windView = null;
 
 	/**
-	 * 模板输出的变量
-	 * @var array
-	 */
-	protected $templateVars = array();
-
-	/**
 	 * @var WindUrlHelper
 	 */
 	protected $urlHelper = null;
@@ -69,13 +63,8 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	 * @param string $key
 	 */
 	public function windAssign($vars, $key = '') {
-		if ($key === '') $key = 'default';
-		if ($key) {
-			$this->templateVars[$key] = $vars;
-			return;
-		}
-		if (is_object($vars)) $vars = get_object_vars($vars);
-		if (is_array($vars)) $this->templateVars += $vars;
+		if ($key === '') $key = $this->getWindView()->getTemplateName();
+		$this->response->setData($vars, $key);
 	}
 
 	/**
@@ -115,19 +104,10 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	protected function render($template) {
 		$_tmp = $this->compile($template);
 		//extract template vars
-		@extract((array) $this->templateVars['default'], EXTR_REFS);
+		@extract((array) $this->response->getData($this->windView->getTemplateName()), EXTR_REFS);
 		if (!include $_tmp) {
 			throw new WindViewException($_tmp, WindViewException::VIEW_NOT_EXIST);
 		}
-	}
-
-	/**
-	 * 向上继承，布局切片设置
-	 * @param string $segment
-	 * @deprecated
-	 */
-	private function setSegments($segment = '') {
-		$this->getContent($segment);
 	}
 
 	/**
@@ -137,30 +117,6 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	private function getContent($template = '') {
 		if (!$template) $template = $this->getWindView()->getTemplateName();
 		if ($template) $this->displayWindFetch($template);
-	}
-
-	/**
-	 * @param string $action
-	 * @param string $controller
-	 */
-	private function doSubAction($action, $controller) {
-		$_forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
-		$_forward->forwardAnotherAction($action, $controller);
-		$_appName = $this->windSystemConfig->getAppClass();
-		$_app = $this->windFactory->getInstance($_appName);
-		$_app->getDispatcher()->setDisplay(true);
-		$_app->doDispatch($_forward);
-		list($viewName, $tplVars) = $_app->getDispatcher()->getAttribute("viewCache");
-		$this->windAssign($tplVars, $viewName);
-	}
-
-	/**
-	 * 返回指定模板参数
-	 * @param string $tpl
-	 * @param string $var
-	 */
-	private function getVar($tpl, $var) {
-		return $this->templateVars[$tpl][$var];
 	}
 
 	/**
