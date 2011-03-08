@@ -31,6 +31,8 @@ class WindHttpResponse implements IWindResponse {
 
 	private $_isAjax = false;
 
+	private $_data = array();
+
 	/*
      * Server status codes; see RFC 2068.
      * Status code (100) indicating the client can continue.
@@ -494,4 +496,27 @@ class WindHttpResponse implements IWindResponse {
 	public function setIsAjax($_isAjax) {
 		$this->_isAjax = $_isAjax;
 	}
+
+	/**
+	 * @return the $_data
+	 */
+	public function getData($key1, $key2) {
+		if (!$key1) return $this->_data;
+		if (!$key2) return isset($this->_data[$key1]) ? $this->_data[$key1] : '';
+		return isset($this->_data[$key1]) ? (isset($this->_data[$key1][$key2]) ? $this->_data[$key1][$key2] : '') : '';
+	}
+
+	/**
+	 * @param $data
+	 */
+	public function setData($data, $key) {
+		if ($key === '') return;
+		if ($key) {
+			$this->_data[$key] = $data;
+			return;
+		}
+		if (is_object($data)) $data = get_object_vars($data);
+		if (is_array($data)) $this->_data += $data;
+	}
+
 }
