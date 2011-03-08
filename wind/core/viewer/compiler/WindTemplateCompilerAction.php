@@ -27,6 +27,9 @@ class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 		return $_content;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getScript() {
 		$_tmp .= '$_tpl_forward = $this->windFactory->getInstance(COMPONENT_FORWARD);'.
 		'$_tpl_forward->forwardAnotherAction(\''.$this->action.'\', \''.$this->controller.'\');'.
