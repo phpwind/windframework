@@ -234,7 +234,38 @@ class WindGeneralDate {
 		return $dateTime ? is_int($dateTime) ? $dateTime : strtotime($dateTime) : time();
 	}
 	
-	public function getLastDate(){
-		
+	/**
+	 * @param int $time 当前时间戳
+	 * @param int $timestamp 比较的时间戳
+	 * @param string $format 格式化当前时间戳
+	 * @param array $type 要返回的时间类型
+	 * @return array
+	 */
+	public static function getLastDate($time,$timestamp = null,$format = null,$type = 1) {
+		$timelang = array('second' => '秒前', 'yesterday' => '昨天', 'hour' => '小时前', 'minute' => '分钟前', 'qiantian' =>'前天');
+		$timestamp = $timestamp ? $timestamp : time();
+		$compareTime = strtotime(self::format('Y-m-d',$timestamp));
+		$currentTime = strtotime(self::format('Y-m-d',$time));
+		$decrease = $timestamp - $time;
+		$result = self::format($format,$time);
+		if (0 >= $decrease) {
+			return 1 == $type ? array(self::format('Y-m-d',$time), $result) : array(self::format('Y-m-d m-d H:i',$time), $result);
+		}
+		if ($currentTime == $compareTime) {
+			if (1 == $type) {
+				if (60 >= $decrease) {
+					return array($decrease . $timelang['second'], $result);
+				}
+				return 3600 >= $decrease ? array(ceil($decrease / 60) . $timelang['minute'], $result) : array(ceil($decrease / 3600) . $timelang['hour'], $result);
+			} 
+			return array(self::format('H:i',$time), $result);
+		} elseif ($currentTime == $compareTime - 86400) {
+			return 1 == $type ? array($timelang['yesterday'] . " " . self::format('H:i',$time), $result) : array(self::format('m-d H:i', $time), $result);
+		} elseif ($currentTime == $compareTime - 172800) {
+			return 1 == $type ? array($timelang['qiantian'] . " " . self::format('H:i',$time), $result) : array(self::format('m-d H:i',$time), $result);
+		} elseif (strtotime(self::format('Y',$time)) == strtotime(self::format('Y',$timestamp))) {
+			return 1 == $type ? array(self::format('m-d',$time), $result) : array(self::format('m-d H:i',$time), $result);
+		} 
+		return 1 == $type ?  array(self::format('Y-m-d',$time), $result) : array(self::format('Y-m-d m-d H:i',$time), $result);
 	}
 }
