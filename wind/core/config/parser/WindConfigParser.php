@@ -193,8 +193,10 @@ class WindConfigParser implements IWindConfigParser {
 			return array();
 		if (!is_file($configFile))
 			throw new WindException('The file <' . $configFile . '> is not exists');
-		if ($type == 'PHP')
-			return include ($configFile);
+		if ($type == 'PHP') {
+			$config = include ($configFile);
+			return (isset($config['wind'])) ? $config['wind'] : $config;
+		}
 		if (!isset($this->configParsers[$type])) {
 			$this->configParsers[$type] = $this->createParser($type);
 		}
