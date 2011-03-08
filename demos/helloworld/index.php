@@ -31,22 +31,3 @@ echo '<br>';
 echo 'TIME: ', microtime(true) - $start;
 echo '<br>';
 echo 'MEMORY: ', memory_get_usage() / 1024 / 1024;
-
-//class Test {
-//
-//	public function compile($content) {
-//		$content = preg_replace_callback('/h/i', array($this, 'subCompile'), $content);
-//		
-//		return $content;
-//	}
-//
-//	public function subCompile($content) {
-//		return 'm';
-//	}
-//}
-//
-//$str = 'hello world Hello world';
-//$test = new Test();
-//echo '<br>';
-//print $test->compile($str);
-
