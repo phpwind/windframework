@@ -23,7 +23,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	}
 	private function compileVarShare($input) {
 	    $input = trim($input);
-	    if (strpos($input, '$') !== false || strpos($input, ':') === false) return $input;
+	    if (strpos($input, '$') !== false || strpos($input, '::') !== false || strpos($input, ':') === false) return $input;
 	    list($templateName, $var) = explode(':', $input);
 	    $input = '$this->getVar(\'' . $templateName . '\', \'' . $var .'\')';
 	    return $input;
