@@ -1,4 +1,4 @@
-<!--<?php
+<?php
 
 L::import('WIND:core.viewer.AbstractWindTemplateCompiler');
 
