@@ -292,7 +292,7 @@ class L {
 				$imports[$value[0]] = $value[1];
 			}
 			L::import('WIND:component.utility.WindString');
-			return "L::perLoadInjection(array()," . WindString::varExport($imports) . ");";
+			return "L::perLoadInjection(array()," . WindString::varToString($imports) . ");";
 		}
 	}
 
