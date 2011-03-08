@@ -251,6 +251,6 @@ class WindImapTest extends BaseTestCase {
 		);
 	}
 	public static function providerLogin() {
-		return array(array('aoxue.su.qian@163.com', ''));
+		return array(array('aoxue.1988.su.qian@163.com', ''));
 	}
 }

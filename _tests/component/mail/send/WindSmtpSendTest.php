@@ -8,14 +8,20 @@
  */
 
 class WindSmtpSendTest extends BaseTestCase {
-	private $sender = null; /* @var $sender WindSmtpSend*/
+	/* @var $sender WindSmtpMail*/
+	private $sender = null; 
+	/**
+	 * @var $mail WindMail
+	 */
 	private $mail = null;
 	
 	public function init() {
 		require_once ('component/mail/WindMail.php');
-		require_once ('component/mail/send/WindSmtpSend.php');
+		require_once ('component/mail/sender/WindSmtpMail.php');
 		if (null === $this->sender) {
-			$this->sender = new WindSmtpSend('smtp.qq.com',25,'qq.com',true);
+			$config = array('host'=>'smtp.qq.com','port'=>25,'name'=>'qq.com','auth'=>true,'user'=>'635927818@qq.com','password'=>'');
+			
+			$this->sender = new WindSmtpMail($config);
 			$this->mail = new WindMail();
 		}
 	}
@@ -41,7 +47,7 @@ class WindSmtpSendTest extends BaseTestCase {
 		$this->mail->setBodyHtml("test it<a>aaa</a>");
 		$this->mail->setContentEncode(WindMail::ENCODE_BASE64);
 		$this->mail->setAttachment(__FILE__, 'application/x-httpd-php', WindMail::DIS_INLINE, WindMail::ENCODE_QP);
-		$this->sender->setAuthParams('635927818@qq.com','');
 		$this->sender->send($this->mail);
+		
 	}
 }

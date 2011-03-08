@@ -81,13 +81,13 @@ class WindMailTest extends BaseTestCase {
 	public function testChineseDate() {
 		$this->mail->setDate();
 		$date = $this->mail->getMailHeader(WindMail::DATE);
-		$this->assertTrue(WindDate::getChineseDate() == $date[0]);
+		$this->assertTrue(WindGeneralDate::getChinaDate() == $date[0]);
 	}
 	
 	public function testRFCDate() {
 		$this->mail->setDate(null, false);
 		$date = $this->mail->getMailHeader(WindMail::DATE);
-		$this->assertTrue(WindDate::getRFCDate() == $date[0]);
+		$this->assertTrue(WindGeneralDate::getRFCDate() == $date[0]);
 	}
 	
 	public function testMessageId() {
@@ -157,13 +157,13 @@ class WindMailTest extends BaseTestCase {
 		$this->assertTrue(is_array($recipients) && count($mail) == count($recipients));
 	}
 	
-	public function testCreate() {
+	public function testSend() {
 		$this->mail->clearAll();
-		$this->mail->setFrom('6359818@qq.com');
-		$this->mail->setTo('6927818@qq.com');
-		$this->mail->setTo('aoxue@163.com');
-		$this->mail->setCc('aoxue@163.com');
-		$this->mail->setBcc('aoxue.3d@163.com', 'ha');
+		$this->mail->setFrom('635927818@qq.com');
+		$this->mail->setTo('635927818@qq.com');
+		$this->mail->setTo('aoxue.1988.su.qian@163.com');
+		$this->mail->setCc('weihu@aliyun-inc.com');
+		$this->mail->setBcc('594524924@qq.com', 'ha');
 		$this->mail->setSubject("test mail ");
 		$this->mail->setDate();
 		$this->mail->setBodyHtml("test it<a>aaa</a>");
@@ -172,6 +172,8 @@ class WindMailTest extends BaseTestCase {
 		$header = $this->mail->createHeader();
 		$body = $this->mail->createBody();
 		$this->assertTrue(is_string($header) && is_string($body));
+		$config = array('host'=>'smtp.qq.com','port'=>25,'name'=>'qq.com','auth'=>true,'user'=>'635927818@qq.com','password'=>'');
+		$this->mail->send(WindMail::SEND_SMTP,$config);
 	}
 	
 	public function testEncodeHeader(){
@@ -183,4 +185,5 @@ class WindMailTest extends BaseTestCase {
 		$encode = $this->mail->encodeHeader($string,WindMail::ENCODE_QP);
 		$this->assertTrue($qp == trim($encode));
 	}
+	
 }

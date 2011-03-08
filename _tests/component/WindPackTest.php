@@ -7,7 +7,7 @@
  */
 
 
-require_once ('component/WindPack.php');
+require_once ('component/utility/WindPack.php');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>

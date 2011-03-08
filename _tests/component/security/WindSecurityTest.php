@@ -6,7 +6,7 @@
  * @license 
  */
 
-require_once('component/security/WindSecurity.php');
+require_once('component/utility/WindSecurity.php');
 
 class WindSecurityTest extends BaseTestCase {
 	public function setUp() {
@@ -86,8 +86,8 @@ class WindSecurityTest extends BaseTestCase {
 		$r1 = "Is your name O\"reilly?";
 		$_GET['t2'] = 'Is your name \ssss';
 		$r2 = 'Is your name \\ssss';
-		$this->assertEquals($r1, WindSecurity::addSlashesFromGPC($_GET['t1']));
-		$this->assertEquals($r2, WindSecurity::addSlashesFromGPC($_GET['t2']));
+		$this->assertEquals($r1, WindSecurity::addSlashesForInput($_GET['t1']));
+		$this->assertEquals($r2, WindSecurity::addSlashesForInput($_GET['t2']));
 	}
 	
 	/**
@@ -95,9 +95,9 @@ class WindSecurityTest extends BaseTestCase {
 	 */
 	public function testAddSlashesFromDF($source, $result) {
 		if (is_array($source)) {
-			$this->assertArrayEquals($result, WindSecurity::addSlashesFromDF($source));
+			$this->assertArrayEquals($result, WindSecurity::addSlashesForOutput($source));
 		} else {
-			$this->assertEquals($result, WindSecurity::addSlashesFromDF($source));
+			$this->assertEquals($result, WindSecurity::addSlashesForOutput($source));
 		}
 	}
 
@@ -106,9 +106,9 @@ class WindSecurityTest extends BaseTestCase {
 	 */
 	public function testAddSlashesFromString($source, $result) {
 		if (is_array($source)) {
-			$this->assertArrayEquals($result, WindSecurity::addSlashesFromString($source));
+			$this->assertArrayEquals($result, WindSecurity::addSlashes($source));
 		} else {
-			$this->assertEquals($result, WindSecurity::addSlashesFromString($source));
+			$this->assertEquals($result, WindSecurity::addSlashes($source));
 		}
 	}
 	

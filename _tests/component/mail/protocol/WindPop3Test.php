@@ -96,7 +96,7 @@ class WindPop3Test extends BaseTestCase {
 	
 	public static function providerLogin(){
 		return array(
-			 array('635927818@qq.com','password')
+			 array('635927818@qq.com','')
 		);
 	}
 }

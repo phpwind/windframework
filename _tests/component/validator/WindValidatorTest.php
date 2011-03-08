@@ -6,7 +6,7 @@
  * @license 
  */
 
-require_once('component/validator/WindValidator.php');
+require_once('component/utility/WindValidator.php');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -89,13 +89,28 @@ class WindValidatorTest extends BaseTestCase{
 		$this->assertTrue($this->validate->isChinese("中国"));
 	}
 	
-	public function testHasIP(){
-		$this->assertTrue($this->validate->hasIP("afa,198.168.2.4") > 0);
+	public function testHasIpv4(){
+		$this->assertTrue($this->validate->hasIpv4("198.168.2.4") > 0);
 	}
 	
-	public function testIsIP(){
-		$this->assertTrue($this->validate->isIP("192.168.1.104"));
+	public function testIsIpv4(){
+		$this->assertTrue($this->validate->isIpv4("192.168.1.104"));
 	}
+	
+	/**
+	 * @dataProvider providerIpv6
+	 */
+	public function testHasIpv6($ipv6){
+		$this->assertTrue($this->validate->hasIpv6($ipv6) > 0);
+	}
+	
+	/**
+	 * @dataProvider providerIpv6
+	 */
+	public function testIsIpv6($ipv6){
+		$this->assertTrue($this->validate->isIpv6($ipv6));
+	}
+	
 	
 	public function testHasHTML(){
 		$this->assertTrue($this->validate->hasHTML("afaf<a>asdfa<b>") > 0);
@@ -125,17 +140,7 @@ class WindValidatorTest extends BaseTestCase{
 		$this->assertTrue($this->validate->isNonNegative("0") && $this->validate->isNonNegative("1") && !$this->validate->isNonNegative("-1"));
 	}
 	
-	public function testIsBool(){
-		$this->assertTrue($this->validate->isBool(true) && !$this->validate->isBool(""));
-	}
 	
-	public function testIsInt(){
-		$this->assertTrue($this->validate->isInt(1) && !$this->validate->isInt("a"));
-	}
-	
-	public function testIsFloat(){
-		$this->assertTrue($this->validate->isFloat(10.01) && !$this->validate->isFloat("a"));
-	}
 	
 	public  function testIsArray(){
 		$this->assertTrue($this->validate->isArray(array("")) && !$this->validate->isArray("a"));
@@ -153,9 +158,14 @@ class WindValidatorTest extends BaseTestCase{
 		$this->assertTrue($this->validate->hasHTML("afaf<a>asdfa<b>",$matchs,true) > 0 && is_array($matchs));
 	}
 	
-	
-	
-	
-	
+	public static function providerIpv6(){
+		return array(
+			array('3255:0304::FE4A:174F:5577:289C:0014'),
+			array('3255::0014'),
+			array('3255:304::FE4A:174F:5577:289C:0014'),
+			array('0:0:0:0:0:0:10.0.0.1'),
+			array('::10.0.0.1'),
+		);
+	}
 	
 }
