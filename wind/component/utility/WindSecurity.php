@@ -98,11 +98,11 @@ class WindSecurity {
 		if (is_int($value)) {
 			$value = (int) $value;
 		} elseif (is_string($value)) {
-			$value = " '" . addslashes($value) . "' ";
+			$value = "'" . addslashes($value) . "'";
 		} elseif (is_float($value)) {
 			$value = (float) $value;
 		} elseif (is_object($value) || is_array($value)) {
-			$value = " '" . addslashes(serialize($value)). "' ";
+			$value = "'" . addslashes(serialize($value)). "'";
 		}
 		return $value;
 	}
@@ -150,7 +150,7 @@ class WindSecurity {
 			return addslashes($value);
 		}
 		foreach($value as $key=>$_value){
-			$value[$key] == self::addSlashes($value,$gpc,$df);
+			$value[$key] = self::addSlashes($_value,$gpc,$df);
 		}
 		return $value;
 	}
@@ -162,11 +162,86 @@ class WindSecurity {
 	public static function stripSlashes($value) {
 		if (!$value) return $value;
 		if (is_string($value)) return stripslashes($value);
-		if (!is_array($value) || !($value instanceof Traversable)) return $value;
+		if (!is_array($value) && !($value instanceof Traversable)) return $value;
 		foreach ($value as $key => $_value) {
 			$value[$key] = self::stripSlashes($_value);
 		}
 		return $value;
+	}
+	
+	/**
+	 * 通用多类型混合转义函数
+	 * @param $var
+	 * @param $strip
+	 * @param $isArray
+	 * @return mixture
+	 */
+	public static  function sqlEscape($var, $strip = true, $isArray = false) {
+		if (is_array($var)) {
+			if (!$isArray) return " '' ";
+			foreach ($var as $key => $value) {
+				$var[$key] = trim(self::sqlEscape($value, $strip));
+			}
+			return $var;
+		} elseif (is_numeric($var)) {
+			return " '" . $var . "' ";
+		} else {
+			return " '" . addslashes($strip ? stripslashes($var) : $var) . "' ";
+		}
+	}
+	/**
+	 * 通过","字符连接数组转换的字符
+	 * @param $array
+	 * @param $strip
+	 * @return string
+	 */
+	public static function sqlImplode($array, $strip = true) {
+		return implode(',', self::sqlEscape($array, $strip, true));
+	}
+	/**
+	 * 组装单条 key=value 形式的SQL查询语句值 insert/update
+	 * @param $array
+	 * @param $strip
+	 * @return string
+	 */
+	public static function sqlSingle($array, $strip = true) {
+		if (!is_array($array)) return ''; 
+		$array = self::sqlEscape($array, $strip, true);
+		$str = '';
+		foreach ($array as $key => $val) {
+			$str .= ($str ? ', ' : ' ') . self::sqlMetadata($key) . '=' . $val;
+		}
+		return $str;
+	}
+	/**
+	 * 组装多条 key=value 形式的SQL查询语句 insert
+	 * @param $array
+	 * @param $strip
+	 * @return string
+	 */
+	public static function sqlMulti($array, $strip = true) {
+		if (!is_array($array)) {
+			return ''; 
+		}
+		$str = '';
+		foreach ($array as $val) {
+			if (!empty($val) && is_array($val)) { 
+				$str .= ($str ? ', ' : ' ') . '(' . self::sqlImplode($val, $strip) . ') ';
+			}
+		}
+		return $str;
+	}
+	/**
+	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
+	 * @param $data 元数据
+	 * @param $tlists 白名单
+	 * @return string 经过转义的元数据字符串
+	 */
+	public static function sqlMetadata($data ,$tlists=array()) {
+		if (empty($tlists) || !is_array($data , $tlists)) {
+			$data = str_replace(array('`', ' '), '',$data);
+		}
+		return ' `'.$data.'` ';
 	}
 	/**
 	 * 私用路径转换
@@ -183,4 +258,5 @@ class WindSecurity {
 		}
 		return true;
 	}
+	
 }

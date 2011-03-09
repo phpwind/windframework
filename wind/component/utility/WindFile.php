@@ -118,7 +118,7 @@ class WindFile{
 			if ('.' === $file[0] || '..' === $file[0]) continue;
 			$fullPath = $dir . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
-				$this->clearDir($fullPath, $ifexpiled);
+				self::clearDir($fullPath, $ifexpiled);
 			} else if (($ifexpiled && ($mtime =  filemtime($fullPath)) && $mtime < time()) || !$ifexpiled) {
 				self::delFile($fullPath);
 			}

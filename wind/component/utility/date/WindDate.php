@@ -151,10 +151,11 @@ class WindDate {
 	}
 	/**
 	 * 取得中国日期时间
+	 * @param int $time 
 	 * @return string
 	 */
-	public static function getChinaDate() {
-		list($y, $m, $d, $w, $h, $_h, $i) = explode(' ', date('Y n j w G g i'));
+	public static function getChinaDate($time = null) {
+		list($y, $m, $d, $w, $h, $_h, $i) = explode(' ', date('Y n j w G g i',$time ? $time : time()));
 		return sprintf('%s年%s月%s日(%s) %s%s:%s', $y, $m, $d, self::getChinaWeek($w), self::getPeriodOfTime($h), $_h, $i);
 	}
 	/**
@@ -216,8 +217,8 @@ class WindDate {
 	 * 获取微秒数
 	 * @return number
 	 */
-	public static function getMicroTime() {
-		 return  array_sum(explode(' ', microtime()));
+	public static function getMicroTime($get_as_float = null,$mircrotime = null) {
+		 return  array_sum(explode(' ', $mircrotime ? $mircrotime : microtime($get_as_float = null)));
 	}
 	/**
 	 * 判断是否是闰年
