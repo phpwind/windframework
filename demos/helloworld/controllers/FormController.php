@@ -28,6 +28,7 @@ class FormController extends WindFormController {
 		echo '<li>your age is :' . $formData->getAge(), '</li><br/>';
 		echo '<li>your sex is :' . $formData->getSex(), '</li><br/>';
 		echo '<li>your email is :' . $formData->getEmail(), '</li><br/>';
+		echo '<li>your telPhone is :' . $formData->getTelPhone(), '</li><br/>';
 		echo '</ul>';
 		exit();
 	}

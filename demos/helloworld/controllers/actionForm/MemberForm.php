@@ -15,17 +15,34 @@ class MemberForm extends WindEnableValidateModule {
 
 	private $email;
 	
+	private $telPhone;
+
 	private $rules = array();
+
 	protected $errorController = 'error';
-	
-	
-	
+
 	public function __construct() {
 		$this->rules[] = WindUtility::buildValidateRule('name', 'isLegalLength', 5, 'xxx', 'ErrorNameLength');
 		$this->rules[] = WindUtility::buildValidateRule('email', 'hasEmail', array(), null, 'ErrorEmail!');
 		$this->rules[] = WindUtility::buildValidateRule('sex', 'isLegalLength', array(), '1', 'ErrorSexType');
 		$this->rules[] = WindUtility::buildValidateRule('age', 'isInt', array(), '20', 'ErrorAge');
+		$this->rules[] = WindUtility::buildValidateRule('telPhone', 'isTelPhone', array(), '11', 'ErrorTelPhone');
 	}
+	
+	/**
+	 * @return the $telPhone
+	 */
+	public function getTelPhone() {
+		return $this->telPhone;
+	}
+
+	/**
+	 * @param field_type $telPhone
+	 */
+	public function setTelPhone($telPhone) {
+		$this->telPhone = $telPhone;
+	}
+	
 
 	/**
 	 * 返回验证规则
