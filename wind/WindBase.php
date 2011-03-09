@@ -373,8 +373,10 @@ class L {
 
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 
+
 //********************约定变量***********************************
 define('WIND_M_ERROR', 'windError');
+define('CONFIG_CACHE', 'wind_components_config');
 
 //**********配置*******通用常量定义***************************************
 define('WIND_CONFIG_CONFIG', 'config');
