@@ -151,8 +151,8 @@ abstract class AbstractWindDbAdapter {
 	 */
 	final public function getSqlBuilder() {
 		if (empty($this->sqlBuilder)) {
-			$builderBlackList = array('mysql'=>'WindMySqlBuilder','mssql'=>'WindMsSqlBuilder');
-			$builderClass = $builderBlackList[strtolower($this->getDriver())];
+			$builders = array('mysql'=>'WIND:component.db.drivers.mysql.WindMySqlBuilder','mssql'=>'WIND:component.db.drivers.mssql.WindMsSqlBuilder');
+			$builderClass = L::import($builders[strtolower($this->getDriver())]);
 			$this->sqlBuilder = new $builderClass($this);
 		}
 		return $this->sqlBuilder;

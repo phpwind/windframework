@@ -36,9 +36,9 @@ class WindConnectionManager extends WindComponentModule {
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if (empty($this->linked[$identify])) {
-			$config = $connections[$identify];
-			$drivers = array('mssql'=>'WindMsSql','mysql'=>'WindMySql');
-			$class = L::import($drivers[strtolower($drivers[$config[IWindDbConfig::DRIVER]])]);
+			$config = $connections[$identify];print_r($config);
+			$drivers = array('mssql'=>'WIND:component.db.drivers.mssql.WindMsSql','mysql'=>'WIND:component.db.drivers.mysql.WindMySql');
+			$class = L::import($drivers[strtolower($config[IWindDbConfig::DRIVER])]);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
 			}
@@ -76,8 +76,7 @@ class WindConnectionManager extends WindComponentModule {
 	 * @return array|string
 	 */
 	public function getConnections($name='',$subname=''){
-		$config = $this->getConfig()->getConfig();
-		$connections = $config[IWindDbConfig::CONNECTIONS];
+		$connections = $this->getConfig()->getConfig();;
 		if(empty($connections) || false === is_array($connections)){
 			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
 		}
