@@ -76,7 +76,6 @@ class WindSystemConfig extends WindConfig {
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
 		$this->setConfig($config);
-		$this->checkWindConfig();
 	}
 
 	/* (non-PHPdoc)
@@ -102,7 +101,8 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function getAppClass() {
 		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
-		return $this->getConfig(self::CLASS_PATH, '', $_config);
+		$_tmp = $this->getConfig(self::CLASS_PATH, '', $_config);
+		return $_tmp ? $_tmp : COMPONENT_WEBAPP;
 	}
 
 	/**
@@ -193,15 +193,6 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function getErrorMessage($name = '') {
 		return $this->getConfig(self::ERROR, $name);
-	}
-
-	/**
-	 * 配置信息合法性检查
-	 */
-	protected function checkWindConfig() {
-		if (!$this->getConfig(self::WEB_APPS, $this->appName)) {
-			throw new WindException('Unable to load app config for ' . $this->appName);
-		}
 	}
 
 	/**
