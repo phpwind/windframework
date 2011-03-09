@@ -17,6 +17,8 @@ L::import('WIND:core.WindModule');
 abstract class WindEnableValidateModule extends WindModule {
 
 	protected $_validatorClass = 'WIND:component.utility.WindValidator';
+	protected $errorController = ''; 
+	protected $errorAction = '';
 
 	private $_validator = null;
 
@@ -30,7 +32,10 @@ abstract class WindEnableValidateModule extends WindModule {
 	public function getErrors() {
 		return $this->_errors;
 	}
-
+    
+	public function getErrorControllerAndAction() {
+	    return array($this->errorController, $this->errorAction);
+	}
 	/**
 	 * 返回验证规则
 	 * 
@@ -79,7 +84,7 @@ abstract class WindEnableValidateModule extends WindModule {
 			array_unshift($arg, $_input);
 			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
-				$this->_errors[$_input] = $rule['message'];
+				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
 			}
 			$input[$rule['field']] = $rule['default'];
@@ -103,7 +108,7 @@ abstract class WindEnableValidateModule extends WindModule {
 			array_unshift($arg, $_input);
 			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
-				$this->_errors[$_input] = $rule['message'];
+				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
 			}
 			$setMethod = 'set' . ucfirst($rule['field']);

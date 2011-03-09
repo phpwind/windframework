@@ -29,7 +29,6 @@ class WindErrorHandler extends WindController {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		var_dump($this->request->getIsAjaxRequest());
 		echo 'ErrorMessage:' . array_pop($this->error);
 		exit();
 	}

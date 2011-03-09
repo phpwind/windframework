@@ -34,6 +34,7 @@ class WindFormListener extends WindHandlerInterceptor {
 	public function preHandle() {
 		$className = L::import($this->formPath);
 		if (!class_exists($className)) throw new WindException('the form \'' . $this->formPath . '\' is not exists!');
+		if ('WindEnableValidateModule' != get_parent_class($className)) throw new WindException('the form \'' . $this->formPath . '\' is not extends \'WindEnableValidateModule\'!');
 		$form = new $className();
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
@@ -46,10 +47,15 @@ class WindFormListener extends WindHandlerInterceptor {
 		}
 		call_user_func_array(array($form, 'validate'), array($form));
 		if (($error = $form->getErrors())) {
-		    $errorMessage = new WindErrorMessage($error);
-		    $errorMessage->sendError();
+		    list($errorController, $errorAction) = $form->getErrorControllerAndAction();
+		    $this->sendError($errorController, $errorAction, $error);
 		}
 		$this->request->setAttribute('formData', $form);
+	}
+	
+	private function sendError($errorController, $errorAction, $errors) {
+	    $error = new WindErrorMessage($errors, $errorAction, $errorController);
+	    $error->sendError();
 	}
 
 	/* (non-PHPdoc)

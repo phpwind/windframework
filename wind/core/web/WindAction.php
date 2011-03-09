@@ -38,6 +38,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param AbstractWindRouter $handlerAdapter
 	 */
 	public function doAction($handlerAdapter) {
+	    $this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$this->resolvedActionMethod($handlerAdapter);
 		$this->afterAction($handlerAdapter);

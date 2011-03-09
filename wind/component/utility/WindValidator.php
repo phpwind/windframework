@@ -25,7 +25,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasEmail($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $string, $matches, $ifAll);
 	}
 	
 	/**
@@ -45,7 +45,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasIdCard($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp("/\d{17}[\d|X]|\d{15}/", $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp("/\d{17}[\d|X]|\d{15}/", $string, $matches, $ifAll);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasUrl($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', $string, $matches, $ifAll);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasChinese($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/[\x{4e00}-\x{9fa5}]+/u', $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp('/[\x{4e00}-\x{9fa5}]+/u', $string, $matches, $ifAll);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasHtml($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/<(.*)>.*|<(.*)\/>/', $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp('/<(.*)>.*|<(.*)\/>/', $string, $matches, $ifAll);
 	}
 	/**
 	 * 验证是否是合法的html标记
@@ -123,7 +123,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasIpv4($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/((25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp('/((25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string, $matches, $ifAll);
 	}
 	/**
 	 * 验证是否是合法的IP
@@ -135,7 +135,7 @@ class WindValidator {
 	}
 	
 	public function hasIpv6($string, &$matches = array(), $ifAll = false){
-		return self::validateByRegExp('/\A((([a-f0-9]{1,4}:){6}|
+		return 0 < self::validateByRegExp('/\A((([a-f0-9]{1,4}:){6}|
 										::([a-f0-9]{1,4}:){5}|
 										([a-f0-9]{1,4})?::([a-f0-9]{1,4}:){4}|
 										(([a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::([a-f0-9]{1,4}:){3}|
@@ -175,7 +175,7 @@ class WindValidator {
 	 * @return number
 	 */
 	public function hasScript($string, &$matches = array(), $ifAll = false) {
-		return self::validateByRegExp('/<script(.*?)>([^\x00]*?)<\/script>/', $string, $matches, $ifAll);
+		return 0 < self::validateByRegExp('/<script(.*?)>([^\x00]*?)<\/script>/', $string, $matches, $ifAll);
 	}
 	/**
 	 * 验证是否是合法的客户端脚本
