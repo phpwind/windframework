@@ -66,6 +66,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @param String $outputEncoding	
 	 */
 	public function __construct($outputEncoding = 'UTF-8') {
+		//TODO 删除 $windConfig 默认定义的相关处理
 		$this->encoding = $outputEncoding;
 	}
 
