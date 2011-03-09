@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
 	<!-- import external config source file -->
-	<imports>
-		<import name='components' resource='WIND:config.components_config'
-			suffix='xml' init-delay='false' is-append='true' />
-	</imports>
-
 	<!-- web application definitions, you can define application more than one. -->
-	<web-apps>
-		<web-app name='default' class='windWebApp' root-path=''>
-			<factory class-definition='components'
-				class='WIND:core.factory.WindComponentFactory' />
-			<router class='urlBasedRouter' />
-			<modules>
-				<module name='default' path='controllers'>
-					<controller-suffix value='Controller' />
-					<view class='windView' />
-				</module>
-			</modules>
-		</web-app>
-	</web-apps>
-
 </WIND>
