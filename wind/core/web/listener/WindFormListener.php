@@ -38,9 +38,8 @@ class WindFormListener extends WindHandlerInterceptor {
 		$form = new $className();
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
-			$_tmp = strtolower($method);
-			if (0 !== ($pos = strpos($_tmp, 'set'))) continue;
-			$_tmp = substr($_tmp, 3);
+			if ((0 !== strpos($method, 'set')) || ('' == ($_tmp = substr($method, 3)))) continue;
+			$_tmp[0] = strtolower($_tmp[0]);
 			$value = $this->request->getPost($_tmp) ? $this->request->getPost($_tmp) : $this->request->getGet($_tmp);
 			if (null === $value) continue;
 			call_user_func_array(array($form, $method), array($value));
