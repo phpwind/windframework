@@ -36,7 +36,7 @@ class WindConnectionManager extends WindComponentModule {
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if (empty($this->linked[$identify])) {
-			$config = $connections[$identify];print_r($config);
+			$config = $connections[$identify];
 			$drivers = array('mssql'=>'WIND:component.db.drivers.mssql.WindMsSql','mysql'=>'WIND:component.db.drivers.mysql.WindMySql');
 			$class = L::import($drivers[strtolower($config[IWindDbConfig::DRIVER])]);
 			if (false === class_exists($class)) {
