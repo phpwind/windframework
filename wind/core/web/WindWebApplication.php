@@ -45,11 +45,9 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		
 		} catch (WindViewException $windViewException) {
 
+		} catch (WindException $exception) {
+			$this->noActionHandlerFound($exception->getMessage());
 		}
-	
-		//		catch (WindException $exception) {
-	//			$this->noActionHandlerFound($exception->getMessage());
-	//		}
 	}
 
 	/* (non-PHPdoc)
@@ -152,8 +150,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 * @param string $message
