@@ -92,10 +92,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function insert($tableName, $data, $field = array()) {
-		empty($field) && list($field, $data) = $this->parseData($data);
+	public function insert($tableName, $data) {
 		$db = $this->getDbHandler();
-		$db->getSqlBuilder()->from($tableName)->field($field)->data($data)->insert();
+		$db->getSqlBuilder()->from($tableName)->data($data)->insert();
 		return $db->getLastInsertId();
 	}
 
@@ -107,10 +106,9 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 	 * @param return $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
-	public function replace($tableName, $data, $field = array(), $isGetAffectedRows = false) {
-		empty($field) && list($field, $data) = $this->parseData($data);
+	public function replace($tableName, $data, $isGetAffectedRows = false) {
 		$db = $this->getDbHandler();
-		$result = $db->getSqlBuilder()->from($tableName)->field($field)->data($data)->replace();
+		$result = $db->getSqlBuilder()->from($tableName)->data($data)->replace();
 		return $isGetAffectedRows ? $db->getAffectedRows() : $result;
 	}
 
@@ -246,37 +244,6 @@ class WindConnectionManagerBasedDbTemplate implements IWindDbTemplate {
 		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 'group' => array(), 'order' => array(), 
 			'limit' => null, 'offset' => null, 'having' => '', 'havingValue' => array());
 		return array_merge($defaultValue, (array) $condition);
-	}
-
-	/**
-	 * 解析数据并返回字段名
-	 * 
-	 * @param array $data	待解析的数据
-	 * @return array ($field,$data)
-	 */
-	private function parseData($data) {
-		$key = array_keys($data);
-		$tmp_data = $field = array();
-		if (!is_string($key[0])) return array($field, $data);
-		
-		$rows = count($data[$key[0]]);
-		for ($i = 0; $i < $rows; $i++) {
-			foreach ($data as $key => $value) {
-				$fvalues = array_values($field);
-				if (!in_array($key, $fvalues)) {
-					$field[] = $key;
-				}
-				if (is_array($value)) {
-					$tmp_data[$i][] = $value[$i];
-					unset($data[$key][$i]);
-				} else {
-					$tmp_data[] = $value;
-				}
-			}
-		}
-		
-		$data = $tmp_data ? $tmp_data : $data;
-		return array($field, $data);
 	}
 
 	/**

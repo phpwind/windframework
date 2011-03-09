@@ -62,10 +62,9 @@ interface IWindDbTemplate {
 	 * 
 	 * @param string $tableName 更新的数据表
 	 * @param array $data	插入的数据
-	 * @param array $field	相关的字段（可选）
 	 * @return bool
 	 */
-	public function insert($tableName, $data, $field = array()) ;
+	public function insert($tableName, $data) ;
    
 	/**
 	 * 删除数据
@@ -98,11 +97,10 @@ interface IWindDbTemplate {
 	 * 更新一条数据
 	 * @param string $tableName 更新的数据表
 	 * @param array $data	更新的数据
-	 * @param array $field	相关的字段（可选）
 	 * @param return $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
-	public function replace($tableName, $data, $field = array(), $isGetAffectedRows = false);
+	public function replace($tableName, $data, $isGetAffectedRows = false);
     
 	/**
 	 * 更新数据
