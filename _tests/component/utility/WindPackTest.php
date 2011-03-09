@@ -21,7 +21,7 @@ class WindPackTest extends PHPUnit_Framework_TestCase {
 	public function init() {
 		if (null === $this->pack) {
 			$this->pack = new WindPack();
-			$this->path = $this->pack->realDir($this->pack->getFilePath(dirname(__FILE__)));
+			$this->path = $this->pack->realDir($this->pack->getFilePath(dirname(dirname(__FILE__))));
 		}
 	}
 	
