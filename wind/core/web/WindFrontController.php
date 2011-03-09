@@ -22,14 +22,19 @@ L::import('WIND:core.AbstractWindServer');
  */
 class WindFrontController extends AbstractWindServer {
 
-	const WIND_APPLICATION = 'WIND:core.web.WindWebApplication';
-
 	const WIND_CONFIG = 'WIND:core.config.WindSystemConfig';
 
 	const WIND_FACTORY = 'WIND:core.factory.WindComponentFactory';
 
-	const WIND_ERRORHANDLER = 'WIND:core.web.WindErrorHandler';
+	const CONFIG_CACHE = 'wind_components_config';
 
+	const COMPONENTS_CONFIG = 'WIND:config.components_config';
+
+	const DEFAULT_CONFIG_TYPE = 'xml';
+
+	/**
+	 * @var WindSystemConfig
+	 */
 	protected $windSystemConfig = null;
 
 	protected $windFactory = null;
@@ -37,8 +42,6 @@ class WindFrontController extends AbstractWindServer {
 	protected $windErrorHandler = null;
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param WindConfig $windConfig
 	 * @param WindFactory $windFactory
 	 */
@@ -49,16 +52,15 @@ class WindFrontController extends AbstractWindServer {
 	}
 
 	/**
-	 * Enter description here ...
+	 * 初始化类工厂
 	 */
 	protected function initWindFactory() {
-		$classesDefinition = $this->getWindConfig()->getFactory(WindSystemConfig::WEB_APP_FACTORY_CLASS_DEFINITION);
-		$classesDefinitions = $this->getWindConfig()->getConfig($classesDefinition);
-		$factoryClass = L::import($this->getWindConfig()->getFactory(WindSystemConfig::CLASS_PATH));
+		$configPath = L::getRealPath(self::COMPONENTS_CONFIG, self::DEFAULT_CONFIG_TYPE);
+		$classesDefinitions = $this->getWindConfig()->getConfigParser()->parse($configPath, 'components', CONFIG_CACHE);
+		$factoryClass = L::import(self::WIND_FACTORY);
 		if (!class_exists($factoryClass)) {
 			throw new WindException($factoryClass, WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		
 		$this->windFactory = new $factoryClass($classesDefinitions);
 	}
 
@@ -73,6 +75,8 @@ class WindFrontController extends AbstractWindServer {
 		$configParser = new WindConfigParser();
 		$this->windSystemConfig = new WindSystemConfig($config, $configParser, ($appName ? $appName : 'default'));
 		L::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
+	
+		//TODO register all apps
 	}
 
 	/* (non-PHPdoc)
