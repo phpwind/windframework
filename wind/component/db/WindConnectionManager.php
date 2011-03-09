@@ -31,21 +31,18 @@ class WindConnectionManager extends WindComponentModule {
 	 */
 	public function getConnection($identify = '', $type = IWindDbConfig::MASTER) {
 		$connections = $this->getConnections();
-		$drivers = $this->getDrivers();
-		$builders = $this->getBuilders();
 		if ($identify && empty($connections[$identify])) {
 			throw new WindSqlException($identify, WindSqlException::DB_CONNECT_NOT_EXIST);
 		}
 		$identify = $identify ? $identify : $this->getRandomDbDriverIdentify($type);
 		if (empty($this->linked[$identify])) {
-			$dbConfig = $connections[$identify];
-			$driver = $drivers[$dbConfig[IWindDbConfig::DRIVER]];
-			$class = L::import($driver[IWindDbConfig::CLASSNAME]);
+			$config = $connections[$identify];
+			$drivers = array('mssql'=>'WindMsSql','mysql'=>'WindMySql');
+			$class = L::import($drivers[strtolower($drivers[$config[IWindDbConfig::DRIVER]])]);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
 			}
-			$builder = $builders[$driver[IWindDbConfig::BUILDER]];
-			$this->linked[$identify] = new $class($dbConfig, $driver, $builder);
+			$this->linked[$identify] = new $class($config);
 		}
 		return $this->connection = $this->linked[$identify];
 	}
@@ -88,40 +85,6 @@ class WindConnectionManager extends WindComponentModule {
 			return $subname ? $connections[$subname] : $connections[$name];
 		}
 		return $connections;
-	}
-	/**
-	 * 取得数据库驱动配置
-	 * @param string $name
-	 * @param string $subname
-	 * @return array|string
-	 */
-	public function getDrivers($name='',$subname=''){
-		$config = $this->getConfig()->getConfig();
-		$drivers = $config[IWindDbConfig::DRIVERS];
-		if(empty($drivers) || false === is_array($drivers)){
-			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
-		}
-		if($name){
-			return $subname ? $drivers[$subname] : $drivers[$name];
-		}
-		return $drivers;
-	}
-	/**
-	 * 取得数据库生成器配置
-	 * @param string $name
-	 * @param string $subname
-	 * @return array|string
-	 */
-	public function getBuilders($name='',$subname=''){
-		$config = $this->getConfig()->getConfig();
-		$builders = $config[IWindDbConfig::BUILDERS];
-		if(empty($builders) || false === is_array($builders)){
-			throw new WindSqlException('', WindSqlException::DB_CONN_FORMAT);
-		}
-		if($name){
-			return $subname ? $builders[$subname] : $builders[$name];
-		}
-		return $builders;
 	}
 	/**
 	 * 随机取得数据库配置

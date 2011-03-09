@@ -55,26 +55,13 @@ abstract class AbstractWindDbAdapter {
 	 * @var array 数据库连接配置
 	 */
 	protected $config = array();
-	
-	/**
-	 * @var array 自身的数据库驱动配置信息
-	 */
-	protected $driver = array();
-	/**
-	 * @var array 自身的sql语句组装器信息
-	 */
-	protected $builder =  array();
 	/**
 	 * 初始化配置
 	 * @param array $config
-	 * @param array $driver
-	 * @param array $builder
 	 */
-	public function __construct(array $config,array $driver = array(),array $builder = array()) {
+	public function __construct(array $config) {
 		$this->parseConfig($config);
 		$this->connect();
-		$this->driver = $driver;
-		$this->builder = $builder;
 	}
 	
 	/**
@@ -162,15 +149,11 @@ abstract class AbstractWindDbAdapter {
 	 * @param array builderConfig 生成器配置
 	 * @return AbstractWindSqlBuilder
 	 */
-	final public function getSqlBuilder($builderConfig = array()) {
+	final public function getSqlBuilder() {
 		if (empty($this->sqlBuilder)) {
-			$builderConfig = $builderConfig ? $builderConfig : $this->builder;
-			$builderClass = $builderConfig[IWindDbConfig::CLASSNAME];
-			$class = L::import($builderClass);
-			if (false === class_exists($class)) {
-				throw new WindSqlException($class, WindSqlException::DB_BUILDER_NOT_EXIST);
-			}
-			$this->sqlBuilder = new $class($this);
+			$builderBlackList = array('mysql'=>'WindMySqlBuilder','mssql'=>'WindMsSqlBuilder');
+			$builderClass = $builderBlackList[strtolower($this->getDriver())];
+			$this->sqlBuilder = new $builderClass($this);
 		}
 		return $this->sqlBuilder;
 	}
