@@ -45,10 +45,11 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		
 		} catch (WindViewException $windViewException) {
 
-		} catch (WindException $exception) {
-			$this->noActionHandlerFound($exception->getMessage());
-		
 		}
+	
+		//		catch (WindException $exception) {
+	//			$this->noActionHandlerFound($exception->getMessage());
+	//		}
 	}
 
 	/* (non-PHPdoc)
@@ -71,53 +72,48 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	 * @param WindHttpRequest $request
 	 */
 	protected function getHandler() {
-		try {
-			$handlerAdapter = $this->getHandlerAdapter();
-			$handlerAdapter->doParse();
-			
-			//add log
-			if (IS_DEBUG) {
-				/* @var $logger WindLogger */
-				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-				$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
-			}
-			
-			$handler = $handlerAdapter->getHandler();
-			$definition = new WindComponentDefinition();
-			$definition->setPath($handler);
-			$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
-			$definition->setProxy('true');
-			$definition->setAlias($handler);
-			$definition->setPropertys(array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
-				'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
-			
-			$this->windFactory->addClassDefinitions($definition);
-			$actionHandler = $this->windFactory->getInstance($handler);
-			$actionHandler->beforeAction($handlerAdapter);
-			
-			//TODO 添加过滤链
-			if ($actionHandler->_getInstance() instanceof WindFormController) {
-				if ($formClassPath = $actionHandler->getFormClass()) {
-					$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath, $actionHandler->getErrorMessage()));
-				}
-			} elseif ($actionHandler->_getInstance() instanceof WindController) {
-				if ($rules = (array) $actionHandler->validatorFormRule($handlerAdapter->getAction())) {
-					if (!isset($rules['errorMessage'])) {
-						$rules['errorMessage'] = $actionHandler->getErrorMessage();
-					}
-					$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
-				}
-			}
-			
-			//add log
-			if (IS_DEBUG) {
-				/* @var $logger WindLogger */
-				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-				$logger->debug('ActionHandler: ' . $handler);
-			}
+		$handlerAdapter = $this->getHandlerAdapter();
+		$handlerAdapter->doParse();
 		
-		} catch (WindException $exception) {
-			throw new WindActionException($exception->getMessage());
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
+		}
+		
+		$handler = $handlerAdapter->getHandler();
+		$definition = new WindComponentDefinition();
+		$definition->setPath($handler);
+		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
+		$definition->setProxy('true');
+		$definition->setAlias($handler);
+		$definition->setPropertys(array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
+			'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
+		
+		$this->windFactory->addClassDefinitions($definition);
+		$actionHandler = $this->windFactory->getInstance($handler);
+		$actionHandler->beforeAction($handlerAdapter);
+		
+		//TODO 添加过滤链
+		if ($actionHandler->_getInstance() instanceof WindFormController) {
+			if ($formClassPath = $actionHandler->getFormClass()) {
+				$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath, $actionHandler->getErrorMessage()));
+			}
+		} elseif ($actionHandler->_getInstance() instanceof WindController) {
+			if ($rules = (array) $actionHandler->validatorFormRule($handlerAdapter->getAction())) {
+				if (!isset($rules['errorMessage'])) {
+					$rules['errorMessage'] = $actionHandler->getErrorMessage();
+				}
+				$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
+			}
+		}
+		
+		//add log
+		if (IS_DEBUG) {
+			/* @var $logger WindLogger */
+			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+			$logger->debug('ActionHandler: ' . $handler);
 		}
 		
 		return $actionHandler;
@@ -140,7 +136,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 	}
 
 	/**
-	 * Enter description here ...
 	 * @param request
 	 * @return AbstractWindRouter
 	 */
@@ -149,6 +144,9 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		if (null === $this->getAttribute($routerAlias)) {
 			/* @var $router AbstractWindRouter */
 			$router = $this->windFactory->getInstance($routerAlias);
+			if (!$router instanceof AbstractWindRouter) {
+				throw new WindException(get_class($this) . '::getHandlerAdapter()', WindException::ERROR_RETURN_TYPE_ERROR);
+			}
 		}
 		return $this->getAttribute($routerAlias);
 	}
