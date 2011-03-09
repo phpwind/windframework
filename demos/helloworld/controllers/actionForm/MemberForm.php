@@ -21,10 +21,10 @@ class MemberForm extends WindEnableValidateModule {
 	
 	
 	public function __construct() {
-		$this->rules[] = $this->buildValidateRule('name', 'isLegalLength', 5, 'xxx', 'ErrorNameLength');
-		$this->rules[] = $this->buildValidateRule('email', 'hasEmail', array(), null, 'ErrorEmail!');
-		$this->rules[] = $this->buildValidateRule('sex', 'isLegalLength', array(), '1', 'ErrorSexType');
-		$this->rules[] = $this->buildValidateRule('age', 'isInt', array(), '20', 'ErrorAge');
+		$this->rules[] = WindUtility::buildValidateRule('name', 'isLegalLength', 5, 'xxx', 'ErrorNameLength');
+		$this->rules[] = WindUtility::buildValidateRule('email', 'hasEmail', array(), null, 'ErrorEmail!');
+		$this->rules[] = WindUtility::buildValidateRule('sex', 'isLegalLength', array(), '1', 'ErrorSexType');
+		$this->rules[] = WindUtility::buildValidateRule('age', 'isInt', array(), '20', 'ErrorAge');
 	}
 
 	/**

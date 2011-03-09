@@ -19,12 +19,13 @@ class ValidatorController extends WindController {
     }
     
     public function run() {
+        $data = $this->getInput('inputData');
 		echo '<h1>success:</h1><br/><ul>';
 		echo '<li>validator in class : ' . __CLASS__ , '</li><br/>';
 		echo '<li>your name is : ' . $this->getInput('name'), '</li><br/>';
 		echo '<li>your age is :' . $this->getInput('age'), '</li><br/>';
-		echo '<li>your sex is :' . $this->getInput('sex'), '</li><br/>';
-		echo '<li>your email is :' . $this->getInput('email'), '</li><br/>';
+		echo '<li>your sex is :' . $data->sex, '</li><br/>';
+		echo '<li>your email is :' . $data->email, '</li><br/>';
 		echo '</ul>';
 		exit();
 	}
