@@ -23,9 +23,10 @@ class WindFormListener extends WindHandlerInterceptor {
 	 * @param WindHttpRequest $request
 	 * @param string $formPath
 	 */
-	public function __construct($request, $formPath) {
+	public function __construct($request, $formPath, $errorMessage) {
 		$this->request = $request;
 		$this->formPath = $formPath;
+		$this->errorMessage = $errorMessage;
 	}
 
 	/* (non-PHPdoc)
@@ -53,8 +54,11 @@ class WindFormListener extends WindHandlerInterceptor {
 	}
 	
 	private function sendError($errorController, $errorAction, $errors) {
-	    $error = new WindErrorMessage($errors, $errorAction, $errorController);
-	    $error->sendError();
+	    if (!$this->errorMessage instanceof WindErrorMessage) $this->errorMessage = new WindErrorMessage();
+	    $this->errorMessage->setErrorController($errorController);
+	    $this->errorMessage->setErrorAction($errorAction);
+	    $this->errorMessage->addError($errors);
+	    $this->errorMessage->sendError();
 	}
 
 	/* (non-PHPdoc)
