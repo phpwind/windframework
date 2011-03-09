@@ -53,11 +53,7 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 */
 	public function getHandler() {
 		if (!strcasecmp($this->getController(), WIND_M_ERROR)) {
-			$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-			if ($errorHandler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig))
-				$controllerPath = $errorHandler;
-			else
-				$controllerPath = $this->errorHandle;
+			$controllerPath = $this->getErrorHandler();
 		} else {
 			$controllerSuffix = '';
 			$_modulePath = '';
@@ -66,8 +62,10 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 				if ($moduleConfig) {
 					$_modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
 					$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
-				} else
-					$_modulePath = $this->getModule();
+				} else {
+					$_modulePath = 'controllers';
+					$controllerSuffix = 'Controller';
+				}
 			
 			} else
 				$_modulePath = $this->modulePath;
@@ -81,6 +79,15 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
 			$logger->debug('do getHandler of ' . __CLASS__);
 		}
+		return $controllerPath;
+	}
+
+	protected function getErrorHandler() {
+		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
+		if ($errorHandler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig))
+			$controllerPath = $errorHandler;
+		else
+			$controllerPath = $this->errorHandle;
 		return $controllerPath;
 	}
 
