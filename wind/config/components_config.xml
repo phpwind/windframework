@@ -56,7 +56,6 @@
 		<config>
 			<template-dir value='template' />
 			<template-ext value='htm' />
-			<share-var value='false' />
 			<is-cache value='true' />
 			<cache-dir value='cache' />
 			<compile-dir value='compile.template' />
