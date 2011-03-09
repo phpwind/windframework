@@ -16,10 +16,7 @@
 interface IWindDbConfig{
 	
 	const CONNECTIONS = 'connections';
-	const DRIVERS = 'drivers';
-	const BUILDERS = 'builders';
 	const DRIVER = 'driver';
-	const BUILDER = 'builder';
 	const TYPE = 'type';
 	const USER = 'user';
 	const PASS = 'password';
