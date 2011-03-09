@@ -54,6 +54,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
 		$_tags['page'] = $this->createTag('page', 'WIND:core.viewer.compiler.WindTemplateCompilerPage');
 		$_tags['action'] = $this->createTag('action', 'WIND:core.viewer.compiler.WindTemplateCompilerAction');
+		$_tags['action'] = $this->createTag('action', 'WIND:core.viewer.compiler.WindTemplateCompilerComponent');
 		/*标签解析结束*/
 		$_tags += (array) parent::getTags();
 		$_tags['expression'] = $this->createTag('expression', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/({@|{\$)[^{@=\n]*}/i');
