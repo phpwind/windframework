@@ -60,8 +60,8 @@ class WindFileCache extends AbstractWindCache {
 	 * @see wind/component/cache/base/IWindCache#flush()
 	 */
 	public function flush() {
-		if (WindFile::clearDir($this->cacheDir, false)) {
-			!file_exists($this->cacheDir) && mkdir($this->cacheDir, 0777, true);
+		if(WindFile::clearDir($this->cacheDir, false)){
+			$this->createCacheDir();
 		}
 	}
 	
@@ -69,7 +69,9 @@ class WindFileCache extends AbstractWindCache {
 	 * 删除过期缓存
 	 */
 	public function deleteExpiredCache() {
-		return WindFile::clearDir($this->cacheDir, true);
+		if(WindFile::clearDir($this->cacheDir, true)){
+			$this->createCacheDir();
+		}
 	}
 	/**
 	 * 获取缓存文件名。
@@ -152,6 +154,10 @@ class WindFileCache extends AbstractWindCache {
 			throw new WindException('cache dir must be a writable directory');
 		}
 		$this->cacheDir = rtrim($dir, '\\/') . DIRECTORY_SEPARATOR;
+	}
+	
+	private function createCacheDir(){
+		!is_dir($this->cacheDir) && mkdir($this->cacheDir, 0777, true);
 	}
 	
 	public function __destruct() {
