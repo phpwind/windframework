@@ -15,8 +15,11 @@ L::import('WIND:core.web.WindFormController');
  * @package
  */
 class FormController extends WindFormController {
-    protected $formClass = 'actionControllers.actionForm.MemberForm';
+    protected $formClass = 'controllers.actionForm.MemberForm';
 	
+    public function beforeAction($handerAdapter) {
+        $this->errorMessage->setErrorController('Error');
+    }
     public function run() {
 		$formData = $this->getInput('formData');
 		echo '<h1>success:</h1><br/><ul>';

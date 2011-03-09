@@ -15,7 +15,7 @@ L::import('WIND:core.web.WindController');
  */
 class IndexController extends WindController {
 
-	protected $formClass = 'actionControllers.actionForm.IndexRunForm';
+	protected $formClass = 'controllers.actionForm.IndexRunForm';
 
 	public function run() {
         //$this->setLayout('layout');

@@ -12,10 +12,12 @@
 			<![endif]-->
 	</head>
 <body>
+<action action='header' controller="index"/>
 {@$this->getContent();}
 $var1 <br/>
 {$var1}<br/>
 {@$var1}<br/>
+{@header:a}<br/>
 <template source='footer' load='false' />
 </div>
 </body>
