@@ -72,8 +72,7 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function initConfig($config) {
 		if (!is_array($config)) {
-			if ($this->getConfigParser() === null)
-				throw new WindException('configParser is null.');
+			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
 			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
 		}
 		$this->setConfig($config);
@@ -112,8 +111,7 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getRootPath($appName = '') {
-		if ($appName === '')
-			$appName = $this->appName;
+		if ($appName === '') $appName = $this->appName;
 		
 		$_tmp = $appName . '_RootPath';
 		if (!isset($this->$_tmp)) {
@@ -152,7 +150,8 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function getRouter($name = '') {
 		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
-		return $this->getConfig(self::WEB_APP_ROUTER, $name, $_config);
+		$_router = $this->getConfig(self::WEB_APP_ROUTER, $name, $_config);
+		return $_router ? $_router : COMPONENT_ROUTER;
 	}
 
 	/**
@@ -214,8 +213,7 @@ class WindSystemConfig extends WindConfig {
 	protected function parseImport($name) {
 		if (!isset($this->imports[$name])) {
 			$imports = $this->getConfig(self::IMPORTS);
-			if (!isset($imports[$name]))
-				return array();
+			if (!isset($imports[$name])) return array();
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
