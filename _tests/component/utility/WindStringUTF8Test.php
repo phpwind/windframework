@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-require_once('component/format/WindString.php');
+require_once('component/utility/WindString.php');
 
 class WindStringUTF8Test extends BaseTestCase {
 	public function setUp() {
@@ -17,9 +17,9 @@ class WindStringUTF8Test extends BaseTestCase {
 	public static function providerString() {
 		return array(
 			array('pp', 'ppp', 1, 2),
-			array('我爱中', '我爱中国!', 0, 3, 'UTF8'),
-			array('爱中国!...', '我爱中国!', 1, 5, 'UTF8', true),
-			array('爱中国!', '我爱中国!', 1, 5, 'UTF8'),
+			array('我爱中', '我爱中国!', 0, 3, 'utf8'),
+			array('爱中国!...', '我爱中国!', 1, 5, 'utf8', true),
+			array('爱中国!', '我爱中国!', 1, 5, 'utf8'),
 		);
 	}
 	
@@ -34,14 +34,14 @@ class WindStringUTF8Test extends BaseTestCase {
 	/**
 	 * @dataProvider providerString
 	 */
-	public function testsubstr($rt, $string, $start, $length, $charset = 'UTF8', $falg = false) {
+	public function testsubstr($rt, $string, $start, $length, $charset = WindString::UTF8, $falg = false) {
 		$this->assertEquals($rt, WindString::substr($string, $start, $length, $charset, $falg));
 	}
 	
 	/**
 	 * @dataProvider providerString
 	 */
-	public function testUtf8_substr($rt, $string, $start, $length, $charset = 'UTF8', $falg = false) {
+	public function testUtf8_substr($rt, $string, $start, $length, $charset = WindString::UTF8, $falg = false) {
 		$this->assertEquals($rt, WindString::utf8_substr($string, $start, $length, $falg));
 	}
 	
@@ -49,7 +49,7 @@ class WindStringUTF8Test extends BaseTestCase {
 	 * @dataProvider providerStringLen
 	 */
 	public function testStrlen($str, $leng) {
-		$this->assertEquals($leng, WindString::strlen($str, 'UTF-8'));
+		$this->assertEquals($leng, WindString::strlen($str, WindString::UTF8));
 	}
 	
 	/**
@@ -74,13 +74,13 @@ class WindStringUTF8Test extends BaseTestCase {
 	 * @dataProvider exportData
 	 */
 	public function testVarExportForString($source, $result) {
-		$this->assertEquals($result, WindString::varExport($source));
+		$this->assertEquals($result, WindString::varToString($source));
 	}
 	
 	public function testVarExportForArray() {
 		$arr = array('key' => 'value', 'name' => 'phpwind');
 		$string  = "array(\r\n\t'key' => 'value,\r\n\t'name' => 'phpwind',\r\n)";
-		WindString::varExport($arr);
+		WindString::varToString($arr);
 	//	$this->assertEquals($string, WindString::varExport($arr));//text比较
 	}
 }

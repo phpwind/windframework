@@ -7,7 +7,7 @@
  */
 
 
-require_once('component/format/WindString.php');
+require_once('component/utility/WindString.php');
 
 class WindStringGBKTest extends BaseTestCase {
 	public function setUp() {
@@ -20,31 +20,31 @@ class WindStringGBKTest extends BaseTestCase {
 	public static function providerString() {
 		return array(
 			array('pp', 'ppp', 1, 2),
-			array('ÎÒ°®ÖÐ', 'ÎÒ°®ÖÐ¹ú!', 0, 3, 'gbk'),
-			array('°®ÖÐ¹ú!...', 'ÎÒ°®ÖÐ¹ú!', 1, 5, 'gbk', true),
-			array('°®ÖÐ¹ú!', 'ÎÒ°®ÖÐ¹ú!', 1, 5, 'gbk'),
+			array('ï¿½Ò°ï¿½ï¿½ï¿½', 'ï¿½Ò°ï¿½ï¿½Ð¹ï¿½!', 0, 3, 'gbk'),
+			array('ï¿½ï¿½ï¿½Ð¹ï¿½!...', 'ï¿½Ò°ï¿½ï¿½Ð¹ï¿½!', 1, 5, 'gbk', true),
+			array('ï¿½ï¿½ï¿½Ð¹ï¿½!', 'ï¿½Ò°ï¿½ï¿½Ð¹ï¿½!', 1, 5, 'gbk'),
 		);
 	}
 	
 	public static function providerStringLen() {
 		return array(
 			array('ppp', 3),
-			array('p¹úÖÐ', 3),
-			array('ÍòËê', 2),
+			array('pï¿½ï¿½ï¿½ï¿½', 3),
+			array('ï¿½ï¿½ï¿½ï¿½', 2),
 		);
 	}
 	
 	/**
 	 * @dataProvider providerString
 	 */
-	public function testsubstr($rt, $string, $start, $length, $charset = 'gbk', $falg = false) {
+	public function testsubstr($rt, $string, $start, $length, $charset =  WindString::GBK, $falg = false) {
 		$this->assertEquals($rt, WindString::substr($string, $start, $length, $charset, $falg));
 	}
 	
 	/**
 	 * @dataProvider providerString
 	 */
-	public function testGbk_substr($rt, $string, $start, $length, $charset = 'gbk', $falg = false) {
+	public function testGbk_substr($rt, $string, $start, $length, $charset = WindString::GBK, $falg = false) {
 		$this->assertEquals($rt, WindString::gbk_substr($string, $start, $length, $falg));
 	}
 	
@@ -53,7 +53,7 @@ class WindStringGBKTest extends BaseTestCase {
 	 * @dataProvider providerStringLen
 	 */
 	public function testStrlen($str, $leng) {
-		$this->assertEquals($leng, WindString::strlen($str, 'gbk'));
+		$this->assertEquals($leng, WindString::strlen($str, WindString::GBK));
 	}
 	
 	/**
