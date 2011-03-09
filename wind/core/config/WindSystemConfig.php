@@ -66,18 +66,6 @@ class WindSystemConfig extends WindConfig {
 		parent::__construct($config, $configParser, $cacheName);
 	}
 
-	/**
-	 * @param string $appName | 应用名称
-	 * @param string $config | 配置文件路径信息
-	 */
-	public function initConfig($config) {
-		if (!is_array($config)) {
-			if ($this->getConfigParser() === null) throw new WindException('configParser is null.');
-			$config = $this->getConfigParser()->parseConfig($config, $this->getCacheName());
-		}
-		$this->setConfig($config);
-	}
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindConfig::getConfig()
 	 */
