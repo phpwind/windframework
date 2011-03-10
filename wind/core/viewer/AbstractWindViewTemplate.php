@@ -22,10 +22,6 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 
 	const PATTERN = 'pattern';
 
-	protected $leftDelimiter = "<!--{";
-
-	protected $rightDelimiter = "}-->";
-
 	/**
 	 * 对模板内容进行编译
 	 * @param string $content
@@ -42,31 +38,24 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	public function compile($templateFile, $compileFile, $windViewerResolver) {
 		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
 		$_output = $this->getTemplateFileContent($templateFile);
+		$_output = $this->compileDelimiter($_output);
 		$_output = $this->doCompile($_output, $windViewerResolver);
 		$this->cacheCompileResult($compileFile, $_output);
 		return $_output;
 	}
 
 	/**
-	 * 返回左侧定界符，去掉两侧空白符
-	 * @return string $leftDelimiter
+	 * @param string content
+	 * @return string $content
 	 */
-	public function getLeftDelimiter() {
-		$this->leftDelimiter = trim($this->leftDelimiter);
-		return $this->leftDelimiter;
-	}
-
-	/**
-	 * 返回右侧定界符，去掉两侧空白符
-	 * @return string $rightDelimiter
-	 */
-	public function getRightDelimiter() {
-		return $this->rightDelimiter;
+	protected function compileDelimiter($content) {
+		$content = str_replace(array('<!--{', '<!--#'), '<?php ', $content);
+		$content = str_replace(array('}-->', '#-->'), '?>', $content);
+		return $content;
 	}
 
 	/**
 	 * 获得模板文件内容，目前只支持本地文件获取
-	 * 
 	 * @param string $templateFile
 	 */
 	private function getTemplateFileContent($templateFile) {
