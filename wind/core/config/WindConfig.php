@@ -44,17 +44,17 @@ class WindConfig extends WindModule {
 	 * @param string $subConfigName
 	 * @return string
 	 */
-	public function getConfig($configName = '', $subConfigName = '', $config = array()) {
+	public function getConfig($configName = '', $subConfigName = '', $config = array(), $default = null) {
 		if (!$config) $config = $this->config;
 		if ($configName === '') return $config;
 		
-		$_config = array();
+		$_config = $default;
 		if (isset($config[$configName])) {
 			$_config = $config[$configName];
 		}
 		if ($subConfigName === '') return $_config;
 		
-		$_subConfig = array();
+		$_subConfig = $default;
 		if (is_array($_config) && isset($_config[$subConfigName])) {
 			$_subConfig = $_config[$subConfigName];
 		}

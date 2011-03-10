@@ -71,7 +71,7 @@ class WindSystemConfig extends WindConfig {
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $config = array()) {
 		$imports = parent::getConfig(self::IMPORTS);
-		if (key_exists($configName, $imports)) {
+		if (key_exists($configName, (array) $imports)) {
 			return $this->parseImport($configName);
 		}
 		return parent::getConfig($configName, $subConfigName, $config);
