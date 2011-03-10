@@ -93,7 +93,7 @@ class WindFile{
 	 * @param string $method 读取模式
 	 * @return string
 	 */
-	public function read($fileName, $method = self::READ) {
+	public static function read($fileName, $method = self::READ) {
 		L::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		$data = '';
@@ -229,9 +229,18 @@ class WindFile{
 	 * @param string $filename
 	 * @return string
 	 */
-	public function getFileSuffix($filename){
+	public static function getFileSuffix($filename){
 		$filename = explode($filename,'.');
 		return $filename[count($filename)-1];
+	}
+	
+	/**
+	 * 取得真实的目录
+	 * @param string $path 路径名
+	 * @return string
+	 */
+	public static function appendSlashesToDir($path) {
+		return rtrim($path, '\\/') . DIRECTORY_SEPARATOR;
 	}
 	
 }

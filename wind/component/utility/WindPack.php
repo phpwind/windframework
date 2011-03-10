@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
+L::import('WIND:component.utility.WindFile');
 /**
  * 程序打包工具
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -48,7 +48,7 @@ class WindPack {
 		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
 			return false;
 		}
-		$fileSuffix = $this->getFileSuffix($dst);
+		$fileSuffix = WindFile::getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
 		$content = implode($replace, $content);
 		$content = $this->callBack($content, $replace);
@@ -56,7 +56,7 @@ class WindPack {
 		$content = $this->stripPhpIdentify($content, '');
 		$content = $this->stripImport($content, '');
 		$content = $this->getContentBySuffix($content, $fileSuffix, $replace);
-		$this->writeContentToFile($dst, $content);
+		WindFile::write($dst, $content);
 		return true;
 	}
 	/**
@@ -73,7 +73,7 @@ class WindPack {
 		}
 		$content = array();
 		$this->readContentFromFileList($fileList, $packMethod, $absolutePath, $content);
-		$fileSuffix = $this->getFileSuffix($dst);
+		$fileSuffix = WindFile::getFileSuffix($dst);
 		$replace = $compress ? ' ' : "\n";
 		$content = implode($replace, $content);
 		$content = $this->callBack($content, $replace);
@@ -81,7 +81,7 @@ class WindPack {
 		$content = $this->stripPhpIdentify($content, '');
 		$content = $this->stripImport($content, '');
 		$content = $this->getContentBySuffix($content, $fileSuffix, $replace);
-		$this->writeContentToFile($dst, $content);
+		WindFile::write($dst, $content);
 		return true;
 	}
 	/**
@@ -141,15 +141,15 @@ class WindPack {
 		}
 		$dir = is_array($dir) ? $dir : array($dir);
 		foreach ($dir as $_dir) {
-			$_dir = is_dir($absolutePath) ? $this->realDir($absolutePath) . $_dir : $_dir;
-			if ($this->isDir($_dir)) {
+			$_dir = is_dir($absolutePath) ? WindFile::appendSlashesToDir($absolutePath) . $_dir : $_dir;
+			if (is_dir($_dir)) {
 				$handle = dir($_dir);
 				while (false != ($tmp = $handle->read())) {
-					$name = $this->realDir($_dir) . $tmp;
-					if ($this->isDir($name) && !in_array($tmp, $ndir)) {
+					$name = WindFile::appendSlashesToDir($_dir) . $tmp;
+					if (is_dir($name) && !in_array($tmp, $ndir)) {
 						$this->readContentFromDir($packMethod, $name, $absolutePath, $ndir, $suffix, $nfile);
 					}
-					if ($this->isFile($name) && !in_array($this->getFileSuffix($name), $suffix) && !in_array($file = $this->getFileName($name), $nfile)) {
+					if (is_file($name) && !in_array(WindFile::getFileSuffix($name), $suffix) && !in_array($file = basename($name), $nfile)) {
 						$content[] = $this->$packMethod($name);
 						$this->setPackList($file, $name);
 					}
@@ -181,7 +181,7 @@ class WindPack {
 				$_fileList = $this->buildFileList($implements, $fileList);
 				$this->readContentFromFileList($_fileList, $packMethod, $absolutePath, $content);
 				if (key_exists($key, $this->getPackList())) continue;
-				$file = is_dir($absolutePath) ? $this->realDir($absolutePath) . $key : $key;
+				$file = is_dir($absolutePath) ? WindFile::appendSlashesToDir($absolutePath) . $key : $key;
 				if (is_file($file)) {
 					$content[] = $this->$packMethod($file);
 					$this->setPackList($key, $value);
@@ -267,7 +267,7 @@ class WindPack {
 	 * @return string
 	 */
 	public function getContentFromFile($filename) {
-		if ($this->isFile($filename)) {
+		if (is_file($filename)) {
 			$content = '';
 			$fp = fopen($filename, "r");
 			while (!feof($fp)) {
@@ -281,18 +281,6 @@ class WindPack {
 		return false;
 	}
 	/**
-	 * 将内容打包的文件
-	 * @param string $filename 文件内容
-	 * @param string $content  要打包的指定文件的内容
-	 * @return string
-	 */
-	public function writeContentToFile($filename, $content) {
-		$fp = fopen($filename, "w");
-		fwrite($fp, $content);
-		fclose($fp);
-		return true;
-	}
-	/**
 	 * 根据文件后缀得取对应的mime内容
 	 * @param string $content 要打包的内容内容
 	 * @param string $suffix 文件后缀类型
@@ -302,9 +290,11 @@ class WindPack {
 	public function getContentBySuffix($content, $suffix, $replace = ' ') {
 		switch ($suffix) {
 			case 'php':
-				$content = '<?php' . $replace . $content . '?>';break;
+				$content = '<?php' . $replace . $content . '?>';
+				break;
 			default:
-				$content = '<?php' . $replace . $content . '?>';break;
+				$content = '<?php' . $replace . $content . '?>';
+				break;
 		}
 		return $content;
 	}
@@ -320,68 +310,6 @@ class WindPack {
 		}
 		return $_temp;
 	}
-	
-	private function isValidatePackMethod($packMethod) {
-		return method_exists($this, $packMethod) && in_array($packMethod, array(WindPack::STRIP_PHP, 
-			WindPack::STRIP_SELF, WindPack::STRIP_TOKEN));
-	}
-	/**
-	 * 添加被打包的文件到列表
-	 * @param  string $key
-	 * @param  string $value
-	 */
-	private function setPackList($key, $value) {
-		if (isset($this->packList[$key])) {
-			if (is_array($this->packList[$key])) {
-				array_push($this->packList[$key], $value);
-			} else {
-				$tmp_name = $this->packList[$key];
-				$this->packList[$key] = array($tmp_name, $value);
-			}
-		} else {
-			$this->packList[$key] = $value;
-		}
-	}
-	/**
-	 * 取得真实的目录
-	 * @param string $path 路径名
-	 * @return string
-	 */
-	public function realDir($path) {
-		return rtrim($path, '\\/') . DIRECTORY_SEPARATOR;
-	}
-	
-	/**
-	 * 判断是否是一个文件
-	 * @param string $filename 文件名
-	 * @return boolean
-	 */
-	public function isFile($filename) {
-		return is_file($filename);
-	}
-	
-	/**
-	 * 判断是否是一个目录
-	 * @param string $dir 目录名
-	 * @return boolean
-	 */
-	public function isDir($dir) {
-		return is_dir($dir);
-	}
-	
-	public function getFileSuffix($filename) {
-		return substr($filename, strrpos($filename, '.') + 1);
-	}
-	
-	public function getFileName($path, $ifsuffix = false) {
-		$filename = substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1);
-		return $ifsuffix ? $filename : substr($filename, 0, strrpos($filename, '.'));
-	}
-	
-	public function getFilePath($path) {
-		return substr($path, 0, strrpos($path, DIRECTORY_SEPARATOR));
-	}
-	
 	/**
 	 * @param $contentInjectionCallBack the $contentInjectionCallBack to set
 	 * @param string $position 调用位置(before|after)
@@ -404,11 +332,33 @@ class WindPack {
 			$_content = call_user_func_array($this->contentInjectionCallBack, array($this->getPackList()));
 			if ($this->contentInjectionPosition == 'before') {
 				$content = $replace . $_content . $content;
-			} elseif ($this->contentInjectionPosition == 'after'){
+			} elseif ($this->contentInjectionPosition == 'after') {
 				$content .= $replace . $_content . $replace;
 			}
 		}
 		return $content;
+	}
+	
+	private function isValidatePackMethod($packMethod) {
+		return method_exists($this, $packMethod) && in_array($packMethod, array(WindPack::STRIP_PHP, 
+			WindPack::STRIP_SELF, WindPack::STRIP_TOKEN));
+	}
+	/**
+	 * 添加被打包的文件到列表
+	 * @param  string $key
+	 * @param  string $value
+	 */
+	private function setPackList($key, $value) {
+		if (isset($this->packList[$key])) {
+			if (is_array($this->packList[$key])) {
+				array_push($this->packList[$key], $value);
+			} else {
+				$tmp_name = $this->packList[$key];
+				$this->packList[$key] = array($tmp_name, $value);
+			}
+		} else {
+			$this->packList[$key] = $value;
+		}
 	}
 
 }
