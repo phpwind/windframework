@@ -28,7 +28,7 @@ class WindFrontController extends AbstractWindServer {
 
 	const CONFIG_CACHE = 'wind_components_config';
 
-	const COMPONENTS_CONFIG = 'WIND:core.components_config';
+	const COMPONENTS_CONFIG = 'WIND:config.components_config';
 
 	const DEFAULT_CONFIG_TYPE = 'xml';
 
