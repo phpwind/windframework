@@ -72,7 +72,7 @@
 	</component>
 	<component name='template' path='WIND:core.viewer.compiler.WindViewTemplate'
 		scope='prototype'>
-		<config resource='WIND:config.viewTemplateConfig' suffix='xml' />
+		<config resource='' suffix='xml' />
 	</component>
 
 	<!-- error -->
