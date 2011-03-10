@@ -80,7 +80,7 @@ class WindMail {
 	private $encode = self::ENCODE_BASE64;
 	//常用邮件MIME
 	const CRLF = "\n";
-	CONST TO = 'To';
+	const TO = 'To';
 	const CC = 'Cc';
 	const BCC = 'Bcc';
 	const FROM = 'From';
