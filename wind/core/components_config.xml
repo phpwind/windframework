@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/request/session/application" 
+	proxy=''> -->
+<!-- <property property-name='' ref/value=''> -->
+<!-- <constructor-arg ref/value=''> -->
+<!-- <config resource=''> -->
+<!-- </component> -->
+
+<components>
+	<!-- app -->
+	<component name='windWebApp' path='WIND:core.web.WindWebApplication'
+		scope='request'>
+		<properties>
+			<property name='dispatcher' ref='dispatcher' />
+		</properties>
+	</component>
+	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
+		scope='prototype'>
+	</component>
+
+	<!-- logger -->
+	<component name='windLogger' path='WIND:component.log.WindLogger'
+		scope='request'>
+	</component>
+
+	<!-- forward -->
+	<component name='forward' path='WIND:core.web.WindForward'
+		scope='prototype'>
+	</component>
+
+	<!-- urlBasedRouter -->
+	<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
+		scope="application">
+		<config>
+			<module url-param='m' default-value='default' />
+			<controller url-param='c' default-value='index' />
+			<action url-param='a' default-value='run' />
+		</config>
+	</component>
+	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
+		scope='singleton'>
+		<properties>
+			<property name='windRouter' ref='urlBasedRouter' />
+		</properties>
+		<config>
+			<url-pattern value="-/" />
+			<route-suffix value='htm' />
+			<route-param value='r' />
+		</config>
+	</component>
+
+	<!-- windView -->
+	<component name='windView' path='WIND:core.viewer.WindView'
+		scope='prototype'>
+		<config>
+			<template-dir value='template' />
+			<template-ext value='htm' />
+			<is-cache value='true' />
+			<cache-dir value='cache' />
+			<compile-dir value='compile.template' />
+		</config>
+		<properties>
+			<property name='viewResolver' ref='viewResolver' />
+		</properties>
+	</component>
+	<component name='viewResolver' path='WIND:core.viewer.WindViewerResolver'
+		scope='prototype'>
+		<properties>
+			<property name='urlHelper' ref='urlHelper' />
+		</properties>
+	</component>
+	<component name='template' path='WIND:core.viewer.compiler.WindViewTemplate'
+		scope='prototype'>
+		<config resource='' suffix='xml' />
+	</component>
+
+	<!-- error -->
+	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
+		scope='prototype'></component>
+
+</components>
