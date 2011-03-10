@@ -33,6 +33,10 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	protected $reParse = true;
 
+	protected $defaultControllerSuffix = 'Controller';
+
+	protected $defaultControllerPath = 'controller';
+
 	/**
 	 * Enter description here ...
 	 */
@@ -57,6 +61,19 @@ abstract class AbstractWindRouter extends WindComponentModule {
 			$this->reParse = false;
 		}
 		$this->destroy();
+	}
+
+	/**
+	 * 返回Error处理句柄
+	 * @return Ambigous <string, multitype:, unknown>
+	 */
+	protected function getErrorHandler() {
+		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
+		if ($errorHandler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig))
+			$controllerPath = $errorHandler;
+		else
+			$controllerPath = $this->errorHandle;
+		return $controllerPath;
 	}
 
 	/**

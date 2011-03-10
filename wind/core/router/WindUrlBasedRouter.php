@@ -52,26 +52,19 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::getHandler()
 	 */
 	public function getHandler() {
-		if (!strcasecmp($this->getController(), WIND_M_ERROR)) {
-			$controllerPath = $this->getErrorHandler();
-		} else {
-			$controllerSuffix = '';
-			$_modulePath = '';
-			if ($this->modulePath === '') {
-				$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-				if ($moduleConfig) {
-					$_modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig);
-					$controllerSuffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig);
-				} else {
-					$_modulePath = 'controllers';
-					$controllerSuffix = 'Controller';
-				}
-			
+		if (strcasecmp($this->getController(), WIND_M_ERROR)) {
+			$_suffix = $this->defaultControllerSuffix;
+			$_modulePath = $this->defaultControllerPath;
+			if ($this->modulePath === '' && $moduleConfig = $this->windSystemConfig->getModules($this->getModule())) {
+				$_modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig, $_modulePath);
+				$_suffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig, $_suffix);
 			} else
 				$_modulePath = $this->modulePath;
-			$controllerPath = $_modulePath . '.' . ucfirst($this->controller) . $controllerSuffix;
-		}
-		if (strpos($controllerPath, ':') === false) $controllerPath = strtoupper($this->windSystemConfig->getAppName()) . ':' . $controllerPath;
+			$_path = $_modulePath . '.' . ucfirst($this->controller) . $_suffix;
+		} else
+			$_path = $this->getErrorHandler();
+		
+		if (strpos($_path, ':') === false) $_path = strtoupper($this->windSystemConfig->getAppName()) . ':' . $_path;
 		
 		//add log
 		if (IS_DEBUG) {
@@ -79,16 +72,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
 			$logger->debug('do getHandler of ' . __CLASS__);
 		}
-		return $controllerPath;
-	}
-
-	protected function getErrorHandler() {
-		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-		if ($errorHandler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig))
-			$controllerPath = $errorHandler;
-		else
-			$controllerPath = $this->errorHandle;
-		return $controllerPath;
+		
+		return $_path;
 	}
 
 	/* (non-PHPdoc)
