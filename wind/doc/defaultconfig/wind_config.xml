@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WIND>
+	<!-- import external config source file -->
+	<!-- web application definitions, you can define application more than one. -->
+	<web-apps>
+		<web-app name='default' class='windWebApp' root-path=''></web-app>
+	</web-apps>
+</WIND>
