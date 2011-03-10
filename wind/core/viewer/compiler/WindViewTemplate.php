@@ -32,7 +32,6 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @see AbstractWindViewTemplate::doCompile()
 	 */
 	protected function doCompile($content, $windViewerResolver = null) {
-		$content = str_replace(array($this->getLeftDelimiter(), $this->getRightDelimiter()), array('<?php ', '?>'), $content);
 		$content = $this->registerTags($content, $windViewerResolver);
 		if ($this->windHandlerInterceptorChain !== null) {
 			$this->windHandlerInterceptorChain->getHandler()->handle();
