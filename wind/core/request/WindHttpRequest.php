@@ -328,16 +328,17 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 获取Http头信息
 	 * @param string $header 头部名称
+	 * @return string|null
 	 */
-	public function getHeader($header) {
+	public function getHeader($header, $default = null) {
 		$temp = strtoupper(str_replace('-', '_', $header));
 		if (substr($temp, 0, 5) != 'HTTP_') $temp = 'HTTP_' . $temp;
 		if (($header = $this->getServer($temp)) != null) return $header;
 		if (function_exists('apache_request_headers')) {
 			$headers = apache_request_headers();
-			if (!empty($headers[$header])) return $headers[$header];
+			if ($headers[$header]) return $headers[$header];
 		}
-		return false;
+		return $default;
 	}
 
 	/**
