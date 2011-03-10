@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache>
+	<servers>
+		<server name='phpwind'>
+			<host>127.0.0.1</host>
+			<port>11211</port>
+		</server>
+		<server name='cac'>
+			<host>127.0.0.1</host>
+			<port>11211</port>
+		</server>
+	</servers>
+	<compress value='2' />
+	<security value='true' />
+	<expires value='20' />
+</cache>
