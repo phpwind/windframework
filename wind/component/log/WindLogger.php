@@ -112,16 +112,6 @@ class WindLogger extends WindComponentModule {
 		$dir->close();
 		return true;
 	}
-
-	/**
-	 * Enter description here ...
-	 * 
-	 * @param string $path
-	 */
-	private function createFolder($path) {
-		!is_dir($path) && mkdir($path, 0777, true);
-	}
-
 	/**
 	 * 组装日志信息
 	 * 
@@ -277,7 +267,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function getFileName() {
 		$logDir = $this->getLogDir();
-		$this->createFolder($logDir);
+		!is_dir($logDir) &&  mkdir($logDir, 0777, true);
 		$size = 1024 * 50;
 		$filename = $logDir . date("Y_m_d") . '.log';
 		if (is_file($filename) && $size <= filesize($filename)) {
