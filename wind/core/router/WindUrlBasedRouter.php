@@ -29,8 +29,6 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	/* url 后缀名参数规则 */
 	const CONTROLLER_SUFFIX = 'controller-suffix';
 
-	const ERROR_HANDLER = 'error-handler';
-
 	const ACTION_SUFFIX = 'action-suffix';
 
 	const URL_RULE_MODULE = 'module';
@@ -52,18 +50,11 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::getHandler()
 	 */
 	public function getHandler() {
-		if (strcasecmp($this->getController(), WIND_M_ERROR)) {
-			$_suffix = $this->defaultControllerSuffix;
-			$_modulePath = $this->defaultControllerPath;
-			if ($this->modulePath === '' && $moduleConfig = $this->windSystemConfig->getModules($this->getModule())) {
-				$_modulePath = $this->getConfig()->getConfig(WindSystemConfig::PATH, '', $moduleConfig, $_modulePath);
-				$_suffix = $this->getConfig()->getConfig(self::CONTROLLER_SUFFIX, WindSystemConfig::VALUE, $moduleConfig, $_suffix);
-			} else
-				$_modulePath = $this->modulePath;
-			$_path = $_modulePath . '.' . ucfirst($this->controller) . $_suffix;
-		} else
-			$_path = $this->getErrorHandler();
-		
+		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
+		$_controllerPath = $this->windSystemConfig->getConfig(WIND_CONFIG_CLASSPATH, '', $moduleConfig, $this->defaultControllerPath);
+		$_suffix = $this->windSystemConfig->getConfig(self::CONTROLLER_SUFFIX, WIND_CONFIG_VALUE, $moduleConfig, $this->defaultControllerSuffix);
+		$_path = $this->modulePath ? $this->modulePath : $_controllerPath;
+		$_path .= '.' . ucfirst($this->controller) . $_suffix;
 		if (strpos($_path, ':') === false) $_path = strtoupper($this->windSystemConfig->getAppName()) . ':' . $_path;
 		
 		//add log

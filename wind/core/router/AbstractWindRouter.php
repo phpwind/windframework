@@ -19,8 +19,6 @@ L::import('WIND:core.WindComponentModule');
  */
 abstract class AbstractWindRouter extends WindComponentModule {
 
-	protected $errorHandle = 'WIND:core.web.WindErrorHandler';
-
 	protected $action = 'run';
 
 	protected $controller = 'index';
@@ -61,19 +59,6 @@ abstract class AbstractWindRouter extends WindComponentModule {
 			$this->reParse = false;
 		}
 		$this->destroy();
-	}
-
-	/**
-	 * 返回Error处理句柄
-	 * @return Ambigous <string, multitype:, unknown>
-	 */
-	protected function getErrorHandler() {
-		$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
-		if ($errorHandler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig))
-			$controllerPath = $errorHandler;
-		else
-			$controllerPath = $this->errorHandle;
-		return $controllerPath;
 	}
 
 	/**
