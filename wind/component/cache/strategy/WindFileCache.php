@@ -17,6 +17,8 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	protected $cacheDir;
 
+	protected $cacheType = '';
+
 	/**
 	 * @var string 缓存后缀
 	 */
@@ -63,7 +65,14 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::clear()
 	 */
 	public function clear($isExpired = false) {
-		return WindFile::clearDir($this->cacheDir, $isExpired);
+		return WindFile::clearDir($this->getCacheDir(), $isExpired);
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::clearByType()
+	 */
+	public function clearByType($key, $type) {
+		return WindFile::clearDir($this->getRealCacheKey($key, $type, true));
 	}
 
 	/**
@@ -71,18 +80,20 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $key
 	 * @return string
 	 */
-	protected function getRealCacheKey($key) {
+	protected function getRealCacheKey($key, $fileType = '', $getDir = false) {
 		$filename = $this->buildSecurityKey($key) . '.' . ltrim($this->getCacheFileSuffix(), '.');
+		$fileType = $fileType ? $fileType : $this->getCacheType();
+		$_tmp = $this->getCacheDir();
 		if (0 < $this->getCacheDirectoryLevel()) {
-			$root = $this->cacheDir;
 			for ($i = $this->getCacheDirectoryLevel(); $i > 0; --$i) {
 				if (false === isset($key[$i])) continue;
-				$root .= $key[$i] . DIRECTORY_SEPARATOR;
+				$_tmp .= $key[$i] . DIRECTORY_SEPARATOR;
 			}
-			if (false === is_dir($root)) mkdir($root, 0777, true);
-			return $root . $filename;
+			if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
 		}
-		return $this->cacheDir . $filename;
+		if ($fileType) $_tmp .= $fileType . DIRECTORY_SEPARATOR;
+		if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
+		return $getDir ? $_tmp : $_tmp . $filename;
 	}
 
 	/**
@@ -93,7 +104,6 @@ class WindFileCache extends AbstractWindCache {
 	 * @return boolean
 	 */
 	protected function writeData($file, $data, $mtime = 0) {
-		echo $mtime;
 		if (WindFile::write($file, $data) == strlen($data)) {
 			$mtime += $mtime ? time() : 0;
 			chmod($file, 0777);
@@ -137,7 +147,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @return the $cacheDir
 	 */
 	public function getCacheDir() {
-		if (is_dir($this->cacheDir)) mkdir($this->cacheDir, 0777, true);
+		if (!is_dir($this->cacheDir)) mkdir($this->cacheDir, 0777, true);
 		return $this->cacheDir;
 	}
 
@@ -161,6 +171,20 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function __destruct() {
 		$this->clear(true);
+	}
+
+	/**
+	 * @return the $fileType
+	 */
+	public function getCacheType() {
+		return $this->cacheType;
+	}
+
+	/**
+	 * @param field_type $fileType
+	 */
+	public function setCacheType($cacheType) {
+		$this->cacheType = $cacheType;
 	}
 
 }
