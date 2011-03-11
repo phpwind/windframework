@@ -39,8 +39,8 @@ class WindErrorHandler extends WindController {
 	 * @param string $errfile
 	 * @param string $errline
 	 */
-	public function errorHandle($errno, $errstr, $errfile, $errline) {
-
+	final public function errorHandle($errno, $errstr, $errfile, $errline) {
+		echo $errstr,$errfile,$errline,'<br>';
 	}
 
 }
