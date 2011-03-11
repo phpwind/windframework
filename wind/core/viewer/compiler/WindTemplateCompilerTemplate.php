@@ -24,7 +24,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	 */
 	public function compile($key, $content) {
 		if (!isset($this->source)) return $content;
-		preg_match('/[\$\(\/\\]/i', $this->source, $result);
+		preg_match('/[\$\(\/\\]]/i', $this->source, $result);
 		if (empty($result)) {
 			if ($this->load === 'false') {
 				$content = '<?php include(\'' . addslashes($this->windViewerResolver->compile($this->source, $this->suffix)) . '\'); ?>';
