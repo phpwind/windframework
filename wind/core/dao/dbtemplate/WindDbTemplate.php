@@ -71,7 +71,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	public function getAllRow($sql, $resultIndexKey = '') {
 		$db = $this->getDbHandler();
-		$query = $db->query($sql);
+		$db->query($sql);
 		return $db->getAllRow($resultIndexKey);
 	}
 
