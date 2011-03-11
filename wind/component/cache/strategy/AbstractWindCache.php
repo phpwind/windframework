@@ -15,47 +15,62 @@
  * @package 
  */
 abstract class AbstractWindCache extends WindComponentModule {
+
 	/**
-	 * @var string key的安全码
+	 * key的安全码
+	 * @var string
 	 */
-	protected $securityCode = '';
-	
+	private $securityCode = '';
+
 	/**
-	 * @var sting 缓存前缀
+	 * 缓存前缀
+	 * @var sting 
 	 */
-	protected $prefix = '';
-	
+	private $keyPrefix = '';
+
 	/**
-	 * @var string 缓存依赖的类名称
+	 * 缓存过期时间
+	 * @var int
+	 */
+	private $expire = 0;
+
+	/**
+	 * 缓存依赖的类名称
+	 * @var string
 	 */
 	const DEPENDENCYCLASS = 'dependencyclass';
+
 	/**
-	 * @var string 标志存储时间
+	 * 标志存储时间
+	 * @var string
 	 */
 	const STORETIME = 'store';
-	
+
 	/**
 	 * @var string 标志存储数据
 	 */
 	const DATA = 'data';
-	
+
 	/**
 	 * @var string 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
 	 */
 	const EXPIRES = 'expires';
+
 	/**
 	 * @var string 配置文件中标志缓存依赖名称的定义
 	 */
 	const DEPENDENCY = 'dependency';
+
 	/**
 	 * @var string 配置文件中缓存安全码名称的定义
 	 */
 	const SECURITY = 'security';
-	
+
 	/**
 	 * @var string 配置文件中缓存键的前缀名称的定义
 	 */
 	const KEYPREFIX = 'prefix';
+
 	/**
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。
 	 * @param string $key 保存缓存数据的键。
@@ -65,64 +80,51 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * @return boolean
 	 */
 	public abstract function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null);
+
 	/**
 	 * 获取指定缓存
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return mixed
 	 */
 	public abstract function get($key);
-	
+
 	/**
 	 * 通过key批量获取缓存数据
 	 * @param array $keys
 	 * @return array
 	 */
-	public function batchGet(array $keys){
+	public function batchGet(array $keys) {
 		$data = array();
 		foreach ($keys as $key) {
 			$data[$key] = $this->get($key);
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * 删除缓存数据
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return string
 	 */
 	public abstract function delete($key);
-	
+
 	/**
 	 * 通过key批量删除缓存数据
 	 * @param array $keys
 	 * @return boolean
 	 */
-	public function batchDelete(array $keys){
+	public function batchDelete(array $keys) {
 		foreach ($keys as $key) {
 			$this->delete($key);
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 清空所有缓存
 	 */
-	public abstract function flush();
-	
-	/**
-	 * @param WindConfig $config
-	 */
-	public function setConfig($config){
-		parent::setConfig($config);
-		$_config = is_object($config) ? $config->getConfig() : $config;
-		if (isset($_config[self::SECURITY])) {
-			$this->securityCode = $_config[self::SECURITY];
-		}
-		if (isset($_config[self::KEYPREFIX])) {
-			$this->prefix = $_config[self::KEYPREFIX];
-		}
-	}
-	
+	public abstract function clear();
+
 	/**
 	 * 如果缓存中有数据，则检查缓存依赖是否已经变更，如果变更则删除缓存
 	 * @param string $key 键
@@ -140,7 +142,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 从缓存元数据中取得真实的数据
 	 * @param string $key
@@ -156,13 +158,13 @@ abstract class AbstractWindCache extends WindComponentModule {
 		}
 		return $data;
 	}
-	
+
 	/* 
 	 * 获取存储的数据
 	 * @see wind/component/cache/stored/IWindCache#set()
 	 * @return string
 	 */
-	protected function storeData($value, $expires = 0, IWindCacheDependency $denpendency = null) {
+	protected function storeData($value, $expires = null, IWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent($this);
@@ -171,15 +173,35 @@ abstract class AbstractWindCache extends WindComponentModule {
 		}
 		return serialize($data);
 	}
-	
+
 	/**
 	 * 生成安全的key
 	 * @param string $key
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
-		return $this->prefix ? $this->prefix . '_' . $key : $key;
+		return $this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key : $key;
 	}
-	
+
+	/**
+	 * @return the $securityCode
+	 */
+	protected function getSecurityCode() {
+		return $this->getConfig()->getConfig(self::SECURITY, WIND_CONFIG_VALUE, '', $this->securityCode);
+	}
+
+	/**
+	 * @return the $prefix
+	 */
+	protected function getKeyPrefix() {
+		return $this->getConfig()->getConfig(self::KEYPREFIX, WIND_CONFIG_VALUE, '', $this->keyPrefix);
+	}
+
+	/**
+	 * @return the $expire
+	 */
+	public function getExpire() {
+		return (int) $this->getConfig()->getConfig('expires', WIND_CONFIG_VALUE, '', $this->expire);
+	}
 
 }
