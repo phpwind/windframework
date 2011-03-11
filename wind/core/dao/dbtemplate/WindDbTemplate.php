@@ -63,25 +63,25 @@ class WindDbTemplate implements IWindDbTemplate {
 	}
 
 	/**
-	 * 执行sql语句返回结果
+	 * 执行sql语句并且返回所有结果集
 	 * 
 	 * @param string $sql	sql语句
 	 * @param string $resultIndexKey 键名
 	 * @return array 执行结果数组 
 	 */
-	public function getAllRow($sql, $resultIndexKey = '') {
+	public function findAllBySql($sql, $resultIndexKey = '') {
 		$db = $this->getDbHandler();
 		$db->query($sql);
 		return $db->getAllRow($resultIndexKey);
 	}
 
 	/**
-	 * 执行一条sql语句返回一行
+	 * 执行sql语句,并且返回一行结果集
 	 * 
 	 * @param string $sql	sql语句
 	 * @return array 执行结果数组 
 	 */
-	public function getRow($sql) {
+	public function findBySql($sql) {
 		$db = $this->getDbHandler();
 		$db->query($sql);
 		return $db->getRow();

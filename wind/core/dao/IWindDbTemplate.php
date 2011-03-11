@@ -189,27 +189,28 @@ interface IWindDbTemplate {
 	public function createTable($tableName, $statement, $engine = 'MyISAM', $charset = 'GBK', $auto_increment = '');
 
 	/**
-	 * 执行一条sql语句
+	 * 执行sql语句
+	 * 
 	 * @param string $sql	sql语句
-	 * @return array|bool  数据库句柄
+	 * @return bool  执行结果
 	 */
 	public function query($sql);
 
 	/**
-	 * 执行sql语句返回结果
+	 * 执行sql语句并且返回所有结果集
 	 * 
 	 * @param string $sql	sql语句
 	 * @param string $resultIndexKey 键名
 	 * @return array 执行结果数组 
 	 */
-	public function getAllRow($sql, $resultIndexKey = '');
+	public function findAllBySql($sql, $resultIndexKey = '');
 
 	/**
-	 * 执行一条sql语句返回一行
+	 * 执行sql语句,并且返回一行结果集
 	 * 
 	 * @param string $sql	sql语句
 	 * @return array 执行结果数组 
 	 */
-	public function getRow($sql);
+	public function findBySql($sql);
 }
 ?>
