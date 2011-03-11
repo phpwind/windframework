@@ -21,7 +21,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @var WindDbAdapter
 	 */
 	private $connection = null;
-   
+
 	/**
 	 * 设置数据库链接句柄
 	 * 
@@ -32,7 +32,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function setConnection($connection) {
 		$this->connection = $connection;
 	}
-    
+
 	/**
 	 * 获得数据库链接句柄
 	 * 
@@ -43,14 +43,14 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function getConnection() {
 		return $this->connection;
 	}
-   
+
 	/**
 	 * 获得数据库链接操作句柄
 	 * 
 	 * @return WindDbAdapter $connection
 	 */
 	protected function getDbHandler() {
-	    return $this->getConnection();
+		return $this->getConnection();
 	}
 
 	/**
@@ -265,7 +265,38 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * @param string $filed
 	 * @return bool
 	 */
-	private function checkFiled($filed) {
+	public function checkFiled($filed) {
 		return preg_match('/^[A-Za-z]{1}[A-Za-z0-9_]+$/i', $filed);
+	}
+
+	/**
+	 * 判断字段是否存在 不存在返回false，存在返回true
+	 * 
+	 * @param string $tableName 表名
+	 * @param  string $field 字段
+	 * @return bool
+	 */
+	public function isExistField($tableName, $field) {
+		if ($field == '') return false;
+		$fields = $this->getDbHandler()->getMetaColumns($tableName);
+		foreach ($fields as $val) {
+			if ($val['Field'] == $field) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 获取表字段名
+	 * 
+	 * @param string $tableName 待获取的表名
+	 * @return array 
+	 */
+	public function getTableFields($tableName) {
+		$fields = $this->getDbHandler()->getMetaColumns($tableName);
+		$temp = array();
+		foreach ($fields as $val) {
+			$temp[] = $val['Field'];
+		}
+		return $temp;
 	}
 }

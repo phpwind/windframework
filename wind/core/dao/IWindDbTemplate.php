@@ -155,6 +155,22 @@ interface IWindDbTemplate {
 	 */
 	public function count($tableName, $condition);
 
+	/**
+	 * 判断字段是否存在 不存在返回false，存在返回true
+	 * 
+	 * @param string $tableName 表名
+	 * @param  string $field 字段
+	 * @return bool
+	 */
+	public function isExistField($tableName, $field);
+	
+	/**
+	 * 获取表字段名
+	 * 
+	 * @param string $tableName 待获取的表名
+	 * @return array 
+	 */
+	public function getTableFields($tableName);
 	
 	/**
 	 * 获得数据库链接
@@ -167,5 +183,6 @@ interface IWindDbTemplate {
 	 * @param object $connection
 	 */
 	public function setConnection($connection);
+	
 }
 ?>
