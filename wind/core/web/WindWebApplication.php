@@ -17,7 +17,11 @@ L::import('WIND:core.factory.WindComponentDefinition');
  */
 class WindWebApplication extends WindComponentModule implements IWindApplication {
 
+	const ERROR_HANDLER = 'error-handler';
+
 	protected $dispatcher = null;
+
+	protected $errorHandle = 'WIND:core.web.WindErrorHandler';
 
 	/* (non-PHPdoc)
 	 * @see IWindApplication::processRequest()
@@ -80,7 +84,12 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
 		}
 		
-		$handler = $handlerAdapter->getHandler();
+		if (!strcasecmp($handlerAdapter->getController(), WIND_M_ERROR)) {
+			$moduleConfig = $this->windSystemConfig->getModules($this->getModule());
+			$handler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig, $this->errorHandle);
+		} else
+			$handler = $handlerAdapter->getHandler();
+		
 		$definition = new WindComponentDefinition();
 		$definition->setPath($handler);
 		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
