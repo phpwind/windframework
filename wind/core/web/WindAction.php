@@ -153,7 +153,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $message
 	 * @param string $key
 	 */
-	public function addError($message, $key = '') {
+	public function addMessage($message, $key = '') {
 		$this->getErrorMessage()->addError($message, $key);
 	}
 
@@ -165,7 +165,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $errorController
 	 */
 	public function showMessage($message = '', $key = '', $errorAction = '', $errorController = '') {
-		$this->addError($message, $key);
+		$this->addMessage($message, $key);
 		$this->getErrorMessage()->setErrorAction($errorAction);
 		$this->getErrorMessage()->setErrorController($errorController);
 		$this->getErrorMessage()->sendError();
