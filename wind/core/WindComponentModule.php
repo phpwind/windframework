@@ -82,7 +82,15 @@ abstract class WindComponentModule extends WindModule {
 	 * @param WindConfig $config
 	 */
 	public function setConfig($config) {
-		$this->_config = $config;
+		if (is_object($config)) {
+			$this->_config = $config;
+		} elseif (is_array($config)) {
+			$this->_config = new WindConfig($config);
+		} elseif (is_string($config)) {
+			L::import('WIND:core.config.parser.WindConfigParser');
+			$configParser = new WindConfigParser();
+			$this->_config = new WindConfig($config, $configParser, get_class($this), CONFIG_CACHE);
+		}
 	}
 
 }
