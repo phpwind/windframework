@@ -8,7 +8,7 @@
  * @package 
  */
 interface IWindDbTemplate {
-    
+
 	/**
 	 * 单条查询
 	 * 
@@ -26,7 +26,7 @@ interface IWindDbTemplate {
 	 * @return array
 	 */
 	public function find($tableName, $condition = array());
-   
+
 	/**
 	 * 查询多条
 	 * 
@@ -47,7 +47,7 @@ interface IWindDbTemplate {
 	 * @return array() | array($result,$count)
 	 */
 	public function findAll($tableName, $condition = array(), $ifCount = false);
-	
+
 	/**
 	 * 通过某一字段查询
 	 * @param string $table 查询的数据表
@@ -55,8 +55,8 @@ interface IWindDbTemplate {
 	 * @param string $value	该字段的值
 	 * @return array
 	 */
-	public function findByField($tableName, $filed, $value) ;
-	
+	public function findByField($tableName, $filed, $value);
+
 	/**
 	 * 插入一条数据
 	 * 
@@ -64,8 +64,8 @@ interface IWindDbTemplate {
 	 * @param array $data	插入的数据
 	 * @return bool
 	 */
-	public function insert($tableName, $data) ;
-   
+	public function insert($tableName, $data);
+
 	/**
 	 * 删除数据
 	 * 
@@ -81,7 +81,7 @@ interface IWindDbTemplate {
 	 * @return bool
 	 */
 	public function delete($tableName, $condition, $isGetAffectedRows = false);
-	
+
 	/**
 	 * 通过某个字段删除数据
 	 * 
@@ -92,7 +92,7 @@ interface IWindDbTemplate {
 	 * @return bool
 	 */
 	public function deleteByField($tableName, $filed, $value, $isGetAffectedRows = false);
-	
+
 	/**
 	 * 更新一条数据
 	 * @param string $tableName 更新的数据表
@@ -101,7 +101,7 @@ interface IWindDbTemplate {
 	 * @return bool
 	 */
 	public function replace($tableName, $data, $isGetAffectedRows = false);
-    
+
 	/**
 	 * 更新数据
 	 * @param string $tableName 更新的数据表
@@ -117,7 +117,7 @@ interface IWindDbTemplate {
 	 * @return bool
 	 */
 	public function update($tableName, $data, $condition = array(), $isGetAffectedRows = false);
-	
+
 	/**
 	 * 通过字段更新
 	 * 
@@ -129,14 +129,7 @@ interface IWindDbTemplate {
 	 * @return bool 
 	 */
 	public function updateByField($tableName, $data, $filed, $value, $isGetAffectedRows = false);
-    
-	/**
-	 * 执行一条sql语句
-	 * @param string $sql	sql语句
-	 * @return array|bool  数据库句柄
-	 */
-	public function query($sql) ;
-	
+
 	/**
 	 * 统计个数
 	 * 
@@ -163,7 +156,7 @@ interface IWindDbTemplate {
 	 * @return bool
 	 */
 	public function isExistField($tableName, $field);
-	
+
 	/**
 	 * 获取表字段名
 	 * 
@@ -171,7 +164,7 @@ interface IWindDbTemplate {
 	 * @return array 
 	 */
 	public function getTableFields($tableName);
-	
+
 	/**
 	 * 获得数据库链接
 	 * @return the $connection
@@ -183,7 +176,7 @@ interface IWindDbTemplate {
 	 * @param object $connection
 	 */
 	public function setConnection($connection);
-	
+
 	/**
 	 * 创建数据库表
 	 * @param string $tableName 待创建的表名
@@ -193,6 +186,30 @@ interface IWindDbTemplate {
 	 * @param int $auto_increment 自动增号开始
 	 * @return boolean
 	 */
-	public function createTable($tableName, $statement, $engine='MyISAM', $charset='GBK', $auto_increment = '');
+	public function createTable($tableName, $statement, $engine = 'MyISAM', $charset = 'GBK', $auto_increment = '');
+
+	/**
+	 * 执行一条sql语句
+	 * @param string $sql	sql语句
+	 * @return array|bool  数据库句柄
+	 */
+	public function query($sql);
+
+	/**
+	 * 执行sql语句返回结果
+	 * 
+	 * @param string $sql	sql语句
+	 * @param string $resultIndexKey 键名
+	 * @return array 执行结果数组 
+	 */
+	public function getAllRow($sql, $resultIndexKey = '');
+
+	/**
+	 * 执行一条sql语句返回一行
+	 * 
+	 * @param string $sql	sql语句
+	 * @return array 执行结果数组 
+	 */
+	public function getRow($sql);
 }
 ?>
