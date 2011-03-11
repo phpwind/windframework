@@ -84,11 +84,12 @@ abstract class AbstractWindDao extends WindModule {
 
 	/**
 	 * 获得需要缓存的处理的方法名称数组
-	 * 
+	 * array(cache=>array('methodName1','methodName2','methodName3'),
+	 * clear=>array('methodName1','methodName2','methodName3'))
 	 * @return multitype:
 	 */
 	public function getCacheMethods() {
-		return array();
+		return array('cache' => array());
 	}
 
 	/**

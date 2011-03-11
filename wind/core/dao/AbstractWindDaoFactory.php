@@ -43,14 +43,17 @@ abstract class AbstractWindDaoFactory {
 			
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
-			if (!$daoInstance->getIsDataCache())
-				return $daoInstance;
+			if (!$daoInstance->getIsDataCache()) return $daoInstance;
 			
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
 			$daoInstance = $daoInstance->getClassProxy();
 			$listener = new WindDaoCacheListener($daoInstance);
-			foreach ($daoInstance->getCacheMethods() as $classMethod) {
+			$caches = (array) $daoInstance->getCacheMethods();
+			$_caches = isset($caches['cache']) ? $caches['cache'] : array();
+			$_caches1 = isset($caches['clear']) ? $caches['clear'] : array();
+			$_caches = array_merge($_caches, $_caches1);
+			foreach ($_caches as $classMethod) {
 				$daoInstance->registerEventListener($classMethod, $listener);
 			}
 			return $daoInstance;
@@ -85,8 +88,7 @@ abstract class AbstractWindDaoFactory {
 	 * @deprecated
 	 */
 	protected function createDbTemplatePrototype($daoObject, $connection, $key) {
-		if ($connection !== null)
-			$this->dbConnections[$key] = $connection;
+		if ($connection !== null) $this->dbConnections[$key] = $connection;
 		
 		$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
 		/* @var $_dbTemplate IWindDbTemplate */
@@ -107,8 +109,7 @@ abstract class AbstractWindDaoFactory {
 		if ($connection !== null) {
 			$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
 			/* @var $_dbTemplate IWindDbTemplate */
-			if ($_dbTemplate instanceof IWindDbTemplate)
-				$_dbTemplate->setConnection($connection);
+			if ($_dbTemplate instanceof IWindDbTemplate) $_dbTemplate->setConnection($connection);
 			$this->dbConnections[$key] = $_dbTemplate;
 		}
 		return $this->dbConnections[$key];
