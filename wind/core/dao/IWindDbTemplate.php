@@ -184,5 +184,15 @@ interface IWindDbTemplate {
 	 */
 	public function setConnection($connection);
 	
+	/**
+	 * 创建数据库表
+	 * @param string $tableName 待创建的表名
+	 * @param string $statement 创建的语句体
+	 * @param string $engine 创建的引擎
+	 * @param string $charset 创建的字符集
+	 * @param int $auto_increment 自动增号开始
+	 * @return boolean
+	 */
+	public function createTable($tableName, $statement, $engine='MyISAM', $charset='GBK', $auto_increment = '');
 }
 ?>
