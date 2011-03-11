@@ -15,6 +15,8 @@
  */
 class WindLogger extends WindComponentModule {
 
+	private $logs = array();
+
 	/*错误类型*/
 	const INFO = 0;
 
@@ -112,6 +114,7 @@ class WindLogger extends WindComponentModule {
 		$dir->close();
 		return true;
 	}
+
 	/**
 	 * 组装日志信息
 	 * 
@@ -246,7 +249,7 @@ class WindLogger extends WindComponentModule {
 	 * @return string
 	 */
 	private function getLogDate() {
-		return '[' . date('Y-m-d H:i:s', time()) . '] ';
+		return '[' . date('Y-m-d H:i:s') . '] ';
 	}
 
 	/**
@@ -267,7 +270,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function getFileName() {
 		$logDir = $this->getLogDir();
-		!is_dir($logDir) &&  mkdir($logDir, 0777, true);
+		!is_dir($logDir) && mkdir($logDir, 0777, true);
 		$size = 1024 * 50;
 		$filename = $logDir . date("Y_m_d") . '.log';
 		if (is_file($filename) && $size <= filesize($filename)) {
