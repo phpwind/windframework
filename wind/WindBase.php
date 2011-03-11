@@ -59,7 +59,7 @@ class W {
 	 * 环境检查
 	 */
 	private static function checkEnvironment() {
-
+		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 	}
 
 	/**
