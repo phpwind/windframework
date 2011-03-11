@@ -211,6 +211,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * 'limit' => '' 查询的数量
 	 * 'offset'=> '' 和limit配合使用
+	 * 'resultIndexKey' => '' string 数据结果数组的索引key，空则为自增key
 	 * )
 	 * @param bool $ifCount	是否需要统计总个数
 	 * @return array() | array($result,$count)
@@ -219,7 +220,7 @@ class WindDbTemplate implements IWindDbTemplate {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getDbHandler();
 		$query = $db->getSqlBuilder()->from($tableName)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit($condition['limit'], $condition['offset'])->select();
-		$result = $db->getAllRow();
+		$result = $db->getAllRow($condition['resultIndexKey']);
 		if (!$ifCount) return $result;
 		$count = $this->count($tableName, $condition);
 		return array($result, $count);
@@ -256,7 +257,7 @@ class WindDbTemplate implements IWindDbTemplate {
 	 */
 	private function cookCondition($condition) {
 		$defaultValue = array('field' => '*', 'where' => '', 'whereValue' => array(), 'group' => array(), 'order' => array(), 
-			'limit' => null, 'offset' => null, 'having' => '', 'havingValue' => array());
+			'limit' => null, 'offset' => null, 'having' => '', 'havingValue' => array(), 'resultIndexKey' => '');
 		return array_merge($defaultValue, (array) $condition);
 	}
 
