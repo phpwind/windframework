@@ -14,21 +14,27 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 
 	private $daoObject = null;
 
+	private $caches = array();
+
 	/**
-	 * Enter description here ...
-	 * @param WindView $windView
+	 * @param AbstractWindDao $instance
 	 */
 	function __construct($instance) {
 		$this->daoObject = $instance;
+		$this->caches = $this->cookCache($instance->getCacheMethods());
 	}
 
 	/*
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
+		if (in_array($this->event[1], $this->caches['clear'])) return null;
+		
 		/* @var $cacheHandler AbstractWindCache */
 		$cacheHandler = $this->daoObject->getCacheHandler();
-		$result = $cacheHandler->get($this->generateKey(func_get_args()));
+		list($type, $key) = $this->generateKey(func_get_args());
+		if ($cacheHandler instanceof WindFileCache) $cacheHandler->setCacheType($type);
+		$result = $cacheHandler->get($key);
 		return empty($result) ? null : $result;
 	}
 
@@ -38,7 +44,13 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	public function postHandle() {
 		/* @var $cacheHandler AbstractWindCache */
 		$cacheHandler = $this->daoObject->getCacheHandler();
-		$cacheHandler->set($this->generateKey(func_get_args()), $this->result);
+		list($type, $key) = $this->generateKey(func_get_args());
+		if ($cacheHandler instanceof WindFileCache) $cacheHandler->setCacheType($type);
+		
+		if (in_array($this->event[1], $this->caches['clear'])) {
+			$cacheHandler->clearByType($key, $type);
+		} else
+			$cacheHandler->set($key, $this->result);
 	}
 
 	/**
@@ -46,8 +58,18 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 * @param array $args
 	 * @return string
 	 */
-	public function generateKey($args) {
-		return $this->event[0] . '-' . $this->event[1] . '-' . (is_array($args[0]) ? $args[0][0] : $args[0]);
+	private function generateKey($args) {
+		$_type = $this->event[0];
+		$_key = $this->event[1] . '_' . (is_array($args[0]) ? $args[0][0] : $args[0]);
+		return array($_type, $_key);
+	}
+
+	/**
+	 * @param array $caches
+	 */
+	private function cookCache($caches) {
+		$_tmp = array('cache' => array(), 'clear' => array());
+		return array_merge($_tmp, $caches);
 	}
 
 }
