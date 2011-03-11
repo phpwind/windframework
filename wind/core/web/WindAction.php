@@ -30,7 +30,21 @@ abstract class WindAction extends WindComponentModule {
 	/**
 	 * 默认的操作处理方法
 	 */
-	public function run() {}
+	protected function run() {}
+
+	/**
+	 * Action操作预处理方法，返回boolean型值
+	 * @param AbstractWindRouter $handlerAdapter
+	 * @return boolean
+	 */
+	public function beforeAction($handlerAdapter) {}
+
+	/**
+	 * Action操作后处理方法，在执行完Action后执行
+	 * @param AbstractWindRouter $handlerAdapter
+	 * @return null
+	 */
+	public function afterAction($handlerAdapter) {}
 
 	/**
 	 * 根据路由信息重定向执行方法
@@ -47,22 +61,6 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/**
-	 * Action操作预处理方法，返回boolean型值
-	 * @param AbstractWindRouter $handlerAdapter
-	 * @return boolean
-	 */
-	public function beforeAction($handlerAdapter) {
-		return true;
-	}
-
-	/**
-	 * Action操作后处理方法，在执行完Action后执行
-	 * @param AbstractWindRouter $handlerAdapter
-	 * @return null
-	 */
-	public function afterAction($handlerAdapter) {}
-
-	/**
 	 * 重定向一个请求到另外的Action
 	 * 
 	 * @param string $action
@@ -70,14 +68,14 @@ abstract class WindAction extends WindComponentModule {
 	 * @param array $args
 	 * @param boolean $isRedirect
 	 */
-	public function forwardAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
+	protected function forwardAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
 		$this->getForward()->forwardAnotherAction($action, $controller, $args, $isRedirect);
 	}
 
 	/**
 	 * 请求重定向到另外一个Url
 	 */
-	public function forwardRedirect($url) {
+	protected function forwardRedirect($url) {
 		$this->getForward()->setIsRedirect(true);
 		$this->getForward()->setUrl($url);
 	}
@@ -90,7 +88,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string|array|object $data
 	 * @param string $key
 	 */
-	public function setOutput($data, $key = '') {
+	protected function setOutput($data, $key = '') {
 		$this->getForward()->setVars($data, $key);
 	}
 
@@ -105,7 +103,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $callback | validation for input
 	 * @return array | string
 	 */
-	public function getInput($name, $type = '', $callback = null) {
+	protected function getInput($name, $type = '', $callback = null) {
 		if (is_array($name))
 			return $this->getInputWithArray($name, $type);
 		else
@@ -117,7 +115,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 设置页面模板
 	 * @param string $template
 	 */
-	public function setTemplate($template) {
+	protected function setTemplate($template) {
 		$this->getForward()->getWindView()->setTemplateName($template);
 	}
 
@@ -125,7 +123,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 设置模板路径
 	 * @param string $templatePath
 	 */
-	public function setTemplatePath($templatePath) {
+	protected function setTemplatePath($templatePath) {
 		$this->getForward()->getWindView()->setTemplatePath($templatePath);
 	}
 
@@ -133,7 +131,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 设置模板扩展名称
 	 * @param string $templateExt
 	 */
-	public function setTemplateExt($templateExt) {
+	protected function setTemplateExt($templateExt) {
 		$this->getForward()->getWindView()->setTemplateExt($templateExt);
 	}
 
@@ -142,7 +140,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 可以是一个布局对象或者一个布局文件
 	 * @param WindLayout|string $layout
 	 */
-	public function setLayout($layout) {
+	protected function setLayout($layout) {
 		$this->getForward()->getWindView()->setLayout($layout);
 	}
 
@@ -153,7 +151,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $message
 	 * @param string $key
 	 */
-	public function addMessage($message, $key = '') {
+	protected function addMessage($message, $key = '') {
 		$this->getErrorMessage()->addError($message, $key);
 	}
 
@@ -164,7 +162,7 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $errorAction
 	 * @param string $errorController
 	 */
-	public function showMessage($message = '', $key = '', $errorAction = '', $errorController = '') {
+	protected function showMessage($message = '', $key = '', $errorAction = '', $errorController = '') {
 		$this->addMessage($message, $key);
 		$this->getErrorMessage()->setErrorAction($errorAction);
 		$this->getErrorMessage()->setErrorController($errorController);
@@ -175,7 +173,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 返回一个错误处理对象
 	 * @return WindErrorMessage $errorMessage
 	 */
-	public function getErrorMessage() {
+	protected function getErrorMessage() {
 		if ($this->errorMessage === null) {
 			throw new WindException(__CLASS__ . '::getError(), Actually get a null', WindException::ERROR_RETURN_TYPE_ERROR);
 		}
@@ -183,19 +181,11 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/**
-	 * 设置错误处理对象
-	 * @param WindErrorMessage $errorMessage
-	 */
-	public function setErrorMessage($errorMessage) {
-		$this->errorMessage = $errorMessage;
-	}
-
-	/**
 	 * 返回UrlHelper对象
 	 * 
 	 * @return WindUrlHelper
 	 */
-	public function getUrlHelper() {
+	protected function getUrlHelper() {
 		if ($this->urlHelper === null) {
 			throw new WindException('urlHelper', WindException::ERROR_CLASS_NOT_EXIST);
 		}
@@ -203,27 +193,13 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/**
-	 * @param WindUrlHelper $urlHelper
-	 */
-	public function setUrlHelper($urlHelper) {
-		$this->urlHelper = $urlHelper;
-	}
-
-	/**
 	 * @return WindForward
 	 */
-	public function getForward() {
+	protected function getForward() {
 		if ($this->forward === null) {
 			throw new WindException('windForward', WindException::ERROR_CLASS_NOT_EXIST);
 		}
 		return $this->forward;
-	}
-
-	/**
-	 * @param field_type $forward
-	 */
-	public function setForward($forward) {
-		$this->forward = $forward;
 	}
 
 	/**
@@ -286,6 +262,13 @@ abstract class WindAction extends WindComponentModule {
 			$result[(is_array($value) ? $key : $value)] = $this->getInput($value, $type);
 		}
 		return $result;
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::getWriteTableForGetterAndSetter()
+	 */
+	protected function getWriteTableForGetterAndSetter() {
+		return array('forward', 'urlHelper', 'errorMessage');
 	}
 
 }
