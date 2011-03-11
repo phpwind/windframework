@@ -1,53 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-	<modules>
-		<module name='default'>
-			<path>actionControllers</path>
-			<template>front</template>
-			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
-			<method>run</method>
-		</module>
-		<module name='other'>
-			<path>otherControllers</path>
-			<template>admin</template>
-			<suffix>controller</suffix>
-			<controllerSuffix>controller</controllerSuffix>
-			<actionSuffix>action</actionSuffix>
-			<method>run</method>
-		</module>
-	</modules>
-	<templates>
-		<template name='front'>
-			<dir>front</dir>
-			<default>index</default>
-			<ext>htm</ext>
-			<resolver>default</resolver>
-			<isCache>false</isCache>
-			<cacheDir>cache</cacheDir>
-			<compileDir>compile</compileDir>
-		</template>
-		<template name='admin'>
-			<dir>template</dir>
-			<default>index</default>
-			<ext>htm</ext>
-			<resolver>default</resolver>
-			<isCache>false</isCache>
-			<cacheDir>cache</cacheDir>
-			<compileDir>compile</compileDir>
-		</template>
-	</templates>
-	<error>
-		<errorAction name='ppp'>
-			<class>WIND:core.WindErrorAction</class>
-		</errorAction>
-		<errorAction name='defaut1'>
-			<class>WIND:core.*</class>
-		</errorAction>
-	</error>
-	<filters>
-		<filter name="WindFormFilter1">
-			<class>WIND:component.form.WindFormFilter</class>
-		</filter>
-	</filters>
+	<web-apps>
+		<web-app name='default' class='windWebApp' root-path=''>
+			<modules>
+				<module name='default' path='controllers'>
+					<controller-suffix value='controller' />
+					<view>
+						<config>
+							<template-dir value='template' />
+							<template-ext value='htm' />
+							<is-cache value='true' />
+							<cache-dir value='cache' />
+							<compile-dir value='compile.template' />
+						</config>
+					</view>
+				</module>
+			</modules>
+		</web-app>
+	</web-apps>
 </WIND>
