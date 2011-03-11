@@ -143,8 +143,8 @@ class WindDbTemplate implements IWindDbTemplate {
 	public function find($tableName, $condition = array()) {
 		$condition = $this->cookCondition($condition);
 		$db = $this->getDbHandler();
-		$query = $db->getSqlBuilder()->from($tableName)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
-		return $db->getRow($query);
+		$db->getSqlBuilder()->from($tableName)->field($condition['field'])->where($condition['where'], $condition['whereValue'])->group($condition['group'])->having($condition['having'], $condition['havingValue'])->order($condition['order'])->limit(1)->select();
+		return $db->getRow();
 	}
 
 	/**
