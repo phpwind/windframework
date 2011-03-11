@@ -40,12 +40,12 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	protected $expirestrage = true;
 	
-	const CACHETABLE = 'cachetable';
+	const CACHETABLE = 'cache-table';
 	const NAME = 'name';
-	const KEY = 'key';
-	const VALUE = 'value';
+	const KEY = 'field-key';
+	const VALUE = 'field-value';
 	const EXPIRE = 'expire';
-	const FIELD = 'field';
+	const FIELD = 'field-expire';
 	const STRAGE = 'expirestrage';
 	
 	public function __construct(AbstractWindDbAdapter $dbHandler = null) {
