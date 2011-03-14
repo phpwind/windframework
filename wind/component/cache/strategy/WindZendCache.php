@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.strategy.AbstractWindCache');
+L::import('WIND:component.cache.AbstractWindCache');
 L::import('WIND:component.cache.operator.WindUZendCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
