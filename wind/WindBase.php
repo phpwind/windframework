@@ -185,7 +185,7 @@ class L {
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
-			$dirPath = self::getRealPath($filePath);
+			$dirPath = self::getRealPath($filePath, true);
 			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dirPath . D_S . $file)) {
@@ -223,7 +223,7 @@ class L {
 		if ($path === '') {
 			throw new Exception('auto load ' . $className . ' failed.');
 		}
-		$path = self::getRealPath($path, self::$_extensions);
+		$path = self::getRealPath($path . '.' . self::$_extensions);
 		if ((include $path) === false) {
 			throw new Exception('include file ' . $path . ' failed.');
 		}
@@ -246,20 +246,27 @@ class L {
 	 * 解析路径信息，并返回路径的详情
 	 * 
 	 * @param string $filePath 路径信息
-	 * @param boolean $info 是否返回路径详情
-	 * @param string $ext 扩展名,如果不填该值，则自动在允许的扩展名列表中匹配
+	 * @param boolean $info 是否为目录路径
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	static public function getRealPath($filePath, $ext = '') {
-		$namespace = '';
+	static public function getRealPath($filePath, $isDir = false) {
+		$filePath = trim($filePath, '');
+		$namespace = $suffix = '';
+		if (!$isDir) {
+			$_pos1 = strrpos($filePath, '.');
+			$_len = strlen($filePath);
+			if ($_pos1 + 1 !== $_len) {
+				$suffix = '.' . substr($filePath, $_pos1 + 1);
+				$filePath = substr($filePath, 0, $_pos1);
+			}
+		}
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = substr($filePath, 0, $pos);
 			$filePath = substr($filePath, $pos + 1);
 		}
 		$filePath = str_replace('.', D_S, $filePath);
 		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
-		if ($ext) $filePath .= '.' . $ext;
-		return $filePath;
+		return $filePath . $suffix;
 	}
 
 	/**
@@ -342,7 +349,7 @@ class L {
 		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
 		$fileList = array();
 		foreach ($imports as $key => $value) {
-			$_key = self::getRealPath($key, self::$_extensions);
+			$_key = self::getRealPath($key . '.' . self::$_extensions);
 			$fileList[$_key] = array($key, $value);
 		}
 		$pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
