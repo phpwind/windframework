@@ -28,8 +28,6 @@ class WindSystemConfig extends WindConfig {
 
 	const IMPORTS_RESOURCE = 'resource';
 
-	const IMPORTS_SUFFIX = 'suffix';
-
 	const IMPORTS_IS_APPEND = 'is-append';
 
 	/* app 相关配置 */
@@ -196,7 +194,7 @@ class WindSystemConfig extends WindConfig {
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
-				$configPath = L::getRealPath($import[self::IMPORTS_RESOURCE], $import[self::IMPORTS_SUFFIX]);
+				$configPath = L::getRealPath($import[self::IMPORTS_RESOURCE]);
 				if (!isset($import[self::IMPORTS_IS_APPEND]) || $import[self::IMPORTS_IS_APPEND] === 'true') {
 					$append = $this->cacheName;
 				} elseif ($import[self::IMPORTS_IS_APPEND] === 'false' || $import[self::IMPORTS_IS_APPEND] === '') {

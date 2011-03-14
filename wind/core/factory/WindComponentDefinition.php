@@ -22,8 +22,6 @@ class WindComponentDefinition extends WindClassDefinition {
 
 	const RESOURCE = 'resource';
 
-	const SUFFIX = 'suffix';
-
 	/* 是否支持隐藏变量 */
 	const HIDDEN_PRO = 'hidden-pro';
 
@@ -56,7 +54,7 @@ class WindComponentDefinition extends WindClassDefinition {
 		$windConfig = null;
 		if (isset($this->config[self::RESOURCE]) && ($resource = $this->config[self::RESOURCE])) {
 			L::import('WIND:core.config.parser.WindConfigParser');
-			$configPath = L::getRealPath($resource, $this->config[self::SUFFIX]);
+			$configPath = L::getRealPath($resource);
 			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias(), CONFIG_CACHE);
 		} else {
 			$windConfig = new WindConfig($this->config);

@@ -13,7 +13,7 @@ L::import('WIND:core.dao.IWindDbTemplate');
  * @version $Id$ 2011-3-9
  * @package
  */
-class WindDbTemplate implements IWindDbTemplate {
+class WindSimpleDbTemplate implements IWindDbTemplate {
 
 	/**
 	 * 链接句柄

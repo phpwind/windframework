@@ -201,16 +201,6 @@ class WindConfigParser implements IWindConfigParser {
 	}
 
 	/**
-	 * 获得默认配置文件的路径
-	 * 
-	 * @param string $parseFormat 后缀
-	 * @return string 	获得默认配置文件的路径
-	 */
-	private function getWindConfigPath($parseFormat) {
-		return L::getRealPath($this->windConfig, strtolower($parseFormat));
-	}
-
-	/**
 	 * 构造文件的路径
 	 * 
 	 * @param string $fileName   缓存文件的名字

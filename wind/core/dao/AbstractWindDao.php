@@ -16,15 +16,11 @@ abstract class AbstractWindDao extends WindModule {
 
 	protected $dbTemplateClass = 'WIND:core.dao.dbtemplate.WindConnectionManagerBasedDbTemplate';
 
-	protected $dbConfigSuffix = 'xml';
-
 	protected $dbDefinition = null;
 
 	protected $cacheClass = '';
 
 	protected $cacheConfig = '';
-
-	protected $cacheConfigSuffix = '';
 
 	protected $isDataCache = true;
 
@@ -55,8 +51,7 @@ abstract class AbstractWindDao extends WindModule {
 		$definition->setPath($this->dbClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->dbClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig, 
-			WindComponentDefinition::SUFFIX => $this->dbConfigSuffix));
+		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig));
 		return $definition;
 	}
 
@@ -70,8 +65,7 @@ abstract class AbstractWindDao extends WindModule {
 		$definition->setPath($this->cacheClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->cacheClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig, 
-			WindComponentDefinition::SUFFIX => $this->cacheConfigSuffix));
+		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig));
 		return $definition;
 	}
 

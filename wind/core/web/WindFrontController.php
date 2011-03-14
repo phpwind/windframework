@@ -28,9 +28,7 @@ class WindFrontController extends AbstractWindServer {
 
 	const CONFIG_CACHE = 'wind_components_config';
 
-	const COMPONENTS_CONFIG = 'WIND:config.components_config';
-
-	const DEFAULT_CONFIG_TYPE = 'xml';
+	const COMPONENTS_CONFIG = 'WIND:config.components_config.xml';
 
 	/**
 	 * @var WindSystemConfig
@@ -55,7 +53,7 @@ class WindFrontController extends AbstractWindServer {
 	 * 初始化类工厂
 	 */
 	protected function initWindFactory() {
-		$configPath = L::getRealPath(self::COMPONENTS_CONFIG, self::DEFAULT_CONFIG_TYPE);
+		$configPath = L::getRealPath(self::COMPONENTS_CONFIG);
 		$classesDefinitions = $this->getWindConfig()->getConfigParser()->parse($configPath, 'components', CONFIG_CACHE);
 		$factoryClass = L::import(self::WIND_FACTORY);
 		if (!class_exists($factoryClass)) {
@@ -120,7 +118,7 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
 		//L::import('WIND:core.web.WindErrorHandler');
-		//set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
+	//set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
 	}
 
 	/* (non-PHPdoc)

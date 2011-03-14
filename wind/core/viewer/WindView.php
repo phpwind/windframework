@@ -140,9 +140,9 @@ class WindView extends WindComponentModule {
 		if (strrpos($path, ':') === false) {
 			$path = $this->windSystemConfig->getAppName() . ':' . $path;
 		}
-		$filePath = L::getRealPath($path);
+		$filePath = L::getRealPath($path, true);
 		if ($filePath && !file_exists($filePath)) @mkdir($filePath);
-		return L::getRealPath($path . '.' . $fileName, $fileExt);
+		return L::getRealPath($path . '.' . $fileName . '.' . $fileExt);
 	}
 
 	/**

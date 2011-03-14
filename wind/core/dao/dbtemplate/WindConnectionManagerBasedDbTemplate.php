@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.dao.dbtemplate.WindDbTemplate');
+L::import('WIND:core.dao.dbtemplate.WindSimpleDbTemplate');
 /**
  * Enter description here ...
  *
@@ -15,7 +15,7 @@ L::import('WIND:core.dao.dbtemplate.WindDbTemplate');
  * @version $Id$
  * @package 
  */
-class WindConnectionManagerBasedDbTemplate extends WindDbTemplate {
+class WindConnectionManagerBasedDbTemplate extends WindSimpleDbTemplate {
 
 	/**
 	 * @var WindConnectionManager
