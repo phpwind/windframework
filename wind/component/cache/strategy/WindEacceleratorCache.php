@@ -55,13 +55,4 @@ class WindEacceleratorCache extends AbstractWindCache {
 	public function clear() {
 		return $this->eaccelerator->flush();
 	}
-
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return WindEaccelerator
-	 */
-	public function getCacheHandler() {
-		return $this->eaccelerator;
-	}
-
 }

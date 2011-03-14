@@ -51,12 +51,4 @@ class WindWinCache extends AbstractWindCache {
 		return $this->wincache->flush();
 	}
 	
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return WindUWinCache
-	 */
-	public function getCacheHandler(){
-		return $this->wincache;
-	}
-	
 }

@@ -68,12 +68,6 @@ class WindFileCache extends AbstractWindCache {
 	public function clear($isExpired = false) {
 		return WindFile::clearDir($this->getCacheDir(), $isExpired);
 	}
-
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 */
-	public function getCacheHandler() {}
-
 	/**
 	 * 获取缓存文件名。
 	 * @param string $key

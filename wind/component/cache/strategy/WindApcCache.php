@@ -52,14 +52,4 @@ class WindApcCache extends AbstractWindCache {
 		return $this->apc->flush();
 	}
 	
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return WindApc
-	 */
-	public function getCacheHandler(){
-		return $this->apc;
-	}
-	
-
-	
 }

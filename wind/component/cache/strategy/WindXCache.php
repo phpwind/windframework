@@ -51,12 +51,5 @@ class WindXCache extends AbstractWindCache {
 	public function clear() {
 		return $this->xcache->flush();
 	}
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return WindUXCache
-	 */
-	public function getCacheHandler(){
-		return $this->xcache;
-	}
 	
 }

@@ -181,14 +181,6 @@ class WindDbCache extends AbstractWindCache {
 	public function setDbHandler(AbstractWindDbAdapter $dbHandler) {
 		$this->dbHandler = $dbHandler;
 	}
-	
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return AbstarctWindDbAdapter
-	 */
-	public function getCacheHandler(){
-		return $this->dbHandler;
-	}
 
 	/* 
 	 * @see WindComponentModule#setConfig()

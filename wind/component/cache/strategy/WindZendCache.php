@@ -55,12 +55,4 @@ class WindZendCache extends AbstractWindCache {
 		return $this->zendCache->flush();
 	}
 	
-	/* 
-	 * @see AbstractWindCache#getCacheHandler()
-	 * @return WindUZendCache
-	 */
-	public function getCacheHandler(){
-		return $this->zendCache;
-	}
-
 }
