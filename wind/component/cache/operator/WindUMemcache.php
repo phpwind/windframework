@@ -14,30 +14,39 @@
  * @package 
  */
 class WindUMemcache {
-	
+
 	const HOST = 'host';
+
 	const PORT = 'port';
+
 	const PCONNECT = 'pconn';
+
 	const WEIGHT = 'weight';
+
 	const TIMEOUT = 'timeout';
+
 	const RETRY = 'retry';
+
 	const STATUS = 'status';
+
 	const FCALLBACK = 'fcallback';
+
 	const COMPRESS = 'compress';
+
 	const SERVERCONFIG = 'servers';
-	
+
 	/**
 	 * @var Memcache
 	 */
 	private $memcache = null;
-	
+
 	public function __construct() {
 		if (!extension_loaded('Memcache')) {
 			throw new WindException('The memcache extension must be loaded !');
 		}
 		$this->memcache = new Memcache();
 	}
-	
+
 	/**
 	 * 设置一个指定 key 的缓存变量内容
 	 * @param string $key 缓存数据的键， 其长度不能超过250个字符
@@ -48,7 +57,7 @@ class WindUMemcache {
 	public function set($key, $value, $flag = 0, $expire = 0) {
 		return $this->memcache->set($key, $value, $flag, $expire);
 	}
-	
+
 	/**
 	 * 获取某个或者一组 key 的变量缓存值
 	 * @param mixed $key
@@ -56,7 +65,7 @@ class WindUMemcache {
 	public function get($key) {
 		return $this->memcache->get($key);
 	}
-	
+
 	/**
 	 * 删除某一个或一组变量的缓存
 	 * @param string $key 存的键 键值不能为null和'’，当它等于前面两个值的时候php会有警告错误。
@@ -65,13 +74,14 @@ class WindUMemcache {
 	public function delete($key, $timeout = 0) {
 		return $this->memcache->delete($key, $timeout);
 	}
-	
+
 	/**
 	 * 清空所有缓存内容，不是真的删除缓存的内容，只是使所有变量的缓存过期，使内存中的内容被重写
 	 */
 	public function flush() {
 		$this->memcache->flush();
 	}
+
 	/**
 	 * 取得缓存操作句柄
 	 * @return Memcache
@@ -79,6 +89,7 @@ class WindUMemcache {
 	public function getMemcache() {
 		return $this->memcache;
 	}
+
 	/**
 	 * 批量添加memecache服务器
 	 * @param array $servers
@@ -91,7 +102,7 @@ class WindUMemcache {
 			$this->setServer($server);
 		}
 	}
-	
+
 	/**
 	 * 添加memached服务器
 	 * @example  $server = array(
@@ -116,14 +127,14 @@ class WindUMemcache {
 		}
 		$defaultServer = array(self::HOST => '', self::PORT => '', self::PCONNECT => true, self::WEIGHT => 1, 
 			self::TIMEOUT => 15, self::RETRY => 15, self::STATUS => true, self::FCALLBACK => null);
-		list($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback) = array_values(array_merge($defaultServer,$server));
+		list($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback) = array_values(array_merge($defaultServer, $server));
 		$this->memcache->addServer($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback);
 	}
-	
+
 	public function close() {
 		return $this->memcache->close();
 	}
-	
+
 	public function __destruct() {
 		$this->close();
 	}
