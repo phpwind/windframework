@@ -48,13 +48,15 @@ class WindWinCache extends AbstractWindCache {
 	 * @see AbstractWindCache#clear()
 	 */
 	public function clear() {
-		return $this->windcache->flush();
+		return $this->wincache->flush();
 	}
+	
 	/* 
-	 * @see AbstractWindCache#clearByType()
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return WindUWinCache
 	 */
-	public function clearByType($key, $type) {
-		
+	public function getCacheHandler(){
+		return $this->wincache;
 	}
 	
 }

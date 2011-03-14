@@ -56,10 +56,11 @@ class WindZendCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see AbstractWindCache::clearByType()
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return WindUZendCache
 	 */
-	public function clearByType($key, $type) {
-		
+	public function getCacheHandler(){
+		return $this->zendCache;
 	}
 
 }

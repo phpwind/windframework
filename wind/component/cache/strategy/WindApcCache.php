@@ -34,7 +34,7 @@ class WindApcCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see AbstractWindCache#fetch()
+	 * @see AbstractWindCache#get()
 	 */
 	public function get($key) {
 		return $this->getDataFromMeta($key, unserialize($this->apc->get($this->buildSecurityKey($key))));
@@ -50,6 +50,14 @@ class WindApcCache extends AbstractWindCache {
 	 */
 	public function clear() {
 		return $this->apc->flush();
+	}
+	
+	/* 
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return WindApc
+	 */
+	public function getCacheHandler(){
+		return $this->apc;
 	}
 	
 

@@ -15,32 +15,38 @@ L::import('WIND:component.cache.AbstractWindCache');
 class WindDbCache extends AbstractWindCache {
 
 	/**
-	 * @var AbstractWindDbAdapter 分布式管理
+	 * 分布式管理
+	 * @var AbstractWindDbAdapter 
 	 */
 	protected $dbHandler;
 
 	/**
-	 * @var string 缓存表
+	 * 缓存表
+	 * @var string 
 	 */
 	protected $table = 'pw_cache';
 
 	/**
-	 * @var string 缓存表的键字段
+	 * 缓存表的键字段
+	 * @var string 
 	 */
 	protected $keyField = 'key';
 
 	/**
-	 * @var string 缓存表的值字段
+	 * 缓存表的值字段
+	 * @var string 
 	 */
 	protected $valueField = 'value';
 
 	/**
-	 * @var string 缓存表过期时间字段
+	 * 缓存表过期时间字段
+	 * @var string 
 	 */
 	protected $expireField = 'expire';
 
 	/**
-	 * @var boolean 数据过期策略
+	 * 数据过期策略
+	 * @var boolean 
 	 */
 	protected $expirestrage = true;
 
@@ -52,7 +58,7 @@ class WindDbCache extends AbstractWindCache {
 
 	const VALUE = 'field-value';
 
-	const EXPIRE = 'field_expire';
+	const EXPIRE = 'field-expire';
 
 	const STRAGE = 'expirestrage';
 
@@ -76,7 +82,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache#fetch()
+	 * @see AbstractWindCache#get()
 	 */
 	public function get($key) {
 		if ($this->expirestrage) {
@@ -174,6 +180,14 @@ class WindDbCache extends AbstractWindCache {
 
 	public function setDbHandler(AbstractWindDbAdapter $dbHandler) {
 		$this->dbHandler = $dbHandler;
+	}
+	
+	/* 
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return AbstarctWindDbAdapter
+	 */
+	public function getCacheHandler(){
+		return $this->dbHandler;
 	}
 
 	/* 

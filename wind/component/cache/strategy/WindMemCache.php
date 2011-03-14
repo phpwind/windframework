@@ -17,23 +17,27 @@ L::import('WIND:component.cache.operator.WindUMemcache');
 class WindMemCache extends AbstractWindCache {
 
 	/**
-	 * @var WindMemcache memcache缓存操作句柄
+	 * memcache缓存操作句柄
+	 * @var WindMemcache 
 	 */
 	protected $memcache = null;
 
 	/**
-	 * @var int 是否对缓存采取压缩存储
+	 * 是否对缓存采取压缩存储
+	 * @var int 
 	 */
 	protected $compress = 0;
 
 	//配置信息
 	/**
-	 * @var int 是否对缓存进行压缩，如果缓存的值较大，可进行压缩
+	 * 是否对缓存进行压缩，如果缓存的值较大，可进行压缩
+	 * @var int 
 	 */
 	const COMPRESS = 'compress';
 
 	/**
-	 * @var string 取得memcache配置项
+	 * 取得memcache配置项
+	 * @var string 
 	 */
 	const SERVERCONFIG = 'servers';
 
@@ -41,7 +45,7 @@ class WindMemCache extends AbstractWindCache {
 		$this->memcache = new WindUMemcache();
 	}
 
-	/* (non-PHPdoc)
+	/* 
 	 * @see AbstractWindCache::set()
 	 */
 	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
@@ -49,60 +53,61 @@ class WindMemCache extends AbstractWindCache {
 		return $this->memcache->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $this->compress, (int) $expire);
 	}
 
-	/* (non-PHPdoc)
+	/* 
 	 * @see AbstractWindCache::get()
 	 */
 	public function get($key) {
 		return $this->getDataFromMeta($key, unserialize($this->memcache->get($this->buildSecurityKey($key), $this->compress)));
 	}
 
-	/* (non-PHPdoc)
+	/* 
 	 * @see AbstractWindCache::delete()
 	 */
 	public function delete($key) {
 		return $this->memcache->delete($this->buildSecurityKey($key));
 	}
 
-	/* (non-PHPdoc)
+	/* 
 	 * @see AbstractWindCache::clear()
 	 */
 	public function clear() {
 		return $this->memcache->flush();
 	}
-
-	/* (non-PHPdoc)
-	 * @see AbstractWindCache::clearByType()
-	 */
-	public function clearByType($key, $type) {
-
-	}
-
 	/* 
-	 * @example $config = array(
-	 * array(
-	 * 'host'=>'localhost',
-	 * 'port'=>11211
-	 * 'pconn'=>true
-	 * ),
-	 * array(
-	 * 'host'=>'localhost',
-	 * 'port'=>11212
-	 * 'pconn'=>false
-	 * ),
-	 * 'compress'=>true,
-	 * 'security'=>'1x2aao@'
-	 * 'prefix'=>'phpwind'
-	 * )
-	 * @see wind/core/WindComponentModule#setConfig()
-	 */
-	/* (non-PHPdoc)
 	 * @see WindComponentModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$_config = is_object($config) ? $config->getConfig() : $config;
-		$this->memcache->setServers($_config[self::SERVERCONFIG]);
-		$this->compress = isset($_config[self::COMPRESS]) ? MEMCACHE_COMPRESSED : 0;
+		$this->memcache->setServers($this->getServersConfig());
+		$this->compress = $this->getCompress();
+	}
+	
+	/* 
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return WindMemcache
+	 */
+	public function getCacheHandler(){
+		return $this->memcache;
+	}
+	
+	/**
+	 * 取得缓存配置
+	 * @return array|mixed
+	 */
+	protected function getServersConfig($name = '',$subName = ''){
+		$servers =  $this->getConfig()->getConfig(self::SERVERCONFIG);
+		if(empty($name)){
+			return $servers;
+		}
+		if(empty($subName)){
+			return isset($servers[$name]) ? $servers[$name] : $servers;
+		}
+		return isset($servers[$name][$subName]) ? $servers[$name][$subName] : $servers[$name];
+	}
+	
+	protected function getCompress(){
+		$compress =  $this->getConfig()->getConfig(self::COMPRESS, WIND_CONFIG_VALUE, '', 0);
+		return $compress ? MEMCACHE_COMPRESSED : 0;
 	}
 
 }

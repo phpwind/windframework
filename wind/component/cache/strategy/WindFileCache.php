@@ -13,17 +13,20 @@ L::import('WIND:component.utility.WindFile');
 class WindFileCache extends AbstractWindCache {
 
 	/**
-	 * @var string 缓存目录
+	 * 缓存目录
+	 * @var string 
 	 */
 	protected $cacheDir;
 
 	/**
-	 * @var string 缓存后缀
+	 * 缓存后缀
+	 * @var string 
 	 */
 	protected $cacheFileSuffix = '';
 
 	/**
-	 * @var int 缓存多级目录。最好不要超3层目录
+	 * 缓存多级目录。最好不要超3层目录
+	 * @var int 
 	 */
 	protected $cacheDirectoryLevel = '';
 
@@ -64,6 +67,12 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function clear($isExpired = false) {
 		return WindFile::clearDir($this->getCacheDir(), $isExpired);
+	}
+	
+	/* 
+	 * @see AbstractWindCache#getCacheHandler()
+	 */
+	public function getCacheHandler(){
 	}
 
 	/**

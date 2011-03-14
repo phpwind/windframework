@@ -33,7 +33,7 @@ class WindEacceleratorCache extends AbstractWindCache {
 		return $this->eaccelerator->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 	/* 
-	 * @see AbstractWindCache#fetch()
+	 * @see AbstractWindCache#get()
 	 */
 	public function get($key) {
 		return $this->getDataFromMeta($key, unserialize($this->eaccelerator->get($this->buildSecurityKey($key))));
@@ -55,9 +55,12 @@ class WindEacceleratorCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see AbstractWindCache#clearByType()
+	 * @see AbstractWindCache#getCacheHandler()
+	 * @return WindEaccelerator
 	 */
-	public function clearByType($key, $type) {
-		
+	public function getCacheHandler(){
+		return $this->eaccelerator;
 	}
+	
+	
 }
