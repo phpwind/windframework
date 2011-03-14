@@ -29,11 +29,11 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 	 */
 	public function preHandle() {
 		if (in_array($this->event[1], $this->caches['clear'])) return null;
-		
 		/* @var $cacheHandler AbstractWindCache */
 		$cacheHandler = $this->daoObject->getCacheHandler();
 		list($type, $key) = $this->generateKey(func_get_args());
 		if ($cacheHandler instanceof WindFileCache) $cacheHandler->setCacheType($type);
+		if ($cacheHandler instanceof WindDbCache) $cacheHandler->setDbHandler($this->daoObject->getDbHandler()->getConnection()->getConnection());
 		$result = $cacheHandler->get($key);
 		return empty($result) ? null : $result;
 	}
@@ -46,7 +46,6 @@ class WindDaoCacheListener extends WindHandlerInterceptor {
 		$cacheHandler = $this->daoObject->getCacheHandler();
 		list($type, $key) = $this->generateKey(func_get_args());
 		if ($cacheHandler instanceof WindFileCache) $cacheHandler->setCacheType($type);
-		
 		if (in_array($this->event[1], $this->caches['clear'])) {
 			$cacheHandler->clearByType($key, $type);
 		} else
