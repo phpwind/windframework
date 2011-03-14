@@ -32,7 +32,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * 缓存过期时间
 	 * @var int
 	 */
-	private $expire = 0;
+	private $expire = '';
 
 	/**
 	 * 缓存依赖的类名称
@@ -198,17 +198,43 @@ abstract class AbstractWindCache extends WindComponentModule {
 	}
 
 	/**
+	 * 返回缓存Key值前缀，默认值为null无任何前缀添加
 	 * @return the $prefix
 	 */
 	protected function getKeyPrefix() {
-		return $this->getConfig()->getConfig(self::KEYPREFIX, WIND_CONFIG_VALUE, '', $this->keyPrefix);
+		return $this->keyPrefix;
 	}
 
 	/**
+	 * 返回过期时间设置,默认值为0永不过期
 	 * @return the $expire
 	 */
 	public function getExpire() {
-		return (int) $this->getConfig()->getConfig('expires', WIND_CONFIG_VALUE, '', $this->expire);
+		if ('' === $this->expire) {
+			$this->expire = $this->getConfig()->getConfig('expires', WIND_CONFIG_VALUE, '', '0');
+		}
+		return $this->expire;
+	}
+
+	/**
+	 * @param string $securityCode
+	 */
+	public function setSecurityCode($securityCode) {
+		$this->securityCode = $securityCode;
+	}
+
+	/**
+	 * @param sting $keyPrefix
+	 */
+	public function setKeyPrefix($keyPrefix) {
+		$this->keyPrefix = $keyPrefix;
+	}
+
+	/**
+	 * @param int $expire
+	 */
+	public function setExpire($expire) {
+		$this->expire = $expire;
 	}
 
 }
