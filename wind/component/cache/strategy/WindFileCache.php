@@ -18,11 +18,6 @@ class WindFileCache extends AbstractWindCache {
 	protected $cacheDir;
 
 	/**
-	 * @var 缓存分类/分组
-	 */
-	protected $cacheType = '';
-
-	/**
 	 * @var string 缓存后缀
 	 */
 	protected $cacheFileSuffix = '';
@@ -71,21 +66,13 @@ class WindFileCache extends AbstractWindCache {
 		return WindFile::clearDir($this->getCacheDir(), $isExpired);
 	}
 
-	/* (non-PHPdoc)
-	 * @see AbstractWindCache::clearByType()
-	 */
-	public function clearByType($key, $type) {
-		return WindFile::clearDir($this->getRealCacheKey($key, $type, true));
-	}
-
 	/**
 	 * 获取缓存文件名。
 	 * @param string $key
 	 * @return string
 	 */
-	protected function getRealCacheKey($key, $fileType = '', $getDir = false) {
+	protected function getRealCacheKey($key, $getDir = false) {
 		$filename = $this->buildSecurityKey($key) . '.' . ltrim($this->getCacheFileSuffix(), '.');
-		$fileType = $fileType ? $fileType : $this->getCacheType();
 		$_tmp = $this->getCacheDir();
 		if (0 < $this->getCacheDirectoryLevel()) {
 			for ($i = $this->getCacheDirectoryLevel(); $i > 0; --$i) {
@@ -94,7 +81,6 @@ class WindFileCache extends AbstractWindCache {
 			}
 			if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
 		}
-		if ($fileType) $_tmp .= $fileType . DIRECTORY_SEPARATOR;
 		if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
 		return $getDir ? $_tmp : $_tmp . $filename;
 	}
@@ -165,27 +151,14 @@ class WindFileCache extends AbstractWindCache {
 	}
 
 	/**
+	 * 返回cache目录级别，默认为0，不分级，最大分级为5
 	 * @return the $cacheDirectoryLevel
 	 */
 	protected function getCacheDirectoryLevel() {
 		if ('' === $this->cacheDirectoryLevel) {
 			$this->cacheDirectoryLevel = $this->getConfig()->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', 0);
 		}
-		return $this->cacheDirectoryLevel;
-	}
-
-	/**
-	 * @return the $fileType
-	 */
-	public function getCacheType() {
-		return $this->cacheType;
-	}
-
-	/**
-	 * @param field_type $fileType
-	 */
-	public function setCacheType($cacheType) {
-		$this->cacheType = $cacheType;
+		return $this->cacheDirectoryLevel > 5 ? 5 : $this->cacheDirectoryLevel;
 	}
 
 	/**
