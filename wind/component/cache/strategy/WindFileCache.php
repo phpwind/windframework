@@ -131,7 +131,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	private function setCacheDir($dir) {
-		$this->cacheDir = L::getRealPath($dir) . DIRECTORY_SEPARATOR;
+		$this->cacheDir = L::getRealPath($dir,true) . DIRECTORY_SEPARATOR;
 	}
 
 	/**
