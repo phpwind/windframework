@@ -28,8 +28,9 @@ class WindApcCache extends AbstractWindCache {
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
-	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return $this->apc->set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
+	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
+		$expire = null === $expire  ? $this->getExpire() : $expire;
+		return $this->apc->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 	
 	/* 
@@ -44,12 +45,18 @@ class WindApcCache extends AbstractWindCache {
 	public function delete($key) {
 		return $this->apc->delete($this->buildSecurityKey($key));
 	}
-	
-	/* 
-	 * @see wind/component/cache/base/IWindCache#flush()
+	/**
+	 * @see wind/component/cache/base/IWindCache#clear()
 	 */
-	public function flush() {
-		$this->apc->flush();
+	public function clear() {
+		return $this->apc->flush();
 	}
+	/* 
+	 * @see wind/component/cache/base/IWindCache#clearByType()
+	 */
+	public function clearByType($key, $type) {
+		
+	}
+
 	
 }

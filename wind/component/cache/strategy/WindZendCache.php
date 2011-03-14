@@ -28,8 +28,9 @@ class WindZendCache extends AbstractWindCache {
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::set()
 	 */
-	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		return $this->zendCache->set($this->buildSecurityKey($key), $this->storeData($value, $expires, $denpendency), $expires);
+	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
+		$expire = null === $expire  ? $this->getExpire() : $expire;
+		return $this->zendCache->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 
 	/* (non-PHPdoc)
@@ -47,11 +48,18 @@ class WindZendCache extends AbstractWindCache {
 	}
 
 	/**
-	 * Enter description here ...
+	 * @see AbstractWindCache::clear()
 	 * @return boolean
 	 */
-	public function flush() {
+	public function clear() {
 		return $this->zendCache->flush();
+	}
+	
+	/* 
+	 * @see AbstractWindCache::clearByType()
+	 */
+	public function clearByType($key, $type) {
+		
 	}
 
 }

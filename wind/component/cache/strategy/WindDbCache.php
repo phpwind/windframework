@@ -56,12 +56,13 @@ class WindDbCache extends AbstractWindCache {
 	/* 
 	 * @see wind/component/cache/base/IWindCache#set()
 	 */
-	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
+		$expire = null === $expire  ? $this->getExpire() : $expire;
 		$data = $this->dbHandler->getSqlBuilder()->from($this->table)->field($this->expireField)->where($this->keyField.' = :key ', array(':key' => $this->buildSecurityKey($key)))->select()->getRow();
 		if ($data) {
-			return !$this->expirestrage && '0' === $data[$this->expireField] ? null : $this->update($key, $value, $expires, $denpendency);
+			return !$this->expirestrage && '0' === $data[$this->expireField] ? null : $this->update($key, $value, $expire, $denpendency);
 		} else {
-			return $this->store($key, $value, $expires, $denpendency);
+			return $this->store($key, $value, $expire, $denpendency);
 		}
 		return true;
 	}
@@ -131,14 +132,22 @@ class WindDbCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#flush()
+	 * @see wind/component/cache/base/IWindCache#clear()
+	 * @return boolean
 	 */
-	public function flush() {
+	public function clear() {
 		if($this->expirestrage){
-			 $this->dbHandler->getSqlBuilder()->from($this->table)->delete();
+			 return $this->dbHandler->getSqlBuilder()->from($this->table)->delete();
 		}else{
-			 $this->dbHandler->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->update();
+			 return $this->dbHandler->getSqlBuilder()->from($this->table)->set($this->expireField.' = 0')->update();
 		}
+		return false;
+	}
+	/* 
+	 * @see wind/component/cache/base/IWindCache#clearByType()
+	 */
+	public function clearByType($key, $type) {
+		
 	}
 	
 	/**

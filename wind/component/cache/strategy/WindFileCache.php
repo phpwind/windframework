@@ -39,7 +39,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::set()
 	 */
 	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
-		$expire = $expire === null ? $this->getExpire() : $expire;
+		$expire = null === $expire  ? $this->getExpire() : $expire;
 		return $this->writeData($this->getRealCacheKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 
@@ -120,7 +120,7 @@ class WindFileCache extends AbstractWindCache {
 	protected function readData($file) {
 		if (false === is_file($file)) return null;
 		$mtime = filemtime($file);
-		if ($mtime === 0 || ($mtime && $mtime > time()))
+		if (0 === $mtime || ($mtime && $mtime > time()))
 			return unserialize(WindFile::read($file));
 		elseif (0 < $mtime)
 			WindFile::delFile($file);
