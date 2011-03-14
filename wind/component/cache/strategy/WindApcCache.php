@@ -28,8 +28,8 @@ class WindApcCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache#set()
 	 */
-	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
-		$expire = null === $expire  ? $this->getExpire() : $expire;
+	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
+		$expire = null === $expire  ? $this->getExpire() : $expire;echo $expire;
 		return $this->apc->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 	
