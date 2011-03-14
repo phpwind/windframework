@@ -126,13 +126,6 @@ abstract class AbstractWindCache extends WindComponentModule {
 	public abstract function clear();
 
 	/**
-	 * 根据类型清理缓存
-	 * @param string $key
-	 * @param string $type
-	 */
-	public abstract function clearByType($key, $type);
-
-	/**
 	 * 如果缓存中有数据，则检查缓存依赖是否已经变更，如果变更则删除缓存
 	 * @param string $key 键
 	 * @param array  $data 缓存中的数据
