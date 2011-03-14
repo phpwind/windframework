@@ -17,17 +17,20 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	protected $cacheDir;
 
+	/**
+	 * @var 缓存分类/分组
+	 */
 	protected $cacheType = '';
 
 	/**
 	 * @var string 缓存后缀
 	 */
-	protected $cacheFileSuffix = '.bin';
+	protected $cacheFileSuffix = '';
 
 	/**
 	 * @var int 缓存多级目录。最好不要超3层目录
 	 */
-	protected $cacheDirectoryLevel = 0;
+	protected $cacheDirectoryLevel = '';
 
 	const CACHEDIR = 'cache-dir';
 
@@ -39,7 +42,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::set()
 	 */
 	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
-		$expire = null === $expire  ? $this->getExpire() : $expire;
+		$expire = null === $expire ? $this->getExpire() : $expire;
 		return $this->writeData($this->getRealCacheKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 
@@ -155,22 +158,20 @@ class WindFileCache extends AbstractWindCache {
 	 * @return the $cacheFileSuffix
 	 */
 	protected function getCacheFileSuffix() {
-		return $this->getConfig()->getConfig(self::SUFFIX, WIND_CONFIG_VALUE, '', $this->cacheFileSuffix);
-	
+		if ('' === $this->cacheFileSuffix) {
+			$this->cacheFileSuffix = $this->getConfig()->getConfig(self::SUFFIX, WIND_CONFIG_VALUE, '', 'bin');
+		}
+		return $this->cacheFileSuffix;
 	}
 
 	/**
 	 * @return the $cacheDirectoryLevel
 	 */
 	protected function getCacheDirectoryLevel() {
-		return $this->getConfig()->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', $this->cacheDirectoryLevel);
-	}
-
-	/**
-	 * 垃圾回收，清理过期缓存
-	 */
-	public function __destruct() {
-		$this->clear(true);
+		if ('' === $this->cacheDirectoryLevel) {
+			$this->cacheDirectoryLevel = $this->getConfig()->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', 0);
+		}
+		return $this->cacheDirectoryLevel;
 	}
 
 	/**
@@ -185,6 +186,27 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setCacheType($cacheType) {
 		$this->cacheType = $cacheType;
+	}
+
+	/**
+	 * @param string $cacheFileSuffix
+	 */
+	public function setCacheFileSuffix($cacheFileSuffix) {
+		$this->cacheFileSuffix = $cacheFileSuffix;
+	}
+
+	/**
+	 * @param int $cacheDirectoryLevel
+	 */
+	public function setCacheDirectoryLevel($cacheDirectoryLevel) {
+		$this->cacheDirectoryLevel = $cacheDirectoryLevel;
+	}
+
+	/**
+	 * 垃圾回收，清理过期缓存
+	 */
+	public function __destruct() {
+		$this->clear(true);
 	}
 
 }
