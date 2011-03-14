@@ -120,7 +120,7 @@ class WindClassProxy implements IWindClassProxy {
 	 */
 	public function __call($methodName, $args) {
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_METHOD, $methodName);
-		if (empty($listeners)) return call_user_func_array(array($this->_getInstance(), $methodName), $args);
+		if (empty($listeners)) return call_user_func_array(array($this->_getInstance(), $methodName), (array)$args);
 		
 		$interceptorChain = $this->_getInterceptorChain($methodName);
 		$interceptorChain->addInterceptors($listeners);
