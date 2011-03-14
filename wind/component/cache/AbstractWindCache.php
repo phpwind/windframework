@@ -1,7 +1,7 @@
 <?php
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  * tags
@@ -10,7 +10,7 @@
 /**
  * 缓存接口及通用方法定义
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package 
  */
@@ -47,27 +47,32 @@ abstract class AbstractWindCache extends WindComponentModule {
 	const STORETIME = 'store';
 
 	/**
-	 * @var string 标志存储数据
+	 * 标志存储数据
+	 * @var string 
 	 */
 	const DATA = 'data';
 
 	/**
-	 * @var string 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
+	 * 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
+	 * @var string 
 	 */
-	const EXPIRES = 'expires';
+	const EXPIRE = 'expires';
 
 	/**
-	 * @var string 配置文件中标志缓存依赖名称的定义
+	 * 配置文件中标志缓存依赖名称的定义
+	 * @var string 
 	 */
 	const DEPENDENCY = 'dependency';
 
 	/**
-	 * @var string 配置文件中缓存安全码名称的定义
+	 * 配置文件中缓存安全码名称的定义
+	 * @var string 
 	 */
 	const SECURITY = 'security';
 
 	/**
-	 * @var string 配置文件中缓存键的前缀名称的定义
+	 * 配置文件中缓存键的前缀名称的定义
+	 * @var string 
 	 */
 	const KEYPREFIX = 'prefix';
 
@@ -124,7 +129,6 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * 清空所有缓存
 	 */
 	public abstract function clear();
-
 	/**
 	 * 如果缓存中有数据，则检查缓存依赖是否已经变更，如果变更则删除缓存
 	 * @param string $key 键
@@ -134,7 +138,8 @@ abstract class AbstractWindCache extends WindComponentModule {
 	protected function checkDependencyChanged($key, array $data) {
 		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
 			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
-			$dependency = unserialize($data[self::DEPENDENCY]); /* @var $dependency IWindCacheDependency*/
+			/* @var $dependency IWindCacheDependency*/
+			$dependency = unserialize($data[self::DEPENDENCY]); 
 			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
 				$this->delete($key);
 				return true;
@@ -167,7 +172,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * @return string
 	 */
 	protected function storeData($value, $expires = null, $denpendency = null) {
-		$data = array(self::DATA => $value, self::EXPIRES => $expires, self::STORETIME => time());
+		$data = array(self::DATA => $value, self::EXPIRE => $expires, self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent($this);
 			$data[self::DEPENDENCY] = serialize($denpendency);
@@ -206,7 +211,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 */
 	public function getExpire() {
 		if ('' === $this->expire) {
-			$this->expire = $this->getConfig()->getConfig('expires', WIND_CONFIG_VALUE, '', '0');
+			$this->expire = $this->getConfig()->getConfig(self::EXPIRE, WIND_CONFIG_VALUE, '', '0');
 		}
 		return $this->expire;
 	}
