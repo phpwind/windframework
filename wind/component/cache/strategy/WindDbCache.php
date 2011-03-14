@@ -69,7 +69,7 @@ class WindDbCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache#set()
 	 */
-	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
+	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
 		$expire = null === $expire ? $this->getExpire() : $expire;
 		$data = $this->dbHandler->getSqlBuilder()->from($this->table)->field($this->expireField)->where($this->keyField . ' = :key ', array(
 			':key' => $this->buildSecurityKey($key)))->select()->getRow();
