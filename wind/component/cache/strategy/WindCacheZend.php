@@ -14,22 +14,22 @@ L::import('WIND:component.cache.operator.WindUZendCache');
  * @version $Id$ 
  * @package 
  */
-class WindZendCache extends AbstractWindCache {
+class WindCacheZend extends AbstractWindCache {
 
 	/**
-	 * @var WindUZendCache
+	 * @var WindZendCache
 	 */
 	protected $zendCache = null;
 
 	public function __construct() {
-		$this->zendCache = new WindUZendCache();
+		$this->zendCache = new WindZendCache();
 	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::set()
 	 */
 	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
-		$expire = null === $expire  ? $this->getExpire() : $expire;echo $expire;
+		$expire = null === $expire  ? $this->getExpire() : $expire;
 		return $this->zendCache->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 

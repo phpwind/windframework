@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-16
+ * @author Su Qian <weihu@alibaba-inc.om> 2010-12-16
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
@@ -8,16 +8,15 @@
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.om>
  * @version $Id$ 
  * @package 
- * tags
  */
-class WindUXCache {
+class WindZendCache{
 	
 	public function __construct() {
-		if (!function_exists('xcache_get')) {
-			throw new WindException('The xcache extension must be loaded !');
+		if (!function_exists('zend_shm_cache_fetch')) {
+			throw new WindException('The zend cache extension must be loaded !');
 		}
 	}
 	
@@ -28,7 +27,7 @@ class WindUXCache {
 	 * @param int $ttl 缓存的生命周期，单位是秒，省略该参数或指定为 0 表示不限时，直到服务器重启清空为止。
 	 */
 	public function set($key, $value, $ttl = 0) {
-		return xcache_set($key, $value, $ttl);
+		return zend_shm_cache_store($key, $value, $ttl);
 	}
 	
 	/**
@@ -37,30 +36,20 @@ class WindUXCache {
 	 * @return mixed
 	 */
 	public function get($key) {
-		return xcache_get($key);
+		return zend_shm_cache_fetch($key);
 	}
 	/**
 	 * 删除缓存
 	 * @param string $key
 	 */
 	public function delete($key) {
-		return xcache_unset($key);
+		return zend_shm_cache_delete($key);
 	}
 	
-	/**
-	 * 判断一个某个键对应的缓存是否存在
-	 * @param string $key
-	 */
-	public function exist($key) {
-		return xcache_isset($key);
-	}
 	/**
 	 * 清空所有缓存
 	 */
 	public function flush() {
-		for ($i = 0, $max = xcache_count(XC_TYPE_VAR); $i < $max; $i++) {
-			xcache_clear_cache(XC_TYPE_VAR, $i);
-		}
-		return true;
+		return zend_shm_cache_clear();
 	}
 }

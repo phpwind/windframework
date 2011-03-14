@@ -12,7 +12,7 @@ L::import('WIND:component.cache.AbstractWindCache');
  * @version $Id$ 
  * @package 
  */
-class WindDbCache extends AbstractWindCache {
+class WindCacheDb extends AbstractWindCache {
 
 	/**
 	 * 分布式管理

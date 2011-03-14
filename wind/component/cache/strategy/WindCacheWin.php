@@ -6,50 +6,49 @@
  * @license 
  */
 L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.cache.operator.WindApc');
+L::import('WIND:component.cache.operator.WindWinCache');
 /**
- * php加速器缓存
- * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  */
-class WindApcCache extends AbstractWindCache {
-	
+
+class WindCacheWin extends AbstractWindCache {
 	/**
-	 * @var WindApc
+	 * @var WindWinCache
 	 */
-	protected $apc = null;
+	protected $wincache = null;
 	
 	public function __construct(){
-		$this->apc = new WindApc();
+		$this->wincache = new WindWinCache();
 	}
 	/* 
 	 * @see AbstractWindCache#set()
 	 */
 	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
-		$expire = null === $expire  ? $this->getExpire() : $expire;echo $expire;
-		return $this->apc->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
+		$expire = null === $expire  ? $this->getExpire() : $expire;
+		return $this->wincache->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
-	
 	/* 
-	 * @see AbstractWindCache#get()
+	 * @see AbstractWindCache#fetch()
 	 */
 	public function get($key) {
-		return $this->getDataFromMeta($key, unserialize($this->apc->get($this->buildSecurityKey($key))));
+		return $this->getDataFromMeta($key, unserialize($this->wincache->get($this->buildSecurityKey($key))));
 	}
+	
 	/* 
 	 * @see AbstractWindCache#delete()
 	 */
 	public function delete($key) {
-		return $this->apc->delete($this->buildSecurityKey($key));
+		return $this->wincache->delete($this->buildSecurityKey($key));
 	}
-	/**
+	
+	/* 
 	 * @see AbstractWindCache#clear()
 	 */
 	public function clear() {
-		return $this->apc->flush();
+		return $this->wincache->flush();
 	}
 	
 }

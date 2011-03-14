@@ -10,7 +10,7 @@ L::import('WIND:component.utility.WindFile');
  * @version $Id$ 
  * @package 
  */
-class WindFileCache extends AbstractWindCache {
+class WindCacheFile extends AbstractWindCache {
 
 	/**
 	 * 缓存目录

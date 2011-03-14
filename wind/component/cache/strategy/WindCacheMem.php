@@ -7,14 +7,14 @@
  * tags
  */
 L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.cache.operator.WindUMemcache');
+L::import('WIND:component.cache.operator.WindMemcache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  */
-class WindMemCache extends AbstractWindCache {
+class WindCacheMem extends AbstractWindCache {
 
 	/**
 	 * memcache缓存操作句柄
@@ -42,7 +42,7 @@ class WindMemCache extends AbstractWindCache {
 	const SERVERCONFIG = 'servers';
 
 	public function __construct() {
-		$this->memcache = new WindUMemcache();
+		$this->memcache = new WindMemcache();
 	}
 
 	/* 

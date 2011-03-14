@@ -14,15 +14,15 @@ L::import('WIND:component.cache.operator.WindUXCache');
  * @version $Id$ 
  * @package 
  */
-class WindXCache extends AbstractWindCache {
+class WindCacheXCache extends AbstractWindCache {
 	
 	/**
-	 * @var WindUXCache
+	 * @var WindXCache
 	 */
 	protected $xcache = null;
 	
 	public function __construct(){
-		$this->xcache = new WindUXCache();
+		$this->xcache = new WindXCache();
 	}
 	/* 
 	 * @see AbstractWindCache#set()

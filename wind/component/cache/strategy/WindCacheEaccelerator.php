@@ -15,7 +15,7 @@ L::import('WIND:component.cache.operator.WindEaccelerator');
  * @version $Id$ 
  * @package 
  */
-class WindEacceleratorCache extends AbstractWindCache {
+class WindCacheEaccelerator extends AbstractWindCache {
 
 	/**
 	 * @var WindEaccelerator
