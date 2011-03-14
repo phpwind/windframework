@@ -26,7 +26,7 @@ class WindApcCache extends AbstractWindCache {
 		$this->apc = new WindApc();
 	}
 	/* 
-	 * @see wind/component/cache/base/IWindCache#set()
+	 * @see AbstractWindCache#set()
 	 */
 	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
 		$expire = null === $expire  ? $this->getExpire() : $expire;
@@ -34,29 +34,24 @@ class WindApcCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#fetch()
+	 * @see AbstractWindCache#fetch()
 	 */
 	public function get($key) {
 		return $this->getDataFromMeta($key, unserialize($this->apc->get($this->buildSecurityKey($key))));
 	}
 	/* 
-	 * @see wind/component/cache/base/IWindCache#delete()
+	 * @see AbstractWindCache#delete()
 	 */
 	public function delete($key) {
 		return $this->apc->delete($this->buildSecurityKey($key));
 	}
 	/**
-	 * @see wind/component/cache/base/IWindCache#clear()
+	 * @see AbstractWindCache#clear()
 	 */
 	public function clear() {
 		return $this->apc->flush();
 	}
-	/* 
-	 * @see wind/component/cache/base/IWindCache#clearByType()
-	 */
-	public function clearByType($key, $type) {
-		
-	}
+	
 
 	
 }

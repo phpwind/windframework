@@ -26,28 +26,28 @@ class WindEacceleratorCache extends AbstractWindCache {
 		$this->eaccelerator = new WindEaccelerator();/* @var WindEaccelerator*/
 	}
 	/* 
-	 * @see wind/component/cache/base/IWindCache#set()
+	 * @see AbstractWindCache#set()
 	 */
 	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
 		$expire = null === $expire  ? $this->getExpire() : $expire;
 		return $this->eaccelerator->set($this->buildSecurityKey($key), $this->storeData($value, $expire, $denpendency), $expire);
 	}
 	/* 
-	 * @see wind/component/cache/base/IWindCache#fetch()
+	 * @see AbstractWindCache#fetch()
 	 */
 	public function get($key) {
 		return $this->getDataFromMeta($key, unserialize($this->eaccelerator->get($this->buildSecurityKey($key))));
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#delete()
+	 * @see AbstractWindCache#delete()
 	 */
 	public function delete($key) {
 		return $this->eaccelerator->delete($this->buildSecurityKey($key));
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#clear()
+	 * @see AbstractWindCache#clear()
 	 * @return boolean
 	 */
 	public function clear() {
@@ -55,7 +55,7 @@ class WindEacceleratorCache extends AbstractWindCache {
 	}
 	
 	/* 
-	 * @see wind/component/cache/base/IWindCache#clearByType()
+	 * @see AbstractWindCache#clearByType()
 	 */
 	public function clearByType($key, $type) {
 		

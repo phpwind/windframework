@@ -61,7 +61,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#set()
+	 * @see AbstractWindCache#set()
 	 */
 	public function set($key, $value, $expire = 0, IWindCacheDependency $denpendency = null) {
 		$expire = null === $expire ? $this->getExpire() : $expire;
@@ -76,7 +76,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#fetch()
+	 * @see AbstractWindCache#fetch()
 	 */
 	public function get($key) {
 		if ($this->expirestrage) {
@@ -90,7 +90,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#batchFetch()
+	 * @see AbstractWindCache#batchFetch()
 	 */
 	public function batchGet(array $keys) {
 		foreach ($keys as $key => $value) {
@@ -119,7 +119,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#delete()
+	 * @see AbstractWindCache#delete()
 	 */
 	public function delete($key) {
 		if ($this->expirestrage) {
@@ -132,7 +132,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#batchDelete()
+	 * @see AbstractWindCache#batchDelete()
 	 */
 	public function batchDelete(array $keys) {
 		foreach ($keys as $key => $value) {
@@ -148,8 +148,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/component/cache/base/IWindCache#clear()
-	 * @return boolean
+	 * @see AbstractWindCache#clear()
 	 */
 	public function clear() {
 		if ($this->expirestrage) {
@@ -178,7 +177,7 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see wind/core/WindComponentModule#setConfig()
+	 * @see WindComponentModule#setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
