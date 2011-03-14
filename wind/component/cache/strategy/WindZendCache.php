@@ -1,7 +1,7 @@
 <?php
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  * tags
@@ -10,7 +10,7 @@ L::import('WIND:component.cache.AbstractWindCache');
 L::import('WIND:component.cache.operator.WindUZendCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  */

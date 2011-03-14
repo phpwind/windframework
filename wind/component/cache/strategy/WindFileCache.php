@@ -6,7 +6,7 @@ L::import('WIND:component.utility.WindFile');
 /**
  * 文件缓存类
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  */
@@ -68,12 +68,11 @@ class WindFileCache extends AbstractWindCache {
 	public function clear($isExpired = false) {
 		return WindFile::clearDir($this->getCacheDir(), $isExpired);
 	}
-	
+
 	/* 
 	 * @see AbstractWindCache#getCacheHandler()
 	 */
-	public function getCacheHandler(){
-	}
+	public function getCacheHandler() {}
 
 	/**
 	 * 获取缓存文件名。

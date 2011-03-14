@@ -1,7 +1,7 @@
 <?php
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  * tags
@@ -10,7 +10,7 @@ L::import('WIND:component.cache.AbstractWindCache');
 L::import('WIND:component.cache.operator.WindUMemcache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @author Su Qian <weihu@alibaba-inc.com>
  * @version $Id$ 
  * @package 
  */
@@ -73,6 +73,7 @@ class WindMemCache extends AbstractWindCache {
 	public function clear() {
 		return $this->memcache->flush();
 	}
+
 	/* 
 	 * @see WindComponentModule::setConfig()
 	 */
@@ -81,32 +82,32 @@ class WindMemCache extends AbstractWindCache {
 		$this->memcache->setServers($this->getServersConfig());
 		$this->compress = $this->getCompress();
 	}
-	
+
 	/* 
 	 * @see AbstractWindCache#getCacheHandler()
 	 * @return WindMemcache
 	 */
-	public function getCacheHandler(){
+	public function getCacheHandler() {
 		return $this->memcache;
 	}
-	
+
 	/**
 	 * 取得缓存配置
 	 * @return array|mixed
 	 */
-	protected function getServersConfig($name = '',$subName = ''){
-		$servers =  $this->getConfig()->getConfig(self::SERVERCONFIG);
-		if(empty($name)){
+	protected function getServersConfig($name = '', $subName = '') {
+		$servers = $this->getConfig()->getConfig(self::SERVERCONFIG);
+		if (empty($name)) {
 			return $servers;
 		}
-		if(empty($subName)){
+		if (empty($subName)) {
 			return isset($servers[$name]) ? $servers[$name] : $servers;
 		}
 		return isset($servers[$name][$subName]) ? $servers[$name][$subName] : $servers[$name];
 	}
-	
-	protected function getCompress(){
-		$compress =  $this->getConfig()->getConfig(self::COMPRESS, WIND_CONFIG_VALUE, '', 0);
+
+	protected function getCompress() {
+		$compress = $this->getConfig()->getConfig(self::COMPRESS, WIND_CONFIG_VALUE, '', 0);
 		return $compress ? MEMCACHE_COMPRESSED : 0;
 	}
 
