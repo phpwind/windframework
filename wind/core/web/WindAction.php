@@ -173,7 +173,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 返回一个错误处理对象
 	 * @return WindErrorMessage $errorMessage
 	 */
-	protected function getErrorMessage() {
+	public function getErrorMessage() {
 		if ($this->errorMessage === null) {
 			throw new WindException(__CLASS__ . '::getError(), Actually get a null', WindException::ERROR_RETURN_TYPE_ERROR);
 		}
