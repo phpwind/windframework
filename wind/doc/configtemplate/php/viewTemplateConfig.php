@@ -7,12 +7,17 @@
  */
 
 /**
- * 结构列子：
+ * 配置模板自定义标签
+ */
 return array(
-   'tag1' => array(
-        'tag' => '',
-        'pattern' => '',
-        'compiler' => '',
-    )
+    /*配置标签*/
+   'support-tags' => array(
+       /** 标签名称
+        'tag1' => array(
+            'tag' => '',   //标签
+            'pattern' => '',  //匹配表达式
+            'compiler' => '',  //解析类文件
+        )
+        */
+    ),
 );
-*/

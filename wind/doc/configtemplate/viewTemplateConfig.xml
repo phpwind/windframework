@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<support-tags> <tag name='' tag='' pattern='' compiler='' /> </support-tags> -->
-
+<!-- 配置自定义模板标签 -->
 <config>
 	<support-tags>
+<!-- 标签配置：name:标签名字，tag:具体的标签，pattern:匹配表达式 ， compiler:解析类文件-->
+<!--<tag name='' tag='' pattern='' compiler='' /> -->
 	</support-tags>
 </config>

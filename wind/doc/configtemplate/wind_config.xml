@@ -1,8 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-	<!-- import external config source file -->
 	<!-- web application definitions, you can define application more than one. -->
 	<web-apps>
-		<web-app name='default' class='windWebApp' root-path=''></web-app>
+	    <!-- 
+	               应用配置，如果是多个应用配置，则可以建立多组的web-app配置项只要以name属性区分 
+	        name:  指定应用的名字，该名字为引用入口中调用的时候指定的名字，W::application('name');
+	        class: 指定该应用的配置 
+            root-path: 指定该应用的入口地址
+	     -->
+		<web-app name='default' class='windWebApp' root-path=''>
+		    <!-- 路由的相关配置  class: 指定路由解析类配置 -->
+			<router>
+			    <!-- 路由module/controller/action相关配置（使用别名及缺省值） -->
+				<config>
+				    <!-- module配置 -->
+					<module url-param='m' default-value='default' />
+				    <!-- controller配置 -->
+					<controller url-param='c' default-value='index' />
+				    <!-- action配置 -->
+					<action url-param='a' default-value='run' />
+				</config>
+			</router>
+			<!-- 
+			模块配置：
+			   可以通过设定多个<module></module>来设置多组模块配置，每组模块以name来相互区分
+			 -->
+			<modules>
+			    <!-- name: 模块的名字    path: 模块的路径（采用命名空间的方式) -->
+				<module name='default' path='controller'>
+				    <!-- 指定该模块下的controller的后缀格式 -->
+					<controller-suffix value='Controller' />
+					<!-- 配置该模块的error处理的action controller类 -->
+					<error-handler class='WIND:core.web.WindErrorHandler'/>
+					<!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
+					<view>
+						<config>
+						    <!-- 指定模板路径 -->
+							<template-dir value='template' />
+						    <!-- 指定模板后缀 -->
+							<template-ext value='htm' />
+							<!-- 模板编译文件存放路径 -->
+							<compile-dir value='compile.template' />
+						</config>
+					</view>
+				</module>
+			</modules>
+		</web-app>
 	</web-apps>
 </WIND>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 数据库缓存的配置信息 -->
 <cache>
+    <!-- 配置数据缓存表 -->
 	<cache-table>
 		<table-name value='pw_cache'/>
 		<field-key value='name' />
@@ -7,6 +9,8 @@
 		<field-expire value='time' />
 		<expirestrage value='true' />
 	</cache-table>
+	<!-- 缓存key是否经过安全处理 -->
 	<security value='true' />
+	<!-- 缓存过期时间 -->
 	<expires value='20' />
 </cache>
