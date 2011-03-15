@@ -15,23 +15,26 @@
  * @package 
  */
 class WindXmlParser {
+
 	/**
 	 * @var string 节点名称
 	 */
 	const NAME = 'name';
-	
+
 	/**
 	 * @var Domdocument DOM解析器
 	 */
 	private $dom = null;
+
 	/**
 	 * @param string $version xml版本
 	 * @param string $encode  xml编码
 	 */
 	public function __construct($version = '1.0', $encode = 'utf-8') {
+		if (!class_exists('DOMDocument')) throw new WindException('DOMDocument is not exist.');
 		$this->dom = new DOMDocument($version, $encode);
 	}
-	
+
 	/**
 	 * @param string $filename xml 文件名
 	 * @param int $option 解析选项
@@ -58,8 +61,8 @@ class WindXmlParser {
 		$childs = array();
 		foreach ($node->childNodes as $node) {
 			$tempChilds = $attributes = array();
-			($node->hasAttributes()) && $attributes = $this->getAttributes($node); 
-			(3 == $node->nodeType && trim($node->nodeValue)) && $childs[0] = (string) $node->nodeValue ;
+			($node->hasAttributes()) && $attributes = $this->getAttributes($node);
+			(3 == $node->nodeType && trim($node->nodeValue)) && $childs[0] = (string) $node->nodeValue;
 			if (1 !== $node->nodeType) continue;
 			
 			$nodeName = ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
@@ -67,20 +70,20 @@ class WindXmlParser {
 			$tempChilds = array_merge($attributes, $tempChilds);
 			if (empty($tempChilds)) $tempChilds = '';
 			
-			$tempChilds = (isset($tempChilds[0]) && count($tempChilds) == 1 ) ? $tempChilds[0] : $tempChilds;
+			$tempChilds = (isset($tempChilds[0]) && count($tempChilds) == 1) ? $tempChilds[0] : $tempChilds;
 			if (!isset($childs[$nodeName])) {
 				$childs[$nodeName] = $tempChilds;
 				continue;
 			} else {
 				$element = $childs[$nodeName];
-				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? 
-						array_merge(array($element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
+				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? array_merge(array(
+					$element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
 				continue;
 			}
 		}
 		return $childs;
 	}
-	
+
 	/**
 	 * 获得节点的属性
 	 * 
