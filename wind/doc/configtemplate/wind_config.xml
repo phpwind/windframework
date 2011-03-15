@@ -11,7 +11,7 @@
 		<web-app name='default' class='windWebApp' root-path=''>
 		    <!-- 路由的相关配置  class: 指定路由解析类配置 -->
 			<router>
-			    <!-- 路由module/controller/action相关配置（使用别名及缺省值） -->
+			    <!-- 路由module/controller/action相关配置（使用url访问参数名称及缺省值） -->
 				<config>
 				    <!-- module配置 -->
 					<module url-param='m' default-value='default' />
