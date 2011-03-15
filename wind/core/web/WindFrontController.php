@@ -81,28 +81,24 @@ class WindFrontController extends AbstractWindServer {
 	 * @see wind/core/base/WindServer#process()
 	 */
 	protected function process(WindHttpRequest $request, WindHttpResponse $response) {
-		try {
-			$this->getWindFactory()->request = $request;
-			$this->getWindFactory()->response = $response;
-			$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
-			$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
-			
-			$appName = $this->getWindConfig()->getAppClass();
-			$application = $this->getWindFactory()->getInstance($appName);
-			if (null === $application) {
-				throw new WindException('application', WindException::ERROR_CLASS_NOT_EXIST);
-			}
-			
-			$this->getWindFactory()->application = $application;
-			if (null !== $filterChain = $this->getFilterChain()) {
-				$filterChain->setCallBack(array($application, 'processRequest'), array());
-				$filterChain->getHandler()->handle($request, $response);
-			} else
-				$application->processRequest();
+		$this->getWindFactory()->request = $request;
+		$this->getWindFactory()->response = $response;
+		$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
+		$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
 		
-		} catch (WindException $exception) {
-			echo $exception->getMessage();
+		$appName = $this->getWindConfig()->getAppClass();
+		$application = $this->getWindFactory()->getInstance($appName);
+		if (null === $application) {
+			throw new WindException('application', WindException::ERROR_CLASS_NOT_EXIST);
 		}
+		
+		$this->getWindFactory()->application = $application;
+		if (null !== $filterChain = $this->getFilterChain()) {
+			$filterChain->setCallBack(array($application, 'processRequest'), array());
+			$filterChain->getHandler()->handle($request, $response);
+		} else
+			$application->processRequest();
+	
 	}
 
 	/**
@@ -117,8 +113,9 @@ class WindFrontController extends AbstractWindServer {
 	 * @see AbstractWindServer::beforeProcess()
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
-		//L::import('WIND:core.web.WindErrorHandler');
-	//set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
+		L::import('WIND:core.web.WindErrorHandler');
+		set_error_handler(array(new WindErrorHandler($request, $response), 'errorHandle'), error_reporting());
+		set_exception_handler(array(new WindErrorHandler($request, $response), 'exceptionHandle'));
 	}
 
 	/* (non-PHPdoc)
@@ -132,6 +129,7 @@ class WindFrontController extends AbstractWindServer {
 			$logger->flush();
 		}
 		restore_error_handler();
+		restore_exception_handler();
 	}
 
 	/**

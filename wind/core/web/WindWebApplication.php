@@ -49,8 +49,6 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		
 		} catch (WindViewException $windViewException) {
 
-		} catch (WindException $exception) {
-			$this->noActionHandlerFound($exception->getMessage());
 		}
 	}
 
@@ -89,7 +87,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			$handler = $this->windSystemConfig->getConfig(self::ERROR_HANDLER, WIND_CONFIG_CLASS, $moduleConfig, $this->errorHandle);
 		} else
 			$handler = $handlerAdapter->getHandler();
-			
+		
 		$definition = new WindComponentDefinition();
 		$definition->setPath($handler);
 		$definition->setScope(WindComponentDefinition::SCOPE_PROTOTYPE);
