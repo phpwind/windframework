@@ -40,7 +40,6 @@ abstract class AbstractWindDaoFactory {
 				$_path = $className;
 			}
 			$className = L::import($_path);
-			
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
@@ -48,17 +47,27 @@ abstract class AbstractWindDaoFactory {
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
 			$daoInstance = $daoInstance->getClassProxy();
-			$listener = new WindDaoCacheListener($daoInstance);
-			$caches = (array) $daoInstance->getCacheMethods();
-			$_caches = isset($caches['cache']) ? $caches['cache'] : array();
-			$_caches1 = isset($caches['clear']) ? $caches['clear'] : array();
-			$_caches = array_merge($_caches, $_caches1);
-			foreach ($_caches as $classMethod) {
-				$daoInstance->registerEventListener($classMethod, $listener);
-			}
+			$this->registerCacheListener($daoInstance);
 			return $daoInstance;
 		} catch (Exception $exception) {
 			throw new WindDaoException($exception->getMessage());
+		}
+	}
+
+	/**
+	 * 注册Dao缓存监听
+	 * @param AbstractWindDao daoInstance
+	 */
+	private function registerCacheListener($daoInstance) {
+		$caches = (array) $daoInstance->getCacheMethods();
+		foreach ($caches as $classMethod => $classPath) {
+			if (!$classMethod) continue;
+			if ($classPath === 'default')
+				$_className = L::import('WIND:core.dao.listener.WindDaoCacheListener');
+			else
+				$_className = L::import($classPath);
+			if (!$_className) continue;
+			$daoInstance->registerEventListener($classMethod, new $_className($daoInstance));
 		}
 	}
 
