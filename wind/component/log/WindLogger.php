@@ -83,9 +83,7 @@ class WindLogger extends WindComponentModule {
 	/**
 	 * 将记录的日志列表信息写入文件
 	 * 
-	 * @param string $type 日志类别
 	 * @param string $dst  日志被记录于何处
-	 * @param string $header 其它信息
 	 * @return boolean
 	 */
 	public function flush($dst = '') {
@@ -287,6 +285,10 @@ class WindLogger extends WindComponentModule {
 	 */
 	protected function getLogDir() {
 		return LOG_DIR;
+	}
+
+	public function __destruct() {
+		$this->flush();
 	}
 
 }

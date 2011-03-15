@@ -250,15 +250,12 @@ class L {
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	static public function getRealPath($filePath, $isDir = false) {
-		$filePath = trim($filePath, '');
+		$filePath = trim($filePath, ' ');
 		$namespace = $suffix = '';
 		if (!$isDir) {
 			$_pos1 = strrpos($filePath, '.');
-			$_len = strlen($filePath);
-			if ($_pos1 + 1 !== $_len) {
-				$suffix = '.' . substr($filePath, $_pos1 + 1);
-				$filePath = substr($filePath, 0, $_pos1);
-			}
+			$suffix = trim(substr($filePath, $_pos1 + 1), '.');
+			$filePath = substr($filePath, 0, $_pos1);
 		}
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = substr($filePath, 0, $pos);
@@ -266,7 +263,7 @@ class L {
 		}
 		$filePath = str_replace('.', D_S, $filePath);
 		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
-		return $filePath . $suffix;
+		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 
 	/**
