@@ -77,7 +77,7 @@ class WindViewerResolver extends WindComponentModule implements IWindViewerResol
 	public function compile($template, $suffix = '', $output = false) {
 		$templateFile = $this->getWindView()->getViewTemplate($template, $suffix);
 		if (!file_exists($templateFile)) {
-			throw new WindException($templateFile, WindViewException::VIEW_NOT_EXIST);
+			throw new WindViewException($templateFile, WindViewException::VIEW_NOT_EXIST);
 		}
 		if (!$this->getWindView()->getCompileDir()) return $templateFile;
 		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
