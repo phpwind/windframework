@@ -51,7 +51,7 @@ class WindDispatcher extends WindComponentModule {
 		$_url = $urlHelper->checkUrl($_url);
 		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);
 		$_router->reParse();
-		if (!$this->checkProcess($_router)) {
+		if ($forward->getIsReAction() && !$this->checkProcess($_router)) {
 			throw new WindException('Duplicate request ' . $_router->getAction() . '_' . $_router->getController() . '.' . $_router->getModule());
 		}
 		$this->response->sendRedirect($_url);
