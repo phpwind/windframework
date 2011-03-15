@@ -23,10 +23,10 @@ class IndexController extends WindController {
 		$this->setTemplate('helloworld');
 		//$this->forwardAction('add', 'WINDAPP1:default.index', '', true);
 	    //echo $this->getUrlHelper()->createUrl('add');
-	    /*$this->forwardAction('add', '', '', true);
-		L::import('WINDAPP1:dao.WindApp1DaoFactory');
-		$dao = WindApp1DaoFactory::getFactory()->getDao('WINDAPP1:dao.windApp1UserDao');
-		$dao->findUserById('1');*/
+	    /*$this->forwardAction('add', '', '', true);*/
+		L::import('DEFAULT:dao.WindApp1DaoFactory');
+		$dao = WindApp1DaoFactory::getFactory()->getDao('DEFAULT:dao.windApp1UserDao');
+		return $dao->findUserById('3');
 	}
 
 	public function doHeader() {

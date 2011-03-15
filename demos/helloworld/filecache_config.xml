@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cache>
-	<cache-dir value='default:compile.cache' />
+	<cache-dir value='DEFAULT:compile.cache' />
 	<cache-level value='3' />
 	<cache-suffix value='php' />
 	<security value='true' />
-	<expires value='10' />
+	<expires value='5' />
 </cache>

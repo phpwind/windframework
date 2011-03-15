@@ -10,9 +10,9 @@ return array(
 		'driver' => 'mysql',
 		'host' => 'localhost',
 		'user' => 'root',
-		'password' => 'phpwind.net',
+		'password' => 'suqian0512h',
 		'port' => '3306',
-		'name' => 'yulingsp3',
+		'name' => 'phpwind_8',
 		'charset' => 'utf8',
 	),
 );
