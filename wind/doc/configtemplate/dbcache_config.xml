@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cache>
-	<cache-table name='pw_cache'>
+	<cache-table>
+		<table-name value='pw_cache'/>
 		<field-key value='name' />
 		<field-value value='cache' />
 		<field-expire value='time' />
-		<expirestrage>true</expirestrage>
+		<expirestrage value='true' />
 	</cache-table>
 	<security value='true' />
 	<expires value='20' />
