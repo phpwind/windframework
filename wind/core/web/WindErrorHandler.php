@@ -38,7 +38,14 @@ class WindErrorHandler extends WindController {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		echo 'ErrorMessage:' . array_pop($this->error);
+		$_tmp = "Error [user error]:\r\n";
+		for ($i = 0; $i < count($this->error); $i++) {
+			$_tmp .= "#$i " . $this->error[$i] . "\r\n";
+		}
+		echo "<h3>User Error:</h3>";
+		echo "<p>" . nl2br($_tmp) . "</p>";
+		echo "<a href='" . $this->urlReferer . "'>Click to go back.</a>";
+		$this->addLog("User Error:", $_tmp);
 		exit();
 	}
 
@@ -67,7 +74,7 @@ class WindErrorHandler extends WindController {
 			} else
 				echo "<h3>Error [$errno] $errstr</h3>";
 			
-			$this->addLog();
+			$this->addLog("Error [$errno] $errstr", $_tmp);
 		}
 	}
 
