@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- memcache配置 -->
+<cache>
+   <!-- memcache服务器相关配置 可以配置多个-->
+	<servers>
+		<server name='phpwind'>
+			<host>127.0.0.1</host>
+			<port>11211</port>
+		</server>
+		<server name='cac'>
+			<host>127.0.0.1</host>
+			<port>11212</port>
+		</server>
+	</servers>
+	<!-- 压缩的级次 -->
+	<compress value='2' />
+	<!-- 缓存key是否经过安全过滤 -->
+	<security value='true' />
+	<!-- 缓存过期时间 -->
+	<expires value='20' />
+</cache>
