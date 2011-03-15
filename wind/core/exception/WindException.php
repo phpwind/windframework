@@ -84,7 +84,6 @@ class WindException extends Exception {
 	 */
 	public function buildMessage($message, $code) {
 		eval('$message="' . addcslashes($this->messageMapper($code), '"') . '";');
-		$message .= $this->getTraceAsString();
 		return $message;
 	}
 
