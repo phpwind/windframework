@@ -38,11 +38,11 @@ class WindErrorHandler extends WindController {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		$_tmp = "Error [user error]:\r\n";
+		$_tmp = "User Message:\r\n";
 		for ($i = 0; $i < count($this->error); $i++) {
 			$_tmp .= "#$i " . $this->error[$i] . "\r\n";
 		}
-		echo "<h3>User Error:</h3>";
+		echo "<h3>User Message: (" . count($this->error) . ")</h3>";
 		echo "<p>" . nl2br($_tmp) . "</p>";
 		echo "<a href='" . $this->urlReferer . "'>Click to go back.</a>";
 		$this->addLog("User Error:", $_tmp);
