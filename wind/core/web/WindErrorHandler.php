@@ -71,13 +71,66 @@ class WindErrorHandler extends WindController {
 				$_tmp .= "{$value['function']}()\r\n";
 			}
 			if (IS_DEBUG) {
-				echo "<h3>Error [$errno] $errstr</h3>";
+				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
 				echo "<p>" . nl2br($_tmp) . "</p>";
 			} else
-				echo "<h3>Error [$errno] $errstr</h3>";
+				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
 			
-			$this->addLog("Error [$errno] $errstr", $_tmp);
+			$this->addLog($this->errnoMap($errno) . $errstr, $_tmp);
 		}
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param $string $errno
+	 */
+	private function errnoMap($errno) {
+		$_tmp = '';
+		switch ($errno) {
+			case E_ERROR:
+				$_tmp = "Error";
+				break;
+			case E_WARNING:
+				$_tmp = "Warning";
+				break;
+			case E_PARSE:
+				$_tmp = "Parse Error";
+				break;
+			case E_NOTICE:
+				$_tmp = "Notice";
+				break;
+			case E_CORE_ERROR:
+				$_tmp = "Core Error";
+				break;
+			case E_CORE_WARNING:
+				$_tmp = "Core Warning";
+				break;
+			case E_COMPILE_ERROR:
+				$_tmp = "Compile Error";
+				break;
+			case E_COMPILE_WARNING:
+				$_tmp = "Compile Warning";
+				break;
+			case E_USER_ERROR:
+				$_tmp = "User Error";
+				break;
+			case E_USER_WARNING:
+				$_tmp = "User Warning";
+				break;
+			case E_USER_NOTICE:
+				$_tmp = "User Notice";
+				break;
+			case E_STRICT:
+				$_tmp = "Strict Notice";
+				break;
+			case E_RECOVERABLE_ERROR:
+				$_tmp = "Recoverable Error";
+				break;
+			default:
+				$_tmp = "Unknown error ($errno)";
+				break;
+		}
+		return $_tmp;
 	}
 
 	/**
