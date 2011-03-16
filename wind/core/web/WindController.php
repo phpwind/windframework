@@ -22,7 +22,7 @@ abstract class WindController extends WindAction {
 	 */
 	protected function resolvedActionMethod($handlerAdapter) {
 		$action = $handlerAdapter->getAction();
-		if ($action !== 'run') $action = 'do' . ucfirst($action);
+		if ($action !== 'run') $action = $this->resolvedActionName($action);
 		try {
 			$method = new ReflectionMethod($this, $action);
 		} catch (Exception $exception) {
@@ -32,6 +32,16 @@ abstract class WindController extends WindAction {
 			call_user_func_array(array($this, $action), array());
 		else
 			throw new WindException();
+	}
+
+	/**
+	 * 根据请求的Action值返回Action的真正方法名
+	 * 可以通过覆盖该方法来改变Action的命名规则
+	 * @param string $action
+	 * @return string
+	 */
+	protected function resolvedActionName($action) {
+		return $action . 'Action';
 	}
 
 	/**
