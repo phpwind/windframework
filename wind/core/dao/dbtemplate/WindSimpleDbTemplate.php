@@ -87,6 +87,36 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 
 	/**
 	 * (non-PHPdoc)
+	 * @see IWindDbTemplate::batchInsert()
+	 */
+	public function batchInsert($tableName, array $field, array $data) {
+		$db = $this->getDbHandler();
+		$time = 0;
+		foreach ($data as $value) {
+			if (empty($clear = $this->buildData($field, $value))) continue;
+			$db->getSqlBuilder()->from($tableName)->data($clear)->insert();
+			$time++;
+		}
+		return $time;
+	}
+
+	/**
+	 * 根据传入的字段数组及数据，构造根据字段组成的数据
+	 *
+	 * @param array $field
+	 * @param array $data
+	 */
+	private function buildData(array $field, array $data) {
+		$clear = array();
+		foreach ($field as $key) {
+			if (!$this->checkFiled($key)) continue;
+			isset($data[$key]) && $clear[$key] = $data[$key];
+		}
+		return $clear;
+	}
+
+	/**
+	 * (non-PHPdoc)
 	 * @see IWindDbTemplate::replace()
 	 */
 	public function replace($tableName, $data, $isGetAffectedRows = false) {
@@ -126,11 +156,10 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 		return $isGetAffectedRows ? $db->getAffectedRows() : $result;
 	}
 
-	
-    /**
-     * (non-PHPdoc)
-     * @see IWindDbTemplate::deleteByField()
-     */
+	/**
+	 * (non-PHPdoc)
+	 * @see IWindDbTemplate::deleteByField()
+	 */
 	public function deleteByField($tableName, $filed, $value, $isGetAffectedRows = false) {
 		if (!$this->checkFiled($filed)) return array();
 		return $this->delete($tableName, array('where' => "$filed = ?", 'whereValue' => $value), $isGetAffectedRows);
@@ -169,13 +198,13 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 		$count = $this->count($tableName, $condition);
 		return array($result, $count);
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see IWindDbTemplate::findAllByField()
 	 */
 	public function findAllByField($tableName, $field, $value, $ifCount = false) {
-	    if (!$this->checkFiled($filed)) return array();
+		if (!$this->checkFiled($filed)) return array();
 		return $this->findAll($tableName, array('where' => "$filed = ?", 'whereValue' => $value));
 	}
 
