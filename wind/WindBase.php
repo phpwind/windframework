@@ -6,7 +6,7 @@
  * @license
  */
 
-!defined('VERSION') && define('VERSION', '0.2');
+!defined('VERSION') && define('VERSION', '0.3');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
 
 /* 路径相关配置信息  */
