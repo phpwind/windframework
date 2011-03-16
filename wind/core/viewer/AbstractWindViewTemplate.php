@@ -77,7 +77,8 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	 * @param string $content | 模板内容
 	 */
 	private function cacheCompileResult($compileFile, $content) {
-		if (!$compileFile) return;
+		//TODO 修复模板在非Debug模式下不能生成问题
+		if (!$compileFile && !$content) return;
 		WindFile::write($compileFile, $content);
 	}
 

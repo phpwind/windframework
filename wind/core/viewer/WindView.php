@@ -128,20 +128,18 @@ class WindView extends WindComponentModule {
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param template
-	 * @param ext
+	 * @param $fileName
+	 * @param $fileExt
+	 * @param $path
 	 */
 	private function parseFilePath($fileName, $fileExt, $path) {
 		if (!$fileName) $fileName = $this->getTemplateName();
 		if (!$fileExt) $fileExt = $this->getTemplateExt();
 		if (!$fileName) return '';
-		
-		if (strrpos($path, ':') === false) {
-			$path = $this->windSystemConfig->getAppName() . ':' . $path;
+		if (strrpos($path, ':') === false) $path = $this->windSystemConfig->getAppName() . ':' . $path;
+		if (!($dir = L::getRealPath($path, true)) || !is_dir($dir)) {
+			throw new WindException('The file folder \'' . $dir . '\' is not exist.');
 		}
-		$filePath = L::getRealPath($path, true);
-		if ($filePath && !file_exists($filePath)) @mkdir($filePath);
 		return L::getRealPath($path . '.' . $fileName . '.' . $fileExt);
 	}
 
