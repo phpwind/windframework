@@ -39,8 +39,10 @@ class WindErrorHandler extends WindController {
 	 */
 	public function run() {
 		$_tmp = "User Message:\r\n";
-		for ($i = 0; $i < count($this->error); $i++) {
-			$_tmp .= "#$i " . $this->error[$i] . "\r\n";
+		$i = 0;
+		foreach ($this->error as $key => $value) {
+			$i++;
+			$_tmp .= "#$i " . $value . "\r\n";
 		}
 		echo "<h3>User Message: (" . count($this->error) . ")</h3>";
 		echo "<p>" . nl2br($_tmp) . "</p>";
