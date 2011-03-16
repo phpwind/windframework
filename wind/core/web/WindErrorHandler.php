@@ -12,15 +12,6 @@ class WindErrorHandler extends WindController {
 
 	protected $urlReferer = '';
 
-	/**
-	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
-	 */
-	public function __construct($request = null, $response = null) {
-		$this->request = $request;
-		$this->response = $response;
-	}
-
 	/* (non-PHPdoc)
 	 * @see WindAction::beforeAction()
 	 */
@@ -151,11 +142,7 @@ class WindErrorHandler extends WindController {
 	}
 
 	private function getFile($filePath) {
-		$documentRoot = $this->request->getServer('DOCUMENT_ROOT', '');
-		$filePath = str_replace(array('\\', '/'), '.', $filePath);
-		$documentRoot = str_replace(array('\\', '/'), '.', $documentRoot);
-		if ($documentRoot) $filePath = str_replace($documentRoot, '', $filePath);
-		return str_replace(array('.'), D_S, $filePath);
+		return $filePath;
 	}
 
 	/**

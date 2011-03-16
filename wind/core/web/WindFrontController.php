@@ -114,8 +114,8 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
 		L::import('WIND:core.web.WindErrorHandler');
-		set_error_handler(array(new WindErrorHandler($request, $response), 'errorHandle'), error_reporting());
-		set_exception_handler(array(new WindErrorHandler($request, $response), 'exceptionHandle'));
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
+		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
 
 	/* (non-PHPdoc)
