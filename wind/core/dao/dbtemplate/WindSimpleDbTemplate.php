@@ -141,9 +141,9 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * (non-PHPdoc)
 	 * @see IWindDbTemplate::updateByField()
 	 */
-	public function updateByField($tableName, $data, $filed, $value, $isGetAffectedRows = false) {
-		if (!$this->checkFiled($filed)) return false;
-		return $this->update($tableName, $data, array('where' => "$filed = ?", 'whereValue' => $value), $isGetAffectedRows);
+	public function updateByField($tableName, $data, $field, $value, $isGetAffectedRows = false) {
+		if (!$this->checkFiled($field)) return false;
+		return $this->update($tableName, $data, array('where' => "$field = ?", 'whereValue' => $value), $isGetAffectedRows);
 	}
 
 	/**
@@ -161,9 +161,9 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * (non-PHPdoc)
 	 * @see IWindDbTemplate::deleteByField()
 	 */
-	public function deleteByField($tableName, $filed, $value, $isGetAffectedRows = false) {
-		if (!$this->checkFiled($filed)) return array();
-		return $this->delete($tableName, array('where' => "$filed = ?", 'whereValue' => $value), $isGetAffectedRows);
+	public function deleteByField($tableName, $field, $value, $isGetAffectedRows = false) {
+		if (!$this->checkFiled($field)) return array();
+		return $this->delete($tableName, array('where' => "$field = ?", 'whereValue' => $value), $isGetAffectedRows);
 	}
 
 	/**
@@ -181,9 +181,9 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * (non-PHPdoc)
 	 * @see IWindDbTemplate::findByField()
 	 */
-	public function findByField($tableName, $filed, $value) {
-		if (!$this->checkFiled($filed)) return array();
-		return $this->find($tableName, array('where' => "$filed = ?", 'whereValue' => $value));
+	public function findByField($tableName, $field, $value) {
+		if (!$this->checkFiled($field)) return array();
+		return $this->find($tableName, array('where' => "$field = ?", 'whereValue' => $value));
 	}
 
 	/**
@@ -238,8 +238,8 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * @param string $filed
 	 * @return bool
 	 */
-	public function checkFiled($filed) {
-		return preg_match('/^[A-Za-z]{1}[A-Za-z0-9_]+$/i', $filed);
+	public function checkFiled($field) {
+		return preg_match('/^[A-Za-z]{1}[A-Za-z0-9_]+$/i', $field);
 	}
 
 	/**
