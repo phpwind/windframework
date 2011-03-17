@@ -257,7 +257,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function writeLog($dst = '') {
 		$dst = empty($dst) ? $this->getFileName() : $dst;
-		L::import('WIND:utility.WindFile');
+		L::import('WIND:componet.utility.WindFile');
 		WindFile::write($dst, join("", $this->logs), 'a');
 	}
 
