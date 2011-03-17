@@ -250,7 +250,6 @@ class L {
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	static public function getRealPath($filePath, $isDir = false) {
-		//TODO 修复对绝对路径的访问支持
 		$filePath = trim($filePath, ' ');
 		$namespace = $suffix = '';
 		if (!$isDir) {
