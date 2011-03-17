@@ -17,13 +17,13 @@ interface IWindDbTemplate {
 	
 	/**
 	 * 获得数据库链接
-	 * @return the $connection
+	 * @return WindConnectionManager|WindDbAdapter  $connection
 	 */
 	public function getConnection();
 
 	/**
 	 * 设置数据库链接
-	 * @param object $connection
+	 * @param WindConnectionManager|WindDbAdapter $connection
 	 */
 	public function setConnection($connection);
     
@@ -62,20 +62,10 @@ interface IWindDbTemplate {
 	public function insert($tableName, $data);
 	
 	/**
-	 * 批量添加数据
-	 * 
-	 * @param string $tableName 表名
-	 * @param array $field 字段
-	 * @param array $data 待插入的数据
-	 * @return int 返回执行的次数
-	 */
-	public function batchInsert($tableName, array $field, array $data);
-	
-	/**
 	 * 更新一条数据
 	 * @param string $tableName 更新的数据表
 	 * @param array $data	更新的数据
-	 * @param return $isGetAffectedRows 是否返回影响行数
+	 * @param boolean $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
 	public function replace($tableName, $data, $isGetAffectedRows = false);
@@ -91,7 +81,7 @@ interface IWindDbTemplate {
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * 'limit' => '' 查询的数量
 	 * )
-	 * @param return $isGetAffectedRows 是否返回影响行数
+	 * @param boolean $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
 	public function update($tableName, $data, $condition = array(), $isGetAffectedRows = false);
@@ -103,7 +93,7 @@ interface IWindDbTemplate {
 	 * @param array $data	更新的数据
 	 * @param string $filed	条件字段
 	 * @param string $value	该字段的值
-	 * @param return $isGetAffectedRows 是否返回影响行数
+	 * @param boolean $isGetAffectedRows 是否返回影响行数
 	 * @return bool 
 	 */
 	public function updateByField($tableName, $data, $filed, $value, $isGetAffectedRows = false);
@@ -119,7 +109,7 @@ interface IWindDbTemplate {
 	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
 	 * 'limit' => '' 查询的数量
 	 * )
-	 * @param return $isGetAffectedRows 是否返回影响行数
+	 * @param boolean $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
 	public function delete($tableName, $condition, $isGetAffectedRows = false);
@@ -130,7 +120,7 @@ interface IWindDbTemplate {
 	 * @param string $tableName 删除的数据表
 	 * @param string $filed	所依据的字段名
 	 * @param string $value 该字段的值
-	 * @param return $isGetAffectedRows 是否返回影响行数
+	 * @param boolean $isGetAffectedRows 是否返回影响行数
 	 * @return bool
 	 */
 	public function deleteByField($tableName, $filed, $value, $isGetAffectedRows = false);
