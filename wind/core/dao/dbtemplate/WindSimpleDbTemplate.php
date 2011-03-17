@@ -93,7 +93,7 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 		$db = $this->getDbHandler();
 		$time = 0;
 		foreach ($data as $value) {
-		    $clear = $this->buildData($field, $value);
+			$clear = $this->buildData($field, $value);
 			if (empty($clear)) continue;
 			$db->getSqlBuilder()->from($tableName)->data($clear)->insert();
 			$time++;
