@@ -258,11 +258,10 @@ class L {
 			$filePath = substr($filePath, 0, $_pos1);
 		}
 		if (($pos = strpos($filePath, ':')) !== false) {
-			$namespace = substr($filePath, 0, $pos);
-			$filePath = substr($filePath, $pos + 1);
+			$namespace = self::getRootPath(substr($filePath, 0, $pos));
 		}
 		$filePath = str_replace('.', D_S, $filePath);
-		if ($namespace) $filePath = rtrim(self::getRootPath($namespace), D_S) . D_S . $filePath;
+		if ($namespace) $filePath = rtrim($namespace, D_S) . D_S . substr($filePath, $pos + 1);
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 
@@ -311,7 +310,7 @@ class L {
 	}
 
 	static private function getRootPath($namespace = '') {
-		if ($namespace === '') $namespace = W::getCurrentApp();
+		if (!$namespace) return '';
 		$namespace = strtolower($namespace);
 		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
