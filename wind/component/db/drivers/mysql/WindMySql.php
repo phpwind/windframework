@@ -197,7 +197,9 @@ class WindMySql extends AbstractWindDbAdapter {
 		$this->last_errcode = mysql_errno();
 		$this->last_sql = $sql;
 		if ($this->last_errstr || $this->last_errcode) {
-			throw new WindSqlException($this->last_errstr, $this->last_errcode);
+			$errInfo = 'This sql statement error has occurred:'.$this->last_sql.'.<br/>';
+			$errInfo .= 'Error Message:'.$this->last_errstr.'.<br/>';
+			throw new WindSqlException($errInfo, $this->last_errcode);
 		}
 		return true;
 	}
