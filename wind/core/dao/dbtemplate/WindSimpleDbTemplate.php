@@ -205,8 +205,8 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * @see IWindDbTemplate::findAllByField()
 	 */
 	public function findAllByField($tableName, $field, $value, $ifCount = false) {
-		if (!$this->checkFiled($filed)) return array();
-		return $this->findAll($tableName, array('where' => "$filed = ?", 'whereValue' => $value));
+		if (!$this->checkFiled($field)) return array();
+		return $this->findAll($tableName, array('where' => "$field = ?", 'whereValue' => $value));
 	}
 
 	/**
