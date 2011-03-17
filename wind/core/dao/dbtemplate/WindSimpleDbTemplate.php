@@ -239,6 +239,7 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	 * @return bool
 	 */
 	public function checkFiled($field) {
+	    if (!is_string($field)) return false;
 		return preg_match('/^[A-Za-z]{1}[A-Za-z0-9_]+$/i', $field);
 	}
 
