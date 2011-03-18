@@ -141,6 +141,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return string
 	 */
 	protected function getCompiledBlockKey() {
+		L::import('WIND:component.utility.WindUtility');
 		$key = WindUtility::generateRandStr(50);
 		if (key_exists($key, $this->compiledBlockData)) {
 			return $this->getCompiledBlockKey();
