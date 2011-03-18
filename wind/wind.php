@@ -44,4 +44,15 @@ define('WIND_CONFIG_RESOURCE', 'resource');
 define('WIND_CONFIG_VALUE', 'value');
 
 
+//************DBsql构造中condition的条件key**********************************************************
+define('WIND_DB_C_FIELD', 'field');
+define('WIND_DB_C_WHERE', 'where');
+define('WIND_DB_C_WHEREVALUE', 'whereValue');
+define('WIND_DB_C_ORDER', 'order');
+define('WIND_DB_C_LIMIT', 'limit');
+define('WIND_DB_C_OFFSET', 'offset');
+define('WIND_DB_C_GROUP', 'group');
+define('WIND_DB_C_HAVING', 'having');
+define('WIND_DB_C_HAVINGVALUE', 'havingValue');
+define('WIND_DB_C_RESULTTINDEXKEY', 'resultIndexKey');
 
