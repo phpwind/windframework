@@ -598,6 +598,8 @@ abstract class AbstractWindSqlBuilder {
 			$value = (float) $value;
 		} elseif (is_object($value) || is_array($value)) {
 			$value = " '" . addslashes(serialize($value)). "' ";
+		} elseif (is_null($value)){
+			$value = '';
 		}
 		return $this->sqlFillSpace($value);
 	}
