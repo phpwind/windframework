@@ -14,6 +14,16 @@
  * @package
  */
 interface IWindDbTemplate {
+    const FIELD = 'field';
+    const WHERE = 'where';
+    const WHEREVALUE = 'whereValue';
+    const ORDER = 'order';
+    const LIMIT = 'limit';
+    const OFFSET = 'offset';
+    const GROUP = 'group';
+    const HAVING = 'having';
+    const HAVINGVALUE = 'havingValue';
+    const RESULTTINDEXKEY = 'resultIndexKey';
 	
 	/**
 	 * 获得数据库链接
