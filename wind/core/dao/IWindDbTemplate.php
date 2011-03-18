@@ -62,6 +62,15 @@ interface IWindDbTemplate {
 	public function insert($tableName, $data);
 	
 	/**
+	 * 批量插入数据
+	 *
+	 * @param string $tableName 待插入的表名
+	 * @param array $field  插入的字段
+	 * @param array $data   插入的数据
+	 */
+	public function batchInsert($tableName, array $field, array $data);
+	
+	/**
 	 * 更新一条数据
 	 * @param string $tableName 更新的数据表
 	 * @param array $data	更新的数据
