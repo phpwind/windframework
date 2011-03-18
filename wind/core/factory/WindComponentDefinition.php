@@ -7,6 +7,8 @@
  */
 
 L::import('WIND:core.factory.WindClassDefinition');
+L::import('WIND:core.config.parser.WindConfigParser');
+L::import('WIND:core.config.WindConfig');
 /**
  * 组件定义
  * 
@@ -53,7 +55,6 @@ class WindComponentDefinition extends WindClassDefinition {
 		if (!($instance instanceof WindComponentModule)) return $instance;
 		$windConfig = null;
 		if (isset($this->config[self::RESOURCE]) && ($resource = $this->config[self::RESOURCE])) {
-			L::import('WIND:core.config.parser.WindConfigParser');
 			$configPath = L::getRealPath($resource);
 			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias(), CONFIG_CACHE);
 		} else {
