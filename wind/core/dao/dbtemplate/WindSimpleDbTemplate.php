@@ -283,4 +283,14 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 		$sql = 'CREATE TABLE ' . $tableName . '(' . $statement . ')' . $engine;
 		return $this->query($sql);
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see IWindDbTemplate::dropTable()
+	 */
+	public function dropTable($tableName) {
+	    if (!$tableName) return false;
+	    $sql = "DROP TABLE IF EXISTS " . trim($tableName);
+	    $return $this->query($sql);
+	}
 }

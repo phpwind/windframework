@@ -231,6 +231,12 @@ interface IWindDbTemplate {
 	 * @return boolean
 	 */
 	public function createTable($tableName, $statement, $engine = 'MyISAM', $charset = 'GBK', $auto_increment = '');
-
+    
+	/**
+	 * 删除数据表
+	 * @param string $tableName 待删除的表名
+	 * @return boolean
+	 */
+	public function dropTable($tableName);
 }
 ?>
