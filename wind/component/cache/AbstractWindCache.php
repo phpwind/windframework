@@ -1,12 +1,5 @@
 <?php
-/**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Su Qian <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
-
+L::import('WIND:core.WindComponentModule');
 /**
  * 缓存接口及通用方法定义
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -129,6 +122,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * 清空所有缓存
 	 */
 	public abstract function clear();
+
 	/**
 	 * 如果缓存中有数据，则检查缓存依赖是否已经变更，如果变更则删除缓存
 	 * @param string $key 键
@@ -139,7 +133,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
 			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
 			/* @var $dependency IWindCacheDependency*/
-			$dependency = unserialize($data[self::DEPENDENCY]); 
+			$dependency = unserialize($data[self::DEPENDENCY]);
 			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
 				$this->delete($key);
 				return true;
@@ -172,7 +166,10 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * @return string
 	 */
 	protected function storeData($value, $expires = null, $denpendency = null) {
-		$data = array(self::DATA => $value, self::EXPIRE => $expires, self::STORETIME => time());
+		$data = array(
+			self::DATA => $value, 
+			self::EXPIRE => $expires, 
+			self::STORETIME => time());
 		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
 			$denpendency->injectDependent($this);
 			$data[self::DEPENDENCY] = serialize($denpendency);
