@@ -7,6 +7,7 @@
  */
 L::import('WIND:component.exception.WindSqlException');
 L::import('WIND:component.db.drivers.IWindDbConfig');
+L::import('WIND:core.WindComponentModule');
 /**
  * 实现分步式数据库操作管理及由静态工厂返回相应的数据库适配器
  * the last known user to change this file in the repository  <$LastChangedBy$>
