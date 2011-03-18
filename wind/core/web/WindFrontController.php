@@ -26,8 +26,6 @@ class WindFrontController extends AbstractWindServer {
 
 	const WIND_FACTORY = 'WIND:core.factory.WindComponentFactory';
 
-	const CONFIG_CACHE = 'wind_components_config';
-
 	const COMPONENTS_CONFIG = 'WIND:config.components_config.php';
 
 	/**
@@ -54,7 +52,7 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function initWindFactory() {
 		$configPath = L::getRealPath(self::COMPONENTS_CONFIG);
-		$classesDefinitions = $this->getWindConfig()->getConfigParser()->parse($configPath, 'components', CONFIG_CACHE);
+		$classesDefinitions = $this->getWindConfig()->getConfigParser()->parse($configPath, 'components', WIND_CONFIG_CACHE);
 		$factoryClass = L::import(self::WIND_FACTORY);
 		if (!class_exists($factoryClass)) {
 			throw new WindException($factoryClass, WindException::ERROR_CLASS_NOT_EXIST);
