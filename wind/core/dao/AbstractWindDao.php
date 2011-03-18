@@ -1,5 +1,5 @@
 <?php
-
+L::import('WIND:core.WindModule');
 /**
  * 抽象DAO接口
  *
