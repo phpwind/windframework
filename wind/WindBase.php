@@ -106,18 +106,14 @@ class W {
 	 */
 	static public function resolveController($controllerPath) {
 		$_m = $_c = '';
-		if (!$controllerPath) return array(
-			$_c, 
-			$_m);
+		if (!$controllerPath) return array($_c, $_m);
 		if (false !== ($pos = strrpos($controllerPath, '.'))) {
 			$_m = substr($controllerPath, 0, $pos);
 			$_c = substr($controllerPath, $pos + 1);
 		} else {
 			$_c = $controllerPath;
 		}
-		return array(
-			$_c, 
-			$_m);
+		return array($_c, $_m);
 	}
 
 }
@@ -321,7 +317,8 @@ class L {
 	}
 
 	static private function isImported($path) {
-		if (key_exists($path, self::$_imports)) return self::$_imports[$path];
+		if (isset(self::$_imports[$path])) return self::$_imports[$path];
+		//if (key_exists($path, self::$_imports)) return self::$_imports[$path];
 		if (in_array($path, self::$_imports)) return $path;
 		return false;
 	}
@@ -363,15 +360,11 @@ class L {
 		$imports = L::getImports();
 		self::import('COM:utility.WindPack');
 		$pack = new WindPack();
-		$pack->setContentInjectionCallBack(array(
-			'L', 
-			'perLoadInjection'));
+		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
 		$fileList = array();
 		foreach ($imports as $key => $value) {
 			$_key = self::getRealPath($key . '.' . self::$_extensions);
-			$fileList[$_key] = array(
-				$key, 
-				$value);
+			$fileList[$_key] = array($key, $value);
 		}
 		$pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 	}
