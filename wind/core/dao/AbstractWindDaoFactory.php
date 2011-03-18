@@ -40,6 +40,7 @@ abstract class AbstractWindDaoFactory {
 				$_path = $className;
 			}
 			$className = L::import($_path);
+			L::import('WIND:core.factory.WindFactory');
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
