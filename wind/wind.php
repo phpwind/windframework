@@ -34,7 +34,7 @@ class Wind extends W {
 
 //********************约定变量***********************************
 define('WIND_M_ERROR', 'windError');
-define('CONFIG_CACHE', 'wind_components_config');
+define('WIND_CONFIG_CACHE', 'wind_components_config');
 
 //**********配置*******通用常量定义***************************************
 define('WIND_CONFIG_CONFIG', 'config');
@@ -42,3 +42,6 @@ define('WIND_CONFIG_CLASS', 'class');
 define('WIND_CONFIG_CLASSPATH', 'path');
 define('WIND_CONFIG_RESOURCE', 'resource');
 define('WIND_CONFIG_VALUE', 'value');
+
+
+
