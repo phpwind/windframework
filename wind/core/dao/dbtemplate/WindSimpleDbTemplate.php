@@ -291,6 +291,6 @@ class WindSimpleDbTemplate implements IWindDbTemplate {
 	public function dropTable($tableName) {
 	    if (!$tableName) return false;
 	    $sql = "DROP TABLE IF EXISTS " . trim($tableName);
-	    $return $this->query($sql);
+	    return $this->query($sql);
 	}
 }
