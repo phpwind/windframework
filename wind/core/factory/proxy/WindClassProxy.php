@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.factory.IWindClassProxy');
+L::import('WIND:core.factory.proxy.IWindClassProxy');
 /**
  * Enter description here ...
  *
@@ -23,7 +23,7 @@ class WindClassProxy implements IWindClassProxy {
 
 	protected $_listener = array();
 
-	private $_interceptorChain = 'WIND:core.web.WindHandlerInterceptorChain';
+	private $_interceptorChain = 'WIND:core.filter.WindHandlerInterceptorChain';
 
 	/**
 	 * Enter description here ...

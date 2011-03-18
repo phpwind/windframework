@@ -70,6 +70,7 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function initWindConfig($appName, $config) {
 		L::import('WIND:core.config.parser.WindConfigParser');
+		L::import('WIND:core.config.WindSystemConfig');
 		$configParser = new WindConfigParser();
 		$this->windSystemConfig = new WindSystemConfig($config, $configParser, ($appName ? $appName : 'default'));
 		L::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());

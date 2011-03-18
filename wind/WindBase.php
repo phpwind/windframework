@@ -13,7 +13,7 @@
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
-!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.libreary');
+!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.php');
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -31,6 +31,7 @@ class W {
 	 */
 	static public function application($appName = '', $config = '') {
 		self::initWindFramework();
+		L::import('WIND:core.web.WindFrontController');
 		return new WindFrontController($appName, $config);
 	}
 
@@ -105,14 +106,18 @@ class W {
 	 */
 	static public function resolveController($controllerPath) {
 		$_m = $_c = '';
-		if (!$controllerPath) return array($_c, $_m);
+		if (!$controllerPath) return array(
+			$_c, 
+			$_m);
 		if (false !== ($pos = strrpos($controllerPath, '.'))) {
 			$_m = substr($controllerPath, 0, $pos);
 			$_c = substr($controllerPath, $pos + 1);
 		} else {
 			$_c = $controllerPath;
 		}
-		return array($_c, $_m);
+		return array(
+			$_c, 
+			$_m);
 	}
 
 }
@@ -272,10 +277,26 @@ class L {
 	 * @return null
 	 */
 	static public function loadCoreLibrary() {
-		self::import('WIND:component.utility.WindUtility');
-		self::import('WIND:core.*', true, true);
-		
-		if (!IS_DEBUG && W::ifCompile()) self::perLoadCoreLibrary();
+		L::import('WIND:core.exception.*');
+		if (!IS_DEBUG && W::ifCompile()) {
+			self::import('WIND:core.AbstractWindServer');
+			self::import('WIND:core.WindComponentModule');
+			self::import('WIND:core.WindEnableValidateModule');
+			self::import('WIND:core.WindModule');
+			self::import('WIND:core.config.*', true, true);
+			self::import('WIND:core.factory.*', true, true);
+			self::import('WIND:core.request.*');
+			self::import('WIND:core.response.*');
+			self::import('WIND:core.router.*');
+			self::import('WIND:core.web.IWindApplication');
+			self::import('WIND:core.web.WindAction');
+			self::import('WIND:core.web.WindController');
+			self::import('WIND:core.web.WindDispatcher');
+			self::import('WIND:core.web.WindForward');
+			self::import('WIND:core.web.WindFrontController');
+			self::import('WIND:core.web.WindWebApplication');
+			self::perLoadCoreLibrary();
+		}
 	}
 
 	/**
@@ -342,11 +363,15 @@ class L {
 		$imports = L::getImports();
 		self::import('COM:utility.WindPack');
 		$pack = new WindPack();
-		$pack->setContentInjectionCallBack(array('L', 'perLoadInjection'));
+		$pack->setContentInjectionCallBack(array(
+			'L', 
+			'perLoadInjection'));
 		$fileList = array();
 		foreach ($imports as $key => $value) {
 			$_key = self::getRealPath($key . '.' . self::$_extensions);
-			$fileList[$_key] = array($key, $value);
+			$fileList[$_key] = array(
+				$key, 
+				$value);
 		}
 		$pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 	}

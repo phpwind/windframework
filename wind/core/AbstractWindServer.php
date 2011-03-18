@@ -37,6 +37,7 @@ abstract class AbstractWindServer {
 	 */
 	public function __construct() {
 		try {
+			L::import('WIND:core.request.WindHttpRequest');
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
 		} catch (Exception $exception) {

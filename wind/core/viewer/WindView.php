@@ -116,6 +116,7 @@ class WindView extends WindComponentModule {
 	public function getViewResolver() {
 		if ($this->viewResolver !== null) {
 			if ($this->getIsCache() === 'true') {
+				L::import('WIND:core.viewer.listener.WindViewCacheListener');
 				$this->viewResolver->setClassProxy(new WindClassProxy());
 				$this->viewResolver = $this->viewResolver->getClassProxy();
 				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener($this));
