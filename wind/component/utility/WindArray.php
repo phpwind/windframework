@@ -39,6 +39,28 @@ class WindArray {
 		}
 		return array_merge($tmp, (array) $array2);
 	}
+	
+	/**
+	 * 按指定key合并两个数组
+	 * @param string key    合并数组的参照值
+	 * @param array $array1  要合并数组
+	 * @param array $array2  要合并数组
+	 * @return array 返回合并的数组
+	 */
+	public static function filterArrayWithKey($key, array $array1, array $array2) {
+		if (!$key || !$array1 || !$array2) {
+			return array();
+		}
+		$array1 = self::rebuildArrayWithKey($key, $array1);
+		$array2 = self::rebuildArrayWithKey($key, $array2);
+		$tmp = array();
+		foreach ($array1 as $key => $array) {
+			if (isset($array2[$key])) {
+				$tmp[$key] = array_merge($array, $array2[$key]);
+			}
+		}
+		return $tmp;
+	}
 
 	/**
 	 * 按指定KEY重新生成数组
