@@ -28,7 +28,7 @@ class WindConnectionManager extends WindComponentModule {
 	 * 取得数据库服务器
 	 * @param string $identify 数据库标识
 	 * @param string $type 是否是主从
-	 * @return resource
+	 * @return AbstractWindDbAdapter
 	 */
 	public function getConnection($identify = '', $type = IWindDbConfig::MASTER) {
 		$connections = $this->getConnections();

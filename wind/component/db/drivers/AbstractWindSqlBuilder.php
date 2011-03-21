@@ -71,7 +71,7 @@ abstract class AbstractWindSqlBuilder {
 	 * @param string $table_alias  表别名
 	 * @param string|array $fields 表字段
 	 * @param string $schema 数据库
-	 * @return WindSqlBuilder
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function from($table, $table_alias = '', $fields = '', $schema = '') {
 		$fields && $this->assembleFieldByTable($fields, $table, $table_alias);
@@ -223,7 +223,7 @@ abstract class AbstractWindSqlBuilder {
 	 * 对查询结果排序
 	 * @param string|array $field 排序的字段
 	 * @param boolean $type 升序还是倒序
-	 * @return boolean
+	 * @return AbstractWindSqlBuilder
 	 */
 	public function order($field, $type = true) {
 		$field = is_array($field) ? $field : array($field => $type);
@@ -542,12 +542,13 @@ abstract class AbstractWindSqlBuilder {
 	
 	/**
 	 * 取得结果集
+	 * @param string $resultIndex 
 	 * @param int $fetch_type 类型
 	 * @return array
 	 */
-	public function getAllRow($fetch_type = IWindDbConfig::ASSOC) {
+	public function getAllRow($resultIndex = null,$fetch_type = IWindDbConfig::ASSOC) {
 		$this->verifyAdapter();
-		return $this->connection->getAllRow($fetch_type);
+		return $this->connection->getAllRow($resultIndex,$fetch_type);
 	}
 	
 	/**
