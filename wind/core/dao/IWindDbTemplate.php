@@ -87,7 +87,7 @@ interface IWindDbTemplate {
 	 * array(
 	 * 'where' => '',  查询的条件
 	 * 'whereValue' => array(),  查询条件中的变量值
-	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>'DESC','name'=>'ASC')
 	 * 'limit' => '' 查询的数量
 	 * )
 	 * @param boolean $isGetAffectedRows 是否返回影响行数
@@ -115,7 +115,7 @@ interface IWindDbTemplate {
 	 * array(
 	 * 'where' => '',  查询的条件
 	 * 'whereValue' => array(),  查询条件中的变量值
-	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序   array('id'=>'DESC','name'=>'ASC')
 	 * 'limit' => '' 查询的数量
 	 * )
 	 * @param boolean $isGetAffectedRows 是否返回影响行数
@@ -146,7 +146,7 @@ interface IWindDbTemplate {
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
 	 * 'havingValue' => array(),  having条件中的变量值
-	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序   array('id'=>'DESC','name'=>'ASC')
 	 * )
 	 * @return array
 	 */
@@ -173,7 +173,7 @@ interface IWindDbTemplate {
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
 	 * 'havingValue' => array(),  having条件中的变量值
-	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序   array('id'=>'DESC','name'=>'ASC')
 	 * 'limit' => '' 查询的数量
 	 * 'offset'=> '' 和limit配合使用
 	 * 'resultIndexKey' => '' 返回的结果集数组的索引字段
@@ -206,7 +206,7 @@ interface IWindDbTemplate {
 	 * 'group' => array(),  group关键字的列名
 	 * 'having' => '', having关键字的列名
 	 * 'havingValue' => array(),  having条件中的变量值
-	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序  array('id'=>true,'name'=>false)
+	 * 'order' => array(), 排序类型  默认是降序排列，支持多字段排序   array('id'=>'DESC','name'=>'ASC')
 	 * )
 	 * @return int
 	 */
