@@ -103,6 +103,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		//TODO 添加过滤链
 		if ($actionHandler->_getInstance() instanceof WindFormController) {
 			if ($formClassPath = $actionHandler->getFormClass()) {
+				L::import('WIND:core.web.listener.WindFormListener');
 				$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath, $actionHandler->getErrorMessage()));
 			}
 		} elseif ($actionHandler->_getInstance() instanceof WindController) {
@@ -110,6 +111,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 				if (!isset($rules['errorMessage'])) {
 					$rules['errorMessage'] = $actionHandler->getErrorMessage();
 				}
+				L::import('WIND:core.web.listener.WindValidateListener');
 				$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
 			}
 		}
