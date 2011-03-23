@@ -24,10 +24,10 @@ class WindValidator {
 	 * @param string $phone 被验证的电话号码
 	 * @return boolean
 	 */
-	public function isTelPhone($phone) {
+	public static function isTelPhone($phone) {
 		return 0 < preg_match('/^\+?[0\s]*[\d]{0,4}[\-\s]?\d{0,6}[\-\s]?\d{4,12}$/', $phone);
 	}
-    
+
 	/**
 	 * 验证是否是手机号码
 	 * 国际区号-手机号码
@@ -35,28 +35,28 @@ class WindValidator {
 	 * @param string $number
 	 * @return boolean
 	 */
-	public function isTelNumber($number) {
-        return 0 < preg_match('/^\+?[0\s]*[\d]{0,4}[\-\s]?\d{4,12}$/', $number);
+	public static function isTelNumber($number) {
+		return 0 < preg_match('/^\+?[0\s]*[\d]{0,4}[\-\s]?\d{4,12}$/', $number);
 	}
-   
+
 	/**
 	 * 验证是否是QQ号码
 	 *
 	 * @param string $qq
 	 * @return boolean
 	 */
-	public function isQQ($qq) {
-        return 0 < preg_match('/^[1-9]\d{4,14}$/', $qq);
+	public static function isQQ($qq) {
+		return 0 < preg_match('/^[1-9]\d{4,14}$/', $qq);
 	}
-    
+
 	/**
 	 * 验证是否是邮政编码
 	 *
 	 * @param string $zipcode
 	 * @return boolean
 	 */
-	public function isZipcode($zipcode) {
-        return 0 < preg_match('/^\d{4,8}$/', $zipcode);
+	public static function isZipcode($zipcode) {
+		return 0 < preg_match('/^\d{4,8}$/', $zipcode);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasEmail($string, &$matches = array(), $ifAll = false) {
+	public static function hasEmail($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $string, $matches, $ifAll);
 	}
 
@@ -75,7 +75,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isEmail($string) {
+	public static function isEmail($string) {
 		return 0 < preg_match("/^\w+(?:[-+.']\w+)*@\w+(?:[-.]\w+)*\.\w+(?:[-.]\w+)*$/", $string);
 	}
 
@@ -86,7 +86,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasIdCard($string, &$matches = array(), $ifAll = false) {
+	public static function hasIdCard($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp("/\d{17}[\d|X]|\d{15}/", $string, $matches, $ifAll);
 	}
 
@@ -95,7 +95,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isIdCard($string) {
+	public static function isIdCard($string) {
 		return 0 < preg_match("/^(?:\d{17}[\d|X]|\d{15})$/", $string);
 	}
 
@@ -106,7 +106,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasUrl($string, &$matches = array(), $ifAll = false) {
+	public static function hasUrl($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', $string, $matches, $ifAll);
 	}
 
@@ -115,7 +115,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isUrl($string) {
+	public static function isUrl($string) {
 		return 0 < preg_match('/^(?:http(?:s)?:\/\/(?:[\w-]+\.)+[\w-]+(?:\:\d+)*+(?:\/[\w- .\/?%&=]*)?)$/', $string);
 	}
 
@@ -126,7 +126,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasChinese($string, &$matches = array(), $ifAll = false) {
+	public static function hasChinese($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/[\x{4e00}-\x{9fa5}]+/u', $string, $matches, $ifAll);
 	}
 
@@ -135,7 +135,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isChinese($string) {
+	public static function isChinese($string) {
 		return 0 < preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $string);
 	}
 
@@ -146,7 +146,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasHtml($string, &$matches = array(), $ifAll = false) {
+	public static function hasHtml($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/<(.*)>.*|<(.*)\/>/', $string, $matches, $ifAll);
 	}
 
@@ -155,7 +155,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isHtml($string) {
+	public static function isHtml($string) {
 		return 0 < preg_match('/^<(.*)>.*|<(.*)\/>$/', $string);
 	}
 
@@ -166,7 +166,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasIpv4($string, &$matches = array(), $ifAll = false) {
+	public static function hasIpv4($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/((25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string, $matches, $ifAll);
 	}
 
@@ -175,7 +175,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isIpv4($string) {
+	public static function isIpv4($string) {
 		return 0 < preg_match('/(?:(?:25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|0?[1-9]\d|0?0?\d)/', $string);
 	}
 
@@ -187,7 +187,7 @@ class WindValidator {
 	 * @param boolean $ifAll
 	 * @return boolean
 	 */
-	public function hasIpv6($string, &$matches = array(), $ifAll = false) {
+	public static function hasIpv6($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/\A((([a-f0-9]{1,4}:){6}|
 										::([a-f0-9]{1,4}:){5}|
 										([a-f0-9]{1,4})?::([a-f0-9]{1,4}:){4}|
@@ -210,7 +210,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isIpv6($string) {
+	public static function isIpv6($string) {
 		return 0 < preg_match('/\A(?:(?:(?:[a-f0-9]{1,4}:){6}|
 										::(?:[a-f0-9]{1,4}:){5}|
 										(?:[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){4}|
@@ -234,7 +234,7 @@ class WindValidator {
 	 * @param boolean $ifAll   是否进行全局正则表达式匹配
 	 * @return boolean
 	 */
-	public function hasScript($string, &$matches = array(), $ifAll = false) {
+	public static function hasScript($string, &$matches = array(), $ifAll = false) {
 		return 0 < self::validateByRegExp('/<script(.*?)>([^\x00]*?)<\/script>/', $string, $matches, $ifAll);
 	}
 
@@ -243,7 +243,7 @@ class WindValidator {
 	 * @param string $string
 	 * @return boolean
 	 */
-	public function isScript($string) {
+	public static function isScript($string) {
 		return 0 < preg_match('/<script(?:.*?)>(?:[^\x00]*?)<\/script>/', $string);
 	}
 
@@ -252,7 +252,7 @@ class WindValidator {
 	 * @param string $value
 	 * @return boolean
 	 */
-	public function isEmpty($value) {
+	public static function isEmpty($value) {
 		return empty($value);
 	}
 
@@ -261,7 +261,7 @@ class WindValidator {
 	 * @param int $number 
 	 * @return boolean
 	 */
-	public function isNonNegative($number) {
+	public static function isNonNegative($number) {
 		return 0 <= (int) $number;
 	}
 
@@ -270,7 +270,7 @@ class WindValidator {
 	 * @param int $number
 	 * @return boolean
 	 */
-	public function isPositive($number) {
+	public static function isPositive($number) {
 		return 0 < (int) $number;
 	}
 
@@ -279,7 +279,7 @@ class WindValidator {
 	 * @param int $number   
 	 * @return boolean
 	 */
-	public function isNegative($number) {
+	public static function isNegative($number) {
 		return 0 > (int) $number;
 	}
 
@@ -288,7 +288,7 @@ class WindValidator {
 	 * @param mixed $array
 	 * @return boolean
 	 */
-	public function isArray($array) {
+	public static function isArray($array) {
 		return is_array($array);
 	}
 
@@ -298,7 +298,7 @@ class WindValidator {
 	 * @param mixed $value
 	 * @return boolean
 	 */
-	public function isRequired($value) {
+	public static function isRequired($value) {
 		return !self::isEmpty($value);
 	}
 
@@ -310,7 +310,7 @@ class WindValidator {
 	 * @param boolean $strict
 	 * @return boolean
 	 */
-	public function inArray($needle, array $array, $strict = true) {
+	public static function inArray($needle, array $array, $strict = true) {
 		return in_array($needle, $array, $strict);
 	}
 
@@ -321,7 +321,7 @@ class WindValidator {
 	 * @param string $charset 字符编码
 	 * @return boolean
 	 */
-	public function isLegalLength($string, $length, $charset = 'utf8') {
+	public static function isLegalLength($string, $length, $charset = 'utf8') {
 		L::import('WIND:component.utility.WindString');
 		return WindString::strlen($string, $charset) > (int) $length;
 	}
