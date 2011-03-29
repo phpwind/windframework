@@ -5,21 +5,22 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-class FormController extends WindController {
-	
+L::import("WIND:core.web.WindFormController");
+class FormController extends WindFormController {
+
+	protected $formClass = "FORMDEMO:controllers.actionForm.UserForm";
+
 	public function run() {
-		$this->setOutput(array(
-			'title' => '用户输入表单自动获得UserForm对象'));
+		$this->setOutput(array('title' => '用户输入表单自动获得UserForm对象'));
 		$this->setTemplate('Form');
 	}
-	
+
 	/**
 	 * 获得数据
 	 */
-	public function postForm() {
-		$this->setOutput(array(
-			'title' => '显示用户输入的表单数据'));
-		$userInfo = $this->getInput('userform', self::INPUT_TYPE_FORM);
+	public function postAction() {
+		$this->setOutput(array('title' => '显示用户输入的表单数据'));
+		$userInfo = $this->getInput('formData');
 		$this->setOutput(array('userInfo' => $userInfo, 'notice' => 'formBean测试结果如下'));
 		$this->setTemplate('showInput');
 	}

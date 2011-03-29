@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
-<!-- import external config source file -->
-	<imports>
-		<import name='components' resource='WIND:components_config'
-			suffix='xml' init-delay='false' is-append='true' />
-	</imports>
-	
 	<web-apps>
 		<web-app name='formdemo' class='windWebApp' root-path=''>
-			<factory class-definition='components'
-				class='WIND:core.factory.WindComponentFactory' />
 			<filters class='WIND:core.filter.WindFilterChain'>
 				<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
 			</filters>
-			<router class='urlBasedRouter' />
+			<router class="urlBasedRouter">
+				<config>
+					<url-pattern>
+						<module url-param='m' default-value='default' />
+						<controller url-param='c' default-value='index' />
+						<action url-param='a' default-value='run' />
+					</url-pattern>
+				</config>
+			</router>
 			<modules>
 				<module name='default' path='controllers'>
 					<controller-suffix value='Controller' />

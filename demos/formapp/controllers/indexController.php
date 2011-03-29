@@ -12,7 +12,7 @@ class IndexController extends WindController {
 		$this->setOutput('欢迎进入Form组件的测试', 'title');
 		$this->setTemplate('index');
 	}
-	public function setHeader() {
+	public function setHeaderAction() {
 		$this->setOutput(array('name'=> '亲爱的朋友'));
 		$demos = array('../helloworld' => 'HelloWorld', 
 						'index.php?m=other&c=Index&a=iforward' => 'action中可带参数跳转应用',
@@ -26,7 +26,7 @@ class IndexController extends WindController {
 		$this->setOutput(array('demos' => $demos));
 		$this->setTemplate('header');
 	}
-	public function setFooter() {
+	public function setFooterAction() {
 		$this->setOutput(array('footer'=> array('2010-2110', 'phpwind'),
 								'version' => 'WindFrameWorkV1.0'));
 		$this->setOutput($this->getCompaticyInfo());

@@ -1,5 +1,4 @@
-<?php $this->doAction('setHeader');?>
-
+<action action='setHeader' controller="index"/>
 <div class="main">
 	<div class="grid_2 cc mb10">
 		<div class="cm">
@@ -11,44 +10,60 @@
 							<span class="mr10">最新更新时间：2010-12-21</span>作者：肖
 						</div>
 				        <div>
-							<h3>1、form表单提交：</h3>
-							<h4>案例1：为form提交表单设置一个WindActionForm子类，用来保存该提交的表单</h4>
+							<h3>1、表单验证: 采用表单和controller绑定的方式，一一对应：</h3>
+							<h4>使用方式：</h4>
 							<ol>
-								<li>步骤一：在配置文件中的配置项filters中配置了WindFormFilter， 
+								<li>步骤一：继承表单controller（WindFormController）
 								    <div class="s4">代码：</div>
-									<textarea style="width:95%;height:80px;" class="mb5"><filters>
-    <filter name="WindFormFilter">
-    	<filterPath>WIND:component.form.WindFormFilter</filterPath>
-	</filter>
-</filters>
+									<textarea style="width:95%;height:80px;" class="mb5">
+L::import("WIND:core.web.WindFormController");
+class FormController extends WindFormController {}
 									</textarea>
 								</li>
-								<li>步骤二：在controllers/actionForm中建立一个WindActionForm类的子类UserForm。
-								    <b>注意:</b>类属性名字和表单中的提交名字必须保存一致。同时被继承的属性$_isValidate设置为true则自动执行验证方法，
-								    默认为false（验证方法为：访问权限为public，并且以validate结尾）
-								</li>
-								<li>步骤三：创建一个该对应表单，同时设置该表单需要填充到UserForm中，即formName设置为UserForm随同表单一同递交。</li>
-								<li>步骤四：在处理表单的action中通过L::getInstance('UserForm');来获得表单中的内容进行操作
+								<li>步骤二：实现该重写属性formClass，指定到自己的form类
 									<div class="s4">代码：</div>
-									<textarea style="width:95%;height:80px;" class="mb5"><form action="index.php?c=Form&a=postForm" method="post">
-请输入用户名<input type="text" value="" name="username"/><br/>
-请输入密码<input type="password" value="" name="password"/><br/>
-<input type="hidden" name="formName" value="UserForm"/>
-<input type="submit" value="测试" name="submit"/>
-</form>
+									<textarea style="width:95%;height:80px;" class="mb5">
+L::import("WIND:core.web.WindFormController");
+class FormController extends WindFormController {
+	protected formClass = "FORMDEMO:controllers.actionForm.UserForm";}
 									</textarea>
-									<div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=Form'">测试一下</button></span></span></div>
 								</li>
+								<li>步骤三：form类的编写。<br/>
+								    <b>注意:</b><br/>
+								         Ⅰ、需要继承WindEnableValidateModule<br/>
+								         Ⅱ、可以重写属性：<br/>
+		<span style="margin-left:20px">_validatorClass ：验证器类&nbsp;&nbsp;&nbsp;&nbsp;(默认为框架提供的component/utility/WindValidator.php)</span><br/>
+		<span style="margin-left:20px">errorController： 验证出错时处理的errorController&nbsp;&nbsp;&nbsp;&nbsp;(默认为框架提供的WindErrorHandler)</span><br/>
+		<span style="margin-left:20px">errorAction： 验证出错时处理的的ErrorAction&nbsp;&nbsp;&nbsp;&nbsp;(默认为run)</span><br/>
+								        Ⅲ、需要实现方法：validateRules<br/>
+									<span style="margin-left:20px">该方法需要返回一个数组，该数组中指定了验证规则，</span><br/>
+									<span style="margin-left:20px">验证规则的建立统一由框架的component/utility/WindUtility.php中的buildValidateRule提供。</span><br/>
+								        Ⅳ、对于该form类中编写的变量，都必需提供公共可以访问的setter和getter方法
+								</li>
+								<li>步骤四：结果处理：<br/>
+								<span style="margin-left:20px">对于验证通过的时候，则可以在controller中通过，this->getInput('formData')来获得验证后的类对象。</span><br/>
+                                <span style="margin-left:20px">如果验证不通过，则会跳转到form中指定的ErrorAcion中处理输出。</span></li>
+                                <div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=Form&username=xxx&password=123456'">测试一下</button></span></span></div>
 							</ol><br/>
 							
-							<h4>案例2：不设置form表单的处理类UserForm</h4>
+							<h4>案例2：通用的action验证</h4>
 							<ol>
-								<li>该情况下用户无需配置，也无需设置formName的处理类。在处理的action中通过request来获得表单内容.<br/>
-     	        				           还是使用上面一个表单 <br/>
-     	        				    <b>注意:</b>这次不用设置：
-								    <div class="s4">代码：</div>
-									<textarea style="width:95%;height:80px;" class="mb5"><input type="hidden" name="formName" value="UserForm"/></textarea>
-									<div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=NormalForm'">测试一下</button></span></span></div>
+								<li>步骤一： 普通的继承WindController<br/>
+     	        				    <b>注意:</b><br/>
+							        Ⅰ、可重写属性validatorClass<br/>
+			<span style="margin-left:20px">该属性用与指定验证器。(默认为框架提供的component/utility/WindValidator.php)</span><br/>
+  									Ⅱ、重写validatorFormRule：<br/>
+			<span style="margin-left:20px">该方法用于提供用户指定哪些方法需要提供验证的机制</span><br/>
+            <span style="margin-left:20px">返回类型为array, 以方法为键，以方法中的验证规则数组值，同样的验证规则的组装也统一通过框架提供的接</span><br/><span style="margin-left:20px">口：
+    component/utility/WindUtility.php中的buildValidateRule来完成。</span><br/>
+								    Ⅲ、用户可以在beforeAction中指定errorMessage属性值，用于处理当验证不通过时处理情况。<br/>
+							     </li>
+								 <li>步骤二：结果获得<br/>
+								 <span style="margin-left:20px">对于验证通过，则可以在controller中通过this->getInput('inputData')来获得一个stdClass对象的合法数据</span><br/>
+                                <span style="margin-left:20px">对应验证不通过的，则会跳转到beforeAction中指定的errorMessage来处理，缺省的情况下为框架默认的错误机制</span></li>
+								<div class="s4">代码：</div>
+								<textarea style="width:95%;height:80px;" class="mb5">var_dump(this->getInput('inputData'));</textarea>
+                                <div class="mb10"><span class="bt2" style="margin:0 0;"><span><button type="button" onclick="javascript:location.href='index.php?c=NormalForm'">测试一下</button></span></span></div>
 								</li>
 							</ol>
 						</div>
@@ -61,7 +76,7 @@
 				<h2 class="hdB">tags</h2>
 				<div class="p10">
 					<ul class="tags cc">
-						<li><a href="index.php?c=Form">案例一测试</a></li>
+						<li><a href="index.php?c=Form&username=xxx&password=123456">案例一测试</a></li>
 						<li><a href="index.php?c=NormalForm">案例二测试</a></li>
 					</ul>
 				</div>
@@ -69,8 +84,8 @@
 			<div class="bB">
 				<h2 class="hdB">WindFrameWork其他demo:</h2>
 				<div class="p10">
-					<ul><?php foreach ($this->getVar('demos', 'header') as $path => $describe) { ?>
-						<li><a href="<?php echo $path;?>" target="_blank" title="我要测试"><?php echo $describe;?></a></li>
+					<ul><!--#foreach ($this->response->getData('header', 'demos') as $path => $describe) {#-->
+						<li><a href="{$path;}" target="_blank" title="我要测试">{$describe}</a></li>
 					<?php }?>
 					</ul>
 				</div>
@@ -79,4 +94,4 @@
 	</div>
 </div>
 <!-- end #mainContent -->
-<?php $this->doAction('setFooter');?>
+<action action='setFooter' controller="index"/>

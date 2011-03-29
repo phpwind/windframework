@@ -6,28 +6,58 @@
  * @license 
  */
 
-class UserForm extends WindActionForm {
-	protected $username;
-	protected $password;
-	public function __construct() {
-		parent::__construct();
-		$this->setErrorAction('controllers.ErrorController');
-		$this->setIsValidation(true);
-	}
+L::import('WIND:core.WindEnableValidateModule');
+L::import('WIND:component.utility.WindUtility');
+
+class UserForm extends WindEnableValidateModule {
+
 	/**
-	 * 验证函数
+	 *设置错误处理controller
+	 *
+	 * @var string
 	 */
-	public function UserNameValidate() {
-		if ($this->username == '') {
-			$this->addError('输入的用户名为空', 'username');
-		}
+	protected $errorControler = 'controllers.ErrorController';
+
+	private $username;
+
+	private $password;
+
+	/**
+	 * (non-PHPdoc)
+	 * @see WindEnableValidateModule::validateRules()
+	 */
+	public function validateRules() {
+		$rules = array();
+		$rules[] = WindUtility::buildValidateRule('username', 'isRequired');
+		$rules[] = WindUtility::buildValidateRule('password', 'isLegalLength', array(6), 123456, '用户密码小于6位，重设为123456!');
+		return $rules;
 	}
-	
-	public function PasswordValidate() {
-		if (strlen($this->password) < 6 ) {
-			$this->password = '123456';
-			$this->addError('输入的用户密码小于6位，重设为123456！', 'password');
-		}
-		return true;
+
+	/**
+	 * @return the $username
+	 */
+	public function getUsername() {
+		return $this->username;
+	}
+
+	/**
+	 * @return the $password
+	 */
+	public function getPassword() {
+		return $this->password;
+	}
+
+	/**
+	 * @param field_type $username
+	 */
+	public function setUsername($username) {
+		$this->username = $username;
+	}
+
+	/**
+	 * @param field_type $password
+	 */
+	public function setPassword($password) {
+		$this->password = $password;
 	}
 }
