@@ -5,16 +5,13 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license
  */
-
 !defined('VERSION') && define('VERSION', '0.3');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
-
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
 !defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', COMPILE_PATH . 'wind_v.' . VERSION . '.php');
-
 /**
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -115,9 +112,7 @@ class W {
 		}
 		return array($_c, $_m);
 	}
-
 }
-
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -125,19 +120,12 @@ class W {
  * @package
  */
 class L {
-
 	private static $_namespace = array();
-
 	private static $_imports = array();
-
 	private static $_classes = array();
-
 	private static $_instances = array();
-
 	private static $_extensions = 'php';
-
 	private static $_includePaths = array();
-
 	private static $_isAutoLoad = true;
 
 	/**
@@ -175,14 +163,12 @@ class L {
 	static public function import($filePath, $autoInclude = true, $recursivePackage = false) {
 		if (!$filePath) return false;
 		if ($className = self::isImported($filePath)) return $className;
-		
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
 		elseif (($pos1 = strrpos($filePath, ':')) !== false)
 			$fileName = substr($filePath, $pos1 + 1);
 		else
 			$fileName = $filePath;
-		
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
@@ -376,5 +362,4 @@ class L {
 	public static function setIsAutoLoad($isAutoLoad) {
 		L::$_isAutoLoad = $isAutoLoad;
 	}
-
 }
