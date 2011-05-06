@@ -30,7 +30,7 @@ abstract class WindAction extends WindComponentModule {
 	/**
 	 * 默认的操作处理方法
 	 */
-	protected function run() {}
+	public function run() {}
 
 	/**
 	 * Action操作预处理方法，返回boolean型值
