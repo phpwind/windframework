@@ -5,9 +5,9 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.exception.WindSqlException');
-L::import('WIND:component.db.drivers.IWindDbConfig');
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:component.exception.WindSqlException');
+Wind::import('WIND:component.db.drivers.IWindDbConfig');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 实现分步式数据库操作管理及由静态工厂返回相应的数据库适配器
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -39,7 +39,7 @@ class WindConnectionManager extends WindComponentModule {
 		if (empty($this->linked[$identify])) {
 			$config = $connections[$identify];
 			$drivers = array('mssql'=>'WIND:component.db.drivers.mssql.WindMsSql','mysql'=>'WIND:component.db.drivers.mysql.WindMySql');
-			$class = L::import($drivers[strtolower($config[IWindDbConfig::DRIVER])]);
+			$class = Wind::import($drivers[strtolower($config[IWindDbConfig::DRIVER])]);
 			if (false === class_exists($class)) {
 				throw new WindSqlException($class, WindSqlException::DB_DRIVER_NOT_EXIST);
 			}

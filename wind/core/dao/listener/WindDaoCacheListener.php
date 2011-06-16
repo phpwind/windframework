@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.filter.WindHandlerInterceptor');
+Wind::import('WIND:core.filter.WindHandlerInterceptor');
 
 /**
  * Enter description here ...

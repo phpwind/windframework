@@ -1,5 +1,5 @@
 <?php
-L::import('WIND:core.web.WindController');
+Wind::import('WIND:core.web.WindController');
 /**
  * Enter description here ...
  *

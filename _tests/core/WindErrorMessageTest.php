@@ -78,7 +78,7 @@ class WindErrorMessageTest extends BaseTestCase {
 		$dispatcher->module = 'default';
 		$this->response->setDispatcher($dispatcher);
 		$this->errorMessage = WindErrorMessage::getInstance($this->request, $this->response);
-		L::register(dirname(dirname(dirname(__FILE__))) . D_S, 'TEST');
+		Wind::register(dirname(dirname(dirname(__FILE__))) . D_S, 'TEST');
 		$this->errorMessage->clear();
 	}
 	private function getConfig() {

@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 请求分发
  *
@@ -63,7 +63,7 @@ class WindDispatcher extends WindComponentModule {
 	 */
 	protected function dispatchWithAction($forward) {
 		$_a = $forward->getAction();
-		list($_c, $_m) = W::resolveController($forward->getController());
+		list($_c, $_m) = WindBase::resolveController($forward->getController());
 		
 		/* @var $_router WindUrlBasedRouter */
 		$_router = $this->windFactory->getInstance(COMPONENT_ROUTER);

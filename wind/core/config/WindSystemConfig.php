@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.config.WindConfig');
+Wind::import('WIND:core.config.WindConfig');
 /**
  * 框架配置对象windConfig类，
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -194,7 +194,7 @@ class WindSystemConfig extends WindConfig {
 			$import = $imports[$name];
 			$config = array();
 			if (is_array($import) && !empty($import)) {
-				$configPath = L::getRealPath($import[self::IMPORTS_RESOURCE]);
+				$configPath = Wind::getRealPath($import[self::IMPORTS_RESOURCE]);
 				if (!isset($import[self::IMPORTS_IS_APPEND]) || $import[self::IMPORTS_IS_APPEND] === 'true') {
 					$append = $this->cacheName;
 				} elseif ($import[self::IMPORTS_IS_APPEND] === 'false' || $import[self::IMPORTS_IS_APPEND] === '') {

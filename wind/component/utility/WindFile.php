@@ -54,7 +54,7 @@ class WindFile {
 	 * @param boolean $ifLock           是否对文件加锁
 	 */
 	public static function savePhpData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
-		L::import("COM:utility.WindString");
+		Wind::import("COM:utility.WindString");
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ($data as $key => $value) {
@@ -81,7 +81,7 @@ class WindFile {
 	 * @return int 返回写入的字节数
 	 */
 	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
-		L::import("COM:utility.WindSecurity");
+		Wind::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
 		if (!$handle = fopen($fileName, $method)) return false;
@@ -101,7 +101,7 @@ class WindFile {
 	 * @return string
 	 */
 	public static function read($fileName, $method = self::READ) {
-		L::import("COM:utility.WindSecurity");
+		Wind::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		$data = '';
 		if (false !== ($handle = fopen($fileName, $method))) {

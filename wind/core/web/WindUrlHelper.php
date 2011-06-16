@@ -67,7 +67,7 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	public function createUrl($action, $controller, $params = array()) {
 		$action && $this->getWindRouter()->setAction($action);
-		list($_c, $_m) = W::resolveController($controller);
+		list($_c, $_m) = WindBase::resolveController($controller);
 		$_c && $this->getWindRouter()->setController($_c);
 		$_m && $this->getWindRouter()->setModule($_m);
 		$url = $this->getWindRouter()->buildUrl();

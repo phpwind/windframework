@@ -1,5 +1,5 @@
 <?php
-L::import('WIND:core.WindModule');
+Wind::import('WIND:core.WindModule');
 /**
  * 抽象DAO接口
  *
@@ -46,7 +46,7 @@ abstract class AbstractWindDao extends WindModule {
 	 * @return WindComponentDefinition
 	 */
 	public function getDbDefinition() {
-		L::import('WIND:core.factory.WindComponentDefinition');
+		Wind::import('WIND:core.factory.WindComponentDefinition');
 		$definition = new WindComponentDefinition();
 		$definition->setPath($this->dbClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
@@ -60,7 +60,7 @@ abstract class AbstractWindDao extends WindModule {
 	 * @return WindComponentDefinition
 	 */
 	public function getCacheDefinition() {
-		L::import('WIND:core.factory.WindComponentDefinition');
+		Wind::import('WIND:core.factory.WindComponentDefinition');
 		$definition = new WindComponentDefinition();
 		$definition->setPath($this->cacheClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);

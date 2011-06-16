@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.http.session.AbstractWindUserSession');
+Wind::import('WIND:component.http.session.AbstractWindUserSession');
 /**
  * 数据库会话存储机制,可以实现统一登陆
  * the last known user to change this file in the repository  <$LastChangedBy$>

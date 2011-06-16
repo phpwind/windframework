@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.factory.proxy.IWindClassProxy');
+Wind::import('WIND:core.factory.proxy.IWindClassProxy');
 /**
  * Enter description here ...
  *
@@ -222,7 +222,7 @@ class WindClassProxy implements IWindClassProxy {
 	 * @param string $classPath
 	 */
 	public function _setClassPath($classPath) {
-		$this->_setClassName(L::import($classPath));
+		$this->_setClassName(Wind::import($classPath));
 		$this->_classPath = $classPath;
 	}
 

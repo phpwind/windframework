@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.http.transfer.AbstractWindHttp');
+Wind::import('WIND:component.http.transfer.AbstractWindHttp');
 /**
  * socket操作
  * the last known user to change this file in the repository  <$LastChangedBy$>

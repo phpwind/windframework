@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.cache.operator.WindUXCache');
+Wind::import('WIND:component.cache.AbstractWindCache');
+Wind::import('WIND:component.cache.operator.WindUXCache');
 /**
  * xcache加速缓存
  * the last known user to change this file in the repository  <$LastChangedBy$>

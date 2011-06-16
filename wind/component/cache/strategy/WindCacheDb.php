@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.AbstractWindCache');
+Wind::import('WIND:component.cache.AbstractWindCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Su Qian <weihu@alibaba-inc.com>

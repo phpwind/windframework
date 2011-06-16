@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.dao.dbtemplate.WindSimpleDbTemplate');
+Wind::import('WIND:core.dao.dbtemplate.WindSimpleDbTemplate');
 /**
  * Enter description here ...
  *

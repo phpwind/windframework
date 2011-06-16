@@ -5,13 +5,13 @@ define('IS_DEBUG', true);
 /* 缓存文件路径 */
 define('COMPILE_PATH', T_P . '/data/compile/');
 include 'WindBase.php';
-L::register(T_P, 'TEST');
+Wind::register(T_P, 'TEST');
 
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		W::initWindFramework();
+		WindBase::initWindFramework();
 	}
 
 	protected function tearDown() {

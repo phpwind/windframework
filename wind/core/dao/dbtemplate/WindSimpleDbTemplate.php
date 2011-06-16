@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.dao.IWindDbTemplate');
+Wind::import('WIND:core.dao.IWindDbTemplate');
 /**
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>

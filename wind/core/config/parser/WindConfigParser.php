@@ -1,12 +1,5 @@
 <?php
-/**
- * @author xiaoxia xu <x_824@sina.com> 2010-11-22
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-L::import('WIND:core.config.parser.IWindConfigParser');
+Wind::import('WIND:core.config.parser.IWindConfigParser');
 /**
  * 配置文件解析类
  * 配置文件格式允许有4中格式：xml, php, properties, ini
@@ -20,20 +13,14 @@ L::import('WIND:core.config.parser.IWindConfigParser');
  * @package
  */
 class WindConfigParser implements IWindConfigParser {
-
 	/**
 	 * 配置文件支持的格式白名单
 	 */
 	const CONFIG_XML = 'XML';
-
 	const CONFIG_PHP = 'PHP';
-
 	const CONFIG_INI = 'INI';
-
 	const CONFIG_PROPERTIES = 'PROPERTIES';
-
 	const WIND_ROOT = 'wind';
-
 	/**
 	 * 配置解析对象队列
 	 * @var array object $configParser
@@ -45,8 +32,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * 设置解析数据输出的编码方式
 	 * @param String $outputEncoding	
 	 */
-	public function __construct() {
-	}
+	public function __construct() {}
 
 	/**
 	 * 解析组件的配置文件
@@ -78,11 +64,9 @@ class WindConfigParser implements IWindConfigParser {
 				return $config[$alias];
 			}
 		}
-		if (!($configPath = trim($configPath)))
-			throw new WindException('Please input the file path!');
+		if (!($configPath = trim($configPath))) throw new WindException('Please input the file path!');
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if (!$alias)
-			return $result;
+		if (!$alias) return $result;
 		$config[$alias] = $result;
 		$this->saveConfigFile($cacheFileName, $config);
 		return $result;
@@ -96,8 +80,7 @@ class WindConfigParser implements IWindConfigParser {
 	 */
 	private function getCacheContent($file) {
 		$content = array();
-		if (is_file($file))
-			$content = include ($file);
+		if (is_file($file)) $content = include ($file);
 		return is_array($content) ? $content : array();
 	}
 
@@ -109,15 +92,15 @@ class WindConfigParser implements IWindConfigParser {
 	private function createParser($type) {
 		switch ($type) {
 			case self::CONFIG_XML:
-				L::import("WIND:component.parser.WindXmlParser");
+				Wind::import("WIND:component.parser.WindXmlParser");
 				return new WindXmlParser();
 				break;
 			case self::CONFIG_INI:
-				L::import("WIND:component.parser.WindIniParser");
+				Wind::import("WIND:component.parser.WindIniParser");
 				return new WindIniParser();
 				break;
 			case self::CONFIG_PROPERTIES:
-				L::import("WIND:component.parser.WindPropertiesParser");
+				Wind::import("WIND:component.parser.WindPropertiesParser");
 				return new WindPropertiesParser();
 				break;
 			default:
@@ -135,10 +118,8 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array			    返回解析结果
 	 */
 	private function doParser($configFile, $type) {
-		if (!$configFile)
-			return array();
-		if (!is_file($configFile))
-			throw new WindException('The file <' . $configFile . '> is not exists');
+		if (!$configFile) return array();
+		if (!is_file($configFile)) throw new WindException('The file <' . $configFile . '> is not exists');
 		if ($type == 'PHP') {
 			$config = include ($configFile);
 			return (isset($config['wind'])) ? $config['wind'] : $config;
@@ -148,7 +129,6 @@ class WindConfigParser implements IWindConfigParser {
 		}
 		return $this->configParsers[$type]->parse($configFile);
 	}
-
 
 	/**
 	 * 返回是否需要执行解析
@@ -164,8 +144,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean  		 false:需要进行解析， true：不需要进行解析，直接读取缓存文件
 	 */
 	private function needCompiled() {
-		if (IS_DEBUG && W::ifCompile() && is_dir(COMPILE_PATH))
-			return true;
+		if (IS_DEBUG && is_dir(COMPILE_PATH)) return true;
 		return false;
 	}
 
@@ -177,8 +156,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean           : true  解析文件格式成功，解析失败则抛出异常
 	 */
 	private function getConfigFormat($configPath) {
-		if ($configPath === '')
-			return self::CONFIG_XML;
+		if ($configPath === '') return self::CONFIG_XML;
 		$format = strtoupper(trim(strrchr($configPath, '.'), '.'));
 		if (!in_array($format, $this->getConfigFormatList())) {
 			throw new WindException("The format of the config file doesn't sopported yet!");
@@ -194,9 +172,8 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean 			  保存成功则返回true,保存失败则返回false
 	 */
 	private function saveConfigFile($filename, $data) {
-		if (!W::ifCompile() || !$filename || !$data || !is_dir(COMPILE_PATH))
-			return false;
-		L::import('COM:utility.WindFile');
+		if (!$filename || !$data || !is_dir(COMPILE_PATH)) return false;
+		Wind::import('COM:utility.WindFile');
 		return WindFile::savePhpData($filename, $data);
 	}
 

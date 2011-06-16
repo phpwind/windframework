@@ -6,9 +6,9 @@
  * @license 
  */
 
-L::import('WIND:core.WindComponentModule');
-L::import('WIND:core.web.IWindApplication');
-L::import('WIND:core.factory.WindComponentDefinition');
+Wind::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.web.IWindApplication');
+Wind::import('WIND:core.factory.WindComponentDefinition');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -103,7 +103,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		//TODO 添加过滤链
 		if ($actionHandler->_getInstance() instanceof WindFormController) {
 			if ($formClassPath = $actionHandler->getFormClass()) {
-				L::import('WIND:core.web.listener.WindFormListener');
+				Wind::import('WIND:core.web.listener.WindFormListener');
 				$actionHandler->registerEventListener('doAction', new WindFormListener($this->request, $formClassPath, $actionHandler->getErrorMessage()));
 			}
 		} elseif ($actionHandler->_getInstance() instanceof WindController) {
@@ -111,7 +111,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 				if (!isset($rules['errorMessage'])) {
 					$rules['errorMessage'] = $actionHandler->getErrorMessage();
 				}
-				L::import('WIND:core.web.listener.WindValidateListener');
+				Wind::import('WIND:core.web.listener.WindValidateListener');
 				$actionHandler->registerEventListener('doAction', new WindValidateListener($this->request, $rules, $actionHandler->getValidatorClass()));
 			}
 		}
@@ -134,7 +134,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
 		$_tmp = $actionException->getError();
 		if (is_string($_tmp)) {
-			L::import('WIND:core.web.WindErrorMessage');
+			Wind::import('WIND:core.web.WindErrorMessage');
 			$_tmp = new WindErrorMessage($_tmp);
 		}
 		$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController());

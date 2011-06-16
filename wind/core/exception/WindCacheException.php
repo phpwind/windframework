@@ -6,7 +6,7 @@
 *@license 
 */
 
-L::import('WIND:core.exception.WindException');
+Wind::import('WIND:core.exception.WindException');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

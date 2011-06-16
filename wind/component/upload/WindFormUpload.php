@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import ( 'WIND:component.upload.AbstractWindUpload');
+Wind::import ( 'WIND:component.upload.AbstractWindUpload');
 
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>

@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.filter.WindHandlerInterceptor');
+Wind::import('WIND:core.filter.WindHandlerInterceptor');
 /**
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -33,7 +33,7 @@ class WindFormListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		$className = L::import($this->formPath);
+		$className = Wind::import($this->formPath);
 		if (!class_exists($className)) throw new WindException('the form \'' . $this->formPath . '\' is not exists!');
 		if ('WindEnableValidateModule' != get_parent_class($className)) throw new WindException('the form \'' . $this->formPath . '\' is not extends \'WindEnableValidateModule\'!');
 		$form = new $className();

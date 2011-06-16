@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 处理视图请求的准备工作，并将视图请求提交给某一个具体的视图解析器
  * 如果视图请求是一个重定向请求，或者是请求另一个操作
@@ -116,7 +116,7 @@ class WindView extends WindComponentModule {
 	public function getViewResolver() {
 		if ($this->viewResolver !== null) {
 			if ($this->getIsCache() === 'true') {
-				L::import('WIND:core.viewer.listener.WindViewCacheListener');
+				Wind::import('WIND:core.viewer.listener.WindViewCacheListener');
 				$this->viewResolver->setClassProxy(new WindClassProxy());
 				$this->viewResolver = $this->viewResolver->getClassProxy();
 				$this->viewResolver->registerEventListener('windFetch', new WindViewCacheListener($this));
@@ -138,10 +138,10 @@ class WindView extends WindComponentModule {
 		if (!$fileExt) $fileExt = $this->getTemplateExt();
 		if (!$fileName) return '';
 		if (strrpos($path, ':') === false) $path = $this->windSystemConfig->getAppName() . ':' . $path;
-		if (!($dir = L::getRealPath($path, true)) || !is_dir($dir)) {
+		if (!($dir = Wind::getRealPath($path, true)) || !is_dir($dir)) {
 			throw new WindException('The file folder \'' . $dir . '\' is not exist.');
 		}
-		return L::getRealPath($path . '.' . $fileName . '.' . $fileExt);
+		return Wind::getRealPath($path . '.' . $fileName . '.' . $fileExt);
 	}
 
 	/**

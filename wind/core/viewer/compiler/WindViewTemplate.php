@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.viewer.AbstractWindViewTemplate');
+Wind::import('WIND:core.viewer.AbstractWindViewTemplate');
 /**
  * 模板类
  * 职责：进行模板编译渲染
@@ -98,10 +98,10 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	private function creatTagCompiler($content, $compiler, $regex, $windViewerResolver = null) {
 		$content = preg_replace_callback($regex, array($this, '_creatTagCompiler'), $content);
 		if ($this->windHandlerInterceptorChain === null) {
-			L::import('WIND:core.filter.WindHandlerInterceptorChain');
+			Wind::import('WIND:core.filter.WindHandlerInterceptorChain');
 			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
 		}
-		$_compilerClass = L::import($compiler);
+		$_compilerClass = Wind::import($compiler);
 		if (!class_exists($_compilerClass)) return $content;
 		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->request, $this->response));
 		$this->_compilerCache = array();
@@ -141,7 +141,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return string
 	 */
 	protected function getCompiledBlockKey() {
-		L::import('WIND:component.utility.WindUtility');
+		Wind::import('WIND:component.utility.WindUtility');
 		$key = WindUtility::generateRandStr(50);
 		if (key_exists($key, $this->compiledBlockData)) {
 			return $this->getCompiledBlockKey();

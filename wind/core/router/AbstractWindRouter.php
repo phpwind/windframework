@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 路由解析器接口
  * 职责: 路由解析, 返回路由对象

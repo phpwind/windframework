@@ -10,7 +10,7 @@ class WindClassDefinitionTest extends BaseTestCase {
 	private $proxy = null;
 	public function setUp() {
 		parent::setUp();
-		L::register(T_P, 'TEST');
+		Wind::register(T_P, 'TEST');
 		require_once ('core/factory/WindClassDefinition.php');
 		require_once ('core/factory/WindFactory.php');
 		$this->proxy = new WindClassDefinition($this->getTestData());

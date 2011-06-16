@@ -38,7 +38,7 @@ class WindFormFilterTest extends BaseTestCase {
 		$dispatcher = new WindWebDispatcher($this->request, $this->response);
 		$dispatcher->module = 'default';
 		$this->response->setDispatcher($dispatcher);
-		L::register(dirname(dirname(dirname(__FILE__))) . D_S, 'TEST');
+		Wind::register(dirname(dirname(dirname(__FILE__))) . D_S, 'TEST');
 		$this->obj = new WindFormFilter();
 	}
 	public function tearDown() {

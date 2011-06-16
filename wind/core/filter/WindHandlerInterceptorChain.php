@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * Enter description here ...
  *

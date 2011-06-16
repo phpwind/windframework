@@ -1,7 +1,7 @@
 <?php
 
-L::import('WIND:core.factory.proxy.WindClassProxy');
-L::import('WIND:core.factory.WindFactory');
+Wind::import('WIND:core.factory.proxy.WindClassProxy');
+Wind::import('WIND:core.factory.WindFactory');
 /**
  * Dao工厂
  * 
@@ -40,7 +40,7 @@ abstract class AbstractWindDaoFactory {
 			} else {
 				$_path = $className;
 			}
-			$className = L::import($_path);
+			$className = Wind::import($_path);
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
@@ -64,9 +64,9 @@ abstract class AbstractWindDaoFactory {
 		foreach ($caches as $classMethod => $classPath) {
 			if (!$classMethod) continue;
 			if ($classPath === 'default')
-				$_className = L::import('WIND:core.dao.listener.WindDaoCacheListener');
+				$_className = Wind::import('WIND:core.dao.listener.WindDaoCacheListener');
 			else
-				$_className = L::import($classPath);
+				$_className = Wind::import($classPath);
 			if (!$_className) continue;
 			$daoInstance->registerEventListener($classMethod, new $_className($daoInstance));
 		}
@@ -147,7 +147,7 @@ abstract class AbstractWindDaoFactory {
 	 */
 	private function createWindFactory() {
 		if ($this->windFactory === null) {
-			L::import('WIND:core.factory.WindComponentFactory');
+			Wind::import('WIND:core.factory.WindComponentFactory');
 			$this->windFactory = new WindComponentFactory();
 		}
 		return $this->windFactory;

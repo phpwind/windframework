@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:core.WindModule');
+Wind::import('WIND:core.WindModule');
 /**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
@@ -115,8 +115,8 @@ abstract class WindEnableValidateModule extends WindModule {
 	 */
 	protected function getValidator() {
 		if ($this->_validator === null) {
-			$_className = L::import($this->_validatorClass);
-			L::import('WIND:core.factory.WindFactory');
+			$_className = Wind::import($this->_validatorClass);
+			Wind::import('WIND:core.factory.WindFactory');
 			$this->_validator = WindFactory::createInstance($_className);
 			if ($this->_validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
 		}

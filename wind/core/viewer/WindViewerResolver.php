@@ -6,8 +6,8 @@
  * @license 
  */
 
-L::import('WIND:core.viewer.IWindViewerResolver');
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.viewer.IWindViewerResolver');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 默认视图引擎
  * 基于URL的视图引擎，视图名和模板名称保持一致

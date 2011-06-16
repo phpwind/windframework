@@ -120,7 +120,7 @@ class WindMail {
     	if(!in_array($type,array(self::SEND_SMTP,self::SEND_PHP,self::SEND_SEND))){
     		throw new WindException('There is no way that you want to send e-mail');
     	}
-    	$class = L::import('Wind:component.mail.sender.Wind'.ucfirst($type).'Mail');
+    	$class = Wind::import('Wind:component.mail.sender.Wind'.ucfirst($type).'Mail');
     	/* @var $sender IWindSendMail */
     	$sender = new $class($config);
     	$sender->send($this);
@@ -252,7 +252,7 @@ class WindMail {
 	 */
 	public function setDate($date = null,$ifchinese = true){
 		if(!$date){
-			L::import ( 'WIND:component.utility.date.WindDate' );
+			Wind::import ( 'WIND:component.utility.date.WindDate' );
 			$date = $ifchinese ? WindDate::getChinaDate() : WindDate::getRFCDate();
 		}
 		$this->setMailHeader(self::DATE,$date );

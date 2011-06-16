@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.exception.WindSqlException');
-L::import('WIND:component.db.drivers.IWindDbConfig');
+Wind::import('WIND:component.exception.WindSqlException');
+Wind::import('WIND:component.db.drivers.IWindDbConfig');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -152,7 +152,7 @@ abstract class AbstractWindDbAdapter {
 	final public function getSqlBuilder() {
 		if (empty($this->sqlBuilder)) {
 			$builders = array('mysql'=>'WIND:component.db.drivers.mysql.WindMySqlBuilder','mssql'=>'WIND:component.db.drivers.mssql.WindMsSqlBuilder');
-			$builderClass = L::import($builders[strtolower($this->getDriver())]);
+			$builderClass = Wind::import($builders[strtolower($this->getDriver())]);
 			$this->sqlBuilder = new $builderClass($this);
 		}
 		return $this->sqlBuilder;

@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.viewer.AbstractWindTemplateCompiler');
+Wind::import('WIND:core.viewer.AbstractWindTemplateCompiler');
 /**
  * 职责：编译模板page标签
  * 支持参数类型：

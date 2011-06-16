@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.AbstractWindServer');
+Wind::import('WIND:core.AbstractWindServer');
 /**
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
  * 
@@ -51,9 +51,9 @@ class WindFrontController extends AbstractWindServer {
 	 * 初始化类工厂
 	 */
 	protected function initWindFactory() {
-		$configPath = L::getRealPath(self::COMPONENTS_CONFIG);
+		$configPath = Wind::getRealPath(self::COMPONENTS_CONFIG);
 		$classesDefinitions = $this->getWindConfig()->getConfigParser()->parse($configPath, 'components', WIND_CONFIG_CACHE);
-		$factoryClass = L::import(self::WIND_FACTORY);
+		$factoryClass = Wind::import(self::WIND_FACTORY);
 		if (!class_exists($factoryClass)) {
 			throw new WindException($factoryClass, WindException::ERROR_CLASS_NOT_EXIST);
 		}
@@ -67,11 +67,11 @@ class WindFrontController extends AbstractWindServer {
 	 * @param string $config
 	 */
 	protected function initWindConfig($appName, $config) {
-		L::import('WIND:core.config.parser.WindConfigParser');
-		L::import('WIND:core.config.WindSystemConfig');
+		Wind::import('WIND:core.config.parser.WindConfigParser');
+		Wind::import('WIND:core.config.WindSystemConfig');
 		$configParser = new WindConfigParser();
 		$this->windSystemConfig = new WindSystemConfig($config, $configParser, ($appName ? $appName : 'default'));
-		L::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
+		Wind::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
 	
 		//TODO register all apps
 	}
@@ -112,7 +112,7 @@ class WindFrontController extends AbstractWindServer {
 	 * @see AbstractWindServer::beforeProcess()
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
-		L::import('WIND:core.web.WindErrorHandler');
+		Wind::import('WIND:core.web.WindErrorHandler');
 		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
 		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}

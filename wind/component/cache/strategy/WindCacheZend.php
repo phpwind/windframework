@@ -6,8 +6,8 @@
  * @package 
  * tags
  */
-L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.cache.operator.WindUZendCache');
+Wind::import('WIND:component.cache.AbstractWindCache');
+Wind::import('WIND:component.cache.operator.WindUZendCache');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Su Qian <weihu@alibaba-inc.com>

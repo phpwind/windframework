@@ -6,7 +6,7 @@
  * @license
  */
 
-L::import('WIND:core.filter.WindHandlerInterceptorChain');
+Wind::import('WIND:core.filter.WindHandlerInterceptorChain');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -62,7 +62,7 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 		$_temp = array();
 		foreach ((array) $filters as $key => $filter) {
 			if (!is_array($filter)) continue;
-			$filterClass = L::import($filter[WindSystemConfig::CLASS_PATH]);
+			$filterClass = Wind::import($filter[WindSystemConfig::CLASS_PATH]);
 			if (!class_exists($filterClass)) continue;
 			$_temp[$key] = new $filterClass();
 		}

@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.factory.WindFactory');
+Wind::import('WIND:core.factory.WindFactory');
 /**
  * Enter description here ...
  *

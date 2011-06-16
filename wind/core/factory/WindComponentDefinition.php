@@ -6,9 +6,9 @@
  * @license 
  */
 
-L::import('WIND:core.factory.WindClassDefinition');
-L::import('WIND:core.config.parser.WindConfigParser');
-L::import('WIND:core.config.WindConfig');
+Wind::import('WIND:core.factory.WindClassDefinition');
+Wind::import('WIND:core.config.parser.WindConfigParser');
+Wind::import('WIND:core.config.WindConfig');
 /**
  * 组件定义
  * 
@@ -55,7 +55,7 @@ class WindComponentDefinition extends WindClassDefinition {
 		if (!($instance instanceof WindComponentModule)) return $instance;
 		$windConfig = null;
 		if (isset($this->config[self::RESOURCE]) && ($resource = $this->config[self::RESOURCE])) {
-			$configPath = L::getRealPath($resource);
+			$configPath = Wind::getRealPath($resource);
 			$windConfig = new WindConfig($configPath, new WindConfigParser(), $this->getAlias(), WIND_CONFIG_CACHE);
 		} else {
 			$windConfig = new WindConfig($this->config);
@@ -88,7 +88,7 @@ class WindComponentDefinition extends WindClassDefinition {
 	protected function setProxyForClass($instance, $factory) {
 		if (!($proxyPath = $this->getProxy()) || $proxyPath === 'false') return;
 		$proxyPath = ($proxyPath === 'true' || $proxyPath === true) ? $this->proxyClass : $this->getProxy();
-		$proxyClass = L::import($proxyPath);
+		$proxyClass = Wind::import($proxyPath);
 		if (!class_exists($proxyClass)) return;
 		
 		$proxyClass = $factory->createInstance($proxyClass);

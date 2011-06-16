@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -13,23 +12,14 @@
  * @package 
  */
 abstract class AbstractWindServer {
-
 	const METHOD_DELETE = "DELETE";
-
 	const METHOD_HEAD = "HEAD";
-
 	const METHOD_GET = "GET";
-
 	const METHOD_OPTIONS = "OPTIONS";
-
 	const METHOD_POST = "POST";
-
 	const METHOD_PUT = "PUT";
-
 	const METHOD_TRACE = "TRACE";
-
 	private $request;
-
 	private $response;
 
 	/**
@@ -37,7 +27,7 @@ abstract class AbstractWindServer {
 	 */
 	public function __construct() {
 		try {
-			L::import('WIND:core.request.WindHttpRequest');
+			Wind::import('WIND:core.request.WindHttpRequest');
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
 		} catch (Exception $exception) {
@@ -63,17 +53,13 @@ abstract class AbstractWindServer {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
-
-	}
+	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {}
 
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
-
-	}
+	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {}
 
 	/**
 	 * 执行请求的操作
@@ -92,26 +78,15 @@ abstract class AbstractWindServer {
 	 */
 	protected function service(WindHttpRequest $request, WindHttpResponse $response) {
 		$method = $request->getRequestMethod();
-		
 		if (strcasecmp($method, self::METHOD_GET) == 0) {
 			$this->doGet($request, $response);
-		
 		} else if (strcasecmp($method, self::METHOD_POST) == 0) {
 			$this->doPost($request, $response);
-		
 		} else if (strcasecmp($method, self::METHOD_PUT) == 0) {
 			$this->doPut($request, $response);
-		
 		} else if (strcasecmp($method, self::METHOD_DELETE) == 0) {
 			$this->doDelete($request, $response);
-		
-		} else if (strcasecmp($method, self::METHOD_HEAD) == 0) {
-
-		} else if (strcasecmp($method, self::METHOD_OPTIONS) == 0) {
-
-		} else if (strcasecmp($method, self::METHOD_TRACE) == 0) {
-
-		} else {
+		} else if (strcasecmp($method, self::METHOD_HEAD) == 0) {} else if (strcasecmp($method, self::METHOD_OPTIONS) == 0) {} else if (strcasecmp($method, self::METHOD_TRACE) == 0) {} else {
 			$errMsg = 'your request method is not supported!!!';
 			$response->sendError(WindHttpResponse::SC_METHOD_NOT_ALLOWED, $errMsg);
 		}
@@ -167,25 +142,18 @@ abstract class AbstractWindServer {
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function doTrace(WindHttpRequest $request, WindHttpResponse $response) {
-
-	}
+	protected function doTrace(WindHttpRequest $request, WindHttpResponse $response) {}
 
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 */
-	protected function doOptions(WindHttpRequest $request, WindHttpResponse $response) {
-
-	}
+	protected function doOptions(WindHttpRequest $request, WindHttpResponse $response) {}
 
 	/**
 	 * @param WindHttpRequest $request
 	 * @param WindHttpResponse $response
 	 * @throws Exception
 	 */
-	protected function doHead(WindHttpRequest $request, WindHttpResponse $response) {
-
-	}
-
+	protected function doHead(WindHttpRequest $request, WindHttpResponse $response) {}
 }

@@ -12,7 +12,7 @@ class WindFilterChainTest extends BaseTestCase {
 		parent::setUp();
 		require_once ('core/filter/WindFilterChain.php');
 		require_once ('core/config/WindConfig.php');
-		L::register(T_P, 'TEST', false);
+		Wind::register(T_P, 'TEST', false);
 		$this->filterChain = new WindFilterChain($this->getFilterConfig());
 	}
 	public function tearDown() {

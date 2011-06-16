@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.response.IWindResponse');
+Wind::import('WIND:core.response.IWindResponse');
 /**
  * 1xx：信息，请求收到，继续处理
  * 2xx：成功，行为被成功地接受、理解和采纳

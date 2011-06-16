@@ -1,6 +1,6 @@
 <?php
 
-L::import('WIND:core.filter.WindHandlerInterceptor');
+Wind::import('WIND:core.filter.WindHandlerInterceptor');
 /**
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -73,8 +73,8 @@ class WindValidateListener extends WindHandlerInterceptor {
 	 */
 	private function getValidator() {
 		if ($this->validator === null) {
-			$_className = L::import($this->validatorClass);
-			L::import('WIND:core.factory.WindFactory');
+			$_className = Wind::import($this->validatorClass);
+			Wind::import('WIND:core.factory.WindFactory');
 			$this->validator = WindFactory::createInstance($_className);
 			if ($this->validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
 		}

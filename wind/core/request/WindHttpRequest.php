@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.request.IWindRequest');
+Wind::import('WIND:core.request.IWindRequest');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -497,7 +497,7 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	public function getResponse() {
 		if ($this->_response === null) {
-			L::import('WIND:core.response.WindHttpResponse');
+			Wind::import('WIND:core.response.WindHttpResponse');
 			$this->_response = new WindHttpResponse();
 			if ($this->getIsAjaxRequest()) {
 				$this->_response->addHeader('Content-type', 'text/xml;charset=utf-8');

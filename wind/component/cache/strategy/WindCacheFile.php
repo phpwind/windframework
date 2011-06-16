@@ -1,7 +1,7 @@
 <?php
 
-L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.utility.WindFile');
+Wind::import('WIND:component.cache.AbstractWindCache');
+Wind::import('WIND:component.utility.WindFile');
 
 /**
  * 文件缓存类
@@ -131,7 +131,7 @@ class WindCacheFile extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	private function setCacheDir($dir) {
-		$this->cacheDir = L::getRealPath($dir,true) . DIRECTORY_SEPARATOR;
+		$this->cacheDir = Wind::getRealPath($dir,true) . DIRECTORY_SEPARATOR;
 	}
 
 	/**

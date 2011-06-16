@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.WindModule');
+Wind::import('WIND:core.WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * 
@@ -294,7 +294,7 @@ class WindClassDefinition extends WindModule {
 	 */
 	public function getClassName() {
 		if (!$this->className) {
-			$this->className = L::import($this->getPath());
+			$this->className = Wind::import($this->getPath());
 		}
 		return $this->className;
 	}

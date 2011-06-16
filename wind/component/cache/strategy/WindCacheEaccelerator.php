@@ -5,8 +5,8 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-L::import('WIND:component.cache.AbstractWindCache');
-L::import('WIND:component.cache.operator.WindEaccelerator');
+Wind::import('WIND:component.cache.AbstractWindCache');
+Wind::import('WIND:component.cache.operator.WindEaccelerator');
 /**
  * Eaccelerator是一款php加速器、优化器、编码器及动态内容缓存。
  * WindEaccelerator实现Eaccelerator动态内容缓存功能。

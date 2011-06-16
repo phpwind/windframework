@@ -6,7 +6,7 @@
  * @license 
  */
 
-L::import('WIND:core.factory.IWindFactory');
+Wind::import('WIND:core.factory.IWindFactory');
 /**
  * Wind容器基类，创建类对象（分为两种模式，一种是普通模式，一种为单利模式）
  * 
@@ -60,7 +60,7 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		if (!$className) return null;
-		if (strpos($className, ':') !== false) $className = L::import($className);
+		if (strpos($className, ':') !== false) $className = Wind::import($className);
 		if (!$className || !class_exists($className)) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}

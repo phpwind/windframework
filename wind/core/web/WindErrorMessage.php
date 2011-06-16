@@ -1,12 +1,5 @@
 <?php
-/**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-25
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license
- */
-
-L::import('WIND:core.web.IWindErrorMessage');
+Wind::import('WIND:core.web.IWindErrorMessage');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -14,11 +7,8 @@ L::import('WIND:core.web.IWindErrorMessage');
  * @package
  */
 class WindErrorMessage implements IWindErrorMessage {
-
 	private $error = array();
-
 	private $errorAction = 'run';
-
 	/**
 	 * @var string
 	 */
@@ -62,7 +52,6 @@ class WindErrorMessage implements IWindErrorMessage {
 	 */
 	public function addError($error, $key = '') {
 		if (!$error) return;
-		
 		if ($key === '') {
 			if (is_string($error))
 				$this->error[] = $error;
@@ -100,5 +89,4 @@ class WindErrorMessage implements IWindErrorMessage {
 	public function setErrorController($errorController) {
 		if ($errorController) $this->errorController = $errorController;
 	}
-
 }

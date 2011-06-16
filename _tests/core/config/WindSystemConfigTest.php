@@ -21,7 +21,7 @@ class WindSystemConfigTest extends BaseTestCase {
 		parent::setUp();
 		require_once ('core/config/WindSystemConfig.php');
 		require_once ('core/config/parser/WindConfigParser.php');
-		L::register(T_P, 'TEST');
+		Wind::register(T_P, 'TEST');
 		$this->testConfig = include 'data/config.php';
 		$this->config = new WindSystemConfig($this->testConfig['wind'], new WindConfigParser(), 'testApp');
 	}

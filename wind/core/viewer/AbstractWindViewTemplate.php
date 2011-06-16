@@ -1,7 +1,7 @@
 <?php
 
-L::import('WIND:core.WindComponentModule');
-L::import('WIND:component.utility.WindFile');
+Wind::import('WIND:core.WindComponentModule');
+Wind::import('WIND:component.utility.WindFile');
 /**
  * Enter description here ...
  *

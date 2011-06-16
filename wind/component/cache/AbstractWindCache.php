@@ -1,5 +1,5 @@
 <?php
-L::import('WIND:core.WindComponentModule');
+Wind::import('WIND:core.WindComponentModule');
 /**
  * 缓存接口及通用方法定义
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -131,7 +131,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 */
 	protected function checkDependencyChanged($key, array $data) {
 		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
-			L::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
+			Wind::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
 			/* @var $dependency IWindCacheDependency*/
 			$dependency = unserialize($data[self::DEPENDENCY]);
 			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {

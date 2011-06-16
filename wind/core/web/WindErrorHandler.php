@@ -1,15 +1,13 @@
 <?php
+Wind::import('WIND:core.web.WindController');
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-12-1
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$
+ * @package 
  */
-L::import('WIND:core.web.WindController');
 class WindErrorHandler extends WindController {
-
 	protected $error = array();
-
 	protected $urlReferer = '';
 
 	/* (non-PHPdoc)
@@ -21,7 +19,6 @@ class WindErrorHandler extends WindController {
 			$this->urlReferer = $this->request->getUrlReferer();
 		else
 			$this->urlReferer = $this->request->getBaseUrl();
-		
 		return true;
 	}
 
@@ -66,7 +63,6 @@ class WindErrorHandler extends WindController {
 				echo "<p>" . nl2br($_tmp) . "</p>";
 			} else
 				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
-			
 			$this->addLog($this->errnoMap($errno) . $errstr, $_tmp);
 		}
 	}
@@ -151,7 +147,7 @@ class WindErrorHandler extends WindController {
 	 * @param string $message
 	 */
 	private function addLog($errno, $message) {
-		L::import('WIND:component.log.WindLogger');
+		Wind::import('WIND:component.log.WindLogger');
 		$logger = new WindLogger();
 		$logger->info("$errno:" . $message);
 	}

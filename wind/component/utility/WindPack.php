@@ -1,11 +1,5 @@
 <?php
-/**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-19
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-L::import('WIND:component.utility.WindFile');
+Wind::import('WIND:component.utility.WindFile');
 /**
  * 程序打包工具
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,26 +8,20 @@ L::import('WIND:component.utility.WindFile');
  * @package 
  */
 class WindPack {
-
 	/**
 	 * @var string 使用正则打包
 	 */
 	const STRIP_SELF = 'stripWhiteSpaceBySelf';
-
 	/**
 	 * @var string 利用php自身的函数打包
 	 */
 	const STRIP_PHP = 'stripWhiteSpaceByPhp';
-
 	/**
 	 * @var string 通过token方式打包
 	 */
 	const STRIP_TOKEN = 'stripWhiteSpaceByToken';
-
 	private $packList = array();
-
 	private $contentInjectionPosition;
-
 	private $contentInjectionCallBack = '';
 
 	/**
@@ -51,7 +39,8 @@ class WindPack {
 		if (empty($dst) || empty($dir)) {
 			return false;
 		}
-		$suffix = is_array($suffix) ? $suffix : array($suffix);
+		$suffix = is_array($suffix) ? $suffix : array(
+			$suffix);
 		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
 			return false;
 		}
@@ -124,7 +113,10 @@ class WindPack {
 		$lastToken = 0;
 		foreach (token_get_all($content) as $key => $token) {
 			if (is_array($token)) {
-				if (in_array($token[0], array(T_COMMENT, T_WHITESPACE, T_DOC_COMMENT))) {
+				if (in_array($token[0], array(
+					T_COMMENT, 
+					T_WHITESPACE, 
+					T_DOC_COMMENT))) {
 					continue;
 				}
 				$compressContent .= ' ' . $token[1];
@@ -151,7 +143,8 @@ class WindPack {
 		if (empty($dir) || false === $this->isValidatePackMethod($packMethod)) {
 			return false;
 		}
-		$dir = is_array($dir) ? $dir : array($dir);
+		$dir = is_array($dir) ? $dir : array(
+			$dir);
 		foreach ($dir as $_dir) {
 			$_dir = is_dir($absolutePath) ? WindFile::appendSlashesToDir($absolutePath) . $_dir : $_dir;
 			if (is_dir($_dir)) {
@@ -183,7 +176,8 @@ class WindPack {
 		if (empty($fileList) || false === $this->isValidatePackMethod($packMethod)) {
 			return array();
 		}
-		$fileList = is_array($fileList) ? $fileList : array($fileList);
+		$fileList = is_array($fileList) ? $fileList : array(
+			$fileList);
 		foreach ($fileList as $key => $value) {
 			if (is_array($value) && isset($value[1])) {
 				$parents = class_parents($value[1]);
@@ -265,7 +259,11 @@ class WindPack {
 			foreach ($matchs[1] as $key => $value) {
 				$name = substr($value, strrpos($value, '.') + 1);
 				if (preg_match("/(abstract[\t ]*|class|interface)[\t ]+$name/i", $content)) {
-					$strip = str_replace(array('(', ')'), array('\(', '\)'), addslashes($matchs[0][$key])) . '[\t ]*;';
+					$strip = str_replace(array(
+						'(', 
+						')'), array(
+						'\(', 
+						'\)'), addslashes($matchs[0][$key])) . '[\t ]*;';
 					$content = $this->stripStrByRule($content, $strip, $replace);
 				}
 			}
@@ -292,7 +290,12 @@ class WindPack {
 			$fp = fopen($filename, "r");
 			while (!feof($fp)) {
 				$line = fgets($fp);
-				if (in_array(strlen($line), array(2, 3)) && in_array(ord($line), array(9, 10, 13))) continue;
+				if (in_array(strlen($line), array(
+					2, 
+					3)) && in_array(ord($line), array(
+					9, 
+					10, 
+					13))) continue;
 				$content .= $line;
 			}
 			fclose($fp);
@@ -339,7 +342,9 @@ class WindPack {
 	 * @author Qiong Wu
 	 */
 	public function setContentInjectionCallBack($contentInjectionCallBack, $position = 'before') {
-		if (!in_array($position, array('before', 'after'))) $position = 'before';
+		if (!in_array($position, array(
+			'before', 
+			'after'))) $position = 'before';
 		$this->contentInjectionPosition = $position;
 		$this->contentInjectionCallBack = $contentInjectionCallBack;
 	}
@@ -352,7 +357,8 @@ class WindPack {
 	 */
 	public function callBack($content, $replace = '') {
 		if ($this->contentInjectionCallBack !== '') {
-			$_content = call_user_func_array($this->contentInjectionCallBack, array($this->getPackList()));
+			$_content = call_user_func_array($this->contentInjectionCallBack, array(
+				$this->getPackList()));
 			if ($this->contentInjectionPosition == 'before') {
 				$content = $replace . $_content . $content;
 			} elseif ($this->contentInjectionPosition == 'after') {
@@ -363,8 +369,10 @@ class WindPack {
 	}
 
 	private function isValidatePackMethod($packMethod) {
-		return method_exists($this, $packMethod) && in_array($packMethod, array(WindPack::STRIP_PHP, 
-			WindPack::STRIP_SELF, WindPack::STRIP_TOKEN));
+		return method_exists($this, $packMethod) && in_array($packMethod, array(
+			WindPack::STRIP_PHP, 
+			WindPack::STRIP_SELF, 
+			WindPack::STRIP_TOKEN));
 	}
 
 	/**
@@ -378,11 +386,12 @@ class WindPack {
 				array_push($this->packList[$key], $value);
 			} else {
 				$tmp_name = $this->packList[$key];
-				$this->packList[$key] = array($tmp_name, $value);
+				$this->packList[$key] = array(
+					$tmp_name, 
+					$value);
 			}
 		} else {
 			$this->packList[$key] = $value;
 		}
 	}
-
 }

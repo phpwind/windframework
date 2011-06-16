@@ -6,7 +6,7 @@
  * @license
  */
 
-L::import('WIND:core.WindModule');
+Wind::import('WIND:core.WindModule');
 /**
  * 框架核心组件基类
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
@@ -87,7 +87,7 @@ abstract class WindComponentModule extends WindModule {
 		} elseif (is_array($config)) {
 			$this->_config = new WindConfig($config);
 		} elseif (is_string($config)) {
-			L::import('WIND:core.config.parser.WindConfigParser');
+			Wind::import('WIND:core.config.parser.WindConfigParser');
 			$configParser = new WindConfigParser();
 			$this->_config = new WindConfig($config, $configParser, get_class($this), CONFIG_CACHE);
 		}

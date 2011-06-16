@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-L::import('WIND:component.mail.protocol.WindSocket');
+Wind::import('WIND:component.mail.protocol.WindSocket');
 /**
  * imap协议封装
  * the last known user to change this file in the repository  <$LastChangedBy$>
