@@ -19,8 +19,6 @@ abstract class WindModule {
 	private $_classProxy = null;
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param string $propertyName
 	 * @param string $value
 	 */
@@ -30,8 +28,6 @@ abstract class WindModule {
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param string $propertyName
 	 */
 	public function __get($propertyName) {
