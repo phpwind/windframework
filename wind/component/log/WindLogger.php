@@ -14,115 +14,187 @@
  * @package
  */
 class WindLogger extends WindComponentModule {
-
-	private $logs = array();
-
-	/*错误类型*/
-	const INFO = 0;
-
-	const TRACE = 1;
-
-	const DEBUG = 2;
-
-	const ERROR = 3;
-
+	const LEVEL_INFO = 1;
+	const LEVEL_TRACE = 2;
+	const LEVEL_DEBUG = 3;
+	const LEVEL_ERROR = 4;
+	const LEVEL_PROFILE = 5;
+	const TOKEN_BEGIN = 'begin:';
+	const TOKEN_END = 'end:';
 	/**
 	 * 每次当日志数量达到100的时候，就写入文件一次
-	 * 
 	 * @var int
 	 */
-	const FLUSH = 100;
+	private $_autoFlush = 100;
+	private $_logs = array();
+	private $_logCount = 0;
+	private $_profiles = array();
 
 	/**
 	 * 添加info级别的日志信息
-	 * 
 	 * @param string $msg
 	 */
-	public function info($msg) {
-		$this->log($msg, self::INFO);
+	public function info($msg, $type = 'wind.system') {
+		$this->log($msg, self::INFO, $type);
 	}
 
 	/**
 	 * 添加trace级别的日志信息
-	 * 
 	 * @param string $msg
 	 */
-	public function trace($msg) {
-		$this->log($msg, self::TRACE);
+	public function trace($msg, $type = 'wind.system') {
+		$this->log($msg, self::TRACE, $type);
 	}
 
 	/**
 	 * 添加debug的日志信息
-	 * 
 	 * @param string $msg
 	 */
-	public function debug($msg) {
-		$this->log($msg, self::DEBUG);
+	public function debug($msg, $type = 'wind.system') {
+		$this->log($msg, self::DEBUG, $type);
 	}
 
 	/**
 	 * 添加Error级别的日志信息
-	 * 
 	 * @param string $msg
 	 */
-	public function error($msg) {
-		$this->log($msg, self::ERROR);
+	public function error($msg, $type = 'wind.core') {
+		$this->log($msg, self::LEVEL_ERROR, $type);
+	}
+
+	/**
+	 * @param $msg
+	 * @param $type
+	 */
+	public function profileBegin($msg, $type = 'wind.core') {
+		$this->log('begin:' . trim($msg), self::LEVEL_PROFILE, $type);
+	}
+
+	/**
+	 * @param $msg
+	 * @param $type
+	 */
+	public function profileEnd($msg, $type = 'wind.core') {
+		$this->log('end:' . trim($msg), self::LEVEL_PROFILE, $type);
 	}
 
 	/**
 	 * 记录日志信息，但不写入文件
-	 * 
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 */
-	public function log($msg, $logType = self::INFO) {
-		$this->logs[] = $this->build($msg, $logType);
-		count($this->logs) >= self::FLUSH && $this->flush();
+	public function log($msg, $level = self::INFO, $type = 'wind.system') {
+		$this->_logCount >= $this->_autoFlush && $this->flush();
+		if ($level === self::LEVEL_PROFILE)
+			$this->_logs[] = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
+		elseif ($level === self::LEVEL_DEBUG)
+			$this->_logs[] = $this->_build($msg, $level, $type, microtime(true));
+		else
+			$this->_logs[] = $this->_build($msg, $level, $type);
+		$this->_logCount++;
 	}
 
 	/**
 	 * 将记录的日志列表信息写入文件
-	 * 
 	 * @param string $dst  日志被记录于何处
 	 * @return boolean
 	 */
-	public function flush($dst = '') {
-		if (!$this->logs) return false;
-		$this->writeLog($dst);
-		$this->logs = array();
+	public function flush() {
+		if (empty($this->_logs)) return false;
+		Wind::import('WIND:component.utility.WindFile');
+		WindFile::write($this->_getFileName(), join("", $this->_logs), 'a');
+		$this->_logs = array();
+		$this->_logCount = 0;
 		return true;
 	}
 
 	/**
-	 * 清空日志文件
-	 * 
-	 * 根据输入的值删除从现在回到$time秒之前的值
-	 * 
-	 * @param int $time
-	 * @return bool
+	 * 返回内存使用量
+	 * @param $peak | 是否是内存峰值
+	 * @return int
 	 */
-	public function clearFiles($time = 0) {
-		$logDir = $this->getLogDir();
-		if (!is_int($time) || 0 > intval($time) || !is_dir($logDir)) return false;
-		$dir = dir($logDir);
-		while (false != ($file = $dir->read())) {
-			$file = $logDir . $file;
-			is_file($file) ? (microtime(true) - filectime($file)) > $time && @unlink($file) : '';
+	public function getMemoryUsage($peak = true) {
+		if ($peak && function_exists('memory_get_peak_usage'))
+			return memory_get_peak_usage();
+		elseif (function_exists('memory_get_usage'))
+			return memory_get_usage();
+		$pid = getmypid();
+		if (strncmp(PHP_OS, 'WIN', 3) === 0) {
+			exec('tasklist /FI "PID eq ' . $pid . '" /FO LIST', $output);
+			return isset($output[5]) ? preg_replace('/[\D]/', '', $output[5]) * 1024 : 0;
+		} else {
+			exec("ps -eo%mem,rss,pid | grep $pid", $output);
+			$output = explode("  ", $output[0]);
+			return isset($output[1]) ? $output[1] * 1024 : 0;
 		}
-		$dir->close();
-		return true;
 	}
 
 	/**
 	 * 组装日志信息
-	 * 
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 * @return string
 	 */
-	private function build($msg, $logType = self::INFO) {
+	private function _build($msg, $level, $type, $timer = 0, $mem = 0) {
 		$msg = stripslashes(str_replace("<br/>", "\r\n", trim($msg)));
-		return call_user_func_array(array($this, $this->getLogType($logType)), array($msg));
+		switch ($level) {
+			case self::LEVEL_INFO:
+				$msg .= "\t(" . $type . ")";
+				$result = $this->_buildInfo($msg);
+				break;
+			case self::LEVEL_ERROR:
+				$msg .= "\t(" . $type . ")";
+				$result = $this->_buildError($msg);
+				break;
+			case self::LEVEL_DEBUG:
+				$msg .= "\t(" . $type . " timer: " . sprintf('%0.5f', (DEBUG_TIME - $timer)) . ")\r\n";
+				$result = $this->_buildDebug($msg);
+				break;
+			case self::LEVEL_TRACE:
+				$msg .= "\t(" . $type . ")";
+				$result = $this->_buildTrace($msg);
+				break;
+			case self::LEVEL_PROFILE:
+				$result = $this->_buildProfile($msg, $type, $timer, $mem);
+				break;
+			default:
+				break;
+		}
+		return $result ? '[' . date('Y-m-d H:i:s') . '] ' . $result . "\r\n" : '';
+	}
+
+	/**
+	 * @param $msg
+	 * @param $type
+	 * @param $timer
+	 * @param $mem
+	 */
+	private function _buildProfile($msg, $type, $timer, $mem) {
+		$_msg = '';
+		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
+			$_token = substr($msg, strlen(self::TOKEN_BEGIN), strpos($msg, ':', strlen(self::TOKEN_BEGIN)));
+			$_msg = substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1);
+			$this->_profiles[] = array(
+				$_token, 
+				$_msg, 
+				$type, 
+				$timer, 
+				$mem);
+		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
+			$_msg = "PROFILE! Message:  ";
+			$_token = substr($msg, strlen(self::TOKEN_END), strpos($msg, ':', strlen(self::TOKEN_END)));
+			foreach ($this->_profiles as $key => $profile) {
+				if ($profile[0] !== $_token) continue;
+				if ($profile[1])
+					$_msg .= $profile[1];
+				else
+					$_msg .= substr($msg, strpos($msg, ':', strlen(self::TOKEN_END)) + 1) . "\r\n";
+				$_msg .= "(type: $profile[2] time: " . $timer - $profile[3] . " mem: " . $mem = $profile[4] . ")";
+				break;
+			}
+			unset($this->_profiles[$key]);
+		}
+		return $_msg;
 	}
 
 	/**
@@ -130,12 +202,11 @@ class WindLogger extends WindComponentModule {
 	 * <code>
 	 * [2011-01-24 10:00:00] INFO! Message: $msg
 	 * </code>
-	 * 
 	 * @param string $msg
 	 * @return string
 	 */
-	private function buildInfo($msg) {
-		return $this->getLogDate() . 'INFO! Message:  ' . $msg . "\r\n";
+	private function _buildInfo($msg) {
+		return "INFO! Message:  " . $msg;
 	}
 
 	/**
@@ -145,77 +216,71 @@ class WindLogger extends WindComponentModule {
 	 * #1 trace1
 	 * #2 trace2
 	 * </code>
-	 * 
 	 * @param string $msg
 	 * @return string
 	 */
-	private function buildTrace($msg) {
-		return $this->getLogDate() . 'TRACE! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace()) . "\r\n";
+	private function _buildTrace($msg) {
+		return "TRACE! Message:  " . $msg . "\r\n" . implode("\r\n", $this->_getTrace());
 	}
 
 	/**
 	 * 组装debug信息输出
-	 * 
 	 * <code>
 	 * [2011-01-24 10:00:00] DEBUG! Message: $msg
 	 * #1 trace1
 	 * #2 trace2
 	 * </code>
-	 * 
 	 * @param string $msg
 	 * @return string
 	 */
-	private function buildDebug($msg) {
-		return $this->getLogDate() . 'DEBUG! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace()) . "\r\n";
+	private function _buildDebug($msg) {
+		return 'DEBUG! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->_getTrace());
 	}
 
 	/**
 	 *组装Error信息输出
-	 * 
 	 * <code>
 	 * [2011-01-24 10:00:00] ERROR! Message: $msg
 	 * #1 trace1
 	 * #2 trace2
 	 * </code>
-	 * 
 	 * @param string $msg
 	 * @return string
 	 */
-	private function buildError($msg) {
-		return $this->getLogDate() . 'ERROR! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->getTrace($this->getLogDate())) . "\r\n";
+	private function _buildError($msg) {
+		return 'ERROR! Message:  ' . $msg;
 	}
 
 	/**
 	 * 错误堆栈信息的获取及组装输出
-	 * 
 	 * <code>
 	 * #1 trace
 	 * #2 trace
 	 * </code>
-	 * 
 	 * @return string
 	 */
-	private function getTrace($type = '') {
-		$info = array();
+	private function _getTrace() {
 		$num = 0;
-		$lineHeader = ($type = trim($type)) ? $type : '';
-		$info[] = $lineHeader . ' Stack trace:';
-		foreach (debug_backtrace(false) as $traceKey => $trace) {
+		$info[] = 'Stack trace:';
+		$traces = debug_backtrace(false);
+		foreach ($traces as $traceKey => $trace) {
+			if ($num >= 7) break;
 			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
 			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
 			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
-			$args = array_map(array($this, 'buildArg'), $trace['args']);
-			$info[] = $lineHeader . ' #' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
+			$args = array_map(array(
+				$this, 
+				'_buildArg'), $trace['args']);
+			$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
 		}
 		return $info;
 	}
 
 	/**
 	 * 组装输出的trace中的参数组装
-	 *
 	 * @param mixed $arg
 	 */
-	private function buildArg($arg) {
+	private function _buildArg($arg) {
 		switch (gettype($arg)) {
 			case 'array':
 				return 'Array';
@@ -230,44 +295,11 @@ class WindLogger extends WindComponentModule {
 	}
 
 	/**
-	 * 根据错误级别代码决定使用的组装方法
-	 *
-	 * @param int $code
-	 * @return string
-	 */
-	private function getLogType($code) {
-		$logType = array(self::INFO => 'buildInfo', self::TRACE => 'buildTrace', self::DEBUG => 'buildDebug', 
-			self::ERROR => 'buildError');
-		return $logType[intval($code)];
-	}
-
-	/**
-	 * 获取日志记录时间
-	 * 
-	 * @return string
-	 */
-	private function getLogDate() {
-		return '[' . date('Y-m-d H:i:s') . '] ';
-	}
-
-	/**
-	 * 将日志内容写入文件
-	 * 
-	 * @param string $dst
-	 */
-	private function writeLog($dst = '') {
-		$dst = empty($dst) ? $this->getFileName() : $dst;
-		Wind::import('WIND:component.utility.WindFile');
-		WindFile::write($dst, join("", $this->logs), 'a');
-	}
-
-	/**
 	 * 取得日志文件名
-	 * 
 	 * @return string 
 	 */
-	private function getFileName() {
-		$logDir = $this->getLogDir();
+	private function _getFileName() {
+		$logDir = LOG_DIR;
 		!is_dir($logDir) && mkdir($logDir, 0777, true);
 		$size = 1024 * 50;
 		$filename = $logDir . date("Y_m_d") . '.log';
@@ -280,17 +312,9 @@ class WindLogger extends WindComponentModule {
 		return $filename;
 	}
 
-	/**
-	 * @return the $logDir
-	 */
-	protected function getLogDir() {
-		return LOG_DIR;
-	}
-
 	public function __destruct() {
 		$this->flush();
 	}
-
 }
 
 	
