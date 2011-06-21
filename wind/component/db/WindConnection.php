@@ -5,29 +5,50 @@ Wind::import("WIND:component.db.exception.WindDbException");
  * @version $Id$
  * @package 
  */
-class WindConnection {
+class WindConnection extends WindComponentModule {
+
 	private $_dsn;
+
 	private $_driverName;
+
 	private $_user;
+
 	private $_pwd;
+
 	private $_tablePrefix;
+
 	private $_charset;
+
 	private $_enableLog = false;
+
 	/**
 	 * @var array
 	 */
 	private $_attributes = array();
+
 	/**
 	 * @var PDO
 	 */
 	private $_dbHandle = null;
+
+	const DSN = 'dsn';
+
+	const USER = 'user';
+
+	const PWD = 'pwd';
+
+	const CHARSET = 'charset';
+
+	const ENABLELOG = 'enablelog';
+
+	const DRIVER = 'driver';
 
 	/**
 	 * @param string $dsn
 	 * @param string $username
 	 * @param string $password
 	 */
-	public function __construct($dsn, $username, $password) {
+	public function __construct($dsn = '', $username = '', $password = '') {
 		$this->_dsn = $dsn;
 		$this->_user = $username;
 		$this->_pwd = $password;
@@ -55,8 +76,9 @@ class WindConnection {
 	 * @param int $attribute
 	 * @return string
 	 * */
-	public function getAttribute($attribute) {
-		if (!$attribute) return;
+	public function getAttributes($attribute) {
+		if (! $attribute)
+			return;
 		if ($this->getDbHandle() !== null) {
 			return $this->getDbHandle()->getAttribute($attribute);
 		} else
@@ -68,8 +90,9 @@ class WindConnection {
 	 * @param $value
 	 * @return 
 	 * */
-	public function setAttribute($attribute, $value) {
-		if (!$attribute) return;
+	public function setAttributes($attribute, $value) {
+		if (! $attribute)
+			return;
 		if ($this->_dbHandle !== null && $this->_dbHandle instanceof PDO) {
 			$this->_dbHandle->setAttribute($attribute, $value);
 		} else
@@ -81,12 +104,23 @@ class WindConnection {
 	 * @return string
 	 */
 	public function getDriverName() {
-		if ($this->_driverName) return $this->_driverName;
+		if ($this->_driverName)
+			return $this->_driverName;
 		if ($this->_dbHandle !== null) {
-			return $this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME);
+			$this->setDriverName($this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME));
 		} elseif (($pos = strpos($this->_dsn, ':')) !== false) {
-			return strtolower(substr($this->_dsn, 0, $pos));
+			$this->setDriverName(strtolower(substr($this->_dsn, 0, $pos)));
+		} else {
+			$this->setDriverName($this->getConfig()->getConfig(self::DRIVER));
 		}
+		return $this->_driverName;
+	}
+
+	/**
+	 * @param string $driverName
+	 */
+	public function setDriverName($driverName) {
+		$this->_driverName = $driverName;
 	}
 
 	/**
@@ -97,24 +131,17 @@ class WindConnection {
 	}
 
 	/**
+	 * @param boolean $enableLog
+	 */
+	public function setEnableLog($enableLog) {
+		$this->_enableLog = (boolean)$enableLog;
+	}
+
+	/**
 	 * @return the $tablePrefix
 	 */
 	public function getTablePrefix() {
 		return $this->_tablePrefix;
-	}
-
-	/**
-	 * @return the $charset
-	 */
-	public function getCharset() {
-		return $this->_charset;
-	}
-
-	/**
-	 * @param boolean $enableLog
-	 */
-	public function setEnableLog($enableLog) {
-		$this->_enableLog = $enableLog;
 	}
 
 	/**
@@ -125,10 +152,71 @@ class WindConnection {
 	}
 
 	/**
+	 * @return the $charset
+	 */
+	public function getCharset() {
+		if ($this->_charset)
+			return $this->_charset;
+		$this->setCharset($this->getConfig()->getConfig(self::CHARSET));
+		return $this->_charset;
+	}
+
+	/**
 	 * @param string $charset
 	 */
 	public function setCharset($charset) {
 		$this->_charset = $charset;
+	}
+
+	/**
+	 * @return the $_dsn
+	 */
+	public function getDsn() {
+		if ($this->_dsn)
+			return $this->_dsn;
+		$this->setDsn($this->getConfig()->getConfig(self::DSN));
+		return $this->_dsn;
+	}
+
+	/**
+	 * @param string $dsn
+	 */
+	public function setDsn($dsn) {
+		$this->_dsn = $dsn;
+	}
+
+	/**
+	 * @return the $_user
+	 */
+	public function getUser() {
+		if ($this->_user)
+			return $this->_user;
+		$this->_user = $this->getConfig()->getConfig(self::USER);
+		return $this->_user;
+	}
+
+	/**
+	 * @param string $userName
+	 */
+	public function setUser($userName) {
+		$this->_user = $userName;
+	}
+
+	/**
+	 * @return the $_pwd
+	 */
+	public function getPwd() {
+		if ($this->_pwd)
+			return $this->_pwd;
+		$this->setPwd($this->getConfig()->getConfig(self::PWD));
+		return $this->_pwd;
+	}
+
+	/**
+	 * @param string $_pwd
+	 */
+	public function setPwd($_pwd) {
+		$this->_pwd = $_pwd;
 	}
 
 	/**
@@ -138,7 +226,9 @@ class WindConnection {
 	 */
 	private function _init() {
 		if ($this->_dbHandle === null) {
-			if (empty($this->_dsn)) throw new WindDbException('WindConnection._connectionString is required.');
+			$dsn = $this->getDsn();
+			if (empty($dsn))
+				throw new WindDbException('WindConnection._connectionString is required.');
 			try {
 				$driverName = $this->getDriverName();
 				if ($driverName) {
@@ -146,12 +236,12 @@ class WindConnection {
 					$dbHandleClass = Wind::import($dbHandleClass);
 				} else
 					$dbHandleClass = 'PDO';
-				if (!$dbHandleClass) {
+				if (! $dbHandleClass) {
 					throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 				}
-				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
-				$this->_dbHandle->setCharset($this->_charset);
+				$this->setAttributes(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
+				$this->_dbHandle->setCharset($this->getCharset());
 			} catch (PDOException $e) {
 				throw new WindDbException($e->getMessage());
 			}

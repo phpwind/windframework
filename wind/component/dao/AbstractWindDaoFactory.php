@@ -84,45 +84,23 @@ abstract class AbstractWindDaoFactory {
 			$this->createWindFactory();
 			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
-			$_connection = $this->windFactory->getInstance($defintion->getAlias());
+			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
-		return $this->createDbTemplate($daoObject, $_connection, $_dbClass);
+		return $this->getHandler($_dbClass);
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param unknown_type $daoObject
-	 * @param unknown_type $connection
-	 * @param unknown_type $key
-	 * @return IWindDbTemplate
-	 * @deprecated
-	 */
-	protected function createDbTemplatePrototype($daoObject, $connection, $key) {
-		if ($connection !== null) $this->dbConnections[$key] = $connection;
-		
-		$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
-		/* @var $_dbTemplate IWindDbTemplate */
-		if ($_dbTemplate instanceof IWindDbTemplate) {
-			//TODO set properties
-			$_dbTemplate->setConnection($this->dbConnections[$key]);
-		}
-		return $_dbTemplate;
-	}
-
-	/**
-	 * @param AbstractWindDao daoObject
-	 * @param $connection
 	 * @param string $key
-	 * @return IWindDbTemplate
+	 * @return WindConnection
 	 */
-	protected function createDbTemplate($daoObject, $connection, $key) {
-		if ($connection !== null) {
-			$_dbTemplate = WindFactory::createInstance($daoObject->getDbTemplateClass());
-			/* @var $_dbTemplate IWindDbTemplate */
-			if ($_dbTemplate instanceof IWindDbTemplate) $_dbTemplate->setConnection($connection);
-			$this->dbConnections[$key] = $_dbTemplate;
+	private function getHandler($key) {
+		$connection = $this->dbConnections[$key];
+		if ($connection === null )  return null;
+		if ($connection instanceof WindConnectionManager) {
+			return $connection->getConnection();
+		} elseif ($connection instanceof WindConnection) {
+			return $connection;
 		}
-		return $this->dbConnections[$key];
 	}
 
 	/**

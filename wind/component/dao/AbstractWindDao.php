@@ -10,22 +10,20 @@ Wind::import('WIND:core.WindModule');
  */
 abstract class AbstractWindDao extends WindModule {
 
-	protected $dbClass = 'WIND:component.db.WindConnectionManager';
+	protected $dbClass = 'WIND:component.db.WindConnection';
 
 	protected $dbConfig = '';
-
-	protected $dbTemplateClass = 'WIND:core.dao.dbtemplate.WindConnectionManagerBasedDbTemplate';
-
-	protected $dbDefinition = null;
 
 	protected $cacheClass = '';
 
 	protected $cacheConfig = '';
 
 	protected $isDataCache = false;
+	
+	protected $dbDefinition = null;
 
 	/**
-	 * @var IWindDbTemplate 分布式管理与数据库驱动工厂
+	 * @var WindConnection 数据库链接兑现
 	 */
 	protected $dbHandler = null;
 
@@ -70,13 +68,6 @@ abstract class AbstractWindDao extends WindModule {
 	}
 
 	/**
-	 * @return the $dbTemplateClass
-	 */
-	public function getDbTemplateClass() {
-		return $this->dbTemplateClass;
-	}
-
-	/**
 	 * 获得需要缓存的处理的方法名称数组
 	 * array('methodName1'=>'WIND:component')
 	 * @return multitype:
@@ -86,19 +77,18 @@ abstract class AbstractWindDao extends WindModule {
 	}
 
 	/**
-	 * @return IWindDbTemplate $dbHandler
+	 * @return PDO $dbHandler
 	 */
 	public function getDbHandler() {
 		return $this->dbHandler;
 	}
 
 	/**
-	 * @param IWindDbTemplate $dbHandler
+	 * @param WindConnection $windConnection
 	 */
-	public function setDbHandler($dbHandler) {
-		$this->dbHandler = $dbHandler;
+	public function setDbHandler($windConnection) {
+		$this->dbHandler = $windConnection->getDbHandle();
 	}
-
 }
 
 ?>
