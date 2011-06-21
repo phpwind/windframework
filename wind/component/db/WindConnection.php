@@ -239,8 +239,8 @@ class WindConnection extends WindComponentModule {
 				if (! $dbHandleClass) {
 					throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 				}
-				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
+				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$this->_dbHandle->setCharset($this->getCharset());
 			} catch (PDOException $e) {
 				throw new WindDbException($e->getMessage());
