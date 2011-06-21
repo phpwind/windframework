@@ -77,8 +77,7 @@ class WindConnection extends WindComponentModule {
 	 * @return string
 	 * */
 	public function getAttribute($attribute = '') {
-		if (! $attribute)
-			return;
+		if (!$attribute) return;
 		if ($this->getDbHandle() !== null) {
 			return $this->getDbHandle()->getAttribute($attribute);
 		} else
@@ -91,8 +90,7 @@ class WindConnection extends WindComponentModule {
 	 * @return 
 	 * */
 	public function setAttribute($attribute = '', $value = '') {
-		if (! $attribute)
-			return;
+		if (!$attribute) return;
 		if ($this->_dbHandle !== null && $this->_dbHandle instanceof PDO) {
 			$this->_dbHandle->setAttribute($attribute, $value);
 		} else
@@ -104,8 +102,7 @@ class WindConnection extends WindComponentModule {
 	 * @return string
 	 */
 	public function getDriverName() {
-		if ($this->_driverName)
-			return $this->_driverName;
+		if ($this->_driverName) return $this->_driverName;
 		if ($this->_dbHandle !== null) {
 			$this->setDriverName($this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME));
 		} elseif (($pos = strpos($this->_dsn, ':')) !== false) {
@@ -155,8 +152,7 @@ class WindConnection extends WindComponentModule {
 	 * @return the $charset
 	 */
 	public function getCharset() {
-		if ($this->_charset)
-			return $this->_charset;
+		if ($this->_charset) return $this->_charset;
 		$this->setCharset($this->getConfig()->getConfig(self::CHARSET));
 		return $this->_charset;
 	}
@@ -172,8 +168,7 @@ class WindConnection extends WindComponentModule {
 	 * @return the $_dsn
 	 */
 	public function getDsn() {
-		if ($this->_dsn)
-			return $this->_dsn;
+		if ($this->_dsn) return $this->_dsn;
 		$this->setDsn($this->getConfig()->getConfig(self::DSN));
 		return $this->_dsn;
 	}
@@ -189,8 +184,7 @@ class WindConnection extends WindComponentModule {
 	 * @return the $_user
 	 */
 	public function getUser() {
-		if ($this->_user)
-			return $this->_user;
+		if ($this->_user) return $this->_user;
 		$this->_user = $this->getConfig()->getConfig(self::USER);
 		return $this->_user;
 	}
@@ -206,8 +200,7 @@ class WindConnection extends WindComponentModule {
 	 * @return the $_pwd
 	 */
 	public function getPwd() {
-		if ($this->_pwd)
-			return $this->_pwd;
+		if ($this->_pwd) return $this->_pwd;
 		$this->setPwd($this->getConfig()->getConfig(self::PWD));
 		return $this->_pwd;
 	}
@@ -227,8 +220,7 @@ class WindConnection extends WindComponentModule {
 	private function _init() {
 		if ($this->_dbHandle === null) {
 			$dsn = $this->getDsn();
-			if (empty($dsn))
-				throw new WindDbException('WindConnection._connectionString is required.');
+			if (empty($dsn)) throw new WindDbException('WindConnection._connectionString is required.');
 			try {
 				$driverName = $this->getDriverName();
 				if ($driverName) {
@@ -236,7 +228,7 @@ class WindConnection extends WindComponentModule {
 					$dbHandleClass = Wind::import($dbHandleClass);
 				} else
 					$dbHandleClass = 'PDO';
-				if (! $dbHandleClass) {
+				if (!$dbHandleClass) {
 					throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 				}
 				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
