@@ -222,6 +222,8 @@ class WindConnection extends WindComponentModule {
 			$dsn = $this->getDsn();
 			if (empty($dsn)) throw new WindDbException('WindConnection._connectionString is required.');
 			try {
+				Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
+				
 				$driverName = $this->getDriverName();
 				if ($driverName) {
 					$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
@@ -234,7 +236,12 @@ class WindConnection extends WindComponentModule {
 				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
 				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$this->_dbHandle->setCharset($this->getCharset());
+				
+				Wind::log("component.db.WindConnection._init() \r\n dsn: " . 
+					$this->_dsn . " \r\n username: " . $this->_user . " \r\n  password: " . 
+					$this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
 			} catch (PDOException $e) {
+				Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
 				throw new WindDbException($e->getMessage());
 			}
 		}
