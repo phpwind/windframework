@@ -3,6 +3,7 @@
 define('VERSION', '0.5');
 define('PHPVERSION', '5.1.2');
 !defined('IS_DEBUG') && define('IS_DEBUG', true);
+!defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
@@ -22,6 +23,7 @@ class WindBase {
 	private static $_extensions = 'php';
 	private static $_includePaths = array();
 	private static $_isAutoLoad = true;
+	private static $_logger = null;
 
 	/**
 	 * 加载应用
@@ -202,6 +204,51 @@ class WindBase {
 	}
 
 	/**
+	 * @param string $message
+	 * @param int $level
+	 */
+	public static function log($message, $level = WindLogger::LEVEL_INFO, $type = 'wind.core') {
+		if (IS_DEBUG && $level >= IS_DEBUG && $level != WindLogger::LEVEL_PROFILE) {
+			self::getLogger()->log($message, $level, $type);
+		}
+	}
+
+	/**
+	 * @param $token
+	 * @param $message
+	 * @param $type
+	 */
+	public static function profileBegin($token, $message = '', $type = 'wind.core') {
+		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
+			$msg = WindLogger::TOKEN_BEGIN . $token . ':' . $message;
+			self::getLogger()->profileBegin($msg, $type);
+		}
+	}
+
+	/**
+	 * @param $token
+	 * @param $message
+	 * @param $type
+	 */
+	public static function profileEnd($token, $message = '', $type = 'wend.core') {
+		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
+			$msg = WindLogger::TOKEN_END . $token . ':' . $message;
+			self::getLogger()->profileEnd($msg, $type);
+		}
+	}
+
+	/**
+	 * 返回系统日志对象
+	 * @return WindLogger
+	 */
+	public static function getLogger() {
+		if (self::$_logger === null) {
+			self::$_logger = new WindLogger();
+		}
+		return self::$_logger;
+	}
+
+	/**
 	 * 系统命名空间注册方法
 	 * @return 
 	 */
@@ -294,8 +341,6 @@ class WindBase {
 			'WindConfigParser' => 'WIND:core.config.parser.WindConfigParser', 
 			'WindConfig' => 'WIND:core.config.WindConfig', 
 			'WindSystemConfig' => 'WIND:core.config.WindSystemConfig', 
-			'AbstractWindDao' => 'COM:dao.AbstractWindDao', 
-			'AbstractWindDaoFactory' => 'COM:dao.AbstractWindDaoFactory', 
 			'WindDaoCacheListener' => 'WIND:core.dao.listener.WindDaoCacheListener', 
 			'WindActionException' => 'WIND:core.exception.WindActionException', 
 			'WindCacheException' => 'WIND:core.exception.WindCacheException', 
