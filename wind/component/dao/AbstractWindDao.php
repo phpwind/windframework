@@ -19,7 +19,7 @@ abstract class AbstractWindDao extends WindModule {
 	protected $cacheConfig = '';
 
 	protected $isDataCache = false;
-	
+
 	protected $dbDefinition = null;
 
 	/**
