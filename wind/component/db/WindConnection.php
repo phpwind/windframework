@@ -6,42 +6,31 @@ Wind::import("WIND:component.db.exception.WindDbException");
  * @package 
  */
 class WindConnection extends WindComponentModule {
-
+	const DSN = 'dsn';
+	const USER = 'user';
+	const PWD = 'pwd';
+	const CHARSET = 'charset';
+	const ENABLELOG = 'enablelog';
+	const DRIVER = 'driver';
+	/**
+	 * PDO 链接字符串
+	 * @var string
+	 */
 	private $_dsn;
-
 	private $_driverName;
-
 	private $_user;
-
 	private $_pwd;
-
 	private $_tablePrefix;
-
 	private $_charset;
-
 	private $_enableLog = false;
-
 	/**
 	 * @var array
 	 */
 	private $_attributes = array();
-
 	/**
 	 * @var PDO
 	 */
 	private $_dbHandle = null;
-
-	const DSN = 'dsn';
-
-	const USER = 'user';
-
-	const PWD = 'pwd';
-
-	const CHARSET = 'charset';
-
-	const ENABLELOG = 'enablelog';
-
-	const DRIVER = 'driver';
 
 	/**
 	 * @param string $dsn
@@ -49,9 +38,9 @@ class WindConnection extends WindComponentModule {
 	 * @param string $password
 	 */
 	public function __construct($dsn = '', $username = '', $password = '') {
-		$this->_dsn = $dsn;
-		$this->_user = $username;
-		$this->_pwd = $password;
+		$this->setDsn($dsn);
+		$this->setUser($username);
+		$this->setPwd($password);
 	}
 
 	/**
@@ -105,8 +94,8 @@ class WindConnection extends WindComponentModule {
 		if ($this->_driverName) return $this->_driverName;
 		if ($this->_dbHandle !== null) {
 			$this->setDriverName($this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME));
-		} elseif (($pos = strpos($this->_dsn, ':')) !== false) {
-			$this->setDriverName(strtolower(substr($this->_dsn, 0, $pos)));
+		} elseif (($pos = strpos($this->getDsn(), ':')) !== false) {
+			$this->setDriverName(strtolower(substr($this->getDsn(), 0, $pos)));
 		} else {
 			$this->setDriverName($this->getConfig()->getConfig(self::DRIVER));
 		}
@@ -131,7 +120,7 @@ class WindConnection extends WindComponentModule {
 	 * @param boolean $enableLog
 	 */
 	public function setEnableLog($enableLog) {
-		$this->_enableLog = (boolean)$enableLog;
+		$this->_enableLog = (boolean) $enableLog;
 	}
 
 	/**
@@ -218,32 +207,25 @@ class WindConnection extends WindComponentModule {
 	 * @return 
 	 */
 	private function _init() {
-		if ($this->_dbHandle === null) {
-			$dsn = $this->getDsn();
-			if (empty($dsn)) throw new WindDbException('WindConnection._connectionString is required.');
-			try {
-				Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
-				
-				$driverName = $this->getDriverName();
-				if ($driverName) {
-					$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
-					$dbHandleClass = Wind::import($dbHandleClass);
-				} else
-					$dbHandleClass = 'PDO';
-				if (!$dbHandleClass) {
-					throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
-				}
-				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
-				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$this->_dbHandle->setCharset($this->getCharset());
-				
-				Wind::log("component.db.WindConnection._init() \r\n dsn: " . 
-					$this->_dsn . " \r\n username: " . $this->_user . " \r\n  password: " . 
-					$this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
-			} catch (PDOException $e) {
-				Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
-				throw new WindDbException($e->getMessage());
+		if ($this->_dbHandle !== null) return;
+		try {
+			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
+			$driverName = $this->getDriverName();
+			if ($driverName) {
+				$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
+				$dbHandleClass = Wind::import($dbHandleClass);
+			} else
+				$dbHandleClass = 'PDO';
+			if (!$dbHandleClass) {
+				throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 			}
+			$this->_dbHandle = new $dbHandleClass($this->getDsn(), $this->getUser(), $this->getPwd(), (array) $this->_attributes);
+			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->_dbHandle->setCharset($this->getCharset());
+			Wind::log("component.db.WindConnection._init() \r\n dsn: " . $this->getDsn() . " \r\n username: " . $this->_user . " \r\n  password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
+		} catch (PDOException $e) {
+			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
+			throw new WindDbException($e->getMessage());
 		}
 	}
 }
