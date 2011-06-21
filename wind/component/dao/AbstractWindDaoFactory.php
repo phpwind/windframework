@@ -64,7 +64,7 @@ abstract class AbstractWindDaoFactory {
 		foreach ($caches as $classMethod => $classPath) {
 			if (!$classMethod) continue;
 			if ($classPath === 'default')
-				$_className = Wind::import('WIND:core.dao.listener.WindDaoCacheListener');
+				$_className = Wind::import('COM:dao.listener.WindDaoCacheListener');
 			else
 				$_className = Wind::import($classPath);
 			if (!$_className) continue;
@@ -75,7 +75,7 @@ abstract class AbstractWindDaoFactory {
 	/**
 	 * 返回DbHandler
 	 * @param AbstractWindDao $daoObject
-	 * @return AbstractWindDbAdapter
+	 * @return WindConnection
 	 */
 	protected function createDbHandler($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
@@ -114,8 +114,7 @@ abstract class AbstractWindDaoFactory {
 			$this->createWindFactory();
 			$defintion = $daoObject->getCacheDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
-			$cacheHander = $this->windFactory->getInstance($defintion->getAlias());
-			$this->caches[$_cacheClass] = $cacheHander;
+			$this->caches[$_cacheClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
 		return $this->caches[$_cacheClass];
 	}
