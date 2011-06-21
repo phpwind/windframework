@@ -30,8 +30,6 @@ class WindLoggerFilter extends WindFilter {
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param WindHttpRequest $request
 	 */
 	private function initWindLogger($request) {
