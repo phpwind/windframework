@@ -76,7 +76,7 @@ class WindConnection extends WindComponentModule {
 	 * @param int $attribute
 	 * @return string
 	 * */
-	public function getAttributes($attribute) {
+	public function getAttribute($attribute = '') {
 		if (! $attribute)
 			return;
 		if ($this->getDbHandle() !== null) {
@@ -90,7 +90,7 @@ class WindConnection extends WindComponentModule {
 	 * @param $value
 	 * @return 
 	 * */
-	public function setAttributes($attribute, $value) {
+	public function setAttribute($attribute = '', $value = '') {
 		if (! $attribute)
 			return;
 		if ($this->_dbHandle !== null && $this->_dbHandle instanceof PDO) {
@@ -239,7 +239,7 @@ class WindConnection extends WindComponentModule {
 				if (! $dbHandleClass) {
 					throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 				}
-				$this->setAttributes(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$this->_dbHandle = new $dbHandleClass($dsn, $this->getUser(), $this->getPwd(), (array)$this->_attributes);
 				$this->_dbHandle->setCharset($this->getCharset());
 			} catch (PDOException $e) {
