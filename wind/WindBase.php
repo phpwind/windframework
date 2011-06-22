@@ -2,12 +2,12 @@
 /* 框架版本信息 */
 define('VERSION', '0.5');
 define('PHPVERSION', '5.1.2');
-!defined('IS_DEBUG') && define('IS_DEBUG', true);
+!defined('IS_DEBUG') && define('IS_DEBUG', 0);
 !defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
-!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . 'compile' . D_S);
+!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
 !defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'windlit.php');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -220,7 +220,7 @@ class WindBase {
 	 */
 	public static function profileBegin($token, $message = '', $type = 'wind.core') {
 		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
-			$msg = WindLogger::TOKEN_BEGIN . $token . ':' . $message;
+			$msg = $token . ':' . $message;
 			self::getLogger()->profileBegin($msg, $type);
 		}
 	}
@@ -232,7 +232,7 @@ class WindBase {
 	 */
 	public static function profileEnd($token, $message = '', $type = 'wend.core') {
 		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
-			$msg = WindLogger::TOKEN_END . $token . ':' . $message;
+			$msg = $token . ':' . $message;
 			self::getLogger()->profileEnd($msg, $type);
 		}
 	}
@@ -244,6 +244,7 @@ class WindBase {
 	public static function getLogger() {
 		if (self::$_logger === null) {
 			self::$_logger = new WindLogger();
+			self::$_logger->setLogFile(COMPILE_PATH . 'log/log.txt');
 		}
 		return self::$_logger;
 	}
@@ -401,7 +402,8 @@ class WindBase {
 			'WindComponentModule' => 'WIND:core.WindComponentModule', 
 			'WindEnableValidateModule' => 'WIND:core.WindEnableValidateModule', 
 			'WindHelper' => 'WIND:core.WindHelper', 
-			'WindModule' => 'WIND:core.WindModule');
+			'WindModule' => 'WIND:core.WindModule', 
+			'WindLogger' => 'COM:log.WindLogger');
 	}
 }
 /* 组件定义 */
