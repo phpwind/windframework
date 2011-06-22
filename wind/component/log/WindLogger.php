@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-3
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log' . D_S);
-/**
  * 日志记录
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -25,10 +18,12 @@ class WindLogger extends WindComponentModule {
 	 * 每次当日志数量达到100的时候，就写入文件一次
 	 * @var int
 	 */
-	private $_autoFlush = 100;
+	private $_autoFlush = 1000;
 	private $_logs = array();
 	private $_logCount = 0;
 	private $_profiles = array();
+	private $_logFile;
+	private $_maxFileSize = 100;
 
 	/**
 	 * 添加info级别的日志信息
@@ -101,8 +96,9 @@ class WindLogger extends WindComponentModule {
 	 */
 	public function flush() {
 		if (empty($this->_logs)) return false;
+		if (!$fileName = $this->_getFileName()) return false;
 		Wind::import('WIND:component.utility.WindFile');
-		WindFile::write($this->_getFileName(), join("", $this->_logs), 'a');
+		WindFile::write($fileName, join("", $this->_logs), 'a');
 		$this->_logs = array();
 		$this->_logCount = 0;
 		return true;
@@ -147,7 +143,7 @@ class WindLogger extends WindComponentModule {
 				$result = $this->_buildError($msg);
 				break;
 			case self::LEVEL_DEBUG:
-				$msg .= "\t(" . $type . " timer: " . sprintf('%0.5f', (DEBUG_TIME - $timer)) . ")\r\n";
+				$msg .= "\t(" . $type . " timer: " . sprintf('%0.5f', ($timer - DEBUG_TIME)) . ")\r\n";
 				$result = $this->_buildDebug($msg);
 				break;
 			case self::LEVEL_TRACE:
@@ -172,24 +168,25 @@ class WindLogger extends WindComponentModule {
 	private function _buildProfile($msg, $type, $timer, $mem) {
 		$_msg = '';
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
-			$_token = substr($msg, strlen(self::TOKEN_BEGIN), strpos($msg, ':', strlen(self::TOKEN_BEGIN)));
-			$_msg = substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1);
+			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
+			$_token = substr($_token, 0, strpos($_token, ':'));
 			$this->_profiles[] = array(
 				$_token, 
-				$_msg, 
+				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), 
 				$type, 
 				$timer, 
 				$mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
-			$_msg = "PROFILE! Message:  ";
-			$_token = substr($msg, strlen(self::TOKEN_END), strpos($msg, ':', strlen(self::TOKEN_END)));
+			$_msg = "PROFILE! Message: \r\n";
+			$_token = substr($msg, strlen(self::TOKEN_END));
+			$_token = substr($_token, 0, strpos($_token, ':'));
 			foreach ($this->_profiles as $key => $profile) {
 				if ($profile[0] !== $_token) continue;
 				if ($profile[1])
-					$_msg .= $profile[1];
+					$_msg .= $profile[1] . "\r\n";
 				else
 					$_msg .= substr($msg, strpos($msg, ':', strlen(self::TOKEN_END)) + 1) . "\r\n";
-				$_msg .= "(type: $profile[2] time: " . $timer - $profile[3] . " mem: " . $mem = $profile[4] . ")";
+				$_msg .= "(type: $profile[2] time: " . ($timer - $profile[3]) . " mem: " . ($mem - $profile[4]) . ")";
 				break;
 			}
 			unset($this->_profiles[$key]);
@@ -220,7 +217,7 @@ class WindLogger extends WindComponentModule {
 	 * @return string
 	 */
 	private function _buildTrace($msg) {
-		return "TRACE! Message:  " . $msg . "\r\n" . implode("\r\n", $this->_getTrace());
+		return "TRACE! Message:  " . $msg . implode("\r\n", $this->_getTrace());
 	}
 
 	/**
@@ -234,7 +231,7 @@ class WindLogger extends WindComponentModule {
 	 * @return string
 	 */
 	private function _buildDebug($msg) {
-		return 'DEBUG! Message:  ' . $msg . "\r\n" . implode("\r\n", $this->_getTrace());
+		return 'DEBUG! Message:  ' . $msg . implode("\r\n", $this->_getTrace());
 	}
 
 	/**
@@ -268,6 +265,7 @@ class WindLogger extends WindComponentModule {
 			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
 			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
 			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
+			if ($function == 'WindBase::log') continue;
 			$args = array_map(array(
 				$this, 
 				'_buildArg'), $trace['args']);
@@ -299,21 +297,34 @@ class WindLogger extends WindComponentModule {
 	 * @return string 
 	 */
 	private function _getFileName() {
-		$logDir = LOG_DIR;
-		!is_dir($logDir) && mkdir($logDir, 0777, true);
-		$size = 1024 * 50;
-		$filename = $logDir . date("Y_m_d") . '.log';
-		if (is_file($filename) && $size <= filesize($filename)) {
-			for ($i = 100; $counter = 100 - $i, $i >= 0; $i--) {
-				$filename = $logDir . date("Y_m_d_{$counter}") . '.log';
-				if (!is_file($filename) || $size > filesize($filename)) break;
-			}
+		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
+		$_logfile = $this->_logFile;
+		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
+			do {
+				$counter = $counter ? ($counter + 1) : 1;
+				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
+			} while (is_file($_newFile));
+			@rename($_logfile, $_newFile);
 		}
-		return $filename;
+		return $_logfile;
 	}
 
 	public function __destruct() {
 		$this->flush();
+	}
+
+	/**
+	 * @param field_type $_logFile
+	 */
+	public function setLogFile($logFile) {
+		$this->_logFile = $logFile;
+	}
+
+	/**
+	 * @param field_type $_maxFileSize
+	 */
+	public function setMaxFileSize($maxFileSize) {
+		$this->_maxFileSize = (int)$maxFileSize;
 	}
 }
 
