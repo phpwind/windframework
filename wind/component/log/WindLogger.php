@@ -300,8 +300,9 @@ class WindLogger extends WindComponentModule {
 		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
 		$_logfile = $this->_logFile;
 		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
+			$counter = 0;
 			do {
-				$counter = $counter ? ($counter + 1) : 1;
+				$counter ++;
 				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
 			} while (is_file($_newFile));
 			@rename($_logfile, $_newFile);
