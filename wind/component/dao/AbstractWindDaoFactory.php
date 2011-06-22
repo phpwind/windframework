@@ -1,5 +1,4 @@
 <?php
-
 Wind::import('WIND:core.factory.proxy.WindClassProxy');
 Wind::import('WIND:core.factory.WindFactory');
 /**
@@ -16,13 +15,9 @@ Wind::import('WIND:core.factory.WindFactory');
  * @package 
  */
 abstract class AbstractWindDaoFactory {
-
 	protected $windFactory = null;
-
 	protected $daoResource = '';
-
 	protected $dbConnections = array();
-
 	protected $caches = array();
 
 	/**
@@ -44,7 +39,6 @@ abstract class AbstractWindDaoFactory {
 			$daoInstance = WindFactory::createInstance($className);
 			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
-			
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
 			$daoInstance = $daoInstance->getClassProxy();
@@ -60,11 +54,13 @@ abstract class AbstractWindDaoFactory {
 	 * @param AbstractWindDao daoInstance
 	 */
 	private function registerCacheListener($daoInstance) {
-		$caches = (array)$daoInstance->getCacheMethods();
+		$caches = (array) $daoInstance->getCacheMethods();
 		foreach ($caches as $classMethod => $classPath) {
 			if (!$classMethod) continue;
-			if ($classPath === 'default') $_className = Wind::import('COM:dao.listener.WindDaoCacheListener');
-			else $_className = Wind::import($classPath);
+			if ($classPath === 'default')
+				$_className = Wind::import('COM:dao.listener.WindDaoCacheListener');
+			else
+				$_className = Wind::import($classPath);
 			if (!$_className) continue;
 			$daoInstance->registerEventListener($classMethod, new $_className($daoInstance));
 		}
@@ -141,7 +137,5 @@ abstract class AbstractWindDaoFactory {
 	public function setDaoResource($daoResource) {
 		$this->daoResource = $daoResource;
 	}
-
 }
-
 ?>
