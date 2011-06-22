@@ -101,8 +101,8 @@ class WindForward extends WindComponentModule {
 			if (!$view) $view = COMPONENT_VIEW;
 			
 			$this->windView = $this->windFactory->getInstance($view);
-			$_viewConfig = $this->windView->getConfig()->getConfig('view', WIND_CONFIG_CONFIG, $moduleConfig);
-			if ($_viewConfig) $this->windView->getConfig()->setConfig($_viewConfig, true);
+			$_viewConfig = $this->windView->getConfig('view', WIND_CONFIG_CONFIG, $moduleConfig);
+			if ($_viewConfig) $this->windView->updateConfig($_viewConfig, true);
 		}
 		return $this->windView;
 	}

@@ -198,8 +198,8 @@ class WindUrlHelper extends WindComponentModule {
 	 * @param string $type 返回用户对应的设置，如果不存在则返回本身
 	 */
 	private function getUrlParamConfig($type) {
-		$_config = $this->getWindRouter()->getConfig()->getConfig(WindUrlBasedRouter::URL_RULE);
-		if ($_param = $this->getConfig()->getConfig($type, WindUrlBasedRouter::URL_PARAM, $_config)) {
+		$_config = $this->getWindRouter()->getConfig(WindUrlBasedRouter::URL_RULE);
+		if ($_param = $this->getConfig($type, WindUrlBasedRouter::URL_PARAM, $_config)) {
 			return $_param;
 		}
 		return $type;
@@ -292,7 +292,7 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	public function getRouteSuffix() {
 		if ($this->routeSuffix === '') {
-			$this->routeSuffix = $this->getConfig()->getConfig(self::ROUTE_SUFFIX, WindSystemConfig::VALUE);
+			$this->routeSuffix = $this->getConfig(self::ROUTE_SUFFIX, WindSystemConfig::VALUE);
 		}
 		return $this->routeSuffix;
 	}
@@ -302,7 +302,7 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	public function getRouteParam() {
 		if ($this->routeParam === '') {
-			$this->routeParam = $this->getConfig()->getConfig(self::ROUTE_PARAM, WindSystemConfig::VALUE);
+			$this->routeParam = $this->getConfig(self::ROUTE_PARAM, WindSystemConfig::VALUE);
 		}
 		return $this->routeParam;
 	}
@@ -312,7 +312,7 @@ class WindUrlHelper extends WindComponentModule {
 	 */
 	public function getUrlPattern() {
 		if ($this->urlPattern === '') {
-			$this->urlPattern = $this->getConfig()->getConfig(self::URL_PATTERN, WindSystemConfig::VALUE);
+			$this->urlPattern = $this->getConfig(self::URL_PATTERN, WindSystemConfig::VALUE);
 		}
 		return $this->urlPattern;
 	}

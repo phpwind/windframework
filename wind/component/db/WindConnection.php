@@ -96,7 +96,7 @@ class WindConnection extends WindComponentModule {
 		} elseif (($pos = strpos($this->getDsn(), ':')) !== false) {
 			$this->setDriverName(strtolower(substr($this->getDsn(), 0, $pos)));
 		} else {
-			$this->setDriverName($this->getConfig()->getConfig(self::DRIVER));
+			$this->setDriverName($this->getConfig(self::DRIVER));
 		}
 		return $this->_driverName;
 	}
@@ -141,7 +141,7 @@ class WindConnection extends WindComponentModule {
 	 */
 	public function getCharset() {
 		if ($this->_charset) return $this->_charset;
-		$this->setCharset($this->getConfig()->getConfig(self::CHARSET));
+		$this->setCharset($this->getConfig(self::CHARSET));
 		return $this->_charset;
 	}
 
@@ -157,7 +157,7 @@ class WindConnection extends WindComponentModule {
 	 */
 	public function getDsn() {
 		if ($this->_dsn) return $this->_dsn;
-		$this->setDsn($this->getConfig()->getConfig(self::DSN));
+		$this->setDsn($this->getConfig(self::DSN));
 		return $this->_dsn;
 	}
 
@@ -173,7 +173,7 @@ class WindConnection extends WindComponentModule {
 	 */
 	public function getUser() {
 		if ($this->_user) return $this->_user;
-		$this->_user = $this->getConfig()->getConfig(self::USER);
+		$this->_user = $this->getConfig(self::USER);
 		return $this->_user;
 	}
 
@@ -189,7 +189,7 @@ class WindConnection extends WindComponentModule {
 	 */
 	public function getPwd() {
 		if ($this->_pwd) return $this->_pwd;
-		$this->setPwd($this->getConfig()->getConfig(self::PWD));
+		$this->setPwd($this->getConfig(self::PWD));
 		return $this->_pwd;
 	}
 

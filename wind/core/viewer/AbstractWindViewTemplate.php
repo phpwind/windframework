@@ -107,7 +107,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 	 * @return array
 	 */
 	protected function getTags() {
-		return $this->getConfig()->getConfig(self::SUPPORT_TAGS);
+		return $this->getConfig(self::SUPPORT_TAGS);
 	}
 }
 

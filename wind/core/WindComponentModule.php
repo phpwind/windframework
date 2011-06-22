@@ -60,14 +60,20 @@ abstract class WindComponentModule extends WindModule {
 	}
 
 	/**
-	 * @return WindConfig
+	 * 根据配置名取得相应的配置
+	 * 
+	 * @param string $configName 键名
+	 * @param string $subConfigName 二级键名
+	 * @param array $default 缺省的数组格式
+	 * @return string|array
 	 */
-	public function getConfig() {
-		return $this->_config;
+	public function getConfig($configName = '', $subConfigName = '', $default = array()) {
+		if (null === $this->_config) return '';
+		return $this->_config->getConfig($configName, $subConfigName, array(), $default);
 	}
 
 	/**
-	 * @param WindConfig $config
+	 * @param string|array|windConfig $config
 	 */
 	public function setConfig($config) {
 		if (is_object($config)) {
@@ -79,5 +85,17 @@ abstract class WindComponentModule extends WindModule {
 			$configParser = new WindConfigParser();
 			$this->_config = new WindConfig($config, $configParser, get_class($this), CONFIG_CACHE);
 		}
+	}
+	
+	/**
+	 * 更改现有的config 或是合并
+	 * @param array $config
+	 * @param boolean 是否合并现有
+	 * @return true
+	 */
+	public function updateConfig($config, $merge = false) {
+		if (null === $this->_config) return false;
+		$this->_config->setConfig($config, $merge);
+		return true;
 	}
 }

@@ -37,7 +37,7 @@ abstract class AbstractWindDaoFactory {
 			}
 			$className = Wind::import($_path);
 			$daoInstance = WindFactory::createInstance($className);
-			$daoInstance->setDbHandler($this->createDbHandler($daoInstance));
+			$daoInstance->setConnection($this->createDbConnection($daoInstance));
 			if (!$daoInstance->getIsDataCache()) return $daoInstance;
 			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
 			$daoInstance->setClassProxy(new WindClassProxy());
@@ -71,7 +71,7 @@ abstract class AbstractWindDaoFactory {
 	 * @param AbstractWindDao $daoObject
 	 * @return WindConnection
 	 */
-	protected function createDbHandler($daoObject) {
+	protected function createDbConnection($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
 		$_connection = null;
 		if (!isset($this->dbConnections[$_dbClass])) {

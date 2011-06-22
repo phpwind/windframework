@@ -205,7 +205,7 @@ class WindView extends WindComponentModule {
 	 * @param string $type
 	 */
 	private function getDefaultValue($type) {
-		return $this->getConfig()->getConfig($type, WindSystemConfig::VALUE);
+		return $this->getConfig($type, WindSystemConfig::VALUE);
 	}
 
 	/* (non-PHPdoc)

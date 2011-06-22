@@ -9,28 +9,28 @@ Wind::import('WIND:core.WindModule');
  * @package 
  */
 abstract class AbstractWindDao extends WindModule {
-
+	
 	protected $dbClass = 'WIND:component.db.WindConnection';
-
+	
 	protected $dbConfig = '';
-
+	
 	protected $cacheClass = '';
-
+	
 	protected $cacheConfig = '';
-
+	
 	protected $isDataCache = false;
-
+	
 	protected $dbDefinition = null;
-
+	
 	/**
 	 * @var WindConnection 数据库链接兑现
 	 */
-	protected $dbHandler = null;
-
+	private $connection = null;
+	
 	/**
 	 * @var AbstractWindCache 缓存操作句柄
 	 */
-	protected $cacheHandler = null;
+	private $cacheHandler = null;
 
 	/* 
 	 * @see WindModule::getWriteTableForGetterAndSetter()
@@ -77,18 +77,17 @@ abstract class AbstractWindDao extends WindModule {
 	}
 
 	/**
-	 * @return PDO $dbHandler
+	 * @return WindConnection $connection
 	 */
-	public function getDbHandler() {
-		return $this->dbHandler;
+	public function getConnection() {
+		return $this->connection;
 	}
 
 	/**
 	 * @param WindConnection $windConnection
 	 */
-	public function setDbHandler($windConnection) {
-		$windConnection->init();
-		$this->dbHandler = $windConnection->getDbHandle();
+	public function setConnection($windConnection) {
+		$this->connection = $windConnection;
 	}
 }
 ?>
