@@ -8,26 +8,20 @@ Wind::import('WIND:core.WindModule');
  * @package
  */
 abstract class WindComponentModule extends WindModule {
-
 	private $_attribute = array();
-
 	private $_config = null;
-
 	/**
 	 * @var WindHttpRequest
 	 */
 	protected $request;
-
 	/**
 	 * @var WindHttpResponse
 	 */
 	protected $response;
-
 	/**
 	 * @var WindSystemConfig
 	 */
 	protected $windSystemConfig;
-
 	/**
 	 * @var WindFactory
 	 */
@@ -37,8 +31,11 @@ abstract class WindComponentModule extends WindModule {
 	 * Enter description here ...
 	 */
 	protected function getAutoSetProperty() {
-		return array('request' => 'IWindRequest', 'response' => 'IWindResponse', 
-			'windSystemConfig' => 'WindSystemConfig', 'windFactory' => 'WindFactory');
+		return array(
+			'request' => 'IWindRequest', 
+			'response' => 'IWindResponse', 
+			'windSystemConfig' => 'WindSystemConfig', 
+			'windFactory' => 'WindFactory');
 	}
 
 	/**
@@ -52,8 +49,6 @@ abstract class WindComponentModule extends WindModule {
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param string $alias
 	 * @param object $object
 	 */
@@ -85,5 +80,4 @@ abstract class WindComponentModule extends WindModule {
 			$this->_config = new WindConfig($config, $configParser, get_class($this), CONFIG_CACHE);
 		}
 	}
-
 }
