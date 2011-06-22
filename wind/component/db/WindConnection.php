@@ -21,7 +21,7 @@ class WindConnection extends WindComponentModule {
 	private $_user;
 	private $_pwd;
 	private $_tablePrefix;
-	private $_charset;
+	private $_charset = 'gbk';
 	private $_enableLog = false;
 	/**
 	 * @var array
@@ -57,7 +57,6 @@ class WindConnection extends WindComponentModule {
 	 * @return PDO
 	 */
 	public function getDbHandle() {
-		$this->_init();
 		return $this->_dbHandle;
 	}
 
@@ -206,7 +205,7 @@ class WindConnection extends WindComponentModule {
 	 * @throws Exception
 	 * @return 
 	 */
-	private function _init() {
+	public function init() {
 		if ($this->_dbHandle !== null) return;
 		try {
 			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
@@ -222,7 +221,7 @@ class WindConnection extends WindComponentModule {
 			$this->_dbHandle = new $dbHandleClass($this->getDsn(), $this->getUser(), $this->getPwd(), (array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->getCharset());
-			Wind::log("component.db.WindConnection._init() \r\n dsn: " . $this->getDsn() . " \r\n username: " . $this->_user . " \r\n  password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
+			Wind::log("component.db.WindConnection._init() \r\n dsn: " . $this->getDsn() . " \r\n username: " . $this->_user . " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
 		} catch (PDOException $e) {
 			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
 			throw new WindDbException($e->getMessage());
