@@ -30,7 +30,7 @@ class WindLogger extends WindComponentModule {
 	 * @param string $msg
 	 */
 	public function info($msg, $type = 'wind.system') {
-		$this->log($msg, self::INFO, $type);
+		$this->log($msg, self::LEVEL_INFO, $type);
 	}
 
 	/**
@@ -38,7 +38,7 @@ class WindLogger extends WindComponentModule {
 	 * @param string $msg
 	 */
 	public function trace($msg, $type = 'wind.system') {
-		$this->log($msg, self::TRACE, $type);
+		$this->log($msg, self::LEVEL_TRACE, $type);
 	}
 
 	/**
@@ -46,7 +46,7 @@ class WindLogger extends WindComponentModule {
 	 * @param string $msg
 	 */
 	public function debug($msg, $type = 'wind.system') {
-		$this->log($msg, self::DEBUG, $type);
+		$this->log($msg, self::LEVEL_DEBUG, $type);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class WindLogger extends WindComponentModule {
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 */
-	public function log($msg, $level = self::INFO, $type = 'wind.system') {
+	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system') {
 		$this->_logCount >= $this->_autoFlush && $this->flush();
 		if ($level === self::LEVEL_PROFILE)
 			$this->_logs[] = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
