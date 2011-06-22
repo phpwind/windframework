@@ -9,24 +9,16 @@ Wind::import('WIND:core.WindModule');
  * @package 
  */
 abstract class AbstractWindDao extends WindModule {
-
 	protected $dbClass = 'WIND:component.db.WindConnection';
-
 	protected $dbConfig = '';
-
 	protected $cacheClass = '';
-
 	protected $cacheConfig = '';
-
 	protected $isDataCache = false;
-
 	protected $dbDefinition = null;
-
 	/**
 	 * @var WindConnection 数据库链接兑现
 	 */
 	protected $dbHandler = null;
-
 	/**
 	 * @var AbstractWindCache 缓存操作句柄
 	 */
@@ -36,7 +28,14 @@ abstract class AbstractWindDao extends WindModule {
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	protected function getWriteTableForGetterAndSetter() {
-		return array('dbClass', 'dbConfig', 'cacheClass', 'isDataCache', 'dbHandler', 'cacheConfig', 'cacheHandler');
+		return array(
+			'dbClass', 
+			'dbConfig', 
+			'cacheClass', 
+			'isDataCache', 
+			'dbHandler', 
+			'cacheConfig', 
+			'cacheHandler');
 	}
 
 	/**
@@ -49,7 +48,8 @@ abstract class AbstractWindDao extends WindModule {
 		$definition->setPath($this->dbClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->dbClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig));
+		$definition->setConfig(array(
+			WindComponentDefinition::RESOURCE => $this->dbConfig));
 		return $definition;
 	}
 
@@ -63,7 +63,8 @@ abstract class AbstractWindDao extends WindModule {
 		$definition->setPath($this->cacheClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->cacheClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig));
+		$definition->setConfig(array(
+			WindComponentDefinition::RESOURCE => $this->cacheConfig));
 		return $definition;
 	}
 
@@ -90,5 +91,4 @@ abstract class AbstractWindDao extends WindModule {
 		$this->dbHandler = $windConnection->getDbHandle();
 	}
 }
-
 ?>
