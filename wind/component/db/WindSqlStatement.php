@@ -50,7 +50,7 @@ class WindSqlStatement {
 	 * @param $driver_options
 	 * @return 
 	 */
-	public function bindParam($parameter, &$variable, $data_type = null, $length = null, $driver_options = null) {
+	public function bindParam($parameter, $variable, $data_type = null, $length = null, $driver_options = null) {
 		try {
 			Wind::log("component.db.WindSqlStatement.bindParam. parameter:" . $parameter . " variable:" . $variable, WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
