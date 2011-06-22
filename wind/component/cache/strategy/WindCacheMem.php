@@ -96,7 +96,7 @@ class WindCacheMem extends AbstractWindCache {
 	 * @return array|mixed
 	 */
 	protected function getServersConfig($name = '', $subName = '') {
-		$servers = $this->getConfig()->getConfig(self::SERVERCONFIG);
+		$servers = $this->getConfig(self::SERVERCONFIG);
 		if (empty($name)) {
 			return $servers;
 		}
@@ -107,7 +107,7 @@ class WindCacheMem extends AbstractWindCache {
 	}
 
 	protected function getCompress() {
-		$compress = $this->getConfig()->getConfig(self::COMPRESS, WIND_CONFIG_VALUE, '', 0);
+		$compress = $this->getConfig(self::COMPRESS, WIND_CONFIG_VALUE, '', 0);
 		return $compress ? MEMCACHE_COMPRESSED : 0;
 	}
 

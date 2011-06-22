@@ -191,7 +191,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 * @return the $securityCode
 	 */
 	protected function getSecurityCode() {
-		return $this->getConfig()->getConfig(self::SECURITY, WIND_CONFIG_VALUE, '', $this->securityCode);
+		return $this->getConfig(self::SECURITY, WIND_CONFIG_VALUE, '', $this->securityCode);
 	}
 
 	/**
@@ -208,7 +208,7 @@ abstract class AbstractWindCache extends WindComponentModule {
 	 */
 	public function getExpire() {
 		if ('' === $this->expire) {
-			$this->expire = $this->getConfig()->getConfig(self::EXPIRE, WIND_CONFIG_VALUE, '', '0');
+			$this->expire = $this->getConfig(self::EXPIRE, WIND_CONFIG_VALUE, '', '0');
 		}
 		return $this->expire;
 	}

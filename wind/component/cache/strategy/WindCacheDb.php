@@ -198,7 +198,7 @@ class WindCacheDb extends AbstractWindCache {
 	 * @return mixed
 	 */
 	protected function getTableConfig($name = '', $subname = '') {
-		$tableConfig = $this->getConfig()->getConfig(self::CACHETABLE);
+		$tableConfig = $this->getConfig(self::CACHETABLE);
 		if (empty($name)) {
 			return $tableConfig;
 		}

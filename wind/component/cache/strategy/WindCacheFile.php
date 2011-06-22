@@ -123,7 +123,7 @@ class WindCacheFile extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setCacheDir($this->getConfig()->getConfig(self::CACHEDIR, WIND_CONFIG_VALUE));
+		$this->setCacheDir($this->getConfig(self::CACHEDIR, WIND_CONFIG_VALUE));
 	}
 
 	/**
@@ -147,7 +147,7 @@ class WindCacheFile extends AbstractWindCache {
 	 */
 	protected function getCacheFileSuffix() {
 		if ('' === $this->cacheFileSuffix) {
-			$this->cacheFileSuffix = $this->getConfig()->getConfig(self::SUFFIX, WIND_CONFIG_VALUE, '', 'bin');
+			$this->cacheFileSuffix = $this->getConfig(self::SUFFIX, WIND_CONFIG_VALUE, '', 'bin');
 		}
 		return $this->cacheFileSuffix;
 	}
@@ -158,7 +158,7 @@ class WindCacheFile extends AbstractWindCache {
 	 */
 	protected function getCacheDirectoryLevel() {
 		if ('' === $this->cacheDirectoryLevel) {
-			$this->cacheDirectoryLevel = $this->getConfig()->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', 0);
+			$this->cacheDirectoryLevel = $this->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', 0);
 		}
 		return $this->cacheDirectoryLevel > 5 ? 5 : $this->cacheDirectoryLevel;
 	}
