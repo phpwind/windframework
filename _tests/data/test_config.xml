@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<filters>
+		<filter name="WindFormFilter1">
+			<class>WIND:component.form.WindFormFilter1</class>
+		</filter>
+	</filters>
+	<viewerResolvers>
+		<resolver name='pp'>
+			<class>WIND:core.viewer.WindViewer</class>
+		</resolver>
+	</viewerResolvers>
+</root>

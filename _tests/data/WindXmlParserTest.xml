@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <tag value="a"></tag>
+    <tag ref="b"></tag>
+	<book>
+		<name>wind</name>
+		<price>100</price>
+		<author>windFramework</author>
+	</book>
+	<book name='php'>
+		<price>20</price>
+		<pages>200</pages>
+	</book>
+	<book name="java">
+		<name>C#</name>
+		<price>30</price>
+		<pages pp='ddd'>150</pages>
+	</book>
+	<book>
+		<name>C++</name>
+		<price>0.0002</price>
+		<isSaled>true</isSaled>
+	</book>
+	<book author="ddd" name = 'C++'>
+		<name>C++</name>
+		<price>0.0002</price>
+		<isSaled>true</isSaled>
+		<list>zhejiang</list>
+		<list>thanks</list>
+		<list>
+			<name>C++</name>
+			<price>0.0002</price>
+			<isSaled value = 'true'></isSaled>
+		</list>
+	</book>
+	<book>
+		<name>Smarty</name>
+		<price>0.0002</price>
+		<isSaled>false</isSaled>
+	</book>
+	<book>
+		<name>framework</name>
+		<price>0.0002</price>
+		<isSaled>true</isSaled>
+	</book>
+	<book>
+		<name>key</name>
+		<price>0.0002</price>
+		<isSaled key='xxx' time='2010'>false</isSaled>
+	</book>
+</books>

@@ -1,0 +1,26 @@
+<?php
+return array(
+	'windWebApp' => array('path' => 'WIND:core.web.WindWebApplication', 'scope' => 'request', 
+		'properties' => array('dispatcher' => array('ref' => 'dispatcher'))), 
+	'dispatcher' => array('path' => 'WIND:core.web.WindDispatcher', 'scope' => 'prototype'), 
+	'windLogger' => array('path' => 'WIND:component.log.WindLogger', 'scope' => 'request'), 
+	'forward' => array('path' => 'WIND:core.web.WindForward', 'scope' => 'prototype'), 
+	'urlBasedRouter' => array('path' => 'WIND:core.router.WindUrlBasedRouter', 'scope' => 'application', 
+		'config' => array('module' => array('url-param' => 'm', 'default-value' => 'default'), 
+			'controller' => array('url-param' => 'c', 'default-value' => 'index'), 
+			'action' => array('url-param' => 'a', 'default-value' => 'run'))), 
+	'urlHelper' => array('path' => 'WIND:core.web.WindUrlHelper', 'scope' => 'singleton', 
+		'properties' => array('windRouter' => array('ref' => 'urlBasedRouter')), 
+		'config' => array('url-pattern' => array('value' => '-/'), 'route-suffix' => array('value' => 'htm'), 
+			'route-param' => array('value' => 'r'))), 
+	'windView' => array('path' => 'WIND:core.viewer.WindView', 'scope' => 'prototype', 
+		'config' => array('template-dir' => array('value' => 'template'), 'template-ext' => array('value' => 'htm'), 
+			'is-cache' => array('value' => 'true'), 'cache-dir' => array('value' => 'cache'), 
+			'compile-dir' => array('value' => 'compile.template')), 
+		'properties' => array('viewResolver' => array('ref' => 'viewResolver'))), 
+	'viewResolver' => array('path' => 'WIND:core.viewer.WindViewerResolver', 'scope' => 'prototype', 
+		'properties' => array('urlHelper' => array('ref' => 'urlHelper'))), 
+	'template' => array('path' => 'WIND:core.viewer.compiler.WindViewTemplate', 'scope' => 'prototype', 
+		'config' => array('resource' => '')), 
+	'errorMessage' => array('path' => 'WIND:core.web.WindErrorMessage', 'scope' => 'prototype'));
+?>
