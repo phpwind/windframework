@@ -2,31 +2,23 @@
 Wind::import('WIND:core.WindModule');
 /**
  * 抽象DAO接口
- *
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindDao extends WindModule {
-	
+class WindDao extends WindModule {
 	protected $dbClass = 'WIND:component.db.WindConnection';
-	
 	protected $dbConfig = '';
-	
 	protected $cacheClass = '';
-	
 	protected $cacheConfig = '';
-	
 	protected $isDataCache = false;
-	
 	protected $dbDefinition = null;
-	
 	/**
-	 * @var WindConnection 数据库链接兑现
+	 * @var WindConnection 数据库链接对象
 	 */
 	private $connection = null;
-	
 	/**
 	 * @var AbstractWindCache 缓存操作句柄
 	 */

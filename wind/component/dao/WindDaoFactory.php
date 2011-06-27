@@ -14,7 +14,7 @@ Wind::import('WIND:core.factory.WindFactory');
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindDaoFactory {
+class WindDaoFactory {
 	protected $windFactory = null;
 	protected $daoResource = '';
 	protected $dbConnections = array();
