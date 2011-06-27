@@ -100,7 +100,7 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
 		Wind::import('WIND:core.web.WindErrorHandler');
-		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
 		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
 
@@ -108,12 +108,7 @@ class WindFrontController extends AbstractWindServer {
 	 * @see AbstractWindServer::afterProcess()
 	 */
 	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
-		//add log
-		if (IS_DEBUG) {
-			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->flush();
-		}
+		Wind::getLogger()->flush();
 		restore_error_handler();
 		restore_exception_handler();
 	}

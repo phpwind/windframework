@@ -35,7 +35,7 @@ class WindErrorHandler extends WindController {
 		echo "<h3>User Message: (" . count($this->error) . ")</h3>";
 		echo "<p>" . nl2br($_tmp) . "</p>";
 		echo "<a href='" . $this->urlReferer . "'>Click to go back.</a>";
-		$this->addLog("User Error:", $_tmp);
+		Wind::log('User Error:', $_tmp);
 		exit();
 	}
 
@@ -63,7 +63,7 @@ class WindErrorHandler extends WindController {
 				echo "<p>" . nl2br($_tmp) . "</p>";
 			} else
 				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
-			$this->addLog($this->errnoMap($errno) . $errstr, $_tmp);
+			Wind::log($this->errnoMap($errno) . $errstr, $_tmp);
 		}
 	}
 
@@ -133,22 +133,11 @@ class WindErrorHandler extends WindController {
 			echo '<h3>' . get_class($exception) . '</h3>';
 			echo '<p>' . $exception->getMessage() . '</p>';
 		}
-		$this->addLog($_tmp, $exception->getTraceAsString());
+		Wind::log("$_tmp:" . $exception->getTraceAsString());
 		exit();
 	}
 
 	private function getFile($filePath) {
 		return $filePath;
-	}
-
-	/**
-	 * 日志记录
-	 * @param string $errno
-	 * @param string $message
-	 */
-	private function addLog($errno, $message) {
-		Wind::import('WIND:component.log.WindLogger');
-		$logger = new WindLogger();
-		$logger->info("$errno:" . $message);
 	}
 }
