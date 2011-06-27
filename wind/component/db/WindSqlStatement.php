@@ -69,6 +69,28 @@ class WindSqlStatement {
 	}
 
 	/**
+	 * 批量绑定变量
+	 * 如果是一维数组，则使用key=>value的形式，key代表变量位置，value代表替换的值，而替换值需要的类型则通过该值的类型来判断---不准确
+	 * 如果是一个二维数组，则允许，key=>array(0=>value, 1=>data_type, 2=>length, 3=>driver_options)的方式来传递变量。
+	 * @param array $parameters 
+	 * @return WindSqlStatement
+	 */
+	public function bindParams($parameters) {
+		foreach ($parameters as $key => $value) {
+			if (is_array($value)) {
+				list($var) = $value;
+				$dataType = isset($value[1]) ? $value[1] : null;
+				$length = isset($value[2]) ? $value[2] : null; 
+				$driverOptions = isset($value[3]) ? $value[3] : null;
+				$this->bindParam($key, $var, $dataType, $length, $driverOptions);
+			} else {
+				$this->bindParam($key, $value, $this->_getPdoDataType($value));
+			}
+		}
+		return $this;
+	}
+
+	/**
 	 * @param string $parameter
 	 * @param string $value
 	 * @param int $data_type
@@ -110,10 +132,59 @@ class WindSqlStatement {
 		$this->execute($params, false);
 		return new WindResultSet($this, $fetchMode, $fetchType);
 	}
+	
+	/**
+	 * 执行SQL语句，并返回查询结果
+	 * @param array $params
+	 * @param string $index 索引
+	 * @param int $fetchMode
+	 * @param int $fetchType
+	 * @return array
+	 */
+	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
+		$this->bindParams($params);
+		$this->execute(array(), false);
+		$rs = new WindResultSet($this, $fetchMode, $fetchType);
+		$result = array();
+		while($one = $rs->fetch()) {
+			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
+		}
+		return $result;
+	}
+	
+	/**
+	 * 执行SQL语句，并返回查询结果
+	 * @param array $params
+	 * @param int $fetchMode
+	 * @param int $fetchType
+	 * @return string
+	 */
+	public function getValue($params = array()) {
+		$this->bindParams($params);
+		$this->execute(array(), false);
+		$rs = new WindResultSet($this, PDO::FETCH_NUM, 0);
+		$one = $rs->fetch();
+		if ($one) return $one[0];
+		return null;
+	}
+	
+	/**
+	 * 执行SQL语句，并返回查询结果
+	 * @param array $params
+	 * @param int $fetchMode
+	 * @param int $fetchType
+	 * @return array
+	 */
+	public function getOne($params = array(), $fetchMode = 0, $fetchType = 0) {
+		$this->bindParams($params);
+		$this->execute(array(), false);
+		$rs = new WindResultSet($this, $fetchMode, $fetchType);
+		return $rs->fetch();
+	}
 
 	/**
 	 * 执行sql，$params为变量信息,并返回结果集
-	 * @param array $params
+	 * @param array $params  -- 注意：绑定的变量数组下标将从0开始索引，
 	 * @param boolean $rowCount
 	 * @return rowCount
 	 */
