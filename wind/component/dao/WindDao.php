@@ -41,7 +41,10 @@ class WindDao extends WindModule {
 		$definition->setPath($this->dbClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->dbClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig));
+		if (is_array($this->dbConfig))
+			$definition->setConfig($this->dbConfig);
+		else
+			$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig));
 		return $definition;
 	}
 
