@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.WindModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -21,93 +20,70 @@ Wind::import('WIND:core.WindModule');
  * @package 
  */
 class WindClassDefinition extends WindModule {
-
 	/* 配置信息定义 */
 	const NAME = 'name';
-
 	const PATH = 'path';
-
 	const FACTORY_METHOD = 'factory-method';
-
 	const INIT_METHOD = 'init-method';
-
 	const SCOPE = 'scope';
-
 	const PROPERTIES = 'properties';
-
 	const CONSTRUCTOR_ARG = 'constructor-arg';
-
 	const REF = 'ref';
-
 	const VALUE = 'value';
-
 	/* 支持的类命名空间 */
 	const SCOPE_SINGLETON = 'singleton';
-
 	const SCOPE_PROTOTYPE = 'prototype';
-
 	const SCOPE_REQUEST = 'request';
-
 	/**
 	 * 类名称
 	 * @var string
 	 */
 	protected $className = '';
-
 	/**
 	 * 类别名
 	 * @var string
 	 */
 	protected $alias = '';
-
 	/**
 	 * 类路径
 	 * @var string
 	 */
 	protected $path = '';
-
 	/**
 	 * 类的存储空间
 	 * singleton/prototype/request/session
 	 * @var string
 	 */
 	protected $scope = '';
-
 	/**
 	 * 类自定义的初始化方法
 	 * @var string
 	 */
 	protected $factoryMethod = '';
-
 	/**
 	 * 类设置属性之后的调用处理操作
 	 * @var string
 	 */
 	protected $initMethod = '';
-
 	/**
 	 * 构造参数定义
 	 * @var array
 	 */
 	protected $constructArgs = array();
-
 	/**
 	 * 类属性定义
 	 * @var array
 	 */
 	protected $propertys = array();
-
 	/**
 	 * 类定义
 	 * @var array
 	 */
 	protected $classDefinition;
-
 	/**
 	 * @var prototype
 	 */
 	private $prototype = null;
-
 	/**
 	 * @var instance
 	 */
@@ -210,7 +186,6 @@ class WindClassDefinition extends WindModule {
 			$args = $this->setProperties($this->getConstructArgs(), $factory);
 		}
 		$instance = $factory->createInstance($this->getClassName(), $args);
-		
 		return $instance;
 	}
 
@@ -436,5 +411,4 @@ class WindClassDefinition extends WindModule {
 	public function setInitMethod($initMethod) {
 		$this->initMethod = $initMethod;
 	}
-
 }
