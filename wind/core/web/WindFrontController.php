@@ -22,7 +22,7 @@ Wind::import('WIND:core.AbstractWindServer');
 class WindFrontController extends AbstractWindServer {
 	const WIND_CONFIG = 'WIND:core.config.WindSystemConfig';
 	const WIND_FACTORY = 'WIND:core.factory.WindComponentFactory';
-	const COMPONENTS_CONFIG = 'WIND:config.components_config.php';
+	const COMPONENTS_CONFIG = 'WIND:components_config.php';
 	/**
 	 * @var WindSystemConfig
 	 */
