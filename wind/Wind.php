@@ -2,7 +2,7 @@
 /* 框架版本信息 */
 define('VERSION', '0.5');
 define('PHPVERSION', '5.1.2');
-!defined('IS_DEBUG') && define('IS_DEBUG', 0);
+!defined('IS_DEBUG') && define('IS_DEBUG', 1);
 !defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
@@ -244,11 +244,11 @@ class Wind {
 	public static function getLogger() {
 		if (self::$_logger === null) {
 			self::$_logger = new WindLogger();
-			self::$_logger->setLogFile(COMPILE_PATH . 'log/log.txt');
+			self::$_logger->setLogDir(COMPILE_PATH . '/log/');
 		}
 		return self::$_logger;
 	}
-
+	
 	/**
 	 * 系统命名空间注册方法
 	 * @return 

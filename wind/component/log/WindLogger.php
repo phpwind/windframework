@@ -22,7 +22,7 @@ class WindLogger extends WindComponentModule {
 	private $_logs = array();
 	private $_logCount = 0;
 	private $_profiles = array();
-	private $_logFile;
+	private $_logDir;
 	private $_maxFileSize = 100;
 
 	/**
@@ -170,12 +170,7 @@ class WindLogger extends WindComponentModule {
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
 			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
 			$_token = substr($_token, 0, strpos($_token, ':'));
-			$this->_profiles[] = array(
-				$_token, 
-				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), 
-				$type, 
-				$timer, 
-				$mem);
+			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
 			$_msg = "PROFILE! Message: \r\n";
 			$_token = substr($msg, strlen(self::TOKEN_END));
@@ -266,9 +261,7 @@ class WindLogger extends WindComponentModule {
 			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
 			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
 			if ($function == 'WindBase::log') continue;
-			$args = array_map(array(
-				$this, 
-				'_buildArg'), $trace['args']);
+			$args = array_map(array($this, '_buildArg'), $trace['args']);
 			$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
 		}
 		return $info;
@@ -298,11 +291,11 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function _getFileName() {
 		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
-		$_logfile = $this->_logFile;
+		$_logfile = $this->_logDir . '/log.txt';
 		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
 			$counter = 0;
 			do {
-				$counter ++;
+				$counter++;
 				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
 			} while (is_file($_newFile));
 			@rename($_logfile, $_newFile);
@@ -317,15 +310,15 @@ class WindLogger extends WindComponentModule {
 	/**
 	 * @param field_type $_logFile
 	 */
-	public function setLogFile($logFile) {
-		$this->_logFile = $logFile;
+	public function setLogDir($logDir) {
+		$this->_logDir = $logDir;
 	}
 
 	/**
 	 * @param field_type $_maxFileSize
 	 */
 	public function setMaxFileSize($maxFileSize) {
-		$this->_maxFileSize = (int)$maxFileSize;
+		$this->_maxFileSize = (int) $maxFileSize;
 	}
 }
 
