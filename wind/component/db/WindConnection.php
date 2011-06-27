@@ -224,8 +224,13 @@ class WindConnection extends WindComponentModule {
 			Wind::log("component.db.WindConnection._init() \r\n dsn: " . $this->getDsn() . " \r\n username: " . $this->_user . " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
 		} catch (PDOException $e) {
 			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
+			$this->close();
 			throw new WindDbException($e->getMessage());
 		}
+	}
+
+	public function close() {
+		$this->_dbHandle = null;
 	}
 }
 ?>
