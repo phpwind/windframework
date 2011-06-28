@@ -26,11 +26,7 @@ class WindSqlStatement {
 	 *
 	 * @var array
 	 */
-	private $_typeMap = array(
-		'boolean' => PDO::PARAM_BOOL, 
-		'integer' => PDO::PARAM_INT, 
-		'string' => PDO::PARAM_STR, 
-		'NULL' => PDO::PARAM_NULL);
+	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 'NULL' => PDO::PARAM_NULL);
 
 	/**
 	 * @param WindConnection $connection
@@ -45,22 +41,22 @@ class WindSqlStatement {
 	 * 参数绑定
 	 * @param string $parameter
 	 * @param string $variable
-	 * @param string $data_type
+	 * @param string $dataType
 	 * @param int $length
-	 * @param $driver_options
+	 * @param $driverOptions
 	 * @return 
 	 */
-	public function bindParam($parameter, $variable, $data_type = null, $length = null, $driver_options = null) {
+	public function bindParam($parameter, &$variable, $dataType = null, $length = null, $driverOptions = null) {
 		try {
 			Wind::log("component.db.WindSqlStatement.bindParam. parameter:" . $parameter . " variable:" . $variable, WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
-			if ($data_type === null) {
-				$data_type = $this->_getPdoDataType($variable);
+			if ($dataType === null) {
+				$dataType = $this->_getPdoDataType($variable);
 			}
 			if ($length === null)
-				$this->getStatement()->bindParam($parameter, $variable, $data_type);
+				$this->getStatement()->bindParam($parameter, $variable, $dataType);
 			else
-				$this->getStatement()->bindParam($parameter, $variable, $data_type, $length, $driver_options);
+				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
 			return $this;
 		} catch (PDOException $e) {
 			Wind::log("component.db.WindSqlStatement.bindParam. exception message:" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
@@ -80,7 +76,7 @@ class WindSqlStatement {
 			if (is_array($value)) {
 				list($var) = $value;
 				$dataType = isset($value[1]) ? $value[1] : null;
-				$length = isset($value[2]) ? $value[2] : null; 
+				$length = isset($value[2]) ? $value[2] : null;
 				$driverOptions = isset($value[3]) ? $value[3] : null;
 				$this->bindParam($key, $var, $dataType, $length, $driverOptions);
 			} else {
@@ -107,7 +103,7 @@ class WindSqlStatement {
 			return $this;
 		} catch (PDOException $e) {
 			Wind::log("component.db.WindSqlStatement.bindValue. exception message:" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
-			throw new WindException($e->getMessage());
+			throw new WindDbException($e->getMessage());
 		}
 	}
 
@@ -132,7 +128,7 @@ class WindSqlStatement {
 		$this->execute($params, false);
 		return new WindResultSet($this, $fetchMode, $fetchType);
 	}
-	
+
 	/**
 	 * 执行SQL语句，并返回查询结果
 	 * @param array $params
@@ -145,13 +141,14 @@ class WindSqlStatement {
 		$this->bindParams($params);
 		$this->execute(array(), false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
+		if (!$index) return $rs->fetchAll();
 		$result = array();
-		while($one = $rs->fetch()) {
+		while ($one = $rs->fetch()) {
 			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * 执行SQL语句，并返回查询结果
 	 * @param array $params
@@ -159,15 +156,13 @@ class WindSqlStatement {
 	 * @param int $fetchType
 	 * @return string
 	 */
-	public function getValue($params = array()) {
+	public function getValue($params = array(), $column = 0) {
 		$this->bindParams($params);
 		$this->execute(array(), false);
 		$rs = new WindResultSet($this, PDO::FETCH_NUM, 0);
-		$one = $rs->fetch();
-		if ($one) return $one[0];
-		return null;
+		return $rs->fetchColumn($column);
 	}
-	
+
 	/**
 	 * 执行SQL语句，并返回查询结果
 	 * @param array $params
