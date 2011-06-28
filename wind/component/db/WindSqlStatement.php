@@ -118,6 +118,33 @@ class WindSqlStatement {
 	}
 
 	/**
+	 * 将列值绑定到php变量
+	 * @param $column
+	 * @param $param
+	 * @param $type
+	 * @param $maxlen
+	 * @param $driverdata
+	 * @throws WindDbException
+	 */
+	public function bindColumn($column, &$param, $type = null, $maxlen = null, $driverdata = null) {
+		try {
+			Wind::log("component.db.WindSqlStatement.bindColumn.", WindLogger::LEVEL_INFO, "component.db");
+			$this->init();
+			if ($type == null) $type = $this->_getPdoDataType($param);
+			if ($type == null)
+				$this->getStatement()->bindColumn($column, $param);
+			elseif ($maxlen == null)
+				$this->getStatement()->bindColumn($column, $param, $type);
+			else
+				$this->getStatement()->bindColumn($column, $param, $type, $maxlen, $driverdata);
+			return $this;
+		} catch (PDOException $e) {
+			Wind::log("component.db.WindSqlStatement.bindColumn. exception message" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
+			throw new WindDbException($e->getMessage());
+		}
+	}
+
+	/**
 	 * 执行SQL语句，并返回查询结果
 	 * @param array $params
 	 * @param int $fetchMode
@@ -138,8 +165,7 @@ class WindSqlStatement {
 	 * @return array
 	 */
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
-		$this->bindParams($params);
-		$this->execute(array(), false);
+		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		if (!$index) return $rs->fetchAll();
 		$result = array();
@@ -157,8 +183,7 @@ class WindSqlStatement {
 	 * @return string
 	 */
 	public function getValue($params = array(), $column = 0) {
-		$this->bindParams($params);
-		$this->execute(array(), false);
+		$this->execute($params, false);
 		$rs = new WindResultSet($this, PDO::FETCH_NUM, 0);
 		return $rs->fetchColumn($column);
 	}
@@ -171,8 +196,7 @@ class WindSqlStatement {
 	 * @return array
 	 */
 	public function getOne($params = array(), $fetchMode = 0, $fetchType = 0) {
-		$this->bindParams($params);
-		$this->execute(array(), false);
+		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		return $rs->fetch();
 	}
@@ -187,10 +211,8 @@ class WindSqlStatement {
 		try {
 			$this->init();
 			Wind::log("component.db.WindSqlStatement.execute.", WindLogger::LEVEL_INFO, "component.db");
-			if (empty($params)) {
-				$this->getStatement()->execute();
-			} else
-				$this->getStatement()->execute($params);
+			$this->bindParams($params);
+			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, "component.db");
 			return $_result;
