@@ -38,7 +38,14 @@ class WindResultSet {
 	}
 
 	/**
-	 * 返回结果集的条数
+	 * 返回最后一条Sql语句的影响行数
+	 */
+	public function rowCount() {
+		return $this->_statement->rowCount();
+	}
+
+	/**
+	 * 返回结果集中的列数
 	 * @return number
 	 */
 	public function columnCount() {

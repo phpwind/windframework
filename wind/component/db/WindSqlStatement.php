@@ -145,6 +145,15 @@ class WindSqlStatement {
 	}
 
 	/**
+	 * 执行SQL语句，并返回更新影响行数
+	 * @param array $params
+	 * @throws WindDbException
+	 */
+	public function update($params = array()) {
+		return $this->execute($params);
+	}
+
+	/**
 	 * 执行SQL语句，并返回查询结果
 	 * @param array $params
 	 * @param int $fetchMode
