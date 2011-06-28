@@ -19,12 +19,14 @@ class WindResultSet {
 	 * @var number
 	 */
 	private $_fetchType = PDO::FETCH_ORI_FIRST;
+	private $_columns = array();
 
 	/**
 	 * @param WindSqlStatement $sqlStatement
 	 */
 	public function __construct($sqlStatement, $fetchMode = 0, $fetchType = 0) {
 		$this->_statement = $sqlStatement->getStatement();
+		$this->_columns = $sqlStatement->getColumns();
 		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
 	}
 
@@ -66,10 +68,16 @@ class WindResultSet {
 	 * @return array
 	 */
 	private function _fetch($fetchMode, $fetchType) {
-		if (!$result = $this->_statement->fetch($fetchMode, $fetchType))
-			return array();
-		else
+		if (!empty($this->_columns)) $fetchMode = PDO::FETCH_BOUND;
+		$result = array();
+		if ($row = $this->_statement->fetch($fetchMode, $fetchType)) {
+			if (empty($this->_columns)) return $row;
+			foreach ($this->_columns as $key => $value) {
+				$result[$key] = $value;
+			}
 			return $result;
+		}
+		return array();
 	}
 
 	/**
@@ -83,8 +91,16 @@ class WindResultSet {
 	 * 返回所有的查询结果
 	 * @return array
 	 */
-	public function fetchAll() {
-		return $this->_statement->fetchAll();
+	public function fetchAll($index = 0) {
+		if (empty($this->_columns))
+			return $this->_statement->fetchAll();
+		else {
+			$result = array();
+			while ($row = $this->fetch()) {
+				$result[] = $row;
+			}
+			return $result;
+		}
 	}
 
 	/**

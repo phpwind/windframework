@@ -27,6 +27,7 @@ class WindSqlStatement {
 	 * @var array
 	 */
 	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 'NULL' => PDO::PARAM_NULL);
+	private $_columns = array();
 
 	/**
 	 * @param WindConnection $connection
@@ -126,7 +127,7 @@ class WindSqlStatement {
 	 * @param $driverdata
 	 * @throws WindDbException
 	 */
-	public function bindColumn($column, &$param, $type = null, $maxlen = null, $driverdata = null) {
+	public function bindColumn($column, &$param = '', $type = null, $maxlen = null, $driverdata = null) {
 		try {
 			Wind::log("component.db.WindSqlStatement.bindColumn.", WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
@@ -137,12 +138,26 @@ class WindSqlStatement {
 				$this->getStatement()->bindColumn($column, $param, $type);
 			else
 				$this->getStatement()->bindColumn($column, $param, $type, $maxlen, $driverdata);
+			$this->_columns[$column] = & $param;
 			return $this;
 		} catch (PDOException $e) {
 			Wind::log("component.db.WindSqlStatement.bindColumn. exception message" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
 			throw new WindDbException($e->getMessage());
 		}
 	}
+
+	public function bindColumns($columns, &$param = array()) {
+		$int = 0;
+		foreach ($columns as $value) {
+			$this->bindColumn($value, $param[$int++]);
+		}
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param unknown_type $columns
+	 */
+	public function setColumns($columns) {}
 
 	/**
 	 * 执行SQL语句，并返回更新影响行数
@@ -263,6 +278,13 @@ class WindSqlStatement {
 	 */
 	public function getStatement() {
 		return $this->_statement;
+	}
+
+	/**
+	 * @return the $_columns
+	 */
+	public function getColumns() {
+		return $this->_columns;
 	}
 
 	/**
