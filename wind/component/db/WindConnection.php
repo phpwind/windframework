@@ -151,17 +151,6 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * 返回最后一条插入数据ID
-	 * @param $name
-	 */
-	public function lastInsterId($name = '') {
-		if ($name)
-			return $this->getDbHandle()->lastInsertId($name);
-		else
-			return $this->getDbHandle()->lastInsertId();
-	}
-
-	/**
 	 * @param array $array
 	 */
 	public function quoteArray($array) {
