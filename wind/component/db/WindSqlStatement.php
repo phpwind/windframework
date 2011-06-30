@@ -162,10 +162,11 @@ class WindSqlStatement {
 	/**
 	 * 执行SQL语句，并返回更新影响行数
 	 * @param array $params
+	 * @param boolean $rowCount 是否返回影响行数
 	 * @throws WindDbException
 	 */
-	public function update($params = array()) {
-		return $this->execute($params);
+	public function update($params = array(), $rowCount = false) {
+		return $this->execute($params, $rowCount);
 	}
 
 	/**
