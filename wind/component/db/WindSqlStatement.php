@@ -73,9 +73,9 @@ class WindSqlStatement {
 	 * @return WindSqlStatement
 	 */
 	public function bindParams(&$parameters) {
-		foreach ($parameters as $key => $value) {
+		foreach ($parameters as $key => &$value) {
 			if (is_array($value)) {
-				list($var) = $value;
+				$var = &$value[0];
 				$dataType = isset($value[1]) ? $value[1] : null;
 				$length = isset($value[2]) ? $value[2] : null;
 				$driverOptions = isset($value[3]) ? $value[3] : null;
@@ -244,7 +244,11 @@ class WindSqlStatement {
 		try {
 			$this->init();
 			Wind::log("component.db.WindSqlStatement.execute.", WindLogger::LEVEL_INFO, "component.db");
+<<<<<<< .mine
+			$params && $this->bindParams($params);
+=======
 			$this->bindValues($params);
+>>>>>>> .r2071
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, "component.db");
