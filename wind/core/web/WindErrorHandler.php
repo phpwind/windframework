@@ -125,7 +125,7 @@ class WindErrorHandler extends WindController {
 	 */
 	final public function exceptionHandle($exception) {
 		$_tmp = $exception->getMessage() . ' (' . $this->getFile($exception->getFile()) . ':' . $exception->getLine() . ')';
-		if (IS_DEBUG) {
+		if (IS_DEBUG > WindLogger::LEVEL_DEBUG) {
 			echo '<h3>' . get_class($exception) . '</h3>';
 			echo "<p>$_tmp</p>";
 			echo '<pre>' . $exception->getTraceAsString() . '</pre>';
