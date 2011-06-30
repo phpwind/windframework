@@ -192,9 +192,9 @@ class WindSqlStatement {
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
-		if (!$index) return $rs->fetchAll();
+		if (!$index) return $rs->fetchAll($fetchMode);
 		$result = array();
-		while ($one = $rs->fetch()) {
+		while ($one = $rs->fetch($fetchMode, $fetchType)) {
 			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
 		}
 		return $result;
@@ -231,7 +231,7 @@ class WindSqlStatement {
 	 * @return int
 	 */
 	public function lastInsertId() {
-		return $this->getConnection()->getDbHandle()->lastInsertId();
+		return $this->getConnection()->lastInsertId();
 	}
 	
 	/**
