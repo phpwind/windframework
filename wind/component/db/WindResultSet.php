@@ -56,10 +56,11 @@ class WindResultSet {
 
 	/**
 	 * Fetches the next row from a result set 
+	 * @param int $fetchType 
 	 * @return array
 	 */
-	public function fetch() {
-		return $this->_fetch($this->_fetchMode, $this->_fetchType);
+	public function fetch($fetchMode = PDO::FETCH_BOTH) {
+		return $this->_fetch($fetchMode, $this->_fetchType);
 	}
 
 	/**
@@ -81,6 +82,11 @@ class WindResultSet {
 	}
 
 	/**
+	 * Some database servers support stored procedures that return more than one rowset 
+	 * (also known as a result set). PDOStatement::nextRowset() enables you to access the second 
+	 * and subsequent rowsets associated with a PDOStatement object. Each rowset can have a 
+	 * different set of columns from the preceding rowset. 
+	 * 
 	 * @return boolean | 成功返回true失败返回false
 	 */
 	public function nextRowset() {
@@ -89,14 +95,15 @@ class WindResultSet {
 
 	/**
 	 * 返回所有的查询结果
+	 * @param int $fetchType 设置返回的方式
 	 * @return array
 	 */
-	public function fetchAll($index = 0) {
+	public function fetchAll($fetchType = PDO::FETCH_BOTH) {
 		if (empty($this->_columns))
-			return $this->_statement->fetchAll();
+			return $this->_statement->fetchAll($fetchType);
 		else {
 			$result = array();
-			while ($row = $this->fetch()) {
+			while ($row = $this->fetch($fetchType)) {
 				$result[] = $row;
 			}
 			return $result;
@@ -104,8 +111,10 @@ class WindResultSet {
 	}
 
 	/**
+	 * 从下一行记录中获得下标使$index的值，如果获取失败则返回false
+	 * 
 	 * @param int $index
-	 * @return string
+	 * @return string|bool
 	 */
 	public function fetchColumn($index = 0) {
 		return $this->_statement->fetchColumn($index);
