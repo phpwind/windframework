@@ -41,6 +41,7 @@ class WindResultSet {
 
 	/**
 	 * 返回最后一条Sql语句的影响行数
+	 * @return int
 	 */
 	public function rowCount() {
 		return $this->_statement->rowCount();
