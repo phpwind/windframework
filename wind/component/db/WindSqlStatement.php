@@ -225,10 +225,18 @@ class WindSqlStatement {
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		return $rs->fetch($fetchMode);
 	}
+	
+	/**
+	 * 返回插入的最后一个ID 
+	 * @return int
+	 */
+	public function lastInsertId() {
+		return $this->getConnection()->getDbHandle()->lastInsertId();
+	}
 
 	/**
 	 * 执行sql，$params为变量信息,并返回结果集
-	 * @param array $params  -- 注意：绑定的变量数组下标将从0开始索引，
+	 * @param array $params  
 	 * @param boolean $rowCount
 	 * @return rowCount
 	 */
