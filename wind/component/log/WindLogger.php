@@ -22,7 +22,7 @@ class WindLogger extends WindComponentModule {
 	private $_logs = array();
 	private $_logCount = 0;
 	private $_profiles = array();
-	private $_logDir;
+	private $_logDir = COMPILE_PATH;
 	private $_maxFileSize = 100;
 
 	/**
