@@ -72,7 +72,7 @@ class WindSqlStatement {
 	 * @param array $parameters 
 	 * @return WindSqlStatement
 	 */
-	public function bindParams($parameters) {
+	public function bindParams(&$parameters) {
 		foreach ($parameters as $key => $value) {
 			if (is_array($value)) {
 				list($var) = $value;
@@ -194,7 +194,7 @@ class WindSqlStatement {
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		if (!$index) return $rs->fetchAll();
 		$result = array();
-		while ($one = $rs->fetch($fetchMode)) {
+		while ($one = $rs->fetch()) {
 			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
 		}
 		return $result;
@@ -223,7 +223,7 @@ class WindSqlStatement {
 	public function getOne($params = array(), $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
-		return $rs->fetch($fetchMode);
+		return $rs->fetch();
 	}
 	
 	/**
@@ -231,20 +231,12 @@ class WindSqlStatement {
 	 * @return int
 	 */
 	public function lastInsertId() {
-		return $this->getConnection()->getDbHandle()->lastInsertId();
+		return $this->getConnection()->lastInsertId();
 	}
 	
 	/**
-	 * 错误信息
-	 * @return array  返回错误代码和错误信息
-	 */
-	public function errorInfo() {
-		return $this->getStatement()->errorInfo();
-	}
-
-	/**
 	 * 执行sql，$params为变量信息,并返回结果集
-	 * @param array $params  
+	 * @param array $params  -- 注意：绑定的变量数组下标将从0开始索引，
 	 * @param boolean $rowCount
 	 * @return rowCount
 	 */
@@ -252,7 +244,7 @@ class WindSqlStatement {
 		try {
 			$this->init();
 			Wind::log("component.db.WindSqlStatement.execute.", WindLogger::LEVEL_INFO, "component.db");
-			$this->bindParams($params);
+			$this->bindValues($params);
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, "component.db");
@@ -312,7 +304,6 @@ class WindSqlStatement {
 			try {
 				Wind::log("component.db.WindSqlStatement._init Initialize DBStatement. ", WindLogger::LEVEL_INFO, "component.db");
 				Wind::profileBegin("component.db.WindSqlStatement._init", " SQL: " . $this->getQueryString(), "component.db");
-				$this->getConnection()->init();
 				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
 				Wind::profileEnd('component.db.WindSqlStatement._init');
 				Wind::log("component.db.WindSqlStatement._init Initialize DBStatement. This statement is " . get_class($this->_statement), WindLogger::LEVEL_DEBUG, "component.db");
