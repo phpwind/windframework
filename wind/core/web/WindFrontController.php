@@ -100,7 +100,7 @@ class WindFrontController extends AbstractWindServer {
 	 */
 	protected function beforeProcess(WindHttpRequest $request, WindHttpResponse $response) {
 		Wind::import('WIND:core.web.WindErrorHandler');
-		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
 		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
 
