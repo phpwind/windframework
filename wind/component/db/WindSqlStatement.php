@@ -233,6 +233,14 @@ class WindSqlStatement {
 	public function lastInsertId() {
 		return $this->getConnection()->getDbHandle()->lastInsertId();
 	}
+	
+	/**
+	 * 错误信息
+	 * @return array  返回错误代码和错误信息
+	 */
+	public function errorInfo() {
+		return $this->getStatement()->errorInfo();
+	}
 
 	/**
 	 * 执行sql，$params为变量信息,并返回结果集
