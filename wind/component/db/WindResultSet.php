@@ -60,8 +60,8 @@ class WindResultSet {
 	 * @param int $fetchType 
 	 * @return array
 	 */
-	public function fetch($fetchMode = PDO::FETCH_BOTH) {
-		return $this->_fetch($fetchMode, $this->_fetchType);
+	public function fetch($fetchMode = PDO::FETCH_BOTH, $fetchType = PDO::FETCH_ORI_FIRST) {
+		return $this->_fetch($fetchMode, $fetchType);
 	}
 
 	/**
