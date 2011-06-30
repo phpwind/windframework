@@ -194,7 +194,7 @@ class WindSqlStatement {
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		if (!$index) return $rs->fetchAll();
 		$result = array();
-		while ($one = $rs->fetch()) {
+		while ($one = $rs->fetch($fetchMode)) {
 			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
 		}
 		return $result;
@@ -223,7 +223,7 @@ class WindSqlStatement {
 	public function getOne($params = array(), $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
-		return $rs->fetch();
+		return $rs->fetch($fetchMode);
 	}
 
 	/**
