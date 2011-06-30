@@ -31,8 +31,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			//add log
 			if (IS_DEBUG) {
 				/* @var $logger WindLogger */
-				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-				$logger->debug('do processRequest of ' . get_class($this));
+				//TODO 调试信息输出调用Wind::log
+				Wind::log('do processRequest of ' . get_class($this), WindLogger::LEVEL_DEBUG, 'wind.debug');
+//				$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+//				$logger->debug('do processRequest of ' . get_class($this));
 			}
 			
 			$handler = $this->getHandler();
@@ -59,8 +61,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		//add log
 		if (IS_DEBUG) {
 			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->info('do doDispatch of ' . get_class($this));
+			//TODO 调试信息
+			Wind::log('do doDispatch of ' . get_class($this), WindLogger::LEVEL_DEBUG, 'wind.debug');
+//			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+//			$logger->info('do doDispatch of ' . get_class($this));
 		}
 		
 		$this->dispatcher->dispatch($forward);
@@ -78,8 +82,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		//add log
 		if (IS_DEBUG) {
 			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
+			//TODO 调试信息输出调用Wind::log
+			Wind::log('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule(), WindLogger::LEVEL_DEBUG, 'wind.debug');
+//			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+//			$logger->debug('router result: Action:' . $handlerAdapter->getAction() . ' Controller:' . $handlerAdapter->getController() . ' Module:' . $handlerAdapter->getModule());
 		}
 		
 		if (!strcasecmp($handlerAdapter->getController(), WIND_M_ERROR)) {
@@ -119,8 +125,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		//add log
 		if (IS_DEBUG) {
 			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->debug('ActionHandler: ' . $handler);
+			//TODO 调试信息输出调用Wind::log
+			Wind::log('ActionHandler: ', WindLogger::LEVEL_DEBUG, 'wind.debug');
+//			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+//			$logger->debug('ActionHandler: ' . $handler);
 		}
 		
 		return $actionHandler;
