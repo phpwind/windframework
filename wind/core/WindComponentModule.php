@@ -65,7 +65,7 @@ abstract class WindComponentModule extends WindModule {
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '') {
 		if (null === $this->_config) return '';
-		return $this->_config->getConfig($configName, $subConfigName, $default);
+		return $this->_config->getConfig($configName, $subConfigName, array(), $default);
 	}
 
 	/**
