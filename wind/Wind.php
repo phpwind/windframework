@@ -243,8 +243,7 @@ class Wind {
 	 */
 	public static function getLogger() {
 		if (self::$_logger === null) {
-			self::$_logger = new WindLogger();
-			self::$_logger->setLogDir(COMPILE_PATH . '/log/');
+			self::$_logger = new WindLogger(COMPILE_PATH . '/log/' , WindLogger::WRITE_LEVEL);
 		}
 		return self::$_logger;
 	}
