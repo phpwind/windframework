@@ -21,7 +21,7 @@ class WindConnection extends WindComponentModule {
 	private $_user;
 	private $_pwd;
 	private $_tablePrefix;
-	private $_charset = gbk;
+	private $_charset;
 	private $_enableLog = false;
 	/**
 	 * @var array
