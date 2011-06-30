@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:core.WindModule');
 /**
  * 抽象DAO接口
  * 
@@ -41,6 +40,7 @@ class WindDao extends WindModule {
 		$definition->setPath($this->dbClass);
 		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
 		$definition->setAlias($this->dbClass);
+		$definition->setInitMethod('init');
 		if (is_array($this->dbConfig))
 			$definition->setConfig($this->dbConfig);
 		else
