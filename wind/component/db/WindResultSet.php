@@ -25,8 +25,11 @@ class WindResultSet {
 	 * @param WindSqlStatement $sqlStatement
 	 */
 	public function __construct($sqlStatement, $fetchMode = 0, $fetchType = 0) {
-		$this->_statement = $sqlStatement->getStatement();
-		$this->_columns = $sqlStatement->getColumns();
+		if ($sqlStatement instanceof WindSqlStatement) {
+			$this->_statement = $sqlStatement->getStatement();
+			$this->_columns = $sqlStatement->getColumns();
+		} else
+			$this->_statement = $sqlStatement;
 		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
 		if ($fetchMode != 0) $this->_fetchType = $fetchType;
 	}
@@ -35,9 +38,9 @@ class WindResultSet {
 	 * @param $fetchMode
 	 * @return 
 	 */
-	public function setFetchMode($fetchMode, $push = false) {
+	public function setFetchMode($fetchMode, $flush = false) {
 		$this->_fetchMode = $fetchMode;
-		if ($push) {
+		if ($flush) {
 			$fetchMode = func_get_args();
 			call_user_func_array(array($this->_statement, 'setFetchMode'), $fetchMode);
 		}

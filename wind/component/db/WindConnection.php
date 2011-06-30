@@ -147,7 +147,12 @@ class WindConnection extends WindComponentModule {
 	 * @return PDOStatement
 	 */
 	public function query($sql) {
-		return $this->getDbHandle()->query($sql);
+		try {
+			$statement = $this->getDbHandle()->query($sql);
+			return new WindResultSet($statement);
+		} catch (PDOException $e) {
+			throw new WindDbException();
+		}
 	}
 
 	/**
