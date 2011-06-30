@@ -73,15 +73,14 @@ class WindSqlStatement {
 	 * @return WindSqlStatement
 	 */
 	public function bindParams(&$parameters) {
-		foreach ($parameters as $key => &$value) {
+		foreach ($parameters as $key => $value) {
 			if (is_array($value)) {
-				$var = &$value[0];
 				$dataType = isset($value[1]) ? $value[1] : null;
 				$length = isset($value[2]) ? $value[2] : null;
 				$driverOptions = isset($value[3]) ? $value[3] : null;
-				$this->bindParam($key, $var, $dataType, $length, $driverOptions);
+				$this->bindParam($key, $parameters[$key][0], $dataType, $length, $driverOptions);
 			} else {
-				$this->bindParam($key, $value, $this->_getPdoDataType($value));
+				$this->bindParam($key, $parameters[$key], $this->_getPdoDataType($value));
 			}
 		}
 		return $this;
