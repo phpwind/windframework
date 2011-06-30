@@ -28,15 +28,19 @@ class WindResultSet {
 		$this->_statement = $sqlStatement->getStatement();
 		$this->_columns = $sqlStatement->getColumns();
 		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
+		if ($fetchMode != 0) $this->_fetchType = $fetchType;
 	}
 
 	/**
 	 * @param $fetchMode
 	 * @return 
 	 */
-	public function setFetchMode($fetchMode) {
-		$fetchMode = func_get_args();
-		call_user_func_array(array($this->_statement, 'setFetchMode'), $fetchMode);
+	public function setFetchMode($fetchMode, $push = false) {
+		$this->_fetchMode = $fetchMode;
+		if ($push) {
+			$fetchMode = func_get_args();
+			call_user_func_array(array($this->_statement, 'setFetchMode'), $fetchMode);
+		}
 	}
 
 	/**
@@ -57,10 +61,13 @@ class WindResultSet {
 
 	/**
 	 * Fetches the next row from a result set 
+	 * @param int $fetchMode
 	 * @param int $fetchType 
 	 * @return array
 	 */
-	public function fetch($fetchMode = PDO::FETCH_BOTH, $fetchType = PDO::FETCH_ORI_FIRST) {
+	public function fetch($fetchMode = 0, $fetchType = 0) {
+		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
+		if ($fetchType === 0) $fetchMode = $this->_fetchType;
 		return $this->_fetch($fetchMode, $fetchType);
 	}
 
@@ -83,37 +90,24 @@ class WindResultSet {
 	}
 
 	/**
-	 * Some database servers support stored procedures that return more than one rowset 
-	 * (also known as a result set). PDOStatement::nextRowset() enables you to access the second 
-	 * and subsequent rowsets associated with a PDOStatement object. Each rowset can have a 
-	 * different set of columns from the preceding rowset. 
-	 * 
-	 * @return boolean | 成功返回true失败返回false
-	 */
-	public function nextRowset() {
-		return $this->_statement->nextRowset();
-	}
-
-	/**
 	 * 返回所有的查询结果
 	 * @param int $fetchType 设置返回的方式
 	 * @return array
 	 */
-	public function fetchAll($fetchType = PDO::FETCH_BOTH) {
+	public function fetchAll($fetchMode = 0) {
+		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
 		if (empty($this->_columns))
-			return $this->_statement->fetchAll($fetchType);
+			return $this->_statement->fetchAll($fetchMode);
 		else {
 			$result = array();
-			while ($row = $this->fetch($fetchType)) {
+			while ($row = $this->fetch($fetchMode))
 				$result[] = $row;
-			}
 			return $result;
 		}
 	}
 
 	/**
 	 * 从下一行记录中获得下标使$index的值，如果获取失败则返回false
-	 * 
 	 * @param int $index
 	 * @return string|bool
 	 */
