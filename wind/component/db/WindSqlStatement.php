@@ -192,9 +192,9 @@ class WindSqlStatement {
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
-		if (!$index) return $rs->fetchAll($fetchMode);
+		if (!$index) return $rs->fetchAll();
 		$result = array();
-		while ($one = $rs->fetch($fetchMode, $fetchType)) {
+		while ($one = $rs->fetch()) {
 			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
 		}
 		return $result;
@@ -225,15 +225,18 @@ class WindSqlStatement {
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		return $rs->fetch();
 	}
-	
+
 	/**
-	 * 返回插入的最后一个ID 
-	 * @return int
+	 * 返回最后一条插入数据ID
+	 * @param $name
 	 */
-	public function lastInsertId() {
-		return $this->getConnection()->lastInsertId();
+	public function lastInsterId($name = '') {
+		if ($name)
+			return $this->getDbHandle()->lastInsertId($name);
+		else
+			return $this->getDbHandle()->lastInsertId();
 	}
-	
+
 	/**
 	 * 执行sql，$params为变量信息,并返回结果集
 	 * @param array $params  -- 注意：绑定的变量数组下标将从0开始索引，
