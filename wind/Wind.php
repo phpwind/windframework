@@ -2,13 +2,16 @@
 /* 框架版本信息 */
 define('VERSION', '0.5');
 define('PHPVERSION', '5.1.2');
-!defined('IS_DEBUG') && define('IS_DEBUG', 1);
-!defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
 !defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'windBasic.php');
+/* debug/log */
+!defined('IS_DEBUG') && define('IS_DEBUG', 1);
+!defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
+!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log' . D_S);
+!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 1);
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -186,9 +189,7 @@ class Wind {
 		$fileList = array();
 		foreach (self::$_imports as $key => $value) {
 			$_key = self::getRealPath($key . '.' . self::$_extensions);
-			$fileList[$_key] = array(
-				$key, 
-				$value);
+			$fileList[$_key] = array($key, $value);
 		}
 		$pack->packFromFileList($fileList, $libPath, WindPack::STRIP_PHP, true);
 	}
@@ -219,7 +220,7 @@ class Wind {
 	 * @param $type
 	 */
 	public static function profileBegin($token, $message = '', $type = 'wind.core') {
-		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
+		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
 			$msg = $token . ':' . $message;
 			self::getLogger()->profileBegin($msg, $type);
 		}
@@ -231,7 +232,7 @@ class Wind {
 	 * @param $type
 	 */
 	public static function profileEnd($token, $message = '', $type = 'wend.core') {
-		if (IS_DEBUG && IS_DEBUG >= WindLogger::LEVEL_PROFILE) {
+		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
 			$msg = $token . ':' . $message;
 			self::getLogger()->profileEnd($msg, $type);
 		}
@@ -243,11 +244,11 @@ class Wind {
 	 */
 	public static function getLogger() {
 		if (self::$_logger === null) {
-			self::$_logger = new WindLogger(COMPILE_PATH . '/log/' , WindLogger::WRITE_LEVEL);
+			self::$_logger = new WindLogger(LOG_DIR, LOG_WRITE_LEVEL);
 		}
 		return self::$_logger;
 	}
-	
+
 	/**
 	 * 系统命名空间注册方法
 	 * @return 
@@ -335,74 +336,7 @@ class Wind {
 	 * @return
 	 */
 	private static function _coreLib() {
-		return array(
-			'AbstractWindServer' => 'WIND:core.AbstractWindServer', 
-			'IWindConfigParser' => 'WIND:core.config.parser.IWindConfigParser', 
-			'WindConfigParser' => 'WIND:core.config.parser.WindConfigParser', 
-			'WindConfig' => 'WIND:core.config.WindConfig', 
-			'WindSystemConfig' => 'WIND:core.config.WindSystemConfig', 
-			'WindDaoCacheListener' => 'WIND:core.dao.listener.WindDaoCacheListener', 
-			'WindActionException' => 'WIND:core.exception.WindActionException', 
-			'WindCacheException' => 'WIND:core.exception.WindCacheException', 
-			'WindDaoException' => 'WIND:core.exception.WindDaoException', 
-			'WindException' => 'WIND:core.exception.WindException', 
-			'WindFinalException' => 'WIND:core.exception.WindFinalException', 
-			'WindSqlException' => 'WIND:core.exception.WindSqlException', 
-			'WindViewException' => 'WIND:core.exception.WindViewException', 
-			'IWindFactory' => 'WIND:core.factory.IWindFactory', 
-			'IWindClassProxy' => 'WIND:core.factory.proxy.IWindClassProxy', 
-			'WindClassProxy' => 'WIND:core.factory.proxy.WindClassProxy', 
-			'WindClassDefinition' => 'WIND:core.factory.WindClassDefinition', 
-			'WindComponentDefinition' => 'WIND:core.factory.WindComponentDefinition', 
-			'WindComponentFactory' => 'WIND:core.factory.WindComponentFactory', 
-			'WindFactory' => 'WIND:core.factory.WindFactory', 
-			'WindFilter' => 'WIND:core.filter.WindFilter', 
-			'WindFilterChain' => 'WIND:core.filter.WindFilterChain', 
-			'WindHandlerInterceptor' => 'WIND:core.filter.WindHandlerInterceptor', 
-			'WindHandlerInterceptorChain' => 'WIND:core.filter.WindHandlerInterceptorChain', 
-			'IWindRequest' => 'WIND:core.request.IWindRequest', 
-			'WindHttpRequest' => 'WIND:core.request.WindHttpRequest', 
-			'IWindResponse' => 'WIND:core.response.IWindResponse', 
-			'WindHttpResponse' => 'WIND:core.response.WindHttpResponse', 
-			'AbstractWindRouter' => 'WIND:core.router.AbstractWindRouter', 
-			'WindUrlBasedRouter' => 'WIND:core.router.WindUrlBasedRouter', 
-			'AbstractWindTemplateCompiler' => 'WIND:core.viewer.AbstractWindTemplateCompiler', 
-			'AbstractWindViewTemplate' => 'WIND:core.viewer.AbstractWindViewTemplate', 
-			'WindTemplateCompilerAction' => 'WIND:core.viewer.compiler.WindTemplateCompilerAction', 
-			'WindTemplateCompilerComponent' => 'WIND:core.viewer.compiler.WindTemplateCompilerComponent', 
-			'WindTemplateCompilerEcho' => 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', 
-			'WindTemplateCompilerInternal' => 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', 
-			'WindTemplateCompilerPage' => 'WIND:core.viewer.compiler.WindTemplateCompilerPage', 
-			'WindTemplateCompilerScript' => 'WIND:core.viewer.compiler.WindTemplateCompilerScript', 
-			'WindTemplateCompilerTemplate' => 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate', 
-			'WindViewTemplate' => 'WIND:core.viewer.compiler.WindViewTemplate', 
-			'IWindViewerResolver' => 'WIND:core.viewer.IWindViewerResolver', 
-			'WindViewCacheListener' => 'WIND:core.viewer.listener.WindViewCacheListener', 
-			'WindLayout' => 'WIND:core.viewer.WindLayout', 
-			'WindView' => 'WIND:core.viewer.WindView', 
-			'WindViewerResolver' => 'WIND:core.viewer.WindViewerResolver', 
-			'WindLoggerFilter' => 'WIND:core.web.filter.WindLoggerFilter', 
-			'WindUrlFilter' => 'WIND:core.web.filter.WindUrlFilter', 
-			'IWindApplication' => 'WIND:core.web.IWindApplication', 
-			'IWindErrorMessage' => 'WIND:core.web.IWindErrorMessage', 
-			'WindFormListener' => 'WIND:core.web.listener.WindFormListener', 
-			'WindLoggerListener' => 'WIND:core.web.listener.WindLoggerListener', 
-			'WindValidateListener' => 'WIND:core.web.listener.WindValidateListener', 
-			'WindAction' => 'WIND:core.web.WindAction', 
-			'WindController' => 'WIND:core.web.WindController', 
-			'WindDispatcher' => 'WIND:core.web.WindDispatcher', 
-			'WindErrorHandler' => 'WIND:core.web.WindErrorHandler', 
-			'WindErrorMessage' => 'WIND:core.web.WindErrorMessage', 
-			'WindFormController' => 'WIND:core.web.WindFormController', 
-			'WindForward' => 'WIND:core.web.WindForward', 
-			'WindFrontController' => 'WIND:core.web.WindFrontController', 
-			'WindUrlHelper' => 'WIND:core.web.WindUrlHelper', 
-			'WindWebApplication' => 'WIND:core.web.WindWebApplication', 
-			'WindComponentModule' => 'WIND:core.WindComponentModule', 
-			'WindEnableValidateModule' => 'WIND:core.WindEnableValidateModule', 
-			'WindHelper' => 'WIND:core.WindHelper', 
-			'WindModule' => 'WIND:core.WindModule', 
-			'WindLogger' => 'COM:log.WindLogger');
+		return array('AbstractWindServer' => 'WIND:core.AbstractWindServer', 'IWindConfigParser' => 'WIND:core.config.parser.IWindConfigParser', 'WindConfigParser' => 'WIND:core.config.parser.WindConfigParser', 'WindConfig' => 'WIND:core.config.WindConfig', 'WindSystemConfig' => 'WIND:core.config.WindSystemConfig', 'WindDaoCacheListener' => 'WIND:core.dao.listener.WindDaoCacheListener', 'WindActionException' => 'WIND:core.exception.WindActionException', 'WindCacheException' => 'WIND:core.exception.WindCacheException', 'WindDaoException' => 'WIND:core.exception.WindDaoException', 'WindException' => 'WIND:core.exception.WindException', 'WindFinalException' => 'WIND:core.exception.WindFinalException', 'WindSqlException' => 'WIND:core.exception.WindSqlException', 'WindViewException' => 'WIND:core.exception.WindViewException', 'IWindFactory' => 'WIND:core.factory.IWindFactory', 'IWindClassProxy' => 'WIND:core.factory.proxy.IWindClassProxy', 'WindClassProxy' => 'WIND:core.factory.proxy.WindClassProxy', 'WindClassDefinition' => 'WIND:core.factory.WindClassDefinition', 'WindComponentDefinition' => 'WIND:core.factory.WindComponentDefinition', 'WindComponentFactory' => 'WIND:core.factory.WindComponentFactory', 'WindFactory' => 'WIND:core.factory.WindFactory', 'WindFilter' => 'WIND:core.filter.WindFilter', 'WindFilterChain' => 'WIND:core.filter.WindFilterChain', 'WindHandlerInterceptor' => 'WIND:core.filter.WindHandlerInterceptor', 'WindHandlerInterceptorChain' => 'WIND:core.filter.WindHandlerInterceptorChain', 'IWindRequest' => 'WIND:core.request.IWindRequest', 'WindHttpRequest' => 'WIND:core.request.WindHttpRequest', 'IWindResponse' => 'WIND:core.response.IWindResponse', 'WindHttpResponse' => 'WIND:core.response.WindHttpResponse', 'AbstractWindRouter' => 'WIND:core.router.AbstractWindRouter', 'WindUrlBasedRouter' => 'WIND:core.router.WindUrlBasedRouter', 'AbstractWindTemplateCompiler' => 'WIND:core.viewer.AbstractWindTemplateCompiler', 'AbstractWindViewTemplate' => 'WIND:core.viewer.AbstractWindViewTemplate', 'WindTemplateCompilerAction' => 'WIND:core.viewer.compiler.WindTemplateCompilerAction', 'WindTemplateCompilerComponent' => 'WIND:core.viewer.compiler.WindTemplateCompilerComponent', 'WindTemplateCompilerEcho' => 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', 'WindTemplateCompilerInternal' => 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', 'WindTemplateCompilerPage' => 'WIND:core.viewer.compiler.WindTemplateCompilerPage', 'WindTemplateCompilerScript' => 'WIND:core.viewer.compiler.WindTemplateCompilerScript', 'WindTemplateCompilerTemplate' => 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate', 'WindViewTemplate' => 'WIND:core.viewer.compiler.WindViewTemplate', 'IWindViewerResolver' => 'WIND:core.viewer.IWindViewerResolver', 'WindViewCacheListener' => 'WIND:core.viewer.listener.WindViewCacheListener', 'WindLayout' => 'WIND:core.viewer.WindLayout', 'WindView' => 'WIND:core.viewer.WindView', 'WindViewerResolver' => 'WIND:core.viewer.WindViewerResolver', 'WindLoggerFilter' => 'WIND:core.web.filter.WindLoggerFilter', 'WindUrlFilter' => 'WIND:core.web.filter.WindUrlFilter', 'IWindApplication' => 'WIND:core.web.IWindApplication', 'IWindErrorMessage' => 'WIND:core.web.IWindErrorMessage', 'WindFormListener' => 'WIND:core.web.listener.WindFormListener', 'WindLoggerListener' => 'WIND:core.web.listener.WindLoggerListener', 'WindValidateListener' => 'WIND:core.web.listener.WindValidateListener', 'WindAction' => 'WIND:core.web.WindAction', 'WindController' => 'WIND:core.web.WindController', 'WindDispatcher' => 'WIND:core.web.WindDispatcher', 'WindErrorHandler' => 'WIND:core.web.WindErrorHandler', 'WindErrorMessage' => 'WIND:core.web.WindErrorMessage', 'WindFormController' => 'WIND:core.web.WindFormController', 'WindForward' => 'WIND:core.web.WindForward', 'WindFrontController' => 'WIND:core.web.WindFrontController', 'WindUrlHelper' => 'WIND:core.web.WindUrlHelper', 'WindWebApplication' => 'WIND:core.web.WindWebApplication', 'WindComponentModule' => 'WIND:core.WindComponentModule', 'WindEnableValidateModule' => 'WIND:core.WindEnableValidateModule', 'WindHelper' => 'WIND:core.WindHelper', 'WindModule' => 'WIND:core.WindModule', 'WindLogger' => 'COM:log.WindLogger');
 	}
 }
 Wind::init();
