@@ -215,6 +215,7 @@ class WindConnection extends WindComponentModule {
 		if (!$this->_pwd) $this->_pwd = $this->getConfig(self::PWD, '', $this->_pwd);
 		if (!$this->_enableLog) $this->_enableLog = $this->getConfig(self::ENABLELOG, '', $this->_enableLog);
 		if (!$this->_charset) $this->_charset = $this->getConfig(self::CHARSET, '', $this->_charset);
+		if (!$this->_tablePrefix) $this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', $this->_tablePrefix);
 	}
 }
 ?>
