@@ -265,25 +265,11 @@ class WindSqlStatement {
 	public function setQueryString($queryString) {
 		if (!$queryString) return $this;
 		if ($_prefix = $this->getConnection()->getTablePrefix()) {
-			$queryString = $this->buildTablePrefix($_prefix, $queryString);
+			list($new, $old) = explode('|', $_prefix);
+			$queryString = (preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $queryString));
 		}
 		$this->_queryString = $queryString;
 		return $this;
-	}
-	
-	/**
-	 * 查找并替换表前缀。
-	 * 表前缀配置$prefix允许就设置一个，即添加一个表前缀，或是设置两个并以|分割，则在|左侧的前缀，将会替换|右侧的前缀。
-	 * @param string $prefix
-	 * @param string $queryString
-	 * @return string
-	 */
-	private function buildTablePrefix($prefix, $queryString) {
-		if (strpos($prefix, '|') === false) return preg_replace('/{{(.*?)}}/', $_prefix . '\1', $queryString);
-		list($new, $old) = explode('|', $prefix);
-		preg_match('/{{(.*?)}}/', $queryString, $match);
-		if (!$match) return $queryString;
-		return str_replace($match[0], str_replace($old, $new, $match[1]), $queryString);
 	}
 
 	/**
