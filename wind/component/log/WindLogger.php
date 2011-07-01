@@ -27,7 +27,13 @@ class WindLogger extends WindComponentModule {
 	private $_profiles = array();
 	private $_logDir;
 	private $_maxFileSize = 100;
-	private $_writeType = '0'; //0只按照log记录打印全部结果，1并且按照level打印结果，2并且按照type打印结果
+	/**
+	 * 0: 打印全部日志信息结果
+	 * 1: 按照level分文件存储日志记录
+	 * 2: 按照type分文件存储日志记录
+	 * @var int
+	 */
+	private $_writeType = '0';
 	private $_types = array();
 
 	/**
@@ -94,7 +100,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system') {
 		if ($this->_writeType == self::WRITE_TYPE)
-			(count($this->_types[$type]) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
+			(count($this->_types) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
 		else
 			$this->_logCount >= $this->_autoFlush && $this->flush();
 		if ($level === self::LEVEL_PROFILE)
@@ -105,7 +111,9 @@ class WindLogger extends WindComponentModule {
 			$message = $this->_build($msg, $level, $type);
 		$this->_logs[] = array($level, $type, $message);
 		$this->_logCount++;
-		if ($this->_writeType == self::WRITE_TYPE) $this->_types[$type] = isset($this->_types[$type]) ? count($this->_types[$type]) + 1 : 1;
+		if ($this->_writeType == self::WRITE_TYPE && !in_array($type, $this->_types)) {
+			$this->_types[] = $type;
+		}
 	}
 
 	/**
@@ -116,9 +124,11 @@ class WindLogger extends WindComponentModule {
 	public function flush() {
 		if (empty($this->_logs)) return false;
 		Wind::import('WIND:component.utility.WindFile');
+		$_l = array();
 		if ($this->_writeType == self::WRITE_LEVEL) {
 			$_logs = array();
 			foreach ($this->_logs as $key => $value) {
+				$_l[] = $value[2];
 				$_logs[$value[0]][] = $value[2];
 			}
 			foreach ($_logs as $key => $value) {
@@ -148,14 +158,16 @@ class WindLogger extends WindComponentModule {
 		} elseif ($this->_writeType == self::WRITE_TYPE) {
 			$_logs = array();
 			foreach ($this->_logs as $key => $value) {
+				$_l[] = $value[2];
 				$_logs[$value[1]][] = $value[2];
 			}
 			foreach ($_logs as $key => $value) {
 				if (!$fileName = $this->_getFileName($key)) continue;
 				WindFile::write($fileName, join("", $value), 'a');
 			}
-		} else {
-			if ($fileName = $this->_getFileName()) WindFile::write($fileName, join("", $this->_logs), 'a');
+		}
+		if ($fileName = $this->_getFileName()) {
+			WindFile::write($fileName, join("", $_l), 'a');
 		}
 		$this->_logs = array();
 		$this->_logCount = 0;
@@ -349,7 +361,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function _getFileName($suffix = '') {
 		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
-		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix . '_' : '') . '.txt';
+		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
 		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
 			$counter = 0;
 			do {
@@ -378,7 +390,6 @@ class WindLogger extends WindComponentModule {
 	public function setMaxFileSize($maxFileSize) {
 		$this->_maxFileSize = (int) $maxFileSize;
 	}
-
 }
 
 	
