@@ -265,8 +265,8 @@ class WindSqlStatement {
 	public function setQueryString($queryString) {
 		if (!$queryString) return $this;
 		if ($_prefix = $this->getConnection()->getTablePrefix()) {
-			list($new, $old) = explode('|', $_prefix);
-			$queryString = (preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $queryString));
+			list($new, $old) = strpos($_prefix, '|') !== false ? explode('|', $_prefix) : array($_prefix, '');
+			$queryString = preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $queryString);
 		}
 		$this->_queryString = $queryString;
 		return $this;
