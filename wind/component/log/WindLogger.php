@@ -14,6 +14,9 @@ class WindLogger extends WindComponentModule {
 	const LEVEL_PROFILE = 5;
 	const TOKEN_BEGIN = 'begin:';
 	const TOKEN_END = 'end:';
+	const WRITE_ALL = 0;
+	const WRITE_LEVEL = 1;
+	const WRITE_TYPE = 2;
 	/**
 	 * 每次当日志数量达到100的时候，就写入文件一次
 	 * @var int
@@ -22,8 +25,25 @@ class WindLogger extends WindComponentModule {
 	private $_logs = array();
 	private $_logCount = 0;
 	private $_profiles = array();
-	private $_logFile;
+	private $_logDir;
 	private $_maxFileSize = 100;
+	/**
+	 * 0: 打印全部日志信息结果
+	 * 1: 按照level分文件存储日志记录
+	 * 2: 按照type分文件存储日志记录
+	 * @var int
+	 */
+	private $_writeType = '0';
+	private $_types = array();
+
+	/**
+	 * @param string $logDir
+	 * @param int $writeType
+	 */
+	public function __construct($logDir = '', $writeType = 0) {
+		$this->_logDir = $logDir;
+		$this->_writeType = $writeType;
+	}
 
 	/**
 	 * 添加info级别的日志信息
@@ -79,14 +99,21 @@ class WindLogger extends WindComponentModule {
 	 * @param const  $logType 日志类别
 	 */
 	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system') {
-		$this->_logCount >= $this->_autoFlush && $this->flush();
-		if ($level === self::LEVEL_PROFILE)
-			$this->_logs[] = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
-		elseif ($level === self::LEVEL_DEBUG)
-			$this->_logs[] = $this->_build($msg, $level, $type, microtime(true));
+		if ($this->_writeType == self::WRITE_TYPE)
+			(count($this->_types) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
 		else
-			$this->_logs[] = $this->_build($msg, $level, $type);
+			$this->_logCount >= $this->_autoFlush && $this->flush();
+		if ($level === self::LEVEL_PROFILE)
+			$message = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
+		elseif ($level === self::LEVEL_DEBUG)
+			$message = $this->_build($msg, $level, $type, microtime(true));
+		else
+			$message = $this->_build($msg, $level, $type);
+		$this->_logs[] = array($level, $type, $message);
 		$this->_logCount++;
+		if ($this->_writeType == self::WRITE_TYPE && !in_array($type, $this->_types)) {
+			$this->_types[] = $type;
+		}
 	}
 
 	/**
@@ -96,9 +123,52 @@ class WindLogger extends WindComponentModule {
 	 */
 	public function flush() {
 		if (empty($this->_logs)) return false;
-		if (!$fileName = $this->_getFileName()) return false;
 		Wind::import('WIND:component.utility.WindFile');
-		WindFile::write($fileName, join("", $this->_logs), 'a');
+		$_l = array();
+		if ($this->_writeType == self::WRITE_LEVEL) {
+			$_logs = array();
+			foreach ($this->_logs as $key => $value) {
+				$_l[] = $value[2];
+				$_logs[$value[0]][] = $value[2];
+			}
+			foreach ($_logs as $key => $value) {
+				switch ($key) {
+					case self::LEVEL_INFO:
+						$key = 'info';
+						break;
+					case self::LEVEL_ERROR:
+						$key = 'error';
+						break;
+					case self::LEVEL_DEBUG:
+						$key = 'debug';
+						break;
+					case self::LEVEL_TRACE:
+						$key = 'trace';
+						break;
+					case self::LEVEL_PROFILE:
+						$key = 'profile';
+						break;
+					default:
+						$key = 'all';
+						break;
+				}
+				if (!$fileName = $this->_getFileName($key)) continue;
+				WindFile::write($fileName, join("", $value), 'a');
+			}
+		} elseif ($this->_writeType == self::WRITE_TYPE) {
+			$_logs = array();
+			foreach ($this->_logs as $key => $value) {
+				$_l[] = $value[2];
+				$_logs[$value[1]][] = $value[2];
+			}
+			foreach ($_logs as $key => $value) {
+				if (!$fileName = $this->_getFileName($key)) continue;
+				WindFile::write($fileName, join("", $value), 'a');
+			}
+		}
+		if ($fileName = $this->_getFileName()) {
+			WindFile::write($fileName, join("", $_l), 'a');
+		}
 		$this->_logs = array();
 		$this->_logCount = 0;
 		return true;
@@ -170,12 +240,7 @@ class WindLogger extends WindComponentModule {
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
 			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
 			$_token = substr($_token, 0, strpos($_token, ':'));
-			$this->_profiles[] = array(
-				$_token, 
-				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), 
-				$type, 
-				$timer, 
-				$mem);
+			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
 			$_msg = "PROFILE! Message: \r\n";
 			$_token = substr($msg, strlen(self::TOKEN_END));
@@ -266,9 +331,7 @@ class WindLogger extends WindComponentModule {
 			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
 			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
 			if ($function == 'WindBase::log') continue;
-			$args = array_map(array(
-				$this, 
-				'_buildArg'), $trace['args']);
+			$args = array_map(array($this, '_buildArg'), $trace['args']);
 			$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
 		}
 		return $info;
@@ -296,13 +359,13 @@ class WindLogger extends WindComponentModule {
 	 * 取得日志文件名
 	 * @return string 
 	 */
-	private function _getFileName() {
+	private function _getFileName($suffix = '') {
 		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
-		$_logfile = $this->_logFile;
+		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
 		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
 			$counter = 0;
 			do {
-				$counter ++;
+				$counter++;
 				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
 			} while (is_file($_newFile));
 			@rename($_logfile, $_newFile);
@@ -317,15 +380,15 @@ class WindLogger extends WindComponentModule {
 	/**
 	 * @param field_type $_logFile
 	 */
-	public function setLogFile($logFile) {
-		$this->_logFile = $logFile;
+	public function setLogDir($logDir) {
+		$this->_logDir = $logDir;
 	}
 
 	/**
 	 * @param field_type $_maxFileSize
 	 */
 	public function setMaxFileSize($maxFileSize) {
-		$this->_maxFileSize = (int)$maxFileSize;
+		$this->_maxFileSize = (int) $maxFileSize;
 	}
 }
 

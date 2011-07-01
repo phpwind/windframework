@@ -31,11 +31,7 @@ abstract class WindComponentModule extends WindModule {
 	 * Enter description here ...
 	 */
 	protected function getAutoSetProperty() {
-		return array(
-			'request' => 'IWindRequest', 
-			'response' => 'IWindResponse', 
-			'windSystemConfig' => 'WindSystemConfig', 
-			'windFactory' => 'WindFactory');
+		return array('request' => 'IWindRequest', 'response' => 'IWindResponse', 'windSystemConfig' => 'WindSystemConfig', 'windFactory' => 'WindFactory');
 	}
 
 	/**
@@ -67,7 +63,7 @@ abstract class WindComponentModule extends WindModule {
 	 * @param array $default 缺省的数组格式
 	 * @return string|array
 	 */
-	public function getConfig($configName = '', $subConfigName = '', $default = array()) {
+	public function getConfig($configName = '', $subConfigName = '', $default = '') {
 		if (null === $this->_config) return '';
 		return $this->_config->getConfig($configName, $subConfigName, array(), $default);
 	}
@@ -86,7 +82,7 @@ abstract class WindComponentModule extends WindModule {
 			$this->_config = new WindConfig($config, $configParser, get_class($this), CONFIG_CACHE);
 		}
 	}
-	
+
 	/**
 	 * 更改现有的config 或是合并
 	 * @param array $config

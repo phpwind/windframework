@@ -60,8 +60,10 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 		//add log
 		if (IS_DEBUG) {
 			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->debug('do getHandler of ' . __CLASS__);
+			//TODO 调试信息的输出
+			Wind::log('do getHandler of ' . __CLASS__, WindLogger::LEVEL_DEBUG, 'wind.debug');
+		//	$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
+		//	$logger->debug('do getHandler of ' . __CLASS__);
 		}
 		
 		return $_path;

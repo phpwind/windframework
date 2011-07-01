@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2010 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.AbstractWindServer');
 /**
  * 抽象的前端控制器接口，通过集成该接口可以实现以下职责
@@ -21,20 +20,14 @@ Wind::import('WIND:core.AbstractWindServer');
  * @package 
  */
 class WindFrontController extends AbstractWindServer {
-
 	const WIND_CONFIG = 'WIND:core.config.WindSystemConfig';
-
 	const WIND_FACTORY = 'WIND:core.factory.WindComponentFactory';
-
-	const COMPONENTS_CONFIG = 'WIND:config.components_config.php';
-
+	const COMPONENTS_CONFIG = 'WIND:components_config.php';
 	/**
 	 * @var WindSystemConfig
 	 */
 	protected $windSystemConfig = null;
-
 	protected $windFactory = null;
-
 	protected $windErrorHandler = null;
 
 	/**
@@ -61,8 +54,6 @@ class WindFrontController extends AbstractWindServer {
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
 	 * @param string $appName
 	 * @param string $config
 	 */
@@ -72,8 +63,7 @@ class WindFrontController extends AbstractWindServer {
 		$configParser = new WindConfigParser();
 		$this->windSystemConfig = new WindSystemConfig($config, $configParser, ($appName ? $appName : 'default'));
 		Wind::register($this->getWindConfig()->getRootPath(), $this->getWindConfig()->getAppName());
-	
-		//TODO register all apps
+			//TODO register all apps
 	}
 
 	/* (non-PHPdoc)
@@ -84,20 +74,17 @@ class WindFrontController extends AbstractWindServer {
 		$this->getWindFactory()->response = $response;
 		$request->setAttribute(self::WIND_CONFIG, $this->windSystemConfig);
 		$request->setAttribute(self::WIND_FACTORY, $this->windFactory);
-		
 		$appName = $this->getWindConfig()->getAppClass();
 		$application = $this->getWindFactory()->getInstance($appName);
 		if (null === $application) {
 			throw new WindException('application', WindException::ERROR_CLASS_NOT_EXIST);
 		}
-		
 		$this->getWindFactory()->application = $application;
 		if (null !== $filterChain = $this->getFilterChain()) {
 			$filterChain->setCallBack(array($application, 'processRequest'), array());
 			$filterChain->getHandler()->handle($request, $response);
 		} else
 			$application->processRequest();
-	
 	}
 
 	/**
@@ -121,12 +108,7 @@ class WindFrontController extends AbstractWindServer {
 	 * @see AbstractWindServer::afterProcess()
 	 */
 	protected function afterProcess(WindHttpRequest $request, WindHttpResponse $response) {
-		//add log
-		if (IS_DEBUG) {
-			/* @var $logger WindLogger */
-			$logger = $this->windFactory->getInstance(COMPONENT_LOGGER);
-			$logger->flush();
-		}
+		Wind::getLogger()->flush();
 		restore_error_handler();
 		restore_exception_handler();
 	}
@@ -168,5 +150,4 @@ class WindFrontController extends AbstractWindServer {
 		else
 			throw new WindException(get_class($this) . '->windFactory', WindException::ERROR_CLASS_TYPE_ERROR);
 	}
-
 }

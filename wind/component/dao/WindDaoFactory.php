@@ -14,7 +14,7 @@ Wind::import('WIND:core.factory.WindFactory');
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindDaoFactory {
+class WindDaoFactory {
 	protected $windFactory = null;
 	protected $daoResource = '';
 	protected $dbConnections = array();
@@ -22,8 +22,8 @@ abstract class AbstractWindDaoFactory {
 
 	/**
 	 * 返回Dao类实例
-	 * 
 	 * @param string $className
+	 * @return WindDao
 	 */
 	public function getDao($className) {
 		try {
@@ -50,6 +50,20 @@ abstract class AbstractWindDaoFactory {
 	}
 
 	/**
+	 * @return the $daoResource
+	 */
+	public function getDaoResource() {
+		return $this->daoResource;
+	}
+
+	/**
+	 * @param field_type $daoResource
+	 */
+	public function setDaoResource($daoResource) {
+		$this->daoResource = $daoResource;
+	}
+
+	/**
 	 * 注册Dao缓存监听
 	 * @param AbstractWindDao daoInstance
 	 */
@@ -68,19 +82,34 @@ abstract class AbstractWindDaoFactory {
 
 	/**
 	 * 返回DbHandler
-	 * @param AbstractWindDao $daoObject
+	 * @param WindDao $daoObject
 	 * @return WindConnection
 	 */
 	protected function createDbConnection($daoObject) {
 		$_dbClass = $daoObject->getDbClass();
-		$_connection = null;
 		if (!isset($this->dbConnections[$_dbClass])) {
-			$this->createWindFactory();
+			$this->_getWindFactory();
 			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
 			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
 		return $this->getHandler($_dbClass);
+	}
+
+	/**
+	 * 返回Cache对象
+	 * @param AbstractWindDao $daoObject
+	 * @return AbstractWindCache
+	 */
+	protected function createCacheHandler($daoObject) {
+		$_cacheClass = $daoObject->getCacheClass();
+		if (!isset($this->caches[$_cacheClass])) {
+			$this->_getWindFactory();
+			$defintion = $daoObject->getCacheDefinition();
+			$this->windFactory->addClassDefinitions($defintion);
+			$this->caches[$_cacheClass] = $this->windFactory->getInstance($defintion->getAlias());
+		}
+		return $this->caches[$_cacheClass];
 	}
 
 	/**
@@ -98,44 +127,14 @@ abstract class AbstractWindDaoFactory {
 	}
 
 	/**
-	 * 返回Cache对象
-	 * @param AbstractWindDao $daoObject
-	 * @return AbstractWindCache
-	 */
-	protected function createCacheHandler($daoObject) {
-		$_cacheClass = $daoObject->getCacheClass();
-		if (!isset($this->caches[$_cacheClass])) {
-			$this->createWindFactory();
-			$defintion = $daoObject->getCacheDefinition();
-			$this->windFactory->addClassDefinitions($defintion);
-			$this->caches[$_cacheClass] = $this->windFactory->getInstance($defintion->getAlias());
-		}
-		return $this->caches[$_cacheClass];
-	}
-
-	/**
 	 * @return WindFactory
 	 */
-	private function createWindFactory() {
+	private function _getWindFactory() {
 		if ($this->windFactory === null) {
 			Wind::import('WIND:core.factory.WindComponentFactory');
 			$this->windFactory = new WindComponentFactory();
 		}
 		return $this->windFactory;
-	}
-
-	/**
-	 * @return the $daoResource
-	 */
-	public function getDaoResource() {
-		return $this->daoResource;
-	}
-
-	/**
-	 * @param field_type $daoResource
-	 */
-	public function setDaoResource($daoResource) {
-		$this->daoResource = $daoResource;
 	}
 }
 ?>

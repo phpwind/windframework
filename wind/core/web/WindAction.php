@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.WindComponentModule');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,14 +13,11 @@ Wind::import('WIND:core.WindComponentModule');
  * @package 
  */
 abstract class WindAction extends WindComponentModule {
-
 	protected $forward = null;
-
 	/**
 	 * @var WindUrlHelper
 	 */
 	protected $urlHelper = null;
-
 	/**
 	 * @var WindErrorMessage
 	 */
@@ -81,7 +77,6 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/* 数据处理 */
-	
 	/**
 	 * 设置模板数据
 	 * 
@@ -145,7 +140,6 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/* 错误处理 */
-	
 	/**
 	 * 添加错误信息
 	 * @param string $message
@@ -270,5 +264,4 @@ abstract class WindAction extends WindComponentModule {
 	protected function getWriteTableForGetterAndSetter() {
 		return array('forward', 'urlHelper', 'errorMessage');
 	}
-
 }

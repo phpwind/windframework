@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.factory.WindClassDefinition');
 Wind::import('WIND:core.config.parser.WindConfigParser');
 Wind::import('WIND:core.config.WindConfig');
@@ -18,30 +17,21 @@ Wind::import('WIND:core.config.WindConfig');
  * @package 
  */
 class WindComponentDefinition extends WindClassDefinition {
-
 	/* 配置 */
 	const CONFIG = 'config';
-
 	const RESOURCE = 'resource';
-
 	/* 是否支持隐藏变量 */
 	const HIDDEN_PRO = 'hidden-pro';
-
 	/* component 定义 */
-	
 	const PROXY = 'proxy';
-
 	protected $proxyClass = 'WIND:core.factory.proxy.WindClassProxy';
-
 	/**
 	 * 类代理对象定义
 	 *
 	 * @var string
 	 */
 	protected $proxy = '';
-
 	protected $hiddenPro = '';
-
 	/**
 	 * @var array
 	 */
@@ -90,7 +80,6 @@ class WindComponentDefinition extends WindClassDefinition {
 		$proxyPath = ($proxyPath === 'true' || $proxyPath === true) ? $this->proxyClass : $this->getProxy();
 		$proxyClass = Wind::import($proxyPath);
 		if (!class_exists($proxyClass)) return;
-		
 		$proxyClass = $factory->createInstance($proxyClass);
 		if ($proxyClass instanceof WindClassProxy) $instance->setClassProxy($proxyClass);
 	}
@@ -152,5 +141,4 @@ class WindComponentDefinition extends WindClassDefinition {
 	public function setConfig($config) {
 		$this->config = $config;
 	}
-
 }
