@@ -102,7 +102,7 @@ class WindHttpRequest implements IWindRequest {
 	}
 
 	/**
-	 * 返回
+	 * 返回$_GET,$_POST的值，未设置则返回default
 	 * @param string $name | attribute name 
 	 */
 	public function getRequest($name, $defaultValue = null) {
