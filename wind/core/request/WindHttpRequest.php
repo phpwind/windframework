@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.request.IWindRequest');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,55 +13,45 @@ Wind::import('WIND:core.request.IWindRequest');
  * @package 
  */
 class WindHttpRequest implements IWindRequest {
-
 	/**
 	 * 访问的端口号
 	 * @var int
 	 */
 	private $_port = null;
-
 	/**
 	 * 客户端IP
 	 * @var string
 	 */
 	private $_clientIp = null;
-
 	/**
 	 * 语言信息
 	 * @var string
 	 */
 	private $_language = null;
-
 	/**
 	 * 路径信息
 	 * @var string
 	 */
 	private $_pathInfo = null;
-
 	/**
 	 * @var string
 	 */
 	private $_scriptUrl = null;
-
 	/**
 	 * @var string
 	 */
 	private $_requestUri = null;
-
 	/**
 	 * 基础路径信息
 	 * @var string
 	 */
 	private $_baseUrl = null;
-
 	private $_hostInfo = null;
-
 	/**
 	 * 请求参数信息
 	 * @var array
 	 */
 	private $_attribute = array();
-
 	/**
 	 * @var WindHttpResponse
 	 */
@@ -91,13 +80,12 @@ class WindHttpRequest implements IWindRequest {
 
 	/**
 	 * 根据名称获得服务器和执行环境信息
-	 * 
 	 * @param string|null $name
 	 */
 	public function getAttribute($name, $value = '') {
-		if (isset($this->_attribute[$name])) {
+		if (isset($this->_attribute[$name]))
 			return $this->_attribute[$name];
-		} else if (isset($_GET[$name]))
+		else if (isset($_GET[$name]))
 			return $_GET[$name];
 		else if (isset($_POST[$name]))
 			return $_POST[$name];
@@ -111,6 +99,16 @@ class WindHttpRequest implements IWindRequest {
 			return $_SERVER[$name];
 		else
 			return $value;
+	}
+
+	/**
+	 * 返回
+	 * @param string $name | attribute name 
+	 */
+	public function getRequest($name, $defaultValue = null) {
+		if (isset($_GET[$name])) return $_GET[$name];
+		if (isset($_POST[$name])) return $_POST[$name];
+		return $defaultValue;
 	}
 
 	/**
@@ -572,7 +570,6 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	private function _initScriptUrl() {
 		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
-		
 		$scriptName = basename($scriptName);
 		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
 			$this->_scriptUrl = $_scriptName;
@@ -629,10 +626,7 @@ class WindHttpRequest implements IWindRequest {
 			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
 		else
 			throw new WindException('');
-		
 		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
-		
 		$this->_pathInfo = trim($pathInfo, '/');
 	}
-
 }
