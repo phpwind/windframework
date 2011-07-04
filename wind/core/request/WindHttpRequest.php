@@ -105,7 +105,8 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回$_GET,$_POST的值，未设置则返回default
 	 * @param string $name | attribute name 
 	 */
-	public function getRequest($name, $defaultValue = null) {
+	public function getRequest($name = '', $defaultValue = null) {
+		if (!$name) return array_merge($_POST, $_GET);
 		if (isset($_GET[$name])) return $_GET[$name];
 		if (isset($_POST[$name])) return $_POST[$name];
 		return $defaultValue;
