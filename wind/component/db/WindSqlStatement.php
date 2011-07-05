@@ -74,7 +74,7 @@ class WindSqlStatement {
 	 * @return WindSqlStatement
 	 */
 	public function bindParams(&$parameters) {
-		if (!is_array($parameters) || empty($parameters)) {
+		if (!is_array($parameters)) {
 			throw new WindDbException('[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
 		}
 		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
@@ -116,7 +116,7 @@ class WindSqlStatement {
 	 * @param array $values
 	 */
 	public function bindValues($values) {
-		if (!is_array($values) || empty($values)) {
+		if (!is_array($values)) {
 			throw new WindSqlException('[component.db.WindSqlStatement.bindValues] Error unexpected paraments type ' . gettype($values));
 		}
 		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
@@ -161,12 +161,6 @@ class WindSqlStatement {
 			$this->bindColumn($value, $param[$int++]);
 		}
 	}
-
-	/**
-	 * Enter description here ...
-	 * @param unknown_type $columns
-	 */
-	public function setColumns($columns) {}
 
 	/**
 	 * 执行SQL语句，并返回更新影响行数
