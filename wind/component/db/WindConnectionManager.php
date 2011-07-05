@@ -8,6 +8,11 @@ Wind::import("WIND:component.db.WindConnection");
  */
 class WindConnectionManager extends WindComponentModule {
 	const CONNECTION_MODE_RAND = '0';
+	/**
+	 * 链接句柄
+	 *
+	 * @var array
+	 */
 	private $connections = array();
 
 	/**
