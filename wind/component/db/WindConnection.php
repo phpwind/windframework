@@ -210,12 +210,12 @@ class WindConnection extends WindComponentModule {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		if (!$this->_dsn) $this->_dsn = $this->getConfig(self::DSN, '', $this->_dsn);
-		if (!$this->_user) $this->_user = $this->getConfig(self::USER, '', $this->_user);
-		if (!$this->_pwd) $this->_pwd = $this->getConfig(self::PWD, '', $this->_pwd);
-		if (!$this->_enableLog) $this->_enableLog = $this->getConfig(self::ENABLELOG, '', $this->_enableLog);
-		if (!$this->_charset) $this->_charset = $this->getConfig(self::CHARSET, '', $this->_charset);
-		if (!$this->_tablePrefix) $this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', $this->_tablePrefix);
+		if (!$this->_dsn) $this->_dsn = $this->getConfig(self::DSN, '', array(), $this->_dsn);
+		if (!$this->_user) $this->_user = $this->getConfig(self::USER, '', array(), $this->_user);
+		if (!$this->_pwd) $this->_pwd = $this->getConfig(self::PWD, '', array(), $this->_pwd);
+		if (!$this->_enableLog) $this->_enableLog = $this->getConfig(self::ENABLELOG, '', array(), $this->_enableLog);
+		if (!$this->_charset) $this->_charset = $this->getConfig(self::CHARSET, '', array(), $this->_charset);
+		if (!$this->_tablePrefix) $this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', array(), $this->_tablePrefix);
 	}
 }
 ?>

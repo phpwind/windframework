@@ -61,11 +61,12 @@ abstract class WindComponentModule extends WindModule {
 	 * @param string $configName 键名
 	 * @param string $subConfigName 二级键名
 	 * @param array $config 提供的数组
+	 * @param array $default 提供的数组
 	 * @return string|array
 	 */
-	public function getConfig($configName = '', $subConfigName = '', $config = '') {
+	public function getConfig($configName = '', $subConfigName = '', $config = '', $default = '') {
 		if (null === $this->_config) return '';
-		return $this->_config->getConfig($configName, $subConfigName, $config, array());
+		return $this->_config->getConfig($configName, $subConfigName, $config, $default);
 	}
 
 	/**
