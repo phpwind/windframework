@@ -28,6 +28,11 @@ abstract class WindComponentModule extends WindModule {
 	protected $windFactory;
 
 	/**
+	 * 初始化方法
+	 */
+	public function init() {}
+
+	/**
 	 * Enter description here ...
 	 */
 	protected function getAutoSetProperty() {
@@ -57,10 +62,9 @@ abstract class WindComponentModule extends WindModule {
 
 	/**
 	 * 根据配置名取得相应的配置
-	 * 
 	 * @param string $configName 键名
 	 * @param string $subConfigName 二级键名
-	 * @param array $default 缺省的数组格式
+	 * @param array $default 默认值
 	 * @return string|array
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '') {

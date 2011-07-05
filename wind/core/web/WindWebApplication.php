@@ -46,10 +46,10 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 		} catch (WindActionException $actionException) {
 			$this->sendErrorMessage($actionException);
 		
-		} catch (WindSqlException $windSqlException) {
-			$this->sendErrorMessage($windSqlException->getMessage());
+		} catch (WindDbException $dbException) {
+			$this->sendErrorMessage($dbException);
 			
-		} catch (WindViewException $windViewException) {
+		} catch (WindViewException $viewException) {
 			
 		}
 	}

@@ -1,4 +1,5 @@
 <?php
+Wind::import("WIND:component.db.exception.WindDbException");
 Wind::import("WIND:component.db.WindResultSet");
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -73,15 +74,19 @@ class WindSqlStatement {
 	 * @return WindSqlStatement
 	 */
 	public function bindParams(&$parameters) {
+		if (!is_array($parameters) || empty($parameters)) {
+			throw new WindDbException('[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
+		}
+		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
 		foreach ($parameters as $key => $value) {
+			$_key = $keied ? $key : $key + 1;
 			if (is_array($value)) {
-				$dataType = isset($value[1]) ? $value[1] : null;
+				$dataType = isset($value[1]) ? $value[1] : $this->_getPdoDataType($value[0]);
 				$length = isset($value[2]) ? $value[2] : null;
 				$driverOptions = isset($value[3]) ? $value[3] : null;
-				$this->bindParam($key, $parameters[$key][0], $dataType, $length, $driverOptions);
-			} else {
-				$this->bindParam($key, $parameters[$key], $this->_getPdoDataType($value));
-			}
+				$this->bindParam($_key, $parameters[$key][0], $dataType, $length, $driverOptions);
+			} else
+				$this->bindParam($_key, $parameters[$key], $this->_getPdoDataType($value));
 		}
 		return $this;
 	}
@@ -111,7 +116,12 @@ class WindSqlStatement {
 	 * @param array $values
 	 */
 	public function bindValues($values) {
+		if (!is_array($values) || empty($values)) {
+			throw new WindSqlException('[component.db.WindSqlStatement.bindValues] Error unexpected paraments type ' . gettype($values));
+		}
+		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
 		foreach ($values as $key => $value) {
+			if (!$keied) $key = $key + 1;
 			$this->bindValue($key, $value, $this->_getPdoDataType($value));
 		}
 		return $this;

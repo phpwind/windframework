@@ -10,7 +10,7 @@ define('PHPVERSION', '5.1.2');
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
 !defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
-!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log' . D_S);
+!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
 !defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 1);
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
@@ -197,7 +197,7 @@ class Wind {
 	/**
 	 * 初始化框架
 	 */
-	final public static function init() {
+	public static function init() {
 		self::_checkEnvironment();
 		self::_setDefaultSystemNamespace();
 		self::_registerAutoloader();
