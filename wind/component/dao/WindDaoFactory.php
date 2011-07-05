@@ -86,14 +86,17 @@ class WindDaoFactory {
 	 * @return WindConnection
 	 */
 	protected function createDbConnection($daoObject) {
-		$_dbClass = $daoObject->getDbClass();
-		if (!isset($this->dbConnections[$_dbClass])) {
+		$defintion = $daoObject->getDbDefinition();
+		$_className = $defintion->getClassName();
+		$_classConfig = $defintion->getConfig();
+		$_alias = md5($_className + serialize($_classConfig));
+		if (!isset($this->dbConnections[$_alias])) {
 			$this->_getWindFactory();
-			$defintion = $daoObject->getDbDefinition();
 			$this->windFactory->addClassDefinitions($defintion);
-			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
+			$this->dbConnections[$_alias] = $this->windFactory->getInstance($defintion->getAlias());
 		}
-		return $this->dbConnections[$_dbClass];
+		print_r($this->dbConnections);
+		return $this->dbConnections[$_alias];
 	}
 
 	/**
