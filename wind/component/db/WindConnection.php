@@ -181,6 +181,7 @@ class WindConnection extends WindComponentModule {
 	 * @return 
 	 */
 	public function init() {
+		parent::init();
 		if ($this->_dbHandle !== null) return;
 		try {
 			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
