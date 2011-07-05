@@ -150,7 +150,7 @@ class WindMail {
 		if(self::ONLYTEXT === $mime){
 			return self::encode($this->getBodyText(),$this->encode);
 		}elseif(self::ONLYHTML === $mime){
-			return $body .= self::encode($this->getBodyHtml(),$this->encode).self::CRLF;
+			return self::encode($this->getBodyHtml(),$this->encode).self::CRLF;
 		}elseif(self::TEXTHTML === $mime){
 			$boundary = $this->boundaryLine();
 			$body  = $boundary.$this->getTextHeader().self::encode($this->getBodyText(),$this->encode).self::CRLF;
