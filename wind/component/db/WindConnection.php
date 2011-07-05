@@ -31,7 +31,6 @@ class WindConnection extends WindComponentModule {
 	 * @var PDO
 	 */
 	private $_dbHandle = null;
-	private $_filterArray = array();
 
 	/**
 	 * @param string $dsn
