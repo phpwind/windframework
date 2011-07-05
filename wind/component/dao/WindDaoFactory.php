@@ -89,7 +89,7 @@ class WindDaoFactory {
 		$defintion = $daoObject->getDbDefinition();
 		$_className = $defintion->getClassName();
 		$_classConfig = $defintion->getConfig();
-		$_alias = md5($_className + serialize($_classConfig));
+		$_alias = $_className . '_' . md5(serialize($_classConfig));
 		if (!isset($this->dbConnections[$_alias])) {
 			$this->_getWindFactory();
 			$this->windFactory->addClassDefinitions($defintion);
