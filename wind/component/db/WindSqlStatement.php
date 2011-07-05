@@ -1,4 +1,5 @@
 <?php
+Wind::import("WIND:component.db.exception.WindDbException");
 Wind::import("WIND:component.db.WindResultSet");
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -74,7 +75,7 @@ class WindSqlStatement {
 	 */
 	public function bindParams(&$parameters) {
 		if (!is_array($parameters) || empty($parameters)) {
-			throw new WindSqlException('[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
+			throw new WindDbException('[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
 		}
 		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
 		foreach ($parameters as $key => $value) {
