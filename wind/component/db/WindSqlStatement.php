@@ -246,8 +246,12 @@ class WindSqlStatement {
 		try {
 			Wind::log("component.db.WindSqlStatement.execute.", WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
-			$this->bindValues($params);
-			$this->getStatement()->execute();
+//			$this->bindValues($params);
+			if (empty($params)) {
+				$this->getStatement()->execute();
+			} else {
+				$this->getStatement()->execute($params);
+			}
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, "component.db");
 			Wind::profileEnd('component.db.WindSqlStatement._init');
