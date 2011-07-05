@@ -95,7 +95,6 @@ class WindDaoFactory {
 			$this->windFactory->addClassDefinitions($defintion);
 			$this->dbConnections[$_alias] = $this->windFactory->getInstance($defintion->getAlias());
 		}
-		print_r($this->dbConnections);
 		return $this->dbConnections[$_alias];
 	}
 
