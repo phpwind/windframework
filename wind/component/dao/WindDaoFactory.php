@@ -93,7 +93,7 @@ class WindDaoFactory {
 			$this->windFactory->addClassDefinitions($defintion);
 			$this->dbConnections[$_dbClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
-		return $this->getHandler($_dbClass);
+		return $this->dbConnections[$_dbClass];
 	}
 
 	/**
@@ -110,20 +110,6 @@ class WindDaoFactory {
 			$this->caches[$_cacheClass] = $this->windFactory->getInstance($defintion->getAlias());
 		}
 		return $this->caches[$_cacheClass];
-	}
-
-	/**
-	 * @param string $key
-	 * @return WindConnection
-	 */
-	private function getHandler($key) {
-		$connection = $this->dbConnections[$key];
-		if ($connection === null) return null;
-		if ($connection instanceof WindConnectionManager) {
-			return $connection->getConnection();
-		} elseif ($connection instanceof WindConnection) {
-			return $connection;
-		}
 	}
 
 	/**
