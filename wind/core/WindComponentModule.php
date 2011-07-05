@@ -28,6 +28,11 @@ abstract class WindComponentModule extends WindModule {
 	protected $windFactory;
 
 	/**
+	 * 初始化方法
+	 */
+	public function init() {}
+
+	/**
 	 * Enter description here ...
 	 */
 	protected function getAutoSetProperty() {
