@@ -203,6 +203,7 @@ class WindLogger extends WindComponentModule {
 	 */
 	private function _build($msg, $level, $type, $timer = 0, $mem = 0) {
 		$msg = stripslashes(str_replace("<br/>", "\r\n", trim($msg)));
+		$result = '';
 		switch ($level) {
 			case self::LEVEL_INFO:
 				$msg .= "\t(" . $type . ")";
