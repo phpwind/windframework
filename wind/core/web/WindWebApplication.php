@@ -47,7 +47,7 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 			$this->sendErrorMessage($actionException);
 		
 		} catch (WindDbException $dbException) {
-			$this->sendErrorMessage($dbException);
+			$this->sendErrorMessage($dbException->getMessage());
 			
 		} catch (WindViewException $viewException) {
 			
@@ -136,11 +136,11 @@ class WindWebApplication extends WindComponentModule implements IWindApplication
 
 	/**
 	 * 错误请求
-	 * @param WindActionException actionException
+	 * @param WindActionException|string actionException
 	 */
 	protected function sendErrorMessage($actionException) {
 		$forward = $this->windFactory->getInstance(COMPONENT_FORWARD);
-		$_tmp = $actionException->getError();
+		$_tmp = is_object($actionException) ? $actionException->getError() : $actionException;
 		if (is_string($_tmp)) {
 			Wind::import('WIND:core.web.WindErrorMessage');
 			$_tmp = new WindErrorMessage($_tmp);
