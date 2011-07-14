@@ -54,14 +54,16 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * @return PDO
+	 * 返回数据库链接对象
+	 * @return WindMysqlPdoAdapter
 	 */
 	public function getDbHandle() {
 		return $this->_dbHandle;
 	}
 
 	/**
-	 * @param int $attribute
+	 * 获得链接相关属性设置
+	 * @param string $attribute
 	 * @return string
 	 * */
 	public function getAttribute($attribute = '') {
@@ -73,8 +75,9 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * @param $attribute
-	 * @param $value
+	 * 设置链接相关属性
+	 * @param string $attribute
+	 * @param string $value
 	 * @return 
 	 * */
 	public function setAttribute($attribute, $value = null) {
@@ -100,13 +103,15 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * @return the $enableLog
+	 * 获得是否启用日志记录功能
+	 * @return boolean $enableLog
 	 */
 	public function getEnableLog() {
 		return $this->_enableLog;
 	}
 
 	/**
+	 * 设置是否启用日志记录功能
 	 * @param boolean $enableLog
 	 */
 	public function setEnableLog($enableLog) {
@@ -114,13 +119,15 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * @return the $tablePrefix
+	 * 获得表前缀
+	 * @return string $tablePrefix
 	 */
 	public function getTablePrefix() {
 		return $this->_tablePrefix;
 	}
 
 	/**
+	 * 设置表前缀
 	 * @param string $tablePrefix
 	 */
 	public function setTablePrefix($tablePrefix) {
@@ -128,8 +135,9 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
+	 * 执行一条sql语句 同时返回影响行数
 	 * @param string $sql | SQL statement
-	 * @return row count
+	 * @return int
 	 */
 	public function execute($sql) {
 		try {
@@ -142,8 +150,9 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
+	 * 执行一条查询同时返回结果集
 	 * @param string $sql | SQL statement 
-	 * @return PDOStatement
+	 * @return WindResultSet
 	 */
 	public function query($sql) {
 		try {
@@ -155,14 +164,16 @@ class WindConnection extends WindComponentModule {
 	}
 
 	/**
-	 * @param array $array
+	 *  (non-PHPdoc)
+	 * @see WindMysqlPdoAdapter::filterArray()
 	 */
 	public function quoteArray($array) {
 		return $this->getDbHandle()->filterArray($array);
 	}
 
 	/**
-	 * @param string $string
+	 *  (non-PHPdoc)
+	 * @see WindMysqlPdoAdapter::quote()
 	 */
 	public function quote($string) {
 		return $this->getDbHandle()->quote($string);
@@ -205,7 +216,8 @@ class WindConnection extends WindComponentModule {
 		}
 	}
 
-	/* (non-PHPdoc)
+	/**
+	 *  (non-PHPdoc)
 	 * @see WindComponentModule::setConfig()
 	 */
 	public function setConfig($config) {

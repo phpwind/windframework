@@ -22,7 +22,11 @@ class WindResultSet {
 	private $_columns = array();
 
 	/**
-	 * @param WindSqlStatement $sqlStatement
+	 * 构造函数
+	 * 
+	 * @param WindSqlStatement $sqlStatement 预处理对象
+	 * @param int $fetchMode  获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
+	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
 	 */
 	public function __construct($sqlStatement, $fetchMode = 0, $fetchType = 0) {
 		if ($sqlStatement instanceof WindSqlStatement) {
@@ -35,8 +39,10 @@ class WindResultSet {
 	}
 
 	/**
-	 * @param $fetchMode
-	 * @return 
+	 * 设置获取模式
+	 * 
+	 * @param int $fetchMode 设置获取的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM...
+	 * @param boolean $flush 是否统一设置所有PDOStatement中的获取方式
 	 */
 	public function setFetchMode($fetchMode, $flush = false) {
 		$this->_fetchMode = $fetchMode;
@@ -48,6 +54,7 @@ class WindResultSet {
 
 	/**
 	 * 返回最后一条Sql语句的影响行数
+	 * 
 	 * @return int
 	 */
 	public function rowCount() {
@@ -56,6 +63,7 @@ class WindResultSet {
 
 	/**
 	 * 返回结果集中的列数
+	 * 
 	 * @return number
 	 */
 	public function columnCount() {
@@ -63,9 +71,9 @@ class WindResultSet {
 	}
 
 	/**
-	 * Fetches the next row from a result set 
-	 * @param int $fetchMode
-	 * @param int $fetchType 
+	 * 获得结果集的下一行
+	 * @param int $fetchMode 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
+	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，设置Statement的属性设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
 	 * @return array
 	 */
 	public function fetch($fetchMode = 0, $fetchType = 0) {
@@ -75,9 +83,8 @@ class WindResultSet {
 	}
 
 	/**
-	 * @param $fetchMode
-	 * @param $fetchType
-	 * @return array
+	 *  (non-PHPdoc)
+	 * @see WindResult::fetch()
 	 */
 	private function _fetch($fetchMode, $fetchType) {
 		if (!empty($this->_columns)) $fetchMode = PDO::FETCH_BOUND;
@@ -94,24 +101,23 @@ class WindResultSet {
 
 	/**
 	 * 返回所有的查询结果
-	 * @param int $fetchType 设置返回的方式
+	 * 
+	 * @param int $fetchMode 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
 	 * @return array
 	 */
 	public function fetchAll($fetchMode = 0) {
 		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
-		if (empty($this->_columns))
-			return $this->_statement->fetchAll($fetchMode);
-		else {
-			$result = array();
-			while ($row = $this->fetch($fetchMode))
-				$result[] = $row;
-			return $result;
-		}
+		if (empty($this->_columns)) return $this->_statement->fetchAll($fetchMode);
+		$result = array();
+		while ($row = $this->fetch($fetchMode))
+			$result[] = $row;
+		return $result;
 	}
 
 	/**
-	 * 从下一行记录中获得下标使$index的值，如果获取失败则返回false
-	 * @param int $index
+	 * 从下一行记录中获得下标是$index的值，如果获取失败则返回false
+	 * 
+	 * @param int $index 列下标
 	 * @return string|bool
 	 */
 	public function fetchColumn($index = 0) {
@@ -119,10 +125,11 @@ class WindResultSet {
 	}
 
 	/**
-	 * Fetches the next row and returns it as an object
-	 * @param string $className
-	 * @param array $ctor_args
-	 * @return array
+	 * 获得结果集中的下一行，同时根据设置的类返回如果没有设置则返回的使StdClass对象
+	 * 
+	 * @param string $className  使用的类
+	 * @param array $ctor_args   初始化参数
+	 * @return object
 	 */
 	public function fetchObject($className = '', $ctor_args = array()) {
 		if ($className === '')

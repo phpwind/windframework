@@ -6,7 +6,11 @@
  * @package 
  */
 class WindMysqlPdoAdapter extends PDO {
-
+    
+	/**
+	 * 设置链接使用字符集
+	 * @param string $charset
+	 */
 	public function setCharset($charset) {
 		if (!$charset) $charset = 'gbk';
 		$this->query("set names " . $this->quote($charset) . ";");

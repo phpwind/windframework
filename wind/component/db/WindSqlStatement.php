@@ -31,8 +31,10 @@ class WindSqlStatement {
 	private $_columns = array();
 
 	/**
-	 * @param WindConnection $connection
-	 * @param string $query
+	 * 构造函数
+	 * 
+	 * @param WindConnection $connection   WindConnection对象
+	 * @param string $query  预定义语句
 	 */
 	public function __construct($connection, $query) {
 		$this->_connection = $connection;
@@ -41,12 +43,14 @@ class WindSqlStatement {
 
 	/**
 	 * 参数绑定
-	 * @param string $parameter
-	 * @param string $variable
-	 * @param string $dataType
-	 * @param int $length
-	 * @param $driverOptions
-	 * @return 
+	 * 
+	 * @param mixed $parameter   预定义语句的待绑定的位置
+	 * @param mixed &$variable   绑定的值
+	 * @param int $dataType    值的类型(PDO::PARAM_STR/PDO::PARAM_INT...)
+	 * @param int $length         绑定值的长度
+	 * @param mixed $driverOptions   
+	 * @throws WindDbException
+	 * @return WindSqlStatement
 	 */
 	public function bindParam($parameter, &$variable, $dataType = null, $length = null, $driverOptions = null) {
 		try {
@@ -68,9 +72,12 @@ class WindSqlStatement {
 
 	/**
 	 * 批量绑定变量
+	 * 
 	 * 如果是一维数组，则使用key=>value的形式，key代表变量位置，value代表替换的值，而替换值需要的类型则通过该值的类型来判断---不准确
 	 * 如果是一个二维数组，则允许，key=>array(0=>value, 1=>data_type, 2=>length, 3=>driver_options)的方式来传递变量。
+	 * 
 	 * @param array $parameters 
+	 * @throws WindDbException
 	 * @return WindSqlStatement
 	 */
 	public function bindParams(&$parameters) {
@@ -92,10 +99,13 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @param string $parameter
-	 * @param string $value
-	 * @param int $data_type
-	 * @return
+	 * 参数绑定
+	 * 
+	 * @param string $parameter  预定义语句的待绑定的位置
+	 * @param string $value      绑定的值
+	 * @param int $data_type     值的类型
+	 * @throws WindDbException
+	 * @return WindSqlStatement
 	 */
 	public function bindValue($parameter, $value, $data_type = null) {
 		try {
@@ -113,7 +123,11 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @param array $values
+	 * 调用bindValue的批量绑定参数
+	 * 
+	 * @param array $values 待绑定的参数值
+	 * @throws WindDbException
+	 * @return WindSqlStatement
 	 */
 	public function bindValues($values) {
 		if (!is_array($values)) {
@@ -128,13 +142,15 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * 将列值绑定到php变量
-	 * @param $column
-	 * @param $param
-	 * @param $type
-	 * @param $maxlen
-	 * @param $driverdata
+	 * 绑定输出结果集的列到PHP变量
+	 * 
+	 * @param mixed $column 需要被绑定的字段列表，可以是字段名，也可以是字段的对应的下标
+	 * @param mixed &$param  需要被绑定的php变量
+	 * @param int $type 参数的数据类型 PDO::PARAM_*
+	 * @param int $maxlen  A hint for pre-allocation.
+	 * @param mixed $driverdata  Optional parameter(s) for the driver. 
 	 * @throws WindDbException
+	 * @return WindSqlStatement
 	 */
 	public function bindColumn($column, &$param = '', $type = null, $maxlen = null, $driverdata = null) {
 		try {
@@ -155,28 +171,38 @@ class WindSqlStatement {
 		}
 	}
 
+	/**
+	 * 批量绑定输出结果集的列到PHP变量
+	 * 
+	 * @param array $columns 待绑定的列
+	 * @param array &$param  需要绑定的php变量
+	 * @return WindSqlStatement
+	 */
 	public function bindColumns($columns, &$param = array()) {
 		$int = 0;
 		foreach ($columns as $value) {
 			$this->bindColumn($value, $param[$int++]);
 		}
+		return $this;
 	}
 
 	/**
-	 * 执行SQL语句，并返回更新影响行数
-	 * @param array $params
+	 * 绑定参数，执行SQL语句，并返回更新影响行数
+	 * @param array $params 预定义语句中需要绑定的参数
 	 * @param boolean $rowCount 是否返回影响行数
 	 * @throws WindDbException
+	 * @return int|boolean
 	 */
 	public function update($params = array(), $rowCount = false) {
 		return $this->execute($params, $rowCount);
 	}
 
 	/**
-	 * 执行SQL语句，并返回查询结果
-	 * @param array $params
-	 * @param int $fetchMode
-	 * @param int $fetchType
+	 * 绑定参数，执行SQL语句，并返回查询结果
+	 * 
+	 * @param array $params  预定义语句中需要绑定的参数
+	 * @param int $fetchMode  获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
+	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
 	 * @return WindResultSet
 	 */
 	public function query($params = array(), $fetchMode = 0, $fetchType = 0) {
@@ -185,12 +211,13 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * 执行SQL语句，并返回查询结果
-	 * @param array $params
-	 * @param string $index 索引
-	 * @param int $fetchMode
-	 * @param int $fetchType
-	 * @return array
+	 * 绑定参数，执行SQL语句，并返回查询结果
+	 * 
+	 * @param array $params  预定义语句中需要绑定的参数
+	 * @param string $index  返回的数组的下标对应的字段
+	 * @param int $fetchMode  获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
+	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
+	 * @return array 返回处理后的结果
 	 */
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
@@ -204,11 +231,11 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * 执行SQL语句，并返回查询结果
-	 * @param array $params
-	 * @param int $fetchMode
-	 * @param int $fetchType
-	 * @return string
+	 * 绑定参数，执行SQL语句，并返回查询到的结果集中某一个列的值
+	 * 
+	 * @param array $params  预定义语句中需要绑定的参数
+	 * @param int $column 列的下标，默认为0即第一列
+	 * @return string  
 	 */
 	public function getValue($params = array(), $column = 0) {
 		$this->execute($params, false);
@@ -217,10 +244,11 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * 执行SQL语句，并返回查询结果
-	 * @param array $params
-	 * @param int $fetchMode
-	 * @param int $fetchType
+	 * 绑定参数，执行SQL语句，并返回一行查询结果
+	 * 
+	 * @param array $params  预定义语句中需要绑定的参数
+	 * @param int $fetchMode 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
+	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
 	 * @return array
 	 */
 	public function getOne($params = array(), $fetchMode = 0, $fetchType = 0) {
@@ -231,7 +259,9 @@ class WindSqlStatement {
 
 	/**
 	 * 返回最后一条插入数据ID
-	 * @param $name
+	 * 
+	 * @param string $name
+	 * @return int 
 	 */
 	public function lastInsterId($name = '') {
 		if ($name)
@@ -241,9 +271,10 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * 执行sql，$params为变量信息,并返回结果集
-	 * @param array $params  -- 注意：绑定的变量数组下标将从0开始索引，
-	 * @param boolean $rowCount
+	 * 绑定参数，执行SQL语句，并返回影响行数
+	 * 
+	 * @param array $params  --  绑定的参数和bindValues的参数一样
+	 * @param boolean $rowCount 是否返回受印象行数
 	 * @return rowCount
 	 */
 	public function execute($params = array(), $rowCount = true) {
@@ -263,7 +294,9 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @param string $queryString
+	 * 设置查询预定义语句
+	 * 
+	 * @param string $queryString 
 	 * @return WindSqlStatement
 	 */
 	public function setQueryString($queryString) {
@@ -277,13 +310,17 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @return the $_queryString
+	 * 获得查询的预定义语句
+	 * 
+	 * @return string $_queryString
 	 */
 	public function getQueryString() {
 		return $this->_queryString;
 	}
 
 	/**
+	 * 获得PDO链接对象
+	 * 
 	 * @return WindConnection
 	 */
 	public function getConnection() {
@@ -291,6 +328,8 @@ class WindSqlStatement {
 	}
 
 	/**
+	 * 获得PDOStatement对象
+	 * 
 	 * @return PDOStatement
 	 */
 	public function getStatement() {
@@ -298,14 +337,16 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @return the $_columns
+	 * 获得需要绑定的结果输出的列值
+	 * 
+	 * @return array $_columns
 	 */
 	public function getColumns() {
 		return $this->_columns;
 	}
 
 	/**
-	 * @return
+	 * 初始化数据库链接信息
 	 */
 	public function init() {
 		if ($this->_statement === null) {
@@ -323,8 +364,10 @@ class WindSqlStatement {
 	}
 
 	/**
-	 * @param variable
-	 * @param data_type
+	 * 获得绑定参数的类型
+	 * 
+	 * @param string $variable
+	 * @return int
 	 */
 	private function _getPdoDataType($variable) {
 		return isset($this->_typeMap[gettype($variable)]) ? $this->_typeMap[gettype($variable)] : PDO::PARAM_STR;

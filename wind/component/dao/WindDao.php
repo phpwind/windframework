@@ -9,6 +9,10 @@
  */
 class WindDao extends WindModule {
 	protected $dbClass = 'WIND:component.db.WindConnection';
+	/**
+	 * 链接配置文件或是配置数组
+	 * @var string|array
+	 */
 	protected $dbConfig = '';
 	protected $cacheClass = '';
 	protected $cacheConfig = '';
@@ -23,7 +27,7 @@ class WindDao extends WindModule {
 	 */
 	private $cacheHandler = null;
 
-	/* 
+	/**
 	 * @see WindModule::getWriteTableForGetterAndSetter()
 	 */
 	protected function getWriteTableForGetterAndSetter() {
@@ -65,13 +69,14 @@ class WindDao extends WindModule {
 	/**
 	 * 获得需要缓存的处理的方法名称数组
 	 * array('methodName1'=>'WIND:component')
-	 * @return multitype:
+	 * @return array
 	 */
 	public function getCacheMethods() {
 		return array();
 	}
 
 	/**
+	 * 获得链接对象
 	 * @return WindConnection $connection
 	 */
 	public function getConnection() {
@@ -79,6 +84,7 @@ class WindDao extends WindModule {
 	}
 
 	/**
+	 * 设置链接对象
 	 * @param WindConnection $windConnection
 	 */
 	public function setConnection($windConnection) {

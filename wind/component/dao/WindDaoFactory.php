@@ -50,14 +50,16 @@ class WindDaoFactory {
 	}
 
 	/**
-	 * @return the $daoResource
+	 * 获得dao存放的目录
+	 * @return string $daoResource
 	 */
 	public function getDaoResource() {
 		return $this->daoResource;
 	}
 
 	/**
-	 * @param field_type $daoResource
+	 * 设置dao的获取目录
+	 * @param string $daoResource
 	 */
 	public function setDaoResource($daoResource) {
 		$this->daoResource = $daoResource;
@@ -65,7 +67,7 @@ class WindDaoFactory {
 
 	/**
 	 * 注册Dao缓存监听
-	 * @param AbstractWindDao daoInstance
+	 * @param WindDao daoInstance
 	 */
 	private function registerCacheListener($daoInstance) {
 		$caches = (array) $daoInstance->getCacheMethods();
@@ -81,7 +83,7 @@ class WindDaoFactory {
 	}
 
 	/**
-	 * 返回DbHandler
+	 * 返回链接对象
 	 * @param WindDao $daoObject
 	 * @return WindConnection
 	 */
@@ -100,7 +102,7 @@ class WindDaoFactory {
 
 	/**
 	 * 返回Cache对象
-	 * @param AbstractWindDao $daoObject
+	 * @param WindDao $daoObject
 	 * @return AbstractWindCache
 	 */
 	protected function createCacheHandler($daoObject) {
@@ -115,7 +117,8 @@ class WindDaoFactory {
 	}
 
 	/**
-	 * @return WindFactory
+	 * 获得ComponentFactory对象
+	 * @return WindComponentFactory
 	 */
 	private function _getWindFactory() {
 		if ($this->windFactory === null) {
