@@ -36,6 +36,10 @@ class WindPropertiesParser {
 		return $build ? $this->buildData($data) : $data;
 	}
 	
+	private function delComment($filename, $process) {
+		
+	}
+	
 	/**
 	 * 载入一个由 filename 指定的 properties 文件，
 	 * 并将其中的设置作为一个联合数组返回。
@@ -61,7 +65,7 @@ class WindPropertiesParser {
 			if (0 === strpos(trim($value), self::COMMENT) || in_array(trim($value), array('', "\t", "\n"))) {
 				continue;
 			}
-			$tmp = explode('=', $value);
+			$tmp = explode('=', $value, 2);
 			if (0 === strpos(trim($value), self::LPROCESS) && (strlen($value) - 1) === strrpos($value, self::RPROCESS)) {
 				if ($process) {
 					$current_process = $this->trimChar(trim($value), array(self::LPROCESS, self::RPROCESS));
@@ -71,7 +75,7 @@ class WindPropertiesParser {
 				continue;
 			}
 			$tmp[0] = trim($tmp[0]);
-			$tmp[1] = trim($tmp[1]);
+			$tmp[1] = trim($tmp[1], '\'"');
 			
 			if ($last_process) {
 				count($tmp) > 1 ? $data[$last_process][$tmp[0]] = $tmp[1] : $data[$last_process][$tmp[0]] = '';
