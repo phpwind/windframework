@@ -163,20 +163,25 @@ class WindConnection extends WindComponentModule {
 		}
 	}
 
-	/**
-	 *  (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see WindMysqlPdoAdapter::filterArray()
 	 */
 	public function quoteArray($array) {
 		return $this->getDbHandle()->filterArray($array);
 	}
 
-	/**
-	 *  (non-PHPdoc)
+	/* (non-PHPdoc) 
 	 * @see WindMysqlPdoAdapter::quote()
 	 */
 	public function quote($string) {
 		return $this->getDbHandle()->quote($string);
+	}
+	
+	/* (non-PHPdoc) 
+	 * @see WindMysqlPdoAdapter::sqlSingle()
+	 */
+	public function sqlSingle($array) {
+		return $this->getDbHandle()->sqlSingle($array);
 	}
 
 	/**

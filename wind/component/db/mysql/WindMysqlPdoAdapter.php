@@ -40,5 +40,30 @@ class WindMysqlPdoAdapter extends PDO {
 		}
 		return $result;
 	}
+	
+	/**
+	 * 组装单条 key=value 形式的SQL查询语句值 insert/update
+	 * @param $array
+	 * @param $strip
+	 * @return string
+	 */
+	public function sqlSingle($array) {
+		if (!is_array($array)) return ''; 
+		$str = '';
+		foreach ($array as $key => $val) {
+			$str .= ($str ? ', ' : ' ') . $this->fieldMeta($key) . '=' . $this->quote($val);
+		}
+		return $str;
+	}
+	
+	/**
+	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
+	 * @param $data 元数据
+	 * @return string 经过转义的元数据字符串
+	 */
+	private function fieldMeta($data) {
+		$data = str_replace(array('`', ' '), '',$data);
+		return ' `'.$data.'` ';
+	}
 }
 ?>
