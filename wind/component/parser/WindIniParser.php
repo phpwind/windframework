@@ -85,7 +85,7 @@ class WindIniParser {
 					if (!isset($data[$tkey])) {
 						$data[$tkey] = array();
 					}
-					$this->formatDataArray($tValue, &$data[$tkey]);
+					$this->formatDataArray($tValue, $data[$tkey]);
 				} else {
 					$data[$tkey] = $tValue;
 				}

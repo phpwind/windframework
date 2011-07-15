@@ -59,7 +59,7 @@ class WindConfigParser implements IWindConfigParser {
 		$append = !$append ? '' : trim($append);
 		$alias && $cacheFileName = ($append ? $this->buildCacheFilePath($append) : $this->buildCacheFilePath($alias));
 		if ($alias) {
-			$append && $config = $this->getCacheContent($cacheFileName);
+			$config = $this->getCacheContent($cacheFileName);
 			if (isset($config[$alias]) && !$this->needCompiled()) {
 				return $config[$alias];
 			}
