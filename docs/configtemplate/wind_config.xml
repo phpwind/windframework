@@ -9,8 +9,14 @@
             root-path: 指定该应用的入口地址
 	     -->
 		<web-app name='default' class='windWebApp' root-path=''>
+			<factory class-definition='components'
+                class='WIND:core.factory.WindComponentFactory' />
+            <filters class='WIND:core.filter.WindFilterChain'>
+                <filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
+                <filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
+            </filters>
 		    <!-- 路由的相关配置  class: 指定路由解析类配置 -->
-			<router>
+			<router class="urlBasedRouter">
 			    <!-- 路由module/controller/action相关配置（使用url访问参数名称及缺省值） -->
 				<config>
 				    <!-- module配置 -->
@@ -33,7 +39,7 @@
 					<!-- 配置该模块的error处理的action controller类 -->
 					<error-handler class='WIND:core.web.WindErrorHandler'/>
 					<!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
-					<view>
+					<view class='windView'>
 						<config>
 						    <!-- 指定模板路径 -->
 							<template-dir value='template' />

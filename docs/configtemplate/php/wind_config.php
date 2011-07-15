@@ -11,8 +11,18 @@ return array(
 		'default' => array(
 			'class' => 'windWebApp',
 			'root-path' => '',
+		    'factory' => array(
+				'class-definition' => 'components',
+				'class' => 'WIND:core.factory.WindComponentFactory',
+			),
+			'filters' => array(
+				'class' => 'WIND:core.filter.WindFilterChain',
+				'filter1' => array('class' => 'WIND:core.web.filter.WindLoggerFilter'),
+				'filter2' => array('class' => 'WIND:core.web.filter.WindUrlFilter'),
+			),
             /*配置default应用的路由规则*/
 			'router' => array(
+				'class' => 'urlBasedRouter',
                 'config' => array(
                     /*配置路径中module的规则*/
                      'module' => array(
@@ -38,28 +48,19 @@ return array(
 			        /*default模块的路径*/
 					'path' => 'controller',  
 			        /*default模块的中controller的后缀*/
-					'controller-suffix' => array(
-						'value' => 'controller',
-					),
+					'controller-suffix' => array('value' => 'Controller',),
 					/*default模块中处理error的Action controller路径*/
-					'error-handler' => array(
-					    'class' => 'WIND:core.web.WindErrorHandler',
-					),
+					'error-handler' => array('class' => 'WIND:core.web.WindErrorHandler',),
 					/*default模块的试图配置*/
 					'view' => array(
+						'class' => 'windView',
 						'config' => array(
 					       /*模板路径*/
-							'template-dir' => array(
-								'value' => 'template',
-							),
+							'template-dir' => array('value' => 'template',),
 					       /*模板后缀*/
-							'template-ext' => array(
-								'value' => 'htm',
-							),
+							'template-ext' => array('value' => 'htm',),
 					       /*模板编译路径*/
-							'compile-dir' => array(
-								'value' => 'compile.template',
-							),
+							'compile-dir' => array('value' => 'compile.template',),
 						),
 					),
 				),
