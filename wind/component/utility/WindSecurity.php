@@ -238,7 +238,7 @@ class WindSecurity {
 	 * @return string 经过转义的元数据字符串
 	 */
 	public static function sqlMetadata($data ,$tlists=array()) {
-		if (empty($tlists) || !is_array($data , $tlists)) {
+		if (empty($tlists) || !in_array($data , $tlists)) {
 			$data = str_replace(array('`', ' '), '',$data);
 		}
 		return ' `'.$data.'` ';
