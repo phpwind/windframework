@@ -102,15 +102,16 @@ class WindResultSet {
 	/**
 	 * 返回所有的查询结果
 	 * 
+	 * @param string $index 输出数组下标
 	 * @param int $fetchMode 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
 	 * @return array
 	 */
-	public function fetchAll($fetchMode = 0) {
+	public function fetchAll($index = '', $fetchMode = 0) {
 		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
 		if (empty($this->_columns)) return $this->_statement->fetchAll($fetchMode);
 		$result = array();
 		while ($row = $this->fetch($fetchMode))
-			$result[] = $row;
+			isset($row[$index]) ? $result[$row[$index]] = $row : $result[] = $row;
 		return $result;
 	}
 
