@@ -257,17 +257,11 @@ class WindSqlStatement {
 		return $rs->fetch();
 	}
 
-	/**
-	 * 返回最后一条插入数据ID
-	 * 
-	 * @param string $name
-	 * @return int 
+	/* (non-PHPdoc) 
+	 * @see WindConnection::lastInsterId()
 	 */
 	public function lastInsterId($name = '') {
-		if ($name)
-			return $this->getConnection()->getDbHandle()->lastInsertId($name);
-		else
-			return $this->getConnection()->getDbHandle()->lastInsertId();
+		return $this->getConnection($name);
 	}
 
 	/**

@@ -183,6 +183,19 @@ class WindConnection extends WindComponentModule {
 	public function sqlSingle($array) {
 		return $this->getDbHandle()->sqlSingle($array);
 	}
+	
+	/**
+	 * 返回最后一条插入数据ID
+	 * 
+	 * @param string $name
+	 * @return int 
+	 */
+	public function lastInsterId($name = '') {
+		if ($name)
+			return $this->getDbHandle()->lastInsertId($name);
+		else
+			return $this->getDbHandle()->lastInsertId();
+	}
 
 	/**
 	 * 关闭数据库连接
