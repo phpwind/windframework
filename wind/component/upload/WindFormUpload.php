@@ -42,7 +42,7 @@ class WindFormUpload extends AbstractWindUpload {
 				$this->hasError = true;
 				continue;
 			}
-			if ($upload['size'] < 1 || $upload['size'] > $allowType[$upload['ext']]) {
+			if ($upload['size'] < 1 || ($allowType && $upload['size'] > $allowType[$upload['ext']])) {
 				$upload['maxSize'] = $allowType[$upload['ext']];
 				$error['size'][] = $upload;
 				$this->hasError = true;
