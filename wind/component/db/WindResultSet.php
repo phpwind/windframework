@@ -108,7 +108,7 @@ class WindResultSet {
 	 */
 	public function fetchAll($index = '', $fetchMode = 0) {
 		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
-		if (!empty($this->_columns)) return $this->_statement->fetchAll($fetchMode);
+		if ('' === $index) return $this->_statement->fetchAll($fetchMode);
 		$result = array();
 		while ($row = $this->fetch($fetchMode))
 			isset($row[$index]) ? $result[$row[$index]] = $row : $result[] = $row;
