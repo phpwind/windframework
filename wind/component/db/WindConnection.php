@@ -1,5 +1,7 @@
 <?php
 Wind::import("WIND:component.db.exception.WindDbException");
+Wind::import("WIND:component.db.WindResultSet");
+
 /**
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
