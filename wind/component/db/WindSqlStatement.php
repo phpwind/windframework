@@ -222,12 +222,7 @@ class WindSqlStatement {
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
-		if (!$index) return $rs->fetchAll();
-		$result = array();
-		while ($one = $rs->fetch()) {
-			isset($one[$index]) ? $result[$one[$index]] = $one : $result[] = $one;
-		}
-		return $result;
+		return $rs->fetchAll($index);
 	}
 
 	/**
