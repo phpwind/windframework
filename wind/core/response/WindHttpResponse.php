@@ -1,13 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-8
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-Wind::import('WIND:core.response.IWindResponse');
-/**
  * 1xx：信息，请求收到，继续处理
  * 2xx：成功，行为被成功地接受、理解和采纳
  * 3xx：重定向，为了完成请求，必须进一步执行的动作
@@ -310,7 +302,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function setHeader($name, $value, $replace = false) {
-		if (trim($name) == '' || trim($value) == '') return;
+		if (!$name || !$value) return;
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $one) {
 			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 'value' => $value, 
@@ -325,7 +317,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function addHeader($name, $value, $replace = false) {
-		if (trim($name) == '' || trim($value) == '') return;
+		if ($name == '' || $value == '') return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
@@ -480,7 +472,6 @@ class WindHttpResponse implements IWindResponse {
 	 * @return string
 	 */
 	private function _normalizeHeader($name) {
-		if (trim($name) == '') return '';
 		$filtered = str_replace(array('-', '_'), ' ', (string) $name);
 		$filtered = ucwords(strtolower($filtered));
 		$filtered = str_replace(' ', '-', $filtered);

@@ -147,7 +147,7 @@ class Wind {
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
 		if (!$path) return;
-		$alias = strtolower(trim($alias));
+		$alias = strtolower($alias);
 		if (!empty($alias)) {
 			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = $path;
 		}
@@ -206,18 +206,17 @@ class Wind {
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	public static function getRealPath($filePath, $isDir = false) {
-		$filePath = trim($filePath, ' ');
 		$namespace = $suffix = '';
 		if (!$isDir) {
 			$_pos1 = strrpos($filePath, '.');
-			$suffix = trim(substr($filePath, $_pos1 + 1), '.');
+			$suffix = substr($filePath, $_pos1 + 1);
 			$filePath = substr($filePath, 0, $_pos1);
 		}
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
 		}
 		$filePath = str_replace('.', D_S, $filePath);
-		if ($namespace) $filePath = rtrim($namespace, D_S) . D_S . substr($filePath, $pos + 1);
+		if ($namespace) $filePath = $namespace . D_S . substr($filePath, $pos + 1);
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 
