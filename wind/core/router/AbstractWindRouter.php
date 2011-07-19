@@ -71,8 +71,6 @@ abstract class AbstractWindRouter extends WindModule {
 		if ($this->reParse) {
 			$this->parse();
 			$this->reParse = false;
-			Wind::log('[core.router.AbstractWindRouter.doParse] parse the request.', WindLogger::LEVEL_DEBUG, 
-				'wind.core');
 		}
 		$_suffix = $this->getSystemConfig()->getModuleControllerSuffixByModuleName($_moduleName, 
 			self::CONTROLLER_DEFAULT_SUFFIX);

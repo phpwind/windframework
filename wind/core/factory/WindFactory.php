@@ -76,8 +76,10 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	public function setSingled($classAlias, $instance) {
-		Wind::log('[core.factory.WindFactory.createInstance] create singled instance:' . $classAlias, 
-			WindLogger::LEVEL_INFO, 'core.factory');
+		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
+			Wind::log('[core.factory.WindFactory.createInstance] create singled instance:' . $classAlias, 
+				WindLogger::LEVEL_DEBUG, 'core.factory');
+		}
 		$this->instances[$classAlias] = $instance;
 	}
 
