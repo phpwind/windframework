@@ -347,7 +347,7 @@ class Wind {
 	 * @return 
 	 */
 	private static function _setImport($className, $classPath) {
-		if (self::_isImported($className)) return;
+//		if (self::_isImported($className)) return;
 		self::$_imports[$classPath] = $className;
 		if (self::$_isAutoLoad)
 			self::$_classes[$className] = $classPath;
