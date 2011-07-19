@@ -20,6 +20,7 @@ class WindView extends WindModule {
 	/* 视图配置信息 */
 	const TEMPLATE_DIR = 'template-dir';
 	const TEMPLATE_EXT = 'template-ext';
+	const COMPILE_DIR = 'compile-dir';
 	const IS_CACHE = 'is-cache';
 	/**
 	 * 模板路径信息
@@ -45,6 +46,8 @@ class WindView extends WindModule {
 	 * @var boolean
 	 */
 	protected $isCache = false;
+	
+	protected $compileDir;
 	/**
 	 * 视图解析引擎
 	 *
@@ -104,7 +107,7 @@ class WindView extends WindModule {
 	 * @return string | false
 	 */
 	public function getCompileFile($template = '', $ext = '') {
-		return $this->parseFilePath($template, $ext, COMPILE_PATH . 'template', true);
+		return $this->parseFilePath($template, $ext, $this->getCompileDir(), true);
 	}
 
 	/**
@@ -134,6 +137,7 @@ class WindView extends WindModule {
 	 */
 	public function init() {
 		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR, WIND_CONFIG_VALUE));
+		$this->setCompileDir($this->getConfig(self::COMPILE_DIR, WIND_CONFIG_VALUE));
 		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT, WIND_CONFIG_VALUE));
 		$this->setIsCache($this->getConfig(self::IS_CACHE), WIND_CONFIG_VALUE);
 	}
@@ -143,6 +147,13 @@ class WindView extends WindModule {
 	 */
 	public function getTemplateDir() {
 		return $this->templateDir;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getCompileDir() {
+		return $this->compileDir;
 	}
 
 	/**
@@ -178,6 +189,13 @@ class WindView extends WindModule {
 	 */
 	public function setTemplateDir($templateDir) {
 		$this->templateDir = $templateDir;
+	}
+	
+	/**
+	 * @param string $compileDir
+	 */
+	public function setCompileDir($compileDir) {
+		$this->compileDir = $compileDir;
 	}
 
 	/**
