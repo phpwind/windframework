@@ -5,6 +5,7 @@
  **/
 define('_COMPILE_PATH', WIND_PATH . '_compile' . D_S);
 Wind::clear();
+Wind::import('COM:log.WindLogger');
 Wind::import('WIND:core.*', true);
 $imports = Wind::getImports();
 /* 载入需要的文件信息 */
@@ -18,9 +19,7 @@ $content = array();
 foreach ($imports as $key => $value) {
 	$content[$value] = $key;
 	$_key = Wind::getRealPath($key . '.' . self::$_extensions);
-	$fileList[$_key] = array(
-		$key, 
-		$value);
+	$fileList[$_key] = array($key, $value);
 }
 $pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 /* import信息写入编译文件 */
