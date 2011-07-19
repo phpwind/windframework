@@ -1,7 +1,5 @@
 <?php
-
-Wind::import('WIND:core.viewer.AbstractWindTemplateCompiler');
-
+Wind::import('COM:viewer.AbstractWindTemplateCompiler');
 /**
  * Enter description here ...
  *

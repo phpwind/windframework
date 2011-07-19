@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 通用工具库
  *
@@ -11,12 +10,25 @@
 class WindUtility {
 
 	/**
+	 * 将字符串首字母小写
+	 * 
+	 * @param string $str
+	 * @return string
+	 */
+	public static function lcfirst($str) {
+		if (function_exists('lcfirst')) return lcfirst($str);
+		
+		$str[0] = strtolower($str[0]);
+		return $str;
+	}
+
+	/**
 	 * 获得随机数字符串
 	 * 
 	 * @param int $length
 	 * @return string
 	 */
-	static function generateRandStr($length) {
+	public static function generateRandStr($length) {
 		$randstr = "";
 		for ($i = 0; $i < (int) $length; $i++) {
 			$randnum = rand(0, 61);
@@ -41,10 +53,11 @@ class WindUtility {
 	 * @param string $message	| 错误信息
 	 * @return array
 	 */
-	static public function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
+	public static function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
 		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
 			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
+
 }
 
 ?>

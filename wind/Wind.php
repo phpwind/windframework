@@ -6,12 +6,12 @@ define('PHPVERSION', '5.1.2');
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
 !defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
-!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'windBasic.php');
+!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'wind_basic.php');
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
 !defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 !defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
-!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 1);
+!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 2);
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -19,25 +19,68 @@ define('PHPVERSION', '5.1.2');
  * @package 
  */
 class Wind {
+	private static $_extensions = 'php';
+	private static $_isAutoLoad = true;
+	private static $_logger = null;
 	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_classes = array();
-	private static $_instances = array();
-	private static $_extensions = 'php';
 	private static $_includePaths = array();
-	private static $_isAutoLoad = true;
-	private static $_logger = null;
+	private static $_app = array();
+	private static $_currentApp = array();
 
 	/**
 	 * 加载应用
+	 * 
 	 * @param string $appName
 	 * @param string $config
 	 * @throws WindException
 	 * @return 
 	 */
-	public static function run($appName = '', $config = '') {
-		$frontController = new WindFrontController($appName, $config);
-		$frontController->run();
+	public static function run($appName = 'default', $config = '') {
+		self::beforRun();
+		if (!isset(self::$_app[$appName])) {
+			$frontController = new WindFrontController($appName, $config);
+			/* 将当前的app压入数组的开始 */
+			$_cache = self::getAppName();
+			array_unshift(self::$_currentApp, array($appName, $_cache));
+			self::$_app[$appName] = $frontController;
+		}
+		self::getApp()->run();
+		self::afterRun();
+	}
+
+	/**
+	 * 返回当前appName
+	 * 
+	 * @return string
+	 */
+	public static function getAppName() {
+		if (!isset(self::$_currentApp[0])) return '';
+		return self::$_currentApp[0][0];
+	}
+
+	/**
+	 * 返回当前的app应用
+	 * 
+	 * @param string $appName
+	 * @return WindFrontController
+	 */
+	public static function getApp() {
+		$_appName = self::getAppName();
+		if (isset(self::$_app[$_appName]))
+			return self::$_app[$_appName];
+		else
+			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
+				WindException::ERROR_CLASS_NOT_EXIST);
+	}
+
+	/**
+	 * 开发环境脚本入口
+	 */
+	public static function runWithCompile($appName = 'default', $config = '') {
+		require_once (self::getRealPath('WIND:_compile.compile.php'));
+		self::run($appName, $config);
 	}
 
 	/**
@@ -179,22 +222,6 @@ class Wind {
 	}
 
 	/**
-	 * 将核心库文件打包
-	 * @throws Exception
-	 * @return
-	 */
-	public static function perLoadCoreLibrary($libPath) {
-		self::import('COM:utility.WindPack');
-		$pack = new WindPack();
-		$fileList = array();
-		foreach (self::$_imports as $key => $value) {
-			$_key = self::getRealPath($key . '.' . self::$_extensions);
-			$fileList[$_key] = array($key, $value);
-		}
-		$pack->packFromFileList($fileList, $libPath, WindPack::STRIP_PHP, true);
-	}
-
-	/**
 	 * 初始化框架
 	 */
 	public static function init() {
@@ -250,6 +277,52 @@ class Wind {
 	}
 
 	/**
+	 * 清理Wind import变量信息
+	 * @return
+	 */
+	public static function clear() {
+		self::$_imports = array();
+		self::$_classes = array();
+	}
+
+	/**
+	 * 重置当前应用
+	 * 
+	 * @return
+	 */
+	protected static function resetApp() {
+		if (!isset(self::$_currentApp[0])) return;
+		$_current = self::$_currentApp[0];
+		if ($_current[1] === '') return;
+		foreach (self::$_currentApp as $key => $value) {
+			if ($value[0] == $_current[1]) {
+				array_unshift(self::$_currentApp, $value);
+				unset(self::$_currentApp[$key]);
+			}
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	protected static function beforRun() {
+		self::profileBegin('WINDAPP', 'wind app run time profiles!', 'wind.profile');
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
+		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
+	}
+
+	/**
+	 * @return
+	 */
+	protected static function afterRun() {
+		self::resetApp();
+		restore_error_handler();
+		restore_exception_handler();
+		self::profileEnd('WINDAPP');
+		self::getLogger()->flush();
+	}
+
+	/**
 	 * 系统命名空间注册方法
 	 * @return 
 	 */
@@ -263,7 +336,8 @@ class Wind {
 	 * @return 
 	 */
 	private static function _checkEnvironment() {
-		if (!self::_checkPhpVersion()) throw new Exception('php version is too old, php ' . PHPVERSION . ' or later.', E_WARNING);
+		if (!self::_checkPhpVersion()) throw new Exception('php version is too old, php ' . PHPVERSION . ' or later.', 
+			E_WARNING);
 		if (!defined('COMPILE_PATH')) throw new Exception('compile path undefined.');
 		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 	}
@@ -336,7 +410,7 @@ class Wind {
 	 * @return
 	 */
 	private static function _coreLib() {
-		return array('AbstractWindServer' => 'WIND:core.AbstractWindServer', 'IWindConfigParser' => 'WIND:core.config.parser.IWindConfigParser', 'WindConfigParser' => 'WIND:core.config.parser.WindConfigParser', 'WindConfig' => 'WIND:core.config.WindConfig', 'WindSystemConfig' => 'WIND:core.config.WindSystemConfig', 'WindDaoCacheListener' => 'WIND:core.dao.listener.WindDaoCacheListener', 'WindActionException' => 'WIND:core.exception.WindActionException', 'WindCacheException' => 'WIND:core.exception.WindCacheException', 'WindDaoException' => 'WIND:core.exception.WindDaoException', 'WindException' => 'WIND:core.exception.WindException', 'WindFinalException' => 'WIND:core.exception.WindFinalException', 'WindSqlException' => 'WIND:core.exception.WindSqlException', 'WindViewException' => 'WIND:core.exception.WindViewException', 'IWindFactory' => 'WIND:core.factory.IWindFactory', 'IWindClassProxy' => 'WIND:core.factory.proxy.IWindClassProxy', 'WindClassProxy' => 'WIND:core.factory.proxy.WindClassProxy', 'WindClassDefinition' => 'WIND:core.factory.WindClassDefinition', 'WindComponentDefinition' => 'WIND:core.factory.WindComponentDefinition', 'WindComponentFactory' => 'WIND:core.factory.WindComponentFactory', 'WindFactory' => 'WIND:core.factory.WindFactory', 'WindFilter' => 'WIND:core.filter.WindFilter', 'WindFilterChain' => 'WIND:core.filter.WindFilterChain', 'WindHandlerInterceptor' => 'WIND:core.filter.WindHandlerInterceptor', 'WindHandlerInterceptorChain' => 'WIND:core.filter.WindHandlerInterceptorChain', 'IWindRequest' => 'WIND:core.request.IWindRequest', 'WindHttpRequest' => 'WIND:core.request.WindHttpRequest', 'IWindResponse' => 'WIND:core.response.IWindResponse', 'WindHttpResponse' => 'WIND:core.response.WindHttpResponse', 'AbstractWindRouter' => 'WIND:core.router.AbstractWindRouter', 'WindUrlBasedRouter' => 'WIND:core.router.WindUrlBasedRouter', 'AbstractWindTemplateCompiler' => 'WIND:core.viewer.AbstractWindTemplateCompiler', 'AbstractWindViewTemplate' => 'WIND:core.viewer.AbstractWindViewTemplate', 'WindTemplateCompilerAction' => 'WIND:core.viewer.compiler.WindTemplateCompilerAction', 'WindTemplateCompilerComponent' => 'WIND:core.viewer.compiler.WindTemplateCompilerComponent', 'WindTemplateCompilerEcho' => 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', 'WindTemplateCompilerInternal' => 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', 'WindTemplateCompilerPage' => 'WIND:core.viewer.compiler.WindTemplateCompilerPage', 'WindTemplateCompilerScript' => 'WIND:core.viewer.compiler.WindTemplateCompilerScript', 'WindTemplateCompilerTemplate' => 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate', 'WindViewTemplate' => 'WIND:core.viewer.compiler.WindViewTemplate', 'IWindViewerResolver' => 'WIND:core.viewer.IWindViewerResolver', 'WindViewCacheListener' => 'WIND:core.viewer.listener.WindViewCacheListener', 'WindLayout' => 'WIND:core.viewer.WindLayout', 'WindView' => 'WIND:core.viewer.WindView', 'WindViewerResolver' => 'WIND:core.viewer.WindViewerResolver', 'WindLoggerFilter' => 'WIND:core.web.filter.WindLoggerFilter', 'WindUrlFilter' => 'WIND:core.web.filter.WindUrlFilter', 'IWindApplication' => 'WIND:core.web.IWindApplication', 'IWindErrorMessage' => 'WIND:core.web.IWindErrorMessage', 'WindFormListener' => 'WIND:core.web.listener.WindFormListener', 'WindLoggerListener' => 'WIND:core.web.listener.WindLoggerListener', 'WindValidateListener' => 'WIND:core.web.listener.WindValidateListener', 'WindAction' => 'WIND:core.web.WindAction', 'WindController' => 'WIND:core.web.WindController', 'WindDispatcher' => 'WIND:core.web.WindDispatcher', 'WindErrorHandler' => 'WIND:core.web.WindErrorHandler', 'WindErrorMessage' => 'WIND:core.web.WindErrorMessage', 'WindFormController' => 'WIND:core.web.WindFormController', 'WindForward' => 'WIND:core.web.WindForward', 'WindFrontController' => 'WIND:core.web.WindFrontController', 'WindUrlHelper' => 'WIND:core.web.WindUrlHelper', 'WindWebApplication' => 'WIND:core.web.WindWebApplication', 'WindComponentModule' => 'WIND:core.WindComponentModule', 'WindEnableValidateModule' => 'WIND:core.WindEnableValidateModule', 'WindHelper' => 'WIND:core.WindHelper', 'WindModule' => 'WIND:core.WindModule', 'WindLogger' => 'COM:log.WindLogger');
+		return array();
 	}
 }
 Wind::init();
@@ -352,10 +426,11 @@ Wind::init();
 !defined('COMPONENT_TEMPLATE') && define('COMPONENT_TEMPLATE', 'template');
 !defined('COMPONENT_ERRORMESSAGE') && define('COMPONENT_ERRORMESSAGE', 'errorMessage');
 !defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
+!defined('COMPONENT_DISPATCHER') && define('COMPONENT_DISPATCHER', 'dispatcher');
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 //********************约定变量***********************************
 define('WIND_M_ERROR', 'windError');
-define('WIND_CONFIG_CACHE', 'wind_components_config');
+define('WIND_CONFIG_CACHE', '_wind_config');
 //**********配置*******通用常量定义***************************************
 define('WIND_CONFIG_CONFIG', 'config');
 define('WIND_CONFIG_CLASS', 'class');

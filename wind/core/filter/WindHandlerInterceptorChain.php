@@ -1,26 +1,22 @@
 <?php
-
-Wind::import('WIND:core.WindComponentModule');
 /**
- * Enter description here ...
- *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
-class WindHandlerInterceptorChain extends WindComponentModule {
-
+class WindHandlerInterceptorChain extends WindModule {
 	protected $_interceptors = array();
-
 	protected $_callBack = null;
-
 	protected $_args = array();
-
 	private $_state = true;
 
 	/**
-	 * Enter description here ...
+	 * 设置回调方法
+	 * 
+	 * @param string|array $callBack
+	 * @param array $args
+	 * @return
 	 */
 	public function setCallBack($callBack, $args = array()) {
 		$this->_callBack = $callBack;
@@ -28,20 +24,22 @@ class WindHandlerInterceptorChain extends WindComponentModule {
 	}
 
 	/**
-	 * Enter description here ...
+	 * 执行callback方法
 	 * 
 	 * @throws WindException
 	 * @return void|mixed
 	 */
 	public function execute() {
 		if ($this->_callBack === null) return null;
-		if (is_string($this->_callBack) && !function_exists($this->_callBack)) throw new WindException($this->_callBack, WindException::ERROR_FUNCTION_NOT_EXIST);
-		
+		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {
+			throw new WindException('[core.filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
+				WindException::ERROR_FUNCTION_NOT_EXIST);
+		}
 		return call_user_func_array($this->_callBack, (array) $this->_args);
 	}
 
 	/**
-	 * Enter description here ...
+	 * 返回处理句柄
 	 * 
 	 * @return WindHandlerInterceptor
 	 */
@@ -51,19 +49,22 @@ class WindHandlerInterceptorChain extends WindComponentModule {
 			$this->_state = false;
 		}
 		if (count($this->_interceptors) <= 0) return null;
-		
 		$handler = array_shift($this->_interceptors);
 		if ($handler instanceof WindHandlerInterceptor) {
 			$handler->setHandlerInterceptorChain($this);
 			return $handler;
 		}
+		Wind::log(
+			'[core.filter.WindHandlerInterceptorChain.getHandler] the type of Interceptor ' . gettype($handler) .
+				 ' is not supported.', WindLogger::LEVEL_DEBUG, 'wind.core');
 		return $this->getHandler();
 	}
 
 	/**
-	 * Enter description here ...
+	 * 添加过滤连中的拦截器对象, 支持数组和对象两种类型
 	 * 
 	 * @param $interceptors
+	 * @return 
 	 */
 	public function addInterceptors($interceptors) {
 		if (is_array($interceptors))
@@ -71,7 +72,5 @@ class WindHandlerInterceptorChain extends WindComponentModule {
 		else
 			$this->_interceptors[] = $interceptors;
 	}
-
 }
-
 ?>

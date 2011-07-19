@@ -6,7 +6,7 @@ Wind::import("WIND:component.db.WindConnection");
  * @version $Id$
  * @package 
  */
-class WindConnectionManager extends WindComponentModule {
+class WindConnectionManager extends WindModule {
 	const CONNECTION_MODE_RAND = '0';
 	/**
 	 * 链接句柄

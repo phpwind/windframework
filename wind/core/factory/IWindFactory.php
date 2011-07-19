@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-12-30
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * 类工厂接口定义
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -23,8 +16,17 @@ interface IWindFactory {
 	 * 加载类的路径并创建类的依赖
 	 * 
 	 * @param string $classAlias
+	 * @return instance
 	 */
 	public function getInstance($classAlias);
+
+	/**
+	 * 根据类的别名返回一个类的实例变量的clone
+	 * 
+	 * @param string $classAlias
+	 * @return clone of instance
+	 */
+	public function getPrototype($classAlias);
 
 	/**
 	 * 根据类名称创建类对象
@@ -35,5 +37,4 @@ interface IWindFactory {
 	 * @return Object | 返回的类类型的实例对象
 	 */
 	static public function createInstance($className, $args = array());
-
 }

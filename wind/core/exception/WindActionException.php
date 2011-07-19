@@ -1,5 +1,4 @@
 <?php
-
 Wind::import('WIND:core.exception.WindException');
 /**
  * 模板视图异常类
@@ -10,7 +9,6 @@ Wind::import('WIND:core.exception.WindException');
  * @package 
  */
 class WindActionException extends WindException {
-
 	private $error;
 
 	/**
@@ -29,7 +27,6 @@ class WindActionException extends WindException {
 	 */
 	protected function messageMapper($code) {
 		$messages = array();
-		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
 
@@ -46,7 +43,5 @@ class WindActionException extends WindException {
 	public function setError($error) {
 		$this->error = $error;
 	}
-
 }
-
 ?>

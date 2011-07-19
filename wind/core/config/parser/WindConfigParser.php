@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:core.config.parser.IWindConfigParser');
 /**
  * 配置文件解析类
  * 配置文件格式允许有4中格式：xml, php, properties, ini
@@ -193,7 +192,11 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array  返回配置文件格式的白名单
 	 */
 	private function getConfigFormatList() {
-		return array(self::CONFIG_XML, self::CONFIG_PHP, self::CONFIG_INI, self::CONFIG_PROPERTIES);
+		return array(
+			self::CONFIG_XML, 
+			self::CONFIG_PHP, 
+			self::CONFIG_INI, 
+			self::CONFIG_PROPERTIES);
 	}
 
 	/**

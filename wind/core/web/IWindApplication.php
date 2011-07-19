@@ -1,8 +1,5 @@
 <?php
-
 /**
- * Enter description here ...
- *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -12,6 +9,8 @@ interface IWindApplication {
 
 	/**
 	 * 请求处理
+	 * @param IWindHttpRequest $request
+	 * @param IWindHttpResponse $response
 	 */
 	public function processRequest();
 
@@ -21,7 +20,5 @@ interface IWindApplication {
 	 * @param WindForward $forward
 	 */
 	public function doDispatch($forward);
-
 }
-
 ?>

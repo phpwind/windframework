@@ -8,87 +8,102 @@
  * @package 
  */
 class WindDao extends WindModule {
-	protected $dbClass = 'WIND:component.db.WindConnection';
+	/**
+	 * db链接类型定义
+	 *
+	 * @var string
+	 */
+	protected $dbClass = 'COM:db.WindConnection';
+	/**
+	 * db配置路径定义
+	 *
+	 * @var string
+	 */
 	/**
 	 * 链接配置文件或是配置数组
 	 * @var string|array
 	 */
 	protected $dbConfig = '';
+	/**
+	 * cache类型定义
+	 *
+	 * @var string
+	 */
 	protected $cacheClass = '';
+	/**
+	 * cache配置信息
+	 *
+	 * @var string
+	 */
 	protected $cacheConfig = '';
-	protected $isDataCache = false;
-	protected $dbDefinition = null;
-	/**
-	 * @var WindConnection 数据库链接对象
-	 */
+	
 	private $connection = null;
-	/**
-	 * @var AbstractWindCache 缓存操作句柄
-	 */
 	private $cacheHandler = null;
-
-	/**
-	 * @see WindModule::getWriteTableForGetterAndSetter()
-	 */
-	protected function getWriteTableForGetterAndSetter() {
-		return array('dbClass', 'dbConfig', 'cacheClass', 'isDataCache', 'dbHandler', 'cacheConfig', 'cacheHandler');
-	}
-
-	/**
-	 * 获得DB类定义
-	 * @return WindComponentDefinition
-	 */
-	public function getDbDefinition() {
-		Wind::import('WIND:core.factory.WindComponentDefinition');
-		$definition = new WindComponentDefinition();
-		$definition->setPath($this->dbClass);
-		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
-		$definition->setAlias($this->dbClass);
-		$definition->setInitMethod('init');
-		if (is_array($this->dbConfig))
-			$definition->setConfig($this->dbConfig);
-		else
-			$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->dbConfig));
-		return $definition;
-	}
-
-	/**
-	 * 获得Cache类定义
-	 * @return WindComponentDefinition
-	 */
-	public function getCacheDefinition() {
-		Wind::import('WIND:core.factory.WindComponentDefinition');
-		$definition = new WindComponentDefinition();
-		$definition->setPath($this->cacheClass);
-		$definition->setScope(WindComponentDefinition::SCOPE_SINGLETON);
-		$definition->setAlias($this->cacheClass);
-		$definition->setConfig(array(WindComponentDefinition::RESOURCE => $this->cacheConfig));
-		return $definition;
-	}
 
 	/**
 	 * 获得需要缓存的处理的方法名称数组
 	 * array('methodName1'=>'WIND:component')
-	 * @return array
+	 * @return multitype:
 	 */
 	public function getCacheMethods() {
 		return array();
 	}
 
 	/**
-	 * 获得链接对象
-	 * @return WindConnection $connection
+	 * @return WindConnection
 	 */
 	public function getConnection() {
-		return $this->connection;
+		return $this->_getConnection();
 	}
 
 	/**
-	 * 设置链接对象
-	 * @param WindConnection $windConnection
+	 * @return WindCacheDb
 	 */
-	public function setConnection($windConnection) {
-		$this->connection = $windConnection;
+	public function getCacheHandler() {
+		return $this->_getCacheHandler();
 	}
+
+	/**
+	 * @return the $dbClass
+	 */
+	public function getDbClass() {
+		return $this->dbClass;
+	}
+
+	/**
+	 * @return the $dbConfig
+	 */
+	public function getDbConfig() {
+		return $this->dbConfig;
+	}
+
+	/**
+	 * @return the $cacheClass
+	 */
+	public function getCacheClass() {
+		return $this->cacheClass;
+	}
+
+	/**
+	 * @return the $cacheConfig
+	 */
+	public function getCacheConfig() {
+		return $this->cacheConfig;
+	}
+
+	/**
+	 * @param field_type $connection
+	 */
+	public function setConnection($connection) {
+		$this->connection = $connection;
+	}
+
+	/**
+	 * @param field_type $cacheHandler
+	 */
+	public function setCacheHandler($cacheHandler) {
+		$this->cacheHandler = $cacheHandler;
+	}
+
 }
 ?>

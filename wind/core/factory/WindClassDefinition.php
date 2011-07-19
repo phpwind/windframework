@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-12-31
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-Wind::import('WIND:core.WindModule');
-/**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * 
  * 配置文件格式:
@@ -19,7 +12,7 @@ Wind::import('WIND:core.WindModule');
  * @version $Id$ 
  * @package 
  */
-class WindClassDefinition extends WindModule {
+class WindClassDefinition {
 	/* 配置信息定义 */
 	const NAME = 'name';
 	const PATH = 'path';
@@ -30,60 +23,87 @@ class WindClassDefinition extends WindModule {
 	const CONSTRUCTOR_ARG = 'constructor-arg';
 	const REF = 'ref';
 	const VALUE = 'value';
+	const DELAY = 'delay';
+	const PROXY = 'proxy';
+	const CONFIG = 'config';
+	const RESOURCE = 'resource';
 	/* 支持的类命名空间 */
 	const SCOPE_SINGLETON = 'singleton';
 	const SCOPE_PROTOTYPE = 'prototype';
 	const SCOPE_REQUEST = 'request';
 	/**
-	 * 类名称
+	 * 类代理类型
+	 *
 	 * @var string
 	 */
-	protected $className = '';
+	protected $proxyClass = 'WIND:core.factory.proxy.WindClassProxy';
+	/**
+	 * 配置信息
+	 *
+	 * @var string|array
+	 */
+	protected $config;
+	/**
+	 * 类代理信息
+	 *
+	 * @var boolean|string
+	 */
+	protected $proxy;
+	/**
+	 * 类名称
+	 * 
+	 * @var string
+	 */
+	protected $className;
 	/**
 	 * 类别名
+	 * 
 	 * @var string
 	 */
-	protected $alias = '';
+	protected $alias;
 	/**
 	 * 类路径
+	 * 
 	 * @var string
 	 */
-	protected $path = '';
+	protected $path;
 	/**
 	 * 类的存储空间
+	 * 
 	 * singleton/prototype/request/session
 	 * @var string
 	 */
-	protected $scope = '';
+	protected $scope;
 	/**
 	 * 类自定义的初始化方法
+	 * 
 	 * @var string
 	 */
-	protected $factoryMethod = '';
+	protected $factoryMethod;
 	/**
 	 * 类设置属性之后的调用处理操作
+	 * 
 	 * @var string
 	 */
-	protected $initMethod = '';
+	protected $initMethod;
 	/**
 	 * 构造参数定义
+	 * 
 	 * @var array
 	 */
 	protected $constructArgs = array();
 	/**
 	 * 类属性定义
+	 * 
 	 * @var array
 	 */
-	protected $propertys = array();
+	protected $properties = array();
 	/**
 	 * 类定义
+	 * 
 	 * @var array
 	 */
 	protected $classDefinition;
-	/**
-	 * @var prototype
-	 */
-	private $prototype = null;
 	/**
 	 * @var instance
 	 */
@@ -108,99 +128,101 @@ class WindClassDefinition extends WindModule {
 	 * @return instance|Ambigous <prototype, void, mixed>|NULL
 	 */
 	public function getInstance($factory, $args = array()) {
-		if (($instance = $this->executeFactoryMethod($args)) != null) return $instance;
+		if ($instance = $this->executeFactoryMethod($args)) return $instance;
 		switch ($this->scope) {
 			case 'prototype':
 				return $this->createInstanceWithPrototype($factory, $args);
-			case 'request':
-				return $this->createInstanceWithRequest($factory, $args);
-			case 'application':
-				return $this->createInstanceWithApplication($factory, $args);
 			default:
 				return $this->createInstanceWithSingleton($factory, $args);
 		}
 	}
 
 	/**
-	 * @param IWindFactory $factory
-	 * @param array $args
-	 * @return NULL|object
-	 */
-	protected function createInstanceWithApplication($factory, $args) {
-		if (!isset($factory->application)) return null;
-		if (null === $factory->application->getAttribute($this->getAlias())) {
-			$factory->application->setAttribute($this->getAlias(), $this->createInstanceWithPrototype($factory, $args));
-		}
-		return $factory->application->getAttribute($this->getAlias());
-	}
-
-	/**
-	 * @param IWindFactory $factory
-	 * @param array $args
-	 * @return NULL|object
-	 */
-	protected function createInstanceWithRequest($factory, $args) {
-		if (!isset($factory->request)) return null;
-		if (null === $factory->request->getAttribute($this->getAlias(), null)) {
-			$factory->request->setAttribute($this->getAlias(), $this->createInstanceWithPrototype($factory, $args));
-		}
-		return $factory->request->getAttribute($this->getAlias());
-	}
-
-	/**
+	 * 以原型方式创建类实例
 	 * @param IWindFactory $factory
 	 * @param array $args
 	 * @return NULL|object
 	 */
 	protected function createInstanceWithPrototype($factory, $args) {
-		if ($this->prototype === null) {
-			$instance = $this->createInstance($factory, $args);
-			$this->setProperties($this->getPropertys(), $factory, $instance);
-			$this->executeInitMethod($instance);
-			$this->setPrototype($instance);
-		}
-		return clone $this->prototype;
+		return $this->createInstance($factory, $args);
 	}
 
 	/**
-	 * @param IWindFactory $factory
+	 * @param WindFactory $factory
 	 * @param array $args
 	 * @return NULL|object
 	 */
 	protected function createInstanceWithSingleton($factory, $args) {
-		if (!isset($this->instance)) {
-			$this->instance = $this->createInstanceWithPrototype($factory, $args);
-		}
-		return $this->instance;
+		$_instance = $this->createInstance($factory, $args);
+		$factory->setSingled($this->getAlias(), $_instance);
+		return $_instance;
 	}
 
 	/**
-	 * 
 	 * @modified xiaoxia.xu
 	 * @param AbstractWindFactory $factory
 	 * @param array $args
 	 */
-	protected function createInstance($factory, $args = array()) {
-		$instance = null;
-		if (empty($args)) {
-			$args = $this->setProperties($this->getConstructArgs(), $factory);
-		}
+	protected function createInstance($factory, $args) {
+		$args = $this->buildConstructArgs($factory, $args);
 		$instance = $factory->createInstance($this->getClassName(), $args);
+		if ($instance instanceof WindModule) {
+			$this->buildConfig($instance, $factory);
+			$this->buildProperties($instance, $factory);
+			$this->executeInitMethod($instance);
+			$this->setHiddenProperty($instance, $factory);
+			$instance = $this->setProxyForClass($instance, $factory);
+		}
 		return $instance;
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param instance
-	 * @param proxy
+	 * 为类对象设置配置
+	 * 
+	 * @param WindModule $instance
+	 * @param WindFactory $factory
+	 * @return
 	 */
-	private function setPrototype($instance) {
-		if ($this->prototype === null) {
-			if (($instance instanceof WindModule) && (null !== ($proxy = $instance->getClassProxy())))
-				$this->prototype = $proxy;
-			else
-				$this->prototype = $instance;
+	protected function buildConfig($instance, $factory) {
+		if (!$config = $this->getConfig()) return;
+		if (isset($config[self::RESOURCE])) {
+			$config = $config[self::RESOURCE];
 		}
+		$instance->setConfig($config);
+	}
+
+	/**
+	 * 设置变量隐藏属性
+	 * 
+	 * @param WindModule $instance
+	 * @param WindFactory $factory
+	 * @return
+	 */
+	protected function setHiddenProperty($instance, $factory) {
+		$instance->systemConfig = Wind::getApp()->getWindSystemConfig();
+		$instance->request = Wind::getApp()->getRequest();
+		$instance->response = Wind::getApp()->getResponse();
+		$instance->systemFactory = $factory;
+	}
+
+	/**
+	 * 为类设置代理
+	 * 
+	 * @param WindModule $instance
+	 * @param WindFactory $factory
+	 * @return WindClassProxy
+	 */
+	protected function setProxyForClass($instance, $factory) {
+		if (!($proxy = $this->getProxy()) || $proxy === 'false' || $proxy === false) return $instance;
+		if ($proxy === 'true' || $proxy === true) $proxy = $this->proxyClass;
+		$proxy = $factory->createInstance($proxy, array($instance));
+		if ($proxy !== null) return $proxy;
+		Wind::log(
+			'[core.factory.WindClassDefinition.setProxyForClass] create proxy for ' . $this->getClassName() . ' fail.', 
+			WindLogger::LEVEL_DEBUG, 'wind.core');
+		throw new WindException(
+			'[core.factory.WindClassDefinition.setProxyForClass] create proxy for ' . $this->getClassName() . ' fail.', 
+			WindException::ERROR_SYSTEM_ERROR);
 	}
 
 	/**
@@ -208,60 +230,98 @@ class WindClassDefinition extends WindModule {
 	 * 
 	 * @author xiaoxia.xu
 	 * @param object $instance
+	 * @return
 	 */
 	private function executeInitMethod($instance) {
-		if (!($initMethod = $this->getInitMethod())) return;
-		if (!in_array($initMethod, get_class_methods($instance))) throw new WindException(get_class($instance) . '->' . $initMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
-		$instance->$initMethod();
+		try {
+			if (!($initMethod = $this->getInitMethod())) return;
+			return call_user_func_array(array($instance, $initMethod), array());
+		} catch (Exception $e) {
+			throw new WindException(
+				'[core.factory.WindClassDefinition.executeInitMethod] (' . $this->getClassName() . '->' . $initMethod .
+					 '()) "' . $e->getMessage() . '"', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		}
+	}
+
+	/**
+	 * 构造构造函数参数对象
+	 * 
+	 * @param WindFactory $factory
+	 * @throws WindException
+	 */
+	protected function buildConstructArgs($factory, $args) {
+		if ($args) return $args;
+		$subDefinitions = $this->getConstructArgs();
+		$_tmp = array();
+		foreach ($subDefinitions as $key => $subDefinition) {
+			if (isset($subDefinition[self::VALUE])) {
+				$_tmp[$key] = $subDefinition[self::VALUE];
+			} elseif (isset($subDefinition[self::REF]))
+				$_tmp[$key] = $factory->getInstance($subDefinition[self::REF]);
+		}
+		return $_tmp;
 	}
 
 	/**
 	 * 将类实例的依赖注入到类实例中
-	 * @param array $subDefinitions | 类定义
-	 * @param AbstractWindFactory $factory | 抽象的类工厂
-	 * @param object  $instance | 类实例
+	 * 
+	 * @param WindModule  $instance | 类实例
+	 * @param WindFactory $factory | 抽象的类工厂
 	 */
-	private function setProperties($subDefinitions, $factory, $instance = null) {
-		$_temp = array();
+	protected function buildProperties($instance, $factory) {
+		if (!$subDefinitions = $this->getPropertys()) return;
 		foreach ($subDefinitions as $key => $subDefinition) {
-			if (isset($subDefinition[self::REF]))
-				$_temp[$key] = $factory->getInstance($subDefinition[self::REF]);
-			elseif (isset($subDefinition[self::VALUE]))
-				$_temp[$key] = $subDefinition[self::VALUE];
-			if ($instance !== null) {
-				call_user_func_array(array($instance, 'set' . ucfirst(trim($key, '_'))), array($_temp[$key]));
+			$_value = '';
+			if (isset($subDefinition[self::VALUE])) $_value = $subDefinition[self::VALUE];
+			if ($_value) {
+				$_setter = 'set' . ucfirst(trim($key, '_'));
+				call_user_func_array(array($instance, $_setter), array($_value));
 			}
 		}
-		return $_temp;
+		$instance->setDelayAttributes($subDefinitions);
 	}
 
 	/**
-	 * Enter description here ...
+	 * 执行调用工厂方法
 	 * 
 	 * @param array $args
 	 * @throws WindException
 	 * @return NULL|mixed
 	 */
-	private function executeFactoryMethod($args) {
-		if (!($factoryMethod = $this->getFactoryMethod())) return null;
-		if (!in_array($factoryMethod, get_class_methods($this->getClassName()))) throw new WindException($this->getClassName() . '->' . $factoryMethod, WindException::ERROR_CLASS_METHOD_NOT_EXIST);
-		return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
+	protected function executeFactoryMethod($args) {
+		try {
+			if (!($factoryMethod = $this->getFactoryMethod())) return null;
+			return call_user_func_array(array($this->getClassName(), $factoryMethod), $args);
+		} catch (Exception $e) {
+			throw new WindException(
+				'[core.factory.WindClassDefinition.executeFactoryMethod] (' . $this->getClassName() . '->' .
+					 $factoryMethod . ')', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		}
 	}
 
 	/**
 	 * 初始化类定义
+	 * 
 	 * @param array $classDefinition
 	 */
 	protected function init($classDefinition) {
-		if (empty($classDefinition)) return;
-		if (isset($classDefinition[self::NAME])) $this->setAlias($classDefinition[self::NAME]);
-		if (isset($classDefinition[self::PATH])) $this->setPath($classDefinition[self::PATH]);
-		if (isset($classDefinition[self::SCOPE])) $this->setScope($classDefinition[self::SCOPE]);
-		if (isset($classDefinition[self::FACTORY_METHOD])) $this->setFactoryMethod($classDefinition[self::FACTORY_METHOD]);
-		if (isset($classDefinition[self::INIT_METHOD])) $this->setInitMethod($classDefinition[self::INIT_METHOD]);
-		if (isset($classDefinition[self::PROPERTIES])) $this->setPropertys($classDefinition[self::PROPERTIES]);
-		if (isset($classDefinition[self::CONSTRUCTOR_ARG])) $this->setConstructArgs($classDefinition[self::CONSTRUCTOR_ARG]);
-		$this->setClassDefinition($classDefinition);
+		try {
+			if (empty($classDefinition)) return;
+			foreach ($classDefinition as $key => $value) {
+				if (strpos($key, '-') !== false) {
+					list($_s1, $_s2) = explode('-', $key);
+					$_s1 = ucfirst($_s1);
+					$_s2 = ucfirst($_s2);
+					$_setter = 'set' . $_s1 . $_s2;
+				} else
+					$_setter = 'set' . ucfirst($key);
+				call_user_func_array(array($this, $_setter), array($value));
+			}
+			$this->setClassDefinition($classDefinition);
+		} catch (Exception $e) {
+			throw new WindException("[core.factory.WindClassDefinition.init]" . $e->getMessage(), 
+				WindException::ERROR_SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -338,7 +398,7 @@ class WindClassDefinition extends WindModule {
 	 * @return the $propertys
 	 */
 	public function getPropertys() {
-		return $this->propertys;
+		return $this->properties;
 	}
 
 	/**
@@ -360,8 +420,9 @@ class WindClassDefinition extends WindModule {
 	 * @param array $propertys the $propertys to set
 	 * @author Qiong Wu
 	 */
-	public function setPropertys($propertys) {
-		if (is_array($propertys) && !empty($propertys)) $this->propertys += $propertys;
+	public function setProperties($properties) {
+		if (!is_array($properties)) return;
+		$this->properties = array_merge($this->properties, $properties);
 	}
 
 	/**
@@ -411,4 +472,33 @@ class WindClassDefinition extends WindModule {
 	public function setInitMethod($initMethod) {
 		$this->initMethod = $initMethod;
 	}
+
+	/**
+	 * @return the $proxy
+	 */
+	public function getProxy() {
+		return $this->proxy;
+	}
+
+	/**
+	 * @param boolean $proxy
+	 */
+	public function setProxy($proxy) {
+		$this->proxy = $proxy;
+	}
+
+	/**
+	 * @return the $config
+	 */
+	public function getConfig() {
+		return $this->config;
+	}
+
+	/**
+	 * @param string $config
+	 */
+	public function setConfig($config) {
+		$this->config = $config;
+	}
+
 }

@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-3
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * 异常处理机制
  * 
  * the last known user to change this file in the repository  <$LastChangedBy: weihu $>
@@ -15,30 +8,24 @@
  * @package
  */
 class WindException extends Exception {
-
+	/* 系统错误 */
+	const ERROR_SYSTEM_ERROR = '0';
 	/* 类错误 */
 	const ERROR_CLASS_NOT_EXIST = '100';
-
 	const ERROR_CLASS_TYPE_ERROR = '101';
-
 	const ERROR_CLASS_METHOD_NOT_EXIST = '102';
-
 	const ERROR_OBJECT_NOT_EXIST = '103';
-
 	/* 参数错误 */
 	const ERROR_PARAMETER_TYPE_ERROR = '110';
-
 	/* 配置错误 */
 	const ERROR_CONFIG_ERROR = '120';
-
 	/* 返回值类型错误 */
 	const ERROR_RETURN_TYPE_ERROR = '130';
-
+	
 	private $innerException = null;
 
 	/**
 	 * 异常构造函数
-	 * 
 	 * @param $message		     异常信息
 	 * @param $code			     异常代号
 	 * @param $innerException 内部异常
@@ -83,6 +70,7 @@ class WindException extends Exception {
 	 * @return string 组装后的异常信息
 	 */
 	public function buildMessage($message, $code) {
+		$message = str_replace(array("<br />", "<br>", "\r\n"), '', $message);
 		eval('$message="' . addcslashes($this->messageMapper($code), '"') . '";');
 		return $message;
 	}
@@ -94,15 +82,14 @@ class WindException extends Exception {
 	 * @return string 返回异常号对应的异常组装信息原型
 	 */
 	protected function messageMapper($code) {
-		$messages = array(self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
+		$messages = array(self::ERROR_SYSTEM_ERROR => 'System error \'$message\'.', 
+			self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
-			self::ERROR_CLASS_METHOD_NOT_EXIST => 'Unable to access the method \'$message\' in current class , or the method is not exist.', 
+			self::ERROR_CLASS_METHOD_NOT_EXIST => 'Unable to access the method \'$message\' in current class , the method is not exist or is protected.', 
 			self::ERROR_OBJECT_NOT_EXIST => 'Unable to access the object in current class \'$message\' ', 
 			self::ERROR_CONFIG_ERROR => 'Incorrect config. the config about \'$message\' error.', 
 			self::ERROR_PARAMETER_TYPE_ERROR => 'Incorrect parameter type \'$message\'.', 
 			self::ERROR_RETURN_TYPE_ERROR => 'Incorrect return type for \'$message\'.');
-		
 		return isset($messages[$code]) ? $messages[$code] : '$message';
 	}
-
 }

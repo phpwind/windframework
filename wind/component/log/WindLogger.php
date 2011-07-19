@@ -6,7 +6,7 @@
  * @version $Id$ 
  * @package
  */
-class WindLogger extends WindComponentModule {
+class WindLogger extends WindModule {
 	const LEVEL_INFO = 1;
 	const LEVEL_TRACE = 2;
 	const LEVEL_DEBUG = 3;
@@ -202,7 +202,7 @@ class WindLogger extends WindComponentModule {
 	 * @return string
 	 */
 	private function _build($msg, $level, $type, $timer = 0, $mem = 0) {
-		$msg = stripslashes(str_replace("<br/>", "\r\n", trim($msg)));
+		$msg = stripslashes(str_replace(array("<br/>", "\r\n", "<br>"), "", trim($msg)));
 		$result = '';
 		switch ($level) {
 			case self::LEVEL_INFO:
@@ -241,7 +241,8 @@ class WindLogger extends WindComponentModule {
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
 			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
 			$_token = substr($_token, 0, strpos($_token, ':'));
-			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
+			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, 
+				$timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
 			$_msg = "PROFILE! Message: \r\n";
 			$_token = substr($msg, strlen(self::TOKEN_END));
@@ -325,72 +326,73 @@ class WindLogger extends WindComponentModule {
 	private function _getTrace() {
 		$num = 0;
 		$info[] = 'Stack trace:';
-		$traces = debug_backtrace(false);
+		$traces = debug_backtrace();
 		foreach ($traces as $traceKey => $trace) {
 			if ($num >= 7) break;
-			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
-			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
-			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
-			if ($function == 'WindBase::log') continue;
-			$args = array_map(array($this, '_buildArg'), $trace['args']);
-			$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
+			if ((isset($trace['class']) && $trace['class'] == __CLASS__) ||
+				 isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
+				$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
+				$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
+				if ($function == 'WindBase::log') continue;
+				$args = array_map(array($this, '_buildArg'), $trace['args']);
+				$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
+			}
+			return $info;
 		}
-		return $info;
-	}
 
-	/**
-	 * 组装输出的trace中的参数组装
-	 * @param mixed $arg
-	 */
-	private function _buildArg($arg) {
-		switch (gettype($arg)) {
-			case 'array':
-				return 'Array';
-				break;
-			case 'object':
-				return 'Object ' . get_class($arg);
-				break;
-			default:
-				return "'" . $arg . "'";
-				break;
+		/**
+		 * 组装输出的trace中的参数组装
+		 * @param mixed $arg
+		 */
+		private function _buildArg($arg) {
+			switch (gettype($arg)) {
+				case 'array':
+					return 'Array';
+					break;
+				case 'object':
+					return 'Object ' . get_class($arg);
+					break;
+				default:
+					return "'" . $arg . "'";
+					break;
+			}
+		}
+
+		/**
+		 * 取得日志文件名
+		 * @return string 
+		 */
+		private function _getFileName($suffix = '') {
+			$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
+			$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
+			if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
+				$counter = 0;
+				do {
+					$counter++;
+					$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
+				} while (is_file($_newFile));
+				@rename($_logfile, $_newFile);
+			}
+			return $_logfile;
+		}
+
+		public function __destruct() {
+			$this->flush();
+		}
+
+		/**
+		 * @param field_type $_logFile
+		 */
+		public function setLogDir($logDir) {
+			$this->_logDir = $logDir;
+		}
+
+		/**
+		 * @param field_type $_maxFileSize
+		 */
+		public function setMaxFileSize($maxFileSize) {
+			$this->_maxFileSize = (int) $maxFileSize;
 		}
 	}
-
-	/**
-	 * 取得日志文件名
-	 * @return string 
-	 */
-	private function _getFileName($suffix = '') {
-		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
-		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
-		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
-			$counter = 0;
-			do {
-				$counter++;
-				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
-			} while (is_file($_newFile));
-			@rename($_logfile, $_newFile);
-		}
-		return $_logfile;
-	}
-
-	public function __destruct() {
-		$this->flush();
-	}
-
-	/**
-	 * @param field_type $_logFile
-	 */
-	public function setLogDir($logDir) {
-		$this->_logDir = $logDir;
-	}
-
-	/**
-	 * @param field_type $_maxFileSize
-	 */
-	public function setMaxFileSize($maxFileSize) {
-		$this->_maxFileSize = (int) $maxFileSize;
-	}
-}
 
 	

@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-7
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-Wind::import('WIND:core.request.IWindRequest');
-/**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -74,41 +67,55 @@ class WindHttpRequest implements IWindRequest {
 		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
 	}
 
-	public function setAttribute($name, $value) {
-		$this->_attribute[$name] = $value;
+	/**
+	 * 设置属性数据
+	 * 
+	 * @param string|array|object $data
+	 * @param string $key
+	 * @return
+	 */
+	public function setAttribute($data, $key = '') {
+		if ($key) {
+			$this->_attribute[$key] = $data;
+			return;
+		}
+		if (is_object($data)) $data = get_object_vars($data);
+		if (is_array($data)) $this->_attribute = array_merge($this->_attribute, $data);
 	}
 
 	/**
 	 * 根据名称获得服务器和执行环境信息
+	 * 
 	 * @param string|null $name
+	 * @return string|object|array|
 	 */
-	public function getAttribute($name, $value = '') {
-		if (isset($this->_attribute[$name]))
-			return $this->_attribute[$name];
-		else if (isset($_GET[$name]))
-			return $_GET[$name];
-		else if (isset($_POST[$name]))
-			return $_POST[$name];
-		else if (isset($_COOKIE[$name]))
-			return $_COOKIE[$name];
-		else if (isset($_REQUEST[$name]))
-			return $_REQUEST[$name];
-		else if (isset($_ENV[$name]))
-			return $_ENV[$name];
-		else if (isset($_SERVER[$name]))
-			return $_SERVER[$name];
+	public function getAttribute($key, $defaultValue = '') {
+		if (isset($this->_attribute[$key]))
+			return $this->_attribute[$key];
+		else if (isset($_GET[$key]))
+			return $_GET[$key];
+		else if (isset($_POST[$key]))
+			return $_POST[$key];
+		else if (isset($_COOKIE[$key]))
+			return $_COOKIE[$key];
+		else if (isset($_REQUEST[$key]))
+			return $_REQUEST[$key];
+		else if (isset($_ENV[$key]))
+			return $_ENV[$key];
+		else if (isset($_SERVER[$key]))
+			return $_SERVER[$key];
 		else
-			return $value;
+			return $defaultValue;
 	}
 
 	/**
 	 * 返回$_GET,$_POST的值，未设置则返回default
 	 * @param string $name | attribute name 
 	 */
-	public function getRequest($name = null, $defaultValue = null) {
-		if (!$name) return array_merge($_POST, $_GET);
-		if (isset($_GET[$name])) return $_GET[$name];
-		if (isset($_POST[$name])) return $_POST[$name];
+	public function getRequest($key = null, $defaultValue = null) {
+		if (!$key) return array_merge($_POST, $_GET);
+		if (isset($_GET[$key])) return $_GET[$key];
+		if (isset($_POST[$key])) return $_POST[$key];
 		return $defaultValue;
 	}
 
@@ -522,8 +529,10 @@ class WindHttpRequest implements IWindRequest {
 			$ip = strtok($_ip, ',');
 			do {
 				$ip = ip2long($ip);
-				if (!(($ip == 0) || ($ip == 0xFFFFFFFF) || ($ip == 0x7F000001) || (($ip >= 0x0A000000) && ($ip <= 0x0AFFFFFF)) || (($ip >= 0xC0A8FFFF) && ($ip <= 0xC0A80000)) || (($ip >= 0xAC1FFFFF) && ($ip <= 0xAC100000)))) {
-					$this->_clientIp = long2ip($ip);
+				if (!(($ip == 0) || ($ip == 0xFFFFFFFF) || ($ip == 0x7F000001) ||
+					 (($ip >= 0x0A000000) && ($ip <= 0x0AFFFFFF)) || (($ip >= 0xC0A8FFFF) && ($ip <= 0xC0A80000)) ||
+					 (($ip >= 0xAC1FFFFF) && ($ip <= 0xAC100000)))) {
+						$this->_clientIp = long2ip($ip);
 					return;
 				}
 			} while (($ip = strtok(',')));
@@ -551,7 +560,8 @@ class WindHttpRequest implements IWindRequest {
 			$this->_requestUri = $requestUri;
 		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
 			$this->_requestUri = $requestUri;
-			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace(
+				'/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
 			$this->_requestUri = $requestUri;
 			if (($query = $this->getServer('QUERY_STRING')) != null) $this->_requestUri .= '?' . $query;
@@ -570,64 +580,68 @@ class WindHttpRequest implements IWindRequest {
 	 * @return
 	 */
 	private function _initScriptUrl() {
-		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
+		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(
+			__CLASS__ . ' determine the entry script URL failed!!!');
 		$scriptName = basename($scriptName);
 		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
 			$this->_scriptUrl = $_scriptName;
 		} elseif (($_scriptName = $this->getServer('PHP_SELF')) != null && basename($_scriptName) === $scriptName) {
 			$this->_scriptUrl = $_scriptName;
-		} elseif (($_scriptName = $this->getServer('ORIG_SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
-			$this->_scriptUrl = $_scriptName;
-		} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
-			$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
-		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
-			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
-		} else
-			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
-	}
+		} elseif (($_scriptName = $this->getServer('ORIG_SCRIPT_NAME')) != null &&
+			 basename($_scriptName) === $scriptName) {
+				$this->_scriptUrl = $_scriptName;
+			} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
+				$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
+			} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null &&
+				 ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null &&
+				 strpos($_scriptName, $_documentRoot) === 0) {
+					$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
+			} else
+				throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
+		}
 
-	/**
-	 * 获得主机信息，包含协议信息，主机名，访问端口信息
-	 * 
-	 * Example:
-	 * http://www.phpwind.net/example/index.php?a=test
-	 * $this->_hostInfo = http://www.phpwind.net/
-	 * $this->_hostInfo = http://www.phpwind.net:80/
-	 * $this->_hostInfo = https://www.phpwind.net:443/
-	 * 
-	 * @throws WindException
-	 * @return 
-	 */
-	private function _initHostInfo() {
-		$http = $this->isSecure() ? 'https' : 'http';
-		if (($httpHost = $this->getServer('HTTP_HOST')) != null)
-			$this->_hostInfo = $http . '://' . $httpHost;
-		elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
-			$this->_hostInfo = $http . '://' . $httpHost;
-			if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
-		} else
-			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
-	}
+		/**
+		 * 获得主机信息，包含协议信息，主机名，访问端口信息
+		 * 
+		 * Example:
+		 * http://www.phpwind.net/example/index.php?a=test
+		 * $this->_hostInfo = http://www.phpwind.net/
+		 * $this->_hostInfo = http://www.phpwind.net:80/
+		 * $this->_hostInfo = https://www.phpwind.net:443/
+		 * 
+		 * @throws WindException
+		 * @return 
+		 */
+		private function _initHostInfo() {
+			$http = $this->isSecure() ? 'https' : 'http';
+			if (($httpHost = $this->getServer('HTTP_HOST')) != null)
+				$this->_hostInfo = $http . '://' . $httpHost;
+			elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
+				$this->_hostInfo = $http . '://' . $httpHost;
+				if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
+			} else
+				throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
+		}
 
-	/**
-	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
-	 * 
-	 * @throws WindException
-	 * @return
-	 */
-	private function _initPathInfo() {
-		$requestUri = urldecode($this->getRequestUri());
-		$scriptUrl = $this->getScriptUrl();
-		$baseUrl = $this->getBaseUrl();
-		if (strpos($requestUri, $scriptUrl) === 0)
-			$pathInfo = substr($requestUri, strlen($scriptUrl));
-		elseif ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
-			$pathInfo = substr($requestUri, strlen($baseUrl));
-		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
-			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
-		else
-			throw new WindException('');
-		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
-		$this->_pathInfo = trim($pathInfo, '/');
+		/**
+		 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
+		 * 
+		 * @throws WindException
+		 * @return
+		 */
+		private function _initPathInfo() {
+			$requestUri = urldecode($this->getRequestUri());
+			$scriptUrl = $this->getScriptUrl();
+			$baseUrl = $this->getBaseUrl();
+			if (strpos($requestUri, $scriptUrl) === 0)
+				$pathInfo = substr($requestUri, strlen($scriptUrl));
+			elseif ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
+				$pathInfo = substr($requestUri, strlen($baseUrl));
+			elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
+				$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+			else
+				throw new WindException('');
+			if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
+			$this->_pathInfo = trim($pathInfo, '/');
+		}
 	}
-}

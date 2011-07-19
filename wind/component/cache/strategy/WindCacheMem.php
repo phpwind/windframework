@@ -74,8 +74,8 @@ class WindCacheMem extends AbstractWindCache {
 		return $this->memcache->flush();
 	}
 
-	/* 
-	 * @see WindComponentModule::setConfig()
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);

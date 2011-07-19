@@ -5,7 +5,6 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-
 Wind::import('WIND:core.config.WindConfig');
 /**
  * 框架配置对象windConfig类，
@@ -15,40 +14,24 @@ Wind::import('WIND:core.config.WindConfig');
  * @package 
  */
 class WindSystemConfig extends WindConfig {
-
 	/* 通用配置 */
 	const CLASS_PATH = 'class';
-
 	const PATH = 'path';
-
 	const VALUE = 'value';
-
 	/* import 外部配置文件包含 */
 	const IMPORTS = 'imports';
-
 	const IMPORTS_RESOURCE = 'resource';
-
 	const IMPORTS_IS_APPEND = 'is-append';
-
 	/* app 相关配置 */
 	const WEB_APPS = 'web-apps';
-
 	const WEB_APP_ROOT_PATH = 'root-path';
-
 	const WEB_APP_FACTORY = 'factory';
-
 	const WEB_APP_FACTORY_CLASS_DEFINITION = 'class-definition';
-
 	const WEB_APP_FILTER = 'filters';
-
 	const WEB_APP_ROUTER = 'router';
-
 	const WEB_APP_MODULE = 'modules';
-
 	const WEB_APP_TEMPLATE = 'template';
-
 	protected $appName = '';
-
 	protected $imports = array();
 
 	/**
@@ -93,12 +76,10 @@ class WindSystemConfig extends WindConfig {
 
 	/**
 	 * 返回应用路径信息
-	 * 
 	 * @return string
 	 */
 	public function getRootPath($appName = '') {
 		if ($appName === '') $appName = $this->appName;
-		
 		$_tmp = $appName . '_RootPath';
 		if (!isset($this->$_tmp)) {
 			$appConfig = $this->getConfig(self::WEB_APPS, $appName);
@@ -106,8 +87,6 @@ class WindSystemConfig extends WindConfig {
 				$rootPath = $appConfig[self::WEB_APP_ROOT_PATH];
 			else
 				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
-			
-		//TODO 绝对路径相对路径判断，相对于webroot，支持自定义路径
 			$this->$_tmp = $rootPath;
 		}
 		return $this->$_tmp;
@@ -122,12 +101,30 @@ class WindSystemConfig extends WindConfig {
 	}
 
 	/**
+	 * 返回filterChain的类型
+	 * @return array
+	 */
+	public function getFilterClass() {
+		return $this->getFilters(self::CLASS_PATH);
+	}
+
+	/**
+	 * 返回配置定义中定义的过滤链列表
+	 * 如果定义$name则返回在filters定义标签内对应的属性值
 	 * @param string $name
 	 * @return array|string
 	 */
 	public function getFilters($name = '') {
 		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
 		return $this->getConfig(self::WEB_APP_FILTER, $name, $_config);
+	}
+
+	/**
+	 * 返回路由类型定义
+	 * @return string
+	 */
+	public function getRouterClass() {
+		return $this->getRouter(WIND_CONFIG_CLASS);
 	}
 
 	/**
@@ -141,12 +138,83 @@ class WindSystemConfig extends WindConfig {
 	}
 
 	/**
+	 * <modules>
+	 * <!-- name: 模块的名字    path: 模块的路径（采用命名空间的方式) -->
+	 * <module name='default' path='controller'>
+	 * <!-- 指定该模块下的controller的后缀格式 -->
+	 * <controller-suffix value='Controller' />
+	 * <!-- 配置该模块的error处理的action controller类 -->
+	 * <error-handler class='WIND:core.web.WindErrorHandler'/>
+	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
+	 * <view>
+	 * <config>
+	 * <!-- 指定模板路径 -->
+	 * <template-dir value='template' />
+	 * <!-- 指定模板后缀 -->
+	 * <template-ext value='htm' />
+	 * <!-- 模板编译文件存放路径 -->
+	 * <compile-dir value='compile.template' />
+	 * </config>
+	 * </view>
+	 * </module>
+	 * </modules>
 	 * @param string $name
 	 * @return array|string
 	 */
 	public function getModules($name = '') {
 		$_config = $this->getConfig(self::WEB_APPS, $this->appName);
 		return $this->getConfig(self::WEB_APP_MODULE, $name, $_config);
+	}
+
+	/**
+	 * 根据module名称返回module的视图处理类
+	 * @param string $name
+	 * @param string $default
+	 */
+	public function getModuleViewClassByModuleName($name, $default = '') {
+		$module = $this->getModules($name);
+		return $this->getConfig('view', WIND_CONFIG_CLASS, $module, $default);
+	}
+
+	/**
+	 * 根据module名称返回module的视图配置信息
+	 * @param string $name
+	 * @param string $default
+	 */
+	public function getModuleViewConfigByModuleName($name, $default = '') {
+		$module = $this->getModules($name);
+		return $this->getConfig('view', WIND_CONFIG_CONFIG, $module, $default);
+	}
+
+	/**
+	 * 根据module名称返回错误的处理句柄
+	 * @param string $name
+	 * @param string $default
+	 * @return string
+	 */
+	public function getModuleErrorHandlerByModuleName($name, $default = '') {
+		$module = $this->getModules($name);
+		return $this->getConfig('error-handler', WIND_CONFIG_CLASS, $module, $default);
+	}
+
+	/**
+	 * 返回指定moduleName的controller路径信息
+	 * @param string $name
+	 * @return string
+	 */
+	public function getModuleControllerPathByModuleName($name, $default = '') {
+		$module = $this->getModules($name);
+		return $this->getConfig(WIND_CONFIG_CLASSPATH, '', $module, $default);
+	}
+
+	/**
+	 * 返回指定moduleName的controller后缀
+	 * @param string $name
+	 * @return string
+	 */
+	public function getModuleControllerSuffixByModuleName($name, $default = '') {
+		$module = $this->getModules($name);
+		return $this->getConfig('controller-suffix', WIND_CONFIG_VALUE, $module, $default);
 	}
 
 	/**
@@ -209,5 +277,4 @@ class WindSystemConfig extends WindConfig {
 		}
 		return $this->imports[$name];
 	}
-
 }

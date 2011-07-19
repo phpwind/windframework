@@ -1,6 +1,5 @@
 <?php
-Wind::import('WIND:core.factory.proxy.WindClassProxy');
-Wind::import('WIND:core.factory.WindFactory');
+Wind::import('COM:dao.exception.WindDaoException');
 /**
  * Dao工厂
  * 
@@ -14,38 +13,48 @@ Wind::import('WIND:core.factory.WindFactory');
  * @version $Id$
  * @package 
  */
-class WindDaoFactory {
-	protected $windFactory = null;
+class WindDaoFactory extends WindModule {
+	/**
+	 * dao 实例数组
+	 *
+	 * @var array
+	 */
+	private $daos = array();
+	/**
+	 * dao路径信息
+	 *
+	 * @var string
+	 */
 	protected $daoResource = '';
-	protected $dbConnections = array();
-	protected $caches = array();
 
 	/**
 	 * 返回Dao类实例
+	 * $className接受两种形式呃参数如下
+	 * 'namespace:path'
+	 * 'className'
+	 * 
 	 * @param string $className
 	 * @return WindDao
 	 */
 	public function getDao($className) {
 		try {
-			$_path = '';
-			if (strpos($className, ":") !== false || strpos($className, ".") !== false) {
-				$_path = $className;
-			} elseif ($this->getDaoResource()) {
-				$_path = $this->getDaoResource() . '.' . $className;
-			} else {
-				$_path = $className;
+			if (strpos($className, ":") === false && strpos($className, ".") === false) {
+				$className = $this->getDaoResource() . '.' . $className;
 			}
-			$className = Wind::import($_path);
+			if (isset($this->daos[$className])) return $this->daos[$className];
+			
+			$className = Wind::import($className);
 			$daoInstance = WindFactory::createInstance($className);
-			$daoInstance->setConnection($this->createDbConnection($daoInstance));
-			if (!$daoInstance->getIsDataCache()) return $daoInstance;
-			$daoInstance->setCacheHandler($this->createCacheHandler($daoInstance));
-			$daoInstance->setClassProxy(new WindClassProxy());
-			$daoInstance = $daoInstance->getClassProxy();
-			$this->registerCacheListener($daoInstance);
+			$this->createDbConnection($daoInstance);
+			$this->createCacheHandler($daoInstance);
 			return $daoInstance;
 		} catch (Exception $exception) {
-			throw new WindDaoException($exception->getMessage());
+			Wind::log(
+				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' .
+					 $exception->getMessage(), WindLogger::LEVEL_DEBUG, 'wind.component');
+			throw new WindDaoException(
+				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' .
+					 $exception->getMessage());
 		}
 	}
 
@@ -83,49 +92,56 @@ class WindDaoFactory {
 	}
 
 	/**
-	 * 返回链接对象
+	 * 创建db链接句柄
+	 * 
 	 * @param WindDao $daoObject
-	 * @return WindConnection
 	 */
 	protected function createDbConnection($daoObject) {
-		$defintion = $daoObject->getDbDefinition();
-		$_className = $defintion->getClassName();
-		$_classConfig = $defintion->getConfig();
-		$_alias = $_className . '_' . md5(serialize($_classConfig));
-		if (!isset($this->dbConnections[$_alias])) {
-			$this->_getWindFactory();
-			$this->windFactory->addClassDefinitions($defintion);
-			$this->dbConnections[$_alias] = $this->windFactory->getInstance($defintion->getAlias());
+		if (!($_className = $daoObject->getDbClass())) return;
+		$_classConfig = $daoObject->getDbConfig();
+		$_alias = $_className . '_' . md5((is_string($_classConfig) ? $_classConfig : serialize($_classConfig)));
+		if (!$this->getSystemFactory()->checkAlias($_alias)) {
+			$definition = new WindClassDefinition();
+			$definition->setPath($_className);
+			$definition->setAlias($_alias);
+			$definition->setInitMethod('init');
+			$definition->setScope(WindClassDefinition::SCOPE_SINGLETON);
+			if (is_array($_classConfig))
+				$definition->setConfig($_classConfig);
+			else
+				$definition->setConfig(array(WindClassDefinition::RESOURCE => $_classConfig));
+			
+			$this->getSystemFactory()->addClassDefinitions($definition);
 		}
-		return $this->dbConnections[$_alias];
+		$daoObject->setDelayAttributes(array('connection' => array(WindClassDefinition::REF => $_alias)));
 	}
 
 	/**
-	 * 返回Cache对象
+	 * 创建cache句柄
+	 * 
 	 * @param WindDao $daoObject
-	 * @return AbstractWindCache
 	 */
 	protected function createCacheHandler($daoObject) {
-		$_cacheClass = $daoObject->getCacheClass();
-		if (!isset($this->caches[$_cacheClass])) {
-			$this->_getWindFactory();
-			$defintion = $daoObject->getCacheDefinition();
-			$this->windFactory->addClassDefinitions($defintion);
-			$this->caches[$_cacheClass] = $this->windFactory->getInstance($defintion->getAlias());
+		if (!($_className = $daoObject->getCacheClass())) return;
+		$_classConfig = $daoObject->getCacheConfig();
+		$_alias = $_className . '_' . md5((is_string($_classConfig) ? $_classConfig : serialize($_classConfig)));
+		if (!$this->getSystemFactory()->checkAlias($_alias)) {
+			$definition = new WindClassDefinition();
+			$definition->setPath($_className);
+			$definition->setAlias($_alias);
+			$definition->setInitMethod('init');
+			$definition->setScope(WindClassDefinition::SCOPE_SINGLETON);
+			if (is_array($_classConfig))
+				$definition->setConfig($_classConfig);
+			else
+				$definition->setConfig(array(WindClassDefinition::RESOURCE => $_classConfig));
+			
+			$this->getSystemFactory()->addClassDefinitions($definition);
 		}
-		return $this->caches[$_cacheClass];
+		$daoObject->setDelayAttributes(array('cacheHandler' => array(WindClassDefinition::REF => $_alias)));
+		$daoObject = new WindClassProxy($daoObject);
+		$this->registerCacheListener($daoObject);
 	}
 
-	/**
-	 * 获得ComponentFactory对象
-	 * @return WindComponentFactory
-	 */
-	private function _getWindFactory() {
-		if ($this->windFactory === null) {
-			Wind::import('WIND:core.factory.WindComponentFactory');
-			$this->windFactory = new WindComponentFactory();
-		}
-		return $this->windFactory;
-	}
 }
 ?>

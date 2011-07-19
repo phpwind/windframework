@@ -1,30 +1,23 @@
 <?php
-
 /**
- * Enter description here ...
- *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
-class WindHandlerInterceptor {
-
+class WindHandlerInterceptor extends WindModule {
 	protected $result = null;
+	protected $interceptorChain = null;
 
 	/**
 	 * Enter description here ...
 	 */
-	public function preHandle() {
-
-	}
+	public function preHandle() {}
 
 	/**
 	 * Enter description here ...
 	 */
-	public function postHandle() {
-
-	}
+	public function postHandle() {}
 
 	/**
 	 * Enter description here ...
@@ -46,18 +39,12 @@ class WindHandlerInterceptor {
 	}
 
 	/**
+	 * 设置过滤链对象
+	 * 
 	 * @param WindHandlerInterceptorChain $interceptorChain
 	 */
 	public function setHandlerInterceptorChain($interceptorChain) {
-		if ($interceptorChain instanceof WindComponentModule) {
-			$attributes = $interceptorChain->getAttribute();
-			foreach ($attributes as $key => $value) {
-				$this->$key = $value;
-			}
-		}
 		$this->interceptorChain = $interceptorChain;
 	}
-
 }
-
 ?>

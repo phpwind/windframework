@@ -2,13 +2,13 @@
 /**
  * wind core 基础帮助类
  * 不建议被外部调用
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
 class WindHelper {
-
 
 	/**
 	 * 解析ControllerPath

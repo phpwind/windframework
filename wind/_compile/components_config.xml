@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/request/session/application" 
+<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/" 
 	proxy=''> -->
-<!-- <property property-name='' ref/value=''> -->
+<!-- <property property-name='' ref/value/path=''> -->
 <!-- <constructor-arg ref/value=''> -->
 <!-- <config resource=''> -->
 <!-- </component> -->
@@ -10,20 +10,17 @@
 <components>
 	<!-- app -->
 	<component name='windWebApp' path='WIND:core.web.WindWebApplication'
-		scope='request'>
+		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
 		</properties>
 	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
 		scope='prototype'>
+		<properties>
+			<property name='urlHelper' ref='urlHelper' />
+		</properties>
 	</component>
-
-	<!-- logger -->
-	<component name='windLogger' path='WIND:component.log.WindLogger'
-		scope='request'>
-	</component>
-
 	<!-- forward -->
 	<component name='forward' path='WIND:core.web.WindForward'
 		scope='prototype'>
@@ -31,7 +28,7 @@
 
 	<!-- urlBasedRouter -->
 	<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
-		scope="application">
+		scope="prototype">
 		<config>
 			<module url-param='m' default-value='default' />
 			<controller url-param='c' default-value='index' />
@@ -51,28 +48,26 @@
 	</component>
 
 	<!-- windView -->
-	<component name='windView' path='WIND:core.viewer.WindView'
+	<component name='windView' init-method='init' path='COM:viewer.WindView'
 		scope='prototype'>
 		<config>
 			<template-dir value='template' />
 			<template-ext value='htm' />
 			<is-cache value='true' />
-			<cache-dir value='cache' />
-			<compile-dir value='compile.template' />
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='WIND:core.viewer.WindViewerResolver'
+	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
 		scope='prototype'>
 		<properties>
 			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
-	<component name='template' path='WIND:core.viewer.compiler.WindViewTemplate'
+	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
-		<config resource=''/>
+		<config resource='' />
 	</component>
 
 	<!-- error -->

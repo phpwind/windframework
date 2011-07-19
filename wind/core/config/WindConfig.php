@@ -1,27 +1,15 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-12-21
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-Wind::import('WIND:core.WindModule');
-/**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-class WindConfig extends WindModule {
-
+class WindConfig {
 	/* 配置解析信息 */
 	protected $configParser = null;
-
 	protected $cacheName;
-
 	protected $append;
-
 	protected $config = array();
 
 	/**
@@ -47,13 +35,11 @@ class WindConfig extends WindModule {
 	public function getConfig($configName = '', $subConfigName = '', $config = array(), $default = null) {
 		if (!$config) $config = $this->config;
 		if ($configName === '') return $config;
-		
 		$_config = $default;
 		if (isset($config[$configName])) {
 			$_config = $config[$configName];
 		}
 		if ($subConfigName === '') return $_config;
-		
 		$_subConfig = $default;
 		if (is_array($_config) && isset($_config[$subConfigName])) {
 			$_subConfig = $_config[$subConfigName];
@@ -147,5 +133,4 @@ class WindConfig extends WindModule {
 	public function setAppend($append) {
 		$this->append = $append;
 	}
-
 }

@@ -1,25 +1,16 @@
 <?php
-
-Wind::import('WIND:core.WindComponentModule');
 Wind::import('WIND:component.utility.WindFile');
 /**
- * Enter description here ...
- *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindViewTemplate extends WindComponentModule {
-
+abstract class AbstractWindViewTemplate extends WindModule {
 	const SUPPORT_TAGS = 'support-tags';
-
 	const TAG = 'tag';
-
 	const REGEX = 'regex';
-
 	const COMPILER = 'compiler';
-
 	const PATTERN = 'pattern';
 
 	/**
@@ -31,16 +22,15 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 
 	/**
 	 * 进行视图渲染
+	 * 
+	 * 
 	 * @param string $templateFile | 模板文件
-	 * @param string $compileFile | 编译后生成的文件
 	 * @param WindViewerResolver $windViewerResolver
 	 */
-	public function compile($templateFile, $compileFile, $windViewerResolver) {
-		if (!$this->checkReCompile($templateFile, $compileFile)) return null;
+	public function compile($templateFile, $windViewerResolver) {
 		$_output = $this->getTemplateFileContent($templateFile);
 		$_output = $this->compileDelimiter($_output);
 		$_output = $this->doCompile($_output, $windViewerResolver);
-		$this->cacheCompileResult($compileFile, $_output);
 		return $_output;
 	}
 
@@ -67,38 +57,7 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 			fclose($fp);
 		} else
 			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
-		
 		return $_output;
-	}
-
-	/**
-	 * 将编译结果进行缓存
-	 * @param string $compileFile | 编译缓存文件
-	 * @param string $content | 模板内容
-	 */
-	private function cacheCompileResult($compileFile, $content) {
-		//TODO 修复模板在非Debug模式下不能生成问题
-		if (!$compileFile && !$content) return;
-		WindFile::write($compileFile, $content);
-	}
-
-	/**
-	 * 检查是否需要重新编译
-	 * 
-	 * @param string $templateFile
-	 * @param string $compileFile
-	 */
-	private function checkReCompile($templateFile, $compileFile) {
-		$_reCompile = false;
-		if (IS_DEBUG) {
-			$_reCompile = true;
-		} elseif (false === ($compileFileModifyTime = @filemtime($compileFile))) {
-			$_reCompile = true;
-		} else {
-			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
-		}
-		return $_reCompile;
 	}
 
 	/**
@@ -110,5 +69,4 @@ abstract class AbstractWindViewTemplate extends WindComponentModule {
 		return $this->getConfig(self::SUPPORT_TAGS);
 	}
 }
-
 ?>

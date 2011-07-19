@@ -1,9 +1,7 @@
 <?php
-
 Wind::import('WIND:core.filter.WindHandlerInterceptor');
-
 /**
- * Enter description here ...
+ * 视图解析,抽象接口
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -11,21 +9,21 @@ Wind::import('WIND:core.filter.WindHandlerInterceptor');
  * @package 
  */
 abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
-
+	
 	protected $tags = array();
-
+	
 	/**
 	 * @var WindViewTemplate
 	 */
 	protected $windViewTemplate = null;
-
+	
 	/**
 	 * @var WindViewerResolver
 	 */
 	protected $windViewerResolver = null;
-
+	
 	protected $request = null;
-
+	
 	protected $response = null;
 
 	/**
@@ -53,16 +51,14 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	abstract public function compile($key, $content);
 
 	/**
-	 * 解析属性值
-	 * @param string $content
+	 * 编译前预处理
 	 */
-	protected function compileProperty($content) {
-		foreach ($this->getProperties() as $value) {
-			if (!$value) continue;
-			preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', $content, $result);
-			if ($result) $this->$value = trim(str_replace($result[1], '', $result[0]));
-		}
-	}
+	protected function preCompile() {}
+
+	/**
+	 * 编译后处理结果
+	 */
+	protected function postCompile() {}
 
 	/**
 	 * 返回该标签支持的属性信息
@@ -71,8 +67,17 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 		return array();
 	}
 
-	protected function preCompile() {
-
+	/**
+	 * 解析属性值
+	 * 
+	 * @param string $content
+	 */
+	protected function compileProperty($content) {
+		foreach ($this->getProperties() as $value) {
+			if (!$value) continue;
+			preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', $content, $result);
+			if ($result) $this->$value = trim(str_replace($result[1], '', $result[0]));
+		}
 	}
 
 	/* (non-PHPdoc)
@@ -90,12 +95,10 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 		$this->postCompile();
 	}
 
-	/**
-	 * 编译后处理结果
+	/* (non-PHPdoc)
+	 * @see WindHandlerInterceptor::postHandle()
 	 */
-	protected function postCompile() {
-
-	}
+	public function postHandle() {}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::handle()
@@ -109,13 +112,8 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 		call_user_func_array(array($this, 'postHandle'), $args);
 	}
 
-	/* (non-PHPdoc)
-	 * @see WindHandlerInterceptor::postHandle()
-	 */
-	public function postHandle() {}
-
 	/**
-	 * @return WindViewTemplate $windViewTemplate
+	 * @return WindViewTemplate
 	 */
 	protected function getWindViewTemplate() {
 		return $this->windViewTemplate;

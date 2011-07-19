@@ -1,5 +1,5 @@
 <?php
-Wind::import("WIND:component.db.exception.WindDbException");
+Wind::import("COM:db.exception.WindDbException");
 Wind::import("WIND:component.db.WindResultSet");
 
 /**
@@ -7,7 +7,7 @@ Wind::import("WIND:component.db.WindResultSet");
  * @version $Id$
  * @package 
  */
-class WindConnection extends WindComponentModule {
+class WindConnection extends WindModule {
 	const DSN = 'dsn';
 	const USER = 'user';
 	const PWD = 'pwd';
@@ -208,14 +208,15 @@ class WindConnection extends WindComponentModule {
 
 	/**
 	 * 初始化DB句柄
+	 * 
 	 * @throws Exception
 	 * @return 
 	 */
 	public function init() {
-		parent::init();
 		if ($this->_dbHandle !== null) return;
 		try {
-			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", WindLogger::LEVEL_INFO);
+			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", 
+				WindLogger::LEVEL_INFO);
 			$driverName = $this->getDriverName();
 			if ($driverName) {
 				$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
@@ -228,7 +229,10 @@ class WindConnection extends WindComponentModule {
 			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
-			Wind::log("component.db.WindConnection._init() \r\n dsn: " . $this->_dsn . " \r\n username: " . $this->_user . " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, WindLogger::LEVEL_DEBUG);
+			Wind::log(
+				"component.db.WindConnection.init() \r\n dsn: " . $this->_dsn . " \r\n username: " . $this->_user .
+					 " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, 
+					WindLogger::LEVEL_DEBUG);
 		} catch (PDOException $e) {
 			$this->close();
 			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
@@ -238,7 +242,7 @@ class WindConnection extends WindComponentModule {
 
 	/**
 	 *  (non-PHPdoc)
-	 * @see WindComponentModule::setConfig()
+	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);

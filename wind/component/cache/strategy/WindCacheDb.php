@@ -182,8 +182,8 @@ class WindCacheDb extends AbstractWindCache {
 		$this->dbHandler = $dbHandler;
 	}
 
-	/* 
-	 * @see WindComponentModule#setConfig()
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);

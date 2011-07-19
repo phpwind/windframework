@@ -1,18 +1,15 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-16
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-Wind::import('WIND:core.WindComponentModule');
-/**
+ * 简单应用控制器
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
+ * @version $Id$
  * @package 
  */
-abstract class WindAction extends WindComponentModule {
+abstract class WindSimpleController extends WindModule implements IWindController {
+	/**
+	 * @var WindForward
+	 */
 	protected $forward = null;
 	/**
 	 * @var WindUrlHelper
@@ -26,34 +23,47 @@ abstract class WindAction extends WindComponentModule {
 	/**
 	 * 默认的操作处理方法
 	 */
-	public function run() {}
+	abstract public function run();
 
 	/**
-	 * Action操作预处理方法，返回boolean型值
-	 * @param AbstractWindRouter $handlerAdapter
-	 * @return boolean
+	 * @param WindUrlBasedRouter $handlerAdapter
+	 * @deprecated
 	 */
-	public function beforeAction($handlerAdapter) {}
+	protected function beforeAction($handlerAdapter) {}
 
 	/**
-	 * Action操作后处理方法，在执行完Action后执行
-	 * @param AbstractWindRouter $handlerAdapter
-	 * @return null
+	 * @param WindUrlBasedRouter $handlerAdapter
+	 * @deprecated
 	 */
-	public function afterAction($handlerAdapter) {}
+	protected function afterAction($handlerAdapter) {}
 
-	/**
-	 * 根据路由信息重定向执行方法
-	 * 
-	 * @param AbstractWindRouter $handlerAdapter
+	/* (non-PHPdoc)
+	 * @see IWindController::preAction()
+	 */
+	public function preAction($handlerAdapter) {
+		$this->urlHelper = null;
+		$this->errorMessage = null;
+		$this->forward = null;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindController::postAction()
+	 */
+	public function postAction($handlerAdapter) {}
+
+	/* (non-PHPdoc)
+	 * @see IWindController::doAction()
 	 */
 	public function doAction($handlerAdapter) {
+		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
-		$this->resolvedActionMethod($handlerAdapter);
+		$method = $this->resolvedActionMethod($handlerAdapter);
+		Wind::log('[core.web.controller.WindSimpleController.doAction] resolved action method:' . $method, 
+			WindLogger::LEVEL_INFO, 'wind.core');
+		call_user_func_array(array($this, $method), array());
+		$this->getErrorMessage()->sendError();
 		$this->afterAction($handlerAdapter);
-		if ($this->getErrorMessage()->getError()) $this->getErrorMessage()->sendError();
-		if ($this->request->getIsAjaxRequest()) $this->setLayout('');
-		return $this->getForward();
+		return $this->forward;
 	}
 
 	/**
@@ -63,13 +73,17 @@ abstract class WindAction extends WindComponentModule {
 	 * @param string $controller
 	 * @param array $args
 	 * @param boolean $isRedirect
+	 * @return 
 	 */
 	protected function forwardAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
 		$this->getForward()->forwardAnotherAction($action, $controller, $args, $isRedirect);
 	}
 
 	/**
-	 * 请求重定向到另外一个Url
+	 * 重定向一个请求到另外的URL
+	 * 
+	 * @param string $url
+	 * @return 
 	 */
 	protected function forwardRedirect($url) {
 		$this->getForward()->setIsRedirect(true);
@@ -82,6 +96,7 @@ abstract class WindAction extends WindComponentModule {
 	 * 
 	 * @param string|array|object $data
 	 * @param string $key
+	 * @return
 	 */
 	protected function setOutput($data, $key = '') {
 		$this->getForward()->setVars($data, $key);
@@ -108,42 +123,52 @@ abstract class WindAction extends WindComponentModule {
 	/* 模板处理 */
 	/**
 	 * 设置页面模板
+	 * 
 	 * @param string $template
+	 * @return 
 	 */
 	protected function setTemplate($template) {
-		$this->getForward()->getWindView()->setTemplateName($template);
+		$this->getForward()->setTemplateName($template);
 	}
 
 	/**
 	 * 设置模板路径
+	 * 
 	 * @param string $templatePath
+	 * @return 
 	 */
 	protected function setTemplatePath($templatePath) {
-		$this->getForward()->getWindView()->setTemplatePath($templatePath);
+		$this->getForward()->setTemplatePath($templatePath);
 	}
 
 	/**
-	 * 设置模板扩展名称
+	 * 设置模板文件的扩展名
+	 * 
 	 * @param string $templateExt
+	 * @return
 	 */
 	protected function setTemplateExt($templateExt) {
-		$this->getForward()->getWindView()->setTemplateExt($templateExt);
+		$this->getForward()->setTemplateExt($templateExt);
 	}
 
 	/**
 	 * 设置页面布局
 	 * 可以是一个布局对象或者一个布局文件
+	 * 
 	 * @param WindLayout|string $layout
+	 * @return 
 	 */
 	protected function setLayout($layout) {
-		$this->getForward()->getWindView()->setLayout($layout);
+		$this->getForward()->setLayout($layout);
 	}
 
 	/* 错误处理 */
 	/**
 	 * 添加错误信息
+	 * 
 	 * @param string $message
 	 * @param string $key
+	 * @return 
 	 */
 	protected function addMessage($message, $key = '') {
 		$this->getErrorMessage()->addError($message, $key);
@@ -151,10 +176,12 @@ abstract class WindAction extends WindComponentModule {
 
 	/**
 	 * 发送一个错误
+	 * 
 	 * @param string $message
 	 * @param string $key
 	 * @param string $errorAction
 	 * @param string $errorController
+	 * @return 
 	 */
 	protected function showMessage($message = '', $key = '', $errorAction = '', $errorController = '') {
 		$this->addMessage($message, $key);
@@ -164,62 +191,25 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/**
-	 * 返回一个错误处理对象
-	 * @return WindErrorMessage $errorMessage
-	 */
-	public function getErrorMessage() {
-		if ($this->errorMessage === null) {
-			throw new WindException(__CLASS__ . '::getError(), Actually get a null', WindException::ERROR_RETURN_TYPE_ERROR);
-		}
-		return $this->errorMessage;
-	}
-
-	/**
-	 * 返回UrlHelper对象
-	 * 
-	 * @return WindUrlHelper
-	 */
-	protected function getUrlHelper() {
-		if ($this->urlHelper === null) {
-			throw new WindException('urlHelper', WindException::ERROR_CLASS_NOT_EXIST);
-		}
-		return $this->urlHelper;
-	}
-
-	/**
-	 * @return WindForward
-	 */
-	protected function getForward() {
-		if ($this->forward === null) {
-			throw new WindException('windForward', WindException::ERROR_CLASS_NOT_EXIST);
-		}
-		return $this->forward;
-	}
-
-	/**
 	 * 设置默认的模板名称
-	 * 
 	 * @param WindUrlBasedRouter $handlerAdapter
+	 * @return 
 	 */
-	protected function setDefaultTemplateName($handlerAdapter) {
-		$_temp = $handlerAdapter->getController() . '_' . $handlerAdapter->getAction();
-		$this->setTemplate($_temp);
-	}
+	protected function setDefaultTemplateName($handlerAdapter) {}
 
 	/**
-	 * 获得Action处理方法
-	 * 
-	 * @param AbstractWindRouter $handlerAdapter
+	 * 定义了一种解析策略，使其通过解析请求信息来获得调用的方法。
+	 * @param WindUrlBasedRouter $handlerAdapter
+	 * @return
 	 */
 	protected function resolvedActionMethod($handlerAdapter) {
-		call_user_func_array(array($this, 'run'), array());
+		return 'run';
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
-	 * @param unknown_type $name
-	 * @param unknown_type $type
+	 * @param string $name
+	 * @param string $type
+	 * @param array $callback
 	 * @return Ambigous <multitype:unknown mixed , string, unknown, multitype:>
 	 */
 	private function getInputWithString($name, $type = '', $callback = array()) {
@@ -244,9 +234,7 @@ abstract class WindAction extends WindComponentModule {
 	}
 
 	/**
-	 * Enter description here ...
-	 * 
-	 * @param string $name
+	 * @param array $name
 	 * @param string $type
 	 * @return array
 	 */
@@ -258,10 +246,26 @@ abstract class WindAction extends WindComponentModule {
 		return $result;
 	}
 
-	/* (non-PHPdoc)
-	 * @see WindModule::getWriteTableForGetterAndSetter()
+	/**
+	 * @return WindForward
 	 */
-	protected function getWriteTableForGetterAndSetter() {
-		return array('forward', 'urlHelper', 'errorMessage');
+	protected function getForward() {
+		return $this->_getForward();
 	}
+
+	/**
+	 * @return WindUrlHelper
+	 */
+	protected function getUrlHelper() {
+		return $this->_getUrlHelper();
+	}
+
+	/**
+	 * @return WindErrorMessage
+	 */
+	protected function getErrorMessage() {
+		return $this->_getErrorMessage();
+	}
+
 }
+?>

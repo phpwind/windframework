@@ -1,78 +1,86 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-22
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-Wind::import('WIND:core.WindComponentModule');
-/**
  * 操作转发类，将操作句柄转发给下一个操作或者转发给一个视图处理
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
  * @package 
  */
-class WindForward extends WindComponentModule {
-
+class WindForward extends WindModule {
 	/**
-	 * 模板视图信息
-	 *
-	 * @var WindView
-	 */
-	private $windView = null;
-
-	/**
-	 * 模板变量信息
-	 *
-	 * @var array
-	 */
-	private $vars = array();
-
-	/**
-	 * 是否为Action请求
-	 *
-	 * @var boolean
-	 */
-	private $isReAction = false;
-
-	/**
-	 * 是否是重定向请求
-	 *
-	 * @var boolean
-	 */
-	private $isRedirect = false;
-
-	/**
-	 * 跳转链接
+	 * 定义视图处理器
 	 *
 	 * @var string
 	 */
-	private $url = '';
-
-	private $action = '';
-
-	private $controller = '';
-
-	private $args = '';
+	private $windView;
+	/**
+	 * 模板名称
+	 *
+	 * @var strig
+	 */
+	private $templateName;
+	/**
+	 * 模板路径
+	 *
+	 * @var string
+	 */
+	private $templatePath;
+	/**
+	 * 模板扩展名
+	 *
+	 * @var string
+	 */
+	private $templateExt;
+	/**
+	 * 模板布局
+	 *
+	 * @var string
+	 */
+	private $layout;
+	/**
+	 * 模板变量信息
+	 * 
+	 * @var array
+	 */
+	private $vars = array();
+	/**
+	 * 是否为Action请求
+	 * 
+	 * @var boolean
+	 */
+	private $isReAction = false;
+	/**
+	 * 是否是重定向请求
+	 * 
+	 * @var boolean
+	 */
+	private $isRedirect = false;
+	/**
+	 * 跳转链接
+	 * 
+	 * @var string
+	 */
+	private $url;
+	private $action;
+	private $controller;
+	private $args;
+	private $display = false;
 
 	/**
 	 * 将请求重定向到另外一个Action操作
-	 * 
 	 * @param string $action | $action 操作
 	 * @param string $controller | controller 路径 , controller 为空是则指向当前的控制器
 	 * @param array $args | 参数
 	 * @param boolean $isRedirect | 是否重定向
 	 * 
-	 * @return null
+	 * @return
 	 */
-	public function forwardAnotherAction($action = 'run', $controller = '', $args = array(), $isRedirect = '') {
+	public function forwardAnotherAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
 		$this->setIsReAction(true);
 		$this->setAction($action);
 		$this->setController($controller);
 		$this->setArgs($args);
-		$isRedirect !== '' && $this->setIsRedirect($isRedirect);
+		$this->setIsRedirect($isRedirect);
 	}
 
 	/**
@@ -88,23 +96,6 @@ class WindForward extends WindComponentModule {
 		} else
 			$this->vars[$key] = $vars;
 		return;
-	}
-
-	/**
-	 * @return WindView $windView
-	 */
-	public function getWindView() {
-		if ($this->windView === null) {
-			$module = $this->windFactory->getInstance(COMPONENT_ROUTER)->getModule();
-			$moduleConfig = $this->windSystemConfig->getModules($module);
-			$view = $this->windSystemConfig->getConfig('view', WindSystemConfig::CLASS_PATH, (array) $moduleConfig);
-			if (!$view) $view = COMPONENT_VIEW;
-			
-			$this->windView = $this->windFactory->getInstance($view);
-			$_viewConfig = $this->windView->getConfig('view', WIND_CONFIG_CONFIG, $moduleConfig);
-			if ($_viewConfig) $this->windView->updateConfig($_viewConfig, true);
-		}
-		return $this->windView;
 	}
 
 	/**
@@ -196,6 +187,90 @@ class WindForward extends WindComponentModule {
 	 */
 	public function setArgs($args) {
 		$this->args = $args;
+	}
+
+	/**
+	 * @return the $templateName
+	 */
+	public function getTemplateName() {
+		return $this->templateName;
+	}
+
+	/**
+	 * @return the $templatePath
+	 */
+	public function getTemplatePath() {
+		return $this->templatePath;
+	}
+
+	/**
+	 * @return the $templateExt
+	 */
+	public function getTemplateExt() {
+		return $this->templateExt;
+	}
+
+	/**
+	 * @return the $layout
+	 */
+	public function getLayout() {
+		return $this->layout;
+	}
+
+	/**
+	 * @param strig $templateName
+	 */
+	public function setTemplateName($templateName) {
+		$this->templateName = $templateName;
+	}
+
+	/**
+	 * @param string $templatePath
+	 */
+	public function setTemplatePath($templatePath) {
+		$this->templatePath = $templatePath;
+	}
+
+	/**
+	 * @param string $templateExt
+	 */
+	public function setTemplateExt($templateExt) {
+		$this->templateExt = $templateExt;
+	}
+
+	/**
+	 * @param string $layout
+	 */
+	public function setLayout($layout) {
+		$this->layout = $layout;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWindView() {
+		return $this->windView;
+	}
+
+	/**
+	 * @param string $windView
+	 */
+	public function setWindView($windView) {
+		$this->windView = $windView;
+	}
+
+	/**
+	 * @return the $display
+	 */
+	public function getDisplay() {
+		return $this->display;
+	}
+
+	/**
+	 * @param field_type $display
+	 */
+	public function setDisplay($display) {
+		$this->display = $display;
 	}
 
 }

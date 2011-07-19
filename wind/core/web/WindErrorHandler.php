@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:core.web.WindController');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -49,7 +48,7 @@ class WindErrorHandler extends WindController {
 		if ($errno & error_reporting()) {
 			$errfile = $this->getFile($errfile);
 			$_tmp = "$errstr ($errfile:$errline)\r\nStack trace:\r\n";
-			$_trace = debug_backtrace(false);
+			$_trace = debug_backtrace();
 			foreach ($_trace as $key => $value) {
 				if (!isset($value['file'])) continue;
 				if (!isset($value['line'])) $value['line'] = 0;
@@ -64,11 +63,11 @@ class WindErrorHandler extends WindController {
 			} else
 				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
 			Wind::log($this->errnoMap($errno) . $errstr, $_tmp);
+			exit();
 		}
 	}
 
 	/**
-	 * Enter description here ...
 	 * @param $string $errno
 	 */
 	private function errnoMap($errno) {
@@ -124,20 +123,21 @@ class WindErrorHandler extends WindController {
 	 * 异常处理句柄
 	 */
 	final public function exceptionHandle($exception) {
-		$_tmp = $exception->getMessage() . ' (' . $this->getFile($exception->getFile()) . ':' . $exception->getLine() . ')';
-		if (IS_DEBUG > WindLogger::LEVEL_DEBUG) {
-			echo '<h3>' . get_class($exception) . '</h3>';
-			echo "<p>$_tmp</p>";
-			echo '<pre>' . $exception->getTraceAsString() . '</pre>';
-		} else {
-			echo '<h3>' . get_class($exception) . '</h3>';
-			echo '<p>' . $exception->getMessage() . '</p>';
+		$_tmp = $exception->getMessage() . ' (' . $this->getFile($exception->getFile()) . ':' . $exception->getLine() .
+			 ')';
+			if (IS_DEBUG) {
+				echo '<h3>' . get_class($exception) . '</h3>';
+				echo "<p>$_tmp</p>";
+				echo '<pre>' . $exception->getTraceAsString() . '</pre>';
+			} else {
+				echo '<h3>' . get_class($exception) . '</h3>';
+				echo '<p>' . $exception->getMessage() . '</p>';
+			}
+			Wind::log("$_tmp:" . $exception->getTraceAsString());
+			exit();
 		}
-		Wind::log("$_tmp:" . $exception->getTraceAsString());
-		exit();
-	}
 
-	private function getFile($filePath) {
-		return $filePath;
+		private function getFile($filePath) {
+			return $filePath;
+		}
 	}
-}

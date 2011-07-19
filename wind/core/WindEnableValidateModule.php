@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2011-1-7
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-Wind::import('WIND:core.WindModule');
-/**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -14,16 +7,12 @@ Wind::import('WIND:core.WindModule');
  * @version $Id$ 
  * @package 
  */
-abstract class WindEnableValidateModule extends WindModule {
-
+class WindEnableValidateModule extends WindModule {
 	protected $_validatorClass = 'WIND:component.utility.WindValidator';
-	protected $errorController = ''; 
+	protected $errorController = '';
 	protected $errorAction = '';
-
 	private $_validator = null;
-
 	private $_errors = array();
-
 	private $_defaultMessage = 'the field validate fail.';
 
 	/**
@@ -32,10 +21,13 @@ abstract class WindEnableValidateModule extends WindModule {
 	public function getErrors() {
 		return $this->_errors;
 	}
-    
+
 	public function getErrorControllerAndAction() {
-	    return array($this->errorController, $this->errorAction);
+		return array(
+			$this->errorController, 
+			$this->errorAction);
 	}
+
 	/**
 	 * 返回验证规则
 	 * 
@@ -68,7 +60,9 @@ abstract class WindEnableValidateModule extends WindModule {
 			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : '';
 			$arg = (array) $rule['args'];
 			array_unshift($arg, $_input);
-			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
+			if (call_user_func_array(array(
+				$this->getValidator(), 
+				$rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
 				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
@@ -89,16 +83,23 @@ abstract class WindEnableValidateModule extends WindModule {
 		$methods = get_class_methods($input);
 		foreach ((array) $rules as $rule) {
 			$getMethod = 'get' . ucfirst($rule['field']);
-			$_input = in_array($getMethod, $methods) ? call_user_func(array($input, $getMethod)) : '';
+			$_input = in_array($getMethod, $methods) ? call_user_func(array(
+				$input, 
+				$getMethod)) : '';
 			$arg = (array) $rule['args'];
 			array_unshift($arg, $_input);
-			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
+			if (call_user_func_array(array(
+				$this->getValidator(), 
+				$rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
 				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
 			}
 			$setMethod = 'set' . ucfirst($rule['field']);
-			in_array($setMethod, $methods) && call_user_func_array(array($input, $setMethod), array($rule['default']));
+			in_array($setMethod, $methods) && call_user_func_array(array(
+				$input, 
+				$setMethod), array(
+				$rule['default']));
 		}
 	}
 

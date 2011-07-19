@@ -1,6 +1,6 @@
 <?php
-
-Wind::import('WIND:core.viewer.AbstractWindViewTemplate');
+Wind::import('COM:viewer.AbstractWindViewTemplate');
+Wind::import('COM:utility.WindUtility');
 /**
  * 模板类
  * 职责：进行模板编译渲染
@@ -11,63 +11,42 @@ Wind::import('WIND:core.viewer.AbstractWindViewTemplate');
  * @package 
  */
 class WindViewTemplate extends AbstractWindViewTemplate {
-
-	const COMPILER_ECHO = 'WIND:core.viewer.compiler.WindTemplateCompilerEcho';
-
+	
+	const COMPILER_ECHO = 'COM:viewer.compiler.WindTemplateCompilerEcho';
+	
 	/* 编译结果缓存 */
 	protected $blockKey = "<pw-wind key='\$' />";
-
+	
 	protected $compiledBlockData = array();
-
+	
 	/**
 	 * 模板编译器支持的标签信息
 	 *
 	 * @var array('targName','args info')
 	 */
 	protected $_compilerCache = array();
-
+	
 	protected $windHandlerInterceptorChain = null;
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindViewTemplate::doCompile()
 	 */
 	protected function doCompile($content, $windViewerResolver = null) {
-		$content = $this->registerTags($content, $windViewerResolver);
-		if ($this->windHandlerInterceptorChain !== null) {
-			$this->windHandlerInterceptorChain->getHandler()->handle();
+		try {
+			$content = $this->registerTags($content, $windViewerResolver);
+			if ($this->windHandlerInterceptorChain !== null) {
+				$this->windHandlerInterceptorChain->getHandler()->handle();
+			}
+			foreach (array_reverse($this->compiledBlockData) as $key => $value) {
+				if (!$key) continue;
+				$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
+			}
+			$content = preg_replace('/\?>(\s|\n)*?<\?php/i', "\r\n", $content);
+			return $content;
+		} catch (Exception $e) {
+			throw new WindViewException('[component.viewer.WindViewTemplate.doCompile] compile fail.' . $e->getMessage(), 
+				WindViewException::ERROR_SYSTEM_ERROR);
 		}
-		foreach (array_reverse($this->compiledBlockData) as $key => $value) {
-			if (!$key) continue;
-			$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
-		}
-		$content = preg_replace('/\?>(\s|\n)*?<\?php/i', "\r\n", $content);
-		return $content;
-	}
-
-	/* (non-PHPdoc)
-	 * @see AbstractWindViewTemplate::getTags()
-	 */
-	protected function getTags() {
-		$_tags['internal'] = $this->createTag('internal', 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', '/<\?php(.|\n)*?\?>/i');
-		/*标签体增加在该位置*/
-		$_tags['template'] = $this->createTag('template', 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate');
-		$_tags['page'] = $this->createTag('page', 'WIND:core.viewer.compiler.WindTemplateCompilerPage');
-		$_tags['action'] = $this->createTag('action', 'WIND:core.viewer.compiler.WindTemplateCompilerAction');
-		$_tags['component'] = $this->createTag('component', 'WIND:core.viewer.compiler.WindTemplateCompilerComponent');
-		/*标签解析结束*/
-		$_tags += (array) parent::getTags();
-		$_tags['expression'] = $this->createTag('expression', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/({@|{\$)[^{@=\n]*}/i');
-		$_tags['echo'] = $this->createTag('echo', 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
-		return $_tags;
-	}
-
-	/**
-	 * 创建tag配置
-	 * @param string $tag
-	 * @param string $class
-	 */
-	private function createTag($tag, $class, $pattern = '') {
-		return array(self::TAG => $tag, self::PATTERN => $pattern, self::COMPILER => $class);
 	}
 
 	/**
@@ -98,14 +77,42 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	private function creatTagCompiler($content, $compiler, $regex, $windViewerResolver = null) {
 		$content = preg_replace_callback($regex, array($this, '_creatTagCompiler'), $content);
 		if ($this->windHandlerInterceptorChain === null) {
-			Wind::import('WIND:core.filter.WindHandlerInterceptorChain');
 			$this->windHandlerInterceptorChain = new WindHandlerInterceptorChain();
 		}
 		$_compilerClass = Wind::import($compiler);
-		if (!class_exists($_compilerClass)) return $content;
-		$this->windHandlerInterceptorChain->addInterceptors(new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->request, $this->response));
+		$this->windHandlerInterceptorChain->addInterceptors(
+			new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->getRequest(), 
+				$this->getResponse()));
 		$this->_compilerCache = array();
 		return $content;
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindViewTemplate::getTags()
+	 */
+	protected function getTags() {
+		$_tags['internal'] = $this->createTag('internal', 'COM:viewer.compiler.WindTemplateCompilerInternal', 
+			'/<\?php(.|\n)*?\?>/i');
+		/*标签体增加在该位置*/
+		$_tags['template'] = $this->createTag('template', 'COM:viewer.compiler.WindTemplateCompilerTemplate');
+		$_tags['page'] = $this->createTag('page', 'COM:viewer.compiler.WindTemplateCompilerPage');
+		$_tags['action'] = $this->createTag('action', 'COM:viewer.compiler.WindTemplateCompilerAction');
+		$_tags['component'] = $this->createTag('component', 'COM:viewer.compiler.WindTemplateCompilerComponent');
+		/*标签解析结束*/
+		$_tags += (array) parent::getTags();
+		$_tags['expression'] = $this->createTag('expression', 'COM:viewer.compiler.WindTemplateCompilerEcho', 
+			'/({@|{\$)[^{@=\n]*}/i');
+		$_tags['echo'] = $this->createTag('echo', 'COM:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
+		return $_tags;
+	}
+
+	/**
+	 * 创建tag配置
+	 * @param string $tag
+	 * @param string $class
+	 */
+	private function createTag($tag, $class, $pattern = '') {
+		return array(self::TAG => $tag, self::PATTERN => $pattern, self::COMPILER => $class);
 	}
 
 	/**
@@ -141,7 +148,6 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return string
 	 */
 	protected function getCompiledBlockKey() {
-		Wind::import('WIND:component.utility.WindUtility');
 		$key = WindUtility::generateRandStr(50);
 		if (key_exists($key, $this->compiledBlockData)) {
 			return $this->getCompiledBlockKey();

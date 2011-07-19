@@ -1,13 +1,5 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-11-3
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-Wind::import('WIND:core.WindComponentModule');
-/**
  * 路由解析器接口
  * 职责: 路由解析, 返回路由对象
  * 实现路由解析器必须实现该接口的doParser()方法
@@ -17,59 +9,116 @@ Wind::import('WIND:core.WindComponentModule');
  * @version $Id$ 
  * @package 
  */
-abstract class AbstractWindRouter extends WindComponentModule {
-
-	protected $action = 'run';
-
-	protected $controller = 'index';
-
-	protected $module = 'default';
-
+abstract class AbstractWindRouter extends WindModule {
+	const DEFAULT_ERROR_HANDLER = 'WIND:core.web.WindErrorHandler';
+	const CONTROLLER_DEFAULT_PATH = 'controller';
+	const CONTROLLER_DEFAULT_SUFFIX = 'Controller';
+	/**
+	 * 默认的处理方法‘run’
+	 * 
+	 * @var string
+	 */
+	private $action = 'run';
+	/**
+	 * 默认的控制器‘index’
+	 *
+	 * @var string
+	 */
+	private $controller = 'index';
+	/**
+	 * 默认的系统应用模块名为‘default’
+	 *
+	 * @var string
+	 */
+	private $module = 'default';
+	/**
+	 * 系统应用模块寻址路径
+	 * 
+	 * @var string
+	 */
 	protected $modulePath = '';
-
-	protected $appName = '';
-
-	protected $reParse = true;
-
-	protected $defaultControllerSuffix = 'Controller';
-
-	protected $defaultControllerPath = 'controller';
+	
+	private $reParse = true;
 
 	/**
-	 * Enter description here ...
+	 * 该方法定义了路由解析策略
+	 * @return string | actionHandler
 	 */
 	abstract public function parse();
 
 	/**
-	 * Enter description here ...
-	 */
-	abstract public function getHandler();
-
-	/**
-	 * Enter description here ...
+	 * 构建Url并返回
+	 * @return string
 	 */
 	abstract public function buildUrl();
 
 	/**
-	 * Enter description here ...
+	 * 通过调用该方法返回，解析请求参数，并返回路由结果
+	 * 
+	 * @return
 	 */
 	public function doParse() {
+		$_moduleName = $this->getModule();
+		if (!strcasecmp($this->getController(), WIND_M_ERROR)) {
+			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
+				Wind::log(
+					'[core.roter.AbstractWindRouter.doParse] action hander: default error action :' .
+						 self::DEFAULT_ERROR_HANDLER, WindLogger::LEVEL_DEBUG, 'wind.core');
+			}
+			return $this->getSystemConfig()->getModuleErrorHandlerByModuleName($_moduleName, 
+				self::DEFAULT_ERROR_HANDLER);
+		}
 		if ($this->reParse) {
 			$this->parse();
 			$this->reParse = false;
+			Wind::log('[core.router.AbstractWindRouter.doParse] parse the request.', WindLogger::LEVEL_DEBUG, 
+				'wind.core');
+		}
+		$_suffix = $this->getSystemConfig()->getModuleControllerSuffixByModuleName($_moduleName, 
+			self::CONTROLLER_DEFAULT_SUFFIX);
+		if ($this->modulePath)
+			$_path = $this->modulePath;
+		else {
+			$_path = $this->getSystemConfig()->getModuleControllerPathByModuleName($_moduleName, 
+				self::CONTROLLER_DEFAULT_PATH);
+		}
+		$_path .= '.' . ucfirst($this->controller) . $_suffix;
+		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
+			Wind::log('[core.router.AbstractWindRouter.doParse] action handler: ' . $_path, WindLogger::LEVEL_DEBUG, 
+				'wind.core');
 		}
 		$this->destroy();
+		return $_path;
 	}
 
 	/**
-	 * 重新进行解析
+	 * @return
 	 */
-	public function reParse() {
-		$this->reParse = true;
+	protected function destroy() {
+		$this->modulePath = '';
+	}
+
+	/**
+	 * 设置module信息, 支持格式：
+	 * 'moduleName';
+	 * 'namespace:modulePath'
+	 * 
+	 * @param string $module
+	 * @return
+	 */
+	public function setModule($module) {
+		if (false !== ($pos = strpos($module, ':'))) {
+			$this->modulePath = $module;
+		} else {
+			$this->module = $module;
+			$this->modulePath = '';
+		}
 	}
 
 	/**
 	 * 获得业务操作
+	 * 
+	 * @return string
 	 */
 	public function getAction() {
 		return $this->action;
@@ -77,6 +126,8 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	/**
 	 * 获得业务对象
+	 * 
+	 * @return string
 	 */
 	public function getController() {
 		return $this->controller;
@@ -84,51 +135,39 @@ abstract class AbstractWindRouter extends WindComponentModule {
 
 	/**
 	 * 返回一组应用入口
+	 * 
+	 * @return string
 	 */
 	public function getModule() {
 		return $this->module;
 	}
 
 	/**
+	 * 设置action信息
+	 * 
 	 * @param string $action
+	 * @return
 	 */
 	public function setAction($action) {
 		$this->action = $action;
 	}
 
 	/**
+	 * 设置controller信息
+	 * 
 	 * @param string $controller
+	 * @return
 	 */
 	public function setController($controller) {
 		$this->controller = $controller;
 	}
 
 	/**
-	 * @param string $module
+	 * @param boolean $reParse
+	 * @return 
 	 */
-	public function setModule($module) {
-		if (false !== $pos = strpos($module, ':')) {
-			$this->appName = substr($module, 0, $pos);
-			$this->modulePath = substr($module, $pos + 1);
-			if (false === strpos($this->modulePath, '.')) {
-				$this->module = $this->modulePath;
-				$this->modulePath = '';
-			}
-		} elseif (false !== strpos($module, '.')) {
-			$this->modulePath = $module;
-		} else {
-			$this->module = $module;
-			$this->modulePath = '';
-			$this->appName = '';
-		}
-	}
-
-	/**
-	 * 销毁缓存
-	 */
-	protected function destroy() {
-		$this->modulePath = '';
-		$this->appName = '';
+	public function reParse() {
+		$this->reParse = true;
 	}
 
 }

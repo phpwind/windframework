@@ -1,6 +1,6 @@
 <?php
-Wind::import("WIND:component.db.exception.WindDbException");
-Wind::import("WIND:component.db.WindResultSet");
+Wind::import("COM:db.exception.WindDbException");
+Wind::import("COM:db.WindResultSet");
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -27,7 +27,8 @@ class WindSqlStatement {
 	 *
 	 * @var array
 	 */
-	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 'NULL' => PDO::PARAM_NULL);
+	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 
+		'NULL' => PDO::PARAM_NULL);
 	private $_columns = array();
 
 	/**
@@ -54,7 +55,8 @@ class WindSqlStatement {
 	 */
 	public function bindParam($parameter, &$variable, $dataType = null, $length = null, $driverOptions = null) {
 		try {
-			Wind::log("component.db.WindSqlStatement.bindParam. parameter:" . $parameter . " variable:" . $variable, WindLogger::LEVEL_INFO, "component.db");
+			Wind::log("component.db.WindSqlStatement.bindParam. parameter:" . $parameter . " variable:" . $variable, 
+				WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
 			if ($dataType === null) {
 				$dataType = $this->_getPdoDataType($variable);
@@ -65,7 +67,8 @@ class WindSqlStatement {
 				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
 			return $this;
 		} catch (PDOException $e) {
-			Wind::log("component.db.WindSqlStatement.bindParam. exception message:" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
+			Wind::log("component.db.WindSqlStatement.bindParam. exception message:" . $e->getMessage(), 
+				WindLogger::LEVEL_TRACE, "component.db");
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -82,7 +85,8 @@ class WindSqlStatement {
 	 */
 	public function bindParams(&$parameters) {
 		if (!is_array($parameters)) {
-			throw new WindDbException('[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
+			throw new WindDbException(
+				'[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
 		}
 		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
 		foreach ($parameters as $key => $value) {
@@ -109,7 +113,8 @@ class WindSqlStatement {
 	 */
 	public function bindValue($parameter, $value, $data_type = null) {
 		try {
-			Wind::log("component.db.WindSqlStatement.bindValue. parameter:" . $parameter . " variable:" . $value, WindLogger::LEVEL_INFO, "component.db");
+			Wind::log("component.db.WindSqlStatement.bindValue. parameter:" . $parameter . " variable:" . $value, 
+				WindLogger::LEVEL_INFO, "component.db");
 			$this->init();
 			if ($data_type === null) {
 				$data_type = $this->_getPdoDataType($value);
@@ -117,7 +122,8 @@ class WindSqlStatement {
 			$this->getStatement()->bindValue($parameter, $value, $data_type);
 			return $this;
 		} catch (PDOException $e) {
-			Wind::log("component.db.WindSqlStatement.bindValue. exception message:" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
+			Wind::log("component.db.WindSqlStatement.bindValue. exception message:" . $e->getMessage(), 
+				WindLogger::LEVEL_TRACE, "component.db");
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -131,7 +137,8 @@ class WindSqlStatement {
 	 */
 	public function bindValues($values) {
 		if (!is_array($values)) {
-			throw new WindSqlException('[component.db.WindSqlStatement.bindValues] Error unexpected paraments type ' . gettype($values));
+			throw new WindSqlException(
+				'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type ' . gettype($values));
 		}
 		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
 		foreach ($values as $key => $value) {
@@ -166,7 +173,8 @@ class WindSqlStatement {
 			$this->_columns[$column] = & $param;
 			return $this;
 		} catch (PDOException $e) {
-			Wind::log("component.db.WindSqlStatement.bindColumn. exception message" . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
+			Wind::log("component.db.WindSqlStatement.bindColumn. exception message" . $e->getMessage(), 
+				WindLogger::LEVEL_TRACE, "component.db");
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -273,11 +281,13 @@ class WindSqlStatement {
 			$this->bindValues($params);
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
-			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, "component.db");
+			Wind::log("component.db.WindSqlStatement.execute return value:" . $_result, WindLogger::LEVEL_DEBUG, 
+				"component.db");
 			Wind::profileEnd('component.db.WindSqlStatement._init');
 			return $_result;
 		} catch (PDOException $e) {
-			Wind::log("component.db.WindSqlStatement.execute throw exception,exception message: " . $e->getMessage(), WindLogger::LEVEL_TRACE, "component.db");
+			Wind::log("component.db.WindSqlStatement.execute throw exception,exception message: " . $e->getMessage(), 
+				WindLogger::LEVEL_TRACE, "component.db");
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -340,10 +350,14 @@ class WindSqlStatement {
 	public function init() {
 		if ($this->_statement === null) {
 			try {
-				Wind::log("component.db.WindSqlStatement._init Initialize DBStatement. ", WindLogger::LEVEL_INFO, "component.db");
-				Wind::profileBegin("component.db.WindSqlStatement._init", " SQL: " . $this->getQueryString(), "component.db");
+				Wind::log("component.db.WindSqlStatement._init Initialize DBStatement. ", WindLogger::LEVEL_INFO, 
+					"component.db");
+				Wind::profileBegin("component.db.WindSqlStatement._init", " SQL: " . $this->getQueryString(), 
+					"component.db");
 				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
-				Wind::log("component.db.WindSqlStatement._init Initialize DBStatement. This statement is " . get_class($this->_statement), WindLogger::LEVEL_DEBUG, "component.db");
+				Wind::log(
+					"component.db.WindSqlStatement._init Initialize DBStatement. This statement is " .
+						 get_class($this->_statement), WindLogger::LEVEL_DEBUG, "component.db");
 			} catch (PDOException $e) {
 				Wind::log("Component.db.WindSqlStatement._init Initialize DBStatement 
 					failed.", WindLogger::LEVEL_TRACE, "component.db");

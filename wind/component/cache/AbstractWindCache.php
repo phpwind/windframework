@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:core.WindComponentModule');
 /**
  * 缓存接口及通用方法定义
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -7,62 +6,52 @@ Wind::import('WIND:core.WindComponentModule');
  * @version $Id$ 
  * @package 
  */
-abstract class AbstractWindCache extends WindComponentModule {
-
+abstract class AbstractWindCache extends WindModule {
 	/**
 	 * key的安全码
 	 * @var string
 	 */
 	private $securityCode = '';
-
 	/**
 	 * 缓存前缀
 	 * @var sting 
 	 */
 	private $keyPrefix = '';
-
 	/**
 	 * 缓存过期时间
 	 * @var int
 	 */
 	private $expire = '';
-
 	/**
 	 * 缓存依赖的类名称
 	 * @var string
 	 */
 	const DEPENDENCYCLASS = 'dependencyclass';
-
 	/**
 	 * 标志存储时间
 	 * @var string
 	 */
 	const STORETIME = 'store';
-
 	/**
 	 * 标志存储数据
 	 * @var string 
 	 */
 	const DATA = 'data';
-
 	/**
 	 * 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
 	 * @var string 
 	 */
 	const EXPIRE = 'expires';
-
 	/**
 	 * 配置文件中标志缓存依赖名称的定义
 	 * @var string 
 	 */
 	const DEPENDENCY = 'dependency';
-
 	/**
 	 * 配置文件中缓存安全码名称的定义
 	 * @var string 
 	 */
 	const SECURITY = 'security';
-
 	/**
 	 * 配置文件中缓存键的前缀名称的定义
 	 * @var string 
@@ -233,5 +222,4 @@ abstract class AbstractWindCache extends WindComponentModule {
 	public function setExpire($expire) {
 		$this->expire = $expire;
 	}
-
 }

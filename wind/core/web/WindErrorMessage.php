@@ -1,12 +1,11 @@
 <?php
-Wind::import('WIND:core.web.IWindErrorMessage');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package
  */
-class WindErrorMessage implements IWindErrorMessage {
+class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	private $error = array();
 	private $errorAction = 'run';
 	/**
@@ -27,6 +26,7 @@ class WindErrorMessage implements IWindErrorMessage {
 	 * @see IWindErrorMessage::sendError()
 	 */
 	public function sendError() {
+		if (empty($this->error)) return;
 		throw new WindActionException($this);
 	}
 

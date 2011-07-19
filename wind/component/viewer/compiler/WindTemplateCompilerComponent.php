@@ -1,6 +1,5 @@
 <?php
-
-Wind::import('WIND:core.viewer.AbstractWindTemplateCompiler');
+Wind::import('COM:viewer.AbstractWindTemplateCompiler');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>

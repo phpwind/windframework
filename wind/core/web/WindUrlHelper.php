@@ -1,37 +1,19 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2010-10-27
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2010 phpwind.com
- * @license 
- */
-
-/**
- * Enter description here ...
- *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 
  */
-class WindUrlHelper extends WindComponentModule {
-
+class WindUrlHelper extends WindModule {
 	const URL_PATTERN = 'url-pattern';
-
 	const ROUTE_SUFFIX = 'route-suffix';
-
 	const ROUTE_PARAM = 'route-param';
-
 	const REWRITE = false;
-
 	const ROUTE_SEPARATOR = '_';
-
 	protected $routeSuffix = '';
-
 	protected $routeParam = '';
-
 	protected $urlPattern = '';
-
 	protected $windRouter = null;
 
 	public function isRewrite() {
@@ -229,7 +211,7 @@ class WindUrlHelper extends WindComponentModule {
 		$separator = $this->getSeparator();
 		if (empty($params)) return $separator[1] . $routerInfo;
 		$url = '';
-		foreach ((array)$params as $key => $value) {
+		foreach ((array) $params as $key => $value) {
 			$url .= $this->buildKey($key, $value, $separator[0], $separator[1]) . $separator[1];
 		}
 		return $separator[1] . $url . $routerInfo;
@@ -351,7 +333,5 @@ class WindUrlHelper extends WindComponentModule {
 	public function setWindRouter($windRouter) {
 		$this->windRouter = $windRouter;
 	}
-
 }
-
 ?>

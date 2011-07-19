@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-16
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * 文件工具类
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -14,32 +7,32 @@
  * @package 
  */
 class WindFile {
-
+	
 	/**
 	 * @var string 以读的方式打开文件，具有较强的平台移植性
 	 */
 	const READ = 'rb';
-
+	
 	/**
 	 * @var string 以读写的方式打开文件，具有较强的平台移植性
 	 */
 	const READWRITE = 'rb+';
-
+	
 	/**
 	 * @var string 以写的方式打开文件，具有较强的平台移植性
 	 */
 	const WRITE = 'wb';
-
+	
 	/**
 	 * @var string 以读写的方式打开文件，具有较强的平台移植性
 	 */
 	const WRITEREAD = 'wb+';
-
+	
 	/**
 	 * @var string 以追加写入方式打开文件，具有较强的平台移植性
 	 */
 	const APPEND_WRITE = 'ab';
-
+	
 	/**
 	 * @var string 以追加读写入方式打开文件，具有较强的平台移植性
 	 */
