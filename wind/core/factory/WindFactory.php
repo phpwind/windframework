@@ -12,12 +12,6 @@
  */
 class WindFactory implements IWindFactory {
 	/**
-	 * 类定义类型，默认为WindClassDefinition
-	 * 
-	 * @var string
-	 */
-	protected $classDefinitionType = 'WIND:core.factory.WindClassDefinition';
-	/**
 	 * 类定义集合
 	 * 
 	 * @var array
@@ -66,13 +60,11 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
-			if (!$className) return null;
-			if (strpos($className, ':') !== false) $className = Wind::import($className);
+			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
+				Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, 
+					WindLogger::LEVEL_DEBUG, 'core.factory');
+			}
 			$reflection = new ReflectionClass($className);
-			if ($reflection->isAbstract() || $reflection->isInterface()) return null;
-			
-			Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, WindLogger::LEVEL_INFO, 
-				'core.factory');
 			return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 		} catch (Exception $e) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
@@ -98,7 +90,7 @@ class WindFactory implements IWindFactory {
 	protected function getClassDefinitionByAlias($classAlias) {
 		if (!($definition = $this->classDefinitions[$classAlias])) return null;
 		if ($definition instanceof WindClassDefinition) return $definition;
-		$classDefinition = self::createInstance($this->classDefinitionType, array($definition));
+		$classDefinition = self::createInstance('WindClassDefinition', array($definition));
 		$classDefinition->setAlias($classAlias);
 		$this->addClassDefinitions($classDefinition);
 		return $classDefinition;

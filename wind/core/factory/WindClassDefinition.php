@@ -198,16 +198,10 @@ class WindClassDefinition {
 	 * @return WindClassProxy
 	 */
 	protected function setProxyForClass($instance, $factory) {
-		if (!($proxy = $this->getProxy()) || $proxy === 'false' || $proxy === false) return $instance;
-		if ($proxy === 'true' || $proxy === true) $proxy = $this->proxyClass;
-		$proxy = $factory->createInstance($proxy, array($instance));
-		if ($proxy !== null) return $proxy;
-		Wind::log(
-			'[core.factory.WindClassDefinition.setProxyForClass] create proxy for ' . $this->getClassName() . ' fail.', 
-			WindLogger::LEVEL_DEBUG, 'wind.core');
-		throw new WindException(
-			'[core.factory.WindClassDefinition.setProxyForClass] create proxy for ' . $this->getClassName() . ' fail.', 
-			WindException::ERROR_SYSTEM_ERROR);
+		if (!($proxy = $this->getProxy())) return $instance;
+		if ($proxy === 'false' || $proxy === false) return $instance;
+		$proxy = Wind::import($this->proxyClass);
+		return $factory->createInstance($proxy, array($instance));
 	}
 
 	/**

@@ -39,15 +39,12 @@ class WindModule {
 	 * @return
 	 */
 	public function __set($propertyName, $value) {
-		if (!$this->validatePropertyName($propertyName)) {
-			$_setter = 'set' . ucfirst($propertyName);
-			if (method_exists($this, $_setter))
-				$this->$_setter($value);
-			else
-				Wind::log('[core.WindModule.__set] both of property and setter are not exist. ' . $propertyName, 
-					WindLogger::LEVEL_DEBUG, 'wind.core');
-		} else
-			$this->$propertyName = $value;
+		$_setter = 'set' . ucfirst($propertyName);
+		if (method_exists($this, $_setter))
+			$this->$_setter($value);
+		else
+			Wind::log('[core.WindModule.__set] both of property and setter are not exist. ' . $propertyName, 
+				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
 	/**
@@ -57,15 +54,12 @@ class WindModule {
 	 * @return value of the property or null
 	 */
 	public function __get($propertyName) {
-		if (!$this->validatePropertyName($propertyName)) {
-			$_getter = 'get' . ucfirst($propertyName);
-			if (method_exists($this, $_getter))
-				return $this->$_getter();
-			else
-				Wind::log('[core.WindModule.__set] both of property and getter are not exist. ' . $propertyName, 
-					WindLogger::LEVEL_DEBUG, 'wind.core');
-		} else
-			return $this->$propertyName;
+		$_getter = 'get' . ucfirst($propertyName);
+		if (method_exists($this, $_getter))
+			return $this->$_getter();
+		else
+			Wind::log('[core.WindModule.__set] both of property and getter are not exist. ' . $propertyName, 
+				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
 	/**
@@ -82,10 +76,7 @@ class WindModule {
 		if ($_prefix == '_set') {
 			$this->$_propertyName = $args[0];
 		} elseif ($_prefix == '_get') {
-			if (property_exists($this, $_propertyName) && $this->$_propertyName) {
-				return $this->$_propertyName;
-			}
-			if (isset($this->delayAttributes[$_propertyName])) {
+			if (!$this->$_propertyName && isset($this->delayAttributes[$_propertyName])) {
 				$_instance = null;
 				$_property = $this->delayAttributes[$_propertyName];
 				if (isset($_property[WindClassDefinition::REF])) {
@@ -96,14 +87,7 @@ class WindModule {
 						$_instance = $this->getSystemFactory()->createInstance($_ref);
 				}
 				$this->$_propertyName = $_instance;
-				Wind::log("[core.WindMOdule.__call] create property $_propertyName fail.", WindLogger::LEVEL_DEBUG, 
-					'wind.core');
-			
-		//		unset($this->delayAttributes[$_propertyName]);
 			}
-			Wind::log("[core.WindModule.__call] attribute is not exist. 
-				(" . $methodName . ")", WindLogger::LEVEL_DEBUG, 
-				'wind.core');
 			return $this->$_propertyName;
 		}
 		throw new WindException('[core.WindModule.__call] ' . get_class($this) . '->' . $methodName . '()', 
@@ -147,7 +131,7 @@ class WindModule {
 
 	/**
 	 * 验证白名单是否为空，或属性值是否存在于定义的白名单中
-	 * 
+	 * @deprecated
 	 * @param string $propertyName
 	 * @return boolean
 	 */
@@ -220,7 +204,7 @@ class WindModule {
 	/**
 	 * 设置自动实现Getter/Setter方法的属性名称
 	 * 当该方法返回值为空时，类属性的可访问性跟默认相同
-	 * 
+	 * @deprecated
 	 * @return array
 	 */
 	protected function writeTableForProperty() {
