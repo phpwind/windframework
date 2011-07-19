@@ -170,7 +170,6 @@ class WindClassDefinition {
 			$this->buildConfig($instance, $factory);
 			$this->buildProperties($instance, $factory);
 			$this->executeInitMethod($instance);
-			$this->setHiddenProperty($instance, $factory);
 			$instance = $this->setProxyForClass($instance, $factory);
 		}
 		return $instance;
@@ -189,20 +188,6 @@ class WindClassDefinition {
 			$config = $config[self::RESOURCE];
 		}
 		$instance->setConfig($config);
-	}
-
-	/**
-	 * 设置变量隐藏属性
-	 * 
-	 * @param WindModule $instance
-	 * @param WindFactory $factory
-	 * @return
-	 */
-	protected function setHiddenProperty($instance, $factory) {
-		$instance->systemConfig = Wind::getApp()->getWindSystemConfig();
-		$instance->request = Wind::getApp()->getRequest();
-		$instance->response = Wind::getApp()->getResponse();
-		$instance->systemFactory = $factory;
 	}
 
 	/**
