@@ -68,6 +68,7 @@ class WindView extends WindModule {
 	 * @param WindUrlBasedRouter $router
 	 */
 	public function render($forward, $router, $display = false) {
+		$this->init();
 		if (!($_templateName = $forward->getTemplateName())) {
 			Wind::log('[component.viewer.WindView.render] view render fail. TemplateName is not defined.', 
 				WindLogger::LEVEL_DEBUG, 'wind.component');
