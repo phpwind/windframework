@@ -4,8 +4,8 @@ define('VERSION', '0.5');
 define('PHPVERSION', '5.1.2');
 /* 路径相关配置信息  */
 !defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
-!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__));
-!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH);
+!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
+!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
 !defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'wind_basic.php');
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
@@ -335,7 +335,7 @@ class Wind {
 	 */
 	private static function _setDefaultSystemNamespace() {
 		self::register(WIND_PATH, 'WIND', true);
-		self::register(WIND_PATH . D_S . 'component', 'COM', true);
+		self::register(WIND_PATH . 'component', 'COM', true);
 	}
 
 	/**
