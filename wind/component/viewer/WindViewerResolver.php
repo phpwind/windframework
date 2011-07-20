@@ -117,16 +117,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	}
 
 	/**
-	 * 返回模板变量信息
-	 * 
-	 * @param string $var
-	 * @param string $templateName
-	 */
-	private function getVar($var, $templateName) {
-		return $this->getResponse()->getData($templateName, $var);
-	}
-
-	/**
 	 * 当前模板内容
 	 * 
 	 * @param string $template

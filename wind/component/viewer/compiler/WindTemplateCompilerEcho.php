@@ -29,7 +29,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	    $input = trim($input);
 	    if (strpos($input, '$') !== false || strpos($input, '::') !== false || strpos($input, ':') === false) return $input;
 	    list($templateName, $var) = explode(':', $input);
-	    $input = '$this->response->getData(\'' . $templateName . '\', \'' . $var .'\')';
+	    $input = '$this->getResponse()->getData(\'' . $templateName . '\', \'' . $var .'\')';
 	    return $input;
 	}
 

@@ -81,6 +81,7 @@ abstract class AbstractWindRouter extends WindModule {
 				self::CONTROLLER_DEFAULT_PATH);
 		}
 		$_path .= '.' . ucfirst($this->controller) . $_suffix;
+		if (strpos($_path, ':') === false) $_path = Wind::getAppName() . ':' . $_path;
 		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
 			Wind::log('[core.router.AbstractWindRouter.doParse] action handler: ' . $_path, WindLogger::LEVEL_DEBUG, 
 				'wind.core');
