@@ -58,6 +58,10 @@ abstract class AbstractWindRouter extends WindModule {
 	 * @return
 	 */
 	public function doParse() {
+		if ($this->reParse) {
+			$this->parse();
+			$this->reParse = false;
+		}
 		$_moduleName = $this->getModule();
 		if (!strcasecmp($this->getController(), WIND_M_ERROR)) {
 			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
@@ -67,10 +71,6 @@ abstract class AbstractWindRouter extends WindModule {
 			}
 			return $this->getSystemConfig()->getModuleErrorHandlerByModuleName($_moduleName, 
 				self::DEFAULT_ERROR_HANDLER);
-		}
-		if ($this->reParse) {
-			$this->parse();
-			$this->reParse = false;
 		}
 		$_suffix = $this->getSystemConfig()->getModuleControllerSuffixByModuleName($_moduleName, 
 			self::CONTROLLER_DEFAULT_SUFFIX);
