@@ -32,7 +32,7 @@ class WindFormUpload extends AbstractWindUpload {
 				$uploaddb[$key][] = $this->simpleUpload($key, $saveDir, $preFileName);
 			}
 		}
-		return $uploaddb;/*array($uploaddb, $errorType, $errorSize, $uploadError)*/;
+		return 1 == count($uploaddb) ? array_shift($uploaddb) : $uploaddb;/*array($uploaddb, $errorType, $errorSize, $uploadError)*/;
 	}
 	
 	/**
