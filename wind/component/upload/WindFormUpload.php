@@ -23,9 +23,7 @@ class WindFormUpload extends AbstractWindUpload {
 	 */
 	public function upload($saveDir, $preFileName = '', $allowType = array()) {
 		$allowType && $this->allowType = (array)$allowType;
-		$atc_attachment = '';
-		$uploaddb = $error = array();
-		var_dump($_FILES);
+		$uploaddb = array();
 		foreach ($_FILES as $key => $value) {
 			if (is_array($value['name'])) {
 				$temp = $this->multiUpload($key, $saveDir, $preFileName);
@@ -34,7 +32,6 @@ class WindFormUpload extends AbstractWindUpload {
 				$uploaddb[$key][] = $this->simpleUpload($key, $saveDir, $preFileName);
 			}
 		}
-		$this->errorInfo = $error;
 		return $uploaddb;/*array($uploaddb, $errorType, $errorSize, $uploadError)*/;
 	}
 	
