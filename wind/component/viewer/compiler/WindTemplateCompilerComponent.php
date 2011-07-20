@@ -10,15 +10,15 @@ Wind::import('WIND:core.viewer.AbstractWindTemplateCompiler');
  */
 class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
 
-	protected $name = '';
+	protected $name = ''; //组件名字
 
-	protected $args = '';
+	protected $args = '';//传递给组件的参数
 
-	protected $templateDir = '';
+	protected $templateDir = '';//组件调用的模板路径
 	
-	protected $appConfig = '';
+	protected $appConfig = '';//组件的配置文件
 	
-	protected $componentPath = '';
+	protected $componentPath = '';//组件的入口地址
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
