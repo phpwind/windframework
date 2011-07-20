@@ -11,29 +11,29 @@ Wind::import('WIND:component.utility.WindFile');
  * @package 
  */
 class WindCacheFile extends AbstractWindCache {
-
+	
 	/**
 	 * 缓存目录
 	 * @var string 
 	 */
 	protected $cacheDir;
-
+	
 	/**
 	 * 缓存后缀
 	 * @var string 
 	 */
 	protected $cacheFileSuffix = '';
-
+	
 	/**
 	 * 缓存多级目录。最好不要超3层目录
 	 * @var int 
 	 */
 	protected $cacheDirectoryLevel = '';
-
+	
 	const CACHEDIR = 'cache-dir';
-
+	
 	const SUFFIX = 'cache-suffix';
-
+	
 	const LEVEL = 'cache-level';
 
 	/* (non-PHPdoc)
@@ -68,6 +68,7 @@ class WindCacheFile extends AbstractWindCache {
 	public function clear($isExpired = false) {
 		return WindFile::clearDir($this->getCacheDir(), $isExpired);
 	}
+
 	/**
 	 * 获取缓存文件名。
 	 * @param string $key
@@ -131,7 +132,7 @@ class WindCacheFile extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	private function setCacheDir($dir) {
-		$this->cacheDir = Wind::getRealPath($dir,true) . DIRECTORY_SEPARATOR;
+		$this->cacheDir = Wind::getRealDir($dir) . DIRECTORY_SEPARATOR;
 	}
 
 	/**

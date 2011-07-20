@@ -121,14 +121,14 @@ class WindView extends WindModule {
 		if (!$fileExt) $fileExt = $this->getTemplateExt();
 		if (strrpos($path, ':') === false) $path = Wind::getAppName() . ':' . $path;
 		if ($ifCheckPath) {
-			$dir = Wind::getRealPath($path, true);
+			$dir = Wind::getRealDir($path);
 			if (!is_dir($dir)) {
 				@mkdir($dir);
 				Wind::log('[component.viewer.WindView.parseFilePath] template dir is not exist.', 
 					WindLogger::LEVEL_DEBUG, 'wind.component');
 			}
 		}
-		return Wind::getRealPath($path . '.' . $fileName . '.' . $fileExt);
+		return Wind::getRealPath($path . '.' . $fileName, $fileExt);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class WindView extends WindModule {
 	public function getTemplateDir() {
 		return $this->templateDir;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -191,7 +191,7 @@ class WindView extends WindModule {
 	public function setTemplateDir($templateDir) {
 		$this->templateDir = $templateDir;
 	}
-	
+
 	/**
 	 * @param string $compileDir
 	 */

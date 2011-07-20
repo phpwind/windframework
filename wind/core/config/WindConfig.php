@@ -81,9 +81,8 @@ class WindConfig {
 	 * @author Qiong Wu
 	 */
 	public function setConfig($config, $merage = false) {
-		if (!is_array($config)) throw new WindException('config error.');
 		if ($merage)
-			$this->config = array_merge($this->config, $config);
+			$this->config = array_merge($this->config, (array) $config);
 		else
 			$this->config = $config;
 	}

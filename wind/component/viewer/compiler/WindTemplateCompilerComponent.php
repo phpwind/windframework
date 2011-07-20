@@ -35,7 +35,7 @@ class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
 		if (!isset($params['name']) || !isset($params['componentPath'])) throw new WindException('组件编译错误!');
 		$content = "<?php\r\n";
 		$content .= $this->rebuildConfig($params) . (isset($params['args']) ? $this->registerUrlParams($params) : '') .
-				   "\$componentPath = Wind::getRealPath('" . $params['componentPath'] . "', true);\r\n" .
+				   "\$componentPath = Wind::getRealDir('" . $params['componentPath'] . "');\r\n" .
 		           "Wind::register(\$componentPath, '" . $params['name'] . "');\r\n" .
 				   "Wind::run('" . $params['name'] . "', \$config);\r\n?>";
 		return $content;

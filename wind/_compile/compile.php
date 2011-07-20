@@ -17,15 +17,21 @@ $pack = new WindPack();
 $fileList = array();
 $content = array();
 foreach ($imports as $key => $value) {
-	$content[$value] = $key;
-	$_key = Wind::getRealPath($key . '.' . self::$_extensions);
+	$_key = Wind::getRealPath($key);
 	$fileList[$_key] = array($key, $value);
+	$content[$value] = parseFilePath($key);
 }
 $pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 /* import信息写入编译文件 */
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
+
 /* 编译配置文件信息 */
 $_systemConfig = Wind::getRealPath(WindFrontController::WIND_COMPONENT_CONFIG_RESOURCE);
 $windConfigParser = new WindConfigParser();
 $result = $windConfigParser->parse(_COMPILE_PATH . 'components_config.xml');
 WindFile::write($_systemConfig, '<?php return ' . WindString::varToString($result) . ';');
+
+function parseFilePath($filePath) {
+	list($namespace, $filePath) = explode(':', $filePath);
+	return str_replace('.', D_S, $filePath);
+}

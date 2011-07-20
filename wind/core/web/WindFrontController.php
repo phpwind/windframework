@@ -22,7 +22,7 @@ class WindFrontController {
 	/**
 	 * 框架系统配置信息资源地址，只接受php格式配置
 	 */
-	const WIND_COMPONENT_CONFIG_RESOURCE = 'WIND:components_config.php';
+	const WIND_COMPONENT_CONFIG_RESOURCE = 'WIND:components_config';
 	/**
 	 * @var WindHttpRequest
 	 */
@@ -114,9 +114,8 @@ class WindFrontController {
 	 * @param string $config
 	 */
 	protected function initWindConfig($appName, $config) {
-		!$appName && $appName = 'default';
 		$this->windSystemConfig = new WindSystemConfig($config, new WindConfigParser(), $appName);
-		Wind::register($this->windSystemConfig->getRootPath(), $this->windSystemConfig->getAppName(), true);
+		Wind::register($this->windSystemConfig->getRootPath(), $appName, true);
 		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
 			Wind::log(
 				'[core.web.WindFrontController.initWindConfig] rootPath:' . $this->windSystemConfig->getRootPath() .
