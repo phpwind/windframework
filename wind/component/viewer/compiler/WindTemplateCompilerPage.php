@@ -57,8 +57,8 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	}
 
 	private function parsePageTags($content) {
-		$arrPageTags = array('$total', '$page', '$url');
-		$arrPageVars = array('$_tplPageTotal', '$_tplPageCurrent', '$_tplPageUrl');
+		$arrPageTags = array('$total', '$page', '$url', '$count');
+		$arrPageVars = array('$_tplPageTotal', '$_tplPageCurrent', '$_tplPageUrl', '$_tplPageCount');
 		return str_ireplace($arrPageTags, $arrPageVars, $content);
 	}
 

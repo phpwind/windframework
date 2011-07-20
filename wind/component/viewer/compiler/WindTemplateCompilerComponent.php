@@ -3,7 +3,7 @@
 Wind::import('WIND:core.viewer.AbstractWindTemplateCompiler');
 
 /**
- * 
+ * <component name="test" args="my:index:run" templateDir="template" appConfig="WIND:config.config.php" componentPath="WIND:demos.helloworld"/>
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
  * @author xiaoxiao <x_824@sina.com>
  * @version 2011-7-20  xiaoxiao

@@ -33,9 +33,7 @@ class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 			 '$_tpl_forward->setDisplay(true);' .
 			 '$_tpl_forward->forwardAnotherAction(\'' . $this->action . '\', \'' . $this->controller . '\');' .
 			 '$_tpl_app = $this->getSystemFactory()->getInstance(COMPONENT_WEBAPP);'. 
-			 '$_tpl_app->doDispatch($_tpl_forward);' .
-			 ''.
-			 'echo $this->getWindView()->getTemplateName();';
+			 '$_tpl_app->doDispatch($_tpl_forward);';
 		return $_tmp;
 	}
 
