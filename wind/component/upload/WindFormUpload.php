@@ -88,16 +88,17 @@ class WindFormUpload extends AbstractWindUpload {
 			return array();
 		}
 		$fileName = $this->getFileName($upload, $preFileName);
+		$upload['filename'] = $fileName;
 		$source = $this->getSavePath($fileName, $saveDir);
 		
 		if (!$this->postUpload($atc_attachment, $source)) {
-			$upload['savePath'] = $source;
+			$upload['fileuploadurl'] = $source;
 			$this->errorInfo['upload'][$key][] = $upload;
 			$this->hasError = true;
 			return array();
 		}
 		$upload['size'] = ceil(filesize($source) / 1024);
-		$upload['savePath'] = $source;
+		$upload['fileuploadurl'] = $source;
 		return $upload;
 	}
 	
