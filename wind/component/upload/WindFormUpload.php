@@ -29,41 +29,87 @@ class WindFormUpload extends AbstractWindUpload {
 	 * @see AbstractWindUpload::upload()
 	 */
 	public function upload($saveDir, $preFileName = '', $allowType = array()) {
-		$allowType = $allowType ? (array)$allowType : $this->allowType;
+		$allowType && $this->allowType = (array)$allowType;
 		$atc_attachment = '';
 		$uploaddb = $error = array();
+		var_dump($_FILES);
 		foreach ($_FILES as $key => $value) {
-			if (!$this->hasUploadedFile($value['tmp_name'])) continue;
-			$atc_attachment = $value['tmp_name'];
-			$upload = $this->initCurrUpload($key, $value);
-			
-			if (empty($upload['ext']) || !$this->checkAllowType($upload['ext'], array_keys($allowType))) {
-				$error['type'][] = $upload;
-				$this->hasError = true;
-				continue;
+			if (is_array($value['name'])) {
+				$temp = $this->multiUpload($key, $saveDir, $preFileName);
+				$uploaddb[$key] = isset($uploaddb[$key]) ? array_merge((array)$uploaddb[$key], $temp) : $temp;
+			} else {
+				$uploaddb[$key][] = $this->simpleUpload($key, $saveDir, $preFileName);
 			}
-			if ($upload['size'] < 1 || ($allowType && $upload['size'] > $allowType[$upload['ext']])) {
-				$upload['maxSize'] = $allowType[$upload['ext']];
-				$error['size'][] = $upload;
-				$this->hasError = true;
-				continue;
-			}
-			$fileName = $this->getFileName($upload, $preFileName);
-			$source = $this->getSavePath($fileName, $saveDir);
-			
-			if (!$this->postUpload($atc_attachment, $source)) {
-				$upload['savePath'] = $source;
-				$error['upload'][] = $upload;
-				$this->hasError = true;
-				continue;
-			}
-			clearstatcache();
-			$upload['size'] = ceil(filesize($source) / 1024);
-			$upload['savePath'] = $source;
-			$uploaddb[] = $upload;
 		}
 		$this->errorInfo = $error;
 		return $uploaddb;/*array($uploaddb, $errorType, $errorSize, $uploadError)*/;
+	}
+	
+	/**
+	 * 单个控件
+	 * 一个表单中只有一个上传文件的控件
+	 */
+	public function simpleUpload($key, $saveDir, $preFileName = '') {
+		return $this->doUp($key, $_FILES[$key], $saveDir, $preFileName);
+	}
+	
+	/**
+	 * 多个空间
+	 * 一个表单中拥有多个上传文件的控件
+	 */
+	public function multiUpload($key, $saveDir, $preFileName = '') {
+		$uploaddb = array();
+		$files = $_FILES[$key];
+		$num = count($files['name']);
+		for($i = 0; $i < $num; $i ++) {
+			$one = array();
+			$one['name'] = $files['name'][$i];
+			$one['tmp_name'] = $files['tmp_name'][$i];
+			$one['error'] = $files['error'][$i];
+			$one['size'] = $files['size'][$i];
+			$one['type'] = $files['type'][$i];
+			if (!($upload = $this->doUp($key, $one, $saveDir, $preFileName))) continue;
+			$uploaddb[] = $upload;
+		}
+		return $uploaddb;
+	}
+	
+
+	/**
+	 * 执行上传操作
+	 * 
+	 * @param array $value
+	 * @return array
+	 */
+	private function doUp($key, $value, $saveDir, $preFileName) {
+		$atc_attachment = '';
+		if (!$this->hasUploadedFile($value['tmp_name'])) return array();
+		$atc_attachment = $value['tmp_name'];
+		$upload = $this->initCurrUpload($key, $value);
+		
+		if (empty($upload['ext']) || !$this->checkAllowType($upload['ext'], array_keys($this->allowType))) {
+			$this->errorInfo['type'][$key][] = $upload;
+			$this->hasError = true;
+			return array();
+		}
+		if ($upload['size'] < 1 || ($this->allowType && $upload['size'] > $this->allowType[$upload['ext']])) {
+			$upload['maxSize'] = $this->allowType[$upload['ext']];
+			$this->errorInfo['size'][$key][] = $upload;
+			$this->hasError = true;
+			return array();
+		}
+		$fileName = $this->getFileName($upload, $preFileName);
+		$source = $this->getSavePath($fileName, $saveDir);
+		
+		if (!$this->postUpload($atc_attachment, $source)) {
+			$upload['savePath'] = $source;
+			$this->errorInfo['upload'][$key][] = $upload;
+			$this->hasError = true;
+			return array();
+		}
+		$upload['size'] = ceil(filesize($source) / 1024);
+		$upload['savePath'] = $source;
+		return $upload;
 	}
 	
 	/**
@@ -125,7 +171,7 @@ class WindFormUpload extends AbstractWindUpload {
 	 * @return string
 	 */
 	private function getFileName($info, $preFileName = '') {
-		$fileName = mt_rand(1, 10) . time() . substr(md5(time() . $info['id'] . mt_rand(1, 10)), 10, 15) . '.' . $info['ext'];
+		$fileName = mt_rand(1, 10) . time() . substr(md5(time() . $info['attname'] . mt_rand(1, 10)), 10, 15) . '.' . $info['ext'];
 		return $preFileName ? $preFileName . $fileName : $fileName;
 	}
 
@@ -150,10 +196,17 @@ class WindFormUpload extends AbstractWindUpload {
 	 * @param  string $value
 	 */
 	private function initCurrUpload($key, $value) {
-		list($t, $i) = explode('_', $key);
-		$arr = array('id' => intval($i), 'attname' => $t, 'name' => $value['name'], 'size' => intval($value['size']), 'type' => 'zip', 'ifthumb' => 0, 'fileuploadurl' => '');
+		$arr = array('attname' => $key, 'name' => $value['name'], 'size' => intval($value['size']), 'type' => 'zip', 'ifthumb' => 0, 'fileuploadurl' => '');
 		$arr['ext'] = strtolower(substr(strrchr($arr['name'], '.'), 1));
 		return $arr;
+	}
+	
+	/**
+	 * 获得上传文件的的数组的可能key值
+	 * @return array
+	 */
+	private function getUploadFileField() {
+		return array('name', 'tmp_name', 'error', 'size', 'type');
 	}
 
 }
