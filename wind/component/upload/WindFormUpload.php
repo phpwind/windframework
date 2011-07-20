@@ -1,18 +1,11 @@
 <?php
+Wind::import('WIND:component.upload.AbstractWindUpload');
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-13
+ * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
  * @link http://www.phpwind.com
  * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-Wind::import('WIND:component.upload.AbstractWindUpload');
-
-/**
- * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id: WindFormUpload.php 1994 2011-06-16 04:19:05Z yishuo $ 
- * @package 
+ * @license
+ * @package
  */
 class WindFormUpload extends AbstractWindUpload {
 	private $errorInfo = array('type' => array(), 'size' => array(), 'upload' => array());
