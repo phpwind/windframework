@@ -33,5 +33,5 @@ WindFile::write($_systemConfig, '<?php return ' . WindString::varToString($resul
 
 function parseFilePath($filePath) {
 	list($namespace, $filePath) = explode(':', $filePath);
-	return str_replace('.', D_S, $filePath);
+	return str_replace('.', '/', $filePath);
 }
