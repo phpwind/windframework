@@ -334,7 +334,7 @@ class Wind {
 	 * @return 
 	 */
 	private static function _setDefaultSystemNamespace() {
-		self::register(trim(WIND_PATH, D_S), 'WIND', true);
+		self::register(WIND_PATH, 'WIND', true);
 		self::register(WIND_PATH . 'component', 'COM', true);
 	}
 
