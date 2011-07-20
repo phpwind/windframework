@@ -16,8 +16,7 @@ class WindFormUpload extends AbstractWindUpload {
 		$allowType && $this->allowType = $allowType;	
 	}
 	
-	/**
-	 * 
+	/*
 	 * (non-PHPdoc)
 	 * @see AbstractWindUpload::upload()
 	 */
