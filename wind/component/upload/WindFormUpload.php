@@ -189,13 +189,5 @@ class WindFormUpload extends AbstractWindUpload {
 		$arr['ext'] = strtolower(substr(strrchr($arr['name'], '.'), 1));
 		return $arr;
 	}
-	
-	/**
-	 * 获得上传文件的的数组的可能key值
-	 * @return array
-	 */
-	private function getUploadFileField() {
-		return array('name', 'tmp_name', 'error', 'size', 'type');
-	}
 
 }
