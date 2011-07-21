@@ -20,24 +20,19 @@ interface IWindCacheDependency {
 
 	/**
 	 * 注入依赖
-	 * @param IWindCache $cache
+	 * @param mixed
 	 */
-	public function injectDependent(IWindCache $cache);
+	public function injectDependent();
 
 	/**
-	 * CacheDependency 对象是否已更改
+	 * 是否已更新
 	 * @return boolean
 	 */
 	public function hasChanged();
 
 	/**
 	 * 获取依赖项的上次更改时间
-	 * @return string
+	 * @return int
 	 */
 	public function getLastModified();
-
-	/**
-	 * 标记依赖项的上次更改时间。 
-	 */
-	public function setLastModified();
 }

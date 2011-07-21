@@ -1,16 +1,15 @@
 <?php
-
+/**
+ * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2110 phpwind.com
+ * @license
+ * @package
+ */
 Wind::import('WIND:component.cache.AbstractWindCache');
 Wind::import('WIND:component.utility.WindFile');
 
-/**
- * 文件缓存类
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Su Qian <weihu@alibaba-inc.com>
- * @version $Id$ 
- * @package 
- */
-class WindCacheFile extends AbstractWindCache {
+class WindFileCache extends AbstractWindCache {
 	
 	/**
 	 * 缓存目录
@@ -37,28 +36,24 @@ class WindCacheFile extends AbstractWindCache {
 	const LEVEL = 'cache-level';
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindCache::set()
+	 * @see AbstractWindCache::setValue()
 	 */
-	public function set($key, $value, $expire = null, IWindCacheDependency $denpendency = null) {
-		$expire = null === $expire ? $this->getExpire() : $expire;
-		return $this->writeData($this->getRealCacheKey($key), $this->storeData($value, $expire, $denpendency), $expire);
+	protected function setValue($key, $value, $expire = 0) {
+		return $this->writeData($key, $value, $expire);
 	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::get()
 	 */
-	public function get($key) {
-		return $this->getDataFromMeta($key, $this->readData($this->getRealCacheKey($key)));
+	protected function getValue($key) {
+		return $this->readData($key);
 	}
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindCache::delete()
+	 * @see AbstractWindCache::deleteValue()
 	 */
-	public function delete($key) {
-		$cacheFile = $this->getRealCacheKey($key);
-		if (is_file($cacheFile)) {
-			return WindFile::delFile($cacheFile);
-		}
+	protected function deleteValue($key) {
+		if (is_file($cacheFile)) return WindFile::delFile($cacheFile);
 		return false;
 	}
 
@@ -74,15 +69,14 @@ class WindCacheFile extends AbstractWindCache {
 	 * @param string $key
 	 * @return string
 	 */
-	protected function getRealCacheKey($key, $getDir = false) {
-		$filename = $this->buildSecurityKey($key) . '.' . ltrim($this->getCacheFileSuffix(), '.');
+	protected function buildSecurityKey($key, $getDir = false) {
+		$filename = parent::buildSecurityKey($key) . '.' . ltrim($this->getCacheFileSuffix(), '.');
 		$_tmp = $this->getCacheDir();
 		if (0 < $this->getCacheDirectoryLevel()) {
 			for ($i = $this->getCacheDirectoryLevel(); $i > 0; --$i) {
-				if (false === isset($key[$i])) continue;
-				$_tmp .= $key[$i] . DIRECTORY_SEPARATOR;
+				if (($prefix = substr($key, $i+$i, 2)) ===false) continue;
+				$_tmp .= DIRECTORY_SEPARATOR . $prefix;
 			}
-			if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
 		}
 		if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
 		return $getDir ? $_tmp : $_tmp . $filename;
@@ -95,7 +89,7 @@ class WindCacheFile extends AbstractWindCache {
 	 * @param int $mtime 缓存文件的修改时间，即缓存的过期时间
 	 * @return boolean
 	 */
-	protected function writeData($file, $data, $mtime = 0) {
+	private function writeData($file, $data, $mtime = 0) {
 		if (WindFile::write($file, $data) == strlen($data)) {
 			$mtime += $mtime ? time() : 0;
 			chmod($file, 0777);
@@ -109,60 +103,32 @@ class WindCacheFile extends AbstractWindCache {
 	 * @param string $file 缓存文件名
 	 * @return null|string
 	 */
-	protected function readData($file) {
+	private function readData($file) {
 		if (false === is_file($file)) return null;
 		$mtime = filemtime($file);
 		if (0 === $mtime || ($mtime && $mtime > time()))
-			return unserialize(WindFile::read($file));
+			return WindFile::read($file);
 		elseif (0 < $mtime)
 			WindFile::delFile($file);
 		return null;
-	}
-
-	/* (non-PHPdoc)
-	 * @see AbstractWindCache::setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		$this->setCacheDir($this->getConfig(self::CACHEDIR, WIND_CONFIG_VALUE));
 	}
 
 	/**
 	 * 设置缓存目录
 	 * @param string $dir
 	 */
-	private function setCacheDir($dir) {
-		$this->cacheDir = Wind::getRealDir($dir) . DIRECTORY_SEPARATOR;
+	public function setCacheDir($dir) {
+		$this->cacheDir = Wind::getRealPath($dir, true) . DIRECTORY_SEPARATOR;
 	}
 
 	/**
 	 * @return the $cacheDir
 	 */
-	public function getCacheDir() {
+	private function getCacheDir() {
 		if (!is_dir($this->cacheDir)) mkdir($this->cacheDir, 0777, true);
 		return $this->cacheDir;
 	}
 
-	/**
-	 * @return the $cacheFileSuffix
-	 */
-	protected function getCacheFileSuffix() {
-		if ('' === $this->cacheFileSuffix) {
-			$this->cacheFileSuffix = $this->getConfig(self::SUFFIX, WIND_CONFIG_VALUE, '', 'bin');
-		}
-		return $this->cacheFileSuffix;
-	}
-
-	/**
-	 * 返回cache目录级别，默认为0，不分级，最大分级为5
-	 * @return the $cacheDirectoryLevel
-	 */
-	protected function getCacheDirectoryLevel() {
-		if ('' === $this->cacheDirectoryLevel) {
-			$this->cacheDirectoryLevel = $this->getConfig(self::LEVEL, WIND_CONFIG_VALUE, '', 0);
-		}
-		return $this->cacheDirectoryLevel > 5 ? 5 : $this->cacheDirectoryLevel;
-	}
 
 	/**
 	 * @param string $cacheFileSuffix
@@ -170,12 +136,28 @@ class WindCacheFile extends AbstractWindCache {
 	public function setCacheFileSuffix($cacheFileSuffix) {
 		$this->cacheFileSuffix = $cacheFileSuffix;
 	}
+	
+	/**
+	 * @return the $cacheFileSuffix
+	 */
+	private function getCacheFileSuffix() {
+		return $this->cacheFileSuffix;
+	}
 
 	/**
 	 * @param int $cacheDirectoryLevel
 	 */
 	public function setCacheDirectoryLevel($cacheDirectoryLevel) {
-		$this->cacheDirectoryLevel = $cacheDirectoryLevel;
+		$cacheDirectoryLevel = intval($cacheDirectoryLevel);
+		$this->cacheDirectoryLevel = $cacheDirectoryLevel > 5 ? 5 : ($cacheDirectoryLevel < 1 ? 1 : $cacheDirectoryLevel);
+	}
+	
+	/**
+	 * 返回cache目录级别，默认为0，不分级，最大分级为5
+	 * @return the $cacheDirectoryLevel
+	 */
+	private function getCacheDirectoryLevel() {
+		return $this->cacheDirectoryLevel;
 	}
 
 	/**
@@ -183,6 +165,16 @@ class WindCacheFile extends AbstractWindCache {
 	 */
 	public function __destruct() {
 		$this->clear(true);
+	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$this->setCacheDir($this->getConfig(self::CACHEDIR));
+		$this->setCacheFileSuffix($this->getConfig(self::SUFFIX));
+		$this->setCacheDirectoryLevel($this->getConfig(self::LEVEL));
 	}
 
 }

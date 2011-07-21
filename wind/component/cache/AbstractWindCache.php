@@ -38,20 +38,20 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	const DATA = 'data';
 	/**
-	 * 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
-	 * @var string 
-	 */
-	const EXPIRE = 'expires';
-	/**
 	 * 配置文件中标志缓存依赖名称的定义
 	 * @var string 
 	 */
 	const DEPENDENCY = 'dependency';
 	/**
+	 * 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
+	 * @var string 
+	 */
+	const EXPIRE = 'expires';
+	/**
 	 * 配置文件中缓存安全码名称的定义
 	 * @var string 
 	 */
-	const SECURITY = 'security';
+	const SECURITYCODE = 'securityCode';
 	/**
 	 * 配置文件中缓存键的前缀名称的定义
 	 * @var string 
@@ -66,14 +66,61 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
-	public abstract function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null);
+	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+		$data = array(
+			self::DATA => $value, 
+			self::EXPIRE => $expires, 
+			self::STORETIME => time(),
+			self::DEPENDENCY => null,
+			self::DEPENDENCYCLASS => '');
+		if (null != $denpendency) {
+			$denpendency->injectDependent();
+			$data[self::DEPENDENCY] = serialize($denpendency);
+			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
+		}
+		return $this->addValue($this->buildSecurityKey($key), serialize($data), $expires);
+	}
+	
+	protected function 
+	/**
+	 * 执行添加操作
+	 * 
+	 * @param string $key
+	 * @param object $value
+	 * @param int $expires
+	 * @throws WindException
+	 */
+	protected abstract function addValue($key, $value, $expires = 0);
 
 	/**
 	 * 获取指定缓存
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return mixed
 	 */
-	public abstract function get($key);
+	public function get($key) {
+		return $this->formatData($this->getValue($this->buildSecurityKey($key)));
+		
+	}
+	
+	/**
+	 * 格式化输出
+	 * @param string $value
+	 * @return array
+	 */
+	protected function formatData($value) {
+		$data = unserialize($value);
+		if (!is_array($data)) return null;
+		if ($this->hasChanged($key, $data)) return null;
+		return isset($data[self::DATA]) ? $data[self::DATA] : null;
+	}
+	
+	/**
+	 * 执行获取操作
+	 * 
+	 * @param string $key
+	 * @throws WindException
+	 */
+	protected abstract function getValue($key);
 
 	/**
 	 * 通过key批量获取缓存数据
@@ -87,13 +134,22 @@ abstract class AbstractWindCache extends WindModule {
 		}
 		return $data;
 	}
-
+    
 	/**
 	 * 删除缓存数据
+	 * 
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return string
 	 */
-	public abstract function delete($key);
+	public function delete($key) {
+		return $this->deleteValue($this->buildSecurityKey($key));
+	}
+	
+	/**
+	 * 需要实现的删除操作
+	 * @param string $key
+	 */
+	protected abstract function deleteValue($key);
 
 	/**
 	 * 通过key批量删除缓存数据
@@ -101,9 +157,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return boolean
 	 */
 	public function batchDelete(array $keys) {
-		foreach ($keys as $key) {
-			$this->delete($key);
-		}
+		foreach ($keys as $key) $this->delete($key);
 		return true;
 	}
 
@@ -118,53 +172,14 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param array  $data 缓存中的数据
 	 * @return boolean true表示缓存依赖已变更，false表示缓存依赖未变改
 	 */
-	protected function checkDependencyChanged($key, array $data) {
-		if (isset($data[self::DEPENDENCY]) && isset($data[self::DEPENDENCYCLASS])) {
-			Wind::import('Wind:component.cache.dependency.' . $data[self::DEPENDENCYCLASS]);
-			/* @var $dependency IWindCacheDependency*/
-			$dependency = unserialize($data[self::DEPENDENCY]);
-			if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
-				$this->delete($key);
-				return true;
-			}
+	protected function hasChanged($key, array $data) {
+		if (null === $data[self::DEPENDENCY] && '' === $data[self::DEPENDENCYCLASS]) return false;
+		$dependency = unserialize($data[self::DEPENDENCY]);
+		if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
+			$this->delete($key);
+			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 从缓存元数据中取得真实的数据
-	 * @param string $key
-	 * @param mixed $data
-	 * @return mixed
-	 */
-	protected function getDataFromMeta($key, $data) {
-		if (is_array($data)) {
-			if ($this->checkDependencyChanged($key, $data)) {
-				return null;
-			}
-			return isset($data[self::DATA]) ? $data[self::DATA] : null;
-		}
-		return $data;
-	}
-
-	/**
-	 * 获取存储的数据
-	 * @param string $value
-	 * @param string $expires
-	 * @param IWindCacheDependency $denpendency
-	 * @return string
-	 */
-	protected function storeData($value, $expires = null, $denpendency = null) {
-		$data = array(
-			self::DATA => $value, 
-			self::EXPIRE => $expires, 
-			self::STORETIME => time());
-		if ($denpendency && (($denpendency instanceof IWindCacheDependency))) {
-			$denpendency->injectDependent($this);
-			$data[self::DEPENDENCY] = serialize($denpendency);
-			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
-		}
-		return serialize($data);
 	}
 
 	/**
@@ -173,14 +188,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
-		return $this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key : $key;
-	}
-
-	/**
-	 * @return the $securityCode
-	 */
-	protected function getSecurityCode() {
-		return $this->getConfig(self::SECURITY, WIND_CONFIG_VALUE, '', $this->securityCode);
+		return $this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode();
 	}
 
 	/**
@@ -190,18 +198,21 @@ abstract class AbstractWindCache extends WindModule {
 	protected function getKeyPrefix() {
 		return $this->keyPrefix;
 	}
-
+	
 	/**
-	 * 返回过期时间设置,默认值为0永不过期
-	 * @return the $expire
+	 * @param sting $keyPrefix
 	 */
-	public function getExpire() {
-		if ('' === $this->expire) {
-			$this->expire = $this->getConfig(self::EXPIRE, WIND_CONFIG_VALUE, '', '0');
-		}
-		return $this->expire;
+	public function setKeyPrefix($keyPrefix) {
+		$this->keyPrefix = $keyPrefix;
 	}
-
+	
+	/**
+	 * @return the $securityCode
+	 */
+	protected function getSecurityCode() {
+		return $this->securityCode;
+	}
+	
 	/**
 	 * @param string $securityCode
 	 */
@@ -210,16 +221,28 @@ abstract class AbstractWindCache extends WindModule {
 	}
 
 	/**
-	 * @param sting $keyPrefix
+	 * 返回过期时间设置,默认值为0永不过期
+	 * @return the $expire
 	 */
-	public function setKeyPrefix($keyPrefix) {
-		$this->keyPrefix = $keyPrefix;
+	public function getExpire() {
+		return $this->expire;
 	}
-
+	
 	/**
 	 * @param int $expire
 	 */
 	public function setExpire($expire) {
-		$this->expire = $expire;
+		$this->expire = intval($expire);
+	}
+    
+	/**
+	 * 设置配置信息
+	 * @param array $config
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$this->setSecurityCode($this->getConfig(self::SECURITYCODE, '', ''));
+		$this->setKeyPrefix($this->getConfig(self::KEYPREFIX, '', ''));
+		$this->setExpire($this->getCofnig(self::EXPIRE, '', 0));
 	}
 }
