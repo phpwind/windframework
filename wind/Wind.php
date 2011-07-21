@@ -343,8 +343,10 @@ class Wind {
 	 * @return 
 	 */
 	private static function _checkEnvironment() {
-		if (!self::_checkPhpVersion()) throw new Exception('php version is too old, php ' . PHPVERSION . ' or later.', 
-			E_WARNING);
+		if (version_compare(PHP_VERSION, PHPVERSION) === -1) {
+			throw new Exception('[wind._checkEnvironment] php version is lower, php ' . PHPVERSION . ' or later.', 
+				E_WARNING);
+		}
 		if (!defined('COMPILE_PATH')) throw new Exception('compile path undefined.');
 		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 	}
@@ -363,17 +365,6 @@ class Wind {
 	}
 
 	/**
-	 * 判断是否类是否已经被加载，如果已经被加载则返回路径信息，如果没有被加载则返回false
-	 * @param string $path
-	 * @return boolean|string
-	 */
-	private static function _isImported($param) {
-		if (isset(self::$_imports[$param])) return self::$_imports[$param];
-		if (in_array($param, self::$_imports)) return $param;
-		return false;
-	}
-
-	/**
 	 * 注册自动加载回调方法
 	 * @return
 	 */
@@ -387,34 +378,12 @@ class Wind {
 
 	/**
 	 * 加载核心层库函数
+	 * 
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		$_core = self::_coreLib();
-		self::$_classes = $_core;
-	}
-
-	/* private utility */
-	private static function _checkPhpVersion() {
-		$v1 = $v2 = $v3 = $m1 = $m2 = $m3 = 0;
-		$phpversion = phpversion();
-		sscanf($phpversion, "%d.%d.%d", $v1, $v2, $v3);
-		sscanf(PHPVERSION, "%d.%d.%d", $m1, $m2, $m3);
-		if ($v1 > $m1) return true;
-		if ($v1 < $m1) return false;
-		if ($v2 > $m2) return true;
-		if ($v2 < $m2) return false;
-		if ($v3 > $m3) return true;
-		if ($v3 < $m3) return false;
-		return true;
-	}
-
-	/**
-	 * 核心库文件
-	 * @return
-	 */
-	private static function _coreLib() {
-		return array('WindLogger' => 'log/WindLogger', 'IWindConfigParser' => 'core/config/parser/IWindConfigParser', 
+		self::$_classes = array('WindLogger' => 'log/WindLogger', 
+			'IWindConfigParser' => 'core/config/parser/IWindConfigParser', 
 			'WindConfigParser' => 'core/config/parser/WindConfigParser', 'WindConfig' => 'core/config/WindConfig', 
 			'WindSystemConfig' => 'core/config/WindSystemConfig', 
 			'WindActionException' => 'core/exception/WindActionException', 

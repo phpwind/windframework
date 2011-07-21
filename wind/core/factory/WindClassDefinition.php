@@ -285,7 +285,6 @@ class WindClassDefinition {
 	 */
 	protected function init($classDefinition) {
 		try {
-			if (empty($classDefinition)) return;
 			foreach ($classDefinition as $key => $value) {
 				if (strpos($key, '-') !== false) {
 					list($_s1, $_s2) = explode('-', $key);
