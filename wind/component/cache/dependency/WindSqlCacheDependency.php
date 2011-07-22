@@ -15,5 +15,12 @@ Wind::import('WIND:component.cache.dependency.WindCacheDependency');
  * @package 
  */
 class WindSqlCacheDependency extends WindCacheDependency{
-	
+	/**
+	 * (non-PHPdoc)
+	 * @see WindCacheDependency::notifyDependencyChanged()
+	 */
+	protected function notifyDependencyChanged() {
+		// TODO Auto-generated method stub
+		
+	}
 }
