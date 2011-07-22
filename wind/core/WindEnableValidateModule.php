@@ -23,9 +23,7 @@ class WindEnableValidateModule extends WindModule {
 	}
 
 	public function getErrorControllerAndAction() {
-		return array(
-			$this->errorController, 
-			$this->errorAction);
+		return array($this->errorController, $this->errorAction);
 	}
 
 	/**
@@ -60,9 +58,7 @@ class WindEnableValidateModule extends WindModule {
 			$_input = isset($input[$rule['field']]) ? $input[$rule['field']] : '';
 			$arg = (array) $rule['args'];
 			array_unshift($arg, $_input);
-			if (call_user_func_array(array(
-				$this->getValidator(), 
-				$rule['validator']), $arg) !== false) continue;
+			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
 				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
@@ -83,23 +79,17 @@ class WindEnableValidateModule extends WindModule {
 		$methods = get_class_methods($input);
 		foreach ((array) $rules as $rule) {
 			$getMethod = 'get' . ucfirst($rule['field']);
-			$_input = in_array($getMethod, $methods) ? call_user_func(array(
-				$input, 
-				$getMethod)) : '';
+			$_input = in_array($getMethod, $methods) ? call_user_func(array($input, $getMethod)) : '';
 			$arg = (array) $rule['args'];
 			array_unshift($arg, $_input);
-			if (call_user_func_array(array(
-				$this->getValidator(), 
-				$rule['validator']), $arg) !== false) continue;
+			if (call_user_func_array(array($this->getValidator(), $rule['validator']), $arg) !== false) continue;
 			if ($rule['default'] === null) {
 				$this->_errors[$rule['field']] = $rule['message'];
 				continue;
 			}
 			$setMethod = 'set' . ucfirst($rule['field']);
-			in_array($setMethod, $methods) && call_user_func_array(array(
-				$input, 
-				$setMethod), array(
-				$rule['default']));
+			in_array($setMethod, $methods) && call_user_func_array(array($input, $setMethod), 
+				array($rule['default']));
 		}
 	}
 
