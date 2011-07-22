@@ -7,7 +7,7 @@
  * @package 
  */
 Wind::import('WIND:component.cache.IWindCacheDependency');
-class WindCacheDependency implements IWindCacheDependency {
+abstract class WindCacheDependency implements IWindCacheDependency {
 	/**
 	 * @var mixed 缓存依赖控制者
 	 */

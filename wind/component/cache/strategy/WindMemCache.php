@@ -60,9 +60,9 @@ class WindMemCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache::setValue()
+	 * @see AbstractWindCache::addValue()
 	 */
-	protected function setValue($key, $value, $expire = 0) {
+	protected function addValue($key, $value, $expire = 0) {
 		return $this->memcache->set($key, $value, $this->compress, (int) $expire);
 	}
 

@@ -17,9 +17,9 @@ class WindXCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache#setValue()
+	 * @see AbstractWindCache#addValue()
 	 */
-	protected function setValue($key, $value, $expire = 0) {
+	protected function addValue($key, $value, $expire = 0) {
 		return xcache_set($key, $value, $expire);
 	}
 

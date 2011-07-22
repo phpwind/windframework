@@ -84,7 +84,7 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	protected function getValue($key) {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` =? AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
-		$data = $this->getConnection()->createStatement($sql)->getOne(array($key), time())); 
+		$data = $this->getConnection()->createStatement($sql)->getOne(array($key), time()); 
 		return $data[$this->valueField];
 	}
 

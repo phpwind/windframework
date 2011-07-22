@@ -40,9 +40,9 @@ class WindFileCache extends AbstractWindCache {
 	const LEVEL = 'cache-level';
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindCache::setValue()
+	 * @see AbstractWindCache::addValue()
 	 */
-	protected function setValue($key, $value, $expire = 0) {
+	protected function addValue($key, $value, $expire = 0) {
 		return $this->writeData($key, $value, $expire);
 	}
 
