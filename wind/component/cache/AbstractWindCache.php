@@ -42,6 +42,9 @@ abstract class AbstractWindCache extends WindModule {
 	 * @var string 
 	 */
 	const DEPENDENCY = 'dependency';
+	/*
+	 * 配置项
+	 */
 	/**
 	 * 配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间 的定义)
 	 * @var string 
@@ -67,12 +70,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return boolean
 	 */
 	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
-		$data = array(
-			self::DATA => $value, 
-			self::EXPIRE => $expires, 
-			self::STORETIME => time(),
-			self::DEPENDENCY => null,
-			self::DEPENDENCYCLASS => '');
+		$data = array(self::DATA => $value, self::EXPIRE => $expires, self::STORETIME => time(), self::DEPENDENCY => null, self::DEPENDENCYCLASS => '');
 		if (null != $denpendency) {
 			$denpendency->injectDependent();
 			$data[self::DEPENDENCY] = serialize($denpendency);
@@ -80,7 +78,7 @@ abstract class AbstractWindCache extends WindModule {
 		}
 		return $this->addValue($this->buildSecurityKey($key), serialize($data), $expires);
 	}
-	
+
 	/**
 	 * 执行添加操作
 	 * 
@@ -98,21 +96,8 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	public function get($key) {
 		return $this->formatData($this->getValue($this->buildSecurityKey($key)));
-		
 	}
-	
-	/**
-	 * 格式化输出
-	 * @param string $value
-	 * @return array
-	 */
-	protected function formatData($value) {
-		$data = unserialize($value);
-		if (!is_array($data)) return null;
-		if ($this->hasChanged($key, $data)) return null;
-		return isset($data[self::DATA]) ? $data[self::DATA] : null;
-	}
-	
+
 	/**
 	 * 执行获取操作
 	 * 
@@ -133,7 +118,7 @@ abstract class AbstractWindCache extends WindModule {
 		}
 		return $data;
 	}
-    
+
 	/**
 	 * 删除缓存数据
 	 * 
@@ -143,7 +128,7 @@ abstract class AbstractWindCache extends WindModule {
 	public function delete($key) {
 		return $this->deleteValue($this->buildSecurityKey($key));
 	}
-	
+
 	/**
 	 * 需要实现的删除操作
 	 * @param string $key
@@ -156,7 +141,8 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return boolean
 	 */
 	public function batchDelete(array $keys) {
-		foreach ($keys as $key) $this->delete($key);
+		foreach ($keys as $key)
+			$this->delete($key);
 		return true;
 	}
 
@@ -164,6 +150,18 @@ abstract class AbstractWindCache extends WindModule {
 	 * 清空所有缓存
 	 */
 	public abstract function clear();
+
+	/**
+	 * 格式化输出
+	 * @param string $value
+	 * @return array
+	 */
+	protected function formatData($value) {
+		$data = unserialize($value);
+		if (!is_array($data)) return null;
+		if ($this->hasChanged($key, $data)) return null;
+		return isset($data[self::DATA]) ? $data[self::DATA] : null;
+	}
 
 	/**
 	 * 如果缓存中有数据，则检查缓存依赖是否已经变更，如果变更则删除缓存
@@ -197,21 +195,21 @@ abstract class AbstractWindCache extends WindModule {
 	protected function getKeyPrefix() {
 		return $this->keyPrefix;
 	}
-	
+
 	/**
 	 * @param sting $keyPrefix
 	 */
 	public function setKeyPrefix($keyPrefix) {
 		$this->keyPrefix = $keyPrefix;
 	}
-	
+
 	/**
 	 * @return the $securityCode
 	 */
 	protected function getSecurityCode() {
 		return $this->securityCode;
 	}
-	
+
 	/**
 	 * @param string $securityCode
 	 */
@@ -226,14 +224,14 @@ abstract class AbstractWindCache extends WindModule {
 	public function getExpire() {
 		return $this->expire;
 	}
-	
+
 	/**
 	 * @param int $expire
 	 */
 	public function setExpire($expire) {
 		$this->expire = intval($expire);
 	}
-    
+
 	/**
 	 * 设置配置信息
 	 * @param array $config
@@ -243,5 +241,21 @@ abstract class AbstractWindCache extends WindModule {
 		$this->setSecurityCode($this->getConfig(self::SECURITYCODE, '', ''));
 		$this->setKeyPrefix($this->getConfig(self::KEYPREFIX, '', ''));
 		$this->setExpire($this->getCofnig(self::EXPIRE, '', 0));
+	}
+	
+	
+	/**
+	 * 获得缓存表相关配置
+	 * 
+	 * @param array $config
+	 * @param string $name
+	 * @param string $subname
+	 * @param string $default
+	 * @return string
+	 */
+	protected function getSubConfig($config, $name, $subname = '', $default = '') {
+		$result = (isset($config[$name])) ? $config[$name] : $default;
+		if (!$subname || !isset($result[$subname])) return $result;
+		return isset($result[$subname]) ? $result[$subname] : $default;
 	}
 }

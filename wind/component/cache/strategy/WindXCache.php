@@ -10,31 +10,33 @@ Wind::import('WIND:component.cache.AbstractWindCache');
 
 class WindXCache extends AbstractWindCache {
 
-	public function __construct(){
+	public function __construct() {
 		if (!function_exists('xcache_get')) {
 			throw new WindException('The xcache extension must be loaded !');
 		}
 	}
+
 	/* 
 	 * @see AbstractWindCache#setValue()
 	 */
 	protected function setValue($key, $value, $expire = 0) {
 		return xcache_set($key, $value, $expire);
 	}
+
 	/* 
 	 * @see AbstractWindCache#getValue()
 	 */
 	protected function getValue($key) {
 		return xcache_get($key);
 	}
-	
+
 	/* 
 	 * @see AbstractWindCache#deleteValue()
 	 */
 	protected function deleteValue($key) {
 		return xcache_unset($key);
 	}
-	
+
 	/* 
 	 * @see AbstractWindCache#clear()
 	 */
@@ -45,5 +47,5 @@ class WindXCache extends AbstractWindCache {
 		}
 		return true;
 	}
-	
+
 }

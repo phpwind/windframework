@@ -19,7 +19,7 @@ class WindApcCache extends AbstractWindCache {
 	 * @see AbstractWindCache#addValue()
 	 */
 	protected function addValue($key, $value, $expires = 0) {
-		return apc_store($key, $value, $ttl);
+		return apc_store($key, $value, $expires);
 	}
 	
 	/* 

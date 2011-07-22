@@ -12,38 +12,44 @@ class WindDbCache extends AbstractWindCache {
 	 * 分布式管理
 	 * @var AbstractWindDbAdapter 
 	 */
-	protected $dbHandler;
+	private $dbHandler;
+	
+	/**
+	 * 链接配置信息
+	 * @var array
+	 */
+	private $dbconfig;
 
 	/**
 	 * 缓存表
 	 * @var string 
 	 */
-	protected $table = 'pw_cache';
+	private $table = 'pw_cache';
 
 	/**
 	 * 缓存表的键字段
 	 * @var string 
 	 */
-	protected $keyField = 'key';
+	private $keyField = 'key';
 
 	/**
 	 * 缓存表的值字段
 	 * @var string 
 	 */
-	protected $valueField = 'value';
+	private $valueField = 'value';
 
 	/**
 	 * 缓存表过期时间字段
 	 * @var string 
 	 */
-	protected $expireField = 'expire';
+	private $expireField = 'expire';
 
-	/**
-	 * 数据过期策略
-	 * @var boolean 
+	/*
+	 * 配置项常量定义
 	 */
-	protected $expirestrage = true;
-
+	const DBCACHE = 'dbCache';
+	const DBCONFIG = 'dbconfig';
+	
 	const CACHETABLE = 'cache-table';
 
 	const TABLENAME = 'table-name';
@@ -54,7 +60,6 @@ class WindDbCache extends AbstractWindCache {
 
 	const EXPIRE = 'field-expire';
 
-	const STRAGE = 'expirestrage';
 
 	public function __construct(WindConnection $connection = null, $config = array()) {
 		$connection && $this->setConnection($connection);
@@ -138,70 +143,29 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->dbConfig = $this->getConfig(self::DBCONFIG);
-		
-		$this->table = $this->getTableConfig(self::TABLENAME);
-		$this->keyField = $this->getTableConfig(self::KEY);
-		$this->valueField = $this->getTableConfig(self::VALUE);
-		$this->expireField = $this->getTableConfig(self::EXPIRE);
+		$this->dbConfig = $this->getConfig(self::DBCACHE, self::DBCONFIG);
+		$config = $this->getConfig(self::CACHETABLE);
+		$this->table = $this->getSubConfig($config, self::TABLENAME, '', 'pw_cache');
+		$this->keyField = $this->getSubConfig($config, self::KEY, '', 'key');
+		$this->valueField = $this->getSubConfig($config, self::VALUE, '', 'value');
+		$this->expireField = $this->getSubConfig($config, self::EXPIRE, '', 'expire');
 	}
 
 	/**
-	 * @return mixed
+	 * 析构函数
 	 */
-	private function getTableConfig($name = '', $subname = '') {
-		$tableConfig = $this->getConfig(self::CACHETABLE);
-		if (empty($name)) {
-			return $tableConfig;
-		}
-		if (empty($subname)) {
-			return isset($tableConfig[$name]) ? $tableConfig[$name] : $tableConfig;
-		}
-		return isset($tableConfig[$name][$subname]) ? $tableConfig[$name][$subname] : $tableConfig[$name];
-	}
-
-	/**
-	 * 存储数据
-	 * @param string $key
-	 * @param string $value
-	 * @param int $expires
-	 * @param IWindCacheDependency $denpendency
-	 * @return boolean
-	 */
-	protected function store($key, $value, $expires = 0) {
-		($expires > 0) ? $expires += time() : $expire=0;
-		$db = array($this->keyField => $key, $this->valueField => $value, $this->expireField => $expires);
-	    $sql = 'INSERT INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
-		return $this->getConnection()->createStatement($sql)->update();
-	}
-
-	/**
-	 * 更新数据
-	 * @param string $key
-	 * @param int $value
-	 * @param int $expires
-	 * @param IWindCacheDependency $denpendency
-	 * @return boolean
-	 */
-	protected function update($key, $value, $expires = 0) {
-		($expires > 0) ? $expires += time() : $expire=0;
-		$db = array($this->valueField => $value, $this->expireField => $expires);
-		$sql = "UPDATE " . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db) . ' WHERE `' . $this->keyField . '`=?';
-		return $this->getConnection()->createStatement($sql)->update(array($key), true);
-	}
-
 	public function __destruct() {
-		if (null !== $this->dbHandler) {
+		if (null !== $this->getConnection()) {
 			$this->deleteExpiredCache();
 		}
 	}
 	
 	/**
-	 * 返回表名
-	 * @return string 
+	 * 设置链接对象
+	 * @param WindConnection $connection
 	 */
-	private function getTableName() {
-		return $this->table;
+	public function setConnection($connection) {
+		if ($connection instanceof WindConnection) $this->connection = $connection;
 	}
 	
 	/**
@@ -218,16 +182,32 @@ class WindDbCache extends AbstractWindCache {
 	}
 	
 	/**
-	 * @return mixed
+	 * 存储数据
+	 * @param string $key
+	 * @param string $value
+	 * @param int $expires
+	 * @param IWindCacheDependency $denpendency
+	 * @return boolean
 	 */
-	private function getTableConfig($name = '', $subname = '') {
-		$tableConfig = $this->getConfig(self::CACHETABLE);
-		if (empty($name)) {
-			return $tableConfig;
-		}
-		if (empty($subname)) {
-			return isset($tableConfig[$name]) ? $tableConfig[$name] : $tableConfig;
-		}
-		return isset($tableConfig[$name][$subname]) ? $tableConfig[$name][$subname] : $tableConfig[$name];
+	private function store($key, $value, $expires = 0) {
+		($expires > 0) ? $expires += time() : $expire=0;
+		$db = array($this->keyField => $key, $this->valueField => $value, $this->expireField => $expires);
+	    $sql = 'INSERT INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
+		return $this->getConnection()->createStatement($sql)->update();
+	}
+
+	/**
+	 * 更新数据
+	 * @param string $key
+	 * @param int $value
+	 * @param int $expires
+	 * @param IWindCacheDependency $denpendency
+	 * @return boolean
+	 */
+	private function update($key, $value, $expires = 0) {
+		($expires > 0) ? $expires += time() : $expire=0;
+		$db = array($this->valueField => $value, $this->expireField => $expires);
+		$sql = "UPDATE " . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db) . ' WHERE `' . $this->keyField . '`=?';
+		return $this->getConnection()->createStatement($sql)->update(array($key), true);
 	}
 }

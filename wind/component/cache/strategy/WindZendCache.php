@@ -42,5 +42,5 @@ class WindZendCache extends AbstractWindCache {
 	public function clear() {
 		return zend_shm_cache_clear();
 	}
-	
+
 }

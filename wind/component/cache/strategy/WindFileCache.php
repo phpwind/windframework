@@ -21,7 +21,7 @@ class WindFileCache extends AbstractWindCache {
 	 * 缓存后缀
 	 * @var string 
 	 */
-	protected $cacheFileSuffix = '';
+	protected $cacheFileSuffix = 'txt';
 	
 	/**
 	 * 缓存多级目录。最好不要超3层目录
@@ -29,6 +29,10 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	protected $cacheDirectoryLevel = '';
 	
+	/*
+	 * 配置项
+	 */
+	const FILE = 'fileCache';
 	const CACHEDIR = 'cache-dir';
 	
 	const SUFFIX = 'cache-suffix';
@@ -52,7 +56,7 @@ class WindFileCache extends AbstractWindCache {
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::deleteValue()
 	 */
-	protected function deleteValue($key) {
+	protected function deleteValue($cacheFile) {
 		if (is_file($cacheFile)) return WindFile::delFile($cacheFile);
 		return false;
 	}
@@ -74,7 +78,7 @@ class WindFileCache extends AbstractWindCache {
 		$_tmp = $this->getCacheDir();
 		if (0 < $this->getCacheDirectoryLevel()) {
 			for ($i = $this->getCacheDirectoryLevel(); $i > 0; --$i) {
-				if (($prefix = substr($key, $i+$i, 2)) ===false) continue;
+				if (false === ($prefix = substr($key, $i+$i, 2))) continue;
 				$_tmp .= DIRECTORY_SEPARATOR . $prefix;
 			}
 		}
@@ -172,9 +176,9 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setCacheDir($this->getConfig(self::CACHEDIR));
-		$this->setCacheFileSuffix($this->getConfig(self::SUFFIX));
-		$this->setCacheDirectoryLevel($this->getConfig(self::LEVEL));
+		$this->setCacheDir($this->getConfig(self::FILE, self::CACHEDIR));
+		$this->setCacheFileSuffix($this->getConfig(self::FILE, self::SUFFIX, 'txt'));
+		$this->setCacheDirectoryLevel($this->getConfig(self::FILE, self::LEVEL));
 	}
 
 }
