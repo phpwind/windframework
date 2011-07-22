@@ -76,7 +76,7 @@ abstract class AbstractWindCache extends WindModule {
 			$data[self::DEPENDENCY] = serialize($denpendency);
 			$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 		}
-		return $this->addValue($this->buildSecurityKey($key), serialize($data), $expires);
+		return $this->setValue($this->buildSecurityKey($key), serialize($data), $expires);
 	}
 
 	/**
@@ -87,7 +87,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param int $expires
 	 * @throws WindException
 	 */
-	protected abstract function addValue($key, $value, $expires = 0);
+	protected abstract function setValue($key, $value, $expires = 0);
 
 	/**
 	 * 获取指定缓存
@@ -242,7 +242,6 @@ abstract class AbstractWindCache extends WindModule {
 		$this->setKeyPrefix($this->getConfig(self::KEYPREFIX, '', ''));
 		$this->setExpire($this->getCofnig(self::EXPIRE, '', 0));
 	}
-	
 	
 	/**
 	 * 获得缓存表相关配置
