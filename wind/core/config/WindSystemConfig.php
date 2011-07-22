@@ -6,45 +6,39 @@
  * @version $Id$ 
  * @package 
  */
-class WindSystemConfig extends WindConfig {
-	/* 通用配置 */
-	const CLASS_PATH = 'class';
-	const PATH = 'path';
-	const VALUE = 'value';
-	
-	/* app 相关配置 */
-	const WEB_APPS = 'web-apps';
-	const WEB_APP_ROOT_PATH = 'root-path';
-	const WEB_APP_FACTORY_CLASS_DEFINITION = 'class-definition';
-	const WEB_APP_FILTER = 'filters';
-	const WEB_APP_ROUTER = 'router';
-	const WEB_APP_MODULE = 'modules';
-	const WEB_APP_TEMPLATE = 'template';
+class WindSystemConfig extends WindModule {
+	private $rootPath = '';
+	private $appName = '';
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		if (!$config) return;
+		if (is_string($config)) {
+			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
+			$config = $configParser->parse($config, $this->appName . '_config');
+		}
+		if (isset($config[$this->appName]))
+			$this->_config = $config[$this->appName];
+		else
+			$this->_config = $config;
+	}
 
 	/**
 	 * @param string $config
-	 * @param WindConfigParser $configParser
 	 * @param string $appName
 	 */
-	public function __construct($config, $configParser, $appName) {
-		$cacheName = $appName . '_config';
-		parent::__construct($config, $configParser, $cacheName);
-		$_config = $this->getConfig(self::WEB_APPS, $appName);
-		$this->setConfig($_config);
+	public function __construct($config, $appName) {
+		$this->appName = $appName;
+		$this->setConfig($config, $appName);
 	}
 
 	/**
 	 * @return the $appName
 	 */
 	public function getAppName() {
-		return Wind::getAppName();
-	}
-
-	/**
-	 * 返回当前应用的启动脚本位置
-	 */
-	public function getAppClass() {
-		return $this->getConfig(self::CLASS_PATH, '', array(), COMPONENT_WEBAPP);
+		return $this->appName;
 	}
 
 	/**
@@ -53,22 +47,19 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getRootPath() {
-		$_tmp = '_rootPath';
-		if (!isset($this->$_tmp)) {
-			$rootPath = $this->getConfig(self::WEB_APP_ROOT_PATH);
+		if (!$this->rootPath) {
+			$rootPath = $this->getConfig('root-path');
 			if (!$rootPath) $rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
-			$this->$_tmp = $rootPath;
+			$this->rootPath = $rootPath;
 		}
-		return $this->$_tmp;
+		return $this->rootPath;
 	}
 
 	/**
-	 * 返回filterChain的类型
-	 * 
-	 * @return array
+	 * 返回当前应用的启动脚本位置
 	 */
-	public function getFilterClass() {
-		return $this->getFilters(self::CLASS_PATH);
+	public function getAppClass() {
+		return $this->getConfig('class', '', COMPONENT_WEBAPP);
 	}
 
 	/**
@@ -78,8 +69,33 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $name
 	 * @return array|string
 	 */
-	public function getFilters($name = '') {
-		return $this->getConfig(self::WEB_APP_FILTER, $name);
+	public function getFilters() {
+		return $this->getConfig('filters');
+	}
+
+	/**
+	 * 返回filterChain的类型
+	 * 
+	 * @return array
+	 */
+	public function getFilterClass() {
+		return $this->getConfig('filters', 'class');
+	}
+
+	/**
+	 * @param string $name
+	 * @return array|string
+	 */
+	public function getRouter() {
+		return $this->getConfig('router');
+	}
+
+	/**
+	 * 返回当前路由的配置信息
+	 * @return array
+	 */
+	public function getRouterConfig() {
+		return $this->getConfig('router', 'config');
 	}
 
 	/**
@@ -87,15 +103,7 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getRouterClass() {
-		return $this->getRouter(WIND_CONFIG_CLASS);
-	}
-
-	/**
-	 * @param string $name
-	 * @return array|string
-	 */
-	public function getRouter($name = '') {
-		return $this->getConfig(self::WEB_APP_ROUTER, $name, array(), COMPONENT_ROUTER);
+		return $this->getConfig('router', 'class', COMPONENT_ROUTER);
 	}
 
 	/**
@@ -123,7 +131,7 @@ class WindSystemConfig extends WindConfig {
 	 * @return array|string
 	 */
 	public function getModules($name = '') {
-		return $this->getConfig(self::WEB_APP_MODULE, $name);
+		return $this->getConfig('modules', $name);
 	}
 
 	/**
@@ -132,8 +140,8 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $default
 	 */
 	public function getModuleViewClassByModuleName($name, $default = '') {
-		$module = $this->getModules($name);
-		return $this->getConfig('view', WIND_CONFIG_CLASS, $module, $default);
+		$module = $this->getConfig('modules', $name);
+		return $this->getConfig('view', 'class', $default, $module);
 	}
 
 	/**
@@ -142,8 +150,8 @@ class WindSystemConfig extends WindConfig {
 	 * @param string $default
 	 */
 	public function getModuleViewConfigByModuleName($name, $default = '') {
-		$module = $this->getModules($name);
-		return $this->getConfig('view', WIND_CONFIG_CONFIG, $module, $default);
+		$module = $this->getConfig('modules', $name);
+		return $this->getConfig('view', 'config', $default, $module);
 	}
 
 	/**
@@ -153,8 +161,8 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getModuleErrorHandlerByModuleName($name, $default = '') {
-		$module = $this->getModules($name);
-		return $this->getConfig('error-handler', WIND_CONFIG_CLASS, $module, $default);
+		$module = $this->getConfig('modules', $name);
+		return $this->getConfig('error-handler', 'class', $default, $module);
 	}
 
 	/**
@@ -163,8 +171,8 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getModuleControllerPathByModuleName($name, $default = '') {
-		$module = $this->getModules($name);
-		return $this->getConfig(WIND_CONFIG_CLASSPATH, '', $module, $default);
+		$module = $this->getConfig('modules', $name);
+		return $this->getConfig('path', '', $default, $module);
 	}
 
 	/**
@@ -173,8 +181,8 @@ class WindSystemConfig extends WindConfig {
 	 * @return string
 	 */
 	public function getModuleControllerSuffixByModuleName($name, $default = '') {
-		$module = $this->getModules($name);
-		return $this->getConfig('controller-suffix', WIND_CONFIG_VALUE, $module, $default);
+		$module = $this->getConfig('modules', $name);
+		return $this->getConfig('controller-suffix', '', $default, $module);
 	}
 
 }

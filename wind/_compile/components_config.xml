@@ -53,7 +53,7 @@
 		<config>
 			<template-dir value='template' />
 			<template-ext value='htm' />
-			<compile-dir value='compile.template' />
+			<compile-dir value='data.template' />
 			<is-cache value='true' />
 		</config>
 		<properties>
@@ -74,5 +74,8 @@
 	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'></component>
+	<component name='configParser' path='WIND:core.config.parser.WindConfigParser'
+		scope='singleton'>
+	</component>
 
 </components>

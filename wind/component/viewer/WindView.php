@@ -137,10 +137,10 @@ class WindView extends WindModule {
 	 * @return
 	 */
 	public function init() {
-		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR, WIND_CONFIG_VALUE));
-		$this->setCompileDir($this->getConfig(self::COMPILE_DIR, WIND_CONFIG_VALUE));
-		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT, WIND_CONFIG_VALUE));
-		$this->setIsCache($this->getConfig(self::IS_CACHE), WIND_CONFIG_VALUE);
+		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR, 'value'));
+		$this->setCompileDir($this->getConfig(self::COMPILE_DIR, 'value'));
+		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT, 'value'));
+		$this->setIsCache($this->getConfig(self::IS_CACHE, 'value'));
 	}
 
 	/**

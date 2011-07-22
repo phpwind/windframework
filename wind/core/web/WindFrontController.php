@@ -114,7 +114,7 @@ class WindFrontController {
 	 * @param string $config
 	 */
 	protected function initWindConfig($appName, $config) {
-		$this->windSystemConfig = new WindSystemConfig($config, new WindConfigParser(), $appName);
+		$this->windSystemConfig = new WindSystemConfig($config, $appName);
 		Wind::register($this->windSystemConfig->getRootPath(), $appName, true);
 		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
 			Wind::log(

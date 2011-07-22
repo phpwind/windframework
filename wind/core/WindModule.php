@@ -9,15 +9,9 @@ Wind::import('COM:utility.WindUtility');
  */
 class WindModule {
 	/**
-	 * @var WindConfig
-	 */
-	private $_config = null;
-	/**
-	 * 该对象的数组形态
-	 * 
 	 * @var array
 	 */
-	private $_array = array();
+	private $_config = array();
 	/**
 	 * 是否进行类型验证
 	 *
@@ -116,17 +110,14 @@ class WindModule {
 	 * @return array
 	 */
 	public function toArray() {
-		if (empty($this->_array)) {
-			$reflection = new ReflectionClass(get_class($this));
-			$properties = $reflection->getProperties();
-			$_result = array();
-			foreach ($properties as $property) {
-				$_propertyName = $property->name;
-				$_result[$_propertyName] = $this->$_propertyName;
-			}
-			$this->_array = $_result;
+		$reflection = new ReflectionClass(get_class($this));
+		$properties = $reflection->getProperties();
+		$_result = array();
+		foreach ($properties as $property) {
+			$_propertyName = $property->name;
+			$_result[$_propertyName] = $this->$_propertyName;
 		}
-		return $this->_array;
+		return $_result;
 	}
 
 	/**
@@ -145,14 +136,16 @@ class WindModule {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
+				'wind.core');
 			return false;
 		}
 		if (!array_key_exists($propertyName, $_writeTableProperties)) {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
+				'wind.core');
 			return false;
 		}
 		if ($this->_typeValidation && $_writeTableProperties[$propertyName]) {
@@ -171,32 +164,32 @@ class WindModule {
 	 * 
 	 * @param string $configName 键名
 	 * @param string $subConfigName 二级键名
-	 * @param array $default 默认值
+	 * @param string $default 默认值
+	 * @param array $config 
 	 * @return string|array
 	 */
-	public function getConfig($configName = '', $subConfigName = '', $default = '') {
-		if ($this->_config === null) {
-			Wind::log('[core.WindModule.getConfig] config is not exist.', WindLogger::LEVEL_INFO, 'wind.core');
-			return $default;
-		}
-		return $this->_config->getConfig($configName, $subConfigName, array(), $default);
+	public function getConfig($configName = '', $subConfigName = '', $default = '', $config = array()) {
+		if (!$config) $config = $this->_config;
+		if ($configName === '') return $config;
+		if (!isset($config[$configName])) return $default;
+		if ($subConfigName === '' || !isset($config[$configName][$subConfigName])) $config[$configName];
+		return $config[$configName][$subConfigName];
 	}
 
 	/**
 	 * Config配置,如果配置信息已经存在，则会合并配置
 	 * 
 	 * @param string|array|windConfig $config
+	 * @return
 	 */
 	public function setConfig($config) {
 		if (!$config) return;
 		if (is_string($config)) {
-			Wind::import('WIND:core.config.parser.WindConfigParser');
-			$config = new WindConfig($config, new WindConfigParser(), get_class($this), WIND_CONFIG_CACHE);
-		} elseif (is_array($config))
-			$config = new WindConfig($config);
-		
-		if ($this->_config !== null)
-			$this->_config->setConfig($config->getConfig(), true);
+			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
+			$config = $configParser->parse($config, get_class($this), WIND_CONFIG_CACHE);
+		}
+		if (!$this->_config)
+			$this->_config = array_merge($this->_config, $config);
 		else
 			$this->_config = $config;
 	}
