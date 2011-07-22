@@ -81,7 +81,6 @@ abstract class AbstractWindCache extends WindModule {
 		return $this->addValue($this->buildSecurityKey($key), serialize($data), $expires);
 	}
 	
-	protected function 
 	/**
 	 * 执行添加操作
 	 * 
