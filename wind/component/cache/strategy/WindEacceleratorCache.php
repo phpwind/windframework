@@ -20,9 +20,9 @@ class WindEacceleratorCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache#addValue()
+	 * @see AbstractWindCache#setValue()
 	 */
-	protected function addValue($key, $value, $expire = 0) {
+	protected function setValue($key, $value, $expire = 0) {
 		return eaccelerator_put($key, $value, $expire);
 	}
 

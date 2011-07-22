@@ -67,9 +67,9 @@ class WindDbCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache#addValue()
+	 * @see AbstractWindCache#setValue()
 	 */
-	protected function addValue($key, $value, $expire = 0) {
+	protected function setValue($key, $value, $expire = 0) {
 		(mt_rand(100, 1000000) % 100 == 0) && $this->deleteExpiredCache();
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` =?' ; 
 		$data = $this->getConnection()->createStatement($sql)->getOne(array($key));

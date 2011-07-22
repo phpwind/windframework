@@ -16,9 +16,9 @@ class WindWinCache extends AbstractWindCache {
 	}
 
 	/* 
-	 * @see AbstractWindCache#addValue()
+	 * @see AbstractWindCache#setValue()
 	 */
-	protected function addValue($key, $value, $expire = 0) {
+	protected function setValue($key, $value, $expire = 0) {
 		return wincache_ucache_set($key, $value, $expire);
 	}
 
