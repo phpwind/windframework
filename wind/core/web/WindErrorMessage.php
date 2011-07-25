@@ -26,7 +26,8 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	 * @see IWindErrorMessage::sendError()
 	 */
 	public function sendError() {
-		if (empty($this->error)) return;
+		if (empty($this->error))
+			return;
 		throw new WindActionException($this);
 	}
 
@@ -51,13 +52,15 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	 * @see IWindErrorMessage::addError()
 	 */
 	public function addError($error, $key = '') {
-		if (!$error) return;
+		if (!$error)
+			return;
 		if ($key === '') {
 			if (is_string($error))
 				$this->error[] = $error;
 			elseif (is_object($error))
 				$error = get_object_vars($error);
-			if (is_array($error)) $this->error += $error;
+			if (is_array($error))
+				$this->error += $error;
 		} else
 			$this->error[$key] = $error;
 	}
@@ -80,13 +83,15 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	 * @param field_type $errorAction
 	 */
 	public function setErrorAction($errorAction) {
-		if ($errorAction) $this->errorAction = $errorAction;
+		if ($errorAction)
+			$this->errorAction = $errorAction;
 	}
 
 	/**
 	 * @param field_type $errorController
 	 */
 	public function setErrorController($errorController) {
-		if ($errorController) $this->errorController = $errorController;
+		if ($errorController)
+			$this->errorController = $errorController;
 	}
 }
