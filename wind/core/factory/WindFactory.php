@@ -11,6 +11,7 @@
  * @package 
  */
 class WindFactory implements IWindFactory {
+	const WIND_PROXY = 'WIND:core.factory.proxy.WindClassProxy';
 	/**
 	 * 类定义集合
 	 * 
@@ -32,18 +33,138 @@ class WindFactory implements IWindFactory {
 	 * @param string $configFile
 	 */
 	public function __construct($classDefinitions = array()) {
-		$this->loadClassDefinitions($classDefinitions);
+		$this->classDefinitions = $classDefinitions;
 	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindFactory::getInstance()
 	 */
-	public function getInstance($alias) {
-		if (isset($this->instances[$alias])) return $this->instances[$alias];
-		if (!$classDefinition = $this->getClassDefinitionByAlias($alias)) return null;
-		$args = func_get_args();
-		unset($args[0]);
-		return $classDefinition->getInstance($this, $args);
+	public function getInstance($alias, $args = array()) {
+		if (isset($this->instances[$alias]))
+			return $this->instances[$alias];
+		if (!($definition = $this->checkAlias($alias)))
+			return null;
+		$this->buildDefinition($definition);
+		$_subDefinitions = $definition['constructorArg'];
+		foreach ($_subDefinitions as $_subDefinition) {
+			if (isset($_subDefinition['value'])) {
+				$args[] = $_subDefinition['value'];
+			} elseif (isset($_subDefinition['ref']))
+				$args[] = $this->getInstance($_subDefinition['ref']);
+		}
+		$instance = $this->createInstance($definition['className'], $args);
+		if ($definition['config'])
+			$this->buildConfig($definition['config'], $instance);
+		if ($definition['properties'])
+			$this->buildProperties($definition['properties'], $instance);
+		if ($definition['initMethod'])
+			$this->executeInitMethod($definition['initMethod'], $instance);
+		if ($definition['proxy'])
+			$instance = $this->setProxyForClass($definition['proxy'], $instance);
+		
+		$this->setScope($alias, $definition['scope'], $instance);
+		return $instance;
+	}
+
+	/**
+	 * @param string $alias
+	 * @param string $scope
+	 * @param object $instance
+	 */
+	protected function setScope($alias, $scope, $instance) {
+		switch ($scope) {
+			case 'prototype':
+				break;
+			case 'application':
+				$this->instances[$alias] = $instance;
+				break;
+			default:
+				$this->instances[$alias] = $instance;
+				break;
+		
+		}
+	}
+
+	/**
+	 * 为类对象设置配置
+	 * 
+	 * @param WindModule $instance
+	 * @param WindFactory $factory
+	 * @return
+	 */
+	protected function buildConfig($config, $instance) {
+		if (isset($config['resource']))
+			$config = $config['resource'];
+		$instance->setConfig($config);
+	}
+
+	/**
+	 * 执行用户配置的初始化操作
+	 * 
+	 * @param string $initMethod
+	 * @param object $instance
+	 * @return
+	 */
+	protected function executeInitMethod($initMethod, $instance) {
+		try {
+			return call_user_func_array(array($instance, $initMethod), array());
+		} catch (Exception $e) {
+			throw new WindException(
+				'[core.factory.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
+				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		}
+	}
+
+	/**
+	 * 为类设置代理
+	 * 
+	 * @param string $definition
+	 * @param WindModule $instance
+	 * @return WindClassProxy
+	 */
+	protected function setProxyForClass($proxy, $instance) {
+		if ($proxy === 'false' || $proxy === false)
+			return $instance;
+		$proxy = Wind::import(self::WIND_PROXY);
+		return $this->createInstance($proxy, array($instance));
+	}
+
+	/**
+	 * 将类实例的依赖注入到类实例中
+	 * 
+	 * @param string $properties
+	 * @param WindModule  $instance
+	 */
+	protected function buildProperties($properties, $instance) {
+		if (isset($properties['delay']) && ($properties['delay'] === 'false' || $properties['delay'] === false)) {
+			unset($properties['delay']);
+			foreach ($properties as $key => $subDefinition) {
+				$_value = '';
+				if (isset($subDefinition['value']))
+					$_value = $subDefinition['value'];
+				elseif (isset($subDefinition['ref']))
+					$_value = $this->getInstance($subDefinition['ref']);
+				if ($_value) {
+					$_setter = 'set' . ucfirst(trim($key, '_'));
+					call_user_func_array(array($instance, $_setter), array($_value));
+				}
+			}
+		}
+		$instance->setDelayAttributes($properties);
+	}
+
+	/**
+	 * 验证类定义的正确性
+	 * 
+	 * @param array definition
+	 * @return boolean
+	 */
+	private function buildDefinition(&$definition) {
+		$_definition = array('path' => '', 'className' => '', 'factoryMethod' => '', 'initMethod' => '', 
+			'scope' => 'application', 'proxy' => false, 'properties' => array(), 'config' => array(), 'constructorArg' => array());
+		$definition = array_merge($_definition, $definition);
+		$definition['className'] = Wind::import($definition['path']);
+		return true;
 	}
 
 	/* (non-PHPdoc)
@@ -51,7 +172,8 @@ class WindFactory implements IWindFactory {
 	 */
 	public function getPrototype($alias) {
 		$instance = $this->getInstance($alias);
-		if ($instance === null) return null;
+		if ($instance === null)
+			return null;
 		return clone $instance;
 	}
 
@@ -90,8 +212,10 @@ class WindFactory implements IWindFactory {
 	 * @return WindClassDefinition
 	 */
 	protected function getClassDefinitionByAlias($classAlias) {
-		if (!($definition = $this->classDefinitions[$classAlias])) return null;
-		if ($definition instanceof WindClassDefinition) return $definition;
+		if (!($definition = $this->classDefinitions[$classAlias]))
+			return null;
+		if ($definition instanceof WindClassDefinition)
+			return $definition;
 		$classDefinition = self::createInstance('WindClassDefinition', array($definition));
 		$classDefinition->setAlias($classAlias);
 		$this->addClassDefinitions($classDefinition);
@@ -101,17 +225,12 @@ class WindFactory implements IWindFactory {
 	/**
 	 * 动态添加类定义对象
 	 * 
-	 * @param WindClassDefinition|array $classDefinition
+	 * @param string $alias
+	 * @param array $classDefinition
 	 * @return 
 	 */
-	public function addClassDefinitions($classDefinition) {
-		if ($classDefinition instanceof WindClassDefinition) {
-			$alias = $classDefinition->getAlias();
-			$this->classDefinitions[$alias] = $classDefinition;
-		} elseif (is_array($classDefinition)) {
-			foreach ($classDefinition as $value)
-				$this->addClassDefinitions($value);
-		}
+	public function addClassDefinitions($alias, $classDefinition) {
+		$this->classDefinitions[$alias] = $classDefinition;
 	}
 
 	/**
@@ -121,22 +240,7 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	public function checkAlias($alias) {
-		return isset($this->classDefinitions[$alias]);
-	}
-
-	/**
-	 * 加载类定义信息
-	 * 
-	 * @param array $classDefinitions
-	 * @throws WindException
-	 * @return 
-	 */
-	protected function loadClassDefinitions($classDefinitions) {
-		if (is_array($classDefinitions))
-			$this->classDefinitions = $classDefinitions;
-		else
-			throw new WindException('[core.factory.WindFactory.loadClassDefinitions]', 
-				WindException::ERROR_PARAMETER_TYPE_ERROR);
+		return isset($this->classDefinitions[$alias]) ? $this->classDefinitions[$alias] : false;
 	}
 
 }

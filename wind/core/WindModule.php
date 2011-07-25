@@ -70,17 +70,17 @@ class WindModule {
 		if ($_prefix == '_set') {
 			$this->$_propertyName = $args[0];
 		} elseif ($_prefix == '_get') {
-			if (!$this->$_propertyName && isset($this->delayAttributes[$_propertyName])) {
-				$_instance = null;
+			if ($this->$_propertyName)
+				return $this->$_propertyName;
+			if (isset($this->delayAttributes[$_propertyName])) {
+				$_value = null;
 				$_property = $this->delayAttributes[$_propertyName];
-				if (isset($_property[WindClassDefinition::REF])) {
-					$_ref = $_property[WindClassDefinition::REF];
-					if ($this->getSystemFactory()->checkAlias($_ref))
-						$_instance = $this->getSystemFactory()->getInstance($_ref);
-					else
-						$_instance = $this->getSystemFactory()->createInstance($_ref);
+				if (isset($_property['value'])) {
+					$_value = $_property['value'];
+				} elseif (isset($_property['ref'])) {
+					$_value = $this->getSystemFactory()->getInstance($_property['ref']);
 				}
-				$this->$_propertyName = $_instance;
+				$this->$_propertyName = $_value;
 			}
 			return $this->$_propertyName;
 		}
@@ -149,7 +149,8 @@ class WindModule {
 			return false;
 		}
 		if ($this->_typeValidation && $_writeTableProperties[$propertyName]) {
-			if ($value instanceof $_writeTableProperties[$propertyName]) return true;
+			if ($value instanceof $_writeTableProperties[$propertyName])
+				return true;
 			Wind::log(
 				"[core.WindModule.validatePropertyName]
 				type of the property " . $propertyName . " is not defined.
@@ -169,10 +170,14 @@ class WindModule {
 	 * @return string|array
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '', $config = array()) {
-		if (!$config) $config = $this->_config;
-		if ($configName === '') return $config;
-		if (!isset($config[$configName])) return $default;
-		if ($subConfigName === '' || !isset($config[$configName][$subConfigName])) $config[$configName];
+		if (!$config)
+			$config = $this->_config;
+		if ($configName === '')
+			return $config;
+		if (!isset($config[$configName]))
+			return $default;
+		if ($subConfigName === '' || !isset($config[$configName][$subConfigName]))
+			$config[$configName];
 		return $config[$configName][$subConfigName];
 	}
 
@@ -183,7 +188,8 @@ class WindModule {
 	 * @return
 	 */
 	public function setConfig($config) {
-		if (!$config) return;
+		if (!$config)
+			return;
 		if (is_string($config)) {
 			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
 			$config = $configParser->parse($config, get_class($this), WIND_CONFIG_CACHE);

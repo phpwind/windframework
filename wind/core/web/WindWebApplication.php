@@ -62,15 +62,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				'wind.core');
 		}
 		if (!$this->getSystemFactory()->checkAlias($handler)) {
-			$definition = new WindClassDefinition();
-			$definition->setPath($handler);
-			$definition->setScope(WindClassDefinition::SCOPE_SINGLETON);
-			$definition->setAlias($handler);
-			$definition->setProxy('true');
-			$definition->setProperties(
-				array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
-					'forward' => array('ref' => COMPONENT_FORWARD), 'urlHelper' => array('ref' => COMPONENT_URLHELPER)));
-			$this->getSystemFactory()->addClassDefinitions($definition);
+			$this->getSystemFactory()->addClassDefinitions($handler, 
+				array('path' => $handler, 'scope' => 'singleton', 'proxy' => true, 
+					'properties' => array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
+						'forward' => array('ref' => COMPONENT_FORWARD), 
+						'urlHelper' => array('ref' => COMPONENT_URLHELPER))));
 		}
 		return $this->getSystemFactory()->getInstance($handler);
 	}

@@ -24,7 +24,8 @@ class WindSystemConfig extends WindModule {
 	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config, $factory = null) {
-		if (!$config) return;
+		if (!$config)
+			return;
 		if (is_string($config)) {
 			$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 			$config = $configParser->parse($config, $this->appName . '_config');
@@ -50,7 +51,8 @@ class WindSystemConfig extends WindModule {
 	public function getRootPath() {
 		if (!$this->rootPath) {
 			$rootPath = $this->getConfig('root-path');
-			if (!$rootPath) $rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+			if (!$rootPath)
+				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
 			$this->rootPath = $rootPath;
 		}
 		return $this->rootPath;

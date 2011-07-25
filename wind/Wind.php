@@ -56,7 +56,8 @@ class Wind {
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (!isset(self::$_currentApp[0])) return '';
+		if (!isset(self::$_currentApp[0]))
+			return '';
 		return self::$_currentApp[0][0];
 	}
 
@@ -100,8 +101,10 @@ class Wind {
 	 * @return string|null
 	 */
 	public static function import($filePath, $recursivePackage = false) {
-		if (!$filePath) return;
-		if (isset(self::$_imports[$filePath])) return self::$_imports[$filePath];
+		if (!$filePath)
+			return;
+		if (isset(self::$_imports[$filePath]))
+			return self::$_imports[$filePath];
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
 		elseif (($pos1 = strrpos($filePath, ':')) !== false)
@@ -112,7 +115,8 @@ class Wind {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealDir($filePath);
-			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
+			if (!$dh = opendir($dirPath))
+				throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dirPath . D_S . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
@@ -146,15 +150,18 @@ class Wind {
 	 * @return 
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
-		if (!$path) return;
+		if (!$path)
+			return;
 		$alias = strtolower($alias);
 		if (!empty($alias)) {
-			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = $path;
+			if (!isset(self::$_namespace[$alias]) || $reset)
+				self::$_namespace[$alias] = $path;
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
 				self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+				if (($pos = array_search('.', self::$_includePaths, true)) !== false)
+					unset(self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
 			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
@@ -170,7 +177,8 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className])) $path = self::$_classes[$className];
+		if (isset(self::$_classes[$className]))
+			$path = self::$_classes[$className];
 		if ($path === '') {
 			throw new Exception('auto load ' . $className . ' failed.');
 		}
@@ -207,7 +215,8 @@ class Wind {
 	public static function getRealPath($filePath, $suffix = '') {
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
-			if (!$namespace) return $filePath;
+			if (!$namespace)
+				return $filePath;
 			$filePath = $namespace . D_S . str_replace('.', D_S, substr($filePath, $pos + 1));
 		}
 		!$suffix && $suffix = self::$_extensions;
@@ -221,9 +230,11 @@ class Wind {
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	public static function getRealDir($dirPath) {
-		if (($pos = strpos($dirPath, ':')) === false) return $dirPath;
+		if (($pos = strpos($dirPath, ':')) === false)
+			return $dirPath;
 		$namespace = self::getRootPath(substr($dirPath, 0, $pos));
-		if (!$namespace) return $dirPath;
+		if (!$namespace)
+			return $dirPath;
 		$dirPath = str_replace('.', D_S, substr($dirPath, $pos + 1));
 		return $namespace . D_S . $dirPath;
 	}
@@ -298,9 +309,11 @@ class Wind {
 	 * @return
 	 */
 	protected static function resetApp() {
-		if (!isset(self::$_currentApp[0])) return;
+		if (!isset(self::$_currentApp[0]))
+			return;
 		$_current = self::$_currentApp[0];
-		if ($_current[1] === '') return;
+		if ($_current[1] === '')
+			return;
 		foreach (self::$_currentApp as $key => $value) {
 			if ($value[0] == $_current[1]) {
 				array_unshift(self::$_currentApp, $value);
@@ -347,7 +360,8 @@ class Wind {
 			throw new Exception('[wind._checkEnvironment] php version is lower, php ' . PHPVERSION . ' or later.', 
 				E_WARNING);
 		}
-		if (!defined('COMPILE_PATH')) throw new Exception('compile path undefined.');
+		if (!defined('COMPILE_PATH'))
+			throw new Exception('compile path undefined.');
 		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 	}
 
@@ -369,7 +383,8 @@ class Wind {
 	 * @return
 	 */
 	private static function _registerAutoloader() {
-		if (!self::$_isAutoLoad) return;
+		if (!self::$_isAutoLoad)
+			return;
 		if (function_exists('spl_autoload_register'))
 			spl_autoload_register('Wind::autoLoad');
 		else

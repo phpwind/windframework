@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- <component name='' path='' factory-method='' init-method='' scope="singleton/prototype/" 
+<!-- <component name='' path='' factory-method='' init-method='' scope="application/singleton/prototype/" 
 	proxy=''> -->
 <!-- <property property-name='' ref/value/path=''> -->
 <!-- <constructor-arg ref/value=''> -->
