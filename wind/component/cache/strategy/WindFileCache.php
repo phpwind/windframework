@@ -109,6 +109,7 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	private function readData($file) {
 		if (false === is_file($file)) return null;
+		clearstatcache();
 		$mtime = filemtime($file);
 		if (0 === $mtime || ($mtime && $mtime > time()))
 			return WindFile::read($file);

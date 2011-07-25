@@ -69,7 +69,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
-	public function set($key, $value, $expires = 0, IWindCacheDependency $denpendency = null) {
+	public function set($key, $value, $expires = 0, AbstractWindCacheDependency $denpendency = null) {
 		$data = array(self::DATA => $value, self::EXPIRE => $expires, self::STORETIME => time(), self::DEPENDENCY => null, self::DEPENDENCYCLASS => '');
 		if (null != $denpendency) {
 			$denpendency->injectDependent();
@@ -172,7 +172,7 @@ abstract class AbstractWindCache extends WindModule {
 	protected function hasChanged($key, array $data) {
 		if (null === $data[self::DEPENDENCY] && '' === $data[self::DEPENDENCYCLASS]) return false;
 		$dependency = unserialize($data[self::DEPENDENCY]);
-		if (($dependency instanceof IWindCacheDependency) && $dependency->hasChanged()) {
+		if (($dependency instanceof AbstractWindCacheDependency) && $dependency->hasChanged()) {
 			$this->delete($key);
 			return true;
 		}

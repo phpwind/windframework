@@ -171,6 +171,7 @@ class WindDbCache extends AbstractWindCache {
 	/**
 	 * 获得链接对象
 	 * @return WindConnection 
+	 * //TODO DB链接对象～获取全局统一。。
 	 */
 	private function getConnection() {
 		if (null == $this->connection) {
