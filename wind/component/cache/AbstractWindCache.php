@@ -95,7 +95,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return mixed
 	 */
 	public function get($key) {
-		return $this->formatData($this->getValue($this->buildSecurityKey($key)));
+		return $this->formatData($key, $this->getValue($this->buildSecurityKey($key)));
 	}
 
 	/**
@@ -156,7 +156,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param string $value
 	 * @return array
 	 */
-	protected function formatData($value) {
+	protected function formatData($key, $value) {
 		$data = unserialize($value);
 		if (!is_array($data)) return null;
 		if ($this->hasChanged($key, $data)) return null;

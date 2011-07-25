@@ -99,7 +99,7 @@ class WindDbCache extends AbstractWindCache {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` IN ' . $this->getConnection()->quoteArray($keys) . ' AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
 		$data = $this->getConnection()->createStatement($sql)->queryAll(array(time()));
 		foreach ($data as $tmp) {
-			$result[] = $this->formatData($tmp[$this->valueField]);
+			$result[] = $this->formatData(array_search($tmp[$this->keyField], $keys), $tmp[$this->valueField]);
 		}
 		return $result;
 	}
