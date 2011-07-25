@@ -136,16 +136,14 @@ class WindModule {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
-				'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
 			return false;
 		}
 		if (!array_key_exists($propertyName, $_writeTableProperties)) {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
-				'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
 			return false;
 		}
 		if ($this->_typeValidation && $_writeTableProperties[$propertyName]) {
@@ -192,7 +190,7 @@ class WindModule {
 			return;
 		if (is_string($config)) {
 			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($config, get_class($this), WIND_CONFIG_CACHE);
+			$config = $configParser->parse($config, get_class($this), 'cache_wind_config');
 		}
 		if (!$this->_config)
 			$this->_config = array_merge($this->_config, $config);

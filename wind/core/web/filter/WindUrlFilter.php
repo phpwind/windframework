@@ -1,7 +1,4 @@
 <?php
-
-Wind::import('WIND:core.filter.WindFilter');
-
 /**
  * Enter description here ...
  *

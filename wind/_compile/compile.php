@@ -4,6 +4,7 @@
  * @author wuq
  **/
 define('_COMPILE_PATH', WIND_PATH . '_compile' . D_S);
+define('_COMPILE_LIBRARY_PATH', WIND_PATH . 'wind_basic.php');
 Wind::clear();
 Wind::import('COM:log.WindLogger');
 Wind::import('WIND:core.*', true);
@@ -21,7 +22,7 @@ foreach ($imports as $key => $value) {
 	$fileList[$_key] = array($key, $value);
 	$content[$value] = parseFilePath($key);
 }
-$pack->packFromFileList($fileList, COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
+$pack->packFromFileList($fileList, _COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 /* import信息写入编译文件 */
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
 

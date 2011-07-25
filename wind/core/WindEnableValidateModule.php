@@ -107,7 +107,6 @@ class WindEnableValidateModule extends WindModule {
 	protected function getValidator() {
 		if ($this->_validator === null) {
 			$_className = Wind::import($this->_validatorClass);
-			Wind::import('WIND:core.factory.WindFactory');
 			$this->_validator = WindFactory::createInstance($_className);
 			if ($this->_validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
 		}

@@ -1,7 +1,5 @@
 <?php
-
-Wind::import('WIND:core.filter.WindHandlerInterceptor');
-Wind::import('WIND:component.log.WindLogger');
+Wind::import('COM:log.WindLogger');
 /**
  * Enter description here ...
  *

@@ -11,7 +11,7 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	/**
 	 * @var string
 	 */
-	private $errorController = WIND_M_ERROR;
+	private $errorController = 'windError';
 
 	/**
 	 * @param string $message

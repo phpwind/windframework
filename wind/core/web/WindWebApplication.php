@@ -33,8 +33,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindDbException $dbException) {
 			$this->sendErrorMessage($dbException->getMessage());
 		} catch (WindViewException $viewException) {
-			//TODO
-			throw new Exception($viewException->getMessage());
+			$this->sendErrorMessage($viewException->getMessage());
 		}
 	}
 
@@ -79,10 +78,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	protected function sendErrorMessage($actionException) {
 		$_tmp = is_object($actionException) ? $actionException->getError() : $actionException;
-		if (is_string($_tmp)) $_tmp = new WindErrorMessage($_tmp);
+		if (is_string($_tmp))
+			$_tmp = new WindErrorMessage($_tmp);
 		$forward = $this->getSystemFactory()->getInstance(COMPONENT_FORWARD);
 		$forward->forwardAnotherAction($_tmp->getErrorAction(), $_tmp->getErrorController());
-		$this->getRequest()->setAttribute('error', $_tmp->getError());
+		$this->getRequest()->setAttribute($_tmp->getError(), 'error');
 		$this->doDispatch($forward);
 	}
 

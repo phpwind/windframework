@@ -1,17 +1,16 @@
 <?php
 /* 框架版本信息 */
-define('VERSION', '0.5');
+define('VERSION', '0.5.0');
 define('PHPVERSION', '5.1.2');
 /* 路径相关配置信息  */
-!defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
-!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
+define('D_S', DIRECTORY_SEPARATOR);
+define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
-!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'wind_basic.php');
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
-!defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
 !defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
 !defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 2);
+define('DEBUG_TIME', microtime(true));
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -448,10 +447,3 @@ define('COMPONENT_CONFIGPARSER', 'configParser');
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 //********************约定变量***********************************
 define('WIND_M_ERROR', 'windError');
-define('WIND_CONFIG_CACHE', '_wind_config');
-//**********配置*******通用常量定义***************************************
-define('WIND_CONFIG_CONFIG', 'config');
-define('WIND_CONFIG_CLASS', 'class');
-define('WIND_CONFIG_CLASSPATH', 'path');
-define('WIND_CONFIG_RESOURCE', 'resource');
-define('WIND_CONFIG_VALUE', 'value');

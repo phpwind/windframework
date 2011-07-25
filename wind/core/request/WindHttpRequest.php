@@ -503,7 +503,6 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	public function getResponse() {
 		if ($this->_response === null) {
-			Wind::import('WIND:core.response.WindHttpResponse');
 			$this->_response = new WindHttpResponse();
 			if ($this->getIsAjaxRequest()) {
 				$this->_response->addHeader('Content-type', 'text/xml;charset=utf-8');
