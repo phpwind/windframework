@@ -136,14 +136,16 @@ class WindModule {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
+				'wind.core');
 			return false;
 		}
 		if (!array_key_exists($propertyName, $_writeTableProperties)) {
 			Wind::log(
 				"[core.WindModule.validatePropertyName] 
 				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
+				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 
+				'wind.core');
 			return false;
 		}
 		if ($this->_typeValidation && $_writeTableProperties[$propertyName]) {
@@ -168,10 +170,14 @@ class WindModule {
 	 * @return string|array
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '', $config = array()) {
-		if (!$config) $config = $this->_config;
-		if ($configName === '') return $config;
-		if (!isset($config[$configName])) return $default;
-		if ($subConfigName === '' || !isset($config[$configName][$subConfigName])) return $config[$configName];
+		if (empty($config))
+			$config = $this->_config;
+		if ($configName === '')
+			return $config;
+		if (!isset($config[$configName]))
+			return $default;
+		if ($subConfigName === '' || !isset($config[$configName][$subConfigName]))
+			return $config[$configName];
 		return $config[$configName][$subConfigName];
 	}
 
@@ -188,9 +194,9 @@ class WindModule {
 			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
 			$config = $configParser->parse($config, get_class($this), 'cache_wind_config');
 		}
-		if (!$this->_config)
+		if (!$this->_config) {
 			$this->_config = array_merge($this->_config, $config);
-		else
+		} else
 			$this->_config = $config;
 	}
 
