@@ -188,4 +188,12 @@ class WindSystemConfig extends WindModule {
 		return $this->getConfig('controller-suffix', 'value', $default, $module);
 	}
 
+	/**
+	 * 获得缓存数据
+	 * @param string $type
+	 */
+	public function getCacheConfig($type = '') {
+		return $this->getConfig('cache', $type);
+	}
+
 }
