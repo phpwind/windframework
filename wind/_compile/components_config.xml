@@ -53,7 +53,7 @@
 		<config>
 			<template-dir value='template' />
 			<template-ext value='htm' />
-			<compile-dir value='data.template' />
+			<compile-dir value='compile.template' />
 			<is-cache value='true' />
 		</config>
 		<properties>
