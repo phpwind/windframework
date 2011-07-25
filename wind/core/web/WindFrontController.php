@@ -12,14 +12,6 @@
  */
 class WindFrontController {
 	/**
-	 * 全局配置对象类型定义，建议WindSystemConfig配置类作为全局配置容器
-	 */
-	const WIND_SYSTEM_CONFIG = 'WIND:core.config.WindSystemConfig';
-	/**
-	 * 全局工厂类型定义，建议WindComponentFactory工厂类作为全局工厂
-	 */
-	const WIND_SYSTEM_FACTORY = 'WIND:core.factory.WindFactory';
-	/**
 	 * 框架系统配置信息资源地址，只接受php格式配置
 	 */
 	const WIND_COMPONENT_CONFIG_RESOURCE = 'WIND:components_config';
@@ -48,8 +40,7 @@ class WindFrontController {
 		try {
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
-			$this->initWindConfig($appName, $config);
-			$this->initWindFactory();
+			$this->init($appName, $config);
 		} catch (Exception $exception) {
 			throw new Exception('System failed to initialize.' . $exception->getMessage());
 		}
@@ -86,11 +77,6 @@ class WindFrontController {
 		$filterChainPath = $this->windSystemConfig->getFilterClass();
 		$filters = $this->windSystemConfig->getFilters();
 		if (empty($filters) || empty($filterChainPath)) return null;
-		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-			Wind::log(
-				"[core.WindFrontController.getFilterChain] an filter chain defined.(" . $filterChainPath . "," .
-					 count($filters) . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
-		}
 		return $this->windFactory->createInstance($filterChainPath, array($filters));
 	}
 
@@ -98,38 +84,20 @@ class WindFrontController {
 	 * 初始全局工厂类
 	 * @return
 	 */
-	protected function initWindFactory() {
+	protected function init($appName, $config) {
 		$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
-		$factoryClass = Wind::import(self::WIND_SYSTEM_FACTORY);
-		$this->windFactory = new $factoryClass(@include ($configPath));
-		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-			Wind::log('[core.web.WindFrontController.initWindFactory] system factory:' . self::WIND_SYSTEM_FACTORY, 
-				WindLogger::LEVEL_DEBUG, 'wind.core');
-		}
+		$this->windFactory = new WindFactory(@include ($configPath));
+		$this->windSystemConfig = new WindSystemConfig($config, $appName, $this->windFactory);
+		Wind::register($this->windSystemConfig->getRootPath(), $this->windSystemConfig->getAppName(), true);
 	}
 
 	/**
-	 * 初始化系统配置
-	 * @param string $appName
-	 * @param string $config
-	 */
-	protected function initWindConfig($appName, $config) {
-		$this->windSystemConfig = new WindSystemConfig($config, $appName);
-		Wind::register($this->windSystemConfig->getRootPath(), $appName, true);
-		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-			Wind::log(
-				'[core.web.WindFrontController.initWindConfig] rootPath:' . $this->windSystemConfig->getRootPath() .
-					 ' appName:' . $this->windSystemConfig->getAppName(), WindLogger::LEVEL_DEBUG, 'wind.core');
-		}
-	}
-
-	/* (non-PHPdoc)
-	 * @see AbstractWindServer::beforeProcess()
+	 * 预处理Process方法
 	 */
 	protected function beforeProcess() {}
 
-	/* (non-PHPdoc)
-	 * @see AbstractWindServer::afterProcess()
+	/**
+	 * 后处理Process方法
 	 */
 	protected function afterProcess() {
 		$this->response->sendResponse();
