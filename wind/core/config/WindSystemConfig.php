@@ -30,10 +30,10 @@ class WindSystemConfig extends WindModule {
 			$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 			$config = $configParser->parse($config, $this->appName . '_config');
 		}
-		if (isset($config['web-apps'][$this->appName]))
-			$this->_config = $config['web-apps'][$this->appName];
-		else
-			$this->_config = $config['web-apps'];
+		if (isset($config[$this->appName])) {
+			$this->_config = $config[$this->appName];
+		} else
+			$this->_config = $config;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleControllerPathByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('path', '', $default, $module);
+		return $this->getConfig('controller-path', 'value', $default, $module);
 	}
 
 	/**
@@ -186,14 +186,6 @@ class WindSystemConfig extends WindModule {
 	public function getModuleControllerSuffixByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
 		return $this->getConfig('controller-suffix', 'value', $default, $module);
-	}
-	
-	/**
-	 * 获得缓存数据
-	 * @param string $type
-	 */
-	public function getCacheConfig($type = '') {
-		return $this->getConfig('cache', $type);
 	}
 
 }
