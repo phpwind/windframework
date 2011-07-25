@@ -242,7 +242,8 @@ class Wind {
 	 * 初始化框架
 	 */
 	public static function init() {
-		self::_checkEnvironment();
+		if (IS_DEBUG)
+			self::_checkEnvironment();
 		self::_setDefaultSystemNamespace();
 		self::_registerAutoloader();
 		self::_loadBaseLib();
