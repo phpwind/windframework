@@ -11,7 +11,7 @@ class WindModule {
 	/**
 	 * @var array
 	 */
-	private $_config = array();
+	protected $_config = array();
 	/**
 	 * 是否进行类型验证
 	 *
@@ -168,14 +168,10 @@ class WindModule {
 	 * @return string|array
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '', $config = array()) {
-		if (!$config)
-			$config = $this->_config;
-		if ($configName === '')
-			return $config;
-		if (!isset($config[$configName]))
-			return $default;
-		if ($subConfigName === '' || !isset($config[$configName][$subConfigName]))
-			$config[$configName];
+		if (!$config) $config = $this->_config;
+		if ($configName === '') return $config;
+		if (!isset($config[$configName])) return $default;
+		if ($subConfigName === '' || !isset($config[$configName][$subConfigName])) return $config[$configName];
 		return $config[$configName][$subConfigName];
 	}
 
