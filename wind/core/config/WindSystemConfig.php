@@ -10,28 +10,29 @@ class WindSystemConfig extends WindModule {
 	private $rootPath = '';
 	private $appName = '';
 
+	/**
+	 * @param string $config
+	 * @param string $appName
+	 * @param WindFactory $factory
+	 */
+	public function __construct($config, $appName, $factory) {
+		$this->appName = $appName;
+		$this->setConfig($config, $factory);
+	}
+
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
-	public function setConfig($config) {
+	public function setConfig($config, $factory = null) {
 		if (!$config) return;
 		if (is_string($config)) {
-			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
+			$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 			$config = $configParser->parse($config, $this->appName . '_config');
 		}
 		if (isset($config[$this->appName]))
 			$this->_config = $config[$this->appName];
 		else
 			$this->_config = $config;
-	}
-
-	/**
-	 * @param string $config
-	 * @param string $appName
-	 */
-	public function __construct($config, $appName) {
-		$this->appName = $appName;
-		$this->setConfig($config, $appName);
 	}
 
 	/**
