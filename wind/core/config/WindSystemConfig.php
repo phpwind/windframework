@@ -189,11 +189,49 @@ class WindSystemConfig extends WindModule {
 	}
 
 	/**
-	 * 获得缓存数据
+	 * 获得缓存配置
 	 * @param string $type
 	 */
 	public function getCacheConfig($type = '') {
+		$config = $this->getConfig('cache');
+		if (isset($config['resource'])) {
+			$config = $this->parseResource($config['resource']);
+			$this->_config['cache'] = $config;
+		}
 		return $this->getConfig('cache', $type);
+	}
+	
+	/**
+	 * 获得DB配置
+	 * @param string $type
+	 */
+	public function getDbConfig($type = '') {
+		$config = $this->getConfig('db');
+		if (isset($config['resource'])) {
+			$config = $this->parseResource($config['resource']);
+			$this->_config['db'] = $config;
+		}
+		return $this->getConfig('db', $type);
+	}
+	
+	/**
+	 * 解析resource的配置
+	 * 
+	 * @param string $resource
+	 * @return array
+	 */
+	private function parseResource($resource) {
+		$fileName = $resource;
+		$ext = 'php';
+		if (($extPois = strpos($resource, '.')) !== false) {
+			$fileName = substr($resource, 0, $extPois);
+			$ext = substr($resource, $extPois + 1);
+		}
+		$fileName = (false === strpos($resource, ':')) ? Wind::getAppName() . ':' . $fileName : $fileName;
+		$filePath = !is_file($resource) ? Wind::getRealPath($fileName, $ext) : $resource;
+		$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
+		$config = $configParser->parse($filePath);
+		return $config;
 	}
 
 }
