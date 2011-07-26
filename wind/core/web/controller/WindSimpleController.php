@@ -1,6 +1,7 @@
 <?php
 /**
  * 简单应用控制器
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -192,6 +193,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 
 	/**
 	 * 设置默认的模板名称
+	 * 
 	 * @param WindUrlBasedRouter $handlerAdapter
 	 * @return 
 	 */
@@ -199,6 +201,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 
 	/**
 	 * 定义了一种解析策略，使其通过解析请求信息来获得调用的方法。
+	 * 
 	 * @param WindUrlBasedRouter $handlerAdapter
 	 * @return
 	 */

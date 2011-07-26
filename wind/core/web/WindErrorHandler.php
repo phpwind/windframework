@@ -15,9 +15,9 @@ class WindErrorHandler extends WindController {
 	public function beforeAction($handlerAdapter) {
 		$this->error = $this->getInput('error');
 		if ($this->request->getUrlReferer())
-			$this->urlReferer = $this->request->getUrlReferer();
+			$this->urlReferer = $this->getRequest()->getUrlReferer();
 		else
-			$this->urlReferer = $this->request->getBaseUrl();
+			$this->urlReferer = $this->getRequest()->getBaseUrl();
 		return true;
 	}
 
@@ -25,17 +25,12 @@ class WindErrorHandler extends WindController {
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		$_tmp = "User Message:\r\n";
-		$i = 0;
-		foreach ($this->error as $key => $value) {
-			$i++;
-			$_tmp .= "#$i " . $value . "\r\n";
-		}
-		echo "<h3>User Message: (" . count($this->error) . ")</h3>";
-		echo "<p>" . nl2br($_tmp) . "</p>";
-		echo "<a href='" . $this->urlReferer . "'>Click to go back.</a>";
-		Wind::log('User Error:', $_tmp);
-		exit();
+		$this->setOutput("User Error Message: " . $this->error[0], "errorHeader");
+		$this->setOutput('', "errorTrace");
+		$this->setOutput($this->urlReferer, "baseUrl");
+		$this->setOutput($this->error, "errors");
+		$this->setTemplate('default_error');
+		$this->setTemplatePath('COM:viewer.errorPage');
 	}
 
 	/**
@@ -46,25 +41,48 @@ class WindErrorHandler extends WindController {
 	 */
 	final public function errorHandle($errno, $errstr, $errfile, $errline) {
 		if ($errno & error_reporting()) {
-			$errfile = $this->getFile($errfile);
-			$_tmp = "$errstr ($errfile:$errline)\r\nStack trace:\r\n";
-			$_trace = debug_backtrace();
-			foreach ($_trace as $key => $value) {
-				if (!isset($value['file'])) continue;
-				if (!isset($value['line'])) $value['line'] = 0;
-				if (!isset($value['function'])) continue;
-				$_tmp .= "#$key {$value['file']}({$value['line']}): ";
-				if (isset($value['object']) && is_object($value['object'])) $_tmp .= get_class($value['object']) . '->';
-				$_tmp .= "{$value['function']}()\r\n";
-			}
+			$header = $message = $trace = '';
+			$header = $errstr;
 			if (IS_DEBUG) {
-				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
-				echo "<p>" . nl2br($_tmp) . "</p>";
-			} else
-				echo "<h3>" . $this->errnoMap($errno) . " $errstr</h3>";
-			Wind::log($this->errnoMap($errno) . $errstr, $_tmp);
-			exit();
+				$message = $errstr . '(' . $errfile . ' : ' . $errline . ')';
+				$_trace = debug_backtrace();
+				foreach ($_trace as $key => $value) {
+					if (!isset($value['file']) || !isset($value['line']) || !isset($value['function']))
+						continue;
+					$trace .= "#$key {$value['file']}({$value['line']}): ";
+					if (isset($value['object']) && is_object($value['object']))
+						$trace .= get_class($value['object']) . '->';
+					$trace .= "{$value['function']}()\r\n";
+				}
+			}
+			$this->buildMessage($header, $message, $trace);
 		}
+	}
+
+	/**
+	 * 异常处理句柄
+	 * @param Exception $exception
+	 */
+	final public function exceptionHandle($exception) {
+		$header = $message = $trace = '';
+		$header = $exception->getMessage();
+		if (IS_DEBUG) {
+			$message = $exception->getMessage() . '(' . $exception->getFile() . ' : ' . $exception->getLine() . ')';
+			$trace = $exception->getTraceAsString();
+		}
+		$this->buildMessage($header, $message, $trace);
+	}
+
+	/**
+	 * @param string $header
+	 * @param string $message
+	 * @param string $trace
+	 */
+	public function buildMessage($header, $message = '', $trace = '') {
+		$_tmp = "<h4>$header</h4>";
+		$_tmp .= "<p>$message</p>";
+		$_tmp .= "<pre>$trace</pre>";
+		$this->getResponse()->sendError(500, $_tmp);
 	}
 
 	/**
@@ -119,25 +137,4 @@ class WindErrorHandler extends WindController {
 		return $_tmp;
 	}
 
-	/**
-	 * 异常处理句柄
-	 */
-	final public function exceptionHandle($exception) {
-		$_tmp = $exception->getMessage() . ' (' . $this->getFile($exception->getFile()) . ':' . $exception->getLine() .
-			 ')';
-			if (IS_DEBUG) {
-				echo '<h3>' . get_class($exception) . '</h3>';
-				echo "<p>$_tmp</p>";
-				echo '<pre>' . $exception->getTraceAsString() . '</pre>';
-			} else {
-				echo '<h3>' . get_class($exception) . '</h3>';
-				echo '<p>' . $exception->getMessage() . '</p>';
-			}
-			Wind::log("$_tmp:" . $exception->getTraceAsString());
-			exit();
-		}
-
-		private function getFile($filePath) {
-			return $filePath;
-		}
-	}
+}

@@ -507,8 +507,9 @@ class WindHttpRequest implements IWindRequest {
 			if ($this->getIsAjaxRequest()) {
 				$this->_response->addHeader('Content-type', 'text/xml;charset=utf-8');
 				$this->_response->setIsAjax(true);
-			} else
+			} else{
 				$this->_response->addHeader('Content-type', 'text/html;charset=utf-8');
+			}
 		}
 		return $this->_response;
 	}

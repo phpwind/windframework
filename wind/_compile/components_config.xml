@@ -54,7 +54,8 @@
 			<template-dir value='template' />
 			<template-ext value='htm' />
 			<compile-dir value='compile.template' />
-			<is-cache value='true' />
+			<is-cache value='false' />
+			<cache class='windCache' />
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
@@ -76,6 +77,9 @@
 		scope='prototype'></component>
 	<component name='configParser' path='WIND:core.config.parser.WindConfigParser'
 		scope='singleton'>
+	</component>
+	<component name='windCache' path='dbCache'>
+		
 	</component>
 
 </components>

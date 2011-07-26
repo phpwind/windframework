@@ -44,9 +44,9 @@ class WindController extends WindSimpleController {
 	/* (non-PHPdoc)
 	 * @see WindAction::setDefaultTemplateName()
 	 */
-	protected function setDefaultTemplateName($handlerAdapter) {
+	protected function setDefaultTemplateName($handlerAdapter) { /*
 		$_temp = $handlerAdapter->getController() . '_' . $handlerAdapter->getAction();
-		$this->setTemplate($_temp);
+		$this->setTemplate($_temp);*/
 	}
 
 	/* (non-PHPdoc)
