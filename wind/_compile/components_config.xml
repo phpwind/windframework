@@ -78,7 +78,7 @@
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
-	<component name='windCache' path='COM:cache.stragety.WindFileCache'>
+	<component name='windCache' path='COM:cache.strategy.WindFileCache'>
 		
 	</component>
 
