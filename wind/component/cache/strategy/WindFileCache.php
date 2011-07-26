@@ -163,7 +163,7 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setCacheDirectoryLevel($cacheDirectoryLevel) {
 		$cacheDirectoryLevel = intval($cacheDirectoryLevel);
-		$this->cacheDirectoryLevel = $cacheDirectoryLevel > 5 ? 5 : ($cacheDirectoryLevel < 1 ? 1 : $cacheDirectoryLevel);
+		$this->cacheDirectoryLevel = $cacheDirectoryLevel > 5 ? 5 : ($cacheDirectoryLevel < 0 ? 0 : $cacheDirectoryLevel);
 	}
 	
 	/**
@@ -178,7 +178,7 @@ class WindFileCache extends AbstractWindCache {
 	 * 垃圾回收，清理过期缓存
 	 */
 	public function __destruct() {
-		$this->clear(true);
+//		$this->clear(true);
 	}
 	
 	/* (non-PHPdoc)
