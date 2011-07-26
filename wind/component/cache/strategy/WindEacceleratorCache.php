@@ -1,15 +1,13 @@
 <?php
-/**
- * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license
- * @package
- */
-Wind::import('WIND:component.cache.AbstractWindCache');
+
+Wind::import('COM:cache.AbstractWindCache');
+
 /**
  * Eaccelerator是一款php加速器、优化器、编码器及动态内容缓存。
  * WindEaccelerator实现Eaccelerator动态内容缓存功能。
+ * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
+ * @author xiaoxiao <x_824@sina.com>
+ * @version 2011-7-26  xiaoxiao
  */
 class WindEacceleratorCache extends AbstractWindCache {
 

@@ -1,11 +1,12 @@
 <?php
+
+Wind::import('COM:cache.AbstractWindCache');
 /**
- * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
+ * 
+ * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
+ * @author xiaoxiao <x_824@sina.com>
+ * @version 2011-7-26  xiaoxiao
  */
-Wind::import('WIND:component.cache.AbstractWindCache');
 class WindDbCache extends AbstractWindCache {
 
 	/**
@@ -48,25 +49,7 @@ class WindDbCache extends AbstractWindCache {
 	 * 缓存表过期时间字段
 	 * @var string 
 	 */
-	private $connectionConfig = 'default';
-
-	/*
-	 * 配置项常量定义
-	 */
-	const DBCACHE = 'config';
-	const DBCONFIG = 'dbconfig';
-	
-	const CACHETABLE = 'cacheTables';
-
-	const TABLENAME = 'tableName';
-
-	const KEY = 'fieldKey';
-
-	const VALUE = 'fieldValue';
-
-	const EXPIRE = 'fieldExpire';
-
-	const CONNECTION = 'connection';
+	private $connectionConfig = '';
 
 	public function __construct(WindConnection $connection = null, $config = array()) {
 		$connection && $this->setConnection($connection);
@@ -150,12 +133,12 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$config = $this->getConfig(self::CACHETABLE);
-		$this->table = $this->getConfig(self::TABLENAME, '', 'pw_cache', $config);
-		$this->keyField = $this->getConfig(self::KEY, '', 'key', $config);
-		$this->valueField = $this->getConfig(self::VALUE, '', 'value', $config);
-		$this->expireField = $this->getConfig(self::EXPIRE, '', 'expire', $config);
-		$this->connectionConfig = $this->getConfig(self::CONNECTION, '', 'default', $config);
+		$config = $this->getConfig('cacheTables');
+		$this->table = $this->getConfig('tableName', '', 'pw_cache', $config);
+		$this->keyField = $this->getConfig('fieldKey', '', 'key', $config);
+		$this->valueField = $this->getConfig('fieldValue', '', 'value', $config);
+		$this->expireField = $this->getConfig('fieldExpire', '', 'expire', $config);
+		$this->connectionConfig = $this->getConfig('connection', '', 'default', $config);
 	}
 	
 	/**

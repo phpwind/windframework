@@ -50,16 +50,6 @@ abstract class AbstractWindCache extends WindModule {
 	 * @var string 
 	 */
 	const EXPIRE = 'expires';
-	/**
-	 * 配置文件中缓存安全码名称的定义
-	 * @var string 
-	 */
-	const SECURITYCODE = 'securityCode';
-	/**
-	 * 配置文件中缓存键的前缀名称的定义
-	 * @var string 
-	 */
-	const KEYPREFIX = 'keyPrefix';
 
 	/**
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。
@@ -238,8 +228,8 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setSecurityCode($this->getConfig(self::SECURITYCODE, '', ''));
-		$this->setKeyPrefix($this->getConfig(self::KEYPREFIX, '', ''));
+		$this->setSecurityCode($this->getConfig('securityCode', '', ''));
+		$this->setKeyPrefix($this->getConfig('keyPrefix', '', ''));
 		$this->setExpire($this->getConfig(self::EXPIRE, '', 0));
 	}
 }

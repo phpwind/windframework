@@ -1,13 +1,11 @@
 <?php
+Wind::import('COM:cache.AbstractWindCache');
 /**
- * @author xiaoxiao <x_824@sina.com>  2011-7-18
- * @link http://www.cnblogs.com/xiaoyaoxia/
- * @copyright Copyright &copy; 2011-2012  xiaoxiao
- * @license
- * @package
+ * 
+ * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
+ * @author xiaoxiao <x_824@sina.com>
+ * @version 2011-7-26  xiaoxiao
  */
-Wind::import('WIND:component.cache.AbstractWindCache');
-
 class WindMemCache extends AbstractWindCache {
 
 	/**
@@ -21,34 +19,6 @@ class WindMemCache extends AbstractWindCache {
 	 * @var int 
 	 */
 	protected $compress = 0;
-
-	/**
-	 * 是否对缓存进行压缩，如果缓存的值较大，可进行压缩
-	 * @var int 
-	 */
-	const COMPRESS = 'compress';
-
-	/**
-	 * 取得memcache配置项
-	 * @var string 
-	 */
-	const SERVERCONFIG = 'servers';
-	
-	const HOST = 'host';
-
-	const PORT = 'port';
-
-	const PCONNECT = 'pconn';
-
-	const WEIGHT = 'weight';
-
-	const TIMEOUT = 'timeout';
-
-	const RETRY = 'retry';
-
-	const STATUS = 'status';
-
-	const FCALLBACK = 'fcallback';
 
 	public function __construct() {
 		if (!extension_loaded('Memcache')) {
@@ -90,8 +60,8 @@ class WindMemCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->compress = $this->getConfig(self::COMPRESS, '', '0');
-		$this->setServers($this->getConfig(self::SERVERCONFIG));
+		$this->compress = $this->getConfig('compress', '', '0');
+		$this->setServers($this->getConfig('servers'));
 	}
 	
 	/**
@@ -127,14 +97,14 @@ class WindMemCache extends AbstractWindCache {
 	 * @throws WindException
 	 */
 	private function setServer($server) {
-		if (!isset($server[self::HOST])) {
+		if (!isset($server['host'])) {
 			throw new WindException('The memcache server ip address is not exist');
 		}
-		if (!isset($server[self::PORT])) {
+		if (!isset($server['port'])) {
 			throw new WindException('The memcache server port is not exist');
 		}
-		$defaultServer = array(self::HOST => '', self::PORT => '', self::PCONNECT => true, self::WEIGHT => 1, 
-			self::TIMEOUT => 15, self::RETRY => 15, self::STATUS => true, self::FCALLBACK => null);
+		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 
+			'timeout' => 15, 'retry' => 15, 'status' => true, 'fcallback' => null);
 		list($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback) = array_values(array_merge($defaultServer, $server));
 		$this->memcache->addServer($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback);
 	}

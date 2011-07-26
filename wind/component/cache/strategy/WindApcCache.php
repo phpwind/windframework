@@ -1,12 +1,12 @@
 <?php
-/**
- * @author xiaoxia.xu <xiaoxia.xuxx@alibaba-inc.com> 2011-07-21
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-Wind::import('WIND:component.cache.AbstractWindCache');
 
+Wind::import('COM:cache.AbstractWindCache');
+/**
+ * 
+ * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
+ * @author xiaoxiao <x_824@sina.com>
+ * @version 2011-7-26  xiaoxiao
+ */
 class WindApcCache extends AbstractWindCache {
 	
 	public function __construct(){
