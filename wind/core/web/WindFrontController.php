@@ -10,7 +10,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindFrontController {
+class WindFrontController implements IWindFrontController {
 	/**
 	 * 框架系统配置信息资源地址，只接受php格式配置
 	 */
@@ -76,7 +76,8 @@ class WindFrontController {
 	protected function getFilterChain() {
 		$filterChainPath = $this->windSystemConfig->getFilterClass();
 		$filters = $this->windSystemConfig->getFilters();
-		if (empty($filters) || empty($filterChainPath)) return null;
+		if (empty($filters) || empty($filterChainPath))
+			return null;
 		return $this->windFactory->createInstance($filterChainPath, array($filters));
 	}
 
