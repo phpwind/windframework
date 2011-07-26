@@ -8,6 +8,12 @@ define('_COMPILE_LIBRARY_PATH', WIND_PATH . 'wind_basic.php');
 Wind::clear();
 Wind::import('COM:log.WindLogger');
 Wind::import('WIND:core.*', true);
+Wind::import('COM:filter.*', true);
+Wind::import('COM:parser.WindConfigParser', true);
+Wind::import('COM:http.request.*', true);
+Wind::import('COM:http.response.*', true);
+Wind::import('COM:router.*', true);
+
 $imports = Wind::getImports();
 /* 载入需要的文件信息 */
 Wind::import('COM:utility.WindPack');
