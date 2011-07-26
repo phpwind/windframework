@@ -97,23 +97,20 @@ class WindDaoFactory extends WindModule {
 	 * @param WindDao $daoObject
 	 */
 	protected function createDbConnection($daoObject) {
-		if (!($_className = $daoObject->getDbClass())) return;
-		$_classConfig = $daoObject->getDbConfig();
-		$_alias = $_className . '_' . md5((is_string($_classConfig) ? $_classConfig : serialize($_classConfig)));
-		if (!$this->getSystemFactory()->checkAlias($_alias)) {
-			$definition = new WindClassDefinition();
-			$definition->setPath($_className);
-			$definition->setAlias($_alias);
-			$definition->setInitMethod('init');
-			$definition->setScope(WindClassDefinition::SCOPE_SINGLETON);
-			if (is_array($_classConfig))
-				$definition->setConfig($_classConfig);
-			else
-				$definition->setConfig(array(WindClassDefinition::RESOURCE => $_classConfig));
-			
-			$this->getSystemFactory()->addClassDefinitions($definition);
+		$configName = $daoObject->getConfigName() ? $daoObject->getConfigName() : 'default';
+		$alias = 'db_' . $configName;
+		if (!$this->getSystemFactory()->checkAlias($alias)) {
+			$config = $this->getSystemConfig()->getDbConfig($configName);
+			$definition = array(
+				'path' => $this->getConfig('class', '', 'COM:db.WindConnection', $config),
+				'alias' => $alias,
+				'config' => $config,
+				'initMethod' => 'init',
+				'scope' => 'application',
+			);
+			$this->getSystemFactory()->addClassDefinitions($alias, $definition);
 		}
-		$daoObject->setDelayAttributes(array('connection' => array(WindClassDefinition::REF => $_alias)));
+		$daoObject->setDelayAttributes(array('connection' => array('ref' => $alias)));
 	}
 
 	/**

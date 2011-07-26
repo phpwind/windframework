@@ -9,21 +9,10 @@
  */
 class WindDao extends WindModule {
 	/**
-	 * db链接类型定义
-	 *
-	 * @var string
-	 */
-	protected $dbClass = 'COM:db.WindConnection';
-	/**
-	 * db配置路径定义
-	 *
-	 * @var string
-	 */
-	/**
 	 * 链接配置文件或是配置数组
 	 * @var string|array
 	 */
-	protected $dbConfig = '';
+	protected $configName = '';
 	/**
 	 * cache类型定义
 	 *
@@ -37,7 +26,7 @@ class WindDao extends WindModule {
 	 */
 	protected $cacheConfig = '';
 	
-	private $connection = null;
+	protected $connection = null;
 	private $cacheHandler = null;
 
 	/**
@@ -53,7 +42,12 @@ class WindDao extends WindModule {
 	 * @return WindConnection
 	 */
 	public function getConnection() {
-		return $this->_getConnection();
+		$connection = $this->_getConnection();
+		if ($connection instanceof WindConnection) {
+			return $connection;
+		}
+		if ($connection instanceof WindConnectionManager)
+		return $connection->getConnection();
 	}
 
 	/**
@@ -64,17 +58,10 @@ class WindDao extends WindModule {
 	}
 
 	/**
-	 * @return the $dbClass
+	 * @return the $configName
 	 */
-	public function getDbClass() {
-		return $this->dbClass;
-	}
-
-	/**
-	 * @return the $dbConfig
-	 */
-	public function getDbConfig() {
-		return $this->dbConfig;
+	public function getConfigName() {
+		return $this->configName;
 	}
 
 	/**
