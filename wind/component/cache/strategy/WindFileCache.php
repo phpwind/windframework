@@ -32,15 +32,6 @@ class WindFileCache extends AbstractWindCache {
 	 * @var array
 	 */
 	private $cacheFileList = array(); 
-	
-	/*
-	 * 配置项
-	 */
-	const CACHEDIR = 'dir';
-	
-	const SUFFIX = 'suffix';
-	
-	const LEVEL = 'dirLevel';
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
@@ -195,9 +186,9 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setCacheDir($this->getConfig(self::CACHEDIR));
-		$this->setCacheFileSuffix($this->getConfig(self::SUFFIX, '', 'txt'));
-		$this->setCacheDirectoryLevel($this->getConfig(self::LEVEL));
+		$this->setCacheDir($this->getConfig('dir'));
+		$this->setCacheFileSuffix($this->getConfig('suffix', '', 'txt'));
+		$this->setCacheDirectoryLevel($this->getConfig('dirLevel', '', '0'));
 	}
 
 }
