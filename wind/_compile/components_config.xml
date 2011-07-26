@@ -75,10 +75,10 @@
 	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'></component>
-	<component name='configParser' path='WIND:core.config.parser.WindConfigParser'
+	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
-	<component name='windCache' path='dbCache'>
+	<component name='windCache' path='COM:cache.stragety.WindFileCache'>
 		
 	</component>
 
