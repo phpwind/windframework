@@ -59,7 +59,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * 配置文件中缓存键的前缀名称的定义
 	 * @var string 
 	 */
-	const KEYPREFIX = 'prefix';
+	const KEYPREFIX = 'keyPrefix';
 
 	/**
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。
@@ -240,21 +240,6 @@ abstract class AbstractWindCache extends WindModule {
 		parent::setConfig($config);
 		$this->setSecurityCode($this->getConfig(self::SECURITYCODE, '', ''));
 		$this->setKeyPrefix($this->getConfig(self::KEYPREFIX, '', ''));
-		$this->setExpire($this->getCofnig(self::EXPIRE, '', 0));
-	}
-	
-	/**
-	 * 获得缓存表相关配置
-	 * 
-	 * @param array $config
-	 * @param string $name
-	 * @param string $subname
-	 * @param string $default
-	 * @return string
-	 */
-	protected function getSubConfig($config, $name, $subname = '', $default = '') {
-		$result = (isset($config[$name])) ? $config[$name] : $default;
-		if (!$subname || !isset($result[$subname])) return $result;
-		return isset($result[$subname]) ? $result[$subname] : $default;
+		$this->setExpire($this->getConfig(self::EXPIRE, '', 0));
 	}
 }

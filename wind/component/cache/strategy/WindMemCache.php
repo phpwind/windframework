@@ -22,8 +22,6 @@ class WindMemCache extends AbstractWindCache {
 	 */
 	protected $compress = 0;
 
-	//配置信息
-	const MEMCACHE = 'memcache';
 	/**
 	 * 是否对缓存进行压缩，如果缓存的值较大，可进行压缩
 	 * @var int 
@@ -92,8 +90,8 @@ class WindMemCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setServers($this->getConfig(self::MEMCACHE, self::SERVERCONFIG));
-		$this->compress = $this->getSubConfig($this->getConfig(self::MEMCACHE), self::COMPRESS, '', 0);
+		$this->compress = $this->getConfig(self::COMPRESS, '', '0');
+		$this->setServers($this->getConfig(self::SERVERCONFIG));
 	}
 	
 	/**

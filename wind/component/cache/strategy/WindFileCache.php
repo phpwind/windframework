@@ -15,29 +15,34 @@ class WindFileCache extends AbstractWindCache {
 	 * 缓存目录
 	 * @var string 
 	 */
-	protected $cacheDir;
+	private $cacheDir;
 	
 	/**
 	 * 缓存后缀
 	 * @var string 
 	 */
-	protected $cacheFileSuffix = 'txt';
+	private $cacheFileSuffix = 'txt';
 	
 	/**
 	 * 缓存多级目录。最好不要超3层目录
 	 * @var int 
 	 */
-	protected $cacheDirectoryLevel = '';
+	private $cacheDirectoryLevel = '';
+	
+	/**
+	 * 保存操作的路径信息， 存储使用过的key路径
+	 * @var array
+	 */
+	private $cacheFileList = array(); 
 	
 	/*
 	 * 配置项
 	 */
-	const FILE = 'fileCache';
-	const CACHEDIR = 'cache-dir';
+	const CACHEDIR = 'dir';
 	
-	const SUFFIX = 'cache-suffix';
+	const SUFFIX = 'suffix';
 	
-	const LEVEL = 'cache-level';
+	const LEVEL = 'dirLevel';
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
@@ -73,8 +78,9 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $key
 	 * @return string
 	 */
-	protected function buildSecurityKey($key, $getDir = false) {
-		$filename = parent::buildSecurityKey($key) . '.' . ltrim($this->getCacheFileSuffix(), '.');
+	protected function buildSecurityKey($key) {
+		if (($dir = $this->checkCacheDir($key)) !== false) return $dir;
+		$filename = parent::buildSecurityKey($key) . '.' . trim($this->getCacheFileSuffix(), '.');
 		$_tmp = $this->getCacheDir();
 		if (0 < $this->getCacheDirectoryLevel()) {
 			for ($i = $this->getCacheDirectoryLevel(); $i > 0; --$i) {
@@ -83,7 +89,18 @@ class WindFileCache extends AbstractWindCache {
 			}
 		}
 		if (!is_dir($_tmp)) mkdir($_tmp, 0777, true);
-		return $getDir ? $_tmp : $_tmp . $filename;
+		$this->cacheFileList[$key] = $_tmp . D_S . $filename;
+		return $_tmp . D_S . $filename;
+	}
+	
+	/**
+	 * 采用最近最少使用原则算法
+	 * 
+	 * @param string $key
+	 * @return string
+	 */
+	private function checkCacheDir($key) {
+		return isset($this->cacheFileList[$key]) ? $this->cacheFileList[$key] : false;
 	}
 
 	/**
@@ -123,7 +140,9 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	public function setCacheDir($dir) {
-		$this->cacheDir = Wind::getRealPath($dir, true) . DIRECTORY_SEPARATOR;
+		$this->cacheFileList = array();
+		$dir = (false === strpos($dir, ':')) ? Wind::getAppName() . ':' . $dir : $dir;
+		$this->cacheDir = !is_dir($dir) ? Wind::getRealDir($dir) : $dir;
 	}
 
 	/**
@@ -139,6 +158,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $cacheFileSuffix
 	 */
 	public function setCacheFileSuffix($cacheFileSuffix) {
+		$this->cacheFileList = array();
 		$this->cacheFileSuffix = $cacheFileSuffix;
 	}
 	
@@ -177,9 +197,9 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->setCacheDir($this->getConfig(self::FILE, self::CACHEDIR));
-		$this->setCacheFileSuffix($this->getConfig(self::FILE, self::SUFFIX, 'txt'));
-		$this->setCacheDirectoryLevel($this->getConfig(self::FILE, self::LEVEL));
+		$this->setCacheDir($this->getConfig(self::CACHEDIR));
+		$this->setCacheFileSuffix($this->getConfig(self::SUFFIX, '', 'txt'));
+		$this->setCacheDirectoryLevel($this->getConfig(self::LEVEL));
 	}
 
 }

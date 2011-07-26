@@ -12,13 +12,13 @@ class WindDbCache extends AbstractWindCache {
 	 * 分布式管理
 	 * @var AbstractWindDbAdapter 
 	 */
-	private $dbHandler;
+	private $connection;
 	
 	/**
 	 * 链接配置信息
 	 * @var array
 	 */
-	private $dbconfig;
+	private $dbConfig;
 
 	/**
 	 * 缓存表
@@ -43,23 +43,30 @@ class WindDbCache extends AbstractWindCache {
 	 * @var string 
 	 */
 	private $expireField = 'expire';
+	
+	/**
+	 * 缓存表过期时间字段
+	 * @var string 
+	 */
+	private $connectionConfig = 'default';
 
 	/*
 	 * 配置项常量定义
 	 */
-	const DBCACHE = 'dbCache';
+	const DBCACHE = 'config';
 	const DBCONFIG = 'dbconfig';
 	
-	const CACHETABLE = 'cache-table';
+	const CACHETABLE = 'cacheTables';
 
-	const TABLENAME = 'table-name';
+	const TABLENAME = 'tableName';
 
-	const KEY = 'field-key';
+	const KEY = 'fieldKey';
 
-	const VALUE = 'field-value';
+	const VALUE = 'fieldValue';
 
-	const EXPIRE = 'field-expire';
+	const EXPIRE = 'fieldExpire';
 
+	const CONNECTION = 'connection';
 
 	public function __construct(WindConnection $connection = null, $config = array()) {
 		$connection && $this->setConnection($connection);
@@ -84,7 +91,7 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	protected function getValue($key) {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` =? AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
-		$data = $this->getConnection()->createStatement($sql)->getOne(array($key), time()); 
+		$data = $this->getConnection()->createStatement($sql)->getOne(array($key, time())); 
 		return $data[$this->valueField];
 	}
 
@@ -134,7 +141,7 @@ class WindDbCache extends AbstractWindCache {
 	 * 删除过期数据
 	 */
 	public function deleteExpiredCache() {
-		$sql = 'DELETE FROM ' . $this->getTableName() . ' WHERE `' . $this->expireField . '`>0 AND `' . $this->expireField . '`<'.time();
+		$sql = 'DELETE FROM ' . $this->getTableName() . ' WHERE `' . $this->expireField . '`>0 AND `' . $this->expireField . '` <'.time();
 		return $this->getConnection()->execute($sql);
 	}
 
@@ -143,12 +150,20 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->dbConfig = $this->getConfig(self::DBCACHE, self::DBCONFIG);
 		$config = $this->getConfig(self::CACHETABLE);
-		$this->table = $this->getSubConfig($config, self::TABLENAME, '', 'pw_cache');
-		$this->keyField = $this->getSubConfig($config, self::KEY, '', 'key');
-		$this->valueField = $this->getSubConfig($config, self::VALUE, '', 'value');
-		$this->expireField = $this->getSubConfig($config, self::EXPIRE, '', 'expire');
+		$this->table = $this->getConfig(self::TABLENAME, '', 'pw_cache', $config);
+		$this->keyField = $this->getConfig(self::KEY, '', 'key', $config);
+		$this->valueField = $this->getConfig(self::VALUE, '', 'value', $config);
+		$this->expireField = $this->getConfig(self::EXPIRE, '', 'expire', $config);
+		$this->connectionConfig = $this->getConfig(self::CONNECTION, '', 'default', $config);
+	}
+	
+	/**
+	 * 返回表名
+	 * @return string
+	 */
+	private function getTableName() {
+		return $this->table;
 	}
 
 	/**
@@ -175,9 +190,19 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	private function getConnection() {
 		if (null == $this->connection) {
-			$this->connection = new WindConnection();
-			$this->connection->setConfig($this->dbConfig);
-			$this->connection->init();
+			$alias = 'db_' . $this->connectionConfig;
+		    if (!$this->getSystemFactory()->checkAlias($alias)) {
+				$config = $this->getSystemConfig()->getDbConfig($this->connectionConfig);
+				$definition = array(
+					'path' => $this->getConfig('class', '', 'COM:db.WindConnection', $config),
+					'alias' => $alias,
+					'config' => $config,
+					'initMethod' => 'init',
+					'scope' => 'application',
+				);
+				$this->getSystemFactory()->addClassDefinitions($alias, $definition);
+			}
+			$this->connection = $this->getSystemFactory()->getInstance($alias);
 		}
 		return $this->connection;
 	}

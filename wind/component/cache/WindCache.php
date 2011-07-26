@@ -6,9 +6,9 @@
  * @license 
  */
 
-class WindCache {
+class WindCache extends WindModule {
 	
-	private static $caches = array();
+	private $caches = array();
 	
 	const DB = 'db';
 	const APC = 'apc';
@@ -29,8 +29,8 @@ class WindCache {
 	 * @param AbstractWindCacheDependency $denpendency
 	 * @return mixed
 	 */
-	public static function set($type, $key, $value, $expires = 0, AbstractWindCacheDependency $denpendency = null) {
-		$cache = self::getCache($type);
+	public function set($type, $key, $value, $expires = 0, AbstractWindCacheDependency $denpendency = null) {
+		$cache = $this->getCache($type);
 		return $cache->set($key, $value, $expires, $denpendency);
 	}
 	
@@ -41,8 +41,8 @@ class WindCache {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public static function get($type, $key) {
-		$cache = self::getCache($type);
+	public function get($type, $key) {
+		$cache = $this->getCache($type);
 		return $cache->get($key);
 	}
 	
@@ -53,8 +53,8 @@ class WindCache {
 	 * @param string $key 获取缓存数据的标识，即键
 	 * @return mixed
 	 */
-	public static function delete($type, $key) {
-		$cache = self::getCache($type);
+	public function delete($type, $key) {
+		$cache = $this->getCache($type);
 		return $cache->delete($key);
 	}
 	
@@ -65,8 +65,8 @@ class WindCache {
 	 * @param string $keys
 	 * @return array
 	 */
-	public static function batchGet($type, array $keys) {
-		$cache = self::getCache($type);
+	public function batchGet($type, array $keys) {
+		$cache = $this->getCache($type);
 		return $cache->batchGet($keys);
 	}
 	
@@ -77,8 +77,8 @@ class WindCache {
 	 * @param array $keys
 	 * @return boolean
 	 */
-	public static function batchDelete($type, array $keys) {
-		$cache = self::getCache($type);
+	public function batchDelete($type, array $keys) {
+		$cache = $this->getCache($type);
 		return $cache->batchDelete($keys);
 	}
 	
@@ -88,12 +88,12 @@ class WindCache {
 	 * @param string $type
 	 * @return boolean
 	 */
-	public static function clear($type = '') {
+	public function clear($type = '') {
 		if ($type) {
-			$cache = self::getCache($type);
+			$cache = $this->getCache($type);
 			return $cache->clear();
 		}
-		foreach(self::caches as $key => $cache) {
+		foreach($this->caches as $key => $cache) {
 			$cache->clear();
 		}
 		return true;
@@ -106,13 +106,16 @@ class WindCache {
 	 * @param string $type
 	 * @return AbstractWindCache
 	 */
-	private static function getCache($type) {
-		$type = self::getCacheMap($type);
-		if (!$type) throw new WindException('The cache strategy \'' . $type . '\' is not exists!');
-		if (isset(self::$caches[$type])) return self::$caches[$type];
-		$class = Wind::import('WIND:component.cache.strategy.' . $type);
-		self::$caches[$type] = new $class();
-		return self::$caches[$type];
+	public function getCache($type) {
+		$className = $this->getCacheMap($type);
+		if (!$className) throw new WindException('The cache strategy \'' . $type . '\' is not exists!');
+		if (isset($this->caches[$className])) return $this->caches[$className];
+		Wind::import('WIND:component.cache.strategy.' . $className);
+		$cache = new $className();
+		$config = $this->getSystemConfig()->getCacheConfig($type);
+		if ($config) $cache->setConfig($config);
+		$this->caches[$className] = $cache;
+		return $cache;
 	}
 	
 	/**
@@ -120,7 +123,7 @@ class WindCache {
 	 * 
 	 * @param string $type
 	 */
-	private static function getCacheMap($type) {
+	private function getCacheMap($type) {
 		$types = array(self::DB => 'WindDbCache', self::APC => 'WindApcCache', self::FILE => 'WindFileCache',
 		self::EAC => 'WindEacceleratorCache', self::MEMCACHE => 'WindMemCache', self::WINCACHE => 'WindWinCache',
 		self::XCACHE => 'WindXCache', self::ZEND => 'WindZendCache');
