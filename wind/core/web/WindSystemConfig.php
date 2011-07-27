@@ -209,7 +209,7 @@ class WindSystemConfig extends WindModule {
 		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 		$key = $this->appName . '_' . $key;
 		$append === true && $append = $this->appName . '_config';
-		$config = $configParser->parse($config, $key, $append);
+		$config = $configParser->parse($config, $key, $append, $factory->getInstance(COMPONENT_CACHE));
 		return $config;
 	}
 
