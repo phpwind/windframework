@@ -9,7 +9,7 @@ define('WIND_PATH', dirname(__FILE__) . D_S);
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
 !defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
-!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 2);
+!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 0);
 define('DEBUG_TIME', microtime(true));
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
