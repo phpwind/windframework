@@ -44,15 +44,8 @@
 			</module>
 		</modules>
 		<!-- db相关配置，如果设置了resource则系统会默认找到dbconnection resource指向的文件作为db配置信息 -->
-		<db-connections resource="db_config.xml">
-			<connection name='default' class='COM:db.WindConnection'>
-				<dsn>mysql:host=localhost;dbname=test</dsn>
-				<user>root</user>
-				<pwd>root</pwd>
-				<charset>utf8</charset>
-				<tablePrefix>pw_</tablePrefix>
-			</connection>
-			<connection name='default1'>
+		<db resource="db_config.xml">
+			<connection name='conn1'>
 				<class>COM:db.WindConnection</class>
 				<dsn>mysql:host=localhost;dbname=test</dsn>
 				<user>root</user>
@@ -60,10 +53,6 @@
 				<charset>utf8</charset>
 				<tablePrefix>pw_</tablePrefix>
 			</connection>
-			<connection name='default2'>
-				<class>COM:db.WindConnectionManager</class>
-
-			</connection>
-		</db-connections>
+		</db>
 	</web-app>
 </WIND>
