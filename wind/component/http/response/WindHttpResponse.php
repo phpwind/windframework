@@ -396,7 +396,6 @@ class WindHttpResponse implements IWindResponse {
 	public function sendResponse() {
 		$this->sendHeaders();
 		$this->sendBody();
-		exit();
 	}
 
 	/**
