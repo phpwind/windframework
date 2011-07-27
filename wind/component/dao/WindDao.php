@@ -12,7 +12,7 @@ class WindDao extends WindModule {
 	 * 链接配置文件或是配置数组
 	 * @var string|array
 	 */
-	protected $configName = '';
+	protected $dbName = '';
 	/**
 	 * cache类型定义
 	 *
@@ -26,6 +26,9 @@ class WindDao extends WindModule {
 	 */
 	protected $cacheConfig = '';
 	
+	/**
+	 * @var object
+	 */
 	protected $connection = null;
 	private $cacheHandler = null;
 
@@ -42,12 +45,7 @@ class WindDao extends WindModule {
 	 * @return WindConnection
 	 */
 	public function getConnection() {
-		$connection = $this->_getConnection();
-		if ($connection instanceof WindConnection) {
-			return $connection;
-		}
-		if ($connection instanceof WindConnectionManager)
-		return $connection->getConnection();
+		return $this->_getConnection();
 	}
 
 	/**
@@ -60,8 +58,8 @@ class WindDao extends WindModule {
 	/**
 	 * @return the $configName
 	 */
-	public function getConfigName() {
-		return $this->configName;
+	public function getDBName() {
+		return $this->dbName;
 	}
 
 	/**
