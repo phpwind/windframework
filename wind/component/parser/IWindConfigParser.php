@@ -18,9 +18,10 @@ interface IWindConfigParser {
 	 * 
 	 * @param string $name       解析后保存的文件名字
 	 * @param string $configPath 待解析文件的绝对路径
+	 * @param string $append 追加的文件
 	 * @param AbstractWindCache $cache     缓存策略
 	 * @return array             解析成功返回的数据
 	 */
-	public function parse($configPath, $alias = '', AbstractWindCache $cache = null);
+	public function parse($configPath, $alias = '', $append = '',  AbstractWindCache $cache = null);
 
 }

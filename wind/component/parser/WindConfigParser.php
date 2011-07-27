@@ -50,14 +50,16 @@ class WindConfigParser implements IWindConfigParser {
 	 * 
 	 * @param string $configPath 待解析的文件路径
 	 * @param string $alias 解析后保存的key名
+	 * @param string $append 追加的文件
 	 * @param AbstractWindCache $cache  缓存策略
 	 * @return array 解析结果
 	 */
-	public function parse($configPath, $alias = '', AbstractWindCache $cache = null) {
+	public function parse($configPath, $alias = '', $append = '', AbstractWindCache $cache = null) {
 		$config = array();
 		$alias = trim($alias);
+		$key = $append ? $append : $alias;
 		if ($alias && $cache) {
-			$config = $this->getCacheContent($cache, $alias);
+			$config = $this->getCacheContent($cache, $key);
 			if (isset($config[$alias]) && !$this->needCompiled()) {
 				return $config[$alias];
 			}
@@ -67,7 +69,7 @@ class WindConfigParser implements IWindConfigParser {
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
 		if (!$alias || !$cache)	return $result;
 		$config[$alias] = $result;
-		$this->saveConfigFile($cache, $alias, $config);
+		$this->saveConfigFile($cache, $key, $config);
 		return $result;
 	}
 
