@@ -42,17 +42,19 @@ class Wind {
 			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, true);
 			self::$_app[$appName] = new WindFrontController($appName, $config);
 		} else
-			unset(self::$_currentApp[$appName]);
-			/*foreach (self::$_currentApp as $key => $value) {
+			foreach (self::$_currentApp as $key => $value) {
 				if ($value[0] == $appName) {
 					unset(self::$_currentApp[$key]);
 				}
-			}*/
-		
+			}
+			
 		/* 将当前的app压入数组的开始 */
 		$_cache = self::getAppName();
-		self::$_currentApp[0] = array($appName, $_cache);
-		//array_unshift(self::$_currentApp, array($appName, $_cache));
+		if ($_cache === $appName)
+			throw new WindException('Duplicate app.', WindException::ERROR_SYSTEM_ERROR);
+		
+		//self::$_currentApp[0] = array($appName, $_cache);
+		array_unshift(self::$_currentApp, array($appName, $_cache));
 		self::getApp()->run();
 		self::afterRun($appName, $config, $rootPath);
 	}
@@ -324,15 +326,16 @@ class Wind {
 		$_current = self::$_currentApp[0];
 		if ($_current[1] === '')
 			return;
-		self::$_currentApp[$_current[0]] = $_current;
-		self::$_currentApp[0] = self::$_currentApp[$_current[1]];
-		unset(self::$_currentApp[$_current[1]]);
-		/*foreach (self::$_currentApp as $key => $value) {
+			
+		/*self::$_currentApp[$_current[0]] = $_current;
+		self::$_currentApp[0] = self::$_currentApp[$_current[1]];*/
+		//unset(self::$_currentApp[$_current[1]]);
+		foreach (self::$_currentApp as $key => $value) {
 			if ($value[0] == $_current[1]) {
 				array_unshift(self::$_currentApp, $value);
 				unset(self::$_currentApp[$key]);
 			}
-		}*/
+		}
 	}
 
 	/**
