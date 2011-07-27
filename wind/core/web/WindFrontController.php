@@ -74,11 +74,11 @@ class WindFrontController implements IWindFrontController {
 	 * @return WindFilterChain
 	 */
 	protected function getFilterChain() {
-		$filterChainPath = $this->windSystemConfig->getFilterClass();
-		$filters = $this->windSystemConfig->getFilters();
-		if (empty($filters) || empty($filterChainPath))
+		if (!($filters = $this->windSystemConfig->getFilters()))
 			return null;
-		return $this->windFactory->createInstance($filterChainPath, array($filters));
+		if (!($filterChainPath = $this->windSystemConfig->getFilterClass()))
+			return null;
+		return $this->getWindFactory()->createInstance($filterChainPath, array($filters));
 	}
 
 	/**
