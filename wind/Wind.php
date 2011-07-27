@@ -56,7 +56,16 @@ class Wind {
 				}
 			}
 		self::getApp()->run();
+		self::resetApp();
 		self::afterRun($appName, $config, $rootPath);
+	}
+
+	/**
+	 * 开发环境脚本入口
+	 */
+	public static function runWithCompile($appName = 'default', $config = '') {
+		require_once (self::getRealPath('WIND:_compile.compile'));
+		self::run($appName, $config);
 	}
 
 	/**
@@ -83,14 +92,6 @@ class Wind {
 		else
 			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
 				WindException::ERROR_CLASS_NOT_EXIST);
-	}
-
-	/**
-	 * 开发环境脚本入口
-	 */
-	public static function runWithCompile($appName = 'default', $config = '') {
-		require_once (self::getRealPath('WIND:_compile.compile'));
-		self::run($appName, $config);
 	}
 
 	/**
@@ -352,7 +353,6 @@ class Wind {
 	 * @return
 	 */
 	protected static function afterRun($appName, $config, $rootPath) {
-		self::resetApp();
 		restore_error_handler();
 		restore_exception_handler();
 		if (self::$_logger)
