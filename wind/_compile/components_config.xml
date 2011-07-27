@@ -27,7 +27,7 @@
 	</component>
 
 	<!-- urlBasedRouter -->
-	<component name='urlBasedRouter' path='WIND:core.router.WindUrlBasedRouter'
+	<component name='urlBasedRouter' path='COM:router.WindUrlBasedRouter'
 		scope="prototype">
 		<config>
 			<module url-param='m' default-value='default' />
@@ -51,14 +51,15 @@
 	<component name='windView' init-method='init' path='COM:viewer.WindView'
 		scope='prototype'>
 		<config>
-			<template-dir value='template' />
-			<template-ext value='htm' />
-			<compile-dir value='compile.template' />
-			<is-cache value='false' />
-			<cache class='windCache' />
+			<template-dir>template</template-dir>
+			<template-ext>htm</template-ext>
+			<compile-dir>compile.template</compile-dir>
+			<is-cache>false</is-cache>
+			<cache-class></cache-class>
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
+			<property name='viewCache' ref='' />
 		</properties>
 	</component>
 	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
