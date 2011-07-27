@@ -37,16 +37,24 @@ class Wind {
 	 * @return 
 	 */
 	public static function run($appName = 'default', $config = '', $rootPath = '') {
-		self::beforRun();
+		self::beforRun($appName, $config, $rootPath);
 		if (!isset(self::$_app[$appName])) {
 			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, true);
-			/* 将当前的app压入数组的开始 */
-			$_cache = self::getAppName();
-			array_unshift(self::$_currentApp, array($appName, $_cache));
 			self::$_app[$appName] = new WindFrontController($appName, $config);
-		}
+		} else
+			unset(self::$_currentApp[$appName]);
+			/*foreach (self::$_currentApp as $key => $value) {
+				if ($value[0] == $appName) {
+					unset(self::$_currentApp[$key]);
+				}
+			}*/
+		
+		/* 将当前的app压入数组的开始 */
+		$_cache = self::getAppName();
+		self::$_currentApp[0] = array($appName, $_cache);
+		//array_unshift(self::$_currentApp, array($appName, $_cache));
 		self::getApp()->run();
-		self::afterRun();
+		self::afterRun($appName, $config, $rootPath);
 	}
 
 	/**
@@ -316,18 +324,23 @@ class Wind {
 		$_current = self::$_currentApp[0];
 		if ($_current[1] === '')
 			return;
-		foreach (self::$_currentApp as $key => $value) {
+		self::$_currentApp[$_current[0]] = $_current;
+		self::$_currentApp[0] = self::$_currentApp[$_current[1]];
+		unset(self::$_currentApp[$_current[1]]);
+		/*foreach (self::$_currentApp as $key => $value) {
 			if ($value[0] == $_current[1]) {
 				array_unshift(self::$_currentApp, $value);
 				unset(self::$_currentApp[$key]);
 			}
-		}
+		}*/
 	}
 
 	/**
 	 * @return
 	 */
-	protected static function beforRun() {
+	protected static function beforRun($appName, $config, $rootPath) {
+		if ($appName === 0)
+			throw new WindException('unsupported appName (' . $appName . ')', WindException::ERROR_SYSTEM_ERROR);
 		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
 		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
@@ -335,7 +348,7 @@ class Wind {
 	/**
 	 * @return
 	 */
-	protected static function afterRun() {
+	protected static function afterRun($appName, $config, $rootPath) {
 		self::resetApp();
 		restore_error_handler();
 		restore_exception_handler();
