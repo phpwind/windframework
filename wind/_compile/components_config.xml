@@ -59,28 +59,33 @@
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
-			<property name='viewCache' ref='' />
+			<property name='viewCache' ref='viewCache' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
-		scope='prototype'>
+	<component name='viewResolver' path='COM:viewer.WindViewerResolver' scope='prototype'>
 		<properties>
 			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
-	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
-		scope='prototype'>
+	<component name='template' path='COM:viewer.compiler.WindViewTemplate' sscope='prototype'>
 		<config resource='' />
 	</component>
 
 	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'></component>
-	<component name='configParser' path='COM:parser.WindConfigParser'
-		scope='singleton'>
+	<component name='configParser' path='COM:parser.WindConfigParser' scope='singleton'>
 	</component>
 	<component name='windCache' path='COM:cache.strategy.WindFileCache'>
-		
+		<config>
+			<dir>compile</dir>
+		</config>
+	</component>
+	
+	<component name='viewCache' path='COM:cache.strategy.WindFileCache'>
+		<config>
+		   <dir>compile.cache</dir>
+		</config>
 	</component>
 
 </components>
