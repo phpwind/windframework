@@ -211,7 +211,7 @@ class Wind {
 	 * @param boolean $info 是否为目录路径
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	public static function getRealPath($filePath, $suffix = 'php') {
+	public static function getRealPath($filePath, $suffix = '') {
 		if (($pos = strpos($filePath, ':')) !== false) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
 			if (!$namespace)
