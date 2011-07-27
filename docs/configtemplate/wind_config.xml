@@ -42,5 +42,6 @@
 				</view>
 			</module>
 		</modules>
+		<db resource="db_config.xml" />
 	</web-app>
 </WIND>
