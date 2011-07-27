@@ -46,7 +46,11 @@ class WindView extends WindModule {
 	 * @var boolean
 	 */
 	protected $isCache = false;
-	
+	/**
+	 * 编译目录
+	 *
+	 * @var string
+	 */
 	protected $compileDir;
 	/**
 	 * 视图解析引擎
@@ -75,9 +79,12 @@ class WindView extends WindModule {
 			return;
 		}
 		$this->setTemplateName($_templateName);
-		if ($_ext = $forward->getTemplateExt()) $this->setTemplateExt($_ext);
-		if ($_path = $forward->getTemplatePath()) $this->setTemplateDir($_path);
-		if ($_layout = $forward->getLayout()) $this->setLayout($_layout);
+		if ($_ext = $forward->getTemplateExt())
+			$this->setTemplateExt($_ext);
+		if ($_path = $forward->getTemplatePath())
+			$this->setTemplateDir($_path);
+		if ($_layout = $forward->getLayout())
+			$this->setLayout($_layout);
 		
 		$viewResolver = $this->getViewResolver();
 		$viewResolver->windAssign($forward->getVars(), $_templateName);
@@ -117,9 +124,12 @@ class WindView extends WindModule {
 	 * @param $path
 	 */
 	private function parseFilePath($fileName, $fileExt, $path, $ifCheckPath = false) {
-		if (!$fileName) $fileName = $this->getTemplateName();
-		if (!$fileExt) $fileExt = $this->getTemplateExt();
-		if (strrpos($path, ':') === false) $path = Wind::getAppName() . ':' . $path;
+		if (!$fileName)
+			$fileName = $this->getTemplateName();
+		if (!$fileExt)
+			$fileExt = $this->getTemplateExt();
+		if (strrpos($path, ':') === false)
+			$path = Wind::getAppName() . ':' . $path;
 		if ($ifCheckPath) {
 			$dir = Wind::getRealDir($path);
 			if (!is_dir($dir)) {
@@ -137,10 +147,10 @@ class WindView extends WindModule {
 	 * @return
 	 */
 	public function init() {
-		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR, 'value'));
-		$this->setCompileDir($this->getConfig(self::COMPILE_DIR, 'value'));
-		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT, 'value'));
-		$this->setIsCache($this->getConfig(self::IS_CACHE, 'value'));
+		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR));
+		$this->setCompileDir($this->getConfig(self::COMPILE_DIR));
+		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT));
+		$this->setIsCache($this->getConfig(self::IS_CACHE));
 	}
 
 	/**

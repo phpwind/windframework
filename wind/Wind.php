@@ -40,11 +40,10 @@ class Wind {
 		self::beforRun();
 		if (!isset(self::$_app[$appName])) {
 			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, true);
-			$frontController = new WindFrontController($appName, $config);
 			/* 将当前的app压入数组的开始 */
 			$_cache = self::getAppName();
 			array_unshift(self::$_currentApp, array($appName, $_cache));
-			self::$_app[$appName] = $frontController;
+			self::$_app[$appName] = new WindFrontController($appName, $config);
 		}
 		self::getApp()->run();
 		self::afterRun();
@@ -329,8 +328,7 @@ class Wind {
 	 * @return
 	 */
 	protected static function beforRun() {
-		self::profileBegin('WINDAPP', 'wind app run time profiles!', 'wind.profile');
-		set_error_handler(array(new WindErrorHandler(), 'errorHandle'), error_reporting());
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
 		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
 
@@ -341,8 +339,8 @@ class Wind {
 		self::resetApp();
 		restore_error_handler();
 		restore_exception_handler();
-		self::profileEnd('WINDAPP');
-		self::getLogger()->flush();
+		if (self::$_logger)
+			self::$_logger->flush();
 	}
 
 	/**
@@ -433,6 +431,7 @@ class Wind {
 	}
 }
 Wind::init();
+
 /* 组件定义 */
 define('COMPONENT_WEBAPP', 'windWebApp');
 define('COMPONENT_ERRORHANDLER', 'errorHandler');

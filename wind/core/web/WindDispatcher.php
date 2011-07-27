@@ -60,8 +60,9 @@ class WindDispatcher extends WindModule {
 				$forward->getArgs());
 			$router->reParse();
 			if (!$this->checkProcess($router)) {
-				throw new WindException('[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request ', 
-					WindException::ERROR_SYSTEM_ERROR);
+				throw new WindFinalException(
+					'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $router->getController() . ',' .
+						 $router->getAction(), WindException::ERROR_SYSTEM_ERROR);
 			}
 		} else
 			$_url = $this->getUrlHelper()->checkUrl($_url);
@@ -87,8 +88,9 @@ class WindDispatcher extends WindModule {
 		$_c && $router->setController($_c);
 		$_m && $router->setModule($_m);
 		if (!$this->checkProcess($router)) {
-			throw new WindException('[core.web.WindDispatcher.dispatchWithAction] Duplicate request ', 
-				WindException::ERROR_SYSTEM_ERROR);
+			throw new WindFinalException(
+				'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $router->getController() . ',' .
+					 $router->getAction(), WindException::ERROR_SYSTEM_ERROR);
 		}
 		$app->processRequest();
 	}

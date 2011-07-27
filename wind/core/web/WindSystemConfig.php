@@ -7,7 +7,6 @@
  * @package 
  */
 class WindSystemConfig extends WindModule {
-	private $rootPath = '';
 	private $appName = '';
 
 	/**
@@ -150,7 +149,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleErrorHandlerByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('error-handler', 'class', $default, $module);
+		return $this->getConfig('error-handler', '', $default, $module);
 	}
 
 	/**
@@ -160,7 +159,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleControllerPathByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('controller-path', 'value', $default, $module);
+		return $this->getConfig('controller-path', '', $default, $module);
 	}
 
 	/**
@@ -170,7 +169,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleControllerSuffixByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('controller-suffix', 'value', $default, $module);
+		return $this->getConfig('controller-suffix', '', $default, $module);
 	}
 
 	/**
