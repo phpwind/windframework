@@ -24,11 +24,9 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function setConfig($config, $factory = null) {
 		if (is_string($config)) {
-			$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($config, $this->appName . '_config', $factory->getInstance('windCache'));//将不做保存处理
-		}
-		if (isset($config[$this->appName])) {
-			$this->_config = $config[$this->appName];
+			$config = $this->parseConfig($config, '', '', $factory);
+			if (isset($config[$this->appName]))
+				$this->_config = $config[$this->appName];
 		} else
 			$this->_config = (array) $config;
 	}
