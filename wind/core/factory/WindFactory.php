@@ -52,9 +52,10 @@ class WindFactory implements IWindFactory {
 			} elseif (isset($_subDefinition['ref']))
 				$args[] = $this->getInstance($_subDefinition['ref']);
 		}
+		$config = $this->buildConfig($definition, $alias);
 		$instance = $this->createInstance($definition['className'], $args);
-		if ($definition['config'])
-			$this->buildConfig($definition['config'], $instance);
+		if (!empty($config))
+			$instance->setConfig($config);
 		if ($definition['properties'])
 			$this->buildProperties($definition['properties'], $instance);
 		if ($definition['initMethod'])
@@ -88,14 +89,23 @@ class WindFactory implements IWindFactory {
 	/**
 	 * 为类对象设置配置
 	 * 
-	 * @param WindModule $instance
-	 * @param WindFactory $factory
+	 * @param array|string $config
+	 * @param string $alias
 	 * @return
 	 */
-	protected function buildConfig($config, $instance) {
-		if (isset($config['resource']))
-			$config = $config['resource'];
-		$instance->setConfig($config);
+	protected function buildConfig(&$definition, $alias) {
+		if (!($config = $definition['config']))
+			return array();
+		if (isset($config['resource']) && !empty($config['resource'])) {
+			$_configPath = Wind::getRealPath($config['resource'], false);
+			$configParser = $this->getInstance(COMPONENT_CONFIGPARSER);
+			$config = $configParser->parse($_configPath, $alias, 'cache_wind_config');
+		}
+		if (isset($config['class']) && !$definition['path']) {
+			$definition['path'] = $config['class'];
+			$definition['className'] = Wind::import($definition['path']);
+		}
+		return $config;
 	}
 
 	/**

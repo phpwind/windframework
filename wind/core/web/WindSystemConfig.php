@@ -23,16 +23,12 @@ class WindSystemConfig extends WindModule {
 	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config, $factory = null) {
-		if (!$config)
-			return;
 		if (is_string($config)) {
-			$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($config, $this->appName . '_config');
-		}
-		if (isset($config[$this->appName])) {
-			$this->_config = $config[$this->appName];
+			$config = $this->parseConfig($config, '', '', $factory);
+			if (isset($config[$this->appName]))
+				$this->_config = $config[$this->appName];
 		} else
-			$this->_config = $config;
+			$this->_config = (array) $config;
 	}
 
 	/**
@@ -189,15 +185,29 @@ class WindSystemConfig extends WindModule {
 	 * 获得DB配置,根据DB名义的别名来获取DB链接配置信息.
 	 * 当别名为空时,返回全部DB链接配置.
 	 * 
-	 * @param string $type
+	 * @param string $dbName
 	 */
 	public function getDbConfig($dbName = '') {
-		$config = $this->getConfig('db', 'config');
-		if (isset($config['resource'])) {
-			$config = $this->parseResource($config['resource']);
-			$this->_config['db'] = $config;
+		$config = $this->getConfig('db');
+		if (isset($config['resource']) && !empty($config['resource'])) {
+			$_resource = Wind::getRealPath($config['resource'], false);
+			$this->_config['db'] = $this->parseConfig($_resource, 'db', true);
 		}
 		return $this->getConfig('db', $dbName);
+	}
+
+	/**
+	 * @param string $config
+	 * @param factory
+	 */
+	private function parseConfig($config, $key = 'config', $append = '', $factory = null) {
+		if ($factory === null)
+			$factory = $this->getSystemFactory();
+		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
+		$key = $this->appName . '_' . $key;
+		$append === true && $append = $this->appName . '_config';
+		$config = $configParser->parse($config, $key, $append);
+		return $config;
 	}
 
 	/**
