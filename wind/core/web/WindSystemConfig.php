@@ -44,21 +44,6 @@ class WindSystemConfig extends WindModule {
 	}
 
 	/**
-	 * 返回应用路径信息
-	 * 
-	 * @return string
-	 */
-	public function getRootPath() {
-		if (!$this->rootPath) {
-			$rootPath = $this->getConfig('root-path');
-			if (!$rootPath)
-				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
-			$this->rootPath = $rootPath;
-		}
-		return $this->rootPath;
-	}
-
-	/**
 	 * 返回当前应用的启动脚本位置
 	 */
 	public function getAppClass() {
@@ -200,20 +185,22 @@ class WindSystemConfig extends WindModule {
 		}
 		return $this->getConfig('cache', $type);
 	}
-	
+
 	/**
-	 * 获得DB配置
+	 * 获得DB配置,根据DB名义的别名来获取DB链接配置信息.
+	 * 当别名为空时,返回全部DB链接配置.
+	 * 
 	 * @param string $type
 	 */
-	public function getDbConfig($type = '') {
-		$config = $this->getConfig('db');
+	public function getDbConfig($dbName = '') {
+		$config = $this->getConfig('db', 'config');
 		if (isset($config['resource'])) {
 			$config = $this->parseResource($config['resource']);
 			$this->_config['db'] = $config;
 		}
-		return $this->getConfig('db', $type);
+		return $this->getConfig('db', $dbName);
 	}
-	
+
 	/**
 	 * 解析resource的配置
 	 * 

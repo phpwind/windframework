@@ -36,9 +36,10 @@ class Wind {
 	 * @throws WindException
 	 * @return 
 	 */
-	public static function run($appName = 'default', $config = '') {
+	public static function run($appName = 'default', $config = '', $rootPath = '') {
 		self::beforRun();
 		if (!isset(self::$_app[$appName])) {
+			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, true);
 			$frontController = new WindFrontController($appName, $config);
 			/* 将当前的app压入数组的开始 */
 			$_cache = self::getAppName();

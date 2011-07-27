@@ -89,7 +89,6 @@ class WindFrontController implements IWindFrontController {
 		$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
 		$this->windFactory = new WindFactory(@include ($configPath));
 		$this->windSystemConfig = new WindSystemConfig($config, $appName, $this->windFactory);
-		Wind::register($this->windSystemConfig->getRootPath(), $this->windSystemConfig->getAppName(), true);
 	}
 
 	/**
