@@ -6,7 +6,7 @@
  * @version $Id$ 
  * @package 
  */
-abstract class AbstractWindCacheDependency {
+abstract class AbstractWindCacheDependency extends WindModule {
 	
 	/**
 	 * 依赖的依据

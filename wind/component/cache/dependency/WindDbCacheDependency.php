@@ -9,12 +9,12 @@
 Wind::import('WIND:component.cache.dependency.AbstractWindCacheDependency');
 class WindDbCacheDependency extends AbstractWindCacheDependency{
 	private $sql = '';
-	private $config = '';
+	private $configName = '';
 	private $connection = null;
 	
-	public function __construct($sql, $config = '') {
+	public function __construct($sql, $configName = '') {
 		$sql && $this->sql = $sql;
-		$config && $this->config = $this->config;
+		$configName && $this->configName = $configName;
 	}
 	
 	/*
@@ -28,16 +28,23 @@ class WindDbCacheDependency extends AbstractWindCacheDependency{
 	
 	/**
 	 * 获得链接对象
-	 * //TODO DB链接对象～获取全局统一。。
 	 */
 	private function getConnection() {
-		if ($this->connection != null ) return $this->connection;
-		if ($this->config) {
-			$this->connection = new WindConnection();
-			$this->connection->setConfig($this->dbConfig);
-			$this->connection->init();
-			return $this->connection;
+		if ( null != $this->connection) return $this->connection;
+		$alias = 'db_' . $this->configName;
+	    if (!$this->getSystemFactory()->checkAlias($alias)) {
+			$config = $this->getSystemConfig()->getDbConfig($this->configName);
+			$definition = array(
+				'path' => $this->getConfig('class', '', 'COM:db.WindConnection', $config),
+				'alias' => $alias,
+				'config' => $config,
+				'initMethod' => 'init',
+				'scope' => 'application',
+			);
+			$this->getSystemFactory()->addClassDefinitions($alias, $definition);
 		}
+		$this->connection = $this->getSystemFactory()->getInstance($alias);
+		return $this->connection;
 	}
 	
 	
