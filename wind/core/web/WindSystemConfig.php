@@ -191,16 +191,19 @@ class WindSystemConfig extends WindModule {
 		$config = $this->getConfig('db');
 		if (isset($config['resource']) && !empty($config['resource'])) {
 			$_resource = Wind::getRealPath($config['resource'], false);
-			$this->_config['db'] = $this->parseConfig($_resource, 'db', true);
+			$this->_config['db'] = $this->parseConfig($_resource, 'db');
 		}
 		return $this->getConfig('db', $dbName);
 	}
 
 	/**
+	 * 配置解析方法
 	 * @param string $config
+	 * @param string $key
+	 * @param string|boolean $append
 	 * @param factory
 	 */
-	private function parseConfig($config, $key = 'config', $append = '', $factory = null) {
+	private function parseConfig($config, $key = 'config', $append = true, $factory = null) {
 		if ($factory === null)
 			$factory = $this->getSystemFactory();
 		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
