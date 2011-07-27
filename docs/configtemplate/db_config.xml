@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- dbConfig的配置，可以配置多个链接，多个链接的时候必需指定每个链接的type类型是master/slave，当配置一个的时候可以不配置type项 -->
-<connection>
-	<dsn>mysql:host=localhost;dbname=test</dsn>
-	<user>root</user>
-	<pwd>root</pwd>
-	<charset>utf8</charset>
-	<tablePrefix>pw_</tablePrefix>
-</connection>
+<WIND>
+	<connection>
+		<dsn>mysql:host=localhost;dbname=test</dsn>
+		<user>root</user>
+		<pwd>root</pwd>
+		<charset>utf8</charset>
+		<tablePrefix>pw_</tablePrefix>
+	</connection>
+</WIND>
