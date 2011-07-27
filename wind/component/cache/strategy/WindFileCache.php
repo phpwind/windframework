@@ -68,6 +68,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
+		$key = str_replace(D_S, '', $key);
 		if (($dir = $this->checkCacheDir($key)) !== false) return $dir;
 		$filename = parent::buildSecurityKey($key) . '.' . trim($this->getCacheFileSuffix(), '.');
 		$_tmp = $this->getCacheDir();

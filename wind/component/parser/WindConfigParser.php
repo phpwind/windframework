@@ -50,16 +50,14 @@ class WindConfigParser implements IWindConfigParser {
 	 * 
 	 * @param string $configPath 待解析的文件路径
 	 * @param string $alias 解析后保存的key名
-	 * @param string $append  采用最佳的方法追加到$appandName指定的文件中
+	 * @param AbstractWindCache $cache  缓存策略
 	 * @return array 解析结果
 	 */
-	public function parse($configPath, $alias = '', $append = '') {
+	public function parse($configPath, $alias = '', AbstractWindCache $cache = null) {
 		$config = array();
 		$alias = trim($alias);
-		$append = !$append ? '' : trim($append);
-		$alias && $cacheFileName = ($append ? $this->buildCacheFilePath($append) : $this->buildCacheFilePath($alias));
-		if ($alias) {
-			$config = $this->getCacheContent($cacheFileName);
+		if ($alias && $cache) {
+			$config = $this->getCacheContent($cache, $alias);
 			if (isset($config[$alias]) && !$this->needCompiled()) {
 				return $config[$alias];
 			}
@@ -67,23 +65,23 @@ class WindConfigParser implements IWindConfigParser {
 		if (!($configPath = trim($configPath)))
 			throw new WindException('Please input the file path!');
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if (!$alias)
-			return $result;
+		if (!$alias || !$cache)	return $result;
 		$config[$alias] = $result;
-		$this->saveConfigFile($cacheFileName, $config);
+		$this->saveConfigFile($cache, $alias, $config);
 		return $result;
 	}
 
 	/**
 	 * 获得缓存文件内容
 	 * 
+	 * @param AbstractWindCache $cache
 	 * @param string $file 缓存文件名
 	 * @return array 缓存文件内容
 	 */
-	private function getCacheContent($file) {
+	private function getCacheContent(AbstractWindCache $cache, $file) {
 		$content = array();
 		if (is_file($file))
-			$content = include ($file);
+			$content = $cache->get($file);
 		return is_array($content) ? $content : array();
 	}
 
@@ -174,15 +172,14 @@ class WindConfigParser implements IWindConfigParser {
 	/**
 	 * 保存成文件
 	 * 
-	 * @param string $filename   保存的文件名
+	 * @param AbstractWindCache $cache
+	 * @param string $alias   保存的key
 	 * @param array $data		  需要保持的数据
 	 * @return boolean 			  保存成功则返回true,保存失败则返回false
 	 */
-	private function saveConfigFile($filename, $data) {
-		if (!$filename || !$data || !is_dir(COMPILE_PATH))
-			return false;
-		Wind::import('COM:utility.WindFile');
-		return WindFile::savePhpData($filename, $data);
+	private function saveConfigFile(AbstractWindCache $cache, $alias, $data) {
+		if (!$data) return false;
+		return $cache->set($alias, $data, 0);
 	}
 
 	/**
@@ -192,7 +189,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return string 			 返回缓存文件的$fileName的绝对路径
 	 */
 	private function buildCacheFilePath($fileName) {
-		return rtrim(COMPILE_PATH, '/') . D_S . strtolower($fileName) . '.php';
+		return strtolower($fileName) . '.php';
 	}
 
 	/**
