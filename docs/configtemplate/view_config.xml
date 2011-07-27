@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 默认view配置 -->
+<WIND>
+	<!-- 指定模板路径 -->
+	<template-dir>template</template-dir>
+	<!-- 指定模板后缀 -->
+	<template-ext>htm</template-ext>
+	<!-- 模板编译文件存放路径 -->
+	<compile-dir>data.template</compile-dir>
+	<!-- 是否开启缓存 -->
+	<is-cache>false</is-cache>
+	<!-- 如果开启缓存，那么系统将会用cache-class指定的缓存组件初始化cache对象 -->
+	<cache-class></cache-class>
+</WIND>

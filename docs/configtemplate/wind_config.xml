@@ -3,7 +3,7 @@
 	<!-- web application definitions, you can define application more than one. -->
 	<!-- 应用配置，如果是多个应用配置，则可以建立多组的web-app配置项只要以name属性区分 name: 指定应用的名字，该名字为引用入口中调用的时候指定的名字，W::application('name'); 
 		class: 指定该应用的配置 root-path: 指定该应用的入口地址 -->
-	<web-app name='default' class='windWebApp' root-path=''>
+	<web-app name='default' class='windWebApp'>
 		<filters class='WIND:core.filter.WindFilterChain'>
 			<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
 			<filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
@@ -24,24 +24,46 @@
 		<modules>
 			<!-- name: 模块的名字 path: 模块的路径（采用命名空间的方式) -->
 			<module name='default'>
-				<controller-path value='controller' />
+				<controller-path>controller</controller-path>
 				<!-- 指定该模块下的controller的后缀格式 -->
-				<controller-suffix value='Controller' />
+				<controller-suffix>Controller</controller-suffix>
 				<!-- 配置该模块的error处理的action controller类 -->
-				<error-handler class='WIND:core.web.WindErrorHandler' />
+				<error-handler>WIND:core.web.WindErrorHandler</error-handler>
 				<!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
 				<view class='windView'>
+					<!-- 可以在这里进行view的配置，该配置只会影响该module下的view行为，该配置可以设置也可以不设置 -->
 					<config>
 						<!-- 指定模板路径 -->
-						<template-dir value='template' />
+						<template-dir>template</template-dir>
 						<!-- 指定模板后缀 -->
-						<template-ext value='htm' />
+						<template-ext>htm</template-ext>
 						<!-- 模板编译文件存放路径 -->
-						<compile-dir value='data.template' />
+						<compile-dir>data.template</compile-dir>
 					</config>
 				</view>
 			</module>
 		</modules>
-		<db resource="db_config.xml" />
+		<!-- db相关配置，如果设置了resource则系统会默认找到dbconnection resource指向的文件作为db配置信息 -->
+		<db-connections resource="db_config.xml">
+			<connection name='default' class='COM:db.WindConnection'>
+				<dsn>mysql:host=localhost;dbname=test</dsn>
+				<user>root</user>
+				<pwd>root</pwd>
+				<charset>utf8</charset>
+				<tablePrefix>pw_</tablePrefix>
+			</connection>
+			<connection name='default1'>
+				<class>COM:db.WindConnection</class>
+				<dsn>mysql:host=localhost;dbname=test</dsn>
+				<user>root</user>
+				<pwd>root</pwd>
+				<charset>utf8</charset>
+				<tablePrefix>pw_</tablePrefix>
+			</connection>
+			<connection name='default2'>
+				<class>COM:db.WindConnectionManager</class>
+
+			</connection>
+		</db-connections>
 	</web-app>
 </WIND>
