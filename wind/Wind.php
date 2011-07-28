@@ -52,6 +52,7 @@ class Wind {
 	public static function runWithCompile($appName = 'default', $config = '') {
 		require_once (self::getRealPath('WIND:_compile.compile'));
 		self::run($appName, $config);
+		
 	}
 
 	/**

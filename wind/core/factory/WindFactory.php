@@ -146,7 +146,8 @@ class WindFactory implements IWindFactory {
 		if (isset($config['resource']) && !empty($config['resource'])) {
 			$_configPath = Wind::getRealPath($config['resource'], false);
 			$configParser = $this->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($_configPath, $alias, 'cache_wind_config');
+			$config = $configParser->parse($_configPath, $alias, 'cache_wind_config', 
+				$this->getInstance(COMPONENT_CACHE));
 		}
 		if (isset($config['class']) && !$definition['path']) {
 			$definition['path'] = $config['class'];
@@ -217,11 +218,9 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	private function buildDefinition(&$definition) {
-		$_definition = array('path' => '', 'className' => '', 'factoryMethod' => '', 'initMethod' => '', 
-			'scope' => 'application', 'proxy' => false, 'properties' => array(), 'config' => array(), 'constructorArg' => array());
+		$_definition = array('path' => '', 'className' => '', 'factoryMethod' => '', 'initMethod' => '', 'scope' => 'application', 'proxy' => false, 'properties' => array(), 'config' => array(), 'constructorArg' => array());
 		$definition = array_merge($_definition, $definition);
 		$definition['className'] = Wind::import($definition['path']);
-		return true;
 	}
 
 }

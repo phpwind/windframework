@@ -38,6 +38,9 @@ $windConfigParser = new WindConfigParser();
 $result = $windConfigParser->parse(_COMPILE_PATH . 'components_config.xml');
 WindFile::write($_systemConfig, '<?php return ' . WindString::varToString($result) . ';');
 
+/* 清理所有缓存 */
+
+
 function parseFilePath($filePath) {
 	list($namespace, $filePath) = explode(':', $filePath);
 	return str_replace('.', '/', $filePath);

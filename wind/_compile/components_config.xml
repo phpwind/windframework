@@ -78,12 +78,12 @@
 	</component>
 	<component name='windCache' path='COM:cache.strategy.WindFileCache'>
 		<config>
-			<dir>compile</dir>
+			<dir>data</dir>
 		</config>
 	</component>
 	<component name='viewCache' path='COM:cache.strategy.WindFileCache'>
 		<config>
-			<dir>compile</dir>
+			<dir>data</dir>
 		</config>
 	</component>
 
