@@ -387,7 +387,48 @@ class Wind {
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		self::$_classes = array('WindLogger' => 'log/WindLogger', 'WindActionException' => 'core/exception/WindActionException', 'WindException' => 'core/exception/WindException', 'WindFinalException' => 'core/exception/WindFinalException', 'IWindFactory' => 'core/factory/IWindFactory', 'IWindClassProxy' => 'core/factory/proxy/IWindClassProxy', 'WindClassProxy' => 'core/factory/proxy/WindClassProxy', 'WindFactory' => 'core/factory/WindFactory', 'IWindController' => 'core/web/controller/IWindController', 'WindController' => 'core/web/controller/WindController', 'WindSimpleController' => 'core/web/controller/WindSimpleController', 'WindUrlFilter' => 'core/web/filter/WindUrlFilter', 'IWindApplication' => 'core/web/IWindApplication', 'IWindErrorMessage' => 'core/web/IWindErrorMessage', 'WindFormListener' => 'core/web/listener/WindFormListener', 'WindLoggerListener' => 'core/web/listener/WindLoggerListener', 'WindValidateListener' => 'core/web/listener/WindValidateListener', 'WindDispatcher' => 'core/web/WindDispatcher', 'WindErrorHandler' => 'core/web/WindErrorHandler', 'WindErrorMessage' => 'core/web/WindErrorMessage', 'WindForward' => 'core/web/WindForward', 'WindFrontController' => 'core/web/WindFrontController', 'WindUrlHelper' => 'core/web/WindUrlHelper', 'WindWebApplication' => 'core/web/WindWebApplication', 'WindEnableValidateModule' => 'core/WindEnableValidateModule', 'WindHelper' => 'core/WindHelper', 'WindModule' => 'core/WindModule', 'WindSystemConfig' => 'core/WindSystemConfig', 'WindFilter' => 'filter/WindFilter', 'WindFilterChain' => 'filter/WindFilterChain', 'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 'WindConfigParser' => 'parser/WindConfigParser', 'IWindRequest' => 'http/request/IWindRequest', 'WindHttpRequest' => 'http/request/WindHttpRequest', 'IWindResponse' => 'http/response/IWindResponse', 'WindHttpResponse' => 'http/response/WindHttpResponse', 'AbstractWindRouter' => 'router/AbstractWindRouter', 'WindUrlBasedRouter' => 'router/WindUrlBasedRouter');
+		self::$_classes = array(
+			'WindLogger' => 'log/WindLogger',
+			'WindActionException' => 'core/exception/WindActionException',
+			'WindException' => 'core/exception/WindException',
+			'WindFinalException' => 'core/exception/WindFinalException',
+			'IWindFactory' => 'core/factory/IWindFactory',
+			'IWindClassProxy' => 'core/factory/proxy/IWindClassProxy',
+			'WindClassProxy' => 'core/factory/proxy/WindClassProxy',
+			'WindFactory' => 'core/factory/WindFactory',
+			'IWindApplication' => 'core/IWindApplication',
+			'IWindController' => 'core/IWindController',
+			'IWindErrorMessage' => 'core/IWindErrorMessage',
+			'IWindFrontController' => 'core/IWindFrontController',
+			'WindUrlFilter' => 'core/web/filter/WindUrlFilter',
+			'WindFormListener' => 'core/web/listener/WindFormListener',
+			'WindLoggerListener' => 'core/web/listener/WindLoggerListener',
+			'WindValidateListener' => 'core/web/listener/WindValidateListener',
+			'WindController' => 'core/web/WindController',
+			'WindDispatcher' => 'core/web/WindDispatcher',
+			'WindErrorHandler' => 'core/web/WindErrorHandler',
+			'WindErrorMessage' => 'core/web/WindErrorMessage',
+			'WindForward' => 'core/web/WindForward',
+			'WindFrontController' => 'core/web/WindFrontController',
+			'WindHelper' => 'core/web/WindHelper',
+			'WindSimpleController' => 'core/web/WindSimpleController',
+			'WindSystemConfig' => 'core/web/WindSystemConfig',
+			'WindUrlHelper' => 'core/web/WindUrlHelper',
+			'WindWebApplication' => 'core/web/WindWebApplication',
+			'WindEnableValidateModule' => 'core/WindEnableValidateModule',
+			'WindModule' => 'core/WindModule',
+			'WindFilter' => 'filter/WindFilter',
+			'WindFilterChain' => 'filter/WindFilterChain',
+			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor',
+			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain',
+			'WindConfigParser' => 'parser/WindConfigParser',
+			'IWindRequest' => 'http/request/IWindRequest',
+			'WindHttpRequest' => 'http/request/WindHttpRequest',
+			'IWindResponse' => 'http/response/IWindResponse',
+			'WindHttpResponse' => 'http/response/WindHttpResponse',
+			'AbstractWindRouter' => 'router/AbstractWindRouter',
+			'WindUrlBasedRouter' => 'router/WindUrlBasedRouter',
+		);
 	}
 }
 Wind::init();
