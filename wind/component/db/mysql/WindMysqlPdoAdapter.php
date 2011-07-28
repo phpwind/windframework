@@ -6,7 +6,20 @@
  * @package 
  */
 class WindMysqlPdoAdapter extends PDO {
-    
+
+	/**
+	 * 创建表
+	 * @param $tableName
+	 * @param $values
+	 */
+	public function createTable($tableName, $values, $engine, $charset, $autoIncrement) {
+		$_sql = "CREATE TABLE IF NOT EXISTS $tableName ($values)ENGINE=";
+		$_sql .= $engine ? $engine : 'MyISAM';
+		$_sql .= $charset ? " DEFAULT CHARSET=$charset" : '';
+		$_sql .= $autoIncrement ? " AUTO_INCREMENT=$autoIncrement" : '';
+		return $this->query($_sql);
+	}
+
 	/**
 	 * 设置链接使用字符集
 	 * @param string $charset
@@ -40,7 +53,7 @@ class WindMysqlPdoAdapter extends PDO {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * 组装单条 key=value 形式的SQL查询语句值 insert/update
 	 * @param $array
@@ -48,22 +61,22 @@ class WindMysqlPdoAdapter extends PDO {
 	 * @return string
 	 */
 	public function sqlSingle($array) {
-		if (!is_array($array)) return ''; 
+		if (!is_array($array)) return '';
 		$str = '';
 		foreach ($array as $key => $val) {
 			$str .= ($str ? ', ' : ' ') . $this->fieldMeta($key) . '=' . $this->quote($val);
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
 	 * @param $data 元数据
 	 * @return string 经过转义的元数据字符串
 	 */
 	private function fieldMeta($data) {
-		$data = str_replace(array('`', ' '), '',$data);
-		return ' `'.$data.'` ';
+		$data = str_replace(array('`', ' '), '', $data);
+		return ' `' . $data . '` ';
 	}
 }
 ?>

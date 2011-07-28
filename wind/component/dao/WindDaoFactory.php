@@ -41,8 +41,7 @@ class WindDaoFactory extends WindModule {
 			if (strpos($className, ":") === false && strpos($className, ".") === false) {
 				$className = $this->getDaoResource() . '.' . $className;
 			}
-			if (isset($this->daos[$className]))
-				return $this->daos[$className];
+			if (isset($this->daos[$className])) return $this->daos[$className];
 			
 			$className = Wind::import($className);
 			$daoInstance = WindFactory::createInstance($className);
@@ -81,14 +80,12 @@ class WindDaoFactory extends WindModule {
 	private function registerCacheListener($daoInstance) {
 		$caches = (array) $daoInstance->getCacheMethods();
 		foreach ($caches as $classMethod => $classPath) {
-			if (!$classMethod)
-				continue;
+			if (!$classMethod) continue;
 			if ($classPath === 'default')
 				$_className = Wind::import('COM:dao.listener.WindDaoCacheListener');
 			else
 				$_className = Wind::import($classPath);
-			if (!$_className)
-				continue;
+			if (!$_className) continue;
 			$daoInstance->registerEventListener($classMethod, new $_className($daoInstance));
 		}
 	}
@@ -101,21 +98,14 @@ class WindDaoFactory extends WindModule {
 	protected function createDbConnection($daoObject) {
 		$configName = $daoObject->getDBName();
 		$config = $this->getSystemConfig()->getDbConfig($configName);
-		if (!$config)
-			throw new WindDbException('[component.dao.WindDaoFactory.createDbConnection] (' . $configName . ')', 
-				WindDbException::DB_CONN_NOT_EXIST);
+		if (!$config) throw new WindDbException(
+			'[component.dao.WindDaoFactory.createDbConnection] (' . $configName . ')', 
+			WindDbException::DB_CONN_NOT_EXIST);
 		
-		$_path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
-		$alias = $configName ? $_path . $configName : $_path;
-		if (!$this->getSystemFactory()->checkAlias($alias)) {
-			$definition = array(
-				'path' => $_path, 
-				'alias' => $alias, 
-				'config' => $config, 
-				'initMethod' => 'init', 
-				'scope' => 'application');
-			$this->getSystemFactory()->addClassDefinitions($alias, $definition);
-		}
+		$path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
+		$alias = $configName ? $path . $configName : $path . get_class($this);
+		$definition = array('path' => $path, 'alias' => $alias, 'config' => $config, 'initMethod' => 'init', 'scope' => 'application');
+		$this->getSystemFactory()->addClassDefinitions($alias, $definition);
 		$daoObject->setDelayAttributes(array('connection' => array('ref' => $alias)));
 	}
 
@@ -125,8 +115,7 @@ class WindDaoFactory extends WindModule {
 	 * @param WindDao $daoObject
 	 */
 	protected function createCacheHandler($daoObject) {
-		if (!($_className = $daoObject->getCacheClass()))
-			return;
+		if (!($_className = $daoObject->getCacheClass())) return;
 		$_classConfig = $daoObject->getCacheConfig();
 		$_alias = $_className . '_' . md5((is_string($_classConfig) ? $_classConfig : serialize($_classConfig)));
 		if (!$this->getSystemFactory()->checkAlias($_alias)) {

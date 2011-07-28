@@ -165,27 +165,54 @@ class WindConnection extends WindModule {
 		}
 	}
 
-	/* (non-PHPdoc)
-	 * @see WindMysqlPdoAdapter::filterArray()
+	/**
+	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
+	 * 
+	 * @param string $data
+	 * @throws WindDbException
+	 */
+	public function sqlMetadata($data) {
+		$data = str_replace(array('`', ' '), '', $data);
+		return ' `' . $data . '` ';
+	}
+
+	/**
+	 * 过滤数组变量，将数组变量转换为字符串，并用逗号分隔每个数组元素支持多维数组
+	 * 
+	 * @param array $array
 	 */
 	public function quoteArray($array) {
 		return $this->getDbHandle()->filterArray($array);
 	}
 
-	/* (non-PHPdoc) 
-	 * @see WindMysqlPdoAdapter::quote()
+	/**
+	 * sql元数据安全过滤
+	 * 
+	 * @param string $string
 	 */
 	public function quote($string) {
 		return $this->getDbHandle()->quote($string);
 	}
-	
-	/* (non-PHPdoc) 
-	 * @see WindMysqlPdoAdapter::sqlSingle()
+
+	/**
+	 * 组装单条 key=value 形式的SQL查询语句值 insert/update并进行安全过滤
+	 * 
+	 * @param array $array
 	 */
 	public function sqlSingle($array) {
 		return $this->getDbHandle()->sqlSingle($array);
 	}
-	
+
+	/**
+	 * 创建表
+	 * 
+	 * @param string $tableName
+	 * @param array $fileds
+	 */
+	public function createTable($tableName, $values, $engine = '', $autoIncrement = '') {
+		return $this->getDbHandle()->createTable($tableName, $values, $engine, $this->_charset, $autoIncrement);
+	}
+
 	/**
 	 * 返回最后一条插入数据ID
 	 * 
@@ -230,9 +257,8 @@ class WindConnection extends WindModule {
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
 			Wind::log(
-				"component.db.WindConnection.init() \r\n dsn: " . $this->_dsn . " \r\n username: " . $this->_user .
-					 " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, 
-					WindLogger::LEVEL_DEBUG);
+				"component.db.WindConnection.init() \r\n dsn: " . $this->_dsn . " \r\n username: " . $this->_user . " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, 
+				WindLogger::LEVEL_DEBUG);
 		} catch (PDOException $e) {
 			$this->close();
 			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
@@ -241,7 +267,7 @@ class WindConnection extends WindModule {
 	}
 
 	/**
-	 *  (non-PHPdoc)
+	 * (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {

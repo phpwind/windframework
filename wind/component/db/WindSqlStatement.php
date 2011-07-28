@@ -27,8 +27,7 @@ class WindSqlStatement {
 	 *
 	 * @var array
 	 */
-	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 
-		'NULL' => PDO::PARAM_NULL);
+	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 'NULL' => PDO::PARAM_NULL);
 	private $_columns = array();
 
 	/**
@@ -137,7 +136,7 @@ class WindSqlStatement {
 	 */
 	public function bindValues($values) {
 		if (!is_array($values)) {
-			throw new WindSqlException(
+			throw new WindDbException(
 				'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type ' . gettype($values));
 		}
 		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
@@ -356,8 +355,8 @@ class WindSqlStatement {
 					"component.db");
 				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
 				Wind::log(
-					"component.db.WindSqlStatement._init Initialize DBStatement. This statement is " .
-						 get_class($this->_statement), WindLogger::LEVEL_DEBUG, "component.db");
+					"component.db.WindSqlStatement._init Initialize DBStatement. This statement is " . get_class(
+						$this->_statement), WindLogger::LEVEL_DEBUG, "component.db");
 			} catch (PDOException $e) {
 				Wind::log("Component.db.WindSqlStatement._init Initialize DBStatement 
 					failed.", WindLogger::LEVEL_TRACE, "component.db");
