@@ -51,11 +51,10 @@ class WindDaoFactory extends WindModule {
 			return $daoInstance;
 		} catch (Exception $exception) {
 			Wind::log(
-				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' .
-					 $exception->getMessage(), WindLogger::LEVEL_DEBUG, 'wind.component');
+				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' . $exception->getMessage(), 
+				WindLogger::LEVEL_DEBUG, 'wind.component');
 			throw new WindDaoException(
-				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' .
-					 $exception->getMessage());
+				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' . $exception->getMessage());
 		}
 	}
 
@@ -100,17 +99,20 @@ class WindDaoFactory extends WindModule {
 	 * @param WindDao $daoObject
 	 */
 	protected function createDbConnection($daoObject) {
-		if (!($configName = $daoObject->getDBName()))
-			$alias = 'db_default';
-		else
-			$alias = 'db_' . $configName;
+		$configName = $daoObject->getDBName();
+		$config = $this->getSystemConfig()->getDbConfig($configName);
+		if (!$config)
+			throw new WindDbException('[component.dao.WindDaoFactory.createDbConnection] (' . $configName . ')', 
+				WindDbException::DB_CONN_NOT_EXIST);
+		
+		$_path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
+		$alias = $configName ? $_path . $configName : $_path;
 		if (!$this->getSystemFactory()->checkAlias($alias)) {
-			$config = $this->getSystemConfig()->getDbConfig($configName);
-			if (!$config)
-				throw new WindDbException('[component.dao.WindDaoFactory.createDbConnection] (' . $configName . ')', 
-					WindDbException::DB_CONN_NOT_EXIST);
-			$_path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
-			$definition = array('path' => $_path, 'alias' => $alias, 'config' => $config, 'initMethod' => 'init', 
+			$definition = array(
+				'path' => $_path, 
+				'alias' => $alias, 
+				'config' => $config, 
+				'initMethod' => 'init', 
 				'scope' => 'application');
 			$this->getSystemFactory()->addClassDefinitions($alias, $definition);
 		}

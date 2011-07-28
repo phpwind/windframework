@@ -177,7 +177,7 @@ class WindSystemConfig extends WindModule {
 	public function getDbConfig($dbName = '') {
 		$config = $this->getConfig('db');
 		if (isset($config['resource']) && !empty($config['resource'])) {
-			$_resource = Wind::getRealPath($config['resource'], false);
+			$_resource = Wind::getRealPath($config['resource'], true);
 			$this->_config['db'] = $this->parseConfig($_resource, 'db');
 		}
 		return $this->getConfig('db', $dbName);

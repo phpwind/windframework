@@ -144,10 +144,10 @@ class WindFactory implements IWindFactory {
 		if (!($config = $definition['config']))
 			return array();
 		if (isset($config['resource']) && !empty($config['resource'])) {
-			$_configPath = Wind::getRealPath($config['resource'], false);
+			$_configPath = Wind::getRealPath($config['resource'], true);
 			$configParser = $this->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($_configPath, $alias, 'cache_wind_config', 
-				$this->getInstance(COMPONENT_CACHE));
+			$cache = $alias !== COMPONENT_CACHE ? $this->getInstance(COMPONENT_CACHE) : null;
+			$config = $configParser->parse($_configPath, $alias, 'components_config_cache', $cache);
 		}
 		if (isset($config['class']) && !$definition['path']) {
 			$definition['path'] = $config['class'];

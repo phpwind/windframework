@@ -48,8 +48,7 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array 解析结果
 	 */
 	public function parse($configPath, $alias = '', $append = '', AbstractWindCache $cache = null) {
-		if ($config = $this->getCache($alias, $append, $cache))
-			return $config;
+		if ($config = $this->getCache($alias, $append, $cache)) return $config;
 		$config = $this->doParser($configPath);
 		$this->setCache($alias, $append, $cache, $config);
 		return $config;
@@ -62,14 +61,14 @@ class WindConfigParser implements IWindConfigParser {
 	 * @param AbstractWindCache $cache
 	 */
 	private function setCache($alias, $append, $cache, $data) {
-		if (!$alias || !$cache)
-			return;
+		if (!$alias || !$cache) return;
 		if ($append) {
 			$_config = (array) $cache->get($append);
 			$_config[$alias] = $data;
 			$cache->set($append, $_config);
-		} else
+		} else {
 			$cache->set($alias, $data);
+		}
 	}
 
 	/**
@@ -80,25 +79,11 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array
 	 */
 	private function getCache($alias, $append, $cache) {
-		if (!$alias || !$cache)
-			return array();
-		$_key = $append ? $append : $alias;
-		$config = $cache->get($_key);
+		if (!$alias || !$cache) return array();
+		if (!$append) return $cache->get($alias);
+		
+		$config = $cache->get($append);
 		return isset($config[$alias]) ? $config[$alias] : array();
-	}
-
-	/**
-	 * 获得缓存文件内容
-	 * 
-	 * @param AbstractWindCache $cache
-	 * @param string $file 缓存文件名
-	 * @return array 缓存文件内容
-	 */
-	private function getCacheContent(AbstractWindCache $cache, $file) {
-		$content = array();
-		if (is_file($file))
-			$content = $cache->get($file);
-		return is_array($content) ? $content : array();
 	}
 
 	/**
@@ -135,14 +120,11 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array			    返回解析结果
 	 */
 	private function doParser($configFile) {
-		if (!is_file($configFile))
-			throw new WindException(
-				'[component.parser.WindConfigParser.doParser] The file \'' . $configFile . '\' is not exists');
+		if (!is_file($configFile)) throw new WindException(
+			'[component.parser.WindConfigParser.doParser] The file \'' . $configFile . '\' is not exists');
 		$ext = strtoupper(strrchr($configFile, '.'));
-		if ($ext == self::CONFIG_PHP)
-			return @include ($configFile);
-		if (!isset($this->configParsers[$ext]))
-			$this->configParsers[$ext] = $this->createParser($ext);
+		if ($ext == self::CONFIG_PHP) return @include ($configFile);
+		if (!isset($this->configParsers[$ext])) $this->configParsers[$ext] = $this->createParser($ext);
 		return $this->configParsers[$ext]->parse($configFile);
 	}
 }

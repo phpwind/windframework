@@ -40,10 +40,12 @@ class WindFrontController implements IWindFrontController {
 		try {
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
-			$this->init($appName, $config);
+			$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
+			$this->windFactory = new WindFactory(@include ($configPath));
+			$this->windSystemConfig = new WindSystemConfig($config, $appName, $this->windFactory);
 		} catch (Exception $e) {
 			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
-			throw new WindException('System failed to initialize.');
+			throw new WindException('System failed to initialize.' . $e->getMessage());
 		}
 	}
 
@@ -80,16 +82,6 @@ class WindFrontController implements IWindFrontController {
 		if (!($filterChainPath = $this->windSystemConfig->getFilterClass()))
 			return null;
 		return $this->getWindFactory()->createInstance($filterChainPath, array($filters));
-	}
-
-	/**
-	 * 初始全局工厂类
-	 * @return
-	 */
-	protected function init($appName, $config) {
-		$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
-		$this->windFactory = new WindFactory(@include ($configPath));
-		$this->windSystemConfig = new WindSystemConfig($config, $appName, $this->windFactory);
 	}
 
 	/**

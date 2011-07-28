@@ -1,4 +1,6 @@
 <?php
+Wind::import("COM:utility.WindSecurity");
+Wind::import("COM:utility.WindString");
 /**
  * 文件工具类
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -47,7 +49,6 @@ class WindFile {
 	 * @param boolean $ifLock           是否对文件加锁
 	 */
 	public static function savePhpData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
-		Wind::import("COM:utility.WindString");
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ($data as $key => $value) {
@@ -74,7 +75,6 @@ class WindFile {
 	 * @return int 返回写入的字节数
 	 */
 	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
-		Wind::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
 		if (!$handle = fopen($fileName, $method)) return false;
@@ -94,7 +94,6 @@ class WindFile {
 	 * @return string
 	 */
 	public static function read($fileName, $method = self::READ) {
-		Wind::import("COM:utility.WindSecurity");
 		$fileName = WindSecurity::escapePath($fileName);
 		$data = '';
 		if (false !== ($handle = fopen($fileName, $method))) {
@@ -109,9 +108,11 @@ class WindFile {
 	 * 按目录删除文件
 	 * @param string  $dir 目录
 	 * @param boolean $ifexpiled 是否过期
+	 * @deprecated
 	 * @return boolean
 	 */
 	public static function clearDir($dir, $ifexpiled = false) {
+		//TODO 删除掉是否过期相关处理，不要将外部业务需求，耦合进工具库方法
 		if (!$handle = @opendir($dir)) return false;
 		while (false !== ($file = readdir($handle))) {
 			if ('.' === $file[0] || '..' === $file[0]) continue;
@@ -223,7 +224,7 @@ class WindFile {
 	 * @return boolean
 	 */
 	public static function delFile($filename) {
-		return unlink($filename);
+		return @unlink($filename);
 	}
 
 	/**
