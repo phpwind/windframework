@@ -371,7 +371,6 @@ class WindHttpResponse implements IWindResponse {
 			return;
 		$this->setBody($message);
 		$this->setStatus($status);
-		$this->sendResponse();
 	}
 
 	/**

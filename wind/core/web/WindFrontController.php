@@ -41,8 +41,9 @@ class WindFrontController implements IWindFrontController {
 			$this->request = new WindHttpRequest();
 			$this->response = $this->request->getResponse();
 			$this->init($appName, $config);
-		} catch (Exception $exception) {
-			throw new Exception('System failed to initialize.' . $exception->getMessage());
+		} catch (Exception $e) {
+			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
+			throw new WindException('System failed to initialize.');
 		}
 	}
 
@@ -94,13 +95,18 @@ class WindFrontController implements IWindFrontController {
 	/**
 	 * 预处理Process方法
 	 */
-	protected function beforeProcess() {}
+	protected function beforeProcess() {
+		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
+		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
+	}
 
 	/**
 	 * 后处理Process方法
 	 */
 	protected function afterProcess() {
 		$this->response->sendResponse();
+		restore_error_handler();
+		restore_exception_handler();
 	}
 
 	/**

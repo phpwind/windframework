@@ -67,7 +67,8 @@ class WindConfigParser implements IWindConfigParser {
 		if (!($configPath = trim($configPath)))
 			throw new WindException('Please input the file path!');
 		$result = $this->doParser($configPath, $this->getConfigFormat($configPath));
-		if (!$alias || !$cache)	return $result;
+		if (!$alias || !$cache)
+			return $result;
 		$config[$alias] = $result;
 		$this->saveConfigFile($cache, $key, $config);
 		return $result;
@@ -180,7 +181,8 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return boolean 			  保存成功则返回true,保存失败则返回false
 	 */
 	private function saveConfigFile(AbstractWindCache $cache, $alias, $data) {
-		if (!$data) return false;
+		if (!$data)
+			return false;
 		return $cache->set($alias, $data, 0);
 	}
 

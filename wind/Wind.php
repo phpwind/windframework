@@ -318,8 +318,6 @@ class Wind {
 		if (in_array($appName, self::$_currentApp))
 			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
 		array_push(self::$_currentApp, $appName);
-		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
-		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
 	}
 
 	/**
@@ -327,8 +325,6 @@ class Wind {
 	 */
 	protected static function afterRun($appName, $config, $rootPath) {
 		self::resetApp();
-		restore_error_handler();
-		restore_exception_handler();
 		if (self::$_logger)
 			self::$_logger->flush();
 	}

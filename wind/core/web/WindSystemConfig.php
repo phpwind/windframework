@@ -191,6 +191,9 @@ class WindSystemConfig extends WindModule {
 	 * @param factory
 	 */
 	private function parseConfig($config, $key = 'config', $append = true, $factory = null) {
+		if (!$config)
+			return array();
+		
 		if ($factory === null)
 			$factory = $this->getSystemFactory();
 		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
