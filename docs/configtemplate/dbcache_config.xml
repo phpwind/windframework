@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- 数据库缓存的配置信息 -->
-<cache>
+<WIND>
 	<!-- 缓存文件的过期时间 -->
 	<expires>0</expires>
 	<!-- 缓存key的前缀 -->
-	<keyPrefix></keyPrefix>
+	<key-prefix></key-prefix>
 	<!-- 缓存key安全盐码 -->
-	<securityCode></securityCode>
-	
-    <!-- 配置数据缓存表 -->
-	<cacheTables>
-		<!-- 引用配置中的db配置 -->
-		<connection>default</connection>
-		<!-- 缓存的表名 -->
-		<tableName>pw_cache</tableName>
-		<!-- 缓存的key字段名称 -->
-		<fieldKey>key</fieldKey>
-		<!-- 缓存的value字段名称 -->
-		<fieldValue>value</fieldValue>
-		<!-- 缓存的过期时间字段名称 -->
-		<fieldExpire>expire</fieldExpire>
-	</cacheTables>
-</cache>
+	<security-code></security-code>
+	<!-- 缓存的表名 -->
+	<table-name>pw_cache</table-name>
+	<!-- 缓存的key字段名称 -->
+	<field-key>key</field-key>
+	<!-- 缓存的value字段名称 -->
+	<field-value>value</field-value>
+	<!-- 缓存的过期时间字段名称 -->
+	<field-expire>expire</field-expire>
+</WIND>

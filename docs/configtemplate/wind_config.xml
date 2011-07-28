@@ -5,7 +5,6 @@
 		class: 指定该应用的配置 root-path: 指定该应用的入口地址 -->
 	<web-app name='default' class='windWebApp'>
 		<filters class='WIND:core.filter.WindFilterChain'>
-			<filter name='filter1' class='WIND:core.web.filter.WindLoggerFilter' />
 			<filter name='filter2' class='WIND:core.web.filter.WindUrlFilter' />
 		</filters>
 		<!-- 路由的相关配置 class: 指定路由解析类配置 -->
