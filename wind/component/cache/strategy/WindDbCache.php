@@ -49,7 +49,7 @@ class WindDbCache extends AbstractWindCache {
 	 * 缓存表过期时间字段
 	 * @var string 
 	 */
-	private $connectionConfig = '';
+	private $dbConfigName = '';
 
 	public function __construct(WindConnection $connection = null, $config = array()) {
 		$connection && $this->setConnection($connection);
@@ -133,12 +133,11 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$config = $this->getConfig('cacheTables');
-		$this->table = $this->getConfig('tableName', '', 'pw_cache', $config);
-		$this->keyField = $this->getConfig('fieldKey', '', 'key', $config);
-		$this->valueField = $this->getConfig('fieldValue', '', 'value', $config);
-		$this->expireField = $this->getConfig('fieldExpire', '', 'expire', $config);
-		$this->connectionConfig = $this->getConfig('connection', '', 'default', $config);
+		$this->table = $this->getConfig('table-name', '', 'pw_cache', $config);
+		$this->keyField = $this->getConfig('field-key', '', 'key', $config);
+		$this->valueField = $this->getConfig('field-value', '', 'value', $config);
+		$this->expireField = $this->getConfig('field-expire', '', 'expire', $config);
+		$this->dbConfigName = $this->getConfig('dbconfig-name', '', '', $config);
 	}
 	
 	/**
@@ -172,16 +171,11 @@ class WindDbCache extends AbstractWindCache {
 	 */
 	private function getConnection() {
 		if (null == $this->connection) {
-			$alias = 'db_' . $this->connectionConfig;
+			$config = $this->getSystemConfig()->getDbConfig($this->dbConfigName);
+			$path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
+			$alias = $this->dbConfigName ? $path . $this->dbConfigName : $path . get_class($this);
 		    if (!$this->getSystemFactory()->checkAlias($alias)) {
-				$config = $this->getSystemConfig()->getDbConfig($this->connectionConfig);
-				$definition = array(
-					'path' => $this->getConfig('class', '', 'COM:db.WindConnection', $config),
-					'alias' => $alias,
-					'config' => $config,
-					'initMethod' => 'init',
-					'scope' => 'application',
-				);
+				$definition = array('path' => $path, 'alias' => $alias, 'config' => $config, 'initMethod' => 'init', 'scope' => 'application');
 				$this->getSystemFactory()->addClassDefinitions($alias, $definition);
 			}
 			$this->connection = $this->getSystemFactory()->getInstance($alias);
