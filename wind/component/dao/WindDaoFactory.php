@@ -119,22 +119,13 @@ class WindDaoFactory extends WindModule {
 		$_classConfig = $daoObject->getCacheConfig();
 		$_alias = $_className . '_' . md5((is_string($_classConfig) ? $_classConfig : serialize($_classConfig)));
 		if (!$this->getSystemFactory()->checkAlias($_alias)) {
-			$definition = new WindClassDefinition();
-			$definition->setPath($_className);
-			$definition->setAlias($_alias);
-			$definition->setInitMethod('init');
-			$definition->setScope(WindClassDefinition::SCOPE_SINGLETON);
-			if (is_array($_classConfig))
-				$definition->setConfig($_classConfig);
-			else
-				$definition->setConfig(array(WindClassDefinition::RESOURCE => $_classConfig));
-			
-			$this->getSystemFactory()->addClassDefinitions($definition);
+			$definition = array('path' => $_className, 'alias' => $_alias, 'initMethod' => 'init', 'scope' => 'singleton');
+			$definition['config'] = is_array($_classConfig) ? $_classConfig : array('resource' => $_classConfig);
+			$this->getSystemFactory()->addClassDefinitions($_alias, $definition);
 		}
-		$daoObject->setDelayAttributes(array('cacheHandler' => array(WindClassDefinition::REF => $_alias)));
+		$daoObject->setDelayAttributes(array('cacheHandler' => array('ref' => $_alias)));
 		$daoObject = new WindClassProxy($daoObject);
 		$this->registerCacheListener($daoObject);
 	}
-
 }
 ?>
