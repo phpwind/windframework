@@ -7,6 +7,8 @@
 	<key-prefix></key-prefix>
 	<!-- 缓存key安全盐码 -->
 	<security-code></security-code>
+	<!-- db链接配置名字 -->
+	<dbconfig-name></dbconfig-name>
 	<!-- 缓存的表名 -->
 	<table-name>pw_cache</table-name>
 	<!-- 缓存的key字段名称 -->
