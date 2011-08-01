@@ -10,7 +10,7 @@ class WindZendCache extends AbstractWindCache {
 
 	public function __construct() {
 		if (!function_exists('zend_shm_cache_fetch')) {
-			throw new WindException('The zend cache extension must be loaded !');
+			throw new WindCacheException('The zend cache extension must be loaded !');
 		}
 	}
 

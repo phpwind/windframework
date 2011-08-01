@@ -13,7 +13,7 @@ class WindEacceleratorCache extends AbstractWindCache {
 
 	public function __construct() {
 		if (!function_exists('eaccelerator_get')) {
-			throw new WindException('The eaccelerator extension must be loaded !');
+			throw new WindCacheException('The eaccelerator extension must be loaded !');
 		}
 	}
 

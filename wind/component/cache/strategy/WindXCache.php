@@ -7,10 +7,12 @@ Wind::import('COM:cache.AbstractWindCache');
  * @version 2011-7-26  xiaoxiao
  */
 class WindXCache extends AbstractWindCache {
+	private $authUser = '';
+	private $authPwd = '';
 
 	public function __construct() {
-		if (!function_exists('xcache_get')) {
-			throw new WindException('The xcache extension must be loaded !');
+		if (!extension_loaded('xcache')) {
+			throw new WindCacheException('The xcache extension must be loaded !');
 		}
 	}
 
@@ -39,11 +41,49 @@ class WindXCache extends AbstractWindCache {
 	 * @see AbstractWindCache#clear()
 	 */
 	public function clear() {
-		$max = xcache_count(XC_TYPE_VAR);
+		//xcache_clear_cache需要验证权限
+		$this->checkAuthor();
+		
+		//如果配置中xcache.var_count > 0 则不能用xcache_clear_cache(XC_TYPE_VAR, 0)的方式删除
+		$max = xcache_count(XC_TYPE_VAR);  
 		for ($i = 0; $i < $max; $i++) {
 			xcache_clear_cache(XC_TYPE_VAR, $i);
 		}
+		
+		//恢复之前的权限
+		$this->checkAuthor(true);
+		
 		return true;
+	}
+	
+	/**
+	 * 设置验证权限
+	 * @param boolean $recover 是否恢复设置
+	 */
+	private function checkAuthor($recover = false) {
+		static $tmp = array();
+		if (!$recover) {
+			$tmp['user'] = isset($_SERVER['PHP_AUTH_USER']) ? null : $_SERVER['PHP_AUTH_USER'];
+			$tmp['pwd'] = isset($_SERVER['PHP_AUTH_PW']) ? null : $_SERVER['PHP_AUTH_PW'];
+			$_SERVER['PHP_AUTH_USER']	= $this->authUser;
+			$_SERVER['PHP_AUTH_PW']		= $this->authPwd;
+			return true;
+		}
+		$_SERVER['PHP_AUTH_USER'] = $tmp['user'];
+		$_SERVER['PHP_AUTH_PW'] = $tmp['pwd'];
+		unset($tmp);
+		return true;
+	}
+	
+	/*
+	 * (non-PHPdoc)
+	 * @see AbstractWindCache::setConfig()
+	 */
+	public function setConfig($config = array()) {
+		if (!$config) return false;
+		parent::setConfig($config);
+		$this->authUser = $this->getConfig('user');
+		$this->authPwd = $this->getConfig('pwd');
 	}
 
 }

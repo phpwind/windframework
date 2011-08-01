@@ -11,7 +11,7 @@ class WindWinCache extends AbstractWindCache {
 
 	public function __construct() {
 		if (!function_exists('wincache_ucache_get')) {
-			throw new WindException('The wincache extension must be loaded !');
+			throw new WindCacheException('The wincache extension must be loaded !');
 		}
 	}
 

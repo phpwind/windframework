@@ -22,7 +22,7 @@ class WindMemCache extends AbstractWindCache {
 
 	public function __construct() {
 		if (!extension_loaded('Memcache')) {
-			throw new WindException('WindMemCache requires PHP `Memcache` extension to be loaded !');
+			throw new WindCacheException('WindMemCache requires PHP `Memcache` extension to be loaded !');
 		}
 		$this->memcache = new Memcache();
 	}
@@ -80,12 +80,12 @@ class WindMemCache extends AbstractWindCache {
 	 * 		'port'=>11212
 	 * 		'pconn'=>false
 	 *  )
-	 * @throws WindException
+	 * @throws WindCacheException
 	 */
 	private function setServers($servers) {
 		foreach ($servers as $server) {
 			if (!is_array($server)) {
-				throw new WindException('The memcache config is incorrect');
+				throw new WindCacheException('The memcache config is incorrect');
 			}
 			$this->setServer($server);
 		}
@@ -94,14 +94,14 @@ class WindMemCache extends AbstractWindCache {
 	/**
 	 * 设置配置信息
 	 * 
-	 * @throws WindException
+	 * @throws WindCacheException
 	 */
 	private function setServer($server) {
 		if (!isset($server['host'])) {
-			throw new WindException('The memcache server ip address is not exist');
+			throw new WindCacheException('The memcache server ip address is not exist');
 		}
 		if (!isset($server['port'])) {
-			throw new WindException('The memcache server port is not exist');
+			throw new WindCacheException('The memcache server port is not exist');
 		}
 		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 
 			'timeout' => 15, 'retry' => 15, 'status' => true, 'fcallback' => null);

@@ -11,7 +11,7 @@ class WindApcCache extends AbstractWindCache {
 	
 	public function __construct(){
 		if (!extension_loaded('apc')) {
-			throw new WindException('The apc extension must be loaded !');
+			throw new WindCacheException('The apc extension must be loaded !');
 		}
 	}
 	
