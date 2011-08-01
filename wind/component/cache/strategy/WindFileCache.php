@@ -34,7 +34,7 @@ class WindFileCache extends AbstractWindCache {
 	private $cacheFileList = array();
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindCache::setValue()
+	 * @see AbstractWindCache::setValue($key, $value, $expires)
 	 */
 	protected function setValue($key, $value, $expire = 0) {
 		return WindFile::write($key, $value) == strlen($value);
