@@ -17,11 +17,6 @@
  * @package 
  */
 class WindView extends WindModule {
-	/* 视图配置信息 */
-	const TEMPLATE_DIR = 'template-dir';
-	const TEMPLATE_EXT = 'template-ext';
-	const COMPILE_DIR = 'compile-dir';
-	const IS_CACHE = 'is-cache';
 	/**
 	 * 模板路径信息
 	 *
@@ -46,6 +41,13 @@ class WindView extends WindModule {
 	 * @var boolean
 	 */
 	protected $isCache = false;
+	
+	/**
+	 * 是否对模板变量进行html字符过滤
+	 * 
+	 * @var boolean
+	 */
+	protected $htmlspecialchars = false;
 	/**
 	 * 编译目录
 	 *
@@ -79,12 +81,9 @@ class WindView extends WindModule {
 			return;
 		}
 		$this->setTemplateName($_templateName);
-		if ($_ext = $forward->getTemplateExt())
-			$this->setTemplateExt($_ext);
-		if ($_path = $forward->getTemplatePath())
-			$this->setTemplateDir($_path);
-		if ($_layout = $forward->getLayout())
-			$this->setLayout($_layout);
+		if ($_ext = $forward->getTemplateExt()) $this->setTemplateExt($_ext);
+		if ($_path = $forward->getTemplatePath()) $this->setTemplateDir($_path);
+		if ($_layout = $forward->getLayout()) $this->setLayout($_layout);
 		
 		$viewResolver = $this->getViewResolver();
 		$viewResolver->windAssign($forward->getVars(), $_templateName);
@@ -124,12 +123,9 @@ class WindView extends WindModule {
 	 * @param $path
 	 */
 	private function parseFilePath($fileName, $fileExt, $path, $ifCheckPath = false) {
-		if (!$fileName)
-			$fileName = $this->getTemplateName();
-		if (!$fileExt)
-			$fileExt = $this->getTemplateExt();
-		if (strrpos($path, ':') === false)
-			$path = Wind::getAppName() . ':' . $path;
+		if (!$fileName) $fileName = $this->getTemplateName();
+		if (!$fileExt) $fileExt = $this->getTemplateExt();
+		if (strrpos($path, ':') === false) $path = Wind::getAppName() . ':' . $path;
 		if ($ifCheckPath) {
 			$dir = Wind::getRealDir($path);
 			if (!is_dir($dir)) {
@@ -147,10 +143,10 @@ class WindView extends WindModule {
 	 * @return
 	 */
 	public function init() {
-		$this->setTemplateDir($this->getConfig(self::TEMPLATE_DIR));
-		$this->setCompileDir($this->getConfig(self::COMPILE_DIR));
-		$this->setTemplateExt($this->getConfig(self::TEMPLATE_EXT));
-		$this->setIsCache($this->getConfig(self::IS_CACHE));
+		$this->setTemplateDir($this->getConfig('template-dir'));
+		$this->setCompileDir($this->getConfig('compile-dir'));
+		$this->setTemplateExt($this->getConfig('template-ext'));
+		$this->setIsCache($this->getConfig('is-cache'));
 	}
 
 	/**
@@ -235,6 +231,20 @@ class WindView extends WindModule {
 	 */
 	public function setLayout($layout) {
 		$this->layout = $layout;
+	}
+
+	/**
+	 * @return the $htmlspecialchars
+	 */
+	public function getHtmlspecialchars() {
+		return $this->htmlspecialchars;
+	}
+
+	/**
+	 * @param boolean $htmlspecialchars
+	 */
+	public function setHtmlspecialchars($htmlspecialchars) {
+		$this->htmlspecialchars = $htmlspecialchars;
 	}
 
 	/**

@@ -498,23 +498,6 @@ class WindHttpRequest implements IWindRequest {
 	}
 
 	/**
-	 * 获得返回信息
-	 * @return WindHttpResponse
-	 */
-	public function getResponse() {
-		if ($this->_response === null) {
-			$this->_response = new WindHttpResponse();
-			if ($this->getIsAjaxRequest()) {
-				$this->_response->addHeader('Content-type', 'text/xml;charset=utf-8');
-				$this->_response->setIsAjax(true);
-			} else{
-				$this->_response->addHeader('Content-type', 'text/html;charset=utf-8');
-			}
-		}
-		return $this->_response;
-	}
-
-	/**
 	 * 返回访问的IP地址
 	 * 
 	 * Example:
@@ -529,10 +512,8 @@ class WindHttpRequest implements IWindRequest {
 			$ip = strtok($_ip, ',');
 			do {
 				$ip = ip2long($ip);
-				if (!(($ip == 0) || ($ip == 0xFFFFFFFF) || ($ip == 0x7F000001) ||
-					 (($ip >= 0x0A000000) && ($ip <= 0x0AFFFFFF)) || (($ip >= 0xC0A8FFFF) && ($ip <= 0xC0A80000)) ||
-					 (($ip >= 0xAC1FFFFF) && ($ip <= 0xAC100000)))) {
-						$this->_clientIp = long2ip($ip);
+				if (!(($ip == 0) || ($ip == 0xFFFFFFFF) || ($ip == 0x7F000001) || (($ip >= 0x0A000000) && ($ip <= 0x0AFFFFFF)) || (($ip >= 0xC0A8FFFF) && ($ip <= 0xC0A80000)) || (($ip >= 0xAC1FFFFF) && ($ip <= 0xAC100000)))) {
+					$this->_clientIp = long2ip($ip);
 					return;
 				}
 			} while (($ip = strtok(',')));
@@ -587,61 +568,59 @@ class WindHttpRequest implements IWindRequest {
 			$this->_scriptUrl = $_scriptName;
 		} elseif (($_scriptName = $this->getServer('PHP_SELF')) != null && basename($_scriptName) === $scriptName) {
 			$this->_scriptUrl = $_scriptName;
-		} elseif (($_scriptName = $this->getServer('ORIG_SCRIPT_NAME')) != null &&
-			 basename($_scriptName) === $scriptName) {
-				$this->_scriptUrl = $_scriptName;
-			} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
-				$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
-			} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null &&
-				 ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null &&
-				 strpos($_scriptName, $_documentRoot) === 0) {
-					$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
-			} else
-				throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
-		}
-
-		/**
-		 * 获得主机信息，包含协议信息，主机名，访问端口信息
-		 * 
-		 * Example:
-		 * http://www.phpwind.net/example/index.php?a=test
-		 * $this->_hostInfo = http://www.phpwind.net/
-		 * $this->_hostInfo = http://www.phpwind.net:80/
-		 * $this->_hostInfo = https://www.phpwind.net:443/
-		 * 
-		 * @throws WindException
-		 * @return 
-		 */
-		private function _initHostInfo() {
-			$http = $this->isSecure() ? 'https' : 'http';
-			if (($httpHost = $this->getServer('HTTP_HOST')) != null)
-				$this->_hostInfo = $http . '://' . $httpHost;
-			elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
-				$this->_hostInfo = $http . '://' . $httpHost;
-				if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
-			} else
-				throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
-		}
-
-		/**
-		 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
-		 * 
-		 * @throws WindException
-		 * @return
-		 */
-		private function _initPathInfo() {
-			$requestUri = urldecode($this->getRequestUri());
-			$scriptUrl = $this->getScriptUrl();
-			$baseUrl = $this->getBaseUrl();
-			if (strpos($requestUri, $scriptUrl) === 0)
-				$pathInfo = substr($requestUri, strlen($scriptUrl));
-			elseif ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
-				$pathInfo = substr($requestUri, strlen($baseUrl));
-			elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
-				$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
-			else
-				throw new WindException('');
-			if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
-			$this->_pathInfo = trim($pathInfo, '/');
-		}
+		} elseif (($_scriptName = $this->getServer('ORIG_SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
+			$this->_scriptUrl = $_scriptName;
+		} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
+			$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
+		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer(
+			'SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
+			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
+		} else
+			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
 	}
+
+	/**
+	 * 获得主机信息，包含协议信息，主机名，访问端口信息
+	 * 
+	 * Example:
+	 * http://www.phpwind.net/example/index.php?a=test
+	 * $this->_hostInfo = http://www.phpwind.net/
+	 * $this->_hostInfo = http://www.phpwind.net:80/
+	 * $this->_hostInfo = https://www.phpwind.net:443/
+	 * 
+	 * @throws WindException
+	 * @return 
+	 */
+	private function _initHostInfo() {
+		$http = $this->isSecure() ? 'https' : 'http';
+		if (($httpHost = $this->getServer('HTTP_HOST')) != null)
+			$this->_hostInfo = $http . '://' . $httpHost;
+		elseif (($httpHost = $this->getServer('SERVER_NAME')) != null) {
+			$this->_hostInfo = $http . '://' . $httpHost;
+			if (($port = $this->getServerPort()) != null) $this->_hostInfo .= ':' . $port;
+		} else
+			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
+	}
+
+	/**
+	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
+	 * 
+	 * @throws WindException
+	 * @return
+	 */
+	private function _initPathInfo() {
+		$requestUri = urldecode($this->getRequestUri());
+		$scriptUrl = $this->getScriptUrl();
+		$baseUrl = $this->getBaseUrl();
+		if (strpos($requestUri, $scriptUrl) === 0)
+			$pathInfo = substr($requestUri, strlen($scriptUrl));
+		elseif ($baseUrl === '' || strpos($requestUri, $baseUrl) === 0)
+			$pathInfo = substr($requestUri, strlen($baseUrl));
+		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
+			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+		else
+			throw new WindException('');
+		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
+		$this->_pathInfo = trim($pathInfo, '/');
+	}
+}

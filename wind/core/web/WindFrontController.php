@@ -39,6 +39,8 @@ class WindFrontController implements IWindFrontController {
 	 * @param WindFactory $windFactory
 	 */
 	public function __construct($config = '') {
+		$this->request = new WindHttpRequest();
+		$this->response = new WindHttpResponse();
 		$this->config = $config;
 	}
 
@@ -80,13 +82,12 @@ class WindFrontController implements IWindFrontController {
 	 */
 	protected function beforeProcess() {
 		try {
-			$this->request = new WindHttpRequest();
-			$this->response = $this->request->getResponse();
+			ob_start();
 			$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
 			$this->windFactory = new WindFactory(@include ($configPath));
 			$this->windSystemConfig = new WindSystemConfig($this->config, Wind::getAppName(), $this->windFactory);
-			set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
-			set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
+			set_error_handler(array($this, 'errorHandle'));
+			set_exception_handler(array($this, 'exceptionHandle'));
 		} catch (Exception $e) {
 			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
 			throw new WindException('System failed to initialize.' . $e->getMessage());
@@ -94,12 +95,66 @@ class WindFrontController implements IWindFrontController {
 	}
 
 	/**
+	 * 错误处理句柄
+	 * @param string $errno
+	 * @param string $errstr
+	 * @param string $errfile
+	 * @param string $errline
+	 */
+	final public function errorHandle($errno, $errstr, $errfile, $errline) {
+		if ($errno & error_reporting()) {
+			restore_error_handler();
+			restore_exception_handler();
+			$header = $message = $trace = '';
+			$header = $errstr;
+			if (IS_DEBUG) {
+				$message = $errstr . '(' . $errfile . ' : ' . $errline . ')';
+				$_trace = debug_backtrace();
+				foreach ($_trace as $key => $value) {
+					if (!isset($value['file']) || !isset($value['line']) || !isset($value['function'])) continue;
+					$trace .= "#$key {$value['file']}({$value['line']}): ";
+					if (isset($value['object']) && is_object($value['object'])) $trace .= get_class($value['object']) . '->';
+					$trace .= "{$value['function']}()\r\n";
+				}
+			}
+			$this->displayMessage($header, $message, $trace);
+		}
+	}
+
+	/**
+	 * 异常处理句柄
+	 * @param Exception $exception
+	 */
+	final public function exceptionHandle($exception) {
+		restore_error_handler();
+		restore_exception_handler();
+		$header = $message = $trace = '';
+		$header = $exception->getMessage();
+		if (IS_DEBUG) {
+			$message = $exception->getMessage() . '(' . $exception->getFile() . ' : ' . $exception->getLine() . ')';
+			$trace = $exception->getTraceAsString();
+		}
+		$this->displayMessage($header, $message, $trace);
+	}
+
+	/**
+	 * @param string $header
+	 * @param string $message
+	 * @param string $trace
+	 */
+	public function displayMessage($header, $message = '', $trace = '') {
+		$_tmp = "<h4>$header</h4>";
+		$_tmp .= "<p>$message</p>";
+		$_tmp .= "<pre>$trace</pre>";
+		$this->getResponse()->sendError(500, $_tmp);
+	}
+
+	/**
 	 * 后处理Process方法
 	 */
 	protected function afterProcess() {
+		ob_end_flush();
 		$this->response->sendResponse();
-		restore_error_handler();
-		restore_exception_handler();
 	}
 
 	/**

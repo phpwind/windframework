@@ -25,8 +25,7 @@ class WindSystemConfig extends WindModule {
 	public function setConfig($config, $factory = null) {
 		if (is_string($config)) {
 			$config = $this->parseConfig($config, 'config', '', $factory);
-			if (isset($config[$this->appName]))
-				$this->_config = $config[$this->appName];
+			if (isset($config[$this->appName])) $this->_config = $config[$this->appName];
 		} else
 			$this->_config = (array) $config;
 	}
@@ -43,6 +42,13 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getAppClass() {
 		return $this->getConfig('class', '', COMPONENT_WEBAPP);
+	}
+
+	/**
+	 * 返回应用编码信息
+	 */
+	public function getCharset() {
+		return $this->getConfig('charset', '', 'utf-8');
 	}
 
 	/**
@@ -191,11 +197,9 @@ class WindSystemConfig extends WindModule {
 	 * @param factory
 	 */
 	private function parseConfig($config, $key = 'config', $append = true, $factory = null) {
-		if (!$config)
-			return array();
+		if (!$config) return array();
 		
-		if ($factory === null)
-			$factory = $this->getSystemFactory();
+		if ($factory === null) $factory = $this->getSystemFactory();
 		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 		$append === true && $append = $this->appName . '_config';
 		$config = $configParser->parse($config, $this->appName . '_' . $key, $append, 
