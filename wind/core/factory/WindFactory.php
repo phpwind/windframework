@@ -40,10 +40,8 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias, $args = array()) {
-		if (isset($this->instances[$alias]))
-			return $this->instances[$alias];
-		if (!($definition = $this->checkAlias($alias)))
-			return null;
+		if (isset($this->instances[$alias])) return $this->instances[$alias];
+		if (!($definition = $this->checkAlias($alias))) return null;
 		$this->buildDefinition($definition);
 		$_subDefinitions = $definition['constructorArg'];
 		foreach ($_subDefinitions as $_subDefinition) {
@@ -54,14 +52,10 @@ class WindFactory implements IWindFactory {
 		}
 		$config = $this->buildConfig($definition, $alias);
 		$instance = $this->createInstance($definition['className'], $args);
-		if (!empty($config))
-			$instance->setConfig($config);
-		if ($definition['properties'])
-			$this->buildProperties($definition['properties'], $instance);
-		if ($definition['initMethod'])
-			$this->executeInitMethod($definition['initMethod'], $instance);
-		if ($definition['proxy'])
-			$instance = $this->setProxyForClass($definition['proxy'], $instance);
+		if (!empty($config)) $instance->setConfig($config);
+		if ($definition['properties']) $this->buildProperties($definition['properties'], $instance);
+		if ($definition['initMethod']) $this->executeInitMethod($definition['initMethod'], $instance);
+		if ($definition['proxy']) $instance = $this->setProxyForClass($definition['proxy'], $instance);
 		
 		$this->setScope($alias, $definition['scope'], $instance);
 		return $instance;
@@ -88,8 +82,7 @@ class WindFactory implements IWindFactory {
 	 */
 	public function getPrototype($alias) {
 		$instance = $this->getInstance($alias);
-		if ($instance === null)
-			return null;
+		if ($instance === null) return null;
 		return clone $instance;
 	}
 
@@ -101,6 +94,7 @@ class WindFactory implements IWindFactory {
 	 * @return 
 	 */
 	public function addClassDefinitions($alias, $classDefinition) {
+		if (isset($this->classDefinitions[$alias])) return;
 		$this->classDefinitions[$alias] = $classDefinition;
 	}
 
@@ -141,8 +135,7 @@ class WindFactory implements IWindFactory {
 	 * @return
 	 */
 	protected function buildConfig(&$definition, $alias) {
-		if (!($config = $definition['config']))
-			return array();
+		if (!($config = $definition['config'])) return array();
 		if (isset($config['resource']) && !empty($config['resource'])) {
 			$_configPath = Wind::getRealPath($config['resource'], true);
 			$configParser = $this->getInstance(COMPONENT_CONFIGPARSER);
@@ -181,8 +174,7 @@ class WindFactory implements IWindFactory {
 	 * @return WindClassProxy
 	 */
 	protected function setProxyForClass($proxy, $instance) {
-		if ($proxy === 'false' || $proxy === false)
-			return $instance;
+		if ($proxy === 'false' || $proxy === false) return $instance;
 		$proxy = Wind::import(self::WIND_PROXY);
 		return $this->createInstance($proxy, array($instance));
 	}
