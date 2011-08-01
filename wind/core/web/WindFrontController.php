@@ -31,22 +31,15 @@ class WindFrontController implements IWindFrontController {
 	 * @var WindFactory
 	 */
 	protected $windFactory = null;
+	
+	private $config;
 
 	/**
 	 * @param WindConfig $windConfig
 	 * @param WindFactory $windFactory
 	 */
-	public function __construct($appName, $config = '') {
-		try {
-			$this->request = new WindHttpRequest();
-			$this->response = $this->request->getResponse();
-			$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
-			$this->windFactory = new WindFactory(@include ($configPath));
-			$this->windSystemConfig = new WindSystemConfig($config, $appName, $this->windFactory);
-		} catch (Exception $e) {
-			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
-			throw new WindException('System failed to initialize.' . $e->getMessage());
-		}
+	public function __construct($config = '') {
+		$this->config = $config;
 	}
 
 	/**
@@ -77,10 +70,8 @@ class WindFrontController implements IWindFrontController {
 	 * @return WindFilterChain
 	 */
 	protected function getFilterChain() {
-		if (!($filters = $this->windSystemConfig->getFilters()))
-			return null;
-		if (!($filterChainPath = $this->windSystemConfig->getFilterClass()))
-			return null;
+		if (!($filters = $this->windSystemConfig->getFilters())) return null;
+		if (!($filterChainPath = $this->windSystemConfig->getFilterClass())) return null;
 		return $this->getWindFactory()->createInstance($filterChainPath, array($filters));
 	}
 
@@ -88,8 +79,18 @@ class WindFrontController implements IWindFrontController {
 	 * 预处理Process方法
 	 */
 	protected function beforeProcess() {
-		set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
-		set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
+		try {
+			$this->request = new WindHttpRequest();
+			$this->response = $this->request->getResponse();
+			$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
+			$this->windFactory = new WindFactory(@include ($configPath));
+			$this->windSystemConfig = new WindSystemConfig($this->config, Wind::getAppName(), $this->windFactory);
+			set_error_handler(array(new WindErrorHandler(), 'errorHandle'));
+			set_exception_handler(array(new WindErrorHandler(), 'exceptionHandle'));
+		} catch (Exception $e) {
+			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
+			throw new WindException('System failed to initialize.' . $e->getMessage());
+		}
 	}
 
 	/**
