@@ -9,7 +9,7 @@
  * @package 
  */
 class WindClassProxy implements IWindClassProxy {
-	private $_interceptorChain = 'WIND:core.filter.WindHandlerInterceptorChain';
+	private $_interceptorChain = 'COM:filter.WindHandlerInterceptorChain';
 	protected $_attributes = array();
 	protected $_className = '';
 	protected $_classPath = '';
@@ -128,11 +128,9 @@ class WindClassProxy implements IWindClassProxy {
 	 * @return
 	 */
 	private function _getInterceptorChain($event = '') {
-		$interceptorChain = WindFactory::createInstance($this->_interceptorChain);
+		$chain = Wind::import($this->_interceptorChain);
+		$interceptorChain = WindFactory::createInstance($chain);
 		if ($interceptorChain && $interceptorChain instanceof WindHandlerInterceptorChain) {
-			$interceptorChain->setAttribute($this->_getAttribute());
-			$interceptorChain->setAttribute('instance', $this->_getInstance());
-			$interceptorChain->setAttribute('event', array($this->_getClassName(), $event));
 			return $interceptorChain;
 		} else
 			throw new WindException('unable to create interceptorChain.');
