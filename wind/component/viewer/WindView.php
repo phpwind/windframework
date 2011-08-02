@@ -43,6 +43,13 @@ class WindView extends WindModule {
 	protected $isCache = false;
 	
 	/**
+	 * 缓存策略
+	 *
+	 * @var string
+	 */
+	protected $cacheClass;
+	
+	/**
 	 * 是否对模板变量进行html字符过滤
 	 * 
 	 * @var boolean
@@ -60,6 +67,11 @@ class WindView extends WindModule {
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
+	/**
+	 * 试图缓存
+	 * @var AbstractWindCache
+	 */
+	protected $viewCache = null;
 	/**
 	 * 布局文件
 	 *
@@ -147,6 +159,7 @@ class WindView extends WindModule {
 		$this->setCompileDir($this->getConfig('compile-dir'));
 		$this->setTemplateExt($this->getConfig('template-ext'));
 		$this->setIsCache($this->getConfig('is-cache'));
+		$this->setCacheClass($this->getConfig('cache-class'));
 	}
 
 	/**
@@ -176,7 +189,7 @@ class WindView extends WindModule {
 	public function getTemplateName() {
 		return $this->templateName;
 	}
-
+	
 	/**
 	 * @return boolean
 	 */
@@ -189,6 +202,13 @@ class WindView extends WindModule {
 	 */
 	public function getLayout() {
 		return $this->layout;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCacheClass() {
+		return $this->cacheClass;
 	}
 
 	/**
@@ -223,7 +243,7 @@ class WindView extends WindModule {
 	 * @param boolean $isCache
 	 */
 	public function setIsCache($isCache) {
-		$this->isCache = $isCache;
+		$this->isCache = (strtolower($isCache) == 'true' || $isCache == '1');
 	}
 
 	/**
@@ -231,6 +251,13 @@ class WindView extends WindModule {
 	 */
 	public function setLayout($layout) {
 		$this->layout = $layout;
+	}
+	
+	/**
+	 * @param string $class
+	 */
+	public function setCacheClass($class) {
+		$this->cacheClass = $class;
 	}
 
 	/**
@@ -246,17 +273,35 @@ class WindView extends WindModule {
 	public function setHtmlspecialchars($htmlspecialchars) {
 		$this->htmlspecialchars = $htmlspecialchars;
 	}
+	
+	/**
+	 * @return WindViewerCache
+	 */
+	public function getViewCache() {
+		if ($this->viewCache === null) {
+			$this->_getViewCache();
+		}
+		return $this->viewCache;
+	}
+	
+	/**
+	 * @param AbstractWindCache $viewCache
+	 */
+	public function setViewCache($viewCache) {
+		$this->viewCache = $viewCache;
+	}
 
 	/**
 	 * @return WindViewerResolver
 	 */
 	public function getViewResolver() {
-		if ($this->viewResolver === null) {
-			$this->_getViewResolver();
-			$this->viewResolver->setWindView($this);
-			/*$this->viewResolver->setDelayAttributes(
-				array('windView' => array(WindClassDefinition::REF => COMPONENT_VIEW)));*/
-		}
+		if (null !== $this->viewResolver) return $this->viewResolver;
+		$this->_getViewResolver();
+		$this->viewResolver->setWindView($this);
+		if (!$this->getIsCache()) return $this->viewResolver;
+		$this->viewResolver = new WindClassProxy($this->viewResolver);
+		$listener = Wind::import('COM:viewer.listener.WindViewCacheListener');
+		$this->viewResolver->registerEventListener('windFetch', new $listener($this));
 		return $this->viewResolver;
 	}
 

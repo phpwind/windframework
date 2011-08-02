@@ -18,7 +18,7 @@ class WindViewCacheListener extends WindHandlerInterceptor {
 	 * Enter description here ...
 	 * @param WindView $windView
 	 */
-	function __construct($windView) {
+	public function __construct($windView) {
 		$this->windView = $windView;
 	}
 
@@ -26,15 +26,28 @@ class WindViewCacheListener extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		//print_r($this->windView);
-		//TODO 读缓存
+		$data = $this->windView->getViewCache()->get($this->getKey());
+		$data = !$data ? null : $data;
+		return $data;
+	}
+	
+	/**
+	 * 获得保存的key值
+	 */
+	private function getKey() {
+		$host = Wind::getApp()->getRequest()->getHostInfo();
+		$uri = Wind::getApp()->getRequest()->getRequestUri();
+		return md5($host.$uri . '/' . $this->windView->getTemplateName() . '.' . $this->windView->getTemplateExt());
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		//TODO 写缓存
+		$args = func_get_args();
+		$result = end($args);
+		$cache = $this->windView->getViewCache();
+		$cache->set($this->getKey(), $result);
 	}
 }
 
