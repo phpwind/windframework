@@ -25,7 +25,7 @@ class WindFileCache extends AbstractWindCache {
 	 * 缓存多级目录。最好不要超3层目录
 	 * @var int 
 	 */
-	private $cacheDirectoryLevel = '';
+	private $cacheDirectoryLevel = 0;
 	
 	/**
 	 * 保存操作的路径信息， 存储使用过的key路径
@@ -51,8 +51,8 @@ class WindFileCache extends AbstractWindCache {
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::deleteValue()
 	 */
-	protected function deleteValue($cacheFile) {
-		return WindFile::write($cacheFile, '');
+	protected function deleteValue($key) {
+		return WindFile::write($key, '');
 	}
 
 	/* (non-PHPdoc)
@@ -144,6 +144,7 @@ class WindFileCache extends AbstractWindCache {
 		parent::setConfig($config);
 		$this->setCacheDir($this->getConfig('dir'));
 		$this->setCacheFileSuffix($this->getConfig('suffix', '', 'txt'));
+		$this->setCacheDirectoryLevel($this->getConfig('level', '', 0));
 	}
 
 }

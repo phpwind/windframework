@@ -93,7 +93,7 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	public function set($key, $value, $expires = 0, AbstractWindCacheDependency $denpendency = null) {
 		try {
-			$data = array(self::DATA => $value, self::EXPIRE => $expires, self::STORETIME => time(), self::DEPENDENCY => null, self::DEPENDENCYCLASS => '');
+			$data = array(self::DATA => $value, self::EXPIRE => $expires ? $expires : $this->getExpire(), self::STORETIME => time(), self::DEPENDENCY => null, self::DEPENDENCYCLASS => '');
 			if (null != $denpendency) {
 				$denpendency->injectDependent();
 				$data[self::DEPENDENCY] = serialize($denpendency);
@@ -179,13 +179,12 @@ abstract class AbstractWindCache extends WindModule {
 	protected function hasChanged($key, array $data) {
 		if (isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY]) {
 			$dependency = unserialize($data[self::DEPENDENCY]);
-			if (!$dependency->hasChanged()) return false;
+			if (!$dependency->hasChanged($this)) return false;
 		} elseif (isset($data[self::EXPIRE]) && $data[self::EXPIRE]) {
 			$_overTime = $data[self::EXPIRE] + $data[self::STORETIME];
 			if ($_overTime >= time()) return false;
 		} else
 			return false;
-		
 		$this->delete($key);
 		return true;
 	}
