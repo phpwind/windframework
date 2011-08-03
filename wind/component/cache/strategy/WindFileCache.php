@@ -144,7 +144,7 @@ class WindFileCache extends AbstractWindCache {
 		parent::setConfig($config);
 		$this->setCacheDir($this->getConfig('dir'));
 		$this->setCacheFileSuffix($this->getConfig('suffix', '', 'txt'));
-		$this->setCacheDirectoryLevel($this->getConfig('level', '', 0));
+		$this->setCacheDirectoryLevel($this->getConfig('dir-level', '', 0));
 	}
 
 }
