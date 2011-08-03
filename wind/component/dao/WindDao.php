@@ -30,7 +30,7 @@ class WindDao extends WindModule {
 	 * @var object
 	 */
 	protected $connection = null;
-	private $cacheHandler = null;
+	protected $cacheHandler = null;
 
 	/**
 	 * 获得需要缓存的处理的方法名称数组
@@ -42,10 +42,15 @@ class WindDao extends WindModule {
 	}
 
 	/**
+	 * 根据用户配置决定配置是采用配置链接管理
 	 * @return WindConnection
 	 */
-	public function getConnection() {
-		return $this->_getConnection();
+	public function getConnection($name = '') {
+		 $this->_getConnection();
+		 if ($this->connection instanceof WindConnectionManager) {
+		 	return $this->connection->getConnection($name);
+		 }
+		 return $this->connection;
 	}
 
 	/**

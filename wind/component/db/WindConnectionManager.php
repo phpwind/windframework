@@ -1,6 +1,26 @@
 <?php
 Wind::import("WIND:component.db.WindConnection");
 /**
+ * 配置格式为：
+ * array(
+		'class' => 'COM:db.WindConnectionManager',
+		'db1' => array(
+			'user' => 'xxx',
+			'pwd' => 'xxx',
+			'dsn' => 'mysql:host=localhost;dbname=test',
+			'charset' => 'UTF8',
+			'tablePrefix' => 'xx_', //新旧表前缀替换，前一个替换|之后的前缀
+		),
+		'db2' => array(
+			'user' => 'xxx',
+			'pwd' => 'xxx',
+			'dsn' => 'mysql:host=localhost;dbname=test',
+			'charset' => 'UTF8',
+			'tablePrefix' => 'xx_', //新旧表前缀替换，前一个替换|之后的前缀
+		),
+	),
+ */
+/**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
@@ -14,7 +34,14 @@ class WindConnectionManager extends WindModule {
 	 * @var array
 	 */
 	private $connections = array();
-
+	
+	/**
+	 * 初始化操作，将配置中的class的配置项删除
+	 */
+	public function init() {
+		unset($this->_config['class']);
+	}
+	
 	/**
 	 * 根据链接名称返回链接句柄，name为空则返回随机返回一个俩接句柄
 	 * @param unknown_type $name
@@ -22,17 +49,11 @@ class WindConnectionManager extends WindModule {
 	 */
 	public function getConnection($name = '') {
 		if (isset($this->connections[$name])) return $this->connections[$name];
-		$configs = $this->getConfig();
-		if (!is_array($configs) || empty($configs)) {
-			throw new WindDbException('[component.db.WindConnectionManager.getConnection] empty config.');
-		}
 		$config = array();
 		if ($name !== '') {
-			foreach ($configs as $value) {
-				if ($value['name'] == $name) {
-					$config = $value;
-					break;
-				}
+			$config = $this->getConfig($name);
+			if (!is_array($config) || empty($config)) {
+				throw new WindDbException('[component.db.WindConnectionManager.getConnection] empty config.');
 			}
 		} else {
 			$config = $this->getCurrentConnection();
@@ -46,10 +67,13 @@ class WindConnectionManager extends WindModule {
 	}
 
 	/**
-	 * 返回当前连接句柄的配置信息
+	 * 随机返回当前连接句柄的配置信息
+	 * @return array
 	 */
-	protected function getCurrentConnection() {
+	private function getCurrentConnection() {
 		$configs = $this->getConfig();
-		return count($configs) > 1 ? $configs[rand(0, count($configs) - 1)] : $configs[0];
+		$keys = array_keys($configs);
+		$key = count($keys) > 1 ? $keys[rand(0, count($keys) - 1)] : $keys[0];
+		return $configs[$key];
 	}
 }
