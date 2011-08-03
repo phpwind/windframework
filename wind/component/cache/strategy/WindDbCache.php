@@ -10,16 +10,10 @@ Wind::import('COM:cache.AbstractWindCache');
 class WindDbCache extends AbstractWindCache {
 
 	/**
-	 * 分布式管理
+	 * 链接句柄
 	 * @var AbstractWindDbAdapter 
 	 */
 	private $connection;
-	
-	/**
-	 * 链接配置信息
-	 * @var array
-	 */
-	private $dbConfig;
 
 	/**
 	 * 缓存表
@@ -46,7 +40,7 @@ class WindDbCache extends AbstractWindCache {
 	private $expireField = 'expire';
 	
 	/**
-	 * 缓存表过期时间字段
+	 * 配置文件
 	 * @var string 
 	 */
 	private $dbConfigName = '';
@@ -60,12 +54,6 @@ class WindDbCache extends AbstractWindCache {
 	 * @see AbstractWindCache#setValue()
 	 */
 	protected function setValue($key, $value, $expire = 0) {
-		(mt_rand(100, 1000000) % 100 == 0) && $this->deleteExpiredCache();
-		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` =?' ; 
-		$data = $this->getConnection()->createStatement($sql)->getOne(array($key));
-		if ($data) {
-			return $this->update($key, $value, $expire);
-		}
 		return $this->store($key, $value, $expire);
 	}
 
@@ -120,14 +108,6 @@ class WindDbCache extends AbstractWindCache {
 		return $this->getConnection()->execute('DELETE FROM ' . $this->getTableName());
 	}
 
-	/**
-	 * 删除过期数据
-	 */
-	public function deleteExpiredCache() {
-		$sql = 'DELETE FROM ' . $this->getTableName() . ' WHERE `' . $this->expireField . '`>0 AND `' . $this->expireField . '` <'.time();
-		return $this->getConnection()->execute($sql);
-	}
-
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
@@ -141,28 +121,34 @@ class WindDbCache extends AbstractWindCache {
 	}
 	
 	/**
+	 * 设置链接对象
+	 * @param WindConnection $connection
+	 */
+	public function setConnection($connection) {
+		if ($connection instanceof WindConnection) $this->connection = $connection;
+	}
+	
+	/**
 	 * 返回表名
 	 * @return string
 	 */
 	private function getTableName() {
 		return $this->table;
 	}
-
-	/**
-	 * 析构函数
-	 */
-	public function __destruct() {
-		if (null !== $this->getConnection()) {
-			$this->deleteExpiredCache();
-		}
-	}
 	
 	/**
-	 * 设置链接对象
-	 * @param WindConnection $connection
+	 * 存储数据
+	 * @param string $key
+	 * @param string $value
+	 * @param int $expires
+	 * @param IWindCacheDependency $denpendency
+	 * @return boolean
 	 */
-	public function setConnection($connection) {
-		if ($connection instanceof WindConnection) $this->connection = $connection;
+	private function store($key, $value, $expires = 0) {
+		($expires > 0) ? $expires += time() : $expire=0;
+		$db = array($this->keyField => $key, $this->valueField => $value, $this->expireField => $expires);
+	    $sql = 'REPLACE INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
+		return $this->getConnection()->createStatement($sql)->update();
 	}
 	
 	/**
@@ -181,35 +167,5 @@ class WindDbCache extends AbstractWindCache {
 			$this->connection = $this->getSystemFactory()->getInstance($alias);
 		}
 		return $this->connection;
-	}
-	
-	/**
-	 * 存储数据
-	 * @param string $key
-	 * @param string $value
-	 * @param int $expires
-	 * @param IWindCacheDependency $denpendency
-	 * @return boolean
-	 */
-	private function store($key, $value, $expires = 0) {
-		($expires > 0) ? $expires += time() : $expire=0;
-		$db = array($this->keyField => $key, $this->valueField => $value, $this->expireField => $expires);
-	    $sql = 'INSERT INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
-		return $this->getConnection()->createStatement($sql)->update();
-	}
-
-	/**
-	 * 更新数据
-	 * @param string $key
-	 * @param int $value
-	 * @param int $expires
-	 * @param IWindCacheDependency $denpendency
-	 * @return boolean
-	 */
-	private function update($key, $value, $expires = 0) {
-		($expires > 0) ? $expires += time() : $expire=0;
-		$db = array($this->valueField => $value, $this->expireField => $expires);
-		$sql = "UPDATE " . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db) . ' WHERE `' . $this->keyField . '`=?';
-		return $this->getConnection()->createStatement($sql)->update(array($key), true);
 	}
 }
