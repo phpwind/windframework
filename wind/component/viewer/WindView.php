@@ -54,7 +54,7 @@ class WindView extends WindModule {
 	 * 
 	 * @var boolean
 	 */
-	protected $htmlspecialchars = false;
+	protected $htmlspecialchars = true;
 	/**
 	 * 编译目录
 	 *
