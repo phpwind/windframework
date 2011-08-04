@@ -10,16 +10,13 @@
  * 数据库缓存的配置信息
  */
  return array(
+    'expires' => '0',
+    'key-prefix' => '',
+ 	'security-code' => '',
      /*配置数据缓存表*/
-     'cache-table' => array(
-         'table-name' => array('value' => 'pw_cache'),
-         'field-key' => array('value' => 'name'),
-         'field-value' => array('value' => 'cache'),
-         'field-expire' => array('value' => 'time'),
-         'expirestrage' => array('value' => 'true'),
-     ),
-     /*缓存key是否经过安全处理*/
-     'security' => array('value' => 'true'),
-     /*缓存过期时间*/
-     'expires' => array('value' => '20'),
+ 	'dbconfig-name' => 'test',
+    'table-name' => 'pw_cache',
+    'field-key' => 'key',
+    'field-value' => 'value',
+    'field-expire' => 'expire',
  ); 

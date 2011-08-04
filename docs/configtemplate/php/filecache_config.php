@@ -10,14 +10,12 @@
  * 文件缓存的配置
  */
 return array(
+    'expires' => '0',
+    'key-prefix' => '',
+ 	'security-code' => '',
     /*缓存文件的保存路径（支持命名空间的方式配置该路径）*/
-    'cache-dir' => array('value' => 'WEB:compile'),
-    /*缓存的级别*/
-    'cache-level' => array('value' => '0'),
+    'dir' => 'WIND:_compile',
     /*缓存文件的后缀*/
-    'cache-suffix' => array('value' => 'php'),
-    /*缓存文件的key值是否经过安全处理*/
-    'security' => array('value' => 'true'),
-    /*缓存文件的过期时间*/
-    'expires' => array('value' => '20'),
+    'suffix' => 'php',
+    'dir-level' => '0',
 );

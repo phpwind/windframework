@@ -14,5 +14,4 @@
 	<suffix>php</suffix>
 	<!-- 缓存的目录支持级别 -->
 	<dir-level>0</dir-level>
-	
 </WIND>

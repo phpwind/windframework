@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- memcache配置 -->
-<cache>
+<WIND>
 	<!-- 缓存文件的过期时间 -->
 	<expires>0</expires>
 	<!-- 缓存key的前缀 -->
-	<keyPrefix></keyPrefix>
+	<key-prefix></key-prefix>
 	<!-- 缓存key安全盐码 -->
-	<securityCode></securityCode>
+	<security-code></security-code>
 	
 	<!-- 压缩的级次 -->
-	<compress value='2' />
+	<compress>2</compress>
    <!-- memcache服务器相关配置 可以配置多个-->
 	<servers>
 		<server name='phpwind'>
@@ -35,4 +35,4 @@
 			<port>11212</port>
 		</server>
 	</servers>
-</cache>
+</WIND>
