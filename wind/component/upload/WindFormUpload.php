@@ -25,18 +25,18 @@ class WindFormUpload extends AbstractWindUpload {
 		if (function_exists("move_uploaded_file") && @move_uploaded_file($tmp_name, $filename)) {
 			@unlink($tmp_name);
 			@chmod($filename, 0777);
-			return true;
+			return filesize($filename);
 		} elseif (@copy($tmp_name, $filename)) {
 			@unlink($tmp_name);
 			@chmod($filename, 0777);
-			return true;
+			return filesize($filename);
 		} elseif (is_readable($tmp_name)) {
 			Wind::import('WIND:component.utility.WindFile');
 			WindFile::write($filename, WindFile::read($tmp_name));
 			@unlink($tmp_name);
 			if (file_exists($filename)) {
 				@chmod($filename, 0777);
-				return true;
+				return filesize($filename);
 			}
 		}
 		return false;

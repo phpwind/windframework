@@ -158,7 +158,7 @@ abstract class AbstractWindUpload {
 	 * @return string
 	 */
 	protected function getSavePath($fileName, $saveDir) {
-		return $saveDir ? trim($saveDir, '\\/') . '/' . $fileName : $fileName;
+		return $saveDir ? rtrim($saveDir, '\\/') . '/' . $fileName : $fileName;
 	}
 	
 	/**
