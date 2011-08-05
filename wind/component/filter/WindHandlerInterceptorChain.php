@@ -9,7 +9,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	protected $_interceptors = array();
 	protected $_callBack = null;
 	protected $_args = array();
-	private $_state = true;
+	protected $_state = true;
 
 	/**
 	 * 设置回调方法
@@ -71,6 +71,18 @@ class WindHandlerInterceptorChain extends WindModule {
 			$this->_interceptors += $interceptors;
 		else
 			$this->_interceptors[] = $interceptors;
+	}
+	
+	/**
+	 * 重置初始化信息
+	 * @return boolean
+	 */
+	public function reset() {
+		$this->_interceptors = array();
+		$this->_callBack = null;
+		$this->_args = array();
+		$this->_state = true;
+		return true;
 	}
 }
 ?>
