@@ -100,9 +100,11 @@ abstract class AbstractWindFtp {
 	 */
 	abstract protected function pwd();
 	
-	/*
-	 * (non-PHPdoc)
-	 * @see AbstractWindFtp::mkdir()
+	/**
+	 * 级联创建文件夹
+	 * @param string $dir
+	 * @param string $permissions
+	 * @return boolean
 	 */
 	public function mkdirs($dir, $permissions = 0777) {
 		$dir = explode('/', WindSecurity::escapeDir($dir));
@@ -140,7 +142,9 @@ abstract class AbstractWindFtp {
 		return false;
 	}
 	
-	
+	/**
+	 * 初始化根目录信息
+	 */
 	protected function initRootPath() {
 		$this->rootPath = $this->pwd();
 		if ($this->dir) {
