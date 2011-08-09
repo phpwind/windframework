@@ -35,15 +35,19 @@
 			<action url-param='a' default-value='run' />
 		</config>
 	</component>
-	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
-		scope='singleton'>
-		<properties>
-			<property name='windRouter' ref='urlBasedRouter' />
-		</properties>
+	<component name='urlHelper' path='WIND:core.web.WindUrlHelper' scope='singleton'>
 		<config>
-			<url-pattern value="-/" />
-			<route-suffix value='htm' />
-			<route-param value='r' />
+		    <!-- url格式配置项，mca可以根据需求进行格式组合，比如m/c/a,m/c-a但是组合用到的分割符需根据key-value-sep来使用 -->
+			<url-pattern>m/c-a/*</url-pattern>
+			<!-- url的后缀 -->
+			<suffix>htm</suffix>
+			<!-- 模块变量之间的分隔符 -->
+			<separator>/</separator>
+			<!-- 变量之间的key-value的分隔符，也可以是mca组合的时候使用的分隔符 -->
+			<key-value-sep>-</key-value-sep>
+			<!-- 对于数字下标数组是否添加前缀 -->
+			<key-prefix>myvar_</key-prefix>
+			<is-rewrite>1</is-rewrite>
 		</config>
 	</component>
 
@@ -54,8 +58,8 @@
 			<template-dir>template</template-dir>
 			<template-ext>htm</template-ext>
 			<compile-dir>compile.template</compile-dir>
-			<is-cache>false</is-cache>
-			<cache-class></cache-class>
+			<is-cache>true</is-cache>
+			<cache-class>viewCache</cache-class>
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
@@ -69,7 +73,7 @@
 		</properties>
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
-		sscope='prototype'>
+		scope='prototype'>
 		<config resource='' />
 	</component>
 
@@ -79,12 +83,26 @@
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
-
 	<!-- cache -->
-	<component name='windCache' path="COM:cache.strategy.WindFileCache"></component>
+	<component name='windCache' path="COM:cache.strategy.WindFileCache">
+		<config>
+			<dir>compile</dir>
+			<dbconfig-name>default</dbconfig-name>
+			<!-- 缓存的表名 -->
+			<table-name>cache</table-name>
+			<!-- 缓存的key字段名称 -->
+			<field-key>key</field-key>
+			<!-- 缓存的value字段名称 -->
+			<field-value>value</field-value>
+			<!-- 缓存的过期时间字段名称 -->
+			<field-expire>expire</field-expire>
+		</config>
+	</component>
 	<component name='viewCache' path='COM:cache.strategy.WindFileCache'>
 		<config>
-			<dir>data</dir>
+			<dir>compile.cache</dir>
+			<suffix>php</suffix>
+			<expires>10</expires>
 		</config>
 	</component>
 
