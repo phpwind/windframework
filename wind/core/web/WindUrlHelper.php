@@ -170,7 +170,7 @@ class WindUrlHelper extends WindModule {
 	 */
 	private function doParserUrl($url) {
 		if (is_string($url)) {
-			if (!$url || false === strrpos($url, $this->separator)) return array();
+			if (!$url) return array();
 			$url = explode($this->separator, trim($url, $this->separator));
 		}
 		
