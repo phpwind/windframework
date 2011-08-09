@@ -27,6 +27,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::parse()
 	 */
 	public function parse() {
+		$urlHelper = $this->getSystemFactory()->getInstance(COMPONENT_URLHELPER);
+		$urlHelper->parseUrl();
 		$this->setModule($this->getUrlParamValue(self::URL_RULE_MODULE, $this->getModule()));
 		$this->setController($this->getUrlParamValue(self::URL_RULE_CONTROLLER, $this->getController()));
 		$this->setAction($this->getUrlParamValue(self::URL_RULE_ACTION, $this->getAction()));
@@ -36,9 +38,9 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::buildUrl()
 	 */
 	public function buildUrl() {
-		$module = $this->getUrlParamValue(self::URL_RULE_MODULE);
-		$controller = $this->getUrlParamValue(self::URL_RULE_CONTROLLER);
-		$action = $this->getUrlParamValue(self::URL_RULE_ACTION);
+		$module = $this->getConfig(self::URL_RULE_MODULE, self::URL_PARAM);
+		$controller = $this->getConfig(self::URL_RULE_CONTROLLER, self::URL_PARAM);
+		$action = $this->getConfig(self::URL_RULE_ACTION, self::URL_PARAM);
 		$url = '?' . $module . '=' . $this->getModule();
 		$url .= '&' . $controller . '=' . $this->getController();
 		$url .= '&' . $action . '=' . $this->getAction();
