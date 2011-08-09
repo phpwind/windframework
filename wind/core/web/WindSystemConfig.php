@@ -130,7 +130,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleViewClassByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('view', 'class', $default, $module);
+		return $module ? $this->getConfig('view', 'class', $default, $module) : '';
 	}
 
 	/**
@@ -140,7 +140,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleViewConfigByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('view', 'config', $default, $module);
+		return $module ? $this->getConfig('view', 'config', $default, $module) : '';
 	}
 
 	/**
@@ -151,7 +151,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleErrorHandlerByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('error-handler', '', $default, $module);
+		return $module ? $this->getConfig('error-handler', '', $default, $module) : '';
 	}
 
 	/**
@@ -161,7 +161,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleControllerPathByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('controller-path', '', $default, $module);
+		return $module ? $this->getConfig('controller-path', '', $default, $module) : '';
 	}
 
 	/**
@@ -171,7 +171,7 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleControllerSuffixByModuleName($name, $default = '') {
 		$module = $this->getConfig('modules', $name);
-		return $this->getConfig('controller-suffix', '', $default, $module);
+		return $module ? $this->getConfig('controller-suffix', '', $default, $module) : '';
 	}
 
 	/**
