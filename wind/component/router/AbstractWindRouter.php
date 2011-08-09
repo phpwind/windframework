@@ -63,6 +63,9 @@ abstract class AbstractWindRouter extends WindModule {
 			$this->reParse = false;
 		}
 		$_moduleName = $this->getModule();
+		if (!$this->getSystemConfig()->getModules($_moduleName)) {
+			throw new WindException('[core.roter.AbstractWindRouter.doParse] module error: error module :' . $_moduleName);
+		}
 		if (!strcasecmp($this->getController(), 'windError')) {
 			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
 				Wind::log(
@@ -168,6 +171,16 @@ abstract class AbstractWindRouter extends WindModule {
 	 */
 	public function reParse() {
 		$this->reParse = true;
+	}
+	
+	/*
+	 * (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		$usrConfig = $this->getSystemConfig()->getConfig('router', 'config');
+		$usrConfig && $config = array_merge($config, $usrConfig);
+		parent::setConfig($config);
 	}
 
 }
