@@ -36,7 +36,8 @@ class WindUrlHelper extends WindModule {
 				}
 				$url = rtrim($url, $this->suffix);
 			}
-			$url && $params = $this->doParserUrl(trim($url, '?/'));
+			$url = trim($url, '?/');
+			$url && $params = $this->doParserUrl($url);
 		} else {// 命令行下
 			$i = 0;
 			$args = $this->getRequest()->getServer('argv', array());
