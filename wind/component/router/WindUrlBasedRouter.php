@@ -57,7 +57,8 @@ class WindUrlBasedRouter extends AbstractWindRouter {
 	private function getUrlParamValue($type, $defaultValue = '') {
 		if ($_param = $this->getConfig($type, self::URL_PARAM)) {
 			$_defaultValue = $this->getConfig($type, self::DEFAULT_VALUE, $defaultValue);
-			return $this->getRequest()->getRequest($_param, $defaultValue);
+			$tmp = $this->getRequest()->getRequest($_param, $defaultValue);
+			return !$tmp ? $defaultValue : $tmp;
 		}
 		return $defaultValue;
 	}
