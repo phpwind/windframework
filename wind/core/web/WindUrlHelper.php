@@ -62,8 +62,8 @@ class WindUrlHelper extends WindModule {
 	 * @return string
 	 */
 	public function createUrl($action, $controller, $params = array()) {
-		list($controller, $module) = WindHelper::resolveController($controller);
 		$urlRouter = $this->getSystemFactory()->getInstance(COMPONENT_ROUTER);
+		list($module, $controller, $action) = $this->resolveMvc($urlRouter, $action, $controller);
 		if (!$this->isRewrite()) {
 			$urlRouter->setAction($action);
 			$urlRouter->setController($controller);
@@ -77,6 +77,22 @@ class WindUrlHelper extends WindModule {
 		return $this->buildRewriteUrl($params);
 	}
 	
+	/**
+	 * 解析module, controller, action
+	 * 如果不存在该值，则采用配置的默认值
+	 * 
+	 * @param AbstractWindRouter $urlRouter
+	 * @param string $action
+	 * @param string $controller
+	 * @return array
+	 */
+	private function resolveMvc($urlRouter, $action, $controller) {
+		list($controller, $module) = WindHelper::resolveController($controller);
+		!$module && $module = $urlRouter->getConfig('module', WindUrlBasedRouter::DEFAULT_VALUE);
+		!$controller && $controller = $urlRouter->getConfig('controller', WindUrlBasedRouter::DEFAULT_VALUE);
+		!$action && $action = $urlRouter->getConfig('action', WindUrlBasedRouter::DEFAULT_VALUE);
+		return array($module, $controller, $action);
+	}
 	/**
 	 * 构造重写的url
 	 * @param string $m
@@ -170,11 +186,10 @@ class WindUrlHelper extends WindModule {
 	 * @return array
 	 */
 	private function doParserUrl($url) {
+		if (!$url) return array();
 		if (is_string($url)) {
-			if (!$url) return array();
 			$url = explode($this->separator, trim($url, $this->separator));
 		}
-		
 		$vars = array();
 		foreach ($this->patterns as $key => $value) {
 			if ('*' == $value[0]) $this->parseCommonKey($key, $url, $vars);
@@ -186,7 +201,9 @@ class WindUrlHelper extends WindModule {
 				}
 				$keys = explode($this->keyValueSep, $value);
 				$values = explode($this->keyValueSep, $url[$key]);
-				$vars = array_merge($vars, array_combine($keys, $values));
+				foreach($keys as $pos =>$key) {
+					isset($values[$pos]) && $vars[$key] = $values[$pos];
+				}
 			}
 		}
 		return $vars;
