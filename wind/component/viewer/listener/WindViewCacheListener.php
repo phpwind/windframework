@@ -37,17 +37,15 @@ class WindViewCacheListener extends WindHandlerInterceptor {
 	private function getKey() {
 		$host = Wind::getApp()->getRequest()->getHostInfo();
 		$uri = Wind::getApp()->getRequest()->getRequestUri();
-		return md5($host.$uri . '/' . $this->windView->getTemplateName() . '.' . $this->windView->getTemplateExt());
+		return $host.$uri . '/' . $this->windView->getTemplateName() . '.' . $this->windView->getTemplateExt();
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::postHandle()
 	 */
 	public function postHandle() {
-		$args = func_get_args();
-		$result = end($args);
 		$cache = $this->windView->getViewCache();
-		$cache->set($this->getKey(), $result);
+		$cache->set($this->getKey(), $this->result);
 	}
 }
 
