@@ -99,7 +99,7 @@ abstract class AbstractWindCache extends WindModule {
 				$data[self::DEPENDENCY] = serialize($denpendency);
 				$data[self::DEPENDENCYCLASS] = get_class($denpendency);
 			}
-			return $this->setValue($this->buildSecurityKey($key), serialize($data), $expires);
+			return $this->setValue($this->buildSecurityKey($key), serialize($data), $data[self::EXPIRE]);
 		} catch (Exception $e) {
 			throw new WindCacheException('Setting cache failed.' . $e->getMessage());
 		}
@@ -196,7 +196,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
-		return $this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode();
+		return md5($this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode());
 	}
 
 	/**
