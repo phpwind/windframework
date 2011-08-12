@@ -32,7 +32,7 @@ class WindMemCache extends AbstractWindCache {
 	protected $compress = 0;
 
 	public function __construct() {
-		if (!extension_loaded('Memcache')) {
+		if (!extension_loaded('Memcache')) { 
 			throw new WindCacheException('WindMemCache requires PHP `Memcache` extension to be loaded !');
 		}
 		$this->memcache = new Memcache();
