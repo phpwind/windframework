@@ -157,16 +157,16 @@ abstract class AbstractWindCache extends WindModule {
 	}
 
 	/**
-	 * 格式化输出
+	 * 格式化输出,如果没有数据～则返回false
 	 * 
 	 * @param string $value
-	 * @return array
+	 * @return string|boolean  
 	 */
 	protected function formatData($key, $value) {
 		$data = unserialize($value);
-		if (!is_array($data)) return array();
-		if ($this->hasChanged($key, $data)) return array();
-		return isset($data[self::DATA]) ? $data[self::DATA] : array();
+		if (!is_array($data)) return false;
+		if ($this->hasChanged($key, $data)) return false;
+		return isset($data[self::DATA]) ? $data[self::DATA] : false;
 	}
 
 	/**
