@@ -36,6 +36,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindViewException $viewException) {
 			//TODO
 			$this->sendErrorMessage($viewException->getMessage());
+		} catch (Exception $e) {
+			throw new WindException($e->getMessage());
 		}
 	}
 
