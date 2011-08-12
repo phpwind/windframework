@@ -69,6 +69,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
+		$key = parent::buildSecurityKey($key);
 		if (false !== ($dir = $this->checkCacheDir($key))) return $dir;
 		$_dir = $this->getCacheDir();
 		if (0 < ($level = $this->getCacheDirectoryLevel())) {
@@ -76,7 +77,7 @@ class WindFileCache extends AbstractWindCache {
 			$_dir .= DIRECTORY_SEPARATOR . $_subdir;
 			if (!is_dir($_dir)) mkdir($_dir, 0777, true);
 		}
-		$filename = parent::buildSecurityKey($key) . '.' . $this->getCacheFileSuffix();
+		$filename = $key . '.' . $this->getCacheFileSuffix();
 		$this->cacheFileList[$key] = ($_dir ? $_dir . DIRECTORY_SEPARATOR . $filename : $filename);
 		return $this->cacheFileList[$key];
 	}
