@@ -147,6 +147,7 @@ class WindFrontController implements IWindFrontController {
 		$_tmp .= "<p>$message</p>";
 		$_tmp .= "<pre>$trace</pre>";
 		$this->getResponse()->sendError(500, $_tmp);
+		$this->getResponse()->sendResponse();
 	}
 
 	/**
