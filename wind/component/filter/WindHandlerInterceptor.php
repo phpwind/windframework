@@ -34,7 +34,7 @@ class WindHandlerInterceptor extends WindModule {
 		} else {
 			$this->result = $this->interceptorChain->execute();
 		}
-		call_user_func_array(array($this, 'postHandle'), $args + (array)$this->result);
+		call_user_func_array(array($this, 'postHandle'), $args);
 		return $this->result;
 	}
 
