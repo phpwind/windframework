@@ -1,19 +1,30 @@
 <?php
 Wind::import('COM:cache.AbstractWindCache');
 /**
+ * $server = array(
+ * array(
+ * 'host'=>'localhost',
+ * 'port'=>11211
+ * 'pconn'=>true
+ * ),
+ * array(
+ * 'host'=>'localhost',
+ * 'port'=>11212
+ * 'pconn'=>false
+ * )
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
  * @author xiaoxiao <x_824@sina.com>
  * @version 2011-7-26  xiaoxiao
  */
 class WindMemCache extends AbstractWindCache {
-
+	
 	/**
 	 * memcache缓存操作句柄
 	 * @var WindMemcache 
 	 */
 	protected $memcache = null;
-
+	
 	/**
 	 * 是否对缓存采取压缩存储
 	 * @var int 
@@ -61,51 +72,15 @@ class WindMemCache extends AbstractWindCache {
 	public function setConfig($config) {
 		parent::setConfig($config);
 		$this->compress = $this->getConfig('compress', '', '0');
-		$this->setServers($this->getConfig('servers'));
-	}
-	
-	/**
-	 * 设置配置信息
-	 * 
-	 * @param array $servers
-	 * @example  
-	 * $server = array(
-	 * 	array(
-	 * 		'host'=>'localhost',
-	 * 		'port'=>11211
-	 * 		'pconn'=>true
-	 *  ),
-	 *  array(
-	 * 		'host'=>'localhost',
-	 * 		'port'=>11212
-	 * 		'pconn'=>false
-	 *  )
-	 * @throws WindCacheException
-	 */
-	private function setServers($servers) {
-		foreach ($servers as $server) {
-			if (!is_array($server)) {
-				throw new WindCacheException('The memcache config is incorrect');
-			}
-			$this->setServer($server);
+		$servers = $this->getConfig('servers', '', array());
+		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 'timeout' => 15, 
+			'retry' => 15, 'status' => true, 'fcallback' => null);
+		foreach ((array) $servers as $server) {
+			if (!is_array($server)) throw new WindException('The memcache config is incorrect');
+			if (!isset($server['host'])) throw new WindException('The memcache server ip address is not exist');
+			if (!isset($server['port'])) throw new WindException('The memcache server port is not exist');
+			call_user_func_array(array($this->memcache, 'addServer'), array_merge($defaultServer, $server));
 		}
 	}
 
-	/**
-	 * 设置配置信息
-	 * 
-	 * @throws WindCacheException
-	 */
-	private function setServer($server) {
-		if (!isset($server['host'])) {
-			throw new WindCacheException('The memcache server ip address is not exist');
-		}
-		if (!isset($server['port'])) {
-			throw new WindCacheException('The memcache server port is not exist');
-		}
-		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 
-			'timeout' => 15, 'retry' => 15, 'status' => true, 'fcallback' => null);
-		list($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback) = array_values(array_merge($defaultServer, $server));
-		$this->memcache->addServer($host, $port, $pconn, $weight, $timeout, $retry, $status, $fcallback);
-	}
 }
