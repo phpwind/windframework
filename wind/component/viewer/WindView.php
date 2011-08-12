@@ -42,12 +42,6 @@ class WindView extends WindModule {
 	 */
 	protected $isCache = false;
 	
-	/**
-	 * 缓存策略
-	 *
-	 * @var string
-	 */
-	protected $cacheClass;
 	
 	/**
 	 * 是否对模板变量进行html字符过滤
@@ -159,7 +153,6 @@ class WindView extends WindModule {
 		$this->setCompileDir($this->getConfig('compile-dir'));
 		$this->setTemplateExt($this->getConfig('template-ext'));
 		$this->setIsCache($this->getConfig('is-cache'));
-		$this->setCacheClass($this->getConfig('cache-class'));
 	}
 
 	/**
@@ -205,13 +198,6 @@ class WindView extends WindModule {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getCacheClass() {
-		return $this->cacheClass;
-	}
-
-	/**
 	 * @param string $templateDir
 	 */
 	public function setTemplateDir($templateDir) {
@@ -252,13 +238,6 @@ class WindView extends WindModule {
 	public function setLayout($layout) {
 		$this->layout = $layout;
 	}
-	
-	/**
-	 * @param string $class
-	 */
-	public function setCacheClass($class) {
-		$this->cacheClass = $class;
-	}
 
 	/**
 	 * @return the $htmlspecialchars
@@ -278,10 +257,7 @@ class WindView extends WindModule {
 	 * @return WindViewerCache
 	 */
 	public function getViewCache() {
-		if ($this->viewCache === null) {
-			$this->_getViewCache();
-		}
-		return $this->viewCache;
+		return $this->_getViewCache();;
 	}
 	
 	/**
