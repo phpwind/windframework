@@ -3,7 +3,7 @@ Wind::import('COM:viewer.AbstractWindTemplateCompiler');
 /**
  * 职责：编译模板page标签
  * 支持参数类型：
- * 
+ * <page tpl='' current='' total='' per='' url='read.php?tid=$tid&page=' />
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -66,7 +66,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		return '';
 	}
 
-	/* <page tpl='' current='' total='' per='' url='read.php?tid=$tid&page=' />
+	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */
 	public function getProperties() {
