@@ -33,7 +33,9 @@ class WindFactory implements IWindFactory {
 	 * @param string $configFile
 	 */
 	public function __construct($classDefinitions = array()) {
-		$this->classDefinitions = $classDefinitions;
+		if (is_array($classDefinitions)) {
+			$this->classDefinitions = $classDefinitions;
+		}
 	}
 
 	/* (non-PHPdoc)
@@ -43,12 +45,12 @@ class WindFactory implements IWindFactory {
 		if (isset($this->instances[$alias])) return $this->instances[$alias];
 		if (!($definition = $this->checkAlias($alias))) return null;
 		$this->buildDefinition($definition);
-		$_subDefinitions = $definition['constructorArg'];
-		foreach ($_subDefinitions as $_subDefinition) {
-			if (isset($_subDefinition['value'])) {
-				$args[] = $_subDefinition['value'];
-			} elseif (isset($_subDefinition['ref']))
-				$args[] = $this->getInstance($_subDefinition['ref']);
+		$_constructorArgs = $definition['constructorArgs'];
+		foreach ($_constructorArgs as $_var) {
+			if (isset($_var['value'])) {
+				$args[] = $_var['value'];
+			} elseif (isset($_var['ref']))
+				$args[] = $this->getInstance($_var['ref']);
 		}
 		$config = $this->buildConfig($definition, $alias);
 		$instance = $this->createInstance($definition['className'], $args);
@@ -67,11 +69,14 @@ class WindFactory implements IWindFactory {
 	static public function createInstance($className, $args = array()) {
 		try {
 			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-				Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, 
-					WindLogger::LEVEL_DEBUG, 'core.factory');
+				Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, WindLogger::LEVEL_DEBUG, 'core.factory');
 			}
-			$reflection = new ReflectionClass($className);
-			return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
+			if (empty($args))
+				return new $className();
+			else {
+				$reflection = new ReflectionClass($className);
+				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
+			}
 		} catch (Exception $e) {
 			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
 		}
@@ -160,9 +165,7 @@ class WindFactory implements IWindFactory {
 		try {
 			return call_user_func_array(array($instance, $initMethod), array());
 		} catch (Exception $e) {
-			throw new WindException(
-				'[core.factory.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
-				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+			throw new WindException('[core.factory.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		}
 	}
 
@@ -187,13 +190,16 @@ class WindFactory implements IWindFactory {
 	 */
 	protected function buildProperties($properties, $instance) {
 		if (isset($properties['delay']) && ($properties['delay'] === 'false' || $properties['delay'] === false)) {
-			unset($properties['delay']);
 			foreach ($properties as $key => $subDefinition) {
 				$_value = '';
 				if (isset($subDefinition['value']))
 					$_value = $subDefinition['value'];
 				elseif (isset($subDefinition['ref']))
 					$_value = $this->getInstance($subDefinition['ref']);
+				elseif (isset($subDefinition['path'])) {
+					$_className = Wind::import($subDefinition['path']);
+					$_value = $this->createInstance($_className);
+				}
 				if ($_value) {
 					$_setter = 'set' . ucfirst(trim($key, '_'));
 					call_user_func_array(array($instance, $_setter), array($_value));
@@ -210,7 +216,8 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	private function buildDefinition(&$definition) {
-		$_definition = array('path' => '', 'className' => '', 'factoryMethod' => '', 'initMethod' => '', 'scope' => 'application', 'proxy' => false, 'properties' => array(), 'config' => array(), 'constructorArg' => array());
+		$_definition = array('path' => '', 'className' => '', 'factoryMethod' => '', 'initMethod' => '', 
+			'scope' => 'application', 'proxy' => false, 'properties' => array(), 'config' => array(), 'constructorArgs' => array());
 		$definition = array_merge($_definition, $definition);
 		$definition['className'] = Wind::import($definition['path']);
 	}
