@@ -58,8 +58,7 @@
 			<template-dir>template</template-dir>
 			<template-ext>htm</template-ext>
 			<compile-dir>compile.template</compile-dir>
-			<is-cache>true</is-cache>
-			<cache-class>viewCache</cache-class>
+			<is-cache>0</is-cache>
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
