@@ -391,7 +391,7 @@ define('COMPONENT_WEBAPP', 'windWebApp');
 define('COMPONENT_ERRORHANDLER', 'errorHandler');
 define('COMPONENT_LOGGER', 'windLogger');
 define('COMPONENT_FORWARD', 'forward');
-define('COMPONENT_ROUTER', 'urlBasedRouter');
+define('COMPONENT_ROUTER', 'urlRewriteRouter');
 define('COMPONENT_URLHELPER', 'urlHelper');
 define('COMPONENT_VIEW', 'windView');
 define('COMPONENT_VIEWRESOLVER', 'viewResolver');
