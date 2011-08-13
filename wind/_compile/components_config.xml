@@ -35,8 +35,12 @@
 			<action url-param='a' default-value='run' />
 		</config>
 	</component>
-	<component name='urlHelper' path='WIND:core.web.WindUrlHelper' scope='singleton'>
+	
+	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter' scope='singleton'>
 		<config>
+			<module url-param='m' default-value='default' />
+			<controller url-param='c' default-value='index' />
+			<action url-param='a' default-value='run' />
 		    <!-- url格式配置项，mca可以根据需求进行格式组合，比如m/c/a,m/c-a但是组合用到的分割符需根据key-value-sep来使用 -->
 			<url-pattern>m/c-a/*</url-pattern>
 			<!-- url的后缀 -->
@@ -50,7 +54,9 @@
 			<is-rewrite>1</is-rewrite>
 		</config>
 	</component>
-
+	<component name='urlHelper' path='WIND:core.web.WindUrlHelper' scope='singleton'>
+	</component>
+	
 	<!-- windView -->
 	<component name='windView' init-method='init' path='COM:viewer.WindView'
 		scope='prototype'>
@@ -65,11 +71,7 @@
 			<property name='viewCache' ref='viewCache' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
-		scope='prototype'>
-		<properties>
-			<property name='urlHelper' ref='urlHelper' />
-		</properties>
+	<component name='viewResolver' path='COM:viewer.WindViewerResolver' scope='prototype'>
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
