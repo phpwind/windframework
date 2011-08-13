@@ -541,8 +541,7 @@ class WindHttpRequest implements IWindRequest {
 			$this->_requestUri = $requestUri;
 		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
 			$this->_requestUri = $requestUri;
-			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace(
-				'/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
 			$this->_requestUri = $requestUri;
 			if (($query = $this->getServer('QUERY_STRING')) != null) $this->_requestUri .= '?' . $query;
@@ -561,8 +560,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return
 	 */
 	private function _initScriptUrl() {
-		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(
-			__CLASS__ . ' determine the entry script URL failed!!!');
+		if (($scriptName = $this->getServer('SCRIPT_FILENAME')) == null) throw new WindException(__CLASS__ . ' determine the entry script URL failed!!!');
 		$scriptName = basename($scriptName);
 		if (($_scriptName = $this->getServer('SCRIPT_NAME')) != null && basename($_scriptName) === $scriptName) {
 			$this->_scriptUrl = $_scriptName;
@@ -572,8 +570,7 @@ class WindHttpRequest implements IWindRequest {
 			$this->_scriptUrl = $_scriptName;
 		} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
 			$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
-		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer(
-			'SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
+		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
 			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
 		} else
 			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
@@ -619,8 +616,8 @@ class WindHttpRequest implements IWindRequest {
 		elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0)
 			$pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
 		else
-			throw new WindException('');
-		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, 0, $pos);
+			throw new WindException(__CLASS__ . ' determine the entry path info failed!!');
+		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, $pos + 1);
 		$this->_pathInfo = trim($pathInfo, '/');
 	}
 }
