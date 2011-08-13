@@ -478,7 +478,7 @@ class WindHttpResponse implements IWindResponse {
 	/**
 	 * @return array
 	 */
-	public function getData($key1 = '', $key2 = '', $encode = false) {
+	public function getData($key1 = '', $key2 = '') {
 		if (!$key1) return $this->_data;
 		if (!$key2) return isset($this->_data[$key1]) ? $this->_data[$key1] : '';
 		return isset($this->_data[$key1]) ? (isset($this->_data[$key1][$key2]) ? $this->_data[$key1][$key2] : '') : '';
