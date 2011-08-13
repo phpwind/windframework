@@ -6,18 +6,27 @@
  * @package 
  * tags
  */
-class WindCurlUpload extends AbstractWindUpload{
-	
+class WindCurlUpload extends AbstractWindUpload {
+
 	public function upload($newName, $path) {
-		
+
 	}
-	
+
 	public function hasError() {
-		
+
 	}
-	
+
 	public function getErrorInfo($type = '') {
-		
+
 	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindUpload::postUpload()
+	 */
+	protected function postUpload($tmp_name, $filename) {
+		// TODO Auto-generated method stub
 	
+
+	}
+
 }
