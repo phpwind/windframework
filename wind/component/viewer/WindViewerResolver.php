@@ -18,11 +18,6 @@ Wind::import('COM:viewer.exception.WindViewException');
  */
 class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	/**
-	 * @var WindUrlHelper
-	 */
-	protected $urlHelper = null;
-	
-	/**
 	 * @var WindView
 	 */
 	protected $windView = null;
@@ -71,7 +66,7 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
-		$compileFile = $this->getWindView()->getCompileFile($template, 'tpl');
+		$compileFile = $this->getWindView()->getCompileFile($template, 'php');
 		
 		/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = $this->getSystemFactory()->getInstance(COMPONENT_TEMPLATE);
