@@ -8,26 +8,28 @@
  */
 class WindSystemConfig extends WindModule {
 	private $appName = '';
+	private $modules = array();
 
 	/**
 	 * @param string $config
 	 * @param string $appName
 	 * @param WindFactory $factory
 	 */
-	public function __construct($config, $appName, $factory) {
+	public function __construct($config, $appName) {
 		$this->appName = $appName;
-		$this->setConfig($config, $factory);
+		$this->setConfig($config);
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
-	public function setConfig($config, $factory = null) {
+	public function setConfig($config) {
+		if (empty($config)) return;
 		if (is_string($config)) {
-			$config = $this->parseConfig($config, 'config', '', $factory);
+			$config = $this->parseConfig($config, 'config', '');
 			if (isset($config[$this->appName])) $this->_config = $config[$this->appName];
 		} else
-			$this->_config = (array) $config;
+			$this->_config = $this->_config ? array_merge($this->_config, $config) : (array) $config;
 	}
 
 	/**
@@ -80,14 +82,6 @@ class WindSystemConfig extends WindModule {
 	}
 
 	/**
-	 * 返回当前路由的配置信息
-	 * @return array
-	 */
-	public function getRouterConfig() {
-		return $this->getConfig('router', 'config');
-	}
-
-	/**
 	 * 返回路由类型定义
 	 * @return string
 	 */
@@ -120,7 +114,37 @@ class WindSystemConfig extends WindModule {
 	 * @return array|string
 	 */
 	public function getModules($name = '') {
-		return $this->getConfig('modules', $name);
+		if ($name === '') return $this->modules + $this->getConfig('modules', '', array());
+		return isset($this->modules[$name]) ? $this->modules[$name] : $this->getConfig('modules', $name, array());
+	}
+
+	/**
+	 * 添加module
+	 * <controller-path>controller</controller-path>
+	 * <!-- 指定该模块下的controller的后缀格式 -->
+	 * <controller-suffix>Controller</controller-suffix>
+	 * <!-- 配置该模块的error处理的action controller类 -->
+	 * <error-handler>WIND:core.web.WindErrorHandler</error-handler>
+	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
+	 * <view class='windView'>
+	 * <!-- 可以在这里进行view的配置，该配置只会影响该module下的view行为，该配置可以设置也可以不设置 -->
+	 * <config>
+	 * <!-- 指定模板路径 -->
+	 * <template-dir>template</template-dir>
+	 * <!-- 指定模板后缀 -->
+	 * <template-ext>htm</template-ext>
+	 * <!-- 模板编译文件存放路径 -->
+	 * <compile-dir>data.template</compile-dir>
+	 * </config>
+	 * </view>
+	 * 
+	 * @param string $name
+	 * @param array $config
+	 */
+	public function setModules($name, $config) {
+		if (empty($config)) return;
+		if (isset($this->modules[$name]) || $this->getConfig('modules', $name)) throw new WindException('[core.web.WindSystemConfig] module name already exist.');
+		$this->modules[$name] = array_merge($this->getDefaultConfigStruct('modules'), $config);
 	}
 
 	/**
@@ -128,9 +152,8 @@ class WindSystemConfig extends WindModule {
 	 * @param string $name
 	 * @param string $default
 	 */
-	public function getModuleViewClassByModuleName($name, $default = '') {
-		$module = $this->getConfig('modules', $name);
-		return $module ? $this->getConfig('view', 'class', $default, $module) : '';
+	public function getModuleViewClass($name, $default = '') {
+		return $this->getConfig('view', 'class', $default, $this->getModules($name));
 	}
 
 	/**
@@ -138,9 +161,8 @@ class WindSystemConfig extends WindModule {
 	 * @param string $name
 	 * @param string $default
 	 */
-	public function getModuleViewConfigByModuleName($name, $default = '') {
-		$module = $this->getConfig('modules', $name);
-		return $module ? $this->getConfig('view', 'config', $default, $module) : '';
+	public function getModuleViewConfig($name, $default = '') {
+		return $this->getConfig('view', 'config', $default, $this->getModules($name));
 	}
 
 	/**
@@ -149,9 +171,8 @@ class WindSystemConfig extends WindModule {
 	 * @param string $default
 	 * @return string
 	 */
-	public function getModuleErrorHandlerByModuleName($name, $default = '') {
-		$module = $this->getConfig('modules', $name);
-		return $module ? $this->getConfig('error-handler', '', $default, $module) : '';
+	public function getModuleErrorHandler($name, $default = '') {
+		return $this->getConfig('errorhandler', '', $default, $this->getModules($name));
 	}
 
 	/**
@@ -159,9 +180,8 @@ class WindSystemConfig extends WindModule {
 	 * @param string $name
 	 * @return string
 	 */
-	public function getModuleControllerPathByModuleName($name, $default = '') {
-		$module = $this->getConfig('modules', $name);
-		return $module ? $this->getConfig('controller-path', '', $default, $module) : '';
+	public function getModuleControllerPath($name, $default = '') {
+		return $this->getConfig('controller-path', '', $default, $this->getModules($name));
 	}
 
 	/**
@@ -169,9 +189,8 @@ class WindSystemConfig extends WindModule {
 	 * @param string $name
 	 * @return string
 	 */
-	public function getModuleControllerSuffixByModuleName($name, $default = '') {
-		$module = $this->getConfig('modules', $name);
-		return $module ? $this->getConfig('controller-suffix', '', $default, $module) : '';
+	public function getModuleControllerSuffix($name, $default = '') {
+		return $this->getConfig('controller-suffix', '', $default, $this->getModules($name));
 	}
 
 	/**
@@ -196,15 +215,25 @@ class WindSystemConfig extends WindModule {
 	 * @param string|boolean $append
 	 * @param factory
 	 */
-	private function parseConfig($config, $key = 'config', $append = true, $factory = null) {
+	private function parseConfig($config, $key = 'config', $append = true) {
 		if (!$config) return array();
-		
-		if ($factory === null) $factory = $this->getSystemFactory();
+		$factory = $this->getSystemFactory();
 		$configParser = $factory->getInstance(COMPONENT_CONFIGPARSER);
 		$append === true && $append = $this->appName . '_config';
-		$config = $configParser->parse($config, $this->appName . '_' . $key, $append, 
-			$factory->getInstance(COMPONENT_CACHE));
+		$config = $configParser->parse($config, $this->appName . '_' . $key, $append, $factory->getInstance(COMPONENT_CACHE));
 		return $config;
 	}
 
+	/**
+	 * 返回对应的配置结构及默认值
+	 * @param string $configName
+	 * @throws WindException
+	 * @return string
+	 */
+	public function getDefaultConfigStruct($configName) {
+		$_tmp = array();
+		$_tmp['modules'] = array('controller-path' => 'controller', 'controller-suffix' => 'Controller', 
+			'error-handler' => 'WIND:core.web.WindErrorHandler', 'view' => array('class' => COMPONENT_VIEW));
+		return $configName ? (isset($_tmp[$configName]) ? $_tmp[$configName] : array()) : array();
+	}
 }
