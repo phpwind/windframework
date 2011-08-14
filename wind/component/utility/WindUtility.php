@@ -10,13 +10,32 @@
 class WindUtility {
 
 	/**
+	 * 递归合并两个数组
+	 * 
+	 * @param array $array1
+	 * @param array $array2
+	 * @return array
+	 */
+	public static function mergeArray($array1, $array2) {
+		foreach ($array2 as $key => $value) {
+			if (!isset($array1[$key]) || !is_array($array1[$key])) {
+				$array1[$key] = $value;
+				continue;
+			}
+			$array1[$key] = self::mergeArray($array1[$key], $array2[$key]);
+		}
+		return $array1;
+	}
+
+	/**
 	 * 将字符串首字母小写
 	 * 
 	 * @param string $str
 	 * @return string
 	 */
 	public static function lcfirst($str) {
-		if (function_exists('lcfirst')) return lcfirst($str);
+		if (function_exists('lcfirst'))
+			return lcfirst($str);
 		
 		$str[0] = strtolower($str[0]);
 		return $str;
@@ -54,8 +73,8 @@ class WindUtility {
 	 * @return array
 	 */
 	public static function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
-		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
-			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
+		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 
+			'default' => $default, 'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
 
 }
