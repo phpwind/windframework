@@ -6,6 +6,7 @@ define('PHPVERSION', '5.1.2');
 define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
+
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
 !defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
@@ -39,8 +40,18 @@ class Wind {
 	public static function run($appName = 'default', $config = '', $rootPath = '') {
 		self::beforRun($appName, $config, $rootPath);
 		if (!isset(self::$_app[$appName])) {
-			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, true);
-			self::$_app[$appName] = new WindFrontController($config);
+			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, 
+				true);
+			$factory = new WindFactory(@include (self::getRealPath('WIND:components_config')));
+			$config = new WindSystemConfig($config, Wind::getAppName(), $factory);
+			$factory->loadClassDefinitions($config->getComponents());
+			$application = $factory->getInstance($config->getAppClass('windWebApp'), 
+				array($config, $factory));
+			if ($application === null) {
+				throw new WindException('[wind.run] ' . $config->getAppClass('windWebApp'), 
+					WindException::ERROR_CLASS_NOT_EXIST);
+			}
+			self::$_app[$appName] = $application;
 		}
 		self::getApp()->run();
 		self::afterRun($appName, $config, $rootPath);
@@ -61,7 +72,8 @@ class Wind {
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (empty(self::$_currentApp)) throw new WindException('Get appName failed.', WindException::ERROR_SYSTEM_ERROR);
+		if (empty(self::$_currentApp)) throw new WindException('Get appName failed.', 
+			WindException::ERROR_SYSTEM_ERROR);
 		return end(self::$_currentApp);
 	}
 
@@ -109,7 +121,8 @@ class Wind {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealDir($filePath);
-			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
+			if (!$dh = opendir($dirPath)) throw new Exception(
+				'the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dirPath . D_S . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
@@ -151,13 +164,25 @@ class Wind {
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
 				self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(
+					self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
-			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
+			if (set_include_path(
+				'.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
 				throw new Exception('set include path error.');
 			}
 		}
+	}
+
+	/**
+	 * 返回命名空间的路径信息
+	 * @param string $namespace
+	 * @return string|Ambigous <string, multitype:>
+	 */
+	public static function getRootPath($namespace) {
+		$namespace = strtolower($namespace);
+		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
 
 	/**
@@ -183,16 +208,6 @@ class Wind {
 	 */
 	public static function getImports($key = '') {
 		return $key ? self::$_imports[$key] : self::$_imports;
-	}
-
-	/**
-	 * 返回命名空间的路径信息
-	 * @param string $namespace
-	 * @return string|Ambigous <string, multitype:>
-	 */
-	public static function getRootPath($namespace) {
-		$namespace = strtolower($namespace);
-		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
 
 	/**
@@ -301,20 +316,69 @@ class Wind {
 	}
 
 	/**
-	 * 重置当前应用
-	 * 
-	 * @return
+	 * 错误处理句柄
+	 * @param string $errno
+	 * @param string $errstr
+	 * @param string $errfile
+	 * @param string $errline
 	 */
-	protected static function resetApp() {
-		array_pop(self::$_currentApp);
+	public static function errorHandle($errno, $errstr, $errfile, $errline) {
+		if ($errno & error_reporting()) {
+			restore_error_handler();
+			restore_exception_handler();
+			$message = $trace = '';
+			if (IS_DEBUG) {
+				$message = $errstr . '(' . $errfile . ' : ' . $errline . ')';
+				$_trace = debug_backtrace();
+				foreach ($_trace as $key => $value) {
+					if (!isset($value['file']) || !isset($value['line']) || !isset(
+						$value['function'])) continue;
+					$trace .= "#$key {$value['file']}({$value['line']}): ";
+					if (isset($value['object']) && is_object($value['object'])) $trace .= get_class(
+						$value['object']) . '->';
+					$trace .= "{$value['function']}()\r\n";
+				}
+			}
+			self::displayMessage($errstr, $message, $trace);
+		}
+	}
+
+	/**
+	 * 异常处理句柄
+	 * @param Exception $exception
+	 */
+	public static function exceptionHandle($exception) {
+		restore_error_handler();
+		restore_exception_handler();
+		$header = $message = $trace = '';
+		$header = $exception->getMessage();
+		if (IS_DEBUG) {
+			$message = $exception->getMessage() . '(' . $exception->getFile() . ' : ' . $exception->getLine() . ')';
+			$trace = $exception->getTraceAsString();
+		}
+		self::displayMessage($header, $message, $trace);
+	}
+
+	/**
+	 * @param string $header
+	 * @param string $message
+	 * @param string $trace
+	 */
+	protected static function displayMessage($header, $message = '', $trace = '') {
+		$_tmp = "<h4>$header</h4>";
+		$_tmp .= "<p>$message</p>";
+		$_tmp .= "<pre>$trace</pre>";
+		echo $_tmp;
 	}
 
 	/**
 	 * @return
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
-		if (!$appName || in_array($appName, self::$_currentApp)) throw new WindException('Nested request', 
-			WindException::ERROR_SYSTEM_ERROR);
+		set_error_handler('Wind::errorHandle');
+		set_exception_handler('Wind::exceptionHandle');
+		if (!$appName || in_array($appName, self::$_currentApp)) throw new WindException(
+			'Nested request', WindException::ERROR_SYSTEM_ERROR);
 		array_push(self::$_currentApp, $appName);
 	}
 
@@ -322,8 +386,10 @@ class Wind {
 	 * @return
 	 */
 	protected static function afterRun($appName, $config, $rootPath) {
-		self::resetApp();
+		array_pop(self::$_currentApp);
 		if (self::$_logger) self::$_logger->flush();
+		restore_error_handler();
+		restore_exception_handler();
 	}
 
 	/**
@@ -341,10 +407,10 @@ class Wind {
 	 */
 	private static function _checkEnvironment() {
 		if (version_compare(PHP_VERSION, PHPVERSION) === -1) {
-			throw new Exception('[wind._checkEnvironment] php version is lower, php ' . PHPVERSION . ' or later.', 
+			throw new Exception(
+				'[wind._checkEnvironment] current php version is lower, php ' . PHPVERSION . ' or later.', 
 				E_WARNING);
 		}
-		if (!defined('COMPILE_PATH')) throw new Exception('compile path undefined.');
 		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 	}
 
@@ -381,7 +447,7 @@ class Wind {
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		self::$_classes = array('WindLogger' => 'log/WindLogger', 'WindActionException' => 'core/exception/WindActionException', 'WindException' => 'core/exception/WindException', 'WindFinalException' => 'core/exception/WindFinalException', 'IWindFactory' => 'core/factory/IWindFactory', 'IWindClassProxy' => 'core/factory/proxy/IWindClassProxy', 'WindClassProxy' => 'core/factory/proxy/WindClassProxy', 'WindFactory' => 'core/factory/WindFactory', 'IWindApplication' => 'core/IWindApplication', 'IWindController' => 'core/IWindController', 'IWindErrorMessage' => 'core/IWindErrorMessage', 'IWindFrontController' => 'core/IWindFrontController', 'WindUrlFilter' => 'core/web/filter/WindUrlFilter', 'WindFormListener' => 'core/web/listener/WindFormListener', 'WindLoggerListener' => 'core/web/listener/WindLoggerListener', 'WindValidateListener' => 'core/web/listener/WindValidateListener', 'WindController' => 'core/web/WindController', 'WindDispatcher' => 'core/web/WindDispatcher', 'WindErrorHandler' => 'core/web/WindErrorHandler', 'WindErrorMessage' => 'core/web/WindErrorMessage', 'WindForward' => 'core/web/WindForward', 'WindFrontController' => 'core/web/WindFrontController', 'WindHelper' => 'core/web/WindHelper', 'WindSimpleController' => 'core/web/WindSimpleController', 'WindSystemConfig' => 'core/web/WindSystemConfig', 'WindUrlHelper' => 'core/web/WindUrlHelper', 'WindWebApplication' => 'core/web/WindWebApplication', 'WindEnableValidateModule' => 'core/WindEnableValidateModule', 'WindModule' => 'core/WindModule', 'WindFilter' => 'filter/WindFilter', 'WindFilterChain' => 'filter/WindFilterChain', 'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 'WindConfigParser' => 'parser/WindConfigParser', 'IWindRequest' => 'http/request/IWindRequest', 'WindHttpRequest' => 'http/request/WindHttpRequest', 'IWindResponse' => 'http/response/IWindResponse', 'WindHttpResponse' => 'http/response/WindHttpResponse', 'AbstractWindRouter' => 'router/AbstractWindRouter', 'WindUrlBasedRouter' => 'router/WindUrlBasedRouter');
+		self::$_classes = array();
 	}
 }
 Wind::init();
@@ -391,7 +457,7 @@ define('COMPONENT_WEBAPP', 'windWebApp');
 define('COMPONENT_ERRORHANDLER', 'errorHandler');
 define('COMPONENT_LOGGER', 'windLogger');
 define('COMPONENT_FORWARD', 'forward');
-define('COMPONENT_ROUTER', 'urlRewriteRouter');
+define('COMPONENT_ROUTER', 'urlBasedRouter');
 define('COMPONENT_URLHELPER', 'urlHelper');
 define('COMPONENT_VIEW', 'windView');
 define('COMPONENT_VIEWRESOLVER', 'viewResolver');
