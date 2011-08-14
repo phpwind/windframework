@@ -7,6 +7,22 @@
  */
 class WindWebApplication extends WindModule implements IWindApplication {
 	/**
+	 * @var WindHttpRequest
+	 */
+	private $request;
+	/**
+	 * @var WindHttpResponse
+	 */
+	private $response;
+	/**
+	 * @var WindSystemConfig
+	 */
+	protected $windSystemConfig = null;
+	/**
+	 * @var WindFactory
+	 */
+	protected $windFactory = null;
+	/**
 	 * @var WindDispatcher
 	 */
 	protected $dispatcher = null;
@@ -15,30 +31,30 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	protected $handlerAdapter = null;
 
-	/* (non-PHPdoc)
-	 * @see IWindApplication::processRequest()
+	/**
+	 * @param WindSystemConfig $config
+	 * @param WindFactory $factory
 	 */
-	public function processRequest() {
-		try {
-			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-				Wind::log('[core.web.WindWebApplication.processRequest]', WindLogger::LEVEL_DEBUG, 'wind.core');
-			}
-			$handler = $this->getHandler();
-			call_user_func_array(array($handler, 'preAction'), array($this->handlerAdapter));
-			$forward = call_user_func_array(array($handler, 'doAction'), array($this->handlerAdapter));
-			call_user_func_array(array($handler, 'postAction'), array($this->handlerAdapter));
-			$this->doDispatch($forward);
-		} catch (WindActionException $actionException) {
-			$this->sendErrorMessage($actionException);
-		} catch (WindDbException $dbException) {
-			//TODO
-			$this->sendErrorMessage($dbException->getMessage());
-		} catch (WindViewException $viewException) {
-			//TODO
-			$this->sendErrorMessage($viewException->getMessage());
-		} catch (Exception $e) {
-			throw new WindException($e->getMessage());
-		}
+	public function __construct($config, $factory) {
+		$this->windSystemConfig = $config;
+		$this->windFactory = $factory;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindApplication::run()
+	 */
+	public function run() {
+		ob_start();
+		$this->request = new WindHttpRequest();
+		$this->response = new WindHttpResponse();
+		$this->_getHandlerAdapter()->route();
+		if (null !== ($filterChain = $this->getFilterChain())) {
+			$filterChain->setCallBack(array($this, 'processRequest'));
+			$filterChain->getHandler()->handle($this->request, $this->response);
+		} else
+			$this->processRequest();
+		ob_end_flush();
+		$this->response->sendResponse();
 	}
 
 	/* (non-PHPdoc)
@@ -50,28 +66,49 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				WindLogger::LEVEL_DEBUG, 'wind.core');
 			return;
 		}
-		$this->getDispatcher()->dispatch($this, $forward, $this->handlerAdapter);
+		$this->_getDispatcher()->dispatch($this, $forward, $this->handlerAdapter);
 	}
 
 	/**
-	 * 获得Action处理句柄
-	 * 
-	 * @param WindHttpRequest $request
+	 * @return
 	 */
-	protected function getHandler() {
-		$handler = $this->getHandlerAdapter()->doParse();
-		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-			Wind::log('[core.web.WindWebApplication.getHandler] router result:' . $handler, WindLogger::LEVEL_DEBUG, 
-				'wind.core');
+	protected function processRequest() {
+		try {
+			$moduleName = $this->handlerAdapter->getModule();
+			if (!$moduleName)
+				$moduleName = 'default';
+			if ($moduleName === 'default' && !$this->windSystemConfig->getModules($moduleName))
+				$this->windSystemConfig->setModules($moduleName);
+			$handlerPath = $this->windSystemConfig->getModuleControllerPath($moduleName) . '.' . ucfirst(
+				$this->handlerAdapter->getController()) . $this->windSystemConfig->getModuleControllerSuffix(
+				$moduleName);
+			$handlerPath = trim($handlerPath, '.');
+			if (!$handlerPath)
+				throw new WindFinalException(
+					'[core.web.WindWebApplication.processRequest] handler path \'' . $handlerPath . '\' is not exist.');
+			
+			if (strpos($handlerPath, ':') === false)
+				$handlerPath = Wind::getAppName() . ':' . $handlerPath;
+			if (!$this->getSystemFactory()->checkAlias($handlerPath)) {
+				$this->getSystemFactory()->addClassDefinitions($handlerPath, 
+					array('path' => $handlerPath, 'scope' => 'singleton', 'proxy' => true, 
+						'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
+							'forward' => array('ref' => 'forward'), 
+							'urlHelper' => array('ref' => 'urlHelper'))));
+			}
+			$handler = $this->windFactory->getInstance($handlerPath);
+			if ($handler === null)
+				throw new WindFinalException(
+					'[core.web.WindWebApplication.processRequest] action handler \'' . $handlerPath . '\' is not exist.');
+			call_user_func_array(array($handler, 'preAction'), array($this->handlerAdapter));
+			$forward = call_user_func_array(array($handler, 'doAction'), 
+				array($this->handlerAdapter));
+			call_user_func_array(array($handler, 'postAction'), array($this->handlerAdapter));
+			
+			$this->doDispatch($forward);
+		} catch (WindActionException $actionException) {
+			$this->sendErrorMessage($actionException);
 		}
-		if (!$this->getSystemFactory()->checkAlias($handler)) {
-			$this->getSystemFactory()->addClassDefinitions($handler, 
-				array('path' => $handler, 'scope' => 'singleton', 'proxy' => true, 
-					'properties' => array('errorMessage' => array('ref' => COMPONENT_ERRORMESSAGE), 
-						'forward' => array('ref' => COMPONENT_FORWARD), 
-						'urlHelper' => array('ref' => COMPONENT_URLHELPER))));
-		}
-		return $this->getSystemFactory()->getInstance($handler);
 	}
 
 	/**
@@ -91,17 +128,41 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * @return WindUrlBasedRouter
+	 * @return WindFilterChain
 	 */
-	protected function getHandlerAdapter() {
-		return $this->_getHandlerAdapter();
+	protected function getFilterChain() {
+		if (!($filters = $this->getWindSystemConfig()->getFilters()))
+			return null;
+		if (!($filterChainPath = $this->getWindSystemConfig()->getFilterClass()))
+			return null;
+		return $this->getWindFactory()->createInstance($filterChainPath, array($filters));
 	}
 
 	/**
-	 * @return WindDispatcher
+	 * @return the $request
 	 */
-	protected function getDispatcher() {
-		return $this->_getDispatcher();
+	public function getRequest() {
+		return $this->request;
 	}
 
+	/**
+	 * @return the $response
+	 */
+	public function getResponse() {
+		return $this->response;
+	}
+
+	/**
+	 * @return the $windSystemConfig
+	 */
+	public function getWindSystemConfig() {
+		return $this->windSystemConfig;
+	}
+
+	/**
+	 * @return the $windFactory
+	 */
+	public function getWindFactory() {
+		return $this->windFactory;
+	}
 }

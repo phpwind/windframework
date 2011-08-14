@@ -12,10 +12,6 @@
  */
 class WindFrontController implements IWindFrontController {
 	/**
-	 * 框架系统配置信息资源地址，只接受php格式配置
-	 */
-	const WIND_COMPONENT_CONFIG_RESOURCE = 'WIND:components_config';
-	/**
 	 * @var WindHttpRequest
 	 */
 	private $request;
@@ -31,17 +27,21 @@ class WindFrontController implements IWindFrontController {
 	 * @var WindFactory
 	 */
 	protected $windFactory = null;
-	
-	private $config;
 
 	/**
-	 * @param WindConfig $windConfig
-	 * @param WindFactory $windFactory
+	 * @return WindWebApplication
 	 */
-	public function __construct($config = '') {
-		$this->request = new WindHttpRequest();
-		$this->response = new WindHttpResponse();
-		$this->config = $config;
+	public function getApplication($config) {
+		$factory = new WindFactory(@include (Wind::getRealPath('WIND:components_config')));
+		$config = new WindSystemConfig($config, Wind::getAppName(), $factory);
+		if ($components = $config->getComponents()) $factory->loadClassDefinitions($components);
+		$application = $this->windFactory->getInstance($config->getAppClass('windWebApp'));
+		if ($application === null) {
+			throw new WindException(
+				'[core.web.WindFrontController.getApplication] ' . $config->getAppClass(
+					'windWebApp'), WindException::ERROR_CLASS_NOT_EXIST);
+		}
+		return $application;
 	}
 
 	/**
@@ -85,69 +85,13 @@ class WindFrontController implements IWindFrontController {
 			ob_start();
 			$configPath = Wind::getRealPath(self::WIND_COMPONENT_CONFIG_RESOURCE);
 			$this->windFactory = new WindFactory(@include ($configPath));
-			$this->windSystemConfig = new WindSystemConfig($this->config, Wind::getAppName(), $this->windFactory);
-			set_error_handler(array($this, 'errorHandle'));
-			set_exception_handler(array($this, 'exceptionHandle'));
+			$this->windSystemConfig = new WindSystemConfig($this->config, Wind::getAppName(), 
+				$this->windFactory);
 		} catch (Exception $e) {
-			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', WindLogger::LEVEL_INFO, 'wind.core');
+			Wind::log('System failed to initialize. (' . $e->getMessage() . ')', 
+				WindLogger::LEVEL_INFO, 'wind.core');
 			throw new WindException('System failed to initialize.' . $e->getMessage());
 		}
-	}
-
-	/**
-	 * 错误处理句柄
-	 * @param string $errno
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param string $errline
-	 */
-	final public function errorHandle($errno, $errstr, $errfile, $errline) {
-		if ($errno & error_reporting()) {
-			restore_error_handler();
-			restore_exception_handler();
-			$header = $message = $trace = '';
-			$header = $errstr;
-			if (IS_DEBUG) {
-				$message = $errstr . '(' . $errfile . ' : ' . $errline . ')';
-				$_trace = debug_backtrace();
-				foreach ($_trace as $key => $value) {
-					if (!isset($value['file']) || !isset($value['line']) || !isset($value['function'])) continue;
-					$trace .= "#$key {$value['file']}({$value['line']}): ";
-					if (isset($value['object']) && is_object($value['object'])) $trace .= get_class($value['object']) . '->';
-					$trace .= "{$value['function']}()\r\n";
-				}
-			}
-			$this->displayMessage($header, $message, $trace);
-		}
-	}
-
-	/**
-	 * 异常处理句柄
-	 * @param Exception $exception
-	 */
-	final public function exceptionHandle($exception) {
-		restore_error_handler();
-		restore_exception_handler();
-		$header = $message = $trace = '';
-		$header = $exception->getMessage();
-		if (IS_DEBUG) {
-			$message = $exception->getMessage() . '(' . $exception->getFile() . ' : ' . $exception->getLine() . ')';
-			$trace = $exception->getTraceAsString();
-		}
-		$this->displayMessage($header, $message, $trace);
-	}
-
-	/**
-	 * @param string $header
-	 * @param string $message
-	 * @param string $trace
-	 */
-	public function displayMessage($header, $message = '', $trace = '') {
-		$_tmp = "<h4>$header</h4>";
-		$_tmp .= "<p>$message</p>";
-		$_tmp .= "<pre>$trace</pre>";
-		$this->getResponse()->sendError(500, $_tmp);
-		$this->getResponse()->sendResponse();
 	}
 
 	/**
