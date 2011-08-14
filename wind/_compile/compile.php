@@ -30,17 +30,16 @@ foreach ($imports as $key => $value) {
 }
 $pack->packFromFileList($fileList, _COMPILE_LIBRARY_PATH, WindPack::STRIP_PHP, true);
 /* import信息写入编译文件 */
-WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
+WindFile::write(WIND_PATH . 'wind_imports.php', 
+	'<?php return ' . WindString::varToString($content) . ';');
 
 /* 编译配置文件信息 */
-$_systemConfig = Wind::getRealPath(WindFrontController::WIND_COMPONENT_CONFIG_RESOURCE);
+$_systemConfig = Wind::getRealPath('WIND:components_config');
 $windConfigParser = new WindConfigParser();
 $result = $windConfigParser->parse(_COMPILE_PATH . 'components_config.xml');
 WindFile::write($_systemConfig, '<?php return ' . WindString::varToString($result) . ';');
 
 /* 清理所有缓存 */
-
-
 function parseFilePath($filePath) {
 	list($namespace, $filePath) = explode(':', $filePath);
 	return str_replace('.', '/', $filePath);

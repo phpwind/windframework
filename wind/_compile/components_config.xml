@@ -13,6 +13,7 @@
 		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
+			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
@@ -26,37 +27,16 @@
 		scope='prototype'>
 	</component>
 
-	<!-- urlBasedRouter -->
-	<component name='urlBasedRouter' path='COM:router.WindUrlBasedRouter'
-		scope="prototype">
-		<config>
-			<module url-param='m' default-value='default' />
-			<controller url-param='c' default-value='index' />
-			<action url-param='a' default-value='run' />
-		</config>
-	</component>
+	<!-- router -->
+	<component name='router' path='COM:router.WindRouter'
+		scope="prototype"></component>
+	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter'
+		scope='singleton'></component>
 	
-	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter' scope='singleton'>
-		<config>
-			<module url-param='m' default-value='default' />
-			<controller url-param='c' default-value='index' />
-			<action url-param='a' default-value='run' />
-		    <!-- url格式配置项，mca可以根据需求进行格式组合，比如m/c/a,m/c-a但是组合用到的分割符需根据key-value-sep来使用 -->
-			<url-pattern>m/c-a/*</url-pattern>
-			<!-- url的后缀 -->
-			<suffix>htm</suffix>
-			<!-- 模块变量之间的分隔符 -->
-			<separator>/</separator>
-			<!-- 变量之间的key-value的分隔符，也可以是mca组合的时候使用的分隔符 -->
-			<key-value-sep>-</key-value-sep>
-			<!-- 对于数字下标数组是否添加前缀 -->
-			<key-prefix>myvar_</key-prefix>
-			<is-rewrite>1</is-rewrite>
-		</config>
+	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
+		scope='singleton'>
 	</component>
-	<component name='urlHelper' path='WIND:core.web.WindUrlHelper' scope='singleton'>
-	</component>
-	
+
 	<!-- windView -->
 	<component name='windView' init-method='init' path='COM:viewer.WindView'
 		scope='prototype'>
@@ -71,7 +51,8 @@
 			<property name='viewCache' ref='viewCache' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='COM:viewer.WindViewerResolver' scope='prototype'>
+	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
+		scope='prototype'>
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
@@ -81,9 +62,11 @@
 	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'></component>
+
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
+
 	<!-- cache -->
 	<component name='windCache' path="COM:cache.strategy.WindFileCache">
 		<config>
