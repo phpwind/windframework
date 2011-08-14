@@ -9,7 +9,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	protected $_interceptors = array();
 	protected $_callBack = null;
 	protected $_args = array();
-	protected $_state = true;
+	protected $_state = 0;
 
 	/**
 	 * 设置回调方法
@@ -30,9 +30,11 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return void|mixed
 	 */
 	public function execute() {
-		if ($this->_callBack === null) return null;
+		if ($this->_callBack === null)
+			return null;
 		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {
-			throw new WindException('[core.filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
+			throw new WindException(
+				'[core.filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
 				WindException::ERROR_FUNCTION_NOT_EXIST);
 		}
 		return call_user_func_array($this->_callBack, (array) $this->_args);
@@ -44,19 +46,16 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return WindHandlerInterceptor
 	 */
 	public function getHandler() {
-		if ($this->_state) {
+		if (count($this->_interceptors) <= 0) {
 			$this->addInterceptors(new WindHandlerInterceptor());
-			$this->_state = false;
 		}
-		if (count($this->_interceptors) <= 0) return null;
-		$handler = array_shift($this->_interceptors);
+		if ($this->_state >= count($this->_interceptors))
+			return null;
+		$handler = $this->_interceptors[$this->_state++];
 		if ($handler instanceof WindHandlerInterceptor) {
 			$handler->setHandlerInterceptorChain($this);
 			return $handler;
 		}
-		Wind::log(
-			'[core.filter.WindHandlerInterceptorChain.getHandler] the type of Interceptor ' . gettype($handler) .
-				 ' is not supported.', WindLogger::LEVEL_DEBUG, 'wind.core');
 		return $this->getHandler();
 	}
 
@@ -72,7 +71,7 @@ class WindHandlerInterceptorChain extends WindModule {
 		else
 			$this->_interceptors[] = $interceptors;
 	}
-	
+
 	/**
 	 * 重置初始化信息
 	 * @return boolean
@@ -81,7 +80,7 @@ class WindHandlerInterceptorChain extends WindModule {
 		$this->_interceptors = array();
 		$this->_callBack = null;
 		$this->_args = array();
-		$this->_state = true;
+		$this->_state = 0;
 		return true;
 	}
 }
