@@ -8,17 +8,35 @@
 interface IWindApplication {
 
 	/**
-	 * 请求处理
-	 * @param IWindHttpRequest $request
-	 * @param IWindHttpResponse $response
+	 * Enter description here ...
+	 * @return
 	 */
-	public function processRequest();
+	public function run();
 
 	/**
 	 * 请求转发
-	 * 
 	 * @param WindForward $forward
 	 */
 	public function doDispatch($forward);
+
+	/**
+	 * @return WindHttpRequest $request
+	 */
+	public function getRequest();
+
+	/**
+	 * @return WindHttpResponse $response
+	 */
+	public function getResponse();
+
+	/**
+	 * @return WindSystemConfig $windSystemConfig
+	 */
+	public function getWindSystemConfig();
+
+	/**
+	 * @return WindFactory $windFactory
+	 */
+	public function getWindFactory();
 }
 ?>
