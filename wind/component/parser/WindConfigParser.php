@@ -79,7 +79,6 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array
 	 */
 	private function getCache($alias, $append, $cache) {
-		if (IS_DEBUG) return array(); 
 		if (!$alias || !$cache) return array();
 		if (!$append) return $cache->get($alias);
 		
