@@ -9,118 +9,74 @@
  * @version $Id$ 
  * @package 
  */
-abstract class AbstractWindRouter extends WindModule {
-	const DEFAULT_ERROR_HANDLER = 'WIND:core.web.WindErrorHandler';
-	const CONTROLLER_DEFAULT_PATH = 'controller';
-	const CONTROLLER_DEFAULT_SUFFIX = 'Controller';
-	/**
-	 * 默认的处理方法‘run’
-	 * 
-	 * @var string
-	 */
-	private $action = 'run';
-	/**
-	 * 默认的控制器‘index’
-	 *
-	 * @var string
-	 */
-	private $controller = 'index';
-	/**
-	 * 默认的系统应用模块名为‘default’
-	 *
-	 * @var string
-	 */
-	private $module = 'default';
-	/**
-	 * 系统应用模块寻址路径
-	 * 
-	 * @var string
-	 */
-	protected $modulePath = '';
+abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
+	protected $moduleKey = 'm';
+	protected $controllerKey = 'c';
+	protected $actionKey = 'a';
+	protected $module = 'default';
+	protected $controller = 'index';
+	protected $action = 'run';
 	
-	private $reParse = true;
+	protected $currentRoute = null;
 
 	/**
-	 * 该方法定义了路由解析策略
-	 * @return string | actionHandler
-	 */
-	abstract public function parse();
-
-	/**
-	 * 构建Url并返回
+	 * 解析请求参数，并返回路由结果
 	 * @return string
 	 */
-	abstract public function buildUrl();
+	abstract public function route();
 
 	/**
-	 * 通过调用该方法返回，解析请求参数，并返回路由结果
-	 * 
-	 * @return
+	 * 创建Url，并返回
+	 * @return string
 	 */
-	public function doParse() {
-		if ($this->reParse) {
-			$this->parse();
-			$this->reParse = false;
+	abstract public function assemble();
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		if ($this->_config) {
+			$this->module = $this->getConfig('module', 'default-value', $this->module);
+			$this->controller = $this->getConfig('controller', 'default-value', $this->controller);
+			$this->action = $this->getConfig('action', 'default-value', $this->action);
+			$this->moduleKey = $this->getConfig('module', 'url-param', $this->moduleKey);
+			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
+			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
 		}
-		$_moduleName = $this->getModule();
-		if (!$this->getSystemConfig()->getModules($_moduleName)) {
-			throw new WindException('[core.roter.AbstractWindRouter.doParse] module error: error module :' . $_moduleName);
-		}
-		if (!strcasecmp($this->getController(), 'windError')) {
-			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-				Wind::log(
-					'[core.roter.AbstractWindRouter.doParse] action hander: default error action :' .
-						 self::DEFAULT_ERROR_HANDLER, WindLogger::LEVEL_DEBUG, 'wind.core');
-			}
-			return $this->getSystemConfig()->getModuleErrorHandlerByModuleName($_moduleName, 
-				self::DEFAULT_ERROR_HANDLER);
-		}
-		$_suffix = $this->getSystemConfig()->getModuleControllerSuffixByModuleName($_moduleName, 
-			self::CONTROLLER_DEFAULT_SUFFIX);
-		if ($this->modulePath)
-			$_path = $this->modulePath;
-		else {
-			$_path = $this->getSystemConfig()->getModuleControllerPathByModuleName($_moduleName, 
-				self::CONTROLLER_DEFAULT_PATH);
-		}
-		$_path .= '.' . ucfirst($this->controller) . $_suffix;
-		if (strpos($_path, ':') === false)
-			$_path = Wind::getAppName() . ':' . $_path;
-		if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-			Wind::log('[core.router.AbstractWindRouter.doParse] action handler: ' . $_path, WindLogger::LEVEL_DEBUG, 
-				'wind.core');
-		}
-		$this->destroy();
-		return $_path;
 	}
 
 	/**
-	 * @return
+	 * 设置路由变量信息
+	 * 
+	 * @param string $params
 	 */
-	protected function destroy() {
-		$this->modulePath = '';
+	protected function setParams($params) {
+		foreach ($params as $key => $value) {
+			$this->getRequest()->setAttribute($value, $key);
+			if ($this->actionKey === $key)
+				$this->setAction($value);
+			elseif ($this->controllerKey === $key)
+				$this->setController($value);
+			elseif ($this->moduleKey === $key)
+				$this->setModule($value);
+		}
 	}
 
 	/**
-	 * 设置module信息, 支持格式：
-	 * 'moduleName';
-	 * 'namespace:modulePath'
-	 * 
-	 * @param string $module
-	 * @return
+	 * 添加路由协议对象,如果添加的路由协议已经存在则抛出异常
+	 * @param Object $routeInstance
+	 * @throws WindException
+	 * @return 
 	 */
-	public function setModule($module) {
-		if (false !== ($pos = strpos($module, ':'))) {
-			$this->modulePath = $module;
-		} else {
-			$this->module = $module;
-			$this->modulePath = '';
-		}
+	public function addRoute($routeInstance, $current = false) {
+		if ($current)
+			$this->currentRoute = $routeInstance;
+		$this->addInterceptors($routeInstance);
 	}
 
 	/**
 	 * 获得业务操作
-	 * 
 	 * @return string
 	 */
 	public function getAction() {
@@ -129,7 +85,6 @@ abstract class AbstractWindRouter extends WindModule {
 
 	/**
 	 * 获得业务对象
-	 * 
 	 * @return string
 	 */
 	public function getController() {
@@ -137,17 +92,7 @@ abstract class AbstractWindRouter extends WindModule {
 	}
 
 	/**
-	 * 返回一组应用入口
-	 * 
-	 * @return string
-	 */
-	public function getModule() {
-		return $this->module;
-	}
-
-	/**
 	 * 设置action信息
-	 * 
 	 * @param string $action
 	 * @return
 	 */
@@ -157,7 +102,6 @@ abstract class AbstractWindRouter extends WindModule {
 
 	/**
 	 * 设置controller信息
-	 * 
 	 * @param string $controller
 	 * @return
 	 */
@@ -166,21 +110,59 @@ abstract class AbstractWindRouter extends WindModule {
 	}
 
 	/**
-	 * @param boolean $reParse
-	 * @return 
+	 * @return the $module
 	 */
-	public function reParse() {
-		$this->reParse = true;
+	public function getModule() {
+		return $this->module;
 	}
-	
-	/*
-	 * (non-PHPdoc)
-	 * @see WindModule::setConfig()
+
+	/**
+	 * @param string $module
 	 */
-	public function setConfig($config) {
-		$usrConfig = $this->getSystemConfig()->getConfig('router', 'config');
-		$usrConfig && $config = array_merge($config, $usrConfig);
-		parent::setConfig($config);
+	public function setModule($module) {
+		$this->module = $module;
+	}
+
+	/**
+	 * @return the $moduleKey
+	 */
+	public function getModuleKey() {
+		return $this->moduleKey;
+	}
+
+	/**
+	 * @return the $controllerKey
+	 */
+	public function getControllerKey() {
+		return $this->controllerKey;
+	}
+
+	/**
+	 * @return the $actionKey
+	 */
+	public function getActionKey() {
+		return $this->actionKey;
+	}
+
+	/**
+	 * @param field_type $moduleKey
+	 */
+	public function setModuleKey($moduleKey) {
+		$this->moduleKey = $moduleKey;
+	}
+
+	/**
+	 * @param field_type $controllerKey
+	 */
+	public function setControllerKey($controllerKey) {
+		$this->controllerKey = $controllerKey;
+	}
+
+	/**
+	 * @param field_type $actionKey
+	 */
+	public function setActionKey($actionKey) {
+		$this->actionKey = $actionKey;
 	}
 
 }

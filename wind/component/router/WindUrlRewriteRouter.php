@@ -16,7 +16,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	private $keyPrefix = '';
 	private $baseUrl = '';
 	private $patterns = array();
-	
+
 	/**
 	 * 是否开启重写
 	 * 
@@ -25,7 +25,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	public function isRewrite() {
 		return $this->isRewrite == '1' || $this->isRewrite == 'true';
 	}
-	
+
 	/*
 	 * (non-PHPdoc)
 	 * @see AbstractWindRouter::parse()
@@ -36,7 +36,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		$this->setController($this->getUrlParamValue('controller', $this->getController()));
 		$this->setAction($this->getUrlParamValue('action', $this->getAction()));
 	}
-	
+
 	/**
 	 * 解析Url
 	 * 
@@ -45,9 +45,10 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	 * 同时设置到超全局变量$_GET中
 	 */
 	public function parseUrl() {
-		if (!$this->isRewrite()) return;
+		if (!$this->isRewrite())
+			return;
 		$url = array();
-		if ($this->getRequest()->getServer('SERVER_PROTOCOL')) {//http协议
+		if ($this->getRequest()->getServer('SERVER_PROTOCOL')) { //http协议
 			$pathInfo = $this->getRequest()->getServer('PATH_INFO');
 			if ($pathInfo && !empty($pathInfo)) {
 				$url = rtrim($pathInfo, $this->suffix);
@@ -60,7 +61,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 			}
 			$url = trim($url, '?/');
 			$url && $params = $this->doParserUrl($url);
-		} else {// 命令行下
+		} else { // 命令行下
 			$i = 0;
 			$args = $this->getRequest()->getServer('argv', array());
 			while (isset($args[$i]) && isset($args[$i + 1])) {
@@ -72,7 +73,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 			!isset($_GET[$k]) && $_GET[$k] = $v;
 		}
 	}
-    
+
 	/**
 	 * 构造返回Url地址
 	 * 
@@ -89,9 +90,10 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		$c = $this->getConfig('controller', 'url-param');
 		$a = $this->getConfig('action', 'url-param');
 		$params = array_merge(array($m => $module, $c => $controller, $a => $action), $params);
-		return $this->isRewrite() ? $this->buildRewriteUrl($params) : $this->baseUrl . '/index.php?' . http_build_query($params, '', '&');
+		return $this->isRewrite() ? $this->buildRewriteUrl($params) : $this->baseUrl . '/index.php?' . http_build_query(
+			$params, '', '&');
 	}
-	
+
 	/**
 	 * 解析module, controller, action
 	 * 如果不存在该值，则采用配置的默认值
@@ -108,6 +110,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		!$action && $action = $this->getConfig('action', 'default-value');
 		return array($module, $controller, $action);
 	}
+
 	/**
 	 * 构造重写的url
 	 * @param string $m
@@ -125,9 +128,9 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 				$url = $this->buildVars($value, $params, $url);
 			}
 		}
-		return $this->baseUrl  . '/' . $url . $this->suffix;
+		return $this->baseUrl . '/' . $url . $this->suffix;
 	}
-	
+
 	/**
 	 * 构建变量 不是*
 	 * 
@@ -140,13 +143,14 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		$keys = explode($this->keyValueSep, $value);
 		$values = array();
 		foreach ($keys as $v) {
-			if (!isset($params[$v])) continue;
+			if (!isset($params[$v]))
+				continue;
 			$values[] = $params[$v];
 			unset($params[$v]);
 		}
 		return str_replace($keys, $values, $url);
 	}
-	
+
 	/**
 	 * 构建rewriteurl的参数部分
 	 * @param array $params
@@ -156,27 +160,27 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	 */
 	private function buildNomalKeys($params, $parentKey = '', $first = true) {
 		$tmp = array();
-        foreach ($params as $k => $v) { 
-            if (is_int($k) && $this->keyPrefix != null && $first) {
-                $k = urlencode($this->keyPrefix . $k);
-            }
-            if (!empty($parentKey))  $k = $parentKey . '[' . $k . ']';
-            if (is_array($v)) {
-                array_push($tmp, $this->buildNomalKeys($v, $k, false)); 
-            } else {
-                array_push($tmp, $k . $this->keyValueSep . urlencode($v)); 
-            }
-        }
+		foreach ($params as $k => $v) {
+			if (is_int($k) && $this->keyPrefix != null && $first) {
+				$k = urlencode($this->keyPrefix . $k);
+			}
+			if (!empty($parentKey))
+				$k = $parentKey . '[' . $k . ']';
+			if (is_array($v)) {
+				array_push($tmp, $this->buildNomalKeys($v, $k, false));
+			} else {
+				array_push($tmp, $k . $this->keyValueSep . urlencode($v));
+			}
+		}
 		return implode($this->separator, $tmp);
 	}
-
 
 	/**
 	 * 执行匹配
 	 * patterns中的匹配模式去匹配url中的信息
 	 * urlPatterns中可以根据需求将mca进行组合配置。
 	 * <config>
-			<url-pattern>m-c-a/*</url-pattern>  <!-- 这里的mca可以根据自己的喜欢的格式用separator和key-value-step的形式组合配置例如：m/c/a 或者m/c-a -->
+	 *</url-pattern>  <!-- 这里的mca可以根据自己的喜欢的格式用separator和key-value-step的形式组合配置例如：m/c/a 或者m/c-a -->
 			<suffix>htm</suffix>
 			<separator>/</separator>
 			<key-value-sep>-</key-value-sep>
@@ -194,42 +198,45 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	 * 遍历url模式：采用separator配置的分隔符获得该模式数组
 	 * 如果模式是*,则代表该位置开始往后为为传递的变量信息
 	 * 如果模式不是*，则代表该位置为特殊模式。
-	 *    如果含有key-value-sep配置的分隔符： 则分别对url中相同key下的值和模式中的值分别做分割，对应的模式下获得的数组作为key,url中获得数组作为value
-	 *    如果不含：则该值就作为Key,url对应位置上的值作为value
+	 * 如果含有key-value-sep配置的分隔符： 则分别对url中相同key下的值和模式中的值分别做分割，对应的模式下获得的数组作为key,url中获得数组作为value
+	 * 如果不含：则该值就作为Key,url对应位置上的值作为value
 	 * 
 	 * @param string 待分析匹配的路径信息
 	 * @return array
 	 */
 	private function doParserUrl($url) {
-		if (!$url) return array();
+		if (!$url)
+			return array();
 		if (is_string($url)) {
 			$url = explode($this->separator, trim($url, $this->separator));
 		}
 		$vars = array();
 		foreach ($this->patterns as $key => $value) {
-			if ('*' == $value[0]) $this->parseNomalKeys($key, $url, $vars);
+			if ('*' == $value[0])
+				$this->parseNomalKeys($key, $url, $vars);
 			else {
-				if (!isset($url[$key])) continue;
+				if (!isset($url[$key]))
+					continue;
 				if (false === strrpos($value, $this->keyValueSep)) {
 					$vars[$value] = $url[$key];
 					continue;
 				}
 				$keys = explode($this->keyValueSep, $value);
 				$values = explode($this->keyValueSep, $url[$key]);
-				foreach($keys as $pos =>$key) {
+				foreach ($keys as $pos => $key) {
 					isset($values[$pos]) && $vars[$key] = $values[$pos];
 				}
 			}
 		}
 		return $vars;
 	}
-	
+
 	/**
 	 * 解析url普通参数
 	 * 如果separator和key-value-sep配置相同：则采用每两个元素为一对key-value的规则获得变量
 	 * 如果不相同：则将会以每个元素为key-value的组合，之间的分隔符以key-value-sep划分，如果没有该分隔符，则默认该值的索引为数字索引。
-	 *    如果为没有分隔符：则该值索引以数字索引给出，同时该数字索引将会根据用户是否配置key前缀key-prefix来给出key。
-	 *    如果有分隔符：则该值将会用分隔符分割获得的两个值来分别作为key和value.
+	 * 如果为没有分隔符：则该值索引以数字索引给出，同时该数字索引将会根据用户是否配置key前缀key-prefix来给出key。
+	 * 如果有分隔符：则该值将会用分隔符分割获得的两个值来分别作为key和value.
 	 * @param int $key
 	 * @param array $urlParams
 	 * @param array $params
@@ -238,7 +245,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		$pos = 0;
 		while (isset($urlParams[$key])) {
 			if ($this->separator == $this->keyValueSep) {
-				if (isset($urlParams[$key+1])) {
+				if (isset($urlParams[$key + 1])) {
 					$this->parseKey($params, $urlParams[$key], urldecode($urlParams[$key + 1]));
 					$key += 2;
 				}
@@ -246,7 +253,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 			}
 			if (false === strrpos($urlParams[$key], $this->keyValueSep)) {
 				$params[$this->keyPrefix . $pos] = urldecode($urlParams[$key]);
-				$pos ++;
+				$pos++;
 			} else {
 				list($k, $v) = explode($this->keyValueSep, $urlParams[$key], 2);
 				$this->parseKey($params, $k, urldecode($v));
@@ -281,7 +288,7 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 			return;
 		}
 	}
-	
+
 	/*
 	 * (non-PHPdoc)
 	 * @see WindModule::setConfig()
@@ -299,10 +306,10 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 		$this->keyPrefix = $this->getConfig('key-prefix');
 		$this->patterns = explode($this->separator, trim($this->urlPatttern, $this->separator));
 		$this->baseUrl = rtrim($this->getRequest()->getBaseUrl(true), '/');
-		if (!$this->isRewrite()) $this->baseUrl = $this->baseUrl . $this->getRequest()->getScriptUrl();
+		if (!$this->isRewrite())
+			$this->baseUrl = $this->baseUrl . $this->getRequest()->getScriptUrl();
 	}
 
-	
 	/**
 	 * 返回路由的配置信息
 	 * 
@@ -317,6 +324,24 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 			return !$tmp ? $defaultValue : $tmp;
 		}
 		return $defaultValue;
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::route()
+	 */
+	public function route() {
+		// TODO Auto-generated method stub
+	
+
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::assemble()
+	 */
+	public function assemble() {
+		// TODO Auto-generated method stub
+	
+
 	}
 
 }
