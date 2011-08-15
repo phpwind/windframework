@@ -219,7 +219,7 @@ class WindConnection extends WindModule {
 	 * @param string $name
 	 * @return int 
 	 */
-	public function lastInsterId($name = '') {
+	public function lastInsertId($name = '') {
 		if ($name)
 			return $this->getDbHandle()->lastInsertId($name);
 		else

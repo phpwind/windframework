@@ -262,7 +262,7 @@ class WindSqlStatement {
 	/* (non-PHPdoc) 
 	 * @see WindConnection::lastInsterId()
 	 */
-	public function lastInsterId($name = '') {
+	public function lastInsertId($name = '') {
 		return $this->getConnection($name);
 	}
 
