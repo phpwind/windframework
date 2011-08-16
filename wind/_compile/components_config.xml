@@ -31,7 +31,6 @@
 	<component name='router' path='COM:router.WindRouter' scope="prototype"></component>
 	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter'
 		scope='singleton'></component>
-
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
 		scope='singleton'>
 	</component>
