@@ -23,7 +23,7 @@ class WindHttpResponse implements IWindResponse {
 	
 	private $_status = '';
 	
-	private $_data = array();
+	private $_data = array('G' => array());
 	
 	/*
      * Server status codes; see RFC 2068.
@@ -300,10 +300,12 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function setHeader($name, $value, $replace = false) {
-		if (!$name || !$value) return;
+		if (!$name || !$value)
+			return;
 		$name = $this->_normalizeHeader($name);
 		foreach ($this->_headers as $key => $one) {
-			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 
+				'value' => $value, 'replace' => $replace);
 		}
 	}
 
@@ -314,7 +316,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function addHeader($name, $value, $replace = false) {
-		if ($name == '' || $value == '') return;
+		if ($name == '' || $value == '')
+			return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
@@ -326,7 +329,9 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $message
 	 */
 	public function setStatus($status, $message = '') {
-		if (!is_int($status) || $status < 100 || $status > 505) return;
+		$status = intval($status);
+		if ($status < 100 || $status > 505)
+			return;
 		
 		$this->_status = (int) $status;
 	}
@@ -338,7 +343,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
-		if (!$content) return;
+		if (!$content)
+			return;
 		!$name && $name = 'default';
 		array_push($this->_bodyIndex, $name);
 		$this->_body[$name] = $content;
@@ -360,7 +366,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $message
 	 */
 	public function sendError($status = self::SC_NOT_FOUND, $message = '') {
-		if (!is_int($status) || $status < 400 || $status > 505) return;
+		if (!is_int($status) || $status < 400 || $status > 505)
+			return;
 		$this->setBody($message, 'error');
 		$this->setStatus($status);
 		$this->sendResponse();
@@ -372,7 +379,8 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $location
 	 */
 	public function sendRedirect($location, $status = 302) {
-		if (!is_int($status) || $status < 300 || $status > 399) return;
+		if (!is_int($status) || $status < 300 || $status > 399)
+			return;
 		
 		$this->addHeader('Location', $location, true);
 		$this->setStatus($status);
@@ -393,7 +401,8 @@ class WindHttpResponse implements IWindResponse {
 	 * 发送响应头部信息
 	 */
 	public function sendHeaders() {
-		if ($this->isSendedHeader()) return;
+		if ($this->isSendedHeader())
+			return;
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
@@ -434,8 +443,9 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
-		if ($throw && $sended) throw new WindException(
-			__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+		if ($throw && $sended)
+			throw new WindException(
+				__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
@@ -480,21 +490,33 @@ class WindHttpResponse implements IWindResponse {
 	 * @return array
 	 */
 	public function getData($key1 = '', $key2 = '') {
-		if (!$key1) return $this->_data;
-		if (!$key2) return isset($this->_data[$key1]) ? $this->_data[$key1] : '';
+		if (!$key1)
+			return $this->_data;
+		if (!$key2)
+			return isset($this->_data[$key1]) ? $this->_data[$key1] : '';
 		return isset($this->_data[$key1]) ? (isset($this->_data[$key1][$key2]) ? $this->_data[$key1][$key2] : '') : '';
 	}
 
 	/**
 	 * @param $data
 	 */
-	public function setData($data, $key = '') {
+	public function setData($data, $key = '', $isG = false) {
 		if ($key) {
-			$this->_data[$key] = $data;
+			if ($isG)
+				$this->_data['G'][$key] = $data;
+			else
+				$this->_data[$key] = $data;
 			return;
 		}
-		if (is_object($data)) $data = get_object_vars($data);
-		if (is_array($data)) $this->_data += $data;
+		if (is_object($data))
+			$data = get_object_vars($data);
+		if (is_array($data)) {
+			if ($isG)
+				$this->_data['G'] += $data;
+			else
+				$this->_data += $data;
+		
+		}
 	}
 
 }

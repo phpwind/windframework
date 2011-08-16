@@ -13,7 +13,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $moduleKey = 'm';
 	protected $controllerKey = 'c';
 	protected $actionKey = 'a';
-	protected $module = 'default';
+	protected $module;
 	protected $controller = 'index';
 	protected $action = 'run';
 	

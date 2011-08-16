@@ -31,7 +31,7 @@ class WindRouter extends AbstractWindRouter {
 		$params[$this->actionKey] = $this->getRequest()->getRequest($this->actionKey, $this->action);
 		$params[$this->controllerKey] = $this->getRequest()->getRequest($this->controllerKey, 
 			$this->controller);
-		$params[$this->moduleKey] = $this->getRequest()->getRequest($this->module, $this->module);
+		$params[$this->moduleKey] = $this->getRequest()->getRequest($this->moduleKey, $this->module);
 		return $params;
 	}
 

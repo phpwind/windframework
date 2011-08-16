@@ -59,7 +59,8 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$method = $this->resolvedActionMethod($handlerAdapter);
-		Wind::log('[core.web.controller.WindSimpleController.doAction] resolved action method:' . $method, 
+		Wind::log(
+			'[core.web.controller.WindSimpleController.doAction] resolved action method:' . $method, 
 			WindLogger::LEVEL_INFO, 'wind.core');
 		call_user_func_array(array($this, $method), array());
 		$this->getErrorMessage()->sendError();
@@ -101,6 +102,17 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 */
 	protected function setOutput($data, $key = '') {
 		$this->getForward()->setVars($data, $key);
+	}
+
+	/**
+	 * 设置模板数据
+	 * 
+	 * @param string|array|object $data
+	 * @param string $key
+	 * @return
+	 */
+	protected function setGlobal($data, $key = '') {
+		$this->getResponse()->setData($data, $key, true);
 	}
 
 	/**

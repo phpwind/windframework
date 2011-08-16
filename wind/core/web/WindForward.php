@@ -24,13 +24,13 @@ class WindForward extends WindModule {
 	 *
 	 * @var string
 	 */
-	private $templatePath;
+	private $templatePath = null;
 	/**
 	 * 模板扩展名
 	 *
 	 * @var string
 	 */
-	private $templateExt;
+	private $templateExt = null;
 	/**
 	 * 模板布局
 	 *
@@ -91,8 +91,10 @@ class WindForward extends WindModule {
 	 */
 	public function setVars($vars, $key = '') {
 		if (!$key) {
-			if (is_object($vars)) $vars = get_object_vars($vars);
-			if (is_array($vars)) $this->vars += $vars;
+			if (is_object($vars))
+				$vars = get_object_vars($vars);
+			if (is_array($vars))
+				$this->vars += $vars;
 		} else
 			$this->vars[$key] = $vars;
 		return;

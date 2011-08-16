@@ -16,18 +16,30 @@ Wind::import('COM:viewer.exception.WindViewException');
  * @version $Id$ 
  * @package 
  */
-class WindViewerResolver extends WindModule implements IWindViewerResolver {
+class WindViewerResolver implements IWindViewerResolver {
+	/**
+	 * @var array
+	 */
+	protected $vars = array();
 	/**
 	 * @var WindView
 	 */
 	protected $windView = null;
 
+	/**
+	 * @param WindView $windView
+	 */
+	public function __construct($windView) {
+		$this->windView = $windView;
+	}
+
 	/* (non-PHPdoc)
 	 * @see IWindViewerResolver::windFetch()
 	 */
 	public function windFetch($template = '') {
-		if (!$template && null !== ($layout = $this->getWindView()->getLayout())) {
-			$template = $layout;
+		if (!$template) {
+			$layout = $this->windView->getLayout();
+			$template = $layout ? $layout : $this->windView->templateName;
 		}
 		ob_start();
 		$this->render($template);
@@ -38,63 +50,56 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 * @see IWindViewerResolver::windAssign()
 	 */
 	public function windAssign($vars, $key = '') {
-		if ($key === '') $key = $this->getWindView()->getTemplateName();
-		$this->getResponse()->setData($vars, $key);
-	}
-
-	/**
-	 * 立即输出模板内容
-	 * 
-	 * @param string $template
-	 * @param WindView $view
-	 */
-	public function displayWindFetch($template = '') {
-		echo $this->windFetch($template);
+		if ($key === '')
+			$key = $this->windView->templateName;
+		$this->vars[$key] = $vars;
 	}
 
 	/**
 	 * 编译模板并返回编译后模板名称
-	 * 
 	 * @param string $template
 	 * @param string $suffix
 	 * @param boolean $output
 	 * @return string
 	 */
 	public function compile($template, $suffix = '', $output = false) {
-		$templateFile = $this->getWindView()->getViewTemplate($template, $suffix);
+		$templateFile = $this->windView->getViewTemplate($template, $suffix);
 		if (!is_file($templateFile)) {
 			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
-		$compileFile = $this->getWindView()->getCompileFile($template, 'php');
-		
+		if (!($compileFile = $this->windView->getCompileFile($template)))
+			return array($templateFile, '');
+			
 		/* @var $_windTemplate WindViewTemplate */
-		$_windTemplate = $this->getSystemFactory()->getInstance(COMPONENT_TEMPLATE);
+		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
 		
-		if (!$compileFile && !$_output) return array('', '');
+		if (!$compileFile && !$_output)
+			return array('', '');
 		WindFile::write($compileFile, $_output);
 		return array($compileFile, $_output);
 	}
 
 	/**
 	 * 加载视图模板文件
-	 * 
 	 * @param template
 	 */
 	protected function render($template) {
 		list($_tmp, $_output) = $this->compile($template);
-		@extract((array) $this->getResponse()->getData($this->getWindView()->getTemplateName()), EXTR_REFS);
-		if (!include $_tmp) {
+		$_var = Wind::getApp()->getResponse()->getData('G');
+		if (isset($this->vars[$template]))
+			$_var += $this->vars[$template];
+		@extract($_var, EXTR_REFS);
+		if (!@include ($_tmp)) {
 			throw new WindViewException(
-				'[component.viewer.ViewerResolver.render] template:' . $template . ' compile template:' . $_tmp, 
+				'[component.viewer.ViewerResolver.render] template name ' . $template, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
 	}
 
 	/**
 	 * 检查是否需要重新编译
-	 * 
 	 * @param string $templateFile
 	 * @param string $compileFile
 	 */
@@ -106,19 +111,20 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 			$_reCompile = true;
 		} else {
 			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime) $_reCompile = true;
+			if ((int) $templateFileModifyTime >= $compileFileModifyTime)
+				$_reCompile = true;
 		}
 		return $_reCompile;
 	}
 
 	/**
 	 * 当前模板内容
-	 * 
 	 * @param string $template
 	 */
 	private function getContent($template = '') {
-		if (!$template) $template = $this->getWindView()->getTemplateName();
-		if ($template) $this->displayWindFetch($template);
+		!$template && $template = $this->windView->templateName;
+		if ($template)
+			echo $this->windFetch($template);
 	}
 
 	/**
@@ -126,13 +132,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 */
 	public function getWindView() {
 		return $this->windView;
-	}
-
-	/**
-	 * @param WindView $windView
-	 */
-	public function setWindView($windView) {
-		$this->windView = $windView;
 	}
 
 }

@@ -1,4 +1,5 @@
 <?php
+Wind::import('COM:viewer.IWindView');
 /**
  * 处理视图请求的准备工作，并将视图请求提交给某一个具体的视图解析器
  * 如果视图请求是一个重定向请求，或者是请求另一个操作
@@ -16,56 +17,56 @@
  * @version $Id$ 
  * @package 
  */
-class WindView extends WindModule {
+class WindView extends WindModule implements IWindView {
 	/**
 	 * 模板路径信息
 	 *
 	 * @var string
 	 */
-	protected $templateDir;
+	public $templateDir;
 	/**
 	 * 模板文件的扩展名
 	 *
 	 * @var string
 	 */
-	protected $templateExt;
+	public $templateExt;
 	/**
 	 * 模板名称
 	 *
 	 * @var string
 	 */
-	protected $templateName;
-	/**
-	 * 是否进行视图缓存
-	 *
-	 * @var boolean
-	 */
-	protected $isCache = false;
-	
-	
+	public $templateName;
 	/**
 	 * 是否对模板变量进行html字符过滤
 	 * 
 	 * @var boolean
 	 */
-	protected $htmlspecialchars = true;
+	public $htmlspecialchars = true;
+	/**
+	 * 是否开启模板编译
+	 *
+	 * @var boolean
+	 */
+	public $isCompile = false;
 	/**
 	 * 编译目录
 	 *
 	 * @var string
 	 */
-	protected $compileDir;
+	public $compileDir;
+	/**
+	 * 编译脚本后缀
+	 *
+	 * @var string
+	 */
+	public $compileExt = 'tpl';
+	
 	/**
 	 * 视图解析引擎
 	 *
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
-	/**
-	 * 试图缓存
-	 * @var AbstractWindCache
-	 */
-	protected $viewCache = null;
 	/**
 	 * 布局文件
 	 *
@@ -80,23 +81,38 @@ class WindView extends WindModule {
 	 * @param WindUrlBasedRouter $router
 	 */
 	public function render($forward, $router, $display = false) {
-		$this->init();
-		if (!($_templateName = $forward->getTemplateName())) {
-			Wind::log('[component.viewer.WindView.render] view render fail. TemplateName is not defined.', 
-				WindLogger::LEVEL_DEBUG, 'wind.component');
+		$this->templateName = $forward->getTemplateName();
+		if (!$this->templateName)
 			return;
-		}
-		$this->setTemplateName($_templateName);
-		if ($_ext = $forward->getTemplateExt()) $this->setTemplateExt($_ext);
-		if ($_path = $forward->getTemplatePath()) $this->setTemplateDir($_path);
-		if ($_layout = $forward->getLayout()) $this->setLayout($_layout);
+		if (null !== ($_ext = $forward->getTemplateExt()))
+			$this->templateExt = $_ext;
+		if (null !== ($_path = $forward->getTemplatePath()))
+			$this->templateDir = $_path;
+		if (null !== ($_layout = $forward->getLayout()))
+			$this->layout = $_layout;
 		
-		$viewResolver = $this->getViewResolver();
-		$viewResolver->windAssign($forward->getVars(), $_templateName);
+		$viewResolver = $this->_getViewResolver($this);
+		$viewResolver->windAssign($forward->getVars(), $this->templateName);
 		if ($display === false) {
-			$this->getResponse()->setBody($viewResolver->windFetch(), $_templateName);
+			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
 		} else
 			$viewResolver->displayWindFetch();
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		if ($this->_config) {
+			$this->templateDir = $this->getConfig('template-dir', '', $this->templateDir);
+			$this->templateExt = $this->getConfig('template-ext', '', $this->templateExt);
+			$this->compileDir = $this->getConfig('compile-dir', '', $this->compileDir);
+			$this->compileExt = $this->getConfig('compile-ext', '', $this->compileExt);
+			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
+			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', 
+				$this->htmlspecialchars);
+		}
 	}
 
 	/**
@@ -108,7 +124,9 @@ class WindView extends WindModule {
 	 * @return string | false
 	 */
 	public function getViewTemplate($template = '', $ext = '') {
-		return $this->parseFilePath($template, $ext, $this->getTemplateDir());
+		!$template && $template = $this->templateName;
+		!$ext && $ext = $this->templateExt;
+		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
 	}
 
 	/**
@@ -119,162 +137,28 @@ class WindView extends WindModule {
 	 * @param string $templateExt
 	 * @return string | false
 	 */
-	public function getCompileFile($template = '', $ext = '') {
-		return $this->parseFilePath($template, $ext, $this->getCompileDir(), true);
-	}
-
-	/**
-	 * @param $fileName
-	 * @param $fileExt
-	 * @param $path
-	 */
-	private function parseFilePath($fileName, $fileExt, $path, $ifCheckPath = false) {
-		if (!$fileName) $fileName = $this->getTemplateName();
-		if (!$fileExt) $fileExt = $this->getTemplateExt();
-		if (strrpos($path, ':') === false) $path = Wind::getAppName() . ':' . $path;
-		if ($ifCheckPath) {
-			$dir = Wind::getRealDir($path);
-			if (!is_dir($dir)) {
-				@mkdir($dir);
-				Wind::log('[component.viewer.WindView.parseFilePath] template dir is not exist.', 
-					WindLogger::LEVEL_DEBUG, 'wind.component');
-			}
+	public function getCompileFile($template = '') {
+		if (!$this->compileDir) return;
+		!$template && $template = $this->templateName;
+		$dir = Wind::getRealDir($this->compileDir);
+		$_tmp = explode('.', $template);
+		foreach ($_tmp as $_dir) {
+			!is_dir($dir) && @mkdir($dir);
+			$dir .= D_S . $_dir;
 		}
-		return Wind::getRealPath($path . '.' . $fileName, $fileExt);
-	}
-
-	/**
-	 * 初始哈windView类
-	 * 
-	 * @return
-	 */
-	public function init() {
-		$this->setTemplateDir($this->getConfig('template-dir'));
-		$this->setCompileDir($this->getConfig('compile-dir'));
-		$this->setTemplateExt($this->getConfig('template-ext'));
-		$this->setIsCache($this->getConfig('is-cache'));
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTemplateDir() {
-		return $this->templateDir;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCompileDir() {
-		return $this->compileDir;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTemplateExt() {
-		return $this->templateExt;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTemplateName() {
-		return $this->templateName;
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function getIsCache() {
-		return $this->isCache;
-	}
-
-	/**
-	 * @return WindLayout
-	 */
-	public function getLayout() {
-		return $this->layout;
-	}
-
-	/**
-	 * @param string $templateDir
-	 */
-	public function setTemplateDir($templateDir) {
-		$this->templateDir = $templateDir;
-	}
-
-	/**
-	 * @param string $compileDir
-	 */
-	public function setCompileDir($compileDir) {
-		$this->compileDir = $compileDir;
-	}
-
-	/**
-	 * @param string $templateExt
-	 */
-	public function setTemplateExt($templateExt) {
-		$this->templateExt = $templateExt;
-	}
-
-	/**
-	 * @param string $templateName
-	 */
-	public function setTemplateName($templateName) {
-		$this->templateName = $templateName;
-	}
-
-	/**
-	 * @param boolean $isCache
-	 */
-	public function setIsCache($isCache) {
-		$this->isCache = (strtolower($isCache) == 'true' || $isCache == '1');
-	}
-
-	/**
-	 * @param string $layout
-	 */
-	public function setLayout($layout) {
-		$this->layout = $layout;
-	}
-
-	/**
-	 * @return the $htmlspecialchars
-	 */
-	public function getHtmlspecialchars() {
-		return $this->htmlspecialchars;
-	}
-
-	/**
-	 * @param boolean $htmlspecialchars
-	 */
-	public function setHtmlspecialchars($htmlspecialchars) {
-		$this->htmlspecialchars = $htmlspecialchars;
-	}
-	
-	/**
-	 * @return WindViewerCache
-	 */
-	public function getViewCache() {
-		return $this->_getViewCache();;
-	}
-	
-	/**
-	 * @param AbstractWindCache $viewCache
-	 */
-	public function setViewCache($viewCache) {
-		$this->viewCache = $viewCache;
+		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
 
 	/**
 	 * @return WindViewerResolver
 	 */
 	public function getViewResolver() {
-		if (null !== $this->viewResolver) return $this->viewResolver;
+		if (null !== $this->viewResolver)
+			return $this->viewResolver;
 		$this->_getViewResolver();
 		$this->viewResolver->setWindView($this);
-		if (!$this->getIsCache()) return $this->viewResolver;
+		if (!$this->getIsCache())
+			return $this->viewResolver;
 		$this->viewResolver = new WindClassProxy($this->viewResolver);
 		$listener = Wind::import('COM:viewer.listener.WindViewCacheListener');
 		$this->viewResolver->registerEventListener('windFetch', new $listener($this));
@@ -282,10 +166,10 @@ class WindView extends WindModule {
 	}
 
 	/**
-	 * @param WindViewerResolver $viewResolver
+	 * @return the $layout
 	 */
-	public function setViewResolver($viewResolver) {
-		$this->viewResolver = $viewResolver;
+	public function getLayout() {
+		return $this->layout;
 	}
 
 }

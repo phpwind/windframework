@@ -37,7 +37,8 @@ class WindModule {
 		if (method_exists($this, $_setter))
 			$this->$_setter($value);
 		else
-			Wind::log('[core.WindModule.__set] both of property and setter are not exist. ' . $propertyName, 
+			Wind::log(
+				'[core.WindModule.__set] both of property and setter are not exist. ' . $propertyName, 
 				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
@@ -52,7 +53,8 @@ class WindModule {
 		if (method_exists($this, $_getter))
 			return $this->$_getter();
 		else
-			Wind::log('[core.WindModule.__set] both of property and getter are not exist. ' . $propertyName, 
+			Wind::log(
+				'[core.WindModule.__set] both of property and getter are not exist. ' . $propertyName, 
 				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
@@ -78,13 +80,17 @@ class WindModule {
 				if (isset($_property['value'])) {
 					$_value = $_property['value'];
 				} elseif (isset($_property['ref'])) {
-					$_value = $this->getSystemFactory()->getInstance($_property['ref']);
+					$_value = $this->getSystemFactory()->getInstance($_property['ref'], $args);
+				} elseif (isset($_property['path'])) {
+					$_className = Wind::import($_property['path']);
+					$_value = $this->getSystemFactory()->createInstance($_className, $args);
 				}
 				$this->$_propertyName = $_value;
 			}
 			return $this->$_propertyName;
 		}
-		throw new WindException('[core.WindModule.__call] ' . get_class($this) . '->' . $methodName . '()', 
+		throw new WindException(
+			'[core.WindModule.__call] ' . get_class($this) . '->' . $methodName . '()', 
 			WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 	}
 
@@ -128,7 +134,8 @@ class WindModule {
 	 */
 	protected function validatePropertyName($propertyName, $value = null) {
 		if (isset($this->delayAttributes[$propertyName])) {
-			Wind::log('[core.WindModule.validatePropertyName] is a delay property  (' . $propertyName . ')', 
+			Wind::log(
+				'[core.WindModule.validatePropertyName] is a delay property  (' . $propertyName . ')', 
 				WindLogger::LEVEL_DEBUG, 'wind.core');
 			return true;
 		}

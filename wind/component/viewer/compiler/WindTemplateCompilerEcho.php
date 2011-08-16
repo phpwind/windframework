@@ -21,11 +21,12 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $content);
 		list($_output, $type) = $this->doCompile($_output);
-		if ($this->windViewerResolver->getWindView()->getHtmlspecialchars() === true && $type == 'text')
+		if ($this->windViewerResolver->getWindView()->htmlspecialchars === true && $type == 'text')
 			return '<?php echo WindHtmlHelper::encode(' . $_output . ');?>';
 		else
 			return '<?php echo ' . $_output . ';?>';
 	}
+
 	/**
 	 * 处理变量
 	 * @param string $var
@@ -43,11 +44,12 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	 * @return string
 	 */
 	private function compileVarShare($input) {
-		if (strpos($input, '$') !== false || strpos($input, '::') !== false || strpos($input, ':') === false) return $input;
+		if (strpos($input, '$') !== false || strpos($input, '::') !== false || strpos($input, ':') === false)
+			return $input;
 		list($templateName, $var) = explode(':', $input);
 		return '$this->getResponse()->getData(\'' . $templateName . '\', \'' . $var . '\')';
 	}
-	
+
 	/**
 	 * 获得变量后的|之后的值
 	 * @return array

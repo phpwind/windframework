@@ -28,21 +28,20 @@
 	</component>
 
 	<!-- router -->
-	<component name='router' path='COM:router.WindRouter'
-		scope="prototype"></component>
+	<component name='router' path='COM:router.WindRouter' scope="prototype"></component>
 	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter'
 		scope='singleton'></component>
-	
+
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
 		scope='singleton'>
 	</component>
 
 	<!-- windView -->
-	<component name='windView' init-method='init' path='COM:viewer.WindView'
-		scope='prototype'>
+	<component name='windView' path='COM:viewer.WindView' scope='prototype'>
 		<config>
 			<template-dir>template</template-dir>
 			<template-ext>htm</template-ext>
+			<is-compile>0</is-compile>
 			<compile-dir>compile.template</compile-dir>
 			<is-cache>0</is-cache>
 		</config>
@@ -56,7 +55,6 @@
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
-		<config resource='' />
 	</component>
 
 	<!-- error -->
