@@ -9,6 +9,155 @@
  * @package 
  */
 class WindHelper {
+	const INTERNAL_LOCATION = "~Internal Location~";
+
+	/**
+	 * 错误处理句柄
+	 * @param string $errno
+	 * @param string $errstr
+	 * @param string $errfile
+	 * @param string $errline
+	 */
+	public static function errorHandle($errno, $errstr, $errfile, $errline) {
+		if ($errno & error_reporting()) {
+			restore_error_handler();
+			restore_exception_handler();
+			$trace = debug_backtrace();
+			unset($trace[0]["function"], $trace[0]["args"]);
+			self::crash(self::getErrorName($errno) . ':' . $errstr, $errfile, $errline, $trace);
+			exit();
+		}
+	}
+
+	/**
+	 * 异常处理句柄
+	 * @param Exception $exception
+	 */
+	public static function exceptionHandle($exception) {
+		restore_error_handler();
+		restore_exception_handler();
+		$trace = $exception->getTrace();
+		if (@$trace[0]['file'] == '') {
+			unset($trace[0]);
+			$trace = array_values($trace);
+		}
+		$file = @$trace[0]['file'];
+		$line = @$trace[0]['line'];
+		self::crash($exception->getMessage(), $file, $line, $trace);
+		exit();
+	}
+
+	/**
+	 * @param string $message
+	 * @param string $file
+	 * @param string $line
+	 * @param array $trace
+	 */
+	protected static function crash($message, $file, $line, $trace, $status = 500) {
+		$errmessage = substr($message, 0, 8000) . "\n";
+		$topic = "Wind Framework - Error Caught\n";
+		$_headers = Wind::getApp()->getResponse()->getHeaders();
+		$_errhtml = false;
+		foreach ($_headers as $_header) {
+			if (strtolower($_header['name']) == strtolower('Content-type')) {
+				$_errhtml = strpos(strtolower($_header['value']), strtolower('text/html')) !== false;
+				break;
+			}
+		}
+		if (IS_DEBUG) {
+			$errtrace = "__Stack:\n";
+			$count = count($trace);
+			$padLen = strlen($count);
+			foreach ($trace as $key => $call) {
+				if (!isset($call['file']) || $call['file'] == '') {
+					$call['file'] = self::INTERNAL_LOCATION;
+					$call['line'] = 'N/A';
+				}
+				
+				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
+					$call);
+				$errtrace .= "$traceLine\n";
+			}
+			$errsample = '';
+			if ($_errhtml && is_file($file)) {
+				$currentLine = $line - 1;
+				$fileLines = explode("\n", file_get_contents($file, null, null, 0, 10000000));
+				$topLine = $currentLine - 5;
+				$fileLines = array_slice($fileLines, $topLine > 0 ? $topLine : 0, 10, true);
+				if (($count = count($fileLines)) > 0) {
+					$padLen = strlen($count);
+					foreach ($fileLines as $line => &$fileLine)
+						$fileLine = " " . htmlspecialchars(
+							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace(
+								"\t", "    ", rtrim($fileLine)), null, "UTF-8");
+					
+					$fileLines[$currentLine] = "<b style=\"color:red; background:whiteSmoke\">" . $fileLines[$currentLine] . "</b>";
+					$errsample = implode("\n", $fileLines) . "\n";
+				}
+			}
+			$errraised = "$file; line #$line\n";
+			$msg = "<pre>$errraised$errsample\n$errtrace</pre>";
+		} else {
+			$status !== '' && $topic = "$status - " . Wind::getApp()->getResponse()->codeMap(
+				$status) . "\n";
+			$msg = "<pre>The server encountered an internal error and failed to process your request.\nPlease try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message</pre>";
+		}
+		if ($_errhtml) {
+			$errmessage = "<font style=\"background:whiteSmoke\">$errmessage</font>";
+			$topic = "<h3>$topic</h3>";
+		}
+		ob_end_flush();
+		Wind::getApp()->getResponse()->sendHeaders();
+		die($topic . $errmessage . $msg);
+	}
+
+	/**
+	 * @param array $call
+	 * @return string
+	 */
+	private static function getCallLine($call) {
+		$call_signature = "";
+		if (isset($call['file']))
+			$call_signature .= $call['file'] . " ";
+		if (isset($call['line']))
+			$call_signature .= "(" . $call['line'] . ") ";
+		if (isset($call['function'])) {
+			$call_signature .= $call['function'] . '(';
+			if (isset($call['args'])) {
+				foreach ($call['args'] as $arg) {
+					if (is_string($arg))
+						$arg = '"' . (strlen($arg) <= 64 ? $arg : substr($arg, 0, 64) . "…") . '"';
+					else if (is_object($arg))
+						$arg = "[Instance of '" . get_class($arg) . "']";
+					else if ($arg === true)
+						$arg = "true";
+					else if ($arg === false)
+						$arg = "false";
+					else if ($arg === null)
+						$arg = "null";
+					else
+						$arg = strval($arg);
+					$call_signature .= $arg . ',';
+				}
+			}
+			$call_signature = trim($call_signature, ',') . ")";
+		}
+		return $call_signature;
+	}
+
+	/**
+	 * @param int $errorNumber
+	 * @return string
+	 */
+	protected static function getErrorName($errorNumber) {
+		$errorMap = array(E_ERROR => "E_ERROR", E_WARNING => "E_WARNING", E_PARSE => "E_PARSE", 
+			E_NOTICE => "E_NOTICE ", E_CORE_ERROR => "E_CORE_ERROR", 
+			E_CORE_WARNING => "E_CORE_WARNING", E_COMPILE_ERROR => "E_COMPILE_ERROR", 
+			E_COMPILE_WARNING => "E_COMPILE_WARNING", E_USER_ERROR => "E_USER_ERROR", 
+			E_USER_WARNING => "E_USER_WARNING", E_USER_NOTICE => "E_USER_NOTICE", 
+			E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", E_ALL => "E_ALL");
+		return isset($errorMap[$errorNumber]) ? $errorMap[$errorNumber] : 'E_UNKNOWN';
+	}
 
 	/**
 	 * 解析ControllerPath
@@ -19,7 +168,8 @@ class WindHelper {
 	 */
 	public static function resolveController($controllerPath) {
 		$_m = $_c = '';
-		if (!$controllerPath) return array($_c, $_m);
+		if (!$controllerPath)
+			return array($_c, $_m);
 		if (false !== ($pos = strrpos($controllerPath, '.'))) {
 			$_m = substr($controllerPath, 0, $pos);
 			$_c = substr($controllerPath, $pos + 1);

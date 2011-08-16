@@ -44,16 +44,19 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @see IWindApplication::run()
 	 */
 	public function run() {
-		ob_start();
+		set_error_handler('WindHelper::errorHandle');
+		set_exception_handler('WindHelper::exceptionHandle');
 		$this->request = new WindHttpRequest();
-		$this->response = new WindHttpResponse();
+		$this->response = $this->request->getResponse();
 		$this->_getHandlerAdapter()->route();
-		if (null !== ($filterChain = $this->getFilterChain())) {
+		if (null == ($filterChain = $this->getFilterChain()))
+			$this->processRequest();
+		else {
 			$filterChain->setCallBack(array($this, 'processRequest'));
 			$filterChain->getHandler()->handle($this->request, $this->response);
-		} else
-			$this->processRequest();
-		ob_end_flush();
+		}
+		restore_error_handler();
+		restore_exception_handler();
 		$this->response->sendResponse();
 	}
 
@@ -121,7 +124,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
 		} catch (WindViewException $e) {
-			echo $e;exit;
+			echo $e;
+			exit();
 			$this->sendErrorMessage($e->getMessage());
 		}
 	}
