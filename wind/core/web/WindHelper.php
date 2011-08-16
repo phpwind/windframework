@@ -43,7 +43,7 @@ class WindHelper {
 		}
 		$file = @$trace[0]['file'];
 		$line = @$trace[0]['line'];
-		self::crash($exception->getMessage(), $file, $line, $trace);
+		self::crash($exception->getMessage(), $file, $line, $trace, $exception->getCode());
 		exit();
 	}
 
@@ -53,7 +53,7 @@ class WindHelper {
 	 * @param string $line
 	 * @param array $trace
 	 */
-	protected static function crash($message, $file, $line, $trace, $status = 500) {
+	protected static function crash($message, $file, $line, $trace, $status = '') {
 		$errmessage = substr($message, 0, 8000) . "\n";
 		$topic = "Wind Framework - Error Caught\n";
 		$_headers = Wind::getApp()->getResponse()->getHeaders();
@@ -95,20 +95,27 @@ class WindHelper {
 					$errsample = implode("\n", $fileLines) . "\n";
 				}
 			}
-			$errraised = "$file; line #$line\n";
-			$msg = "<pre>$errraised$errsample\n$errtrace</pre>";
-		} else {
-			$status !== '' && $topic = "$status - " . Wind::getApp()->getResponse()->codeMap(
-				$status) . "\n";
-			$msg = "<pre>The server encountered an internal error and failed to process your request.\nPlease try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message</pre>";
+			if ($_errhtml)
+				$errfile = "<b style=\"background:whiteSmoke\">$file</b>";
+			else
+				$errfile = "$file";
+			$msg = "$errfile\n$errsample\n$errtrace\n";
+		}
+		$msg .= "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
+		if ($status !== '') {
+			$topic = "$status - " . ucwords(Wind::getApp()->getResponse()->codeMap($status)) . "\n";
+			Wind::getApp()->getResponse()->setStatus($status);
 		}
 		if ($_errhtml) {
-			$errmessage = "<font style=\"background:whiteSmoke\">$errmessage</font>";
+			$errmessage = "<b style=\"background:whiteSmoke\">$errmessage</b>";
 			$topic = "<h3>$topic</h3>";
+			$msg = "<pre>$topic$errmessage\n$msg</pre>";
+		} else {
+			$msg = "$topic\n$errmessage\n$msg";
 		}
 		ob_end_flush();
 		Wind::getApp()->getResponse()->sendHeaders();
-		die($topic . $errmessage . $msg);
+		die($msg);
 	}
 
 	/**

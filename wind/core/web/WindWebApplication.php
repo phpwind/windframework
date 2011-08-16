@@ -91,7 +91,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			}
 			if (!($module = $this->windSystemConfig->getModules($moduleName)))
 				throw new WindException(
-					'[core.web.WindWebApplication.processRequest] The module \'' . $moduleName . '\' is not exist.');
+					'[core.web.WindWebApplication.processRequest] Your requested \'' . $moduleName . '\' was not found on this server.', 
+					'404');
 			$module = WindUtility::mergeArray(
 				$this->windSystemConfig->getDefaultConfigStruct('modules'), $module);
 			$handlerPath = $module['controller-path'] . '.' . ucfirst(
@@ -100,7 +101,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$handlerPath = trim($handlerPath, '.');
 			if (!$handlerPath)
 				throw new WindFinalException(
-					'[core.web.WindWebApplication.processRequest] handler path \'' . $handlerPath . '\' is not exist.');
+					'[core.web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
+					'404');
 			
 			if (strpos($handlerPath, ':') === false)
 				$handlerPath = Wind::getAppName() . ':' . $handlerPath;
@@ -124,8 +126,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
 		} catch (WindViewException $e) {
-			echo $e;
-			exit();
 			$this->sendErrorMessage($e->getMessage());
 		}
 	}
