@@ -12,6 +12,7 @@ define('WIND_PATH', dirname(__FILE__) . D_S);
 !defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
 !defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 0);
 define('DEBUG_TIME', microtime(true));
+
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -72,8 +73,8 @@ class Wind {
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (empty(self::$_currentApp)) throw new WindException('Get appName failed.', 
-			WindException::ERROR_SYSTEM_ERROR);
+		if (empty(self::$_currentApp))
+			throw new WindException('Get appName failed.', WindException::ERROR_SYSTEM_ERROR);
 		return end(self::$_currentApp);
 	}
 
@@ -109,8 +110,10 @@ class Wind {
 	 * @return string|null
 	 */
 	public static function import($filePath, $recursivePackage = false) {
-		if (!$filePath) return;
-		if (isset(self::$_imports[$filePath])) return self::$_imports[$filePath];
+		if (!$filePath)
+			return;
+		if (isset(self::$_imports[$filePath]))
+			return self::$_imports[$filePath];
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
 		elseif (($pos1 = strrpos($filePath, ':')) !== false)
@@ -121,8 +124,8 @@ class Wind {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealDir($filePath);
-			if (!$dh = opendir($dirPath)) throw new Exception(
-				'the file ' . $dirPath . ' open failed!');
+			if (!$dh = opendir($dirPath))
+				throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dirPath . D_S . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
@@ -156,16 +159,18 @@ class Wind {
 	 * @return 
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
-		if (!$path) return;
+		if (!$path)
+			return;
 		$alias = strtolower($alias);
 		if (!empty($alias)) {
-			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = $path;
+			if (!isset(self::$_namespace[$alias]) || $reset)
+				self::$_namespace[$alias] = $path;
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
 				self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(
-					self::$_includePaths[$pos]);
+				if (($pos = array_search('.', self::$_includePaths, true)) !== false)
+					unset(self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
 			if (set_include_path(
@@ -192,7 +197,8 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className])) $path = self::$_classes[$className];
+		if (isset(self::$_classes[$className]))
+			$path = self::$_classes[$className];
 		if ($path === '') {
 			throw new Exception('auto load ' . $className . ' failed.');
 		}
@@ -255,7 +261,8 @@ class Wind {
 	 * 初始化框架
 	 */
 	public static function init() {
-		if (IS_DEBUG) self::_checkEnvironment();
+		if (IS_DEBUG)
+			self::_checkEnvironment();
 		self::_setDefaultSystemNamespace();
 		self::_registerAutoloader();
 		self::_loadBaseLib();
@@ -316,69 +323,11 @@ class Wind {
 	}
 
 	/**
-	 * 错误处理句柄
-	 * @param string $errno
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param string $errline
-	 */
-	public static function errorHandle($errno, $errstr, $errfile, $errline) {
-		if ($errno & error_reporting()) {
-			restore_error_handler();
-			restore_exception_handler();
-			$message = $trace = '';
-			if (IS_DEBUG) {
-				$message = $errstr . '(' . $errfile . ' : ' . $errline . ')';
-				$_trace = debug_backtrace();
-				foreach ($_trace as $key => $value) {
-					if (!isset($value['file']) || !isset($value['line']) || !isset(
-						$value['function'])) continue;
-					$trace .= "#$key {$value['file']}({$value['line']}): ";
-					if (isset($value['object']) && is_object($value['object'])) $trace .= get_class(
-						$value['object']) . '->';
-					$trace .= "{$value['function']}()\r\n";
-				}
-			}
-			self::displayMessage($errstr, $message, $trace);
-		}
-	}
-
-	/**
-	 * 异常处理句柄
-	 * @param Exception $exception
-	 */
-	public static function exceptionHandle($exception) {
-		restore_error_handler();
-		restore_exception_handler();
-		$header = $message = $trace = '';
-		$header = $exception->getMessage();
-		if (IS_DEBUG) {
-			$message = $exception->getMessage() . '(' . $exception->getFile() . ' : ' . $exception->getLine() . ')';
-			$trace = $exception->getTraceAsString();
-		}
-		self::displayMessage($header, $message, $trace);
-	}
-
-	/**
-	 * @param string $header
-	 * @param string $message
-	 * @param string $trace
-	 */
-	protected static function displayMessage($header, $message = '', $trace = '') {
-		$_tmp = "<h4>$header</h4>";
-		$_tmp .= "<p>$message</p>";
-		$_tmp .= "<pre>$trace</pre>";
-		echo $_tmp;
-	}
-
-	/**
 	 * @return
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
-		set_error_handler('Wind::errorHandle');
-		set_exception_handler('Wind::exceptionHandle');
-		if (!$appName || in_array($appName, self::$_currentApp)) throw new WindException(
-			'Nested request', WindException::ERROR_SYSTEM_ERROR);
+		if (!$appName || in_array($appName, self::$_currentApp))
+			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
 		array_push(self::$_currentApp, $appName);
 	}
 
@@ -387,9 +336,8 @@ class Wind {
 	 */
 	protected static function afterRun($appName, $config, $rootPath) {
 		array_pop(self::$_currentApp);
-		if (self::$_logger) self::$_logger->flush();
-		restore_error_handler();
-		restore_exception_handler();
+		if (self::$_logger)
+			self::$_logger->flush();
 	}
 
 	/**
@@ -426,7 +374,8 @@ class Wind {
 			self::$_classes[$className] = $_classPath;
 		} else
 			$_classPath = self::$_classes[$className];
-		if (!self::$_isAutoLoad) self::autoLoad($className, $_classPath);
+		if (!self::$_isAutoLoad)
+			self::autoLoad($className, $_classPath);
 	}
 
 	/**
@@ -434,7 +383,8 @@ class Wind {
 	 * @return
 	 */
 	private static function _registerAutoloader() {
-		if (!self::$_isAutoLoad) return;
+		if (!self::$_isAutoLoad)
+			return;
 		if (function_exists('spl_autoload_register'))
 			spl_autoload_register('Wind::autoLoad');
 		else
@@ -469,4 +419,3 @@ define('COMPONENT_CONFIGPARSER', 'configParser');
 define('COMPONENT_CACHE', 'windCache');
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 //********************约定变量***********************************
-define('WIND_M_ERROR', 'windError');
