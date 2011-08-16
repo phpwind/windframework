@@ -29,68 +29,68 @@ class WindHttpResponse implements IWindResponse {
      * Server status codes; see RFC 2068.
      * Status code (100) indicating the client can continue.
      */
-	const SC_CONTINUE = 100;
+	const W_CONTINUE = 100;
 	
 	/**
 	 * Status code (101) indicating the server is switching protocols
 	 * according to Upgrade header.
 	 */
-	const SC_SWITCHING_PROTOCOLS = 101;
+	const W_SWITCHING_PROTOCOLS = 101;
 	
 	/**
 	 * Status code (200) indicating the request succeeded normally.
 	 */
-	const SC_OK = 200;
+	const W_OK = 200;
 	
 	/**
 	 * Status code (201) indicating the request succeeded and created
 	 * a new resource on the server.
 	 */
-	const SC_CREATED = 201;
+	const W_CREATED = 201;
 	
 	/**
 	 * Status code (202) indicating that a request was accepted for
 	 * processing, but was not completed.
 	 */
-	const SC_ACCEPTED = 202;
+	const W_ACCEPTED = 202;
 	
 	/**
 	 * Status code (203) indicating that the meta information presented
 	 * by the client did not originate from the server.
 	 */
-	const SC_NON_AUTHORITATIVE_INFORMATION = 203;
+	const W_NON_AUTHORITATIVE_INFORMATION = 203;
 	
 	/**
 	 * Status code (204) indicating that the request succeeded but that
 	 * there was no new information to return.
 	 */
-	const SC_NO_CONTENT = 204;
+	const W_NO_CONTENT = 204;
 	
 	/**
 	 * Status code (205) indicating that the agent <em>SHOULD</em> reset
 	 * the document view which caused the request to be sent.
 	 */
-	const SC_RESET_CONTENT = 205;
+	const W_RESET_CONTENT = 205;
 	
 	/**
 	 * Status code (206) indicating that the server has fulfilled
 	 * the partial GET request for the resource.
 	 */
-	const SC_PARTIAL_CONTENT = 206;
+	const W_PARTIAL_CONTENT = 206;
 	
 	/**
 	 * Status code (300) indicating that the requested resource
 	 * corresponds to any one of a set of representations, each with
 	 * its own specific location.
 	 */
-	const SC_MULTIPLE_CHOICES = 300;
+	const W_MULTIPLE_CHOICES = 300;
 	
 	/**
 	 * Status code (301) indicating that the resource has permanently
 	 * moved to a new location, and that future references should use a
 	 * new URI with their requests.
 	 */
-	const SC_MOVED_PERMANENTLY = 301;
+	const W_MOVED_PERMANENTLY = 301;
 	
 	/**
 	 * Status code (302) indicating that the resource has temporarily
@@ -98,9 +98,9 @@ class WindHttpResponse implements IWindResponse {
 	 * still use the original URI to access the resource.
 	 *
 	 * This definition is being retained for backwards compatibility.
-	 * SC_FOUND is now the preferred definition.
+	 * W_FOUND is now the preferred definition.
 	 */
-	const SC_MOVED_TEMPORARILY = 302;
+	const W_MOVED_TEMPORARILY = 302;
 	
 	/**
 	 * Status code (302) indicating that the resource reside
@@ -109,26 +109,26 @@ class WindHttpResponse implements IWindResponse {
 	 * Request-URI for future requests.(HTTP/1.1) To represent the
 	 * status code (302), it is recommended to use this variable.
 	 */
-	const SC_FOUND = 302;
+	const W_FOUND = 302;
 	
 	/**
 	 * Status code (303) indicating that the response to the request
 	 * can be found under a different URI.
 	 */
-	const SC_SEE_OTHER = 303;
+	const W_SEE_OTHER = 303;
 	
 	/**
 	 * Status code (304) indicating that a conditional GET operation
 	 * found that the resource was available and not modified.
 	 */
-	const SC_NOT_MODIFIED = 304;
+	const W_NOT_MODIFIED = 304;
 	
 	/**
 	 * Status code (305) indicating that the requested resource
 	 * <em>MUST</em> be accessed through the proxy given by the
 	 * <code><em>Location</em></code> field.
 	 */
-	const SC_USE_PROXY = 305;
+	const W_USE_PROXY = 305;
 	
 	/**
 	 * Status code (307) indicating that the requested resource 
@@ -136,43 +136,43 @@ class WindHttpResponse implements IWindResponse {
 	 * <em>SHOULD</em> be given by the <code><em>Location</em></code> 
 	 * field in the response.
 	 */
-	const SC_TEMPORARY_REDIRECT = 307;
+	const W_TEMPORARY_REDIRECT = 307;
 	
 	/**
 	 * Status code (400) indicating the request sent by the client was
 	 * syntactically incorrect.
 	 */
-	const SC_BAD_REQUEST = 400;
+	const W_BAD_REQUEST = 400;
 	
 	/**
 	 * Status code (401) indicating that the request requires HTTP
 	 * authentication.
 	 */
-	const SC_UNAUTHORIZED = 401;
+	const W_UNAUTHORIZED = 401;
 	
 	/**
 	 * Status code (402) reserved for future use.
 	 */
-	const SC_PAYMENT_REQUIRED = 402;
+	const W_PAYMENT_REQUIRED = 402;
 	
 	/**
 	 * Status code (403) indicating the server understood the request
 	 * but refused to fulfill it.
 	 */
-	const SC_FORBIDDEN = 403;
+	const W_FORBIDDEN = 403;
 	
 	/**
 	 * Status code (404) indicating that the requested resource is not
 	 * available.
 	 */
-	const SC_NOT_FOUND = 404;
+	const W_NOT_FOUND = 404;
 	
 	/**
 	 * Status code (405) indicating that the method specified in the
 	 * <code><em>Request-Line</em></code> is not allowed for the resource
 	 * identified by the <code><em>Request-URI</em></code>.
 	 */
-	const SC_METHOD_NOT_ALLOWED = 405;
+	const W_METHOD_NOT_ALLOWED = 405;
 	
 	/**
 	 * Status code (406) indicating that the resource identified by the
@@ -180,118 +180,137 @@ class WindHttpResponse implements IWindResponse {
 	 * content characteristics not acceptable according to the accept
 	 * headers sent in the request.
 	 */
-	const SC_NOT_ACCEPTABLE = 406;
+	const W_NOT_ACCEPTABLE = 406;
 	
 	/**
 	 * Status code (407) indicating that the client <em>MUST</em> first
 	 * authenticate itself with the proxy.
 	 */
-	const SC_PROXY_AUTHENTICATION_REQUIRED = 407;
+	const W_PROXY_AUTHENTICATION_REQUIRED = 407;
 	
 	/**
 	 * Status code (408) indicating that the client did not produce a
 	 * request within the time that the server was prepared to wait.
 	 */
-	const SC_REQUEST_TIMEOUT = 408;
+	const W_REQUEST_TIMEOUT = 408;
 	
 	/**
 	 * Status code (409) indicating that the request could not be
 	 * completed due to a conflict with the current state of the
 	 * resource.
 	 */
-	const SC_CONFLICT = 409;
+	const W_CONFLICT = 409;
 	
 	/**
 	 * Status code (410) indicating that the resource is no longer
 	 * available at the server and no forwarding address is known.
 	 * This condition <em>SHOULD</em> be considered permanent.
 	 */
-	const SC_GONE = 410;
+	const W_GONE = 410;
 	
 	/**
 	 * Status code (411) indicating that the request cannot be handled
 	 * without a defined <code><em>Content-Length</em></code>.
 	 */
-	const SC_LENGTH_REQUIRED = 411;
+	const W_LENGTH_REQUIRED = 411;
 	
 	/**
 	 * Status code (412) indicating that the precondition given in one
 	 * or more of the request-header fields evaluated to false when it
 	 * was tested on the server.
 	 */
-	const SC_PRECONDITION_FAILED = 412;
+	const W_PRECONDITION_FAILED = 412;
 	
 	/**
 	 * Status code (413) indicating that the server is refusing to process
 	 * the request because the request entity is larger than the server is
 	 * willing or able to process.
 	 */
-	const SC_REQUEST_ENTITY_TOO_LARGE = 413;
+	const W_REQUEST_ENTITY_TOO_LARGE = 413;
 	
 	/**
 	 * Status code (414) indicating that the server is refusing to service
 	 * the request because the <code><em>Request-URI</em></code> is longer
 	 * than the server is willing to interpret.
 	 */
-	const SC_REQUEST_URI_TOO_LONG = 414;
+	const W_REQUEST_URI_TOO_LONG = 414;
 	
 	/**
 	 * Status code (415) indicating that the server is refusing to service
 	 * the request because the entity of the request is in a format not
 	 * supported by the requested resource for the requested method.
 	 */
-	const SC_UNSUPPORTED_MEDIA_TYPE = 415;
+	const W_UNSUPPORTED_MEDIA_TYPE = 415;
 	
 	/**
 	 * Status code (416) indicating that the server cannot serve the
 	 * requested byte range.
 	 */
-	const SC_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+	const W_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
 	
 	/**
 	 * Status code (417) indicating that the server could not meet the
 	 * expectation given in the Expect request header.
 	 */
-	const SC_EXPECTATION_FAILED = 417;
+	const W_EXPECTATION_FAILED = 417;
 	
 	/**
 	 * Status code (500) indicating an error inside the HTTP server
 	 * which prevented it from fulfilling the request.
 	 */
-	const SC_INTERNAL_SERVER_ERROR = 500;
+	const W_INTERNAL_SERVER_ERROR = 500;
 	
 	/**
 	 * Status code (501) indicating the HTTP server does not support
 	 * the functionality needed to fulfill the request.
 	 */
-	const SC_NOT_IMPLEMENTED = 501;
+	const W_NOT_IMPLEMENTED = 501;
 	
 	/**
 	 * Status code (502) indicating that the HTTP server received an
 	 * invalid response from a server it consulted when acting as a
 	 * proxy or gateway.
 	 */
-	const SC_BAD_GATEWAY = 502;
+	const W_BAD_GATEWAY = 502;
 	
 	/**
 	 * Status code (503) indicating that the HTTP server is
 	 * temporarily overloaded, and unable to handle the request.
 	 */
-	const SC_SERVICE_UNAVAILABLE = 503;
+	const W_SERVICE_UNAVAILABLE = 503;
 	
 	/**
 	 * Status code (504) indicating that the server did not receive
 	 * a timely response from the upstream server while acting as
 	 * a gateway or proxy.
 	 */
-	const SC_GATEWAY_TIMEOUT = 504;
+	const W_GATEWAY_TIMEOUT = 504;
 	
 	/**
 	 * Status code (505) indicating that the server does not support
 	 * or refuses to support the HTTP protocol version that was used
 	 * in the request message.
 	 */
-	const SC_HTTP_VERSION_NOT_SUPPORTED = 505;
+	const W_HTTP_VERSION_NOT_SUPPORTED = 505;
+
+	public function codeMap($code) {
+		$map = array(505 => 'HTTP VERSION NOT SUPPORTED', 504 => 'GATEWAY TIMEOUT', 
+			503 => 'SERVICE UNAVAILABLE', 503 => 'BAD GATEWAY', 502 => 'BAD GATEWAY', 
+			501 => 'NOT IMPLEMENTED', 500 => 'INTERNAL SERVER ERROR', 417 => 'EXPECTATION FAILED', 
+			416 => 'REQUESTED RANGE NOT SATISFIABLE', 415 => 'UNSUPPORTED MEDIA TYPE', 
+			414 => 'REQUEST URI TOO LONG', 413 => 'REQUEST ENTITY TOO LARGE', 
+			412 => 'PRECONDITION FAILED', 411 => 'LENGTH REQUIRED', 410 => 'GONE', 409 => 'CONFLICT', 
+			408 => 'REQUEST TIMEOUT', 407 => 'PROXY AUTHENTICATION REQUIRED', 
+			406 => 'NOT ACCEPTABLE', 405 => 'METHOD NOT ALLOWED', 404 => 'NOT FOUND', 
+			403 => 'FORBIDDEN', 402 => 'PAYMENT REQUIRED', 401 => 'UNAUTHORIZED', 
+			400 => 'BAD REQUEST', 300 => 'MULTIPLE CHOICES', 301 => 'MOVED PERMANENTLY', 
+			302 => 'MOVED TEMPORARILY', 302 => 'FOUND', 303 => 'SEE OTHER', 304 => 'NOT MODIFIED', 
+			305 => 'USE PROXY', 307 => 'TEMPORARY REDIRECT', 100 => 'CONTINUE', 
+			101 => 'WITCHING PROTOCOLS', 200 => 'OK', 201 => 'CREATED', 202 => 'ACCEPTED', 
+			203 => 'NON AUTHORITATIVE INFORMATION', 204 => 'NO CONTENT', 205 => 'RESET CONTENT', 
+			206 => 'PARTIAL CONTENT');
+		return isset($map[$code]) ? $map[$code] : 'UNKNOWN ERROR';
+	}
 
 	/**
 	 * 设置响应头信息，如果已经设置过同名的响应头，该方法将用新的设置取代原来的头字段
@@ -303,9 +322,17 @@ class WindHttpResponse implements IWindResponse {
 		if (!$name || !$value)
 			return;
 		$name = $this->_normalizeHeader($name);
+		$setted = false;
 		foreach ($this->_headers as $key => $one) {
-			($one['name'] == $name) && $this->_headers[$key] = array('name' => $name, 
-				'value' => $value, 'replace' => $replace);
+			if ($one['name'] == $name && $replace === false) {
+				$this->_headers[$key] = array('name' => $name, 
+					'value' => $value . '; ' . $one['value'], 'replace' => $replace);
+				$setted = true;
+				break;
+			}
+		}
+		if ($setted === false) {
+			$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 		}
 	}
 
@@ -365,7 +392,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param int $status
 	 * @param string $message
 	 */
-	public function sendError($status = self::SC_NOT_FOUND, $message = '') {
+	public function sendError($status = self::W_NOT_FOUND, $message = '') {
 		if (!is_int($status) || $status < 400 || $status > 505)
 			return;
 		$this->setBody($message, 'error');
@@ -406,7 +433,7 @@ class WindHttpResponse implements IWindResponse {
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
-		header('HTTP/1.1 ' . $this->_status);
+		header('HTTP/1.1 ' . $this->_status . " " . $this->codeMap($this->_status));
 	}
 
 	/**
