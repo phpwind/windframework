@@ -26,8 +26,10 @@ class WindString {
 	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = self::UTF8, $dot = false) {
-		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr($string, $start, $length, $dot);
+		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr(
+			$string, $start, $length, $dot);
 	}
+
 	/**
 	 * 求取字符串长度
 	 * @param string $string  要计算的字符串编码
@@ -43,6 +45,7 @@ class WindString {
 		}
 		return $count;
 	}
+
 	/**
 	 * 将变量的值转换为字符串
 	 *
@@ -57,7 +60,8 @@ class WindString {
 			case 'array':
 				$output = "array(\r\n";
 				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString($value, $indent . "\t");
+					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString(
+						$value, $indent . "\t");
 					$output .= ",\r\n";
 				}
 				$output .= $indent . ')';
@@ -73,7 +77,7 @@ class WindString {
 		}
 		return 'NULL';
 	}
-	
+
 	public static function jsonEncode($value) {
 		if (!function_exists('json_encode')) {
 			Wind::import('Wind:component.utility.json.WindEncoder');
@@ -81,7 +85,7 @@ class WindString {
 		}
 		return json_encode($value);
 	}
-	
+
 	public static function jsonDecode($value) {
 		if (!function_exists('json_decode')) {
 			Wind::import('Wind:component.utility.json.WindEncoder');
@@ -89,7 +93,7 @@ class WindString {
 		}
 		return json_decode($value);
 	}
-	
+
 	public static function jsonSimpleEncode($var) {
 		switch (gettype($var)) {
 			case 'boolean':
@@ -102,12 +106,14 @@ class WindString {
 			case 'float':
 				return (float) $var;
 			case 'string':
-				return '"' . addslashes(str_replace(array("\n", "\r", "\t"), '', addcslashes($var, '\\"'))) . '"';
+				return '"' . addslashes(
+					str_replace(array("\n", "\r", "\t"), '', addcslashes($var, '\\"'))) . '"';
 			case 'array':
 				if (count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
 					$properties = array();
 					foreach ($var as $name => $value) {
-						$properties[] = self::jsonSimpleEncode(strval($name)) . ':' . self::jsonSimpleEncode($value);
+						$properties[] = self::jsonSimpleEncode(strval($name)) . ':' . self::jsonSimpleEncode(
+							$value);
 					}
 					return '{' . join(',', $properties) . '}';
 				}
@@ -116,7 +122,7 @@ class WindString {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 以utf8格式截取的字符串编码
 	 * @param string $string  要截取的字符串编码
@@ -155,6 +161,7 @@ class WindString {
 		(strlen($substr) < $strlen) && $dot && $substr .= "...";
 		return $substr;
 	}
+
 	/**
 	 * 以utf8求取字符串长度
 	 * @param string $str     要计算的字符串编码
@@ -167,7 +174,8 @@ class WindString {
 			$chr = ord($str[$i]);
 			$count++;
 			$i++;
-			if ($i >= $len) break;
+			if ($i >= $len)
+				break;
 			if ($chr & 0x80) {
 				$chr <<= 1;
 				while ($chr & 0x80) {
@@ -178,7 +186,7 @@ class WindString {
 		}
 		return $count;
 	}
-	
+
 	/* 以gbk格式截取的字符串编码
 	 * @param string $string  要截取的字符串编码
 	 * @param int $start      开始截取
@@ -216,7 +224,7 @@ class WindString {
 		(strlen($substr) < $strlen) && $dot && $substr .= "...";
 		return $substr;
 	}
-	
+
 	/**
 	 * 以gbk求取字符串长度
 	 * @param string $str     要计算的字符串编码
