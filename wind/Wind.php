@@ -81,7 +81,7 @@ class Wind {
 	 * 返回当前的app应用
 	 * 
 	 * @param string $appName
-	 * @return WindFrontController
+	 * @return WindWebApplication
 	 */
 	public static function getApp() {
 		$_appName = self::getAppName();
@@ -197,7 +197,7 @@ class Wind {
 			throw new Exception('auto load ' . $className . ' failed.');
 		}
 		$path .= '.' . self::$_extensions;
-		if ((include $path) === false) {
+		if ((@include $path) === false) {
 			throw new Exception('[wind.Wind.autoLoad] auto load class ' . $className . ' failed.');
 		}
 	}
