@@ -9,6 +9,4 @@
 	<compile-dir>data.template</compile-dir>
 	<!-- 是否开启缓存 -->
 	<is-cache>false</is-cache>
-	<!-- 如果开启缓存，那么系统将会用cache-class指定的缓存组件初始化cache对象 -->
-	<cache-class></cache-class>
 </WIND>
