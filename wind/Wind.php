@@ -202,10 +202,9 @@ class Wind {
 		if ($path === '')
 			throw new Exception('auto load ' . $className . ' failed.');
 		$path .= '.' . self::$_extensions;
-		if ((@include $path) === false) {
+		if ((@include $path) === false)
 			throw new Exception(
 				'[wind.Wind.autoLoad] Your requested \'' . $path . '\' was not found on this server.');
-		}
 	}
 
 	/**
