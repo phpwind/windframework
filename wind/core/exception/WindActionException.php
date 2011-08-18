@@ -13,9 +13,9 @@ class WindActionException extends WindException {
 	/**
 	 * @param WindErrorMessage $error
 	 */
-	public function __construct($error) {
+	public function __construct($error, $code = 0) {
 		$this->setError($error);
-		parent::__construct('');
+		parent::__construct($error->getError(0), $code);
 	}
 
 	/**
