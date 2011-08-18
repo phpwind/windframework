@@ -32,7 +32,6 @@ class Wind {
 
 	/**
 	 * 加载应用
-	 * 
 	 * @param string $appName
 	 * @param string $config
 	 * @throws WindException
@@ -59,17 +58,7 @@ class Wind {
 	}
 
 	/**
-	 * 开发环境脚本入口
-	 */
-	public static function runWithCompile($appName = 'default', $config = '') {
-		require_once (self::getRealPath('WIND:_compile.compile'));
-		self::run($appName, $config);
-	
-	}
-
-	/**
 	 * 返回当前appName
-	 * 
 	 * @return string
 	 */
 	public static function getAppName() {
@@ -80,7 +69,6 @@ class Wind {
 
 	/**
 	 * 返回当前的app应用
-	 * 
 	 * @param string $appName
 	 * @return WindWebApplication
 	 */
@@ -392,10 +380,10 @@ class Wind {
 
 	/**
 	 * 加载核心层库函数
-	 * 
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
+		
 		self::$_classes = array('WindLogger' => 'log/WindLogger', 
 			'WindActionException' => 'core/exception/WindActionException', 
 			'WindException' => 'core/exception/WindException', 
