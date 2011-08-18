@@ -199,9 +199,8 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if (isset(self::$_classes[$className]))
 			$path = self::$_classes[$className];
-		if ($path === '') {
+		if ($path === '')
 			throw new Exception('auto load ' . $className . ' failed.');
-		}
 		$path .= '.' . self::$_extensions;
 		if ((@include $path) === false) {
 			throw new Exception(
@@ -398,48 +397,44 @@ class Wind {
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		self::$_classes = array(
-	'WindLogger' => 'log/WindLogger',
-	'WindActionException' => 'core/exception/WindActionException',
-	'WindException' => 'core/exception/WindException',
-	'WindFinalException' => 'core/exception/WindFinalException',
-	'IWindFactory' => 'core/factory/IWindFactory',
-	'WindClassProxy' => 'core/factory/proxy/WindClassProxy',
-	'WindFactory' => 'core/factory/WindFactory',
-	'IWindApplication' => 'core/IWindApplication',
-	'IWindController' => 'core/IWindController',
-	'IWindErrorMessage' => 'core/IWindErrorMessage',
-	'WindUrlFilter' => 'core/web/filter/WindUrlFilter',
-	'WindFormListener' => 'core/web/listener/WindFormListener',
-	'WindLoggerListener' => 'core/web/listener/WindLoggerListener',
-	'WindValidateListener' => 'core/web/listener/WindValidateListener',
-	'WindController' => 'core/web/WindController',
-	'WindDispatcher' => 'core/web/WindDispatcher',
-	'WindErrorHandler' => 'core/web/WindErrorHandler',
-	'WindErrorMessage' => 'core/web/WindErrorMessage',
-	'WindForward' => 'core/web/WindForward',
-	'WindHelper' => 'core/web/WindHelper',
-	'WindSimpleController' => 'core/web/WindSimpleController',
-	'WindSystemConfig' => 'core/web/WindSystemConfig',
-	'WindUrlHelper' => 'core/web/WindUrlHelper',
-	'WindWebApplication' => 'core/web/WindWebApplication',
-	'WindEnableValidateModule' => 'core/WindEnableValidateModule',
-	'WindModule' => 'core/WindModule',
-	'WindFilter' => 'filter/WindFilter',
-	'WindFilterChain' => 'filter/WindFilterChain',
-	'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor',
-	'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain',
-	'WindConfigParser' => 'parser/WindConfigParser',
-	'IWindRequest' => 'http/request/IWindRequest',
-	'WindHttpRequest' => 'http/request/WindHttpRequest',
-	'IWindResponse' => 'http/response/IWindResponse',
-	'WindHttpResponse' => 'http/response/WindHttpResponse',
-	'AbstractWindRouter' => 'router/AbstractWindRouter',
-	'AbstractWindRoute' => 'router/route/AbstractWindRoute',
-	'WindRewriteRoute' => 'router/route/WindRewriteRoute',
-	'WindRoute' => 'router/route/WindRoute',
-	'WindRouter' => 'router/WindRouter',
-	'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter');
+		self::$_classes = array('WindLogger' => 'log/WindLogger', 
+			'WindActionException' => 'core/exception/WindActionException', 
+			'WindException' => 'core/exception/WindException', 
+			'WindFinalException' => 'core/exception/WindFinalException', 
+			'IWindFactory' => 'core/factory/IWindFactory', 
+			'WindClassProxy' => 'core/factory/proxy/WindClassProxy', 
+			'WindFactory' => 'core/factory/WindFactory', 
+			'IWindApplication' => 'core/IWindApplication', 
+			'IWindController' => 'core/IWindController', 
+			'IWindErrorMessage' => 'core/IWindErrorMessage', 
+			'WindUrlFilter' => 'core/web/filter/WindUrlFilter', 
+			'WindFormListener' => 'core/web/listener/WindFormListener', 
+			'WindLoggerListener' => 'core/web/listener/WindLoggerListener', 
+			'WindValidateListener' => 'core/web/listener/WindValidateListener', 
+			'WindController' => 'core/web/WindController', 
+			'WindDispatcher' => 'core/web/WindDispatcher', 
+			'WindErrorHandler' => 'core/web/WindErrorHandler', 
+			'WindErrorMessage' => 'core/web/WindErrorMessage', 
+			'WindForward' => 'core/web/WindForward', 'WindHelper' => 'core/web/WindHelper', 
+			'WindSimpleController' => 'core/web/WindSimpleController', 
+			'WindSystemConfig' => 'core/web/WindSystemConfig', 
+			'WindUrlHelper' => 'core/web/WindUrlHelper', 
+			'WindWebApplication' => 'core/web/WindWebApplication', 
+			'WindEnableValidateModule' => 'core/WindEnableValidateModule', 
+			'WindModule' => 'core/WindModule', 'WindFilter' => 'filter/WindFilter', 
+			'WindFilterChain' => 'filter/WindFilterChain', 
+			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
+			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
+			'WindConfigParser' => 'parser/WindConfigParser', 
+			'IWindRequest' => 'http/request/IWindRequest', 
+			'WindHttpRequest' => 'http/request/WindHttpRequest', 
+			'IWindResponse' => 'http/response/IWindResponse', 
+			'WindHttpResponse' => 'http/response/WindHttpResponse', 
+			'AbstractWindRouter' => 'router/AbstractWindRouter', 
+			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
+			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 
+			'WindRoute' => 'router/route/WindRoute', 'WindRouter' => 'router/WindRouter', 
+			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter');
 	}
 }
 Wind::init();
