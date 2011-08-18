@@ -53,9 +53,8 @@ class WindHelper {
 	 * @param string $line
 	 * @param array $trace
 	 */
-	protected static function crash($message, $file, $line, $trace, $status = '') {
+	protected static function crash($message, $file, $line, $trace, $status = 0) {
 		$errmessage = substr($message, 0, 8000) . "\n";
-		$topic = "Wind Framework - Error Caught\n";
 		$_headers = Wind::getApp()->getResponse()->getHeaders();
 		$_errhtml = false;
 		foreach ($_headers as $_header) {
@@ -64,6 +63,7 @@ class WindHelper {
 				break;
 			}
 		}
+		$msg = '';
 		if (IS_DEBUG) {
 			$errtrace = "__Stack:\n";
 			$count = count($trace);
@@ -102,19 +102,19 @@ class WindHelper {
 			$msg = "$errfile\n$errsample\n$errtrace\n";
 		}
 		$msg .= "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
-		if ($status !== '') {
-			$topic = "$status - " . ucwords(Wind::getApp()->getResponse()->codeMap($status)) . "\n";
-			Wind::getApp()->getResponse()->setStatus($status);
-		}
+		if ($status >= 400 && $status <= 505) {
+			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
+			$topic = "$status - " . $_statusMsg . "\n";
+			header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
+			header('Status: ' . $status . ' ' . $_statusMsg);
+		} else
+			$topic = "Wind Framework - Error Caught\n";
 		if ($_errhtml) {
-			$errmessage = "<b style=\"background:whiteSmoke\">$errmessage</b>";
-			$topic = "<h3>$topic</h3>";
-			$msg = "<pre>$topic$errmessage\n$msg</pre>";
-		} else {
+			$msg = "<html><head><title>$topic</title></head><body><pre><h3>$topic</h3><b style=\"background:whiteSmoke\">$errmessage</b>\n$msg</pre></body></html>";
+		} else
 			$msg = "$topic\n$errmessage\n$msg";
-		}
-		ob_end_flush();
-		Wind::getApp()->getResponse()->sendHeaders();
+		
+		ob_end_clean();
 		die($msg);
 	}
 

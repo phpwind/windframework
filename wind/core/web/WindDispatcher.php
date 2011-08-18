@@ -16,10 +16,6 @@ class WindDispatcher extends WindModule {
 	 */
 	protected $processCache = array();
 	/**
-	 * @var WindUrlHelper
-	 */
-	protected $urlHelper = null;
-	/**
 	 * @var boolean
 	 */
 	protected $display = false;
@@ -29,14 +25,15 @@ class WindDispatcher extends WindModule {
 	 * 
 	 * @param WindForward $forward
 	 * @param WindUrlBasedRouter $router
+	 * @param boolean $display
 	 * @return
 	 */
-	public function dispatch($forward, $router) {
+	public function dispatch($forward, $router, $display) {
 		$this->checkProcess($router, false);
 		if ($forward->getIsRedirect())
 			$this->dispatchWithRedirect($forward, $router);
 		elseif ($forward->getIsReAction())
-			$this->dispatchWithAction($forward, $router);
+			$this->dispatchWithAction($forward, $router, $display);
 		else
 			$this->render($forward, $router);
 	}
@@ -65,19 +62,29 @@ class WindDispatcher extends WindModule {
 
 	/**
 	 * 请求分发一个操作请求
+	 * module/controller/action/?param
 	 * @param WindForward $forward
-	 * @param WindUrlBasedRouter $router
+	 * @param WindRouter $router
+	 * @param boolean $display
 	 * @return
 	 */
-	protected function dispatchWithAction($forward, $router) {
-		//TODO 是否需要缓存上次请求的变量信息
-		$this->getRequest()->setAttribute($forward->getVars());
-		$this->setDisplay($forward->getDisplay());
-		list($_c, $_m) = WindHelper::resolveController($forward->getController());
-		$_a = $forward->getAction();
-		$_a && $router->setAction($_a);
-		$_c && $router->setController($_c);
-		$_m && $router->setModule($_m);
+	protected function dispatchWithAction($forward, $router, $display) {
+		if (!$action = $forward->getAction())
+			throw new WindException('[core.web.WindDispatcher.dispatchWithAction] forward fail.', 
+				WindException::ERROR_PARAMETER_TYPE_ERROR);
+		
+		$args = $forward->getArgs();
+		$this->display = $display;
+		list($action, $_args) = explode('?', $action . '?');
+		$action = trim($action, '/') . '/';
+		$action = explode('/', $action);
+		end($action);
+		if ($_tmp = prev($action))
+			$router->setAction($_tmp);
+		if ($_tmp = prev($action))
+			$router->setController($_tmp);
+		if ($_tmp = prev($action))
+			$router->setModule($_tmp);
 		if (!$this->checkProcess($router)) {
 			throw new WindFinalException(
 				'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $router->getController() . ',' . $router->getAction(), 
@@ -113,16 +120,9 @@ class WindDispatcher extends WindModule {
 			$this->processCache['action'] = $router->getAction();
 			$this->processCache['controller'] = $router->getController();
 			$this->processCache['module'] = $router->getModule();
-		} elseif ($router->getAction() === $this->processCache['action'] && $router->getController() === $this->processCache['controller'] && $router->getModule() === $this->processCache['module'])
+		} elseif ($router->getAction() === @$this->processCache['action'] && $router->getController() === @$this->processCache['controller'] && $router->getModule() === @$this->processCache['module'])
 			return false;
 		return true;
-	}
-
-	/**
-	 * @return WindUrlHelper
-	 */
-	public function getUrlHelper() {
-		return $this->_getUrlHelper();
 	}
 
 }

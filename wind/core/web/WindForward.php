@@ -64,7 +64,6 @@ class WindForward extends WindModule {
 	private $action;
 	private $controller;
 	private $args;
-	private $display = false;
 
 	/**
 	 * 将请求重定向到另外一个Action操作
@@ -79,6 +78,23 @@ class WindForward extends WindModule {
 		$this->setIsReAction(true);
 		$this->setAction($action);
 		$this->setController($controller);
+		$this->setArgs($args);
+		$this->setIsRedirect($isRedirect);
+	}
+
+	/**
+	 * 将请求重定向到另外一个Action操作
+	 * $action参数支持:
+	 * module/controller/action/?a=&b=&c=
+	 * 
+	 * @param string $action | $action 操作
+	 * @param array $args | 参数
+	 * @param boolean $isRedirect | 是否重定向
+	 * @return
+	 */
+	public function forwardAction($action, $args = array(), $isRedirect = false) {
+		$this->setIsReAction(true);
+		$this->setAction($action);
 		$this->setArgs($args);
 		$this->setIsRedirect($isRedirect);
 	}
@@ -260,19 +276,4 @@ class WindForward extends WindModule {
 	public function setWindView($windView) {
 		$this->windView = $windView;
 	}
-
-	/**
-	 * @return the $display
-	 */
-	public function getDisplay() {
-		return $this->display;
-	}
-
-	/**
-	 * @param field_type $display
-	 */
-	public function setDisplay($display) {
-		$this->display = $display;
-	}
-
 }

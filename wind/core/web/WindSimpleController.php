@@ -59,11 +59,9 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$method = $this->resolvedActionMethod($handlerAdapter);
-		Wind::log(
-			'[core.web.controller.WindSimpleController.doAction] resolved action method:' . $method, 
-			WindLogger::LEVEL_INFO, 'wind.core');
 		call_user_func_array(array($this, $method), array());
-		$this->getErrorMessage()->sendError();
+		if ($this->errorMessage !== null)
+			$this->getErrorMessage()->sendError();
 		$this->afterAction($handlerAdapter);
 		return $this->forward;
 	}
@@ -193,13 +191,11 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @param string $message
 	 * @param string $key
 	 * @param string $errorAction
-	 * @param string $errorController
 	 * @return 
 	 */
-	protected function showMessage($message = '', $key = '', $errorAction = '', $errorController = '') {
+	protected function showMessage($message = '', $key = '', $errorAction = '') {
 		$this->addMessage($message, $key);
 		$this->getErrorMessage()->setErrorAction($errorAction);
-		$this->getErrorMessage()->setErrorController($errorController);
 		$this->getErrorMessage()->sendError();
 	}
 

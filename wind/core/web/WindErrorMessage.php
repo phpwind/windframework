@@ -7,19 +7,14 @@
  */
 class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	private $error = array();
-	private $errorAction = 'run';
-	/**
-	 * @var string
-	 */
-	private $errorController = 'windError';
+	private $errorAction;
 
 	/**
 	 * @param string $message
 	 */
-	public function __construct($message = '', $errorAction = '', $errorController = '') {
-		$this->addError($message);
-		$this->setErrorAction($errorAction);
-		$this->setErrorController($errorController);
+	public function __construct($message = '', $errorAction = '') {
+		$message !== '' && $this->addError($message);
+		$errorAction !== '' && $this->setErrorAction($errorAction);
 	}
 
 	/* (non-PHPdoc)
@@ -44,16 +39,13 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	public function getError($key = '') {
 		if ($key === '')
 			return $this->error;
-		else
-			return isset($this->error[$key]) ? $this->error[$key] : '';
+		return isset($this->error[$key]) ? $this->error[$key] : '';
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindErrorMessage::addError()
 	 */
 	public function addError($error, $key = '') {
-		if (!$error)
-			return;
 		if ($key === '') {
 			if (is_string($error))
 				$this->error[] = $error;
@@ -73,25 +65,11 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	}
 
 	/**
-	 * @return the $errorController
-	 */
-	public function getErrorController() {
-		return $this->errorController;
-	}
-
-	/**
-	 * @param field_type $errorAction
+	 * /module/controller/action/?a=b&c=a
+	 * @param string $errorAction
 	 */
 	public function setErrorAction($errorAction) {
-		if ($errorAction)
-			$this->errorAction = $errorAction;
+		$this->errorAction = $errorAction;
 	}
 
-	/**
-	 * @param field_type $errorController
-	 */
-	public function setErrorController($errorController) {
-		if ($errorController)
-			$this->errorController = $errorController;
-	}
 }

@@ -139,13 +139,15 @@ class WindSystemConfig extends WindModule {
 	 * @return
 	 */
 	public function setModules($name, $config = array()) {
-		if (isset($this->_config['modules'][$name]))
-			return;
+		if (!$_default = @$this->_config['modules']['default']) {
+			$_default = $this->getDefaultConfigStruct('modules');
+			$this->_config['modules']['default'] = $_default;
+		}
 		if (!$config)
-			$this->_config['modules'][$name] = $this->getDefaultConfigStruct('modules');
+			$this->_config['modules'][$name] = $_default;
 		else
-			$this->_config['modules'][$name] = WindUtility::mergeArray(
-				$this->getDefaultConfigStruct('modules'), $config);
+			$this->_config['modules'][$name] = WindUtility::mergeArray($_default, $config);
+		return $this->_config['modules'][$name];
 	}
 
 	/**
@@ -155,15 +157,6 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getModuleTemplateDir($name, $default = '') {
 		return $this->getConfig('template-dir', '', $default, $this->getModules($name));
-	}
-
-	/**
-	 * 根据module名称返回module的视图配置信息
-	 * @param string $name
-	 * @param string $default
-	 */
-	public function getModuleViewConfig($name, $default = '') {
-		return $this->getConfig('view', 'config', $default, $this->getModules($name));
 	}
 
 	/**
@@ -240,8 +233,11 @@ class WindSystemConfig extends WindModule {
 	 */
 	public function getDefaultConfigStruct($configName) {
 		$_tmp = array();
-		$_tmp['modules'] = array('controller-path' => 'controller', 
-			'controller-suffix' => 'Controller', 'error-handler' => 'WIND:core.web.WindErrorHandler');
+		$_tmp['modules']['controller-path'] = $this->getConfig('controller-path', '', 'controller');
+		$_tmp['modules']['controller-suffix'] = $this->getConfig('controller-suffix', '', 
+			'Controller');
+		$_tmp['modules']['error-handler'] = $this->getConfig('error-handler', '', 
+			'WIND:core.web.WindErrorHandler');
 		return $configName ? (isset($_tmp[$configName]) ? $_tmp[$configName] : array()) : array();
 	}
 }
