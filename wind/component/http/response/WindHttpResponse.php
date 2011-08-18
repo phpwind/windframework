@@ -324,16 +324,15 @@ class WindHttpResponse implements IWindResponse {
 		$name = $this->_normalizeHeader($name);
 		$setted = false;
 		foreach ($this->_headers as $key => $one) {
-			if ($one['name'] == $name && $replace === false) {
-				$this->_headers[$key] = array('name' => $name, 
-					'value' => $value . '; ' . $one['value'], 'replace' => $replace);
+			if ($one['name'] == $name) {
+				$this->_headers[$key] = array('name' => $name, 'value' => $value, 
+					'replace' => $replace);
 				$setted = true;
 				break;
 			}
 		}
-		if ($setted === false) {
+		if ($setted === false)
 			$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
-		}
 	}
 
 	/**
