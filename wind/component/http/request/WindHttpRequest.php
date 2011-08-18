@@ -528,8 +528,7 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	public function getResponse() {
 		$response = new WindHttpResponse();
-		$response->setHeader('Content-type', 'text/html');
-		$response->setHeader('Content-type', 'charset=UTF-8');
+		$response->setHeader('Content-type', 'text/html;charset=UTF-8');
 		return $response;
 	}
 

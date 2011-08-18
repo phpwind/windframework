@@ -87,10 +87,10 @@ class WindViewerResolver implements IWindViewerResolver {
 	 */
 	protected function render($template) {
 		list($_tmp, $_output) = $this->compile($template);
-		$_var = Wind::getApp()->getResponse()->getData('G');
+		/*$_var = Wind::getApp()->getResponse()->getData('G');
 		if (isset($this->vars[$template]))
-			$_var += $this->vars[$template];
-		@extract($_var, EXTR_REFS);
+			$_var += $this->vars[$template];*/
+		@extract(@$this->vars[$template], EXTR_REFS);
 		if (!@include ($_tmp)) {
 			throw new WindViewException(
 				'[component.viewer.ViewerResolver.render] template name ' . $template, 

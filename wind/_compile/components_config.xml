@@ -58,7 +58,8 @@
 
 	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
-		scope='prototype'></component>
+		scope='prototype'>
+	</component>
 
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>

@@ -331,7 +331,6 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	 */
 	public function route() {
 		// TODO Auto-generated method stub
-	
 
 	}
 

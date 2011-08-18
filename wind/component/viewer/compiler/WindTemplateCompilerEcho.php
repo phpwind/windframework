@@ -47,7 +47,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 		if (strpos($input, '$') !== false || strpos($input, '::') !== false || strpos($input, ':') === false)
 			return $input;
 		list($templateName, $var) = explode(':', $input);
-		return '$this->getResponse()->getData(\'' . $templateName . '\', \'' . $var . '\')';
+		return 'Wind::getApp()->getResponse()->getData(\'' . $templateName . '\', \'' . $var . '\')';
 	}
 
 	/**

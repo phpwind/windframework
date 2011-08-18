@@ -294,22 +294,22 @@ class WindHttpResponse implements IWindResponse {
 	const W_HTTP_VERSION_NOT_SUPPORTED = 505;
 
 	public function codeMap($code) {
-		$map = array(505 => 'HTTP VERSION NOT SUPPORTED', 504 => 'GATEWAY TIMEOUT', 
-			503 => 'SERVICE UNAVAILABLE', 503 => 'BAD GATEWAY', 502 => 'BAD GATEWAY', 
-			501 => 'NOT IMPLEMENTED', 500 => 'INTERNAL SERVER ERROR', 417 => 'EXPECTATION FAILED', 
-			416 => 'REQUESTED RANGE NOT SATISFIABLE', 415 => 'UNSUPPORTED MEDIA TYPE', 
-			414 => 'REQUEST URI TOO LONG', 413 => 'REQUEST ENTITY TOO LARGE', 
-			412 => 'PRECONDITION FAILED', 411 => 'LENGTH REQUIRED', 410 => 'GONE', 409 => 'CONFLICT', 
-			408 => 'REQUEST TIMEOUT', 407 => 'PROXY AUTHENTICATION REQUIRED', 
-			406 => 'NOT ACCEPTABLE', 405 => 'METHOD NOT ALLOWED', 404 => 'NOT FOUND', 
-			403 => 'FORBIDDEN', 402 => 'PAYMENT REQUIRED', 401 => 'UNAUTHORIZED', 
-			400 => 'BAD REQUEST', 300 => 'MULTIPLE CHOICES', 301 => 'MOVED PERMANENTLY', 
-			302 => 'MOVED TEMPORARILY', 302 => 'FOUND', 303 => 'SEE OTHER', 304 => 'NOT MODIFIED', 
-			305 => 'USE PROXY', 307 => 'TEMPORARY REDIRECT', 100 => 'CONTINUE', 
-			101 => 'WITCHING PROTOCOLS', 200 => 'OK', 201 => 'CREATED', 202 => 'ACCEPTED', 
-			203 => 'NON AUTHORITATIVE INFORMATION', 204 => 'NO CONTENT', 205 => 'RESET CONTENT', 
-			206 => 'PARTIAL CONTENT');
-		return isset($map[$code]) ? $map[$code] : 'UNKNOWN ERROR';
+		$map = array(505 => 'http version not supported', 504 => 'gateway timeout', 
+			503 => 'service unavailable', 503 => 'bad gateway', 502 => 'bad gateway', 
+			501 => 'not implemented', 500 => 'internal server error', 417 => 'expectation failed', 
+			416 => 'requested range not satisfiable', 415 => 'unsupported media type', 
+			414 => 'request uri too long', 413 => 'request entity too large', 
+			412 => 'precondition failed', 411 => 'length required', 410 => 'gone', 409 => 'conflict', 
+			408 => 'request timeout', 407 => 'proxy authentication required', 
+			406 => 'not acceptable', 405 => 'method not allowed', 404 => 'not found', 
+			403 => 'forbidden', 402 => 'payment required', 401 => 'unauthorized', 
+			400 => 'bad request', 300 => 'multiple choices', 301 => 'moved permanently', 
+			302 => 'moved temporarily', 302 => 'found', 303 => 'see other', 304 => 'not modified', 
+			305 => 'use proxy', 307 => 'temporary redirect', 100 => 'continue', 
+			101 => 'witching protocols', 200 => 'ok', 201 => 'created', 202 => 'accepted', 
+			203 => 'non authoritative information', 204 => 'no content', 205 => 'reset content', 
+			206 => 'partial content');
+		return isset($map[$code]) ? $map[$code] : '';
 	}
 
 	/**
@@ -422,6 +422,7 @@ class WindHttpResponse implements IWindResponse {
 	public function sendResponse() {
 		$this->sendHeaders();
 		$this->sendBody();
+		exit();
 	}
 
 	/**
@@ -433,7 +434,10 @@ class WindHttpResponse implements IWindResponse {
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
-		header('HTTP/1.1 ' . $this->_status . " " . $this->codeMap($this->_status));
+		if ($this->_status) {
+			header('HTTP/1.x ' . $this->_status . ' ' . ucwords($this->codeMap($this->_status)));
+			header('Status: ' . $this->_status . ' ' . ucwords($this->codeMap($this->_status)));
+		}
 	}
 
 	/**
