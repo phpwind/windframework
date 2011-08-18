@@ -148,7 +148,7 @@ class WindFactory implements IWindFactory {
 	protected function setScope($alias, $scope, $instance) {
 		switch ($scope) {
 			case 'prototype':
-				$this->prototype[$alias] = $instance;
+				$this->prototype[$alias] = clone $instance;
 				break;
 			case 'application':
 				$this->instances[$alias] = $instance;
