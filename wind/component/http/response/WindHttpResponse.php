@@ -1,4 +1,5 @@
 <?php
+Wind::import('COM:http.response.IWindResponse');
 /**
  * 1xx：信息，请求收到，继续处理
  * 2xx：成功，行为被成功地接受、理解和采纳
@@ -16,6 +17,8 @@ class WindHttpResponse implements IWindResponse {
 	private $_body = array();
 	
 	private $_bodyIndex = array();
+	
+	private $_charset = 'utf-8';
 	
 	private $_headers = array();
 	
@@ -346,6 +349,20 @@ class WindHttpResponse implements IWindResponse {
 			return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCharset() {
+		return $this->_charset;
+	}
+
+	/**
+	 * @param string $_charset
+	 */
+	public function setCharset($_charset) {
+		$this->_charset = $_charset;
 	}
 
 	/**
