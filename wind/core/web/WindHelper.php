@@ -47,6 +47,12 @@ class WindHelper {
 		exit();
 	}
 
+	public static function errorInfo() {
+		$info = "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
+		$info .= "(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")";
+		return $info;
+	}
+
 	/**
 	 * @param string $message
 	 * @param string $file
@@ -101,7 +107,7 @@ class WindHelper {
 				$errfile = "$file";
 			$msg = "$errfile\n$errsample\n$errtrace\n";
 		}
-		$msg .= "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
+		$msg .= self::errorInfo();
 		if ($status >= 400 && $status <= 505) {
 			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
 			$topic = "$status - " . $_statusMsg . "\n";

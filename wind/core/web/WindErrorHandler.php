@@ -31,7 +31,7 @@ class WindErrorHandler extends WindController {
 			$topic = "$this->errorCode - " . $_statusMsg;
 			$this->getResponse()->setStatus($this->errorCode);
 		} else
-			$topic = "Error message:";
+			$topic = "Error message";
 		$this->setOutput($topic, "errorHeader");
 		$this->setOutput($this->urlReferer, "baseUrl");
 		$this->setOutput($this->error, "errors");
