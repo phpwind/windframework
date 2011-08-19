@@ -39,6 +39,7 @@ class WindController extends WindSimpleController {
 			$this->registerEventListener('doAction', 
 				new WindValidateListener($this->request, $rules, $this->getValidatorClass()));
 		}
+		return true;
 	}
 
 	/* (non-PHPdoc)

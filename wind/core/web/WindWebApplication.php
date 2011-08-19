@@ -1,4 +1,6 @@
 <?php
+Wind::import('COM:http.request.WindHttpRequest');
+Wind::import('COM:http.response.WindHttpResponse');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -15,10 +17,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	private $response;
 	/**
-	 * @var WindSystemConfig
-	 */
-	protected $windSystemConfig = null;
-	/**
 	 * @var WindFactory
 	 */
 	protected $windFactory = null;
@@ -30,14 +28,20 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @var WindRouter
 	 */
 	protected $handlerAdapter = null;
+	protected $filterChain = 'COM:filter.WindFilterChain';
 
 	/**
-	 * @param WindSystemConfig $config
+	 * 应用初始化操作
+	 * 
+	 * @param array|string $config
 	 * @param WindFactory $factory
+	 * @param string $runCallBack
 	 */
 	public function __construct($config, $factory) {
-		$this->windSystemConfig = $config;
+		$this->request = new WindHttpRequest();
+		$this->response = $this->request->getResponse(@$config['charset']);
 		$this->windFactory = $factory;
+		$this->setConfig($config);
 	}
 
 	/* (non-PHPdoc)
@@ -46,12 +50,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	public function run() {
 		set_error_handler('WindHelper::errorHandle');
 		set_exception_handler('WindHelper::exceptionHandle');
-		$this->request = new WindHttpRequest();
-		$this->response = $this->request->getResponse();
+		$this->windFactory->loadClassDefinitions($this->getConfig('components'));
 		$this->_getHandlerAdapter()->route();
-		if (null == ($filterChain = $this->getFilterChain()))
+		if (null == ($filterChain = $this->getFilterChain())) {
 			$this->processRequest();
-		else {
+		} else {
 			$filterChain->setCallBack(array($this, 'processRequest'));
 			$filterChain->getHandler()->handle($this->request, $this->response);
 		}
@@ -67,7 +70,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if ($forward === null)
 			return;
 		$moduleName = $this->handlerAdapter->getModule();
-		if (!($module = $this->windSystemConfig->getModules($moduleName)))
+		if (!($module = $this->getModules($moduleName)))
 			throw new WindActionException(
 				'[core.web.WindWebApplication.doDispatch] Your requested \'' . $moduleName . '\' was not found on this server.', 
 				404);
@@ -90,13 +93,13 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			if (!$moduleName) {
 				$moduleName = 'default';
 				$this->handlerAdapter->setModule($moduleName);
-				$module = $this->windSystemConfig->setModules($moduleName);
+				$module = $this->setModules($moduleName);
 			} else {
-				if (!($module = $this->windSystemConfig->getModules($moduleName)))
+				if (!($module = $this->getModules($moduleName)))
 					throw new WindActionException(
 						'[core.web.WindWebApplication.processRequest] Your requested \'' . $moduleName . '\' was not found on this server.', 
 						404);
-				$module = $this->windSystemConfig->setModules($moduleName, $module);
+				$module = $this->setModules($moduleName, $module);
 			}
 			$handlerPath = @$module['controller-path'] . '.' . ucfirst(
 				$this->handlerAdapter->getController()) . @$module['controller-suffix'];
@@ -106,25 +109,20 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			
-			if (strpos($handlerPath, ':') === false)
-				$handlerPath = Wind::getAppName() . ':' . $handlerPath;
-			if (!$this->getSystemFactory()->checkAlias($handlerPath)) {
-				$this->getSystemFactory()->addClassDefinitions($handlerPath, 
-					array('path' => $handlerPath, 'scope' => 'singleton', 'proxy' => true, 
-						'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
-							'forward' => array('ref' => 'forward'), 
-							'urlHelper' => array('ref' => 'urlHelper'))));
-			}
+			strpos($handlerPath, ':') === false && $handlerPath = Wind::getAppName() . ':' . $handlerPath;
+			$this->getSystemFactory()->addClassDefinitions($handlerPath, 
+				array('path' => $handlerPath, 'scope' => 'singleton', 'proxy' => true, 
+					'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
+						'forward' => array('ref' => 'forward'), 
+						'urlHelper' => array('ref' => 'urlHelper'))));
 			$handler = $this->windFactory->getInstance($handlerPath);
-			
 			if (!$handler)
 				throw new WindActionException(
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
-			call_user_func_array(array($handler, 'preAction'), array($this->handlerAdapter));
-			$forward = call_user_func_array(array($handler, 'doAction'), 
-				array($this->handlerAdapter));
-			call_user_func_array(array($handler, 'postAction'), array($this->handlerAdapter));
+			$handler->preAction($this->handlerAdapter);
+			$forward = $handler->doAction($this->handlerAdapter);
+			$handler->postAction($this->handlerAdapter);
 			$this->doDispatch($forward);
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
@@ -140,7 +138,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	protected function sendErrorMessage($exception) {
 		$moduleName = $this->handlerAdapter->getModule();
-		if ($moduleName === 'error' || !($module = $this->windSystemConfig->getModules($moduleName)))
+		if ($moduleName === 'error' || !($module = $this->getModules($moduleName)))
 			throw new WindException(
 				'[core.web.WindWebApplication.sendErrorMessage] ' . $exception->getMessage());
 		
@@ -154,7 +152,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]))));
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
-			$this->windSystemConfig->setModules('error', 
+			$this->setModules('error', 
 				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 
 					'error-handler' => ''));
 		}
@@ -169,18 +167,76 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return WindFilterChain
 	 */
 	protected function getFilterChain() {
-		if (!($filters = $this->getWindSystemConfig()->getFilters()))
+		if (!$filters = $this->getConfig('filters'))
 			return null;
-		if (!($filterChainPath = $this->getWindSystemConfig()->getFilterClass()))
+		$filterChainPath = @$filters['class'] ? $filters['class'] : $this->filterChain;
+		unset($filters['class']);
+		if (empty($filters))
 			return null;
-		return $this->getWindFactory()->createInstance($filterChainPath, array($filters));
+		$this->windFactory->addClassDefinitions($filterChainPath, 
+			array('path' => $filterChainPath, 'scope' => 'singleton'));
+		return $this->windFactory->getInstance($filterChainPath, array($filters));
 	}
 
 	/**
-	 * @param string $componentName
-	 * @param object $componentInstance
+	 * 添加module
+	 * <controller-path>controller</controller-path>
+	 * <!-- 指定该模块下的controller的后缀格式 -->
+	 * <controller-suffix>Controller</controller-suffix>
+	 * <!-- 配置该模块的error处理的action controller类 -->
+	 * <error-handler>WIND:core.web.WindErrorHandler</error-handler>
+	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
+	 * <!-- 可以在这里进行view的配置，该配置只会影响该module下的view行为，该配置可以设置也可以不设置 -->
+	 * <!-- 指定模板路径 -->
+	 * <template-dir>template</template-dir>
+	 * <!-- 指定模板后缀 -->
+	 * <template-ext>htm</template-ext>
+	 * 
+	 * @param string $name
+	 * @param array $config
+	 * @return array
 	 */
-	public function registeComponent($componentName, $componentInstance) {}
+	public function setModules($name, $config = array()) {
+		if (!$_default = @$this->_config['modules']['default']) {
+			$_default = array('controller-path' => 'controller', 
+				'controller-suffix' => 'Controller', 
+				'error-handler' => 'WIND:core.web.WindErrorHandler');
+			$this->_config['modules']['default'] = $_default;
+		}
+		if (!$config)
+			$this->_config['modules'][$name] = $_default;
+		else
+			$this->_config['modules'][$name] = WindUtility::mergeArray($_default, $config);
+		return $this->_config['modules'][$name];
+	}
+
+	/**
+	 * @param string $name
+	 * @throws WindActionException
+	 * @throws WindException
+	 * @return array
+	 */
+	public function getModules($name = '') {
+		return $this->getConfig('modules', $name, array());
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		if (!$config)
+			return;
+		$config = @$config[Wind::getAppName()] ? $config[Wind::getAppName()] : $config;
+		$this->_config = $config;
+	}
+
+	/**
+	 * @param object $componentInstance
+	 * @param string $componentName
+	 */
+	public function registeComponent($componentName, $componentInstance, $scope) {
+		return $this->windFactory->registInstance($componentInstance, $componentName);
+	}
 
 	/**
 	 * @param string $componentName
@@ -201,13 +257,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function getResponse() {
 		return $this->response;
-	}
-
-	/**
-	 * @return WindSystemConfig $windSystemConfig
-	 */
-	public function getWindSystemConfig() {
-		return $this->windSystemConfig;
 	}
 
 	/**
