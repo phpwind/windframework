@@ -69,25 +69,24 @@ class WindModule {
 		$_prefix = substr($methodName, 0, 4);
 		$_propertyName = substr($methodName, 4);
 		$_propertyName = WindUtility::lcfirst($_propertyName);
-		if ($_prefix == '_set') {
-			$this->$_propertyName = $args[0];
-		} elseif ($_prefix == '_get') {
-			if ($this->$_propertyName)
-				return $this->$_propertyName;
-			if (isset($this->delayAttributes[$_propertyName])) {
-				$_value = null;
+		if ($_prefix == '_get') {
+			if (@$this->delayAttributes[$_propertyName] !== null) {
 				$_property = $this->delayAttributes[$_propertyName];
-				if (isset($_property['value'])) {
+				$_value = null;
+				if (@$_property['value'] !== null) {
 					$_value = $_property['value'];
-				} elseif (isset($_property['ref'])) {
+				} elseif (@$_property['ref'] !== null) {
 					$_value = $this->getSystemFactory()->getInstance($_property['ref'], $args);
-				} elseif (isset($_property['path'])) {
+				} elseif (@$_property['path'] !== null) {
 					$_className = Wind::import($_property['path']);
 					$_value = $this->getSystemFactory()->createInstance($_className, $args);
 				}
 				$this->$_propertyName = $_value;
+				unset($this->delayAttributes[$_propertyName]);
 			}
 			return $this->$_propertyName;
+		} elseif ($_prefix == '_set') {
+			$this->$_propertyName = $args[0];
 		}
 		throw new WindException(
 			'[core.WindModule.__call] ' . get_class($this) . '->' . $methodName . '()', 
@@ -198,8 +197,8 @@ class WindModule {
 		if (!$config)
 			return;
 		if (is_string($config)) {
-			$configParser = $this->getSystemFactory()->getInstance(COMPONENT_CONFIGPARSER);
-			$config = $configParser->parse($config, get_class($this), 'cache_wind_config');
+			$configParser = $this->getSystemFactory()->getInstance('configParser');
+			$config = $configParser->parse($config);
 		}
 		if (!$this->_config) {
 			$this->_config = array_merge($this->_config, (array) $config);
@@ -225,13 +224,6 @@ class WindModule {
 	 */
 	protected function writeTableCloneProperty() {
 		return array();
-	}
-
-	/**
-	 * @return WindSystemConfig
-	 */
-	protected function getSystemConfig() {
-		return Wind::getApp()->getWindSystemConfig();
 	}
 
 	/**

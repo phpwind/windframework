@@ -23,47 +23,39 @@ class WindClassProxy {
 	protected $_listener = array();
 
 	/**
-	 * @param string|object $targetObj
+	 * @param object $targetObj
 	 */
-	public function __construct($targetObject = null, $args = array()) {
-		try {
-			if (is_object($targetObject)) {
-				$this->_setClassName(get_class($targetObject));
-				$this->_instance = $targetObject;
-			} elseif (is_string($targetObject) && !empty($targetObject)) {
-				$this->_setClassPath($targetObject);
-				$reflection = new ReflectionClass($this->_className);
-				if ($reflection->isAbstract() || $reflection->isInterface()) {
-					throw new WindException($this->_className, WindException::ERROR_CLASS_NOT_EXIST);
-				}
-				$this->_reflection = $reflection;
-				$this->_instance = call_user_func_array(array($this->_reflection, 'newInstance'), $args);
-			} else
-				throw new WindException($this->_className, WindException::ERROR_CLASS_NOT_EXIST);
-			
-			$types = array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER);
-			foreach ($types as $type) {
-				$this->_listener[$type] = array();
-			}
-			
-			if ($this->_instance !== null) return;
-		
-		} catch (Exception $e) {
-			Wind::log('[core.factory.proxy.WindClassProxy.initClassProxy] Initialization proxy failed.' . $e->getMessage(), WindLogger::LEVEL_DEBUG, 'wind.core');
-		}
-	
-		//$this->initClassProxy($targetObj, $args);
+	public function __construct($targetObject = null) {
+		$targetObject && $this->registerTargetObject($targetObject);
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindClassProxy::registerAspect()
 	 */
 	public function registerEventListener($event, $listener, $type = self::EVENT_TYPE_METHOD) {
-		if (!in_array($type, array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER))) {
-			throw new WindException('[core.factory.proxy.WindClassProxy.registerEventListener] Unsupport event type:' . $type, WindException::ERROR_PARAMETER_TYPE_ERROR);
+		if (!in_array($type, 
+			array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER))) {
+			throw new WindException(
+				'[core.factory.proxy.WindClassProxy.registerEventListener] Unsupport event type:' . $type, 
+				WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
 		!isset($this->_listener[$type][$event]) && $this->_listener[$type][$event] = array();
 		array_push($this->_listener[$type][$event], $listener);
+	}
+
+	/**
+	 * 注册目标对象,如果已经注册了不重复注册
+	 * @param object $targetObject
+	 */
+	public function registerTargetObject($targetObject) {
+		if ($this->_instance !== null || !is_object($targetObject))
+			return;
+		$this->_setClassName(get_class($targetObject));
+		$this->_instance = $targetObject;
+		$types = array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER);
+		foreach ($types as $type)
+			$this->_listener[$type] = array();
+		return $this;
 	}
 
 	/**
@@ -78,7 +70,8 @@ class WindClassProxy {
 			throw new WindException('undefined property name. ');
 		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_SETTER, $propertyName);
-		if (empty($listeners)) return call_user_func_array(array($this, '_setProperty'), array($propertyName, $value));
+		if (empty($listeners))
+			return call_user_func_array(array($this, '_setProperty'), array($propertyName, $value));
 		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_setProperty'), array($propertyName, $value));
@@ -95,7 +88,8 @@ class WindClassProxy {
 			throw new WindException('undefined property name. ');
 		}
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_GETTER, $propertyName);
-		if (empty($listeners)) return call_user_func_array(array($this, '_getProperty'), array($propertyName));
+		if (empty($listeners))
+			return call_user_func_array(array($this, '_getProperty'), array($propertyName));
 		$interceptorChain = $this->_getInterceptorChain($propertyName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this, '_getProperty'), array($propertyName));
@@ -109,44 +103,12 @@ class WindClassProxy {
 	 */
 	public function __call($methodName, $args) {
 		$listeners = $this->_getListenerByType(self::EVENT_TYPE_METHOD, $methodName);
-		if (empty($listeners)) return call_user_func_array(array($this->_getInstance(), $methodName), (array) $args);
+		if (empty($listeners))
+			return call_user_func_array(array($this->_getInstance(), $methodName), (array) $args);
 		$interceptorChain = $this->_getInterceptorChain($methodName);
 		$interceptorChain->addInterceptors($listeners);
 		$interceptorChain->setCallBack(array($this->_getInstance(), $methodName), $args);
 		return call_user_func_array(array($interceptorChain->getHandler(), 'handle'), (array) $args);
-	}
-
-	/**
-	 * 初始化类代理对象
-	 * 
-	 * @param string|object $targetObject
-	 * @param array $args
-	 * @throws WindException
-	 */
-	protected function initClassProxy($targetObject, $args = array()) {
-		try {
-			if (is_object($targetObject)) {
-				$this->_setClassName(get_class($targetObject));
-				$this->_instance = $targetObject;
-			} elseif (is_string($targetObject) && !empty($targetObject)) {
-				$this->_setClassPath($targetObject);
-				$reflection = new ReflectionClass($this->_className);
-				if ($reflection->isAbstract() || $reflection->isInterface()) {
-					throw new WindException($this->_className, WindException::ERROR_CLASS_NOT_EXIST);
-				}
-				$this->_reflection = $reflection;
-				$this->_instance = call_user_func_array(array($this->_reflection, 'newInstance'), $args);
-			} else
-				throw new WindException($this->_className, WindException::ERROR_CLASS_NOT_EXIST);
-			
-			$types = array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER);
-			foreach ($types as $type) {
-				$this->_listener[$type] = array();
-			}
-		
-		} catch (Exception $e) {
-			Wind::log('[core.factory.proxy.WindClassProxy.initClassProxy] Initialization proxy failed.' . $e->getMessage(), WindLogger::LEVEL_DEBUG, 'wind.core');
-		}
 	}
 
 	/**
@@ -160,7 +122,8 @@ class WindClassProxy {
 			if ($interceptorChain && $interceptorChain instanceof WindHandlerInterceptorChain) {
 				$this->_interceptorChainObj = $interceptorChain;
 			} else
-				throw new WindException('[core.factory.proxy.WindClassProxy._getInterceptorChain] Unable to create interceptorChain.');
+				throw new WindException(
+					'[core.factory.proxy.WindClassProxy._getInterceptorChain] Unable to create interceptorChain.');
 		}
 		$this->_interceptorChainObj->reset();
 		return $this->_interceptorChainObj;

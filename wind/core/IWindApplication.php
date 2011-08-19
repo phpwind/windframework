@@ -8,16 +8,9 @@
 interface IWindApplication {
 
 	/**
-	 * Enter description here ...
 	 * @return
 	 */
 	public function run();
-
-	/**
-	 * 请求转发
-	 * @param WindForward $forward
-	 */
-	public function doDispatch($forward);
 
 	/**
 	 * @return WindHttpRequest $request
@@ -28,11 +21,6 @@ interface IWindApplication {
 	 * @return WindHttpResponse $response
 	 */
 	public function getResponse();
-
-	/**
-	 * @return WindSystemConfig $windSystemConfig
-	 */
-	public function getWindSystemConfig();
 
 	/**
 	 * @return WindFactory $windFactory
