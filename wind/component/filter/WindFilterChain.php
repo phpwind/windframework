@@ -47,7 +47,6 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 	}
 
 	/**
-	 * Enter description here ...
 	 * @param array $filters
 	 */
 	private function _initFilters($filters = array()) {
