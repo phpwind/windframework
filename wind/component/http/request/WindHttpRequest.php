@@ -1,4 +1,5 @@
 <?php
+Wind::import('COM:http.request.IWindRequest');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -526,9 +527,11 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * @return WindHttpResponse
 	 */
-	public function getResponse() {
+	public function getResponse($charset) {
 		$response = new WindHttpResponse();
-		$response->setHeader('Content-type', 'text/html;charset=UTF-8');
+		!$charset && $charset = 'utf-8';
+		$response->setHeader('Content-type', 'text/html;charset=' . $charset);
+		$response->setCharset($charset);
 		return $response;
 	}
 
