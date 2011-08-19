@@ -14,7 +14,7 @@ class WindHtmlHelper {
 	 * @return string | string The converted string
 	 */
 	public static function encode($text) {
-		return htmlspecialchars($text, ENT_QUOTES, Wind::getApp()->getWindSystemConfig()->getCharset());
+		return htmlspecialchars($text, ENT_QUOTES, Wind::getApp()->getResponse()->getCharset());
 	}
 
 	/**
@@ -25,11 +25,12 @@ class WindHtmlHelper {
 	 */
 	public static function encodeArray($data) {
 		$_tmp = array();
+		$_charset = Wind::getApp()->getRequest()->getCharset();
 		foreach ($data as $key => $value) {
-			if (is_string($key)) $key = htmlspecialchars($key, ENT_QUOTES, 
-				Wind::getApp()->getWindSystemConfig()->getCharset());
+			if (is_string($key))
+				$key = htmlspecialchars($key, ENT_QUOTES, $_charset);
 			if (is_string($value))
-				$value = htmlspecialchars($value, ENT_QUOTES, Wind::getApp()->getWindSystemConfig()->getCharset());
+				$value = htmlspecialchars($value, ENT_QUOTES, $_charset);
 			elseif (is_array($value))
 				$value = self::encodeArray($value);
 			$_tmp[$key] = $value;
