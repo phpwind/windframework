@@ -1,4 +1,5 @@
 <?php
+Wind::import('COM:filter.WindHandlerInterceptorChain');
 /**
  * 路由解析器接口
  * 职责: 路由解析, 返回路由对象
