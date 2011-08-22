@@ -104,7 +104,8 @@ class WindLogger extends WindModule {
 		else
 			$this->_logCount >= $this->_autoFlush && $this->flush();
 		if ($level === self::LEVEL_PROFILE)
-			$message = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
+			$message = $this->_build($msg, $level, $type, microtime(true), 
+				$this->getMemoryUsage(false));
 		elseif ($level === self::LEVEL_DEBUG)
 			$message = $this->_build($msg, $level, $type, microtime(true));
 		else
@@ -122,7 +123,8 @@ class WindLogger extends WindModule {
 	 * @return boolean
 	 */
 	public function flush() {
-		if (empty($this->_logs)) return false;
+		if (empty($this->_logs))
+			return false;
 		Wind::import('WIND:component.utility.WindFile');
 		$_l = array();
 		if ($this->_writeType == self::WRITE_LEVEL) {
@@ -152,7 +154,8 @@ class WindLogger extends WindModule {
 						$key = 'all';
 						break;
 				}
-				if (!$fileName = $this->_getFileName($key)) continue;
+				if (!$fileName = $this->_getFileName($key))
+					continue;
 				WindFile::write($fileName, join("", $value), 'a');
 			}
 		} elseif ($this->_writeType == self::WRITE_TYPE) {
@@ -162,7 +165,8 @@ class WindLogger extends WindModule {
 				$_logs[$value[1]][] = $value[2];
 			}
 			foreach ($_logs as $key => $value) {
-				if (!$fileName = $this->_getFileName($key)) continue;
+				if (!$fileName = $this->_getFileName($key))
+					continue;
 				WindFile::write($fileName, join("", $value), 'a');
 			}
 		}
@@ -214,7 +218,7 @@ class WindLogger extends WindModule {
 				$result = $this->_buildError($msg);
 				break;
 			case self::LEVEL_DEBUG:
-				$msg .= "\t(" . $type . " timer: " . sprintf('%0.5f', ($timer - DEBUG_TIME)) . ")\r\n";
+				$msg .= "\t(" . $type . ")\r\n";
 				$result = $this->_buildDebug($msg);
 				break;
 			case self::LEVEL_TRACE:
@@ -241,14 +245,15 @@ class WindLogger extends WindModule {
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
 			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
 			$_token = substr($_token, 0, strpos($_token, ':'));
-			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, 
-				$timer, $mem);
+			$this->_profiles[] = array($_token, 
+				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
 			$_msg = "PROFILE! Message: \r\n";
 			$_token = substr($msg, strlen(self::TOKEN_END));
 			$_token = substr($_token, 0, strpos($_token, ':'));
 			foreach ($this->_profiles as $key => $profile) {
-				if ($profile[0] !== $_token) continue;
+				if ($profile[0] !== $_token)
+					continue;
 				if ($profile[1])
 					$_msg .= $profile[1] . "\r\n";
 				else
@@ -328,71 +333,74 @@ class WindLogger extends WindModule {
 		$info[] = 'Stack trace:';
 		$traces = debug_backtrace();
 		foreach ($traces as $traceKey => $trace) {
-			if ($num >= 7) break;
-			if ((isset($trace['class']) && $trace['class'] == __CLASS__) ||
-				 isset($trace['file']) && strrpos($trace['file'], __CLASS__ . '.php') !== false) continue;
-				$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
-				$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
-				if ($function == 'WindBase::log') continue;
-				$args = array_map(array($this, '_buildArg'), $trace['args']);
-				$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
-			}
-			return $info;
+			if ($num >= 7)
+				break;
+			if ((isset($trace['class']) && $trace['class'] == __CLASS__) || isset($trace['file']) && strrpos(
+				$trace['file'], __CLASS__ . '.php') !== false)
+				continue;
+			$file = isset($trace['file']) ? $trace['file'] . '(' . $trace['line'] . '): ' : '[internal function]: ';
+			$function = isset($trace['class']) ? $trace['class'] . $trace['type'] . $trace['function'] : $trace['function'];
+			if ($function == 'WindBase::log')
+				continue;
+			$args = array_map(array($this, '_buildArg'), $trace['args']);
+			$info[] = '#' . ($num++) . ' ' . $file . $function . '(' . implode(',', $args) . ')';
 		}
+		return $info;
+	}
 
-		/**
-		 * 组装输出的trace中的参数组装
-		 * @param mixed $arg
-		 */
-		private function _buildArg($arg) {
-			switch (gettype($arg)) {
-				case 'array':
-					return 'Array';
-					break;
-				case 'object':
-					return 'Object ' . get_class($arg);
-					break;
-				default:
-					return "'" . $arg . "'";
-					break;
-			}
-		}
-
-		/**
-		 * 取得日志文件名
-		 * @return string 
-		 */
-		private function _getFileName($suffix = '') {
-			$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
-			$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
-			if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
-				$counter = 0;
-				do {
-					$counter++;
-					$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
-				} while (is_file($_newFile));
-				@rename($_logfile, $_newFile);
-			}
-			return $_logfile;
-		}
-
-		public function __destruct() {
-			$this->flush();
-		}
-
-		/**
-		 * @param field_type $_logFile
-		 */
-		public function setLogDir($logDir) {
-			$this->_logDir = $logDir;
-		}
-
-		/**
-		 * @param field_type $_maxFileSize
-		 */
-		public function setMaxFileSize($maxFileSize) {
-			$this->_maxFileSize = (int) $maxFileSize;
+	/**
+	 * 组装输出的trace中的参数组装
+	 * @param mixed $arg
+	 */
+	private function _buildArg($arg) {
+		switch (gettype($arg)) {
+			case 'array':
+				return 'Array';
+				break;
+			case 'object':
+				return 'Object ' . get_class($arg);
+				break;
+			default:
+				return "'" . $arg . "'";
+				break;
 		}
 	}
+
+	/**
+	 * 取得日志文件名
+	 * @return string 
+	 */
+	private function _getFileName($suffix = '') {
+		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
+		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
+		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
+			$counter = 0;
+			do {
+				$counter++;
+				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
+			} while (is_file($_newFile));
+			@rename($_logfile, $_newFile);
+		}
+		return $_logfile;
+	}
+
+	public function __destruct() {
+		$this->flush();
+	}
+
+	/**
+	 * @param field_type $_logFile
+	 */
+	public function setLogDir($logDir) {
+		$this->_logDir = $logDir;
+	}
+
+	/**
+	 * @param field_type $_maxFileSize
+	 */
+	public function setMaxFileSize($maxFileSize) {
+		$this->_maxFileSize = (int) $maxFileSize;
+	}
+}
 
 	
