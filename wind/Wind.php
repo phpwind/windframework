@@ -421,7 +421,20 @@ class Wind {
 			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
 			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 
 			'WindRoute' => 'router/route/WindRoute', 'WindRouter' => 'router/WindRouter', 
-			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter');
+			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter', 
+			'WindCookie' => 'http/cookie/WindCookie', 
+			'WindCookieObject' => 'http/cookie/WindCookieObject', 
+			'IWindRequest' => 'http/request/IWindRequest', 
+			'WindHttpRequest' => 'http/request/WindHttpRequest', 
+			'IWindResponse' => 'http/response/IWindResponse', 
+			'WindHttpResponse' => 'http/response/WindHttpResponse', 
+			'AbstractWindUserSession' => 'http/session/AbstractWindUserSession', 
+			'WindDbSession' => 'http/session/WindDbSession', 
+			'WindSession' => 'http/session/WindSession', 
+			'AbstractWindHttp' => 'http/transfer/AbstractWindHttp', 
+			'WindHttpCurl' => 'http/transfer/WindHttpCurl', 
+			'WindHttpSocket' => 'http/transfer/WindHttpSocket', 
+			'WindHttpStream' => 'http/transfer/WindHttpStream');
 	}
 }
 Wind::init();
