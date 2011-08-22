@@ -275,8 +275,6 @@ class Wind {
 	protected static function afterRun() {
 		array_pop(self::$_currentApp);
 		self::$_currentAppName = end(self::$_currentApp);
-		if (self::$_logger)
-			self::$_logger->flush();
 	}
 
 	/**
