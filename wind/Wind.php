@@ -424,7 +424,7 @@ class Wind {
 Wind::init();
 
 /* 组件定义 */
-define('COMPONENT_WEBAPP', 'windWebApp');
+/*define('COMPONENT_WEBAPP', 'windWebApp');
 define('COMPONENT_ERRORHANDLER', 'errorHandler');
 define('COMPONENT_LOGGER', 'windLogger');
 define('COMPONENT_FORWARD', 'forward');
@@ -437,6 +437,6 @@ define('COMPONENT_ERRORMESSAGE', 'errorMessage');
 define('COMPONENT_DB', 'db');
 define('COMPONENT_DISPATCHER', 'dispatcher');
 define('COMPONENT_CONFIGPARSER', 'configParser');
-define('COMPONENT_CACHE', 'windCache');
+define('COMPONENT_CACHE', 'windCache');*/
 //TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
 //********************约定变量***********************************
