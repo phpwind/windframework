@@ -31,8 +31,12 @@ class Wind {
 	 * @param string $rootPath
 	 * @return IWindApplication
 	 */
-	public static function run($appName = 'default', $config = array(), $rootPath = '') {
-		self::beforRun($appName, $config, $rootPath);
+	public static function application($appName = 'default', $config = array(), $rootPath = '') {
+		//self::beforRun($appName, $config, $rootPath);
+		if (!$appName || in_array($appName, self::$_currentApp))
+			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
+		array_push(self::$_currentApp, $appName);
+		self::$_currentAppName = $appName;
 		if (!isset(self::$_app[$appName])) {
 			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, 
 				true);
@@ -49,8 +53,7 @@ class Wind {
 			Wind::register($rootPath, $appName, true);
 			self::$_app[$appName] = $application;
 		}
-		self::getApp()->run();
-		self::afterRun();
+		return self::$_app[$appName];
 	}
 
 	/**
@@ -75,6 +78,14 @@ class Wind {
 		else
 			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
 				WindException::ERROR_CLASS_NOT_EXIST);
+	}
+
+	/**
+	 * @return
+	 */
+	public static function resetApp() {
+		array_pop(self::$_currentApp);
+		self::$_currentAppName = end(self::$_currentApp);
 	}
 
 	/**
@@ -267,14 +278,6 @@ class Wind {
 			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
 		array_push(self::$_currentApp, $appName);
 		self::$_currentAppName = $appName;
-	}
-
-	/**
-	 * @return
-	 */
-	protected static function afterRun() {
-		array_pop(self::$_currentApp);
-		self::$_currentAppName = end(self::$_currentApp);
 	}
 
 	/**
