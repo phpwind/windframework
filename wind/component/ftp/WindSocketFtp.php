@@ -56,7 +56,7 @@ class WindSocketFtp extends AbstractWindFtp {
 	 * (non-PHPdoc)
 	 * @see AbstractWindFtp::upload()
 	 */
-	public function upload($localfile, $remotefile, $mode = 'I') {
+	public function upload($localfile, $remotefile, $mode) {
 		if ($this->checkFile($localfile)) {
 			$this->showError("Error：illegal file type！（{$localfile}）");
 		}

@@ -63,7 +63,7 @@ class WindFtp extends AbstractWindFtp {
 	 * (non-PHPdoc)
 	 * see AbstractWindFtp::upload()
 	 */
-	public function upload($sourceFile, $desFile, $mode = 'auto') {
+	public function upload($sourceFile, $desFile, $mode) {
 		$mode = $this->getMode($sourceFile, $mode);
 		if (!in_array(($savedir = dirname($desFile)), array('.', '/'))) {
 			$this->mkdirs($savedir);

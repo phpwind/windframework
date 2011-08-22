@@ -35,7 +35,7 @@ final class WindHttpSocket extends AbstractWindHttp {
 			$this->path = isset($url['path']) && $url['path'] ? $url['path'] : '/';
 			$this->path .= $url['query'] ? '?' . $url['query'] : '';
 			$this->query = $url['query'];
-			$this->httpResource = fsockopen($this->host, $this->port, &$this->eno, &$this->err, $this->timeout);
+			$this->httpResource = fsockopen($this->host, $this->port, $this->eno, $this->err, $this->timeout);
 		}
 		return $this->httpResource;
 	}
