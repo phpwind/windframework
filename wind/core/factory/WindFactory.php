@@ -40,22 +40,23 @@ class WindFactory implements IWindFactory {
 		if (!isset($this->classDefinitions[$alias]) || !($definition = $this->classDefinitions[$alias]))
 			return null;
 		
-		if (@$definition['className'] === null)
+		if (!isset($definition['className']))
 			$definition['className'] = Wind::import(@$definition['path']);
-		foreach ((array) @$definition['constructorArgs'] as $_var) {
-			if (@$_var['value'] !== null) {
-				$args[] = $_var['value'];
-			} elseif (@$_var['ref'] !== null)
-				$args[] = $this->getInstance($_var['ref']);
-		}
+		if (isset($definition['constructorArgs']))
+			foreach ((array) $definition['constructorArgs'] as $_var) {
+				if (isset($_var['value'])) {
+					$args[] = $_var['value'];
+				} elseif (isset($_var['ref']))
+					$args[] = $this->getInstance($_var['ref']);
+			}
 		$instance = $this->createInstance($definition['className'], $args);
-		if (@$definition['config'])
+		if (isset($definition['config']))
 			$this->resolveConfig($definition['config'], $alias, $instance);
-		if (@$definition['properties'])
+		if (isset($definition['properties']))
 			$this->buildProperties($definition['properties'], $instance);
-		if (@$definition['initMethod'])
+		if (isset($definition['initMethod']))
 			$this->executeInitMethod($definition['initMethod'], $instance);
-		if (@$definition['proxy'])
+		if (isset($definition['proxy']))
 			$instance = $this->setProxyForClass($definition['proxy'], $instance);
 		$this->setScope($alias, $definition['scope'], $instance);
 		return $instance;
@@ -83,9 +84,9 @@ class WindFactory implements IWindFactory {
 				Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, 
 					WindLogger::LEVEL_DEBUG, 'core.factory');
 			}
-			if (empty($args)){
+			if (empty($args)) {
 				return new $className();
-			}else {
+			} else {
 				$reflection = new ReflectionClass($className);
 				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 			}
@@ -184,7 +185,7 @@ class WindFactory implements IWindFactory {
 	 * @return
 	 */
 	protected function resolveConfig($config, $alias, $instance) {
-		if (@$config['resource']) {
+		if (isset($config['resource'])) {
 			$_configPath = Wind::getRealPath($config['resource'], true);
 			$configParser = $this->getInstance('configParser');
 			$config = $configParser->parse($_configPath, $alias, true, 
@@ -235,14 +236,16 @@ class WindFactory implements IWindFactory {
 	 * @param WindModule  $instance
 	 */
 	protected function buildProperties($properties, $instance) {
-		if (@$properties['delay'] === 'false' || @$properties['delay'] === false) {
+		if (!isset($properties['delay'])) {
+			$instance->setDelayAttributes($properties);
+		} elseif ($properties['delay'] === 'false' || $properties['delay'] === false) {
 			foreach ($properties as $key => $subDefinition) {
 				$_value = '';
-				if (@$subDefinition['value'] !== null)
+				if (isset($subDefinition['value']))
 					$_value = $subDefinition['value'];
-				elseif (@$subDefinition['ref'] !== null)
+				elseif (isset($subDefinition['ref']))
 					$_value = $this->getInstance($subDefinition['ref']);
-				elseif (@$subDefinition['path'] != null) {
+				elseif (isset($subDefinition['path'])) {
 					$_className = Wind::import($subDefinition['path']);
 					$_value = $this->createInstance($_className);
 				}

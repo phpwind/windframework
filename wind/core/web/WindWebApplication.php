@@ -197,7 +197,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return array
 	 */
 	public function setModules($name, $config = array()) {
-		if (!$_default = @$this->_config['modules']['default']) {
+		if (isset($this->_config['modules']['default']))
+			$_default = $this->_config['modules']['default'];
+		else {
 			$_default = array('controller-path' => 'controller', 
 				'controller-suffix' => 'Controller', 
 				'error-handler' => 'WIND:core.web.WindErrorHandler');

@@ -19,6 +19,7 @@ class WindHelper {
 	 * @param string $errline
 	 */
 	public static function errorHandle($errno, $errstr, $errfile, $errline) {
+		echo $errno,$errfile,'.....',$errline,'<br>';
 		if ($errno & error_reporting()) {
 			restore_error_handler();
 			restore_exception_handler();
