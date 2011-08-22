@@ -2,9 +2,11 @@
 /* 框架版本信息 */
 define('VERSION', '0.5.0');
 define('PHPVERSION', '5.1.2');
+
 /* 路径相关配置信息  */
 define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
+
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
 /**
