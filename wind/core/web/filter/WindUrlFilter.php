@@ -11,9 +11,7 @@ class WindUrlFilter extends WindFilter {
 	 * @see WindFilter::preHandle()
 	 */
 	public function preHandle($request = null, $response = null) {
-		$windFactory = $request->getAttribute(WindFrontController::WIND_FACTORY);
-		$this->urlHelper = $windFactory->getInstance(COMPONENT_URLHELPER);
-		$this->urlHelper->parseUrl();
+		
 	}
 
 	/* (non-PHPdoc)
