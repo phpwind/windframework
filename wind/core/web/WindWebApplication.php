@@ -248,6 +248,13 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
+	 * @return WindLogger
+	 */
+	public function getLogger() {
+		return $this->windFactory->getInstance('windLogger');
+	}
+
+	/**
 	 * @return WindHttpRequest $request
 	 */
 	public function getRequest() {

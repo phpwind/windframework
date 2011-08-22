@@ -80,10 +80,6 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
-			if (IS_DEBUG && IS_DEBUG <= WindLogger::LEVEL_DEBUG) {
-				Wind::log('[core.factory.WindFactory.createInstance] create instance:' . $className, 
-					WindLogger::LEVEL_DEBUG, 'core.factory');
-			}
 			if (empty($args)) {
 				return new $className();
 			} else {

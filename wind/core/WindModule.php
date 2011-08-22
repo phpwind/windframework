@@ -36,10 +36,6 @@ class WindModule {
 		$_setter = 'set' . ucfirst($propertyName);
 		if (method_exists($this, $_setter))
 			$this->$_setter($value);
-		else
-			Wind::log(
-				'[core.WindModule.__set] both of property and setter are not exist. ' . $propertyName, 
-				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
 	/**
@@ -52,10 +48,6 @@ class WindModule {
 		$_getter = 'get' . ucfirst($propertyName);
 		if (method_exists($this, $_getter))
 			return $this->$_getter();
-		else
-			Wind::log(
-				'[core.WindModule.__set] both of property and getter are not exist. ' . $propertyName, 
-				WindLogger::LEVEL_DEBUG, 'wind.core');
 	}
 
 	/**
@@ -98,13 +90,8 @@ class WindModule {
 	 */
 	public function __clone() {
 		foreach ($this->writeTableCloneProperty() as $value) {
-			if (!is_object($this->$value) || !isset($this->$value)) {
-				Wind::log(
-					"[core.WindModule.__clone] unexcepted value type or the property 
-					is not setted.(" . $value . ") need an object type in here.
-					", WindLogger::LEVEL_DEBUG, 'wind.core');
+			if (!is_object($this->$value) || !isset($this->$value))
 				continue;
-			}
 			$this->$value = clone $this->$value;
 		}
 	}
@@ -123,45 +110,6 @@ class WindModule {
 			$_result[$_propertyName] = $this->$_propertyName;
 		}
 		return $_result;
-	}
-
-	/**
-	 * 验证白名单是否为空，或属性值是否存在于定义的白名单中
-	 * @deprecated
-	 * @param string $propertyName
-	 * @return boolean
-	 */
-	protected function validatePropertyName($propertyName, $value = null) {
-		if (isset($this->delayAttributes[$propertyName])) {
-			Wind::log(
-				'[core.WindModule.validatePropertyName] is a delay property  (' . $propertyName . ')', 
-				WindLogger::LEVEL_DEBUG, 'wind.core');
-			return true;
-		}
-		if (!($_writeTableProperties = $this->writeTableForProperty())) {
-			Wind::log(
-				"[core.WindModule.validatePropertyName] 
-				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
-			return false;
-		}
-		if (!array_key_exists($propertyName, $_writeTableProperties)) {
-			Wind::log(
-				"[core.WindModule.validatePropertyName] 
-				writeTableForProperty is empty or your input is not exists.
-				(" . $propertyName . ")", WindLogger::LEVEL_DEBUG, 'wind.core');
-			return false;
-		}
-		if ($this->_typeValidation && $_writeTableProperties[$propertyName]) {
-			if ($value instanceof $_writeTableProperties[$propertyName])
-				return true;
-			Wind::log(
-				"[core.WindModule.validatePropertyName]
-				type of the property " . $propertyName . " is not defined.
-				", WindLogger::LEVEL_DEBUG, 'wind.core');
-			return false;
-		}
-		return true;
 	}
 
 	/**
