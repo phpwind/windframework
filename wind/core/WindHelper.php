@@ -120,8 +120,8 @@ class WindHelper {
 			$msg = "<html><head><title>$topic</title></head><body><pre><h3>$topic</h3><b style=\"background:whiteSmoke\">$errmessage</b>\n$msg</pre></body></html>";
 		} else
 			$msg = "$topic\n$errmessage\n$msg";
-		
 		ob_end_clean();
+		$msg = str_replace(Wind::getRootPath(Wind::getAppName()), '~', $msg);
 		die($msg);
 	}
 

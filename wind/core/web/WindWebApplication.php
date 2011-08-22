@@ -61,6 +61,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		restore_error_handler();
 		restore_exception_handler();
 		$this->response->sendResponse();
+		Wind::resetApp();
 	}
 
 	/* (non-PHPdoc)
