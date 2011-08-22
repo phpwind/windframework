@@ -19,6 +19,7 @@ Wind::import('COM:utility.WindPack');
 Wind::import('COM:utility.WindFile');
 Wind::import('COM:utility.WindString');
 Wind::import('COM:parser.WindConfigParser');
+
 /* 打包 */
 $pack = new WindPack();
 $fileList = array();
