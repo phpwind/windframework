@@ -49,9 +49,6 @@ class WindDaoFactory extends WindModule {
 			$this->createCacheHandler($daoInstance);
 			return $daoInstance;
 		} catch (Exception $exception) {
-			Wind::log(
-				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' . $exception->getMessage(), 
-				WindLogger::LEVEL_DEBUG, 'wind.component');
 			throw new WindDaoException(
 				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail. Error message:' . $exception->getMessage());
 		}

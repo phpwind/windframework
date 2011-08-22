@@ -64,17 +64,15 @@ class WindViewerResolver implements IWindViewerResolver {
 	 */
 	public function compile($template, $suffix = '', $output = false) {
 		$templateFile = $this->windView->getViewTemplate($template, $suffix);
-		if (!is_file($templateFile)) {
+		if (!is_file($templateFile))
 			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
-		}
 		if (!($compileFile = $this->windView->getCompileFile($template)))
 			return array($templateFile, '');
 			
 		/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
-		
 		if (!$compileFile && !$_output)
 			return array('', '');
 		WindFile::write($compileFile, $_output);
