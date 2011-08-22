@@ -30,6 +30,7 @@ class Wind {
 	private static $_includePaths = array();
 	private static $_app = array();
 	private static $_currentApp = array();
+	private static $_currentAppName;
 
 	/**
 	 * @param string $appName
@@ -64,9 +65,9 @@ class Wind {
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (empty(self::$_currentApp))
+		if (!self::$_currentAppName)
 			throw new WindException('Get appName failed.', WindException::ERROR_SYSTEM_ERROR);
-		return end(self::$_currentApp);
+		return self::$_currentAppName; //end(self::$_currentApp);
 	}
 
 	/**
@@ -75,7 +76,7 @@ class Wind {
 	 * @return WindWebApplication
 	 */
 	public static function getApp() {
-		$_appName = self::getAppName();
+		$_appName = self::$_currentAppName; //self::getAppName();
 		if (isset(self::$_app[$_appName]))
 			return self::$_app[$_appName];
 		else
@@ -317,6 +318,7 @@ class Wind {
 		if (!$appName || in_array($appName, self::$_currentApp))
 			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
 		array_push(self::$_currentApp, $appName);
+		self::$_currentAppName = $appName;
 	}
 
 	/**
@@ -324,6 +326,7 @@ class Wind {
 	 */
 	protected static function afterRun() {
 		array_pop(self::$_currentApp);
+		self::$_currentAppName = end(self::$_currentApp);
 		if (self::$_logger)
 			self::$_logger->flush();
 	}
