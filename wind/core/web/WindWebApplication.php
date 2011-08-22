@@ -28,7 +28,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @var WindRouter
 	 */
 	protected $handlerAdapter = null;
-	protected $filterChain = 'COM:filter.WindFilterChain';
+	protected $filterChain = 'WIND:filter.WindFilterChain';
 
 	/**
 	 * 应用初始化操作

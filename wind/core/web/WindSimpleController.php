@@ -13,10 +13,6 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 */
 	protected $forward = null;
 	/**
-	 * @var WindUrlHelper
-	 */
-	protected $urlHelper = null;
-	/**
 	 * @var WindErrorMessage
 	 */
 	protected $errorMessage = null;
@@ -265,13 +261,6 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	}
 
 	/**
-	 * @return WindUrlHelper
-	 */
-	protected function getUrlHelper() {
-		return $this->_getUrlHelper();
-	}
-
-	/**
 	 * @return WindErrorMessage
 	 */
 	protected function getErrorMessage() {
@@ -279,6 +268,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	}
 
 }
+
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>

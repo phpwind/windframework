@@ -5,7 +5,7 @@
  * @version $Id$ 
  * @package 
  */
-class WindController extends WindSimpleController {
+abstract class WindController extends WindSimpleController {
 	/**
 	 * 验证类
 	 *
@@ -18,11 +18,6 @@ class WindController extends WindSimpleController {
 	 * @var string
 	 */
 	protected $formClass = '';
-
-	/* (non-PHPdoc)
-	 * @see WindSimpleController::run()
-	 */
-	public function run() {}
 
 	/* (non-PHPdoc)
 	 * @see WindSimpleController::preAction()
