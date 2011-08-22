@@ -5,7 +5,6 @@ Wind::import('COM:parser.IWindConfigParser');
  * 配置文件格式允许有4中格式：xml, php, properties, ini
  * 
  * 根据用户传入的配置文件所在位置解析配置文件，
- * 并将生成的配置缓存文件， 以php格式默认放在‘COMPILE_PATH’下面
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>
