@@ -9,6 +9,8 @@ define('_COMPILE_PATH', dirname(__FILE__) . '/');
 Wind::clear();
 Wind::import('COM:log.WindLogger');
 Wind::import('WIND:core.*', true);
+Wind::import('COM:parser.*', true);
+Wind::import('COM:router.*', true);
 
 $imports = Wind::getImports();
 /* 载入需要的文件信息 */
