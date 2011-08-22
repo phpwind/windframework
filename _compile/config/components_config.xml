@@ -8,7 +8,6 @@
 <!-- </component> -->
 
 <components>
-	<!-- app -->
 	<component name='windWebApp' path='WIND:core.web.WindWebApplication'
 		scope='singleton'>
 		<properties>
@@ -16,26 +15,28 @@
 			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
+	<component name='windLogger' path='COM:log.WindLogger' scope='application'>
+		<constructor-args>
+			<constructor-arg value='data.log' />
+			<constructor-arg value='0' />
+		</constructor-args>
+	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
-		scope='prototype'>
+		scope='application'>
 		<properties>
 			<property name='urlHelper' ref='urlHelper' />
 		</properties>
 	</component>
-	<!-- forward -->
 	<component name='forward' path='WIND:core.web.WindForward'
 		scope='prototype'>
 	</component>
-
-	<!-- router -->
-	<component name='router' path='COM:router.WindRouter' scope="prototype"></component>
+	<component name='router' path='COM:router.WindRouter' scope="application">
+	</component>
 	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter'
 		scope='singleton'></component>
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
-		scope='singleton'>
+		scope='application'>
 	</component>
-
-	<!-- windView -->
 	<component name='windView' path='COM:viewer.WindView' scope='prototype'>
 		<config>
 			<template-dir>template</template-dir>
@@ -55,17 +56,12 @@
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
 	</component>
-
-	<!-- error -->
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'>
 	</component>
-
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
-
-	<!-- cache -->
 	<component name='windCache' path="COM:cache.strategy.WindFileCache">
 		<config>
 			<dir>compile</dir>
@@ -87,5 +83,4 @@
 			<expires>10</expires>
 		</config>
 	</component>
-
 </components>

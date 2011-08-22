@@ -11,9 +11,13 @@
 			),
 		),
 	),
+	'windLog' => array(
+		'path' => 'COM:log.WindLogger',
+		'scope' => 'application',
+	),
 	'dispatcher' => array(
 		'path' => 'WIND:core.web.WindDispatcher',
-		'scope' => 'prototype',
+		'scope' => 'application',
 		'properties' => array(
 			'urlHelper' => array(
 				'ref' => 'urlHelper',
@@ -26,7 +30,7 @@
 	),
 	'router' => array(
 		'path' => 'COM:router.WindRouter',
-		'scope' => 'prototype',
+		'scope' => 'application',
 	),
 	'urlRewriteRouter' => array(
 		'path' => 'COM:router.WindUrlRewriteRouter',
@@ -34,7 +38,7 @@
 	),
 	'urlHelper' => array(
 		'path' => 'WIND:core.web.WindUrlHelper',
-		'scope' => 'singleton',
+		'scope' => 'application',
 	),
 	'windView' => array(
 		'path' => 'COM:viewer.WindView',
