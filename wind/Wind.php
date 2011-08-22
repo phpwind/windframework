@@ -5,14 +5,8 @@ define('PHPVERSION', '5.1.2');
 /* 路径相关配置信息  */
 define('D_S', DIRECTORY_SEPARATOR);
 define('WIND_PATH', dirname(__FILE__) . D_S);
-!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
-
 /* debug/log */
 !defined('IS_DEBUG') && define('IS_DEBUG', 1);
-!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
-!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 0);
-define('DEBUG_TIME', microtime(true));
-
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -23,7 +17,6 @@ class Wind {
 	private static $_components = 'WIND:components_config';
 	private static $_extensions = 'php';
 	private static $_isAutoLoad = true;
-	private static $_logger = null;
 	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_classes = array();
@@ -255,51 +248,6 @@ class Wind {
 		self::_setDefaultSystemNamespace();
 		self::_registerAutoloader();
 		self::_loadBaseLib();
-	}
-
-	/**
-	 * @param string $message
-	 * @param int $level
-	 */
-	public static function log($message, $level = WindLogger::LEVEL_INFO, $type = 'wind.core') {
-		if (IS_DEBUG && $level >= IS_DEBUG && $level != WindLogger::LEVEL_PROFILE) {
-			self::getLogger()->log($message, $level, $type);
-		}
-	}
-
-	/**
-	 * @param $token
-	 * @param $message
-	 * @param $type
-	 */
-	public static function profileBegin($token, $message = '', $type = 'wind.core') {
-		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
-			$msg = $token . ':' . $message;
-			self::getLogger()->profileBegin($msg, $type);
-		}
-	}
-
-	/**
-	 * @param $token
-	 * @param $message
-	 * @param $type
-	 */
-	public static function profileEnd($token, $message = '', $type = 'wend.core') {
-		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
-			$msg = $token . ':' . $message;
-			self::getLogger()->profileEnd($msg, $type);
-		}
-	}
-
-	/**
-	 * 返回系统日志对象
-	 * @return WindLogger
-	 */
-	public static function getLogger() {
-		if (self::$_logger === null) {
-			self::$_logger = new WindLogger(LOG_DIR, LOG_WRITE_LEVEL);
-		}
-		return self::$_logger;
 	}
 
 	/**
