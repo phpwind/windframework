@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:log.WindLogger');
+Wind::import('COM:fitler.WindHandlerInterceptor');
 /**
  * Enter description here ...
  *
@@ -78,11 +78,14 @@ class WindLoggerListener extends WindHandlerInterceptor {
 		$flag = false;
 		foreach (debug_backtrace(false) as $traceKey => $trace) {
 			$class = isset($trace['class']) ? $trace['class'] : '';
-			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor'))) continue;
+			if (in_array($class, array('', 'WindLogger', __CLASS__, 'WindHandlerInterceptor')))
+				continue;
 			$function = isset($trace['function']) ? $trace['function'] : '';
-			($class == 'WindClassProxy' && $function == '__call') && $method = trim($trace['args'][0]);
+			($class == 'WindClassProxy' && $function == '__call') && $method = trim(
+				$trace['args'][0]);
 			($function == $method) && $flag = true;
-			if (!isset($trace['file'])) continue;
+			if (!isset($trace['file']))
+				continue;
 			$info['caller'] = addslashes($trace['file']) . '(' . $trace['line'] . '): ';
 			break;
 		}

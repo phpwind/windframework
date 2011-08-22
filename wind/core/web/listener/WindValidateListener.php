@@ -1,4 +1,5 @@
 <?php
+Wind::import('COM:fitler.WindHandlerInterceptor');
 /**
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -7,18 +8,18 @@
  * @package 
  */
 class WindValidateListener extends WindHandlerInterceptor {
-
+	
 	/**
 	 * @var WindHttpRequest
 	 */
 	private $request = null;
-
+	
 	private $validateRules = array();
-
+	
 	private $validator = null;
-
+	
 	private $validatorClass = '';
-
+	
 	private $defaultMessage = '验证失败';
 
 	/**
@@ -44,14 +45,18 @@ class WindValidateListener extends WindHandlerInterceptor {
 		}
 		$_input = new stdClass();
 		foreach ((array) $this->validateRules as $rule) {
-			if (!is_array($rule)) continue;
+			if (!is_array($rule))
+				continue;
 			$key = $rule['field'];
-			$value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost($key);
+			$value = $this->request->getGet($key) ? $this->request->getGet($key) : $this->request->getPost(
+				$key);
 			$args = $rule['args'];
 			array_unshift($args, $value);
-			if (call_user_func_array(array($this->getValidator(), $rule['validator']), (array) $args) === false) {
+			if (call_user_func_array(array($this->getValidator(), $rule['validator']), 
+				(array) $args) === false) {
 				if (null === $rule['default'])
-					$errorMessage->addError(($rule['message'] ? $rule['message'] : $this->defaultMessage), $key);
+					$errorMessage->addError(
+						($rule['message'] ? $rule['message'] : $this->defaultMessage), $key);
 				else
 					$value = $rule['default'];
 			}
@@ -73,7 +78,8 @@ class WindValidateListener extends WindHandlerInterceptor {
 		if ($this->validator === null) {
 			$_className = Wind::import($this->validatorClass);
 			$this->validator = WindFactory::createInstance($_className);
-			if ($this->validator === null) throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
+			if ($this->validator === null)
+				throw new WindException('validator', WindException::ERROR_RETURN_TYPE_ERROR);
 		}
 		return $this->validator;
 	}
