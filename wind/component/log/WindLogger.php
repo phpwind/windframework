@@ -100,6 +100,7 @@ class WindLogger extends WindModule {
 	 * @param const  $logType 日志类别
 	 */
 	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system', $flush = false) {
+		if (!$this->_logDir) return;
 		if ($this->_writeType == self::WRITE_TYPE)
 			(count($this->_types) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
 		else
@@ -113,9 +114,8 @@ class WindLogger extends WindModule {
 			$message = $this->_build($msg, $level, $type);
 		$this->_logs[] = array($level, $type, $message);
 		$this->_logCount++;
-		if ($this->_writeType == self::WRITE_TYPE && !in_array($type, $this->_types)) {
+		if ($this->_writeType == self::WRITE_TYPE && !in_array($type, $this->_types))
 			$this->_types[] = $type;
-		}
 		if ($flush)
 			$this->flush();
 	}
