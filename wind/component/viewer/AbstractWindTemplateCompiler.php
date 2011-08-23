@@ -24,6 +24,8 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	protected $request = null;
 	
 	protected $response = null;
+	
+	protected $getVar = false;
 
 	/**
 	 * 初始化标签解析器
@@ -73,9 +75,21 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 */
 	protected function compileProperty($content) {
 		foreach ($this->getProperties() as $value) {
-			if (!$value) continue;
-			preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', $content, $result);
-			if ($result) $this->$value = trim(str_replace($result[1], '', $result[0]));
+			if (!$value)
+				continue;
+			preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', 
+				$content, $result);
+			if (!$result)
+				continue;
+			$result = trim(str_replace($result[1], '', $result[0]));
+			if ($this->getVar) {
+				preg_match('/^{?\$(\w+)}?$/Ui', $result, $_tmp);
+				if (!empty($_tmp)) {
+					$_tpl = $this->windViewerResolver->getWindView()->templateName;
+					$result = Wind::getApp()->getResponse()->getData($_tpl, $_tmp[1]);
+				}
+			}
+			$this->$value = $result;
 		}
 	}
 
@@ -83,10 +97,12 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
 	public function preHandle() {
-		if ($this->windViewTemplate === null) return;
+		if ($this->windViewTemplate === null)
+			return;
 		$this->preCompile();
 		foreach ($this->tags as $key => $value) {
-			if (!$value[0] || !$value[1]) continue;
+			if (!$value[0] || !$value[1])
+				continue;
 			$this->compileProperty($value[1]);
 			$_output = $this->compile($value[0], $value[1]);
 			$this->windViewTemplate->setCompiledBlockData($value[0], $_output);
