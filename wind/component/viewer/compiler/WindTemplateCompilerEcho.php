@@ -18,7 +18,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
-	public function compile($key, $content) {
+	public function compile($key, $content) { 
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $content);
 		list($_output, $type) = explode('|', $_output . '|');
 		if (strpos($_output, ':') !== false) {
