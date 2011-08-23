@@ -40,8 +40,6 @@ class WindFactory implements IWindFactory {
 		if (!isset($this->classDefinitions[$alias]) || !($definition = $this->classDefinitions[$alias]))
 			return null;
 		
-		if (!isset($definition['className']))
-			$definition['className'] = Wind::import(@$definition['path']);
 		if (isset($definition['constructorArgs']))
 			foreach ((array) $definition['constructorArgs'] as $_var) {
 				if (isset($_var['value'])) {
@@ -49,6 +47,8 @@ class WindFactory implements IWindFactory {
 				} elseif (isset($_var['ref']))
 					$args[] = $this->getInstance($_var['ref']);
 			}
+		if (!isset($definition['className']))
+			$definition['className'] = Wind::import(@$definition['path']);
 		$instance = $this->createInstance($definition['className'], $args);
 		if (isset($definition['config']))
 			$this->resolveConfig($definition['config'], $alias, $instance);
