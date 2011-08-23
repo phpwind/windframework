@@ -16,7 +16,7 @@
 		'scope' => 'application',
 		'constructor-arg' => array(
 			'0' => array(
-				'value' => 'data.log',
+				'value' => '',
 			),
 			'1' => array(
 				'value' => '0',
