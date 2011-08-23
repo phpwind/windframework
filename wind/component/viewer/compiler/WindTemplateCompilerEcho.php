@@ -18,15 +18,14 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
-	public function compile($key, $content) { 
+	public function compile($key, $content) {
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $content);
 		list($_output, $type) = explode('|', $_output . '|');
 		if (strpos($_output, ':') !== false) {
 			list($_namespace, $_var) = explode(':', $_output);
 			$_output = 'Wind::getApp()->getResponse()->getData(\'' . $_namespace . '\', \'' . $_var . '\')';
 		}
-		if ($this->windViewerResolver->getWindView()->htmlspecialchars === false || strcasecmp(
-			$type, 'html'))
+		if (!strcasecmp($type, 'html'))
 			return '<?php echo ' . $_output . ';?>';
 		else
 			return '<?php echo WindHtmlHelper::encode(' . $_output . ');?>';

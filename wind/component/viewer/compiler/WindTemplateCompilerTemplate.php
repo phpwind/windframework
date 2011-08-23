@@ -18,6 +18,8 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	protected $suffix = '';
 	
 	protected $load = 'true';
+	
+	protected $getVar = true;
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
@@ -25,18 +27,19 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		if (!isset($this->source))
 			return $content;
-		preg_match('/^{?\$(\w+)}?$/Ui', trim($this->source), $result);
+			/*preg_match('/^{?\$(\w+)}?$/Ui', trim($this->source), $result);
 		if (!empty($result)) { 
 			$_tpl = $this->windViewerResolver->getWindView()->templateName;
 			$this->source = Wind::getApp()->getResponse()->getData($_tpl, $result[1]);
-		}
+		}*/
 		//TODO 暂时不支持 load 参数 默认全部以load模式加载子模板
-		/*if ($this->load === 'false') {
+		if ($this->load === 'false') {
 			list($compileFile) = $this->windViewerResolver->compile($this->source, $this->suffix);
 			$content = '<?php include(\'' . addslashes($compileFile) . '\'); ?>';
 		} else {
-		}*/
-		list(, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, true);
+			list(, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, 
+				true);
+		}
 		return $content;
 	}
 
