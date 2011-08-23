@@ -11,9 +11,17 @@
 			),
 		),
 	),
-	'windLog' => array(
+	'windLogger' => array(
 		'path' => 'COM:log.WindLogger',
 		'scope' => 'application',
+		'constructor-arg' => array(
+			'0' => array(
+				'value' => '',
+			),
+			'1' => array(
+				'value' => '0',
+			),
+		),
 	),
 	'dispatcher' => array(
 		'path' => 'WIND:core.web.WindDispatcher',
