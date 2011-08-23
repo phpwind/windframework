@@ -135,7 +135,7 @@ class WindHelper {
 		if (isset($call['line']))
 			$call_signature .= "(" . $call['line'] . ") ";
 		if (isset($call['function'])) {
-			$call_signature .= $call['function'] . '(';
+			$call_signature .= $call['function'] . "(";
 			if (isset($call['args'])) {
 				foreach ($call['args'] as $arg) {
 					if (is_string($arg))
