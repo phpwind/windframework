@@ -195,10 +195,7 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if (isset(self::$_classes[$className]))
 			$path = self::$_classes[$className];
-		$path .= '.' . self::$_extensions;
-		if (!(@include $path))
-			throw new Exception(
-				'[wind.Wind.autoLoad] Your requested \'' . $path . '\' was not found on this server.');
+		include $path . '.' . self::$_extensions;
 	}
 
 	/**
