@@ -195,10 +195,8 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if (isset(self::$_classes[$className]))
 			$path = self::$_classes[$className];
-		if ($path === '')
-			throw new Exception('auto load ' . $className . ' failed.');
 		$path .= '.' . self::$_extensions;
-		if ((include $path) === false)
+		if (!(@include $path))
 			throw new Exception(
 				'[wind.Wind.autoLoad] Your requested \'' . $path . '\' was not found on this server.');
 	}
@@ -385,7 +383,15 @@ class Wind {
 			'AbstractWindHttp' => 'http/transfer/AbstractWindHttp', 
 			'WindHttpCurl' => 'http/transfer/WindHttpCurl', 
 			'WindHttpSocket' => 'http/transfer/WindHttpSocket', 
-			'WindHttpStream' => 'http/transfer/WindHttpStream');
+			'WindHttpStream' => 'http/transfer/WindHttpStream', 
+			'WindDate' => 'utility/date/WindDate', 
+			'WindGeneralDate' => 'utility/date/WindGeneralDate', 
+			'WindDecoder' => 'utility/json/WindDecoder', 'WindEncoder' => 'utility/json/WindEncoder', 
+			'WindArray' => 'utility/WindArray', 'WindFile' => 'utility/WindFile', 
+			'WindHtmlHelper' => 'utility/WindHtmlHelper', 'WindImage' => 'utility/WindImage', 
+			'WindPack' => 'utility/WindPack', 'WindSecurity' => 'utility/WindSecurity', 
+			'WindString' => 'utility/WindString', 'WindUtility' => 'utility/WindUtility', 
+			'WindValidator' => 'utility/WindValidator');
 	}
 }
 Wind::init();
