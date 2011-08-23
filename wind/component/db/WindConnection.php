@@ -243,33 +243,23 @@ class WindConnection extends WindModule {
 	 * @return 
 	 */
 	public function init() {
-		if ($this->_dbHandle !== null)
-			return;
 		try {
-			Wind::log(
-				"component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", 
-				WindLogger::LEVEL_INFO);
 			$driverName = $this->getDriverName();
-			if ($driverName) {
-				$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
-				$dbHandleClass = Wind::import($dbHandleClass);
-			} else
-				$dbHandleClass = 'PDO';
-			if (!$dbHandleClass) {
-				throw new WindDbException(
-					'The db handle class path \'' . $dbHandleClass . '\' is not exist.');
-			}
+			$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
+			$dbHandleClass = Wind::import($dbHandleClass);
 			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
 				(array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
-			Wind::log(
-				"component.db.WindConnection.init() \r\n dsn: " . $this->_dsn . " \r\n username: " . $this->_user . " \r\n password: " . $this->_pwd . " \r\n tablePrefix: " . $this->_tablePrefix, 
-				WindLogger::LEVEL_DEBUG);
+			if (IS_DEBUG) {
+				$reflection = new ReflectionClass(get_class($this));
+				$properties = $reflection->getProperties();
+				Wind::getApp()->getComponent('windLogger')->info(
+					"component.db.WindConnection.init() Initialize db connection success." . WindString::varToString(
+						$properties), 'component.db');
+			}
 		} catch (PDOException $e) {
 			$this->close();
-			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", 
-				WindLogger::LEVEL_TRACE);
 			throw new WindDbException($e->getMessage());
 		}
 	}

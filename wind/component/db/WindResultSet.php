@@ -34,8 +34,10 @@ class WindResultSet {
 			$this->_columns = $sqlStatement->getColumns();
 		} else
 			$this->_statement = $sqlStatement;
-		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
-		if ($fetchMode != 0) $this->_fetchType = $fetchType;
+		if ($fetchMode != 0)
+			$this->_fetchMode = $fetchMode;
+		if ($fetchMode != 0)
+			$this->_fetchType = $fetchType;
 	}
 
 	/**
@@ -77,8 +79,10 @@ class WindResultSet {
 	 * @return array
 	 */
 	public function fetch($fetchMode = 0, $fetchType = 0) {
-		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
-		if ($fetchType === 0) $fetchMode = $this->_fetchType;
+		if ($fetchMode === 0)
+			$fetchMode = $this->_fetchMode;
+		if ($fetchType === 0)
+			$fetchMode = $this->_fetchType;
 		return $this->_fetch($fetchMode, $fetchType);
 	}
 
@@ -87,16 +91,22 @@ class WindResultSet {
 	 * @see WindResult::fetch()
 	 */
 	private function _fetch($fetchMode, $fetchType) {
-		if (!empty($this->_columns)) $fetchMode = PDO::FETCH_BOUND;
+		if (!empty($this->_columns))
+			$fetchMode = PDO::FETCH_BOUND;
 		$result = array();
 		if ($row = $this->_statement->fetch($fetchMode, $fetchType)) {
-			if (empty($this->_columns)) return $row;
-			foreach ($this->_columns as $key => $value) {
-				$result[$key] = $value;
-			}
-			return $result;
+			if (empty($this->_columns))
+				$result = $row;
+			else
+				foreach ($this->_columns as $key => $value) {
+					$result[$key] = $value;
+				}
 		}
-		return array();
+		if (IS_DEBUG)
+			Wind::getApp()->getComponent('windLogger')->info(
+				'[component.db.WindResultSet._fetch]' . WindString::varToString($result));
+		
+		return $result;
 	}
 
 	/**
@@ -107,14 +117,16 @@ class WindResultSet {
 	 * @return array
 	 */
 	public function fetchAll($index = '', $fetchMode = 0) {
-		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
+		if ($fetchMode === 0)
+			$fetchMode = $this->_fetchMode;
 		$result = array();
 		if (!$index)
 			while ($row = $this->fetch($fetchMode))
 				$result[] = $row;
 		else
 			while ($row = $this->fetch($fetchMode)) {
-				if (!isset($row[$index])) continue;
+				if (!isset($row[$index]))
+					continue;
 				$result[$row[$index]] = $row;
 			}
 		return $result;
