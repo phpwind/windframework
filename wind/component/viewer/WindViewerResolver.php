@@ -53,10 +53,14 @@ class WindViewerResolver implements IWindViewerResolver {
 		if ($key === '')
 			$key = $this->windView->templateName;
 		$this->vars[$key] = $vars;
+		Wind::getApp()->getResponse()->setData($vars, $key);
 	}
 
 	/**
-	 * 编译模板并返回编译后模板名称
+	 * 编译模板并返回编译后模板名称,
+	 * $output==true： 直接返回编译结果,不将结果写入编译文件中
+	 * $output==false：返回编译文件地址
+	 * 
 	 * @param string $template
 	 * @param string $suffix
 	 * @param boolean $output
@@ -67,16 +71,17 @@ class WindViewerResolver implements IWindViewerResolver {
 		if (!is_file($templateFile))
 			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
-		if (!($compileFile = $this->windView->getCompileFile($template)))
-			return array($templateFile, '');
 			
 		/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
-		if (!$compileFile && !$_output)
-			return array('', '');
-		WindFile::write($compileFile, $_output);
-		return array($compileFile, $_output);
+		if ($output === true)
+			return array('', $_output);
+		else {
+			$compileFile = $this->windView->getCompileFile($template);
+			WindFile::write($compileFile, $_output);
+			return array($compileFile, $_output);
+		}
 	}
 
 	/**
@@ -84,7 +89,7 @@ class WindViewerResolver implements IWindViewerResolver {
 	 * @param template
 	 */
 	protected function render($template) {
-		list($_tmp, $_output) = $this->compile($template);
+		list($_tmp) = $this->compile($template);
 		/*$_var = Wind::getApp()->getResponse()->getData('G');
 		if (isset($this->vars[$template]))
 			$_var += $this->vars[$template];*/

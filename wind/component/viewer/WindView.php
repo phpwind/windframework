@@ -124,7 +124,11 @@ class WindView extends WindModule implements IWindView {
 	 * @return string | false
 	 */
 	public function getViewTemplate($template = '', $ext = '') {
-		!$template && $template = $this->templateName;
+		if ($template) {
+			if (is_file($template))
+				return $template;
+		} else
+			$template = $this->templateName;
 		!$ext && $ext = $this->templateExt;
 		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
 	}
@@ -138,7 +142,8 @@ class WindView extends WindModule implements IWindView {
 	 * @return string | false
 	 */
 	public function getCompileFile($template = '') {
-		if (!$this->compileDir) return;
+		if (!$this->compileDir)
+			return;
 		!$template && $template = $this->templateName;
 		$dir = Wind::getRealDir($this->compileDir);
 		if (!is_dir($dir))
