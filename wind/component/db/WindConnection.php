@@ -1,6 +1,7 @@
 <?php
 Wind::import("COM:db.exception.WindDbException");
-Wind::import("WIND:component.db.WindResultSet");
+Wind::import("COM:db.WindSqlStatement");
+Wind::import("COM:db.WindResultSet");
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -51,7 +52,6 @@ class WindConnection extends WindModule {
 	 * @return WindSqlStatement
 	 */
 	public function createStatement($sql = null) {
-		Wind::import("WIND:component.db.WindSqlStatement");
 		return new WindSqlStatement($this, $sql);
 	}
 
@@ -69,7 +69,8 @@ class WindConnection extends WindModule {
 	 * @return string
 	 * */
 	public function getAttribute($attribute = '') {
-		if (!$attribute) return;
+		if (!$attribute)
+			return;
 		if ($this->_dbHandle !== null) {
 			return $this->_dbHandle->getAttribute($attribute);
 		} else
@@ -83,7 +84,8 @@ class WindConnection extends WindModule {
 	 * @return 
 	 * */
 	public function setAttribute($attribute, $value = null) {
-		if (!$attribute) return;
+		if (!$attribute)
+			return;
 		if ($this->_dbHandle !== null && $this->_dbHandle instanceof PDO) {
 			$this->_dbHandle->setAttribute($attribute, $value);
 		} else
@@ -95,7 +97,8 @@ class WindConnection extends WindModule {
 	 * @return string
 	 */
 	public function getDriverName() {
-		if ($this->_driverName) return $this->_driverName;
+		if ($this->_driverName)
+			return $this->_driverName;
 		if ($this->_dbHandle !== null) {
 			$this->_driverName = $this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME);
 		} elseif (($pos = strpos($this->_dsn, ':')) !== false) {
@@ -146,7 +149,6 @@ class WindConnection extends WindModule {
 			return $this->getDbHandle()->exec($sql);
 		} catch (PDOException $e) {
 			$this->close();
-			Wind::log('component.db.WindConnection.excute.', WindLogger::LEVEL_TRACE, 'component.db');
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -210,7 +212,8 @@ class WindConnection extends WindModule {
 	 * @param array $fileds
 	 */
 	public function createTable($tableName, $values, $engine = '', $autoIncrement = '') {
-		return $this->getDbHandle()->createTable($tableName, $values, $engine, $this->_charset, $autoIncrement);
+		return $this->getDbHandle()->createTable($tableName, $values, $engine, $this->_charset, 
+			$autoIncrement);
 	}
 
 	/**
@@ -240,9 +243,11 @@ class WindConnection extends WindModule {
 	 * @return 
 	 */
 	public function init() {
-		if ($this->_dbHandle !== null) return;
+		if ($this->_dbHandle !== null)
+			return;
 		try {
-			Wind::log("component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", 
+			Wind::log(
+				"component.db.WindConnection._init() Initialize DB handle, set default attributes and charset.", 
 				WindLogger::LEVEL_INFO);
 			$driverName = $this->getDriverName();
 			if ($driverName) {
@@ -251,9 +256,11 @@ class WindConnection extends WindModule {
 			} else
 				$dbHandleClass = 'PDO';
 			if (!$dbHandleClass) {
-				throw new WindDbException('The db handle class path \'' . $dbHandleClass . '\' is not exist.');
+				throw new WindDbException(
+					'The db handle class path \'' . $dbHandleClass . '\' is not exist.');
 			}
-			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
+			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
+				(array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
 			Wind::log(
@@ -261,7 +268,8 @@ class WindConnection extends WindModule {
 				WindLogger::LEVEL_DEBUG);
 		} catch (PDOException $e) {
 			$this->close();
-			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", WindLogger::LEVEL_TRACE);
+			Wind::log("component.db.WindConnection._init() Initalize DB handle failed.", 
+				WindLogger::LEVEL_TRACE);
 			throw new WindDbException($e->getMessage());
 		}
 	}
@@ -272,12 +280,18 @@ class WindConnection extends WindModule {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		if (!$this->_dsn) $this->_dsn = $this->getConfig(self::DSN, '', $this->_dsn);
-		if (!$this->_user) $this->_user = $this->getConfig(self::USER, '', $this->_user);
-		if (!$this->_pwd) $this->_pwd = $this->getConfig(self::PWD, '', $this->_pwd);
-		if (!$this->_enableLog) $this->_enableLog = $this->getConfig(self::ENABLELOG, '', $this->_enableLog);
-		if (!$this->_charset) $this->_charset = $this->getConfig(self::CHARSET, '', $this->_charset);
-		if (!$this->_tablePrefix) $this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', $this->_tablePrefix);
+		if (!$this->_dsn)
+			$this->_dsn = $this->getConfig(self::DSN, '', $this->_dsn);
+		if (!$this->_user)
+			$this->_user = $this->getConfig(self::USER, '', $this->_user);
+		if (!$this->_pwd)
+			$this->_pwd = $this->getConfig(self::PWD, '', $this->_pwd);
+		if (!$this->_enableLog)
+			$this->_enableLog = $this->getConfig(self::ENABLELOG, '', $this->_enableLog);
+		if (!$this->_charset)
+			$this->_charset = $this->getConfig(self::CHARSET, '', $this->_charset);
+		if (!$this->_tablePrefix)
+			$this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', $this->_tablePrefix);
 	}
 }
 ?>
