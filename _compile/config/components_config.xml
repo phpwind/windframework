@@ -16,10 +16,8 @@
 		</properties>
 	</component>
 	<component name='windLogger' path='COM:log.WindLogger' scope='application'>
-		<constructor-args>
-			<constructor-arg value='data.log' />
-			<constructor-arg value='0' />
-		</constructor-args>
+		<constructor-arg value='' />
+		<constructor-arg value='0' />
 	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
 		scope='application'>
