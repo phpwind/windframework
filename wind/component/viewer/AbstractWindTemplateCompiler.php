@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:core.filter.WindHandlerInterceptor');
 /**
  * 视图解析,抽象接口
  *
