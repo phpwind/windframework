@@ -26,7 +26,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 		if (!isset($this->source))
 			return $content;
 		preg_match('/^{?\$(\w+)}?$/Ui', trim($this->source), $result);
-		if (!empty($result)) {
+		if (!empty($result)) { 
 			$_tpl = $this->windViewerResolver->getWindView()->templateName;
 			$this->source = Wind::getApp()->getResponse()->getData($_tpl, $result[1]);
 		}
