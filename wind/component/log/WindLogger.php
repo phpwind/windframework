@@ -12,11 +12,11 @@ class WindLogger extends WindModule {
 	const LEVEL_DEBUG = 3;
 	const LEVEL_ERROR = 4;
 	const LEVEL_PROFILE = 5;
-	const TOKEN_BEGIN = 'begin:';
-	const TOKEN_END = 'end:';
 	const WRITE_ALL = 0;
 	const WRITE_LEVEL = 1;
 	const WRITE_TYPE = 2;
+	const TOKEN_BEGIN = 'begin:';
+	const TOKEN_END = 'end:';
 	/**
 	 * 每次当日志数量达到100的时候，就写入文件一次
 	 * @var int
@@ -35,13 +35,14 @@ class WindLogger extends WindModule {
 	 */
 	private $_writeType = '0';
 	private $_types = array();
+	private $_levelMap = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error');
 
 	/**
 	 * @param string $logDir
 	 * @param int $writeType
 	 */
 	public function __construct($logDir = '', $writeType = 0) {
-		$this->_logDir = $logDir;
+		$this->setLogDir($logDir);
 		$this->_writeType = $writeType;
 	}
 
@@ -49,48 +50,48 @@ class WindLogger extends WindModule {
 	 * 添加info级别的日志信息
 	 * @param string $msg
 	 */
-	public function info($msg, $type = 'wind.system') {
-		$this->log($msg, self::LEVEL_INFO, $type);
+	public function info($msg, $type = 'wind.system', $flush = false) {
+		$this->log($msg, self::LEVEL_INFO, $type, $flush);
 	}
 
 	/**
 	 * 添加trace级别的日志信息
 	 * @param string $msg
 	 */
-	public function trace($msg, $type = 'wind.system') {
-		$this->log($msg, self::LEVEL_TRACE, $type);
+	public function trace($msg, $type = 'wind.system', $flush = false) {
+		$this->log($msg, self::LEVEL_TRACE, $type, $flush);
 	}
 
 	/**
 	 * 添加debug的日志信息
 	 * @param string $msg
 	 */
-	public function debug($msg, $type = 'wind.system') {
-		$this->log($msg, self::LEVEL_DEBUG, $type);
+	public function debug($msg, $type = 'wind.system', $flush = false) {
+		$this->log($msg, self::LEVEL_DEBUG, $type, $flush);
 	}
 
 	/**
 	 * 添加Error级别的日志信息
 	 * @param string $msg
 	 */
-	public function error($msg, $type = 'wind.core') {
-		$this->log($msg, self::LEVEL_ERROR, $type);
+	public function error($msg, $type = 'wind.core', $flush = false) {
+		$this->log($msg, self::LEVEL_ERROR, $type, $flush);
 	}
 
 	/**
 	 * @param $msg
 	 * @param $type
 	 */
-	public function profileBegin($msg, $type = 'wind.core') {
-		$this->log('begin:' . trim($msg), self::LEVEL_PROFILE, $type);
+	public function profileBegin($msg, $type = 'wind.core', $flush = false) {
+		$this->log('begin:' . trim($msg), self::LEVEL_PROFILE, $type, $flush);
 	}
 
 	/**
 	 * @param $msg
 	 * @param $type
 	 */
-	public function profileEnd($msg, $type = 'wind.core') {
-		$this->log('end:' . trim($msg), self::LEVEL_PROFILE, $type);
+	public function profileEnd($msg, $type = 'wind.core', $flush = false) {
+		$this->log('end:' . trim($msg), self::LEVEL_PROFILE, $type, $flush);
 	}
 
 	/**
@@ -98,7 +99,7 @@ class WindLogger extends WindModule {
 	 * @param string $msg	     日志信息
 	 * @param const  $logType 日志类别
 	 */
-	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system') {
+	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system', $flush = false) {
 		if ($this->_writeType == self::WRITE_TYPE)
 			(count($this->_types) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
 		else
@@ -115,6 +116,8 @@ class WindLogger extends WindModule {
 		if ($this->_writeType == self::WRITE_TYPE && !in_array($type, $this->_types)) {
 			$this->_types[] = $type;
 		}
+		if ($flush)
+			$this->flush();
 	}
 
 	/**
@@ -127,6 +130,9 @@ class WindLogger extends WindModule {
 			return false;
 		Wind::import('WIND:component.utility.WindFile');
 		$_l = array();
+		$_map = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error', 
+			self::LEVEL_DEBUG => 'debug', self::LEVEL_TRACE => 'trace', 
+			self::LEVEL_PROFILE => 'profile');
 		if ($this->_writeType == self::WRITE_LEVEL) {
 			$_logs = array();
 			foreach ($this->_logs as $key => $value) {
@@ -134,26 +140,7 @@ class WindLogger extends WindModule {
 				$_logs[$value[0]][] = $value[2];
 			}
 			foreach ($_logs as $key => $value) {
-				switch ($key) {
-					case self::LEVEL_INFO:
-						$key = 'info';
-						break;
-					case self::LEVEL_ERROR:
-						$key = 'error';
-						break;
-					case self::LEVEL_DEBUG:
-						$key = 'debug';
-						break;
-					case self::LEVEL_TRACE:
-						$key = 'trace';
-						break;
-					case self::LEVEL_PROFILE:
-						$key = 'profile';
-						break;
-					default:
-						$key = 'all';
-						break;
-				}
+				$key = isset($_map[$key]) ? $_map[$key] : 'all';
 				if (!$fileName = $this->_getFileName($key))
 					continue;
 				WindFile::write($fileName, join("", $value), 'a');
@@ -389,9 +376,11 @@ class WindLogger extends WindModule {
 	}
 
 	/**
-	 * @param field_type $_logFile
+	 * @param string $logFile
 	 */
 	public function setLogDir($logDir) {
+		if (!is_dir($logDir))
+			$logDir = Wind::getRealDir($logDir);
 		$this->_logDir = $logDir;
 	}
 
