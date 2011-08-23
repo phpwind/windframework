@@ -137,7 +137,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @param WindActionException actionException
 	 * @return
 	 */
-	protected function sendErrorMessage($exception) { 
+	protected function sendErrorMessage($exception) {
 		$moduleName = $this->handlerAdapter->getModule();
 		if ($moduleName === 'error' || !($module = $this->getModules($moduleName)))
 			throw new WindException($exception->getMessage());
@@ -246,13 +246,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function getComponent($componentName) {
 		return $this->windFactory->getInstance($componentName);
-	}
-
-	/**
-	 * @return WindLogger
-	 */
-	public function getLogger() {
-		return $this->windFactory->getInstance('windLogger');
 	}
 
 	/**
