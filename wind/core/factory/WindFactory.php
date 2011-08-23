@@ -40,8 +40,8 @@ class WindFactory implements IWindFactory {
 		if (!isset($this->classDefinitions[$alias]) || !($definition = $this->classDefinitions[$alias]))
 			return null;
 		
-		if (isset($definition['constructorArgs']))
-			foreach ((array) $definition['constructorArgs'] as $_var) {
+		if (isset($definition['constructor-arg']))
+			foreach ((array) $definition['constructor-arg'] as $_var) {
 				if (isset($_var['value'])) {
 					$args[] = $_var['value'];
 				} elseif (isset($_var['ref']))
