@@ -69,7 +69,7 @@ class WindHelper {
 				break;
 			}
 		}
-		$msg = '';
+		$msg = $msghtml = '';
 		if (IS_DEBUG) {
 			$errtrace = "__Stack:\n";
 			$count = count($trace);
@@ -84,8 +84,9 @@ class WindHelper {
 					$call);
 				$errtrace .= "$traceLine\n";
 			}
-			$errsample = '';
-			if ($_errhtml && is_file($file)) {
+			$msg = "$file\n";
+			$msghtml = "<b style=\"background:whiteSmoke\">$file</b>\n";
+			if (is_file($file)) {
 				$currentLine = $line - 1;
 				$fileLines = explode("\n", file_get_contents($file, null, null, 0, 10000000));
 				$topLine = $currentLine - 5;
@@ -97,17 +98,15 @@ class WindHelper {
 							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace(
 								"\t", "    ", rtrim($fileLine)), null, "UTF-8");
 					
+					$msg .= implode("\n", $fileLines) . "\n";
 					$fileLines[$currentLine] = "<b style=\"color:red; background:whiteSmoke\">" . $fileLines[$currentLine] . "</b>";
-					$errsample = implode("\n", $fileLines) . "\n";
+					$msghtml .= implode("\n", $fileLines) . "\n";
 				}
 			}
-			if ($_errhtml)
-				$errfile = "<b style=\"background:whiteSmoke\">$file</b>";
-			else
-				$errfile = "$file";
-			$msg = "$errfile\n$errsample\n$errtrace\n";
+			$msg .= "$errtrace\n";
+			$msghtml .= "$errtrace\n";
 		}
-		$msg .= self::errorInfo();
+		$msghtml .= self::errorInfo();
 		if ($status >= 400 && $status <= 505) {
 			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
 			$topic = "$status - " . $_statusMsg . "\n";
@@ -115,13 +114,14 @@ class WindHelper {
 			header('Status: ' . $status . ' ' . $_statusMsg);
 		} else
 			$topic = "Wind Framework - Error Caught\n";
-		if ($_errhtml) {
-			$msg = "<html><head><title>$topic</title></head><body><pre><h3>$topic</h3><b style=\"background:whiteSmoke\">$errmessage</b>\n$msg</pre></body></html>";
-		} else
-			$msg = "$topic\n$errmessage\n$msg";
+		
+		$msghtml = "<html><head><title>$topic</title></head><body><pre><h3>$topic</h3><b style=\"background:whiteSmoke\">$errmessage</b>\n$msghtml</pre></body></html>";
+		$msg = "$topic\n$errmessage\n$msg";
 		ob_end_clean();
 		$msg = str_replace(Wind::getRootPath(Wind::getAppName()), '~', $msg);
-		die($msg);
+		$msghtml = str_replace(Wind::getRootPath(Wind::getAppName()), '~', $msghtml);
+		Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', true);
+		die($_errhtml ? $msghtml : $msg);
 	}
 
 	/**
