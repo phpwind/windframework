@@ -40,10 +40,6 @@
 		'path' => 'COM:router.WindRouter',
 		'scope' => 'application',
 	),
-	'urlRewriteRouter' => array(
-		'path' => 'COM:router.WindUrlRewriteRouter',
-		'scope' => 'singleton',
-	),
 	'urlHelper' => array(
 		'path' => 'WIND:core.web.WindUrlHelper',
 		'scope' => 'application',
@@ -74,6 +70,13 @@
 	'template' => array(
 		'path' => 'COM:viewer.compiler.WindViewTemplate',
 		'scope' => 'prototype',
+	),
+	'db' => array(
+		'path' => 'COM:db.WindConnection',
+		'scope' => 'singleton',
+		'config' => array(
+			'resource' => 'db_config.xml',
+		),
 	),
 	'errorMessage' => array(
 		'path' => 'WIND:core.web.WindErrorMessage',

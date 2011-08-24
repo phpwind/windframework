@@ -30,8 +30,6 @@
 	</component>
 	<component name='router' path='COM:router.WindRouter' scope="application">
 	</component>
-	<component name='urlRewriteRouter' path='COM:router.WindUrlRewriteRouter'
-		scope='singleton'></component>
 	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
 		scope='application'>
 	</component>
@@ -53,6 +51,9 @@
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
+	</component>
+	<component name='db' path='COM:db.WindConnection' scope='singleton'>
+		<config resource='db_config.xml' />
 	</component>
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'>

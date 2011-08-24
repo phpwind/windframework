@@ -12,6 +12,7 @@ Wind::import('WIND:core.*', true);
 Wind::import('COM:parser.*', true);
 Wind::import('COM:router.*', true);
 Wind::import('COM:http.*', true);
+Wind::import('COM:utility.*', true);
 
 $imports = Wind::getImports();
 /* 载入需要的文件信息 */
