@@ -62,7 +62,10 @@ class WindXmlParser {
 		foreach ($node->childNodes as $node) {
 			$tempChilds = $attributes = array();
 			($node->hasAttributes()) && $attributes = $this->getAttributes($node);
-			(3 == $node->nodeType && trim($node->nodeValue)) && $childs[0] = (string) $node->nodeValue;
+            if (3 == $node->nodeType) {
+				$value = trim($node->nodeValue);
+				(is_numeric($value) || $value) && $childs[0] = $value;//值为0的情况
+			}
 			if (1 !== $node->nodeType) continue;
 			
 			$nodeName = ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
