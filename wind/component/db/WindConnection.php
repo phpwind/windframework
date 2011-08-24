@@ -60,6 +60,8 @@ class WindConnection extends WindModule {
 	 * @return WindMysqlPdoAdapter
 	 */
 	public function getDbHandle() {
+		if ($this->_dbHandle === null)
+			$this->init();
 		return $this->_dbHandle;
 	}
 
