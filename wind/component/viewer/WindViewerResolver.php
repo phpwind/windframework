@@ -109,7 +109,7 @@ class WindViewerResolver implements IWindViewerResolver {
 	 * @return boolean
 	 */
 	private function checkReCompile($templateFile, $compileFile) {
-		return WIND_DEBUG || $this->getWindView()->isCompile || !is_file($compileFile);
+		return WIND_DEBUG || $this->getWindView()->isCompile;
 	}
 
 	/**
