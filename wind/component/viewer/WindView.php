@@ -38,45 +38,40 @@ class WindView extends WindModule implements IWindView {
 	public $templateName;
 	/**
 	 * 是否对模板变量进行html字符过滤
-	 * 
 	 * @var boolean
 	 */
 	public $htmlspecialchars = true;
 	/**
 	 * 是否开启模板编译
-	 *
+	 * 00: 0   关闭,不进行模板编译
+	 * 01: 1  进行模板编译
 	 * @var boolean
 	 */
-	public $isCompile = false;
+	public $isCompile = 0;
 	/**
 	 * 编译目录
-	 *
 	 * @var string
 	 */
 	public $compileDir;
 	/**
 	 * 编译脚本后缀
-	 *
 	 * @var string
 	 */
 	public $compileExt = 'tpl';
 	
 	/**
 	 * 视图解析引擎
-	 *
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
 	/**
 	 * 布局文件
-	 *
 	 * @var string
 	 */
 	protected $layout;
 
 	/**
 	 * 视图渲染
-	 * 
 	 * @param WindForward $forward
 	 * @param WindUrlBasedRouter $router
 	 */
@@ -126,8 +121,9 @@ class WindView extends WindModule implements IWindView {
 	public function getViewTemplate($template = '', $ext = '') {
 		if (!$template) {
 			$template = $this->templateName;
-		} elseif (is_file($template))
-			return $template;
+		}
+		/* elseif (is_file($template))
+			return $template; */
 		!$ext && $ext = $this->templateExt;
 		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
 	}
@@ -145,10 +141,11 @@ class WindView extends WindModule implements IWindView {
 			return;
 		if (!$template) {
 			$template = $this->templateName;
-		} elseif (is_file($template)) {
+		} 
+		/*elseif (is_file($template)) {
 			$_info = pathinfo($template);
 			$template = $_info['filename'];
-		}
+		}*/
 		$dir = Wind::getRealDir($this->compileDir);
 		if (!is_dir($dir))
 			throw new WindViewException(
@@ -156,7 +153,7 @@ class WindView extends WindModule implements IWindView {
 		$_tmp = explode('.', $template);
 		foreach ($_tmp as $_dir) {
 			!is_dir($dir) && @mkdir($dir);
-			$dir .= D_S . $_dir;
+			$dir .= DIRECTORY_SEPARATOR . $_dir;
 		}
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
