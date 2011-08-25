@@ -21,7 +21,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		$_output = preg_replace(array('/^[\n\s{\@]+/i', '/[\n\s}\;]+$/i'), array('', ''), $content);
 		list($_output, $type) = explode('|', $_output . '|');
-		if (strpos($_output, ':') !== false) {
+		if (strpos($_output, '::') === false && strpos($_output, ':') !== false) {
 			list($_namespace, $_var) = explode(':', $_output);
 			$_output = 'Wind::getApp()->getResponse()->getData(\'' . $_namespace . '\', \'' . $_var . '\')';
 		}
