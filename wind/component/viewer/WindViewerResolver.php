@@ -71,17 +71,18 @@ class WindViewerResolver implements IWindViewerResolver {
 		if (!is_file($templateFile))
 			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
-			
-		/* @var $_windTemplate WindViewTemplate */
+		
+		$compileFile = $this->windView->getCompileFile($template);
+		if (!$this->checkReCompile($templateFile, $compileFile))
+			return array($compileFile, '');
+			/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
-		if ($output === true)
-			return array('', $_output);
-		else {
+		if ($output === false) {
 			$compileFile = $this->windView->getCompileFile($template);
 			WindFile::write($compileFile, $_output);
-			return array($compileFile, $_output);
 		}
+		return array($compileFile, $_output);
 	}
 
 	/**
@@ -102,22 +103,13 @@ class WindViewerResolver implements IWindViewerResolver {
 	}
 
 	/**
-	 * 检查是否需要重新编译
+	 * 检查是否需要重新编译,需要编译返回false，不需要编译返回true
 	 * @param string $templateFile
 	 * @param string $compileFile
+	 * @return boolean
 	 */
 	private function checkReCompile($templateFile, $compileFile) {
-		$_reCompile = false;
-		if (IS_DEBUG) {
-			$_reCompile = true;
-		} elseif (false === ($compileFileModifyTime = @filemtime($compileFile))) {
-			$_reCompile = true;
-		} else {
-			$templateFileModifyTime = @filemtime($templateFile);
-			if ((int) $templateFileModifyTime >= $compileFileModifyTime)
-				$_reCompile = true;
-		}
-		return $_reCompile;
+		return WIND_DEBUG || $this->getWindView()->isCompile || !is_file($compileFile);
 	}
 
 	/**
