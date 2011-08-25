@@ -15,8 +15,8 @@
 			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
-	<component name='windLogger' path='COM:log.WindLogger' scope='application'>
-		<constructor-arg value='' />
+	<component name='windLogger' path='COM:log.WindLogger' scope='singleton'>
+		<constructor-arg value='data.log' />
 		<constructor-arg value='0' />
 	</component>
 	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
@@ -61,23 +61,18 @@
 	<component name='configParser' path='COM:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
+	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
 	<component name='windCache' path="COM:cache.strategy.WindFileCache">
 		<config>
-			<dir>compile</dir>
-			<dbconfig-name>default</dbconfig-name>
-			<!-- 缓存的表名 -->
-			<table-name>cache</table-name>
-			<!-- 缓存的key字段名称 -->
-			<field-key>key</field-key>
-			<!-- 缓存的value字段名称 -->
-			<field-value>value</field-value>
-			<!-- 缓存的过期时间字段名称 -->
-			<field-expire>expire</field-expire>
+			<dir>data.config</dir>
+			<suffix>php</suffix>
+			<expires>0</expires>
 		</config>
 	</component>
+	
 	<component name='viewCache' path='COM:cache.strategy.WindFileCache'>
 		<config>
-			<dir>compile.cache</dir>
+			<dir>data.view</dir>
 			<suffix>php</suffix>
 			<expires>10</expires>
 		</config>

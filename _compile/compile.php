@@ -42,7 +42,7 @@ while (($file = readdir($dh)) !== false) {
 	if (is_file(_COMPILE_PATH . 'config/' . $file) && $file !== '.' && $file !== '..') {
 		$result = $windConfigParser->parse(_COMPILE_PATH . 'config/' . $file);
 		$file = preg_replace('/\.(\w)*$/i', '', $file);
-		WindFile::write(_COMPILE_PATH . $file . '.php', 
+		WindFile::write(WIND_PATH . $file . '.php', 
 			'<?php return ' . WindString::varToString($result) . ';');
 	}
 }
