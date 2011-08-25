@@ -12,9 +12,8 @@ class WindLogger extends WindModule {
 	const LEVEL_DEBUG = 3;
 	const LEVEL_ERROR = 4;
 	const LEVEL_PROFILE = 5;
-	const WRITE_ALL = 0;
-	const WRITE_LEVEL = 1;
 	const WRITE_TYPE = 2;
+	const WRITE_LEVEL = 1;
 	const TOKEN_BEGIN = 'begin:';
 	const TOKEN_END = 'end:';
 	/**
@@ -33,7 +32,7 @@ class WindLogger extends WindModule {
 	 * 2: 按照type分文件存储日志记录
 	 * @var int
 	 */
-	private $_writeType = '0';
+	private $_writeType = 0;
 	private $_types = array();
 	private $_levelMap = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error');
 
@@ -100,8 +99,9 @@ class WindLogger extends WindModule {
 	 * @param const  $logType 日志类别
 	 */
 	public function log($msg, $level = self::LEVEL_INFO, $type = 'wind.system', $flush = false) {
-		if (!$this->_logDir) return;
-		if ($this->_writeType == self::WRITE_TYPE)
+		if (!$this->_logDir)
+			return;
+		if ($this->_writeType & self::WRITE_TYPE)
 			(count($this->_types) >= 5 || $this->_logCount >= $this->_autoFlush) && $this->flush();
 		else
 			$this->_logCount >= $this->_autoFlush && $this->flush();
@@ -129,29 +129,25 @@ class WindLogger extends WindModule {
 		if (empty($this->_logs))
 			return false;
 		Wind::import('WIND:component.utility.WindFile');
-		$_l = array();
+		$_l = $_logTypes = $_logLevels = array();
 		$_map = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error', 
 			self::LEVEL_DEBUG => 'debug', self::LEVEL_TRACE => 'trace', 
 			self::LEVEL_PROFILE => 'profile');
-		if ($this->_writeType == self::WRITE_LEVEL) {
-			$_logs = array();
-			foreach ($this->_logs as $key => $value) {
-				$_l[] = $value[2];
-				$_logs[$value[0]][] = $value[2];
-			}
-			foreach ($_logs as $key => $value) {
-				$key = isset($_map[$key]) ? $_map[$key] : 'all';
+		
+		foreach ($this->_logs as $key => $value) {
+			$_l[] = $value[2];
+			$_logTypes[$value[1]][] = $value[2];
+			$_logLevels[$value[0]][] = $value[2];
+		}
+		if ($this->_writeType & 1) {
+			foreach ($_logLevels as $key => $value) {
 				if (!$fileName = $this->_getFileName($key))
 					continue;
 				WindFile::write($fileName, join("", $value), 'a');
 			}
-		} elseif ($this->_writeType == self::WRITE_TYPE) {
-			$_logs = array();
-			foreach ($this->_logs as $key => $value) {
-				$_l[] = $value[2];
-				$_logs[$value[1]][] = $value[2];
-			}
-			foreach ($_logs as $key => $value) {
+		}
+		if ($this->_writeType & 2) {
+			foreach ($_logTypes as $key => $value) {
 				if (!$fileName = $this->_getFileName($key))
 					continue;
 				WindFile::write($fileName, join("", $value), 'a');
@@ -193,23 +189,18 @@ class WindLogger extends WindModule {
 	 * @return string
 	 */
 	private function _build($msg, $level, $type, $timer = 0, $mem = 0) {
-		$msg = stripslashes(str_replace(array("<br/>", "\r\n", "<br>"), "", trim($msg)));
 		$result = '';
 		switch ($level) {
 			case self::LEVEL_INFO:
-				$msg .= "\t(" . $type . ")";
 				$result = $this->_buildInfo($msg);
 				break;
 			case self::LEVEL_ERROR:
-				$msg .= "\t(" . $type . ")";
 				$result = $this->_buildError($msg);
 				break;
 			case self::LEVEL_DEBUG:
-				$msg .= "\t(" . $type . ")\r\n";
 				$result = $this->_buildDebug($msg);
 				break;
 			case self::LEVEL_TRACE:
-				$msg .= "\t(" . $type . ")";
 				$result = $this->_buildTrace($msg);
 				break;
 			case self::LEVEL_PROFILE:
@@ -235,17 +226,17 @@ class WindLogger extends WindModule {
 			$this->_profiles[] = array($_token, 
 				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
-			$_msg = "PROFILE! Message: \r\n";
+			$_msg = "PROFILE! Message:";
 			$_token = substr($msg, strlen(self::TOKEN_END));
 			$_token = substr($_token, 0, strpos($_token, ':'));
 			foreach ($this->_profiles as $key => $profile) {
 				if ($profile[0] !== $_token)
 					continue;
 				if ($profile[1])
-					$_msg .= $profile[1] . "\r\n";
+					$_msg .= "\r\n\t" . $profile[1];
 				else
-					$_msg .= substr($msg, strpos($msg, ':', strlen(self::TOKEN_END)) + 1) . "\r\n";
-				$_msg .= "(type: $profile[2] time: " . ($timer - $profile[3]) . " mem: " . ($mem - $profile[4]) . ")";
+					$_msg .= "\r\n\t" . substr($msg, strpos($msg, ':', strlen(self::TOKEN_END)) + 1);
+				$_msg .= "\r\n\tTime:" . ($timer - $profile[3]) . "\r\n\tMem:" . ($mem - $profile[4]) . "\r\n\tType:$profile[2]";
 				break;
 			}
 			unset($this->_profiles[$key]);
