@@ -29,7 +29,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @throws WindException
 	 * @return void|mixed
 	 */
-	public function execute() {
+	public function handle() {
 		if ($this->_callBack === null)
 			return null;
 		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {
@@ -47,7 +47,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	 */
 	public function getHandler() {
 		if (count($this->_interceptors) <= 0) {
-			$this->addInterceptors(new WindHandlerInterceptor());
+			return $this;
 		}
 		if ($this->_state >= count($this->_interceptors))
 			return null;

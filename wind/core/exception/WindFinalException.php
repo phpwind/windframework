@@ -7,6 +7,9 @@
  * @version $Id$
  * @package 
  */
-class WindFinalException extends WindException {}
+class WindFinalException extends Exception{
+	
+	
+}
 
 ?>

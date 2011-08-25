@@ -9,6 +9,7 @@ class WindErrorHandler extends WindController {
 	protected $error = array();
 	protected $errorCode = 0;
 	protected $urlReferer = '';
+	protected $errorDir = 'WIND:core.web.view';
 
 	/* (non-PHPdoc)
 	 * @see WindAction::beforeAction()
@@ -35,7 +36,9 @@ class WindErrorHandler extends WindController {
 		$this->setOutput($topic, "errorHeader");
 		$this->setOutput($this->urlReferer, "baseUrl");
 		$this->setOutput($this->error, "errors");
-		$this->setTemplatePath('COM:viewer.errorPage');
-		$this->setTemplate('default_error');
+		$errDir = Wind::getApp()->getConfig('errorpage');
+		!$errDir && $errDir = $this->errorDir;
+		$this->setTemplatePath($errDir);
+		$this->setTemplate('erroraction');
 	}
 }

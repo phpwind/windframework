@@ -24,29 +24,17 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 
 	/**
 	 * @param WindUrlBasedRouter $handlerAdapter
-	 * @deprecated
 	 */
-	protected function beforeAction($handlerAdapter) {}
-
-	/**
-	 * @param WindUrlBasedRouter $handlerAdapter
-	 * @deprecated
-	 */
-	protected function afterAction($handlerAdapter) {}
-
-	/* (non-PHPdoc)
-	 * @see IWindController::preAction()
-	 */
-	public function preAction($handlerAdapter) {
+	protected function beforeAction($handlerAdapter) {
 		$this->urlHelper = null;
 		$this->errorMessage = null;
 		$this->forward = null;
 	}
 
-	/* (non-PHPdoc)
-	 * @see IWindController::postAction()
+	/**
+	 * @param WindUrlBasedRouter $handlerAdapter
 	 */
-	public function postAction($handlerAdapter) {}
+	protected function afterAction($handlerAdapter) {}
 
 	/* (non-PHPdoc)
 	 * @see IWindController::doAction()
@@ -283,19 +271,5 @@ interface IWindController {
 	 * @return WindForward
 	 */
 	public function doAction($handlerAdapter);
-
-	/**
-	 * Action预处理方法
-	 * @param WindUrlBasedRouter $handlerAdapter
-	 * @return
-	 */
-	public function preAction($handlerAdapter);
-
-	/**
-	 * Action后处理方法
-	 * @param WindUrlBasedRouter $handlerAdapter
-	 * @return
-	 */
-	public function postAction($handlerAdapter);
 }
 ?>

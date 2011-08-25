@@ -37,9 +37,11 @@ class WindFactory implements IWindFactory {
 			return clone $this->prototype[$alias];
 		if (isset($this->instances[$alias]))
 			return $this->instances[$alias];
-		if (!isset($this->classDefinitions[$alias]) || !($definition = $this->classDefinitions[$alias]))
-			return null;
+		if (!isset($this->classDefinitions[$alias]))
+			throw new WindException(
+				'[core.factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
 		
+		$definition = $this->classDefinitions[$alias];
 		if (isset($definition['constructor-arg']))
 			foreach ((array) $definition['constructor-arg'] as $_var) {
 				if (isset($_var['value'])) {
@@ -58,6 +60,7 @@ class WindFactory implements IWindFactory {
 			$this->executeInitMethod($definition['initMethod'], $instance);
 		if (isset($definition['proxy']))
 			$instance = $this->setProxyForClass($definition['proxy'], $instance);
+		!isset($definition['scope']) && $definition['scope'] = 'application';
 		$this->setScope($alias, $definition['scope'], $instance);
 		return $instance;
 	}
@@ -80,6 +83,8 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
+			if (!$className || !class_exists($className))
+				throw new WindException('class is not exist.');
 			if (empty($args)) {
 				return new $className();
 			} else {
@@ -87,7 +92,9 @@ class WindFactory implements IWindFactory {
 				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 			}
 		} catch (Exception $e) {
-			throw new WindException($className, WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException(
+				'[core.factory.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
+				WindException::ERROR_CLASS_NOT_EXIST);
 		}
 	}
 
@@ -100,25 +107,22 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 动态添加类定义对象
-	 * 
 	 * @param string $alias
 	 * @param array $classDefinition
 	 * @return 
 	 */
 	public function addClassDefinitions($alias, $classDefinition) {
-		if (!is_string($alias) || empty($alias)) {
+		if (is_string($alias) && !empty($alias)) {
+			if (!isset($this->classDefinitions[$alias]))
+				$this->classDefinitions[$alias] = $classDefinition;
+		} else
 			throw new WindException(
 				'[core.factory.WindFactory.addClassDefinitions] class alias is empty.', 
 				WindException::ERROR_PARAMETER_TYPE_ERROR);
-		}
-		if (isset($this->classDefinitions[$alias]))
-			return;
-		$this->classDefinitions[$alias] = $classDefinition;
 	}
 
 	/**
 	 * 加载类定义,如果merge为true，则覆盖原有配置信息
-	 * 
 	 * @param array $classDefinitions
 	 * @param boolean $merge
 	 * @return
@@ -139,7 +143,6 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 类定义检查，检查类型以是否已经存在
-	 * 
 	 * @param array $definition
 	 * @return boolean
 	 */
@@ -174,7 +177,6 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 为类对象设置配置
-	 * 
 	 * @param array|string $config
 	 * @param string $alias
 	 * @param WindModule $instance
@@ -185,7 +187,7 @@ class WindFactory implements IWindFactory {
 			$_configPath = Wind::getRealPath($config['resource'], true);
 			$configParser = $this->getInstance('configParser');
 			$config = $configParser->parse($_configPath, $alias, true, 
-				$this->getInstance('windCache'));
+				Wind::getApp()->getComponent('windCache'));
 		}
 		if ($config && method_exists($instance, 'setConfig'))
 			$instance->setConfig($config);
@@ -193,7 +195,6 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 执行用户配置的初始化操作
-	 * 
 	 * @param string $initMethod
 	 * @param object $instance
 	 * @return
@@ -210,7 +211,6 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 为类设置代理
-	 * 
 	 * @param string $definition
 	 * @param WindModule $instance
 	 * @return WindClassProxy
@@ -227,7 +227,6 @@ class WindFactory implements IWindFactory {
 
 	/**
 	 * 将类实例的依赖注入到类实例中
-	 * 
 	 * @param string $properties
 	 * @param WindModule  $instance
 	 */

@@ -102,9 +102,10 @@ class WindResultSet {
 					$result[$key] = $value;
 				}
 		}
-		if (IS_DEBUG)
+		if (WIND_DEBUG & 2)
 			Wind::getApp()->getComponent('windLogger')->info(
-				'[component.db.WindResultSet._fetch]' . WindString::varToString($result));
+				"[component.db.WindResultSet._fetch] \r\n\tResult:" . WindString::varToString(
+					$result));
 		
 		return $result;
 	}
@@ -139,7 +140,12 @@ class WindResultSet {
 	 * @return string|bool
 	 */
 	public function fetchColumn($index = 0) {
-		return $this->_statement->fetchColumn($index);
+		$result = $this->_statement->fetchColumn($index);
+		if (WIND_DEBUG & 2)
+			Wind::getApp()->getComponent('windLogger')->info(
+				"[component.db.WindResultSet.fetchColumn] \r\n\tResult:" . WindString::varToString(
+					$result));
+		return $result;
 	}
 
 	/**

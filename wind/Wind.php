@@ -1,14 +1,15 @@
 <?php
 /* 框架版本信息 */
-define('VERSION', '0.5.0');
-define('PHPVERSION', '5.1.2');
-
+define('WIND_VERSION', '0.5.0');
 /* 路径相关配置信息  */
-define('D_S', DIRECTORY_SEPARATOR);
-define('WIND_PATH', dirname(__FILE__) . D_S);
-
-/* debug/log */
-!defined('IS_DEBUG') && define('IS_DEBUG', 1);
+define('WIND_PATH', dirname(__FILE__) . '/');
+/* 二进制:十进制  模式描述
+ * 00: 0 关闭
+ * 01: 1 window
+ * 10: 2 log
+ * 11: 3 window|log
+ * */
+!defined('WIND_DEBUG') && define('WIND_DEBUG', 0);
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -86,6 +87,8 @@ class Wind {
 	 * @return
 	 */
 	public static function resetApp() {
+		if (WIND_DEBUG & 2)
+			self::getApp()->getComponent('windLogger')->flush();
 		array_pop(self::$_currentApp);
 		self::$_currentAppName = end(self::$_currentApp);
 	}
@@ -124,7 +127,7 @@ class Wind {
 			if (!$dh = opendir($dirPath))
 				throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dirPath . D_S . $file)) {
+				if (is_dir($dirPath . '/' . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
 						$_filePath = $filePath . '.' . $file . '.' . '*';
 						self::import($_filePath, $recursivePackage);
@@ -160,7 +163,7 @@ class Wind {
 		$alias = strtolower($alias);
 		if (!empty($alias)) {
 			if (!isset(self::$_namespace[$alias]) || $reset)
-				self::$_namespace[$alias] = rtrim($path, D_S) . D_S;
+				self::$_namespace[$alias] = rtrim($path, '/') . '/';
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
@@ -195,7 +198,7 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if (isset(self::$_classes[$className]))
 			$path = self::$_classes[$className];
-		include $path . '.' . self::$_extensions;
+		@include $path . '.' . self::$_extensions;
 	}
 
 	/**
@@ -226,7 +229,7 @@ class Wind {
 				$filePath = substr($filePath, 0, $pos);
 			}
 		}
-		$filePath = str_replace('.', D_S, $filePath);
+		$filePath = str_replace('.', '/', $filePath);
 		$namespace && $filePath = $namespace . $filePath;
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
@@ -243,7 +246,7 @@ class Wind {
 			$dirPath = substr($dirPath, $pos + 1);
 		} else
 			$namespace = self::getRootPath(self::getAppName());
-		$namespace && $dirPath = $namespace . D_S . str_replace('.', D_S, $dirPath);
+		$namespace && $dirPath = $namespace . '/' . str_replace('.', '/', $dirPath);
 		return $dirPath;
 	}
 
@@ -251,8 +254,7 @@ class Wind {
 	 * 初始化框架
 	 */
 	public static function init() {
-		if (IS_DEBUG)
-			self::_checkEnvironment();
+		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 		self::_setDefaultSystemNamespace();
 		self::_registerAutoloader();
 		self::_loadBaseLib();
@@ -283,7 +285,7 @@ class Wind {
 	 */
 	private static function _setDefaultSystemNamespace() {
 		self::register(WIND_PATH, 'WIND', true);
-		self::register(WIND_PATH . 'component' . D_S, 'COM', true);
+		self::register(WIND_PATH . 'component' . '/', 'COM', true);
 	}
 
 	/**

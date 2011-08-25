@@ -10,6 +10,8 @@
  */
 class WindHelper {
 	const INTERNAL_LOCATION = "~Internal Location~";
+	protected static $errorDir = 'WIND:core.web.view';
+	protected static $errorPage = 'error.htm';
 
 	/**
 	 * 错误处理句柄
@@ -25,7 +27,6 @@ class WindHelper {
 			$trace = debug_backtrace();
 			unset($trace[0]["function"], $trace[0]["args"]);
 			self::crash(self::getErrorName($errno) . ':' . $errstr, $errfile, $errline, $trace);
-			exit();
 		}
 	}
 
@@ -44,13 +45,6 @@ class WindHelper {
 		$file = @$trace[0]['file'];
 		$line = @$trace[0]['line'];
 		self::crash($exception->getMessage(), $file, $line, $trace, $exception->getCode());
-		exit();
-	}
-
-	public static function errorInfo() {
-		$info = "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
-		$info .= "(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")";
-		return $info;
 	}
 
 	/**
@@ -60,7 +54,7 @@ class WindHelper {
 	 * @param array $trace
 	 */
 	protected static function crash($message, $file, $line, $trace, $status = 0) {
-		$errmessage = substr($message, 0, 8000) . "\n";
+		$errmessage = substr($message, 0, 8000);
 		$_headers = Wind::getApp()->getResponse()->getHeaders();
 		$_errhtml = false;
 		foreach ($_headers as $_header) {
@@ -69,9 +63,10 @@ class WindHelper {
 				break;
 			}
 		}
-		$msg = $msghtml = '';
-		if (IS_DEBUG) {
-			$errtrace = "__Stack:\n";
+		$msg = '';
+		if (WIND_DEBUG) {
+			$_errorPage = 'error.htm';
+			/* format error trace */
 			$count = count($trace);
 			$padLen = strlen($count);
 			foreach ($trace as $key => $call) {
@@ -79,13 +74,11 @@ class WindHelper {
 					$call['file'] = self::INTERNAL_LOCATION;
 					$call['line'] = 'N/A';
 				}
-				
 				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
 					$call);
-				$errtrace .= "$traceLine\n";
+				$trace[$key] = $traceLine;
 			}
-			$msg = "$file\n";
-			$msghtml = "<b style=\"background:whiteSmoke\">$file</b>\n";
+			/* format error code */
 			if (is_file($file)) {
 				$currentLine = $line - 1;
 				$fileLines = explode("\n", file_get_contents($file, null, null, 0, 10000000));
@@ -97,31 +90,39 @@ class WindHelper {
 						$fileLine = " " . htmlspecialchars(
 							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace(
 								"\t", "    ", rtrim($fileLine)), null, "UTF-8");
-					
-					$msg .= implode("\n", $fileLines) . "\n";
-					$fileLines[$currentLine] = "<b style=\"color:red; background:whiteSmoke\">" . $fileLines[$currentLine] . "</b>";
-					$msghtml .= implode("\n", $fileLines) . "\n";
 				}
 			}
-			$msg .= "$errtrace\n";
-			$msghtml .= "$errtrace\n";
-		}
-		$msghtml .= self::errorInfo();
+			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
+		} else
+			$_errorPage = '404.htm';
+			
 		if ($status >= 400 && $status <= 505) {
 			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
 			$topic = "$status - " . $_statusMsg . "\n";
-			header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
-			header('Status: ' . $status . ' ' . $_statusMsg);
 		} else
-			$topic = "Wind Framework - Error Caught\n";
+			$topic = "Wind Framework - Error Caught";
 		
-		$msghtml = "<html><head><title>$topic</title></head><body><pre><h3>$topic</h3><b style=\"background:whiteSmoke\">$errmessage</b>\n$msghtml</pre></body></html>";
-		$msg = "$topic\n$errmessage\n$msg";
-		ob_end_clean();
-		$msg = str_replace(Wind::getRootPath(Wind::getAppName()), '~', $msg);
-		$msghtml = str_replace(Wind::getRootPath(Wind::getAppName()), '~', $msghtml);
-		Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', true);
-		die($_errhtml ? $msghtml : $msg);
+		$msg = "$topic\n$errmessage\n" . $msg . "\n\n" . self::errorInfo();
+		
+		if (WIND_DEBUG & 2)
+			Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', 'core.error', 
+				true);
+		
+		if ($_errhtml) {
+			ob_start();
+			$errDir = Wind::getApp()->getConfig('errorpage');
+			!$errDir && $errDir = self::$errorDir;
+			if (isset($_statusMsg)) {
+				header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
+				header('Status: ' . $status . ' ' . $_statusMsg);
+				is_file(Wind::getRealPath($errDir) . '.' . $status . '.htm') && $_errorPage = $status . '.htm';
+			}
+			require Wind::getRealPath(($errDir ? $errDir : self::$errorDir) . '.' . $_errorPage, 
+				true);
+			$msg = ob_get_clean();
+		}
+		$msg = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $msg);
+		die($msg);
 	}
 
 	/**
@@ -170,6 +171,12 @@ class WindHelper {
 			E_USER_WARNING => "E_USER_WARNING", E_USER_NOTICE => "E_USER_NOTICE", 
 			E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", E_ALL => "E_ALL");
 		return isset($errorMap[$errorNumber]) ? $errorMap[$errorNumber] : 'E_UNKNOWN';
+	}
+
+	public static function errorInfo() {
+		$info = "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
+		$info .= "(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")";
+		return $info;
 	}
 
 	/**

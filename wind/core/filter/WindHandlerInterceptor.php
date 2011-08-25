@@ -9,18 +9,11 @@ class WindHandlerInterceptor extends WindModule {
 	protected $result = null;
 	protected $interceptorChain = null;
 
-	/**
-	 * Enter description here ...
-	 */
 	public function preHandle() {}
 
-	/**
-	 * Enter description here ...
-	 */
 	public function postHandle() {}
 
 	/**
-	 * Enter description here ...
 	 * @return mixed
 	 */
 	public function handle() {
@@ -32,7 +25,7 @@ class WindHandlerInterceptor extends WindModule {
 		if (null !== ($handler = $this->interceptorChain->getHandler())) {
 			$this->result = call_user_func_array(array($handler, 'handle'), $args);
 		} else {
-			$this->result = $this->interceptorChain->execute();
+			$this->result = $this->interceptorChain->handle();
 		}
 		call_user_func_array(array($this, 'postHandle'), $args);
 		return $this->result;

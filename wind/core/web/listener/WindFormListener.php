@@ -58,19 +58,10 @@ class WindFormListener extends WindHandlerInterceptor {
 	}
 
 	private function sendError($errorController, $errorAction, $errors) {
-		if (!$this->errorMessage instanceof WindErrorMessage)
-			$this->errorMessage = new WindErrorMessage();
 		$this->errorMessage->setErrorController($errorController);
 		$this->errorMessage->setErrorAction($errorAction);
 		$this->errorMessage->addError($errors);
 		$this->errorMessage->sendError();
-	}
-
-	/* (non-PHPdoc)
-	 * @see WindHandlerInterceptor::postHandle()
-	 */
-	public function postHandle() {
-
 	}
 
 }

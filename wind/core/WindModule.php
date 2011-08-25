@@ -142,16 +142,14 @@ class WindModule {
 	 * @return
 	 */
 	public function setConfig($config) {
-		if (!$config)
-			return;
-		if (is_string($config)) {
-			$configParser = $this->getSystemFactory()->getInstance('configParser');
-			$config = $configParser->parse($config);
+		if ($config) {
+			if (is_string($config))
+				$config = Wind::getApp()->getComponent('configParser')->parse($config);
+			if (!empty($this->_config)) {
+				$this->_config = array_merge($this->_config, (array) $config);
+			} else
+				$this->_config = $config;
 		}
-		if (!$this->_config) {
-			$this->_config = array_merge($this->_config, (array) $config);
-		} else
-			$this->_config = $config;
 	}
 
 	/**

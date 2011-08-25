@@ -9,12 +9,6 @@ Wind::import("COM:db.WindResultSet");
  * @package 
  */
 class WindConnection extends WindModule {
-	const DSN = 'dsn';
-	const USER = 'user';
-	const PWD = 'pwd';
-	const CHARSET = 'charset';
-	const ENABLELOG = 'enablelog';
-	const TABLEPREFIX = 'tablePrefix';
 	/**
 	 * PDO 链接字符串
 	 * @var string
@@ -110,45 +104,19 @@ class WindConnection extends WindModule {
 	}
 
 	/**
-	 * 获得是否启用日志记录功能
-	 * @return boolean $enableLog
-	 */
-	public function getEnableLog() {
-		return $this->_enableLog;
-	}
-
-	/**
-	 * 设置是否启用日志记录功能
-	 * @param boolean $enableLog
-	 */
-	public function setEnableLog($enableLog) {
-		$this->_enableLog = (boolean) $enableLog;
-	}
-
-	/**
-	 * 获得表前缀
-	 * @return string $tablePrefix
-	 */
-	public function getTablePrefix() {
-		return $this->_tablePrefix;
-	}
-
-	/**
-	 * 设置表前缀
-	 * @param string $tablePrefix
-	 */
-	public function setTablePrefix($tablePrefix) {
-		$this->_tablePrefix = $tablePrefix;
-	}
-
-	/**
 	 * 执行一条sql语句 同时返回影响行数
 	 * @param string $sql | SQL statement
 	 * @return int
 	 */
 	public function execute($sql) {
 		try {
-			return $this->getDbHandle()->exec($sql);
+			$result = $this->getDbHandle()->exec($sql);
+			if (WIND_DEBUG & 2)
+				Wind::getApp()->getComponent('windLogger')->info(
+					"[component.db.WindConnection.execute] \r\n\tSQL: " . $sql . 
+					" \r\n\tResult:" . WindString::varToString(
+						$result));
+			return $result;
 		} catch (PDOException $e) {
 			$this->close();
 			throw new WindDbException($e->getMessage());
@@ -253,12 +221,10 @@ class WindConnection extends WindModule {
 				(array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
-			if (IS_DEBUG) {
-				$reflection = new ReflectionClass(get_class($this));
-				$properties = $reflection->getProperties();
+			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
-					"component.db.WindConnection.init() Initialize db connection success." . WindString::varToString(
-						$properties), 'component.db');
+					"[component.db.WindConnection.init] Initialize db connection success. \r\n\tDSN:" . $this->_dsn . "\r\n\tUser:" . $this->_user . "\r\n\tCharset:" . $this->_charset . "\r\n\tTablePrefix:" . $this->_tablePrefix . "\r\n\tDriverName:" . $this->_driverName, 
+					'component.db');
 			}
 		} catch (PDOException $e) {
 			$this->close();
@@ -272,18 +238,44 @@ class WindConnection extends WindModule {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		if (!$this->_dsn)
-			$this->_dsn = $this->getConfig(self::DSN, '', $this->_dsn);
-		if (!$this->_user)
-			$this->_user = $this->getConfig(self::USER, '', $this->_user);
-		if (!$this->_pwd)
-			$this->_pwd = $this->getConfig(self::PWD, '', $this->_pwd);
-		if (!$this->_enableLog)
-			$this->_enableLog = $this->getConfig(self::ENABLELOG, '', $this->_enableLog);
-		if (!$this->_charset)
-			$this->_charset = $this->getConfig(self::CHARSET, '', $this->_charset);
-		if (!$this->_tablePrefix)
-			$this->_tablePrefix = $this->getConfig(self::TABLEPREFIX, '', $this->_tablePrefix);
+		$this->_dsn = $this->getConfig('dsn', '', $this->_dsn);
+		$this->_user = $this->getConfig('user', '', $this->_user);
+		$this->_pwd = $this->getConfig('pwd', '', $this->_pwd);
+		$this->_enableLog = $this->getConfig('enablelog', '', $this->_enableLog);
+		$this->_charset = $this->getConfig('charset', '', $this->_charset);
+		$this->_tablePrefix = $this->getConfig('tableprefix', '', $this->_tablePrefix);
+	}
+
+	/**
+	 * 获得是否启用日志记录功能
+	 * @return boolean $enableLog
+	 */
+	public function getEnableLog() {
+		return $this->_enableLog;
+	}
+
+	/**
+	 * 设置是否启用日志记录功能
+	 * @param boolean $enableLog
+	 */
+	public function setEnableLog($enableLog) {
+		$this->_enableLog = (boolean) $enableLog;
+	}
+
+	/**
+	 * 获得表前缀
+	 * @return string $tablePrefix
+	 */
+	public function getTablePrefix() {
+		return $this->_tablePrefix;
+	}
+
+	/**
+	 * 设置表前缀
+	 * @param string $tablePrefix
+	 */
+	public function setTablePrefix($tablePrefix) {
+		$this->_tablePrefix = $tablePrefix;
 	}
 }
 ?>
