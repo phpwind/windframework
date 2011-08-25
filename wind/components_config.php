@@ -13,10 +13,10 @@
 	),
 	'windLogger' => array(
 		'path' => 'COM:log.WindLogger',
-		'scope' => 'application',
+		'scope' => 'singleton',
 		'constructor-arg' => array(
 			'0' => array(
-				'value' => '',
+				'value' => 'data.log',
 			),
 			'1' => array(
 				'value' => '0',
@@ -39,10 +39,6 @@
 	'router' => array(
 		'path' => 'COM:router.WindRouter',
 		'scope' => 'application',
-	),
-	'urlRewriteRouter' => array(
-		'path' => 'COM:router.WindUrlRewriteRouter',
-		'scope' => 'singleton',
 	),
 	'urlHelper' => array(
 		'path' => 'WIND:core.web.WindUrlHelper',
@@ -75,6 +71,13 @@
 		'path' => 'COM:viewer.compiler.WindViewTemplate',
 		'scope' => 'prototype',
 	),
+	'db' => array(
+		'path' => 'COM:db.WindConnection',
+		'scope' => 'singleton',
+		'config' => array(
+			'resource' => 'db_config.xml',
+		),
+	),
 	'errorMessage' => array(
 		'path' => 'WIND:core.web.WindErrorMessage',
 		'scope' => 'prototype',
@@ -86,18 +89,15 @@
 	'windCache' => array(
 		'path' => 'COM:cache.strategy.WindFileCache',
 		'config' => array(
-			'dir' => 'compile',
-			'dbconfig-name' => 'default',
-			'table-name' => 'cache',
-			'field-key' => 'key',
-			'field-value' => 'value',
-			'field-expire' => 'expire',
+			'dir' => 'data.config',
+			'suffix' => 'php',
+			'expires' => '',
 		),
 	),
 	'viewCache' => array(
 		'path' => 'COM:cache.strategy.WindFileCache',
 		'config' => array(
-			'dir' => 'compile.cache',
+			'dir' => 'data.view',
 			'suffix' => 'php',
 			'expires' => '10',
 		),
