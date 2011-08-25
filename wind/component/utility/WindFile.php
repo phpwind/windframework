@@ -52,7 +52,8 @@ class WindFile {
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ($data as $key => $value) {
-				if (!preg_match('/^\w+$/', $key)) continue;
+				if (!preg_match('/^\w+$/', $key))
+					continue;
 				$temp .= "\$" . $key . " = " . WindString::varToString($value) . ";\r\n";
 			}
 			$temp .= "\r\n?>";
@@ -77,7 +78,8 @@ class WindFile {
 	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
 		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
-		if (!$handle = fopen($fileName, $method)) return false;
+		if (!$handle = fopen($fileName, $method))
+			return false;
 		$ifLock && flock($handle, LOCK_EX);
 		$writeCheck = fwrite($handle, $data);
 		$method == self::READWRITE && ftruncate($handle, strlen($data));
@@ -113,9 +115,11 @@ class WindFile {
 	 */
 	public static function clearDir($dir, $ifexpiled = false) {
 		//TODO 删除掉是否过期相关处理，不要将外部业务需求，耦合进工具库方法
-		if (!$handle = @opendir($dir)) return false;
+		if (!$handle = @opendir($dir))
+			return false;
 		while (false !== ($file = readdir($handle))) {
-			if ('.' === $file[0] || '..' === $file[0]) continue;
+			if ('.' === $file[0] || '..' === $file[0])
+				continue;
 			$fullPath = $dir . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
 				self::clearDir($fullPath, $ifexpiled);
@@ -162,8 +166,9 @@ class WindFile {
 	 * @return string
 	 */
 	public static function getMimeType($fileName) {
+		//TODO WindMimeTypes.php 被删掉了，有bug 
 		$suffix = self::getFileSuffix($fileName);
-		$mimes = require rtrim(WIND_PATH, D_S) . D_S . 'component/utility/WindMimeTypes.php';
+		$mimes = require WIND_PATH . '/component/utility/WindMimeTypes.php';
 		if (isset($mimes[$suffix])) {
 			return is_array($mimes[$suffix]) ? current($mimes[$suffix]) : $mimes[$suffix];
 		} else {
