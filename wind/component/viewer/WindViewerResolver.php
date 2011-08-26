@@ -29,7 +29,7 @@ class WindViewerResolver implements IWindViewerResolver {
 	/**
 	 * @param WindView $windView
 	 */
-	public function __construct($windView) {
+	public function __construct($windView = null) {
 		$this->windView = $windView;
 	}
 
@@ -53,7 +53,6 @@ class WindViewerResolver implements IWindViewerResolver {
 		if ($key === '')
 			$key = $this->windView->templateName;
 		$this->vars[$key] = $vars;
-		Wind::getApp()->getResponse()->setData($vars, $key);
 	}
 
 	/**

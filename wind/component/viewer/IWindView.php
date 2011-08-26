@@ -13,7 +13,7 @@ interface IWindView {
 	 * @param WindForward $forward
 	 * @param WindUrlBasedRouter $router
 	 */
-	public function render($forward, $router);
+	public function render();
 
 }
 

@@ -72,26 +72,19 @@ class WindView extends WindModule implements IWindView {
 
 	/**
 	 * 视图渲染
-	 * @param WindForward $forward
-	 * @param WindUrlBasedRouter $router
+	 * @param boolean $display
 	 */
-	public function render($forward, $router, $display = false) {
-		$this->templateName = $forward->getTemplateName();
+	public function render($display = false) {
 		if (!$this->templateName)
 			return;
-		if (null !== ($_ext = $forward->getTemplateExt()))
-			$this->templateExt = $_ext;
-		if (null !== ($_path = $forward->getTemplatePath()))
-			$this->templateDir = $_path;
-		if (null !== ($_layout = $forward->getLayout()))
-			$this->layout = $_layout;
 		
+		//TODO 其他输出类型
 		$viewResolver = $this->_getViewResolver($this);
-		$viewResolver->windAssign($forward->getVars(), $this->templateName);
+		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
 			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
 		} else
-			$viewResolver->displayWindFetch();
+			echo $viewResolver->windFetch();
 	}
 
 	/* (non-PHPdoc)
@@ -122,8 +115,6 @@ class WindView extends WindModule implements IWindView {
 		if (!$template) {
 			$template = $this->templateName;
 		}
-		/* elseif (is_file($template))
-			return $template; */
 		!$ext && $ext = $this->templateExt;
 		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
 	}
@@ -141,12 +132,8 @@ class WindView extends WindModule implements IWindView {
 			return;
 		if (!$template) {
 			$template = $this->templateName;
-		} 
-		/*elseif (is_file($template)) {
-			$_info = pathinfo($template);
-			$template = $_info['filename'];
-		}*/
-		$dir = Wind::getRealDir($this->compileDir);
+		}
+		$dir = Wind::getRealDir($this->compileDir, true);
 		if (!is_dir($dir))
 			throw new WindViewException(
 				'[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
@@ -179,6 +166,14 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function getLayout() {
 		return $this->layout;
+	}
+
+	/**
+	 * @param string $layout
+	 * @return string
+	 */
+	public function setLayout($layout) {
+		return $this->layout = $layout;
 	}
 
 }

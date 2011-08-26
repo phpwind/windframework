@@ -24,8 +24,6 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	protected $request = null;
 	
 	protected $response = null;
-	
-	protected $getVar = false;
 
 	/**
 	 * 初始化标签解析器
@@ -75,21 +73,12 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 */
 	protected function compileProperty($content) {
 		foreach ($this->getProperties() as $value) {
-			if (!$value)
-				continue;
-			preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', 
-				$content, $result);
-			if (!$result)
-				continue;
-			$result = trim(str_replace($result[1], '', $result[0]));
-			if ($this->getVar) {
-				preg_match('/^{?\$(\w+)}?$/Ui', $result, $_tmp);
-				if (!empty($_tmp)) {
-					$_tpl = $this->windViewerResolver->getWindView()->templateName;
-					$result = Wind::getApp()->getResponse()->getData($_tpl, $_tmp[1]);
-				}
+			if ($value) {
+				preg_match('/(' . preg_quote($value) . '\s*=\s*([\'\"])?)[^\'\"\s]*(?=(\2)?)/i', 
+					$content, $result);
+				if ($result)
+					$this->$value = trim(str_replace($result[1], '', $result[0]));
 			}
-			$this->$value = $result;
 		}
 	}
 
