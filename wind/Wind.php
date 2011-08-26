@@ -35,17 +35,14 @@ class Wind {
 	 * @return IWindApplication
 	 */
 	public static function application($appName = 'default', $config = array(), $rootPath = '') {
-		//self::beforRun($appName, $config, $rootPath);
-		if (!$appName || in_array($appName, self::$_currentApp))
-			throw new WindException('Nested request', WindException::ERROR_SYSTEM_ERROR);
-		array_push(self::$_currentApp, $appName);
-		self::$_currentAppName = $appName;
+		self::beforRun($appName, $config, $rootPath);
 		if (!isset(self::$_app[$appName])) {
-			Wind::register(($rootPath ? $rootPath : dirname($_SERVER['SCRIPT_FILENAME'])), $appName, 
-				true);
 			$factory = new WindFactory(@include (Wind::getRealPath(self::$_components)));
 			if ($config && !is_array($config))
 				$config = $factory->getInstance('configParser')->parse($config);
+			Wind::register(
+				($rootPath ? $rootPath : (isset($config['root-path']) ? $config['root-path'] : dirname(
+					$_SERVER['SCRIPT_FILENAME']))), $appName, true);
 			$appClass = @$config['class'] ? $config['class'] : 'windWebApp';
 			$application = $factory->getInstance($appClass, array($config, $factory));
 			if (!$application instanceof IWindApplication)
@@ -198,7 +195,12 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if (isset(self::$_classes[$className]))
 			$path = self::$_classes[$className];
-		@include $path . '.' . self::$_extensions;
+		
+		//TODO
+		if (WIND_DEBUG & 1)
+			include $path . '.' . self::$_extensions;
+		else
+			@include $path . '.' . self::$_extensions;
 	}
 
 	/**
@@ -215,12 +217,12 @@ class Wind {
 	 * @param boolean $suffix 是否存在文件后缀true，false，default
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	public static function getRealPath($filePath, $suffix = '') {
+	public static function getRealPath($filePath, $suffix = '', $absolut = false) {
 		if (false !== ($pos = strpos($filePath, ':'))) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
 			$filePath = substr($filePath, $pos + 1);
 		} else
-			$namespace = self::getRootPath(self::getAppName());
+			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
 		if ($suffix === '') {
 			$suffix = self::$_extensions;
 		} elseif ($suffix === true) {
@@ -237,15 +239,15 @@ class Wind {
 	/**
 	 * 解析路径信息，并返回路径的详情
 	 * @param string $filePath 路径信息
-	 * @param boolean $info 是否为目录路径
+	 * @param boolean $absolut 是否返回绝对路径
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	public static function getRealDir($dirPath) {
+	public static function getRealDir($dirPath, $absolut = false) {
 		if (false !== ($pos = strpos($dirPath, ':'))) {
 			$namespace = self::getRootPath(substr($dirPath, 0, $pos));
 			$dirPath = substr($dirPath, $pos + 1);
 		} else
-			$namespace = self::getRootPath(self::getAppName());
+			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
 		$namespace && $dirPath = $namespace . '/' . str_replace('.', '/', $dirPath);
 		return $dirPath;
 	}

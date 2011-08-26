@@ -5,13 +5,13 @@
  * @version $Id$
  * @package 
  */
-class WindHandlerInterceptor extends WindModule {
+abstract class WindHandlerInterceptor extends WindModule {
 	protected $result = null;
 	protected $interceptorChain = null;
 
-	public function preHandle() {}
+	abstract public function preHandle();
 
-	public function postHandle() {}
+	abstract public function postHandle();
 
 	/**
 	 * @return mixed

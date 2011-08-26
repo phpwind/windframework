@@ -6,20 +6,6 @@ Wind::import('COM:fitler.WindHandlerInterceptor');
  * @version $Id$
  * @package
  */
-class WindFilter extends WindHandlerInterceptor {
-
-	/* (non-PHPdoc)
-	 * @see WindHandlerInterceptor::preHandle()
-	 */
-	public function preHandle() {
-
-	}
-
-	/* (non-PHPdoc)
-	 * @see WindHandlerInterceptor::postHandle()
-	 */
-	public function postHandle() {
-
-	}
-
+abstract class WindFilter extends WindHandlerInterceptor {
+	
 }

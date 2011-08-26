@@ -26,15 +26,15 @@
 	'dispatcher' => array(
 		'path' => 'WIND:core.web.WindDispatcher',
 		'scope' => 'application',
-		'properties' => array(
-			'urlHelper' => array(
-				'ref' => 'urlHelper',
-			),
-		),
 	),
 	'forward' => array(
 		'path' => 'WIND:core.web.WindForward',
 		'scope' => 'prototype',
+		'properties' => array(
+			'windView' => array(
+				'ref' => 'windView',
+			),
+		),
 	),
 	'router' => array(
 		'path' => 'COM:router.WindRouter',
@@ -50,9 +50,9 @@
 		'config' => array(
 			'template-dir' => 'template',
 			'template-ext' => 'htm',
-			'is-compile' => '',
+			'is-compile' => '0',
 			'compile-dir' => 'compile.template',
-			'is-cache' => '',
+			'is-cache' => '0',
 		),
 		'properties' => array(
 			'viewResolver' => array(
@@ -91,7 +91,7 @@
 		'config' => array(
 			'dir' => 'data.config',
 			'suffix' => 'php',
-			'expires' => '',
+			'expires' => '0',
 		),
 	),
 	'viewCache' => array(

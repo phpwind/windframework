@@ -7,6 +7,7 @@
  * @package 
  */
 abstract class WindSimpleController extends WindModule implements IWindController {
+	protected $_vars = array();
 	/**
 	 * @var WindForward
 	 */
@@ -25,6 +26,8 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @see IWindController::doAction()
 	 */
 	public function doAction($handlerAdapter) {
+		if ($this->forward !== null)
+			$this->_vars = $this->forward->getVars();
 		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$method = $this->resolvedActionMethod($handlerAdapter);
@@ -33,6 +36,13 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 			$this->getErrorMessage()->sendError();
 		$this->afterAction($handlerAdapter);
 		return $this->forward;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindController::resolveActionFilter($action)
+	 */
+	public function resolveActionFilter($action) {
+		return array();
 	}
 
 	/**
@@ -85,7 +95,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @return
 	 */
 	protected function setGlobal($data, $key = '') {
-		$this->getResponse()->setData($data, $key, true);
+		$this->getForward()->setVars($data, $key, true);
 	}
 
 	/**
@@ -194,19 +204,19 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		$value = '';
 		switch (strtolower($type)) {
 			case 'form':
-				$value = $this->response->getData($name);
+				$value = $this->getRequest()->getData($name);
 				break;
 			case IWindRequest::INPUT_TYPE_GET:
-				$value = $this->request->getGet($name);
+				$value = $this->getRequest()->getGet($name);
 				break;
 			case IWindRequest::INPUT_TYPE_POST:
-				$value = $this->request->getPost($name);
+				$value = $this->getRequest()->getPost($name);
 				break;
 			case IWindRequest::INPUT_TYPE_COOKIE:
-				$value = $this->request->getCookie($name);
+				$value = $this->getRequest()->getCookie($name);
 				break;
 			default:
-				$value = $this->request->getAttribute($name);
+				$value = $this->getRequest()->getAttribute($name);
 		}
 		return $callback ? array($value, call_user_func_array($callback, array($value))) : $value;
 	}
@@ -227,15 +237,29 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	/**
 	 * @return WindForward
 	 */
-	protected function getForward() {
+	public function getForward() {
 		return $this->_getForward();
 	}
 
 	/**
 	 * @return WindErrorMessage
 	 */
-	protected function getErrorMessage() {
+	public function getErrorMessage() {
 		return $this->_getErrorMessage();
+	}
+
+	/**
+	 * @param WindForward $forward
+	 */
+	public function setForward($forward) {
+		$this->forward = $forward;
+	}
+
+	/**
+	 * @param WindErrorMessage $errorMessage
+	 */
+	public function setErrorMessage($errorMessage) {
+		$this->errorMessage = $errorMessage;
 	}
 
 }
@@ -254,5 +278,15 @@ interface IWindController {
 	 * @return WindForward
 	 */
 	public function doAction($handlerAdapter);
+
+	/**
+	 * 返回当前Action处理过滤连配置信息
+	 * <action alias=''>
+	 * <filter expression='param=value' class=''/>
+	 * </action>
+	 * @param string $action
+	 * @return array
+	 */
+	public function resolveActionFilter($action);
 }
 ?>

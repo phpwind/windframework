@@ -16,7 +16,7 @@ class WindForward extends WindModule {
 	 * 模板变量信息
 	 * @var array
 	 */
-	private $vars = array();
+	private $vars = array('G' => array());
 	/**
 	 * 是否为Action请求
 	 * @var boolean
@@ -76,15 +76,21 @@ class WindForward extends WindModule {
 	 * @param string|array|object $vars
 	 * @param string $key
 	 */
-	public function setVars($vars, $key = '') {
+	public function setVars($vars, $key = '', $isG = false) {
 		if (!$key) {
 			if (is_object($vars))
 				$vars = get_object_vars($vars);
 			if (is_array($vars))
-				$this->vars += $vars;
-		} else
-			$this->vars[$key] = $vars;
-		return;
+				if ($isG)
+					$this->vars['G'] = $vars;
+				else
+					$this->vars += $vars;
+		} else {
+			if ($isG)
+				$this->vars['G'][$key] = $vars;
+			else
+				$this->vars[$key] = $vars;
+		}
 	}
 
 	/**
