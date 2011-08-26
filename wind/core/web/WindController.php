@@ -33,4 +33,12 @@ abstract class WindController extends WindSimpleController {
 		}
 		return $action;
 	}
+
+	/**
+	 * @param string $action
+	 * @throws WindException
+	 */
+	protected function resolvedActionName($action) {
+		return $action . 'Action';
+	}
 }

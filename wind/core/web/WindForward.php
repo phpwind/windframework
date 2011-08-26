@@ -9,55 +9,26 @@
 class WindForward extends WindModule {
 	/**
 	 * 定义视图处理器
-	 *
-	 * @var string
+	 * @var WindView
 	 */
-	private $windView;
-	/**
-	 * 模板名称
-	 *
-	 * @var strig
-	 */
-	private $templateName;
-	/**
-	 * 模板路径
-	 *
-	 * @var string
-	 */
-	private $templatePath = null;
-	/**
-	 * 模板扩展名
-	 *
-	 * @var string
-	 */
-	private $templateExt = null;
-	/**
-	 * 模板布局
-	 *
-	 * @var string
-	 */
-	private $layout;
+	protected $windView = null;
 	/**
 	 * 模板变量信息
-	 * 
 	 * @var array
 	 */
 	private $vars = array();
 	/**
 	 * 是否为Action请求
-	 * 
 	 * @var boolean
 	 */
 	private $isReAction = false;
 	/**
 	 * 是否是重定向请求
-	 * 
 	 * @var boolean
 	 */
 	private $isRedirect = false;
 	/**
 	 * 跳转链接
-	 * 
 	 * @var string
 	 */
 	private $url;
@@ -208,70 +179,19 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * @return the $templateName
-	 */
-	public function getTemplateName() {
-		return $this->templateName;
-	}
-
-	/**
-	 * @return the $templatePath
-	 */
-	public function getTemplatePath() {
-		return $this->templatePath;
-	}
-
-	/**
-	 * @return the $templateExt
-	 */
-	public function getTemplateExt() {
-		return $this->templateExt;
-	}
-
-	/**
-	 * @return the $layout
-	 */
-	public function getLayout() {
-		return $this->layout;
-	}
-
-	/**
-	 * @param strig $templateName
-	 */
-	public function setTemplateName($templateName) {
-		$this->templateName = $templateName;
-	}
-
-	/**
-	 * @param string $templatePath
-	 */
-	public function setTemplatePath($templatePath) {
-		$this->templatePath = $templatePath;
-	}
-
-	/**
-	 * @param string $templateExt
-	 */
-	public function setTemplateExt($templateExt) {
-		$this->templateExt = $templateExt;
-	}
-
-	/**
-	 * @param string $layout
-	 */
-	public function setLayout($layout) {
-		$this->layout = $layout;
-	}
-
-	/**
-	 * @return string
+	 * @return WindView
 	 */
 	public function getWindView() {
+		if ($this->windView === null)
+			$this->_getWindView();
+		$module = Wind::getApp()->getModules();
+		isset($module['template-dir']) && $this->windView->templateDir = $module['template-dir'];
+		isset($module['compile-dir']) && $this->windView->compileDir = $module['compile-dir'];
 		return $this->windView;
 	}
 
 	/**
-	 * @param string $windView
+	 * @param WindView $windView
 	 */
 	public function setWindView($windView) {
 		$this->windView = $windView;

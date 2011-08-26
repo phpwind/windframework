@@ -14,7 +14,7 @@ class WindDispatcher extends WindModule {
 	 * 将上一次请求信息缓存在这个变量中
 	 * @var array
 	 */
-	protected $processCache = array();
+	protected $token;
 	/**
 	 * @var boolean
 	 */
@@ -24,18 +24,24 @@ class WindDispatcher extends WindModule {
 	 * 请求分发处理
 	 * 
 	 * @param WindForward $forward
-	 * @param WindUrlBasedRouter $router
+	 * @param WindRouter $router
 	 * @param boolean $display
 	 * @return
 	 */
 	public function dispatch($forward, $router, $display) {
-		$this->checkProcess($router, false);
+		$this->checkToken($router, false);
 		if ($forward->getIsRedirect())
 			$this->dispatchWithRedirect($forward, $router);
 		elseif ($forward->getIsReAction())
 			$this->dispatchWithAction($forward, $router, $display);
-		else
-			$this->render($forward, $router);
+		else {
+			$view = $forward->getWindView();
+			if ($view->templateName) {
+				Wind::getApp()->getResponse()->setData($forward->getVars(), $view->templateName);
+				$view->render($forward, $router, $this->display);
+			}
+			$this->display = false;
+		}
 	}
 
 	/**
@@ -49,12 +55,11 @@ class WindDispatcher extends WindModule {
 		if (!$_url && $forward->getIsReAction()) {
 			$_url = $this->_getUrlHelper()->createUrl($forward->getAction(), 
 				$forward->getController(), $forward->getArgs());
-			$router->reParse();
-			if (!$this->checkProcess($router)) {
+			if ($this->checkToken($router))
 				throw new WindFinalException(
-					'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $router->getController() . ',' . $router->getAction(), 
+					'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
 					WindException::ERROR_SYSTEM_ERROR);
-			}
+		
 		} else
 			$_url = $this->_getUrlHelper()->checkUrl($_url);
 		$this->getResponse()->sendRedirect($_url);
@@ -72,7 +77,7 @@ class WindDispatcher extends WindModule {
 		if (!$action = $forward->getAction())
 			throw new WindException('[core.web.WindDispatcher.dispatchWithAction] forward fail.', 
 				WindException::ERROR_PARAMETER_TYPE_ERROR);
-		
+				
 		$args = $forward->getArgs();
 		$this->display = $display;
 		list($action, $_args) = explode('?', $action . '?');
@@ -85,28 +90,12 @@ class WindDispatcher extends WindModule {
 			$router->setController($_tmp);
 		if ($_tmp = prev($action))
 			$router->setModule($_tmp);
-		if (!$this->checkProcess($router)) {
+		if ($this->checkToken($router))
 			throw new WindFinalException(
-				'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $router->getController() . ',' . $router->getAction(), 
+				'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
 				WindException::ERROR_SYSTEM_ERROR);
-		}
+				
 		Wind::getApp()->processRequest();
-	}
-
-	/**
-	 * 进行视图渲染
-	 * @param WindForward $forward
-	 * @param WindUrlBasedRouter $router
-	 * @return
-	 */
-	protected function render($forward, $router) {
-		if ($windViewClass = $forward->getWindView()) {
-			$_className = Wind::import($windViewClass);
-			$view = $this->getSystemFactory()->createInstance($windViewClass);
-		} else
-			$view = $this->getSystemFactory()->getInstance('windView');
-		$view->render($forward, $router, $this->display);
-		$this->display = false;
 	}
 
 	/**
@@ -115,14 +104,12 @@ class WindDispatcher extends WindModule {
 	 * @param boolean $check
 	 * @return boolean
 	 */
-	protected function checkProcess($router, $check = true) {
+	protected function checkToken($router, $check = true) {
+		$token = $router->getModule() . '/' . $router->getController() . '/' . $router->getAction();
 		if ($check === false) {
-			$this->processCache['action'] = $router->getAction();
-			$this->processCache['controller'] = $router->getController();
-			$this->processCache['module'] = $router->getModule();
-		} elseif ($router->getAction() === @$this->processCache['action'] && $router->getController() === @$this->processCache['controller'] && $router->getModule() === @$this->processCache['module'])
-			return false;
-		return true;
+			$this->token = $token;
+		} else
+			return !strcasecmp($token, $this->token);
 	}
 
 }
