@@ -11,28 +11,22 @@ Wind::import('COM:viewer.AbstractWindTemplateCompiler');
  * @package 
  */
 class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
-	
 	protected $action = '';
-	
-	protected $controller = '';
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		$_content = '<?php ' . $this->getScript() . ' ?>' . "\r\n";
-		return $_content;
+		return '<?php $_tpl_forward = Wind::getApp()->getComponent(\'forward\');
+					$_tpl_forward->forwardAction(' . $this->action . ');
+					Wind::getApp()->doDispatch($_tpl_forward, true); ?>';
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getScript() {
-		$_tmp = '$_tpl_forward = $this->getSystemFactory()->getInstance(COMPONENT_FORWARD);' .
-			 '$_tpl_forward->setDisplay(true);' .
-			 '$_tpl_forward->forwardAnotherAction(\'' . $this->action . '\', \'' . $this->controller . '\');' .
-			 '$_tpl_app = $this->getSystemFactory()->getInstance(COMPONENT_WEBAPP);'. 
-			 '$_tpl_app->doDispatch($_tpl_forward);';
+		$_tmp = '$_tpl_forward = $this->getSystemFactory()->getInstance(COMPONENT_FORWARD);' . '$_tpl_forward->setDisplay(true);' . '$_tpl_forward->forwardAnotherAction(\'' . $this->action . '\', \'' . $this->controller . '\');' . '$_tpl_app = $this->getSystemFactory()->getInstance(COMPONENT_WEBAPP);' . '$_tpl_app->doDispatch($_tpl_forward);';
 		return $_tmp;
 	}
 
@@ -40,7 +34,7 @@ class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */
 	public function getProperties() {
-		return array('action', 'controller');
+		return array('action');
 	}
 
 }
