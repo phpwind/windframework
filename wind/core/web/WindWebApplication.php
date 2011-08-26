@@ -115,24 +115,26 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @param WindSimpleController $handler
 	 * @throws WindActionException
 	 */
-	protected function resolveActionChain($handler) {
+	protected function resolveActionChain($__handler) {
 		/*if ($formClassPath = $handler->getConfig($_alias, 'form')) {
 			$handler->registerEventListener('doAction', 
 				new WindFormListener($this->getRequest(), $formClassPath, 
 					$this->getComponent('errorMessage')));
 		}*/
-		$filters = $handler->resolveActionFilter($this->handlerAdapter->getAction());
-		foreach ((array) $filters as $filter) {
-			if (isset($filter['expression']) && !empty($filter['expression'])) {
-				list($p, $v) = explode('=', $filter['expression'] . '=');
+		@extract(@$this->getRequest()->getRequest(), EXTR_REFS);
+		$__filters = $__handler->resolveActionFilter($this->handlerAdapter->getAction());
+		foreach ((array) $__filters as $__filter) {
+			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
+				var_dump(@eval('return ' . addcslashes($__filter['expression'], '"') . ';'));
+				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
 				if ($this->getRequest()->getRequest($p) != $v)
-					continue;
+					continue;*/
 			}
-			$args = array($handler->getForward(), $handler->getErrorMessage());
-			if (isset($filter['args']))
-				$args = $args + (array) $filter['args'];
-			$handler->registerEventListener('doAction', 
-				WindFactory::createInstance(Wind::import(@$filter['class']), $args));
+			$__args = array($__handler->getForward(), $__handler->getErrorMessage());
+			if (isset($__filter['args']))
+				$__args = $__args + (array) $__filter['args'];
+			$__handler->registerEventListener('doAction', 
+				WindFactory::createInstance(Wind::import(@$__filter['class']), $__args));
 		}
 	}
 
