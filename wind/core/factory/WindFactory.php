@@ -33,35 +33,39 @@ class WindFactory implements IWindFactory {
 	 * @see AbstractWindFactory::getInstance()
 	 */
 	public function getInstance($alias, $args = array()) {
-		if (isset($this->prototype[$alias]))
-			return clone $this->prototype[$alias];
-		if (isset($this->instances[$alias]))
-			return $this->instances[$alias];
-		if (!isset($this->classDefinitions[$alias]))
-			throw new WindException(
-				'[core.factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
+		$instance = null;
+		$definition = isset($this->classDefinitions[$alias]) ? $this->classDefinitions[$alias] : array();
+		if (isset($this->prototype[$alias])) {
+			$instance = clone $this->prototype[$alias];
+		} elseif (isset($this->instances[$alias])) {
+			$instance = $this->instances[$alias];
+		} else {
+			if (!$definition)
+				throw new WindException(
+					'[core.factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
+			
+			if (isset($definition['constructor-arg']))
+				foreach ((array) $definition['constructor-arg'] as $_var) {
+					if (isset($_var['value'])) {
+						$args[] = $_var['value'];
+					} elseif (isset($_var['ref']))
+						$args[] = $this->getInstance($_var['ref']);
+				}
+			if (!isset($definition['className']))
+				$definition['className'] = Wind::import(@$definition['path']);
+			$instance = $this->createInstance($definition['className'], $args);
+			if (isset($definition['config']))
+				$this->resolveConfig($definition['config'], $alias, $instance);
+			if (isset($definition['properties']))
+				$this->buildProperties($definition['properties'], $instance);
+			if (isset($definition['initMethod']))
+				$this->executeInitMethod($definition['initMethod'], $instance);
+			!isset($definition['scope']) && $definition['scope'] = 'application';
+			$this->setScope($alias, $definition['scope'], $instance);
+		}
 		
-		$definition = $this->classDefinitions[$alias];
-		if (isset($definition['constructor-arg']))
-			foreach ((array) $definition['constructor-arg'] as $_var) {
-				if (isset($_var['value'])) {
-					$args[] = $_var['value'];
-				} elseif (isset($_var['ref']))
-					$args[] = $this->getInstance($_var['ref']);
-			}
-		if (!isset($definition['className']))
-			$definition['className'] = Wind::import(@$definition['path']);
-		$instance = $this->createInstance($definition['className'], $args);
-		if (isset($definition['config']))
-			$this->resolveConfig($definition['config'], $alias, $instance);
-		if (isset($definition['properties']))
-			$this->buildProperties($definition['properties'], $instance);
-		if (isset($definition['initMethod']))
-			$this->executeInitMethod($definition['initMethod'], $instance);
 		if (isset($definition['proxy']))
 			$instance = $this->setProxyForClass($definition['proxy'], $instance);
-		!isset($definition['scope']) && $definition['scope'] = 'application';
-		$this->setScope($alias, $definition['scope'], $instance);
 		return $instance;
 	}
 
