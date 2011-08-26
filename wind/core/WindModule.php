@@ -80,9 +80,6 @@ class WindModule {
 		} elseif ($_prefix == '_set') {
 			$this->$_propertyName = $args[0];
 		}
-		throw new WindException(
-			'[core.WindModule.__call] ' . get_class($this) . '->' . $methodName . '()', 
-			WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 	}
 
 	/**
@@ -133,6 +130,19 @@ class WindModule {
 		if (!isset($config[$configName][$subConfigName]))
 			return $default;
 		return $config[$configName][$subConfigName];
+	}
+
+	/**
+	 * @return string|array
+	 */
+	public function _getConfig() {
+		$args = func_get_args();
+		$_tmp = '';
+		foreach ($args as $value) {
+			if (!isset($this->_config[$value]))
+				continue;
+			$_tmp = $this->_config[$value];
+		}
 	}
 
 	/**
