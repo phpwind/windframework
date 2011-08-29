@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:ftp.AbstractWindFtp');
+Wind::import('WIND:ftp.AbstractWindFtp');
 /**
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >

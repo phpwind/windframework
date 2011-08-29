@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-Wind::import('WIND:component.mail.sender.IWindSendMail');
+Wind::import('WIND:mail.sender.IWindSendMail');
 /**
  * 使用sendmail发送邮件
  * the last known user to change this file in the repository  <$LastChangedBy$>

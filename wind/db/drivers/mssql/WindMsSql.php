@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; 2003-2110 phpwind.com
  * @license 
  */
-Wind::import('WIND:component.drivers.AbstractWindDbAdapter');
+Wind::import('WIND:drivers.AbstractWindDbAdapter');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>

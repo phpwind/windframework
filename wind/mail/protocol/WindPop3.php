@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-Wind::import ( 'WIND:component.mail.protocol.WindSocket' );
+Wind::import('WIND:mail.protocol.WindSocket');
 /**
  * pop3协议
  * the last known user to change this file in the repository  <$LastChangedBy$>
@@ -23,11 +23,11 @@ class WindPop3 {
 	protected $seperate = ' ';
 	protected $request = array();
 	protected $resonse = array();
-	
+
 	public function __construct($host, $port) {
 		$this->pop3 = new WindSocket($host, $port);
 	}
-	
+
 	/**
 	 * 打开pop3服务器,建立连接
 	 * @return string
@@ -36,7 +36,7 @@ class WindPop3 {
 		$this->pop3->open();
 		return $this->response();
 	}
-	
+
 	/**
 	 * 登陆pop3
 	 * @param string $username 用户名
@@ -47,7 +47,7 @@ class WindPop3 {
 		$this->communicate("USER $username");
 		return $this->communicate("PASS $password");
 	}
-	
+
 	/**
 	 * 处理请求 server 回送邮箱统计资料，如邮件数、 邮件总字节数
 	 * @return string
@@ -55,7 +55,7 @@ class WindPop3 {
 	public function stat() {
 		return $this->communicate('STAT', false, true);
 	}
-	
+
 	/**
 	 * 处理 server 返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的。
 	 * @param int $n 指定邮件
@@ -66,7 +66,7 @@ class WindPop3 {
 		$ifmulti = $n ? false : true;
 		return $this->communicate($request, $ifmulti, true);
 	}
-	
+
 	/**
 	 * 处理 server 返回指定邮件的大小等 
 	 * @param int $n 指定邮件
@@ -77,7 +77,7 @@ class WindPop3 {
 		$ifmulti = $n ? false : true;
 		return $this->communicate($request, $ifmulti, true);
 	}
-	
+
 	/**
 	 * 处处理 server 返回邮件的全部文本
 	 * @param int $n 指定邮件
@@ -86,6 +86,7 @@ class WindPop3 {
 	public function retr($n) {
 		return $this->communicate("RETR $n", true);
 	}
+
 	/**
 	 * 处理 server 标记删除，QUIT 命令执行时才真正删除 
 	 * @param int $n 指定邮件
@@ -94,6 +95,7 @@ class WindPop3 {
 	public function dele($n) {
 		return $this->communicate("DELE $n");
 	}
+
 	/**
 	 * 处理撤消所有的 DELE 命令
 	 * @return string
@@ -101,7 +103,7 @@ class WindPop3 {
 	public function rset() {
 		return $this->communicate("RSET");
 	}
-	
+
 	/**
 	 * 处理 返回 n 号邮件的前 m 行内容，m 必须是自然数
 	 * @param int $n 指定邮件
@@ -112,7 +114,7 @@ class WindPop3 {
 		$request = $m ? 'TOP ' . (int) $n . ' ' . (int) $m : 'TOP ' . (int) $n;
 		return $this->communicate($request, true);
 	}
-	
+
 	/**
 	 * 处理 server 返回一个肯定的响应
 	 * @return string
@@ -120,7 +122,7 @@ class WindPop3 {
 	public function noop() {
 		return $this->communicate("NOOP");
 	}
-	
+
 	/**
 	 * 希望结束会话。如果 server 处于"处理" 状态，
 	 * 则现在进入"更新"状态，删除那些标记成删除的邮件。
@@ -131,7 +133,7 @@ class WindPop3 {
 	public function quit() {
 		return $this->communicate("QUIT");
 	}
-	
+
 	/**
 	 * 结否会话,关闭pop3服务器
 	 */
@@ -140,6 +142,7 @@ class WindPop3 {
 		$this->pop3->close();
 		$this->pop3 = null;
 	}
+
 	/**
 	 * pop3响应请求
 	 * @param int $timeout
@@ -150,7 +153,7 @@ class WindPop3 {
 		}
 		return $this->pop3->responseLine();
 	}
-	
+
 	/**
 	 * 外理响应内容
 	 * @param string $response
@@ -171,7 +174,7 @@ class WindPop3 {
 		}
 		return $_response;
 	}
-	
+
 	/**
 	 * 进行一次网络传输通信
 	 * @param string $request 发竤的请求命令
@@ -183,7 +186,7 @@ class WindPop3 {
 		$this->request($request);
 		return $ifbuild ? $this->buildResponse($this->response($ifmulti)) : $this->response($ifmulti);
 	}
-	
+
 	/**
 	 * 发送pop3命令
 	 * @param string $request
@@ -192,7 +195,7 @@ class WindPop3 {
 		$this->request[] = $request;
 		return $this->pop3->request($request . self::CRLF);
 	}
-	
+
 	/**
 	 * 验证请求
 	 * @param boolean $multi
@@ -224,37 +227,38 @@ class WindPop3 {
 				$response = $ok;
 			}
 		}
-		if(empty($response)) throw new WindException('No response');
+		if (empty($response))
+			throw new WindException('No response');
 		return $response;
 	}
-	
+
 	/**
 	 * 获取解析后的内容
 	 * @param $content
 	 * @param $sep
 	 */
-	public function getMailContent($content,$sep = "\n\n"){
-		$content = explode($sep,$content);
-		$content[0] = explode("\n",$content[0]);
+	public function getMailContent($content, $sep = "\n\n") {
+		$content = explode($sep, $content);
+		$content[0] = explode("\n", $content[0]);
 		$headers = array();
-		foreach($content[0] as $value){
-			$_value = explode(':',$value);
+		foreach ($content[0] as $value) {
+			$_value = explode(':', $value);
 			$headers[$_value[0]] = trim($_value[1]);
 		}
 		$encode = $headers['Content-Transfer-Encoding'];
-		if('base64' == $encode){
+		if ('base64' == $encode) {
 			$content = base64_decode($content[1]);
-		}else{
+		} else {
 			$content = $content[1];
 		}
-		return array($headers,$content);
+		return array($headers, $content);
 	}
-	
+
 	public function __destruct() {
 		if ($this->pop3) {
 			$this->close();
 		}
 	}
-	
+
 }
 ?>

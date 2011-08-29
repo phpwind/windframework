@@ -1,5 +1,5 @@
 <?php
-Wind::import('WIND:component.utility.WindFile');
+Wind::import('WIND:utility.WindFile');
 /**
  * 程序打包工具
  * the last known user to change this file in the repository  <$LastChangedBy$>

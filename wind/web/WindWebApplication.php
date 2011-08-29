@@ -1,6 +1,6 @@
 <?php
-Wind::import('COM:http.request.WindHttpRequest');
-Wind::import('COM:http.response.WindHttpResponse');
+Wind::import('WIND:http.request.WindHttpRequest');
+Wind::import('WIND:http.response.WindHttpResponse');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -29,7 +29,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	protected $handlerAdapter = null;
 	protected $defaultModule = array('controller-path' => 'controller', 'controller-suffix' => 'Controller', 
-		'error-handler' => 'WIND:core.web.WindErrorHandler');
+		'error-handler' => 'WIND:web.WindErrorHandler');
 
 	/**
 	 * 应用初始化操作
@@ -147,7 +147,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * <!-- 指定该模块下的controller的后缀格式 -->
 	 * <controller-suffix>Controller</controller-suffix>
 	 * <!-- 配置该模块的error处理的action controller类 -->
-	 * <error-handler>WIND:core.web.WindErrorHandler</error-handler>
+	 * <error-handler>WIND:web.WindErrorHandler</error-handler>
 	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
 	 * <!-- 可以在这里进行view的配置，该配置只会影响该module下的view行为，该配置可以设置也可以不设置 -->
 	 * <!-- 指定模板路径 -->

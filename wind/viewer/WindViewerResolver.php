@@ -1,6 +1,6 @@
 <?php
-Wind::import('COM:viewer.IWindViewerResolver');
-Wind::import('COM:viewer.exception.WindViewException');
+Wind::import('WIND:viewer.IWindViewerResolver');
+Wind::import('WIND:viewer.exception.WindViewException');
 
 /**
  * 默认视图引擎

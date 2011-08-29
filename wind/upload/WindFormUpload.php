@@ -1,5 +1,5 @@
 <?php
-Wind::import('WIND:component.upload.AbstractWindUpload');
+Wind::import('WIND:upload.AbstractWindUpload');
 /**
  * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
  * @link http://www.phpwind.com
@@ -31,7 +31,7 @@ class WindFormUpload extends AbstractWindUpload {
 			@chmod($filename, 0777);
 			return filesize($filename);
 		} elseif (is_readable($tmp_name)) {
-			Wind::import('WIND:component.utility.WindFile');
+			Wind::import('WIND:utility.WindFile');
 			WindFile::write($filename, WindFile::read($tmp_name));
 			@unlink($tmp_name);
 			if (file_exists($filename)) {

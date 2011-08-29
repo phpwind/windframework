@@ -1,6 +1,6 @@
 <?php
 
-Wind::import('COM:cache.AbstractWindCache');
+Wind::import('WIND:cache.AbstractWindCache');
 /**
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
@@ -158,7 +158,7 @@ class WindDbCache extends AbstractWindCache {
 	private function getConnection() {
 		if (null == $this->connection) {
 			$config = $this->getSystemConfig()->getDbConfig($this->dbConfigName);
-			$path = $this->getConfig('class', '', 'COM:db.WindConnection', $config);
+			$path = $this->getConfig('class', '', 'WIND:db.WindConnection', $config);
 			$alias = $this->dbConfigName ? $path . $this->dbConfigName : $path . get_class($this);
 		    if (!$this->getSystemFactory()->checkAlias($alias)) {
 				$definition = array('path' => $path, 'alias' => $alias, 'config' => $config, 'initMethod' => 'init', 'scope' => 'application');

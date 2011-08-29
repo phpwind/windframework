@@ -6,7 +6,7 @@
  * @version $Id$ 
  * @package 
  */
-Wind::import('WIND:component.cache.dependency.AbstractWindCacheDependency');
+Wind::import('WIND:cache.dependency.AbstractWindCacheDependency');
 class WindDbCacheDependency extends AbstractWindCacheDependency{
 	private $sql = '';
 	private $configName = '';
@@ -35,7 +35,7 @@ class WindDbCacheDependency extends AbstractWindCacheDependency{
 	    if (!$this->getSystemFactory()->checkAlias($alias)) {
 			$config = $this->getSystemConfig()->getDbConfig($this->configName);
 			$definition = array(
-				'path' => $this->getConfig('class', '', 'COM:db.WindConnection', $config),
+				'path' => $this->getConfig('class', '', 'WIND:db.WindConnection', $config),
 				'alias' => $alias,
 				'config' => $config,
 				'initMethod' => 'init',

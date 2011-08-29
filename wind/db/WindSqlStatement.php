@@ -1,6 +1,6 @@
 <?php
-Wind::import("COM:db.exception.WindDbException");
-Wind::import("COM:db.WindResultSet");
+Wind::import("WIND:db.exception.WindDbException");
+Wind::import("WIND:db.WindResultSet");
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>

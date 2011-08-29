@@ -1,5 +1,4 @@
 <?php
-Wind::import('COM:utility.WindUtility');
 /**
  * 所有module的基础抽象类
  * 主要实现__get(), __set()等方法

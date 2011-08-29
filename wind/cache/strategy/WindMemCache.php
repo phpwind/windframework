@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:cache.AbstractWindCache');
+Wind::import('WIND:cache.AbstractWindCache');
 /**
  * $server = array(
  * array(

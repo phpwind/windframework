@@ -1,6 +1,6 @@
 <?php
-Wind::import('COM:viewer.AbstractWindTemplateCompiler');
-Wind::import('COM:utility.WindSecurity');
+Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
+Wind::import('WIND:utility.WindSecurity');
 /**
  * 变量输出解析 
  * 变量名称|变量格式（html，text）

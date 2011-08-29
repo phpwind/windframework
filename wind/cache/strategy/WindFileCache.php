@@ -1,6 +1,6 @@
 <?php
-Wind::import('COM:cache.AbstractWindCache');
-Wind::import('COM:utility.WindFile');
+Wind::import('WIND:cache.AbstractWindCache');
+Wind::import('WIND:utility.WindFile');
 /**
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >

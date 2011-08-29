@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:router.route.AbstractWindRoute');
+Wind::import('WIND:router.route.AbstractWindRoute');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>

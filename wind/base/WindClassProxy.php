@@ -13,7 +13,7 @@ class WindClassProxy {
 	const EVENT_TYPE_SETTER = 'setter';
 	const EVENT_TYPE_GETTER = 'getter';
 	
-	private $_interceptorChain = 'WIND:core.filter.WindHandlerInterceptorChain';
+	private $_interceptorChain = 'WIND:filter.WindHandlerInterceptorChain';
 	private $_interceptorChainObj = null;
 	protected $_attributes = array();
 	protected $_className = '';

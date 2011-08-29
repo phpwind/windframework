@@ -1,5 +1,5 @@
 <?php
-Wind::import("COM:db.WindConnection");
+Wind::import("WIND:db.WindConnection");
 /**
  * 配置格式为：
  * <WIND>
@@ -36,7 +36,7 @@ class WindConnectionManager extends WindConnection {
 	public function init() {
 		try {
 			$driverName = $this->getDriverName();
-			$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
+			$dbHandleClass = "WIND:db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
 			$dbHandleClass = Wind::import($dbHandleClass);
 			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
 				(array) $this->_attributes);

@@ -8,7 +8,7 @@
  * @package 
  */
 class WindEnableValidateModule extends WindModule {
-	protected $_validatorClass = 'WIND:component.utility.WindValidator';
+	protected $_validatorClass = 'WIND:utility.WindValidator';
 	protected $errorController = '';
 	protected $errorAction = '';
 	private $_validator = null;

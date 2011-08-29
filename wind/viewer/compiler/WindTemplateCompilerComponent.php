@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:viewer.AbstractWindTemplateCompiler');
+Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
  * <component name="test" args="my:index:run" templateDir="template" appConfig="WIND:config.config.php" componentPath="WIND:demos.helloworld"/>
  * 

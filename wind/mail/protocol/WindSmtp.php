@@ -6,7 +6,7 @@
  * @package 
  * tags
  */
-Wind::import ( 'WIND:component.mail.protocol.WindSocket' );
+Wind::import ( 'WIND:mail.protocol.WindSocket' );
 /**
  * 邮件传输协议操作
  * the last known user to change this file in the repository  <$LastChangedBy$>

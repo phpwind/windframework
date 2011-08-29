@@ -1,6 +1,6 @@
 <?php
 
-Wind::import('COM:cache.AbstractWindCache');
+Wind::import('WIND:cache.AbstractWindCache');
 
 /**
  * Eaccelerator是一款php加速器、优化器、编码器及动态内容缓存。

@@ -1,5 +1,4 @@
 <?php
-Wind::import('COM:utility.WindUtility');
 /**
  * Wind容器基类，创建类对象（分为两种模式，一种是普通模式，一种为单利模式）
  * 职责：
@@ -12,7 +11,7 @@ Wind::import('COM:utility.WindUtility');
  * @package 
  */
 class WindFactory implements IWindFactory {
-	protected $proxyType = 'WIND:core.factory.WindClassProxy';
+	protected $proxyType = 'WIND:factory.WindClassProxy';
 	protected $classDefinitions = array();
 	protected $instances = array();
 	protected $prototype = array();
@@ -42,7 +41,7 @@ class WindFactory implements IWindFactory {
 		} else {
 			if (!$definition)
 				throw new WindException(
-					'[core.factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
+					'[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
 			
 			if (isset($definition['constructor-arg']))
 				foreach ((array) $definition['constructor-arg'] as $_var) {

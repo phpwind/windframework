@@ -1,6 +1,6 @@
 <?php return array(
 	'windWebApp' => array(
-		'path' => 'WIND:core.web.WindWebApplication',
+		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
 		'properties' => array(
 			'dispatcher' => array(
@@ -12,7 +12,7 @@
 		),
 	),
 	'windLogger' => array(
-		'path' => 'COM:log.WindLogger',
+		'path' => 'WIND:log.WindLogger',
 		'scope' => 'singleton',
 		'constructor-arg' => array(
 			'0' => array(
@@ -24,11 +24,11 @@
 		),
 	),
 	'dispatcher' => array(
-		'path' => 'WIND:core.web.WindDispatcher',
+		'path' => 'WIND:web.WindDispatcher',
 		'scope' => 'application',
 	),
 	'forward' => array(
-		'path' => 'WIND:core.web.WindForward',
+		'path' => 'WIND:web.WindForward',
 		'scope' => 'prototype',
 		'properties' => array(
 			'windView' => array(
@@ -37,15 +37,15 @@
 		),
 	),
 	'router' => array(
-		'path' => 'COM:router.WindRouter',
+		'path' => 'WIND:router.WindRouter',
 		'scope' => 'application',
 	),
 	'urlHelper' => array(
-		'path' => 'WIND:core.web.WindUrlHelper',
+		'path' => 'WIND:web.WindUrlHelper',
 		'scope' => 'application',
 	),
 	'windView' => array(
-		'path' => 'COM:viewer.WindView',
+		'path' => 'WIND:viewer.WindView',
 		'scope' => 'prototype',
 		'config' => array(
 			'template-dir' => 'template',
@@ -64,7 +64,7 @@
 		),
 	),
 	'viewResolver' => array(
-		'path' => 'COM:viewer.WindViewerResolver',
+		'path' => 'WIND:viewer.WindViewerResolver',
 		'scope' => 'prototype',
 		'properties' => array(
 			'windLayout' => array(
@@ -73,15 +73,15 @@
 		),
 	),
 	'layout' => array(
-		'path' => 'COM:viewer.WindLayout',
+		'path' => 'WIND:viewer.WindLayout',
 		'scope' => 'prototype',
 	),
 	'template' => array(
-		'path' => 'COM:viewer.compiler.WindViewTemplate',
+		'path' => 'WIND:viewer.compiler.WindViewTemplate',
 		'scope' => 'prototype',
 	),
 	'db' => array(
-		'path' => 'COM:db.WindConnection',
+		'path' => 'WIND:db.WindConnection',
 		'scope' => 'singleton',
 		'config' => array(
 			'resource' => 'db_config.xml',
@@ -92,11 +92,11 @@
 		'scope' => 'prototype',
 	),
 	'configParser' => array(
-		'path' => 'COM:parser.WindConfigParser',
+		'path' => 'WIND:parser.WindConfigParser',
 		'scope' => 'singleton',
 	),
 	'windCache' => array(
-		'path' => 'COM:cache.strategy.WindFileCache',
+		'path' => 'WIND:cache.strategy.WindFileCache',
 		'config' => array(
 			'dir' => 'data.config',
 			'suffix' => 'php',
@@ -104,7 +104,7 @@
 		),
 	),
 	'viewCache' => array(
-		'path' => 'COM:cache.strategy.WindFileCache',
+		'path' => 'WIND:cache.strategy.WindFileCache',
 		'config' => array(
 			'dir' => 'data.view',
 			'suffix' => 'php',

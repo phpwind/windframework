@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:cache.exception.WindCacheException');
+Wind::import('WIND:cache.exception.WindCacheException');
 /**
  * 缓存接口及通用方法定义
  * the last known user to change this file in the repository  <$LastChangedBy$>

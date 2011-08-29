@@ -99,7 +99,7 @@ class WindSystemConfig extends WindModule {
 	 * <!-- 指定该模块下的controller的后缀格式 -->
 	 * <controller-suffix value='Controller' />
 	 * <!-- 配置该模块的error处理的action controller类 -->
-	 * <error-handler class='WIND:core.web.WindErrorHandler'/>
+	 * <error-handler class='WIND:web.WindErrorHandler'/>
 	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
 	 * <view>
 	 * <config>
@@ -126,7 +126,7 @@ class WindSystemConfig extends WindModule {
 	 * <!-- 指定该模块下的controller的后缀格式 -->
 	 * <controller-suffix>Controller</controller-suffix>
 	 * <!-- 配置该模块的error处理的action controller类 -->
-	 * <error-handler>WIND:core.web.WindErrorHandler</error-handler>
+	 * <error-handler>WIND:web.WindErrorHandler</error-handler>
 	 * <!-- 试图相关配置，config中配置可以根据自己的需要进行配置或是使用缺省 -->
 	 * <!-- 可以在这里进行view的配置，该配置只会影响该module下的view行为，该配置可以设置也可以不设置 -->
 	 * <!-- 指定模板路径 -->
@@ -237,7 +237,7 @@ class WindSystemConfig extends WindModule {
 		$_tmp['modules']['controller-suffix'] = $this->getConfig('controller-suffix', '', 
 			'Controller');
 		$_tmp['modules']['error-handler'] = $this->getConfig('error-handler', '', 
-			'WIND:core.web.WindErrorHandler');
+			'WIND:web.WindErrorHandler');
 		return $configName ? (isset($_tmp[$configName]) ? $_tmp[$configName] : array()) : array();
 	}
 }

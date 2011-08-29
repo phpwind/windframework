@@ -9,7 +9,7 @@ class WindErrorHandler extends WindController {
 	protected $error = array();
 	protected $errorCode = 0;
 	protected $urlReferer = '';
-	protected $errorDir = 'WIND:core.web.view';
+	protected $errorDir = 'WIND:web.view';
 
 	/* (non-PHPdoc)
 	 * @see WindAction::beforeAction()

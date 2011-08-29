@@ -128,7 +128,7 @@ class WindLogger extends WindModule {
 	public function flush() {
 		if (empty($this->_logs))
 			return false;
-		Wind::import('WIND:component.utility.WindFile');
+		Wind::import('WIND:utility.WindFile');
 		$_l = $_logTypes = $_logLevels = array();
 		$_map = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error', 
 			self::LEVEL_DEBUG => 'debug', self::LEVEL_TRACE => 'trace', 

@@ -1,6 +1,6 @@
 <?php
 
-Wind::import('COM:upload.AbstractWindUpload');
+Wind::import('WIND:upload.AbstractWindUpload');
 /**
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
@@ -45,11 +45,11 @@ class WindFtpUpload extends AbstractWindUpload {
 	private function getFtpConnection() {
 		if (is_object($this->ftp)) return $this->ftp;
 		if (function_exists('ftp_connect')) {
-			Wind::import("COM:ftp.WindFtp");
+			Wind::import("WIND:ftp.WindFtp");
 			$this->ftp = new WindFtp($this->config);
 			return $this->ftp;
 		}
-		Wind::import("COM:ftp.WindSocketFtp");
+		Wind::import("WIND:ftp.WindSocketFtp");
 		$this->ftp = new WindSocketFtp($this->config);
 		return $this->ftp;
 	}

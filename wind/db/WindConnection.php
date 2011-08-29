@@ -1,7 +1,7 @@
 <?php
-Wind::import("COM:db.exception.WindDbException");
-Wind::import("COM:db.WindSqlStatement");
-Wind::import("COM:db.WindResultSet");
+Wind::import("WIND:db.exception.WindDbException");
+Wind::import("WIND:db.WindSqlStatement");
+Wind::import("WIND:db.WindResultSet");
 
 /**
  * @author Qiong Wu <papa0924@gmail.com>
@@ -215,7 +215,7 @@ class WindConnection extends WindModule {
 	public function init() {
 		try {
 			$driverName = $this->getDriverName();
-			$dbHandleClass = "WIND:component.db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
+			$dbHandleClass = "WIND:db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
 			$dbHandleClass = Wind::import($dbHandleClass);
 			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
 				(array) $this->_attributes);

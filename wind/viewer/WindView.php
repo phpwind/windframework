@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:viewer.IWindView');
+Wind::import('WIND:viewer.IWindView');
 /**
  * 处理视图请求的准备工作，并将视图请求提交给某一个具体的视图解析器
  * 如果视图请求是一个重定向请求，或者是请求另一个操作
@@ -161,7 +161,7 @@ class WindView extends WindModule implements IWindView {
 		if (!$this->getIsCache())
 			return $this->viewResolver;
 		$this->viewResolver = new WindClassProxy($this->viewResolver);
-		$listener = Wind::import('COM:viewer.listener.WindViewCacheListener');
+		$listener = Wind::import('WIND:viewer.listener.WindViewCacheListener');
 		$this->viewResolver->registerEventListener('windFetch', new $listener($this));
 		return $this->viewResolver;
 	}

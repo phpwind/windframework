@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:viewer.AbstractWindTemplateCompiler');
+Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
  * <doAction /> 标签解析脚本
  * 支持属性: action\controller

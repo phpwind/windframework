@@ -10,7 +10,7 @@
  */
 class WindHelper {
 	const INTERNAL_LOCATION = "~Internal Location~";
-	protected static $errorDir = 'WIND:core.web.view';
+	protected static $errorDir = 'WIND:web.view';
 	protected static $errorPage = 'error.htm';
 
 	/**

@@ -1,5 +1,4 @@
 <?php
-Wind::import('COM:viewer.exception.WindViewException');
 /**
  * 职责描述：负责请求的分发
  * 分发类型：

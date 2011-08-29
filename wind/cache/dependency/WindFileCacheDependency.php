@@ -6,7 +6,7 @@
  * @license
  * @package
  */
-Wind::import('WIND:component.cache.AbstractWindCacheDependency');
+Wind::import('WIND:cache.AbstractWindCacheDependency');
 class WindFileCacheDependency extends AbstractWindCacheDependency {
 	private $fileName = '';
 

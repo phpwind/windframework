@@ -6,8 +6,8 @@
  * @package 
  * tags
  */
-Wind::import('WIND:component.mail.sender.IWindSendMail');
-Wind::import ( 'WIND:component.mail.protocol.WindSmtp' );
+Wind::import('WIND:mail.sender.IWindSendMail');
+Wind::import ( 'WIND:mail.protocol.WindSmtp' );
 /**
  * 邮件发送
  * the last known user to change this file in the repository  <$LastChangedBy$>

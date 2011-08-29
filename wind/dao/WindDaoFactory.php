@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:dao.exception.WindDaoException');
+Wind::import('WIND:dao.exception.WindDaoException');
 /**
  * Dao工厂
  * 

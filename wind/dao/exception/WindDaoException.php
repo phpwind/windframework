@@ -1,6 +1,6 @@
 <?php
 
-Wind::import('WIND:core.exception.WindException');
+Wind::import('WIND:exception.WindException');
 /**
  * 模板视图异常类
  *

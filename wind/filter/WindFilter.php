@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:fitler.WindHandlerInterceptor');
+Wind::import('WIND:fitler.WindHandlerInterceptor');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia xu <x_824@sina.com>

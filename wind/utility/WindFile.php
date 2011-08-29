@@ -1,6 +1,6 @@
 <?php
-Wind::import("COM:utility.WindSecurity");
-Wind::import("COM:utility.WindString");
+Wind::import("WIND:utility.WindSecurity");
+Wind::import("WIND:utility.WindString");
 /**
  * 文件工具类
  * the last known user to change this file in the repository  <$LastChangedBy$>

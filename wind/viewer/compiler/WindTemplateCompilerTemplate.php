@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:viewer.AbstractWindTemplateCompiler');
+Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
  * <template source='' suffix='' load='false' />
  * source: 模板文件源地址

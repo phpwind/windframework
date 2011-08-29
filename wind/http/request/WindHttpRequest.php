@@ -1,5 +1,5 @@
 <?php
-Wind::import('COM:http.request.IWindRequest');
+Wind::import('WIND:http.request.IWindRequest');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
