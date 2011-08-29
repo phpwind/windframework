@@ -66,6 +66,15 @@
 	'viewResolver' => array(
 		'path' => 'COM:viewer.WindViewerResolver',
 		'scope' => 'prototype',
+		'properties' => array(
+			'windLayout' => array(
+				'ref' => 'layout',
+			),
+		),
+	),
+	'layout' => array(
+		'path' => 'COM:viewer.WindLayout',
+		'scope' => 'prototype',
 	),
 	'template' => array(
 		'path' => 'COM:viewer.compiler.WindViewTemplate',
