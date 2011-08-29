@@ -41,8 +41,23 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	/* (non-PHPdoc)
 	 * @see IWindController::resolveActionFilter($action)
 	 */
-	public function resolveActionFilter($action) {
-		return array();
+	protected function resolveActionFilter($__filters) {
+		@extract(@$this->getRequest()->getRequest(), EXTR_REFS);
+		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
+		foreach ((array) $__filters as $__filter) {
+			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
+				if (!@eval('return ' . $__filter['expression'] . ';'))
+					continue;
+				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
+				if ($this->getRequest()->getRequest($p) != $v)
+					continue;*/
+			}
+			$__args = array($this->getForward(), $this->getErrorMessage());
+			if (isset($__filter['args']))
+				$__args = $__args + (array) $__filter['args'];
+			$chain->addInterceptors(WindFactory::createInstance(Wind::import(@$__filter['class']), $__args));
+		}
+		$chain->getHandler()->handle();
 	}
 
 	/**
@@ -287,14 +302,5 @@ interface IWindController {
 	 */
 	public function doAction($handlerAdapter);
 
-	/**
-	 * 返回当前Action处理过滤连配置信息
-	 * <action alias=''>
-	 * <filter expression='param=value' class=''/>
-	 * </action>
-	 * @param string $action
-	 * @return array
-	 */
-	public function resolveActionFilter($action);
 }
 ?>

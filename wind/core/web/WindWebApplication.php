@@ -28,8 +28,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @var WindRouter
 	 */
 	protected $handlerAdapter = null;
-	protected $defaultModule = array('controller-path' => 'controller', 
-		'controller-suffix' => 'Controller', 'error-handler' => 'WIND:core.web.WindErrorHandler');
+	protected $defaultModule = array('controller-path' => 'controller', 'controller-suffix' => 'Controller', 
+		'error-handler' => 'WIND:core.web.WindErrorHandler');
 
 	/**
 	 * 应用初始化操作
@@ -83,59 +83,27 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			$module = WindUtility::mergeArray($this->defaultModule, $module);
-			$handlerPath = @$module['controller-path'] . '.' . ucfirst(
-				$this->handlerAdapter->getController()) . @$module['controller-suffix'];
+			$handlerPath = @$module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . @$module['controller-suffix'];
 			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
-					'[core.web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 
-					'wind.core');
+					'[core.web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
 			
 			$this->getSystemFactory()->addClassDefinitions($handlerPath, 
 				array('path' => $handlerPath, 'scope' => 'prototype', 'proxy' => true, 
 					'config' => $this->getConfig('actionmap'), 
 					'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
-						'forward' => array('ref' => 'forward'), 
-						'urlHelper' => array('ref' => 'urlHelper'))));
+						'forward' => array('ref' => 'forward'), 'urlHelper' => array('ref' => 'urlHelper'))));
 			$handler = $this->windFactory->getInstance($handlerPath);
 			
 			if (!$handler)
 				throw new WindActionException(
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
-			$this->resolveActionChain($handler);
 			$this->doDispatch($handler->doAction($this->handlerAdapter));
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
 		} catch (WindException $e) {
 			$this->sendErrorMessage($e);
-		}
-	}
-
-	/**
-	 * @param WindSimpleController $handler
-	 * @throws WindActionException
-	 */
-	protected function resolveActionChain($__handler) {
-		/*if ($formClassPath = $handler->getConfig($_alias, 'form')) {
-			$handler->registerEventListener('doAction', 
-				new WindFormListener($this->getRequest(), $formClassPath, 
-					$this->getComponent('errorMessage')));
-		}*/
-		@extract(@$this->getRequest()->getRequest(), EXTR_REFS);
-		$__filters = $__handler->resolveActionFilter($this->handlerAdapter->getAction());
-		foreach ((array) $__filters as $__filter) {
-			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
-				if (!@eval('return ' . $__filter['expression'] . ';'))
-					continue;
-				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
-				if ($this->getRequest()->getRequest($p) != $v)
-					continue;*/
-			}
-			$__args = array($__handler->getForward(), $__handler->getErrorMessage());
-			if (isset($__filter['args']))
-				$__args = $__args + (array) $__filter['args'];
-			$__handler->registerEventListener('doAction', 
-				WindFactory::createInstance(Wind::import(@$__filter['class']), $__args));
 		}
 	}
 
@@ -164,8 +132,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]))));
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
-				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 
-					'error-handler' => ''));
+				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
 		}
 		$forward = $this->getSystemFactory()->getInstance('forward');
 		$forward->forwardAction($_errorAction);
