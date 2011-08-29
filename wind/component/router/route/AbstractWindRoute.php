@@ -5,7 +5,7 @@
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindRoute extends WindHandlerInterceptor {
+abstract class AbstractWindRoute extends WindModule {
 
 	/**
 	 * 根据匹配的路由规则，构建Url
@@ -35,10 +35,8 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 		} else {
 			$this->result = $this->interceptorChain->execute();
 		}
-		call_user_func_array(array($this, 'postHandle'), $args);
 		return $this->result;
 	}
-
 }
 
 ?>
