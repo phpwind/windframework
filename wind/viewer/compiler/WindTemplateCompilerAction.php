@@ -18,7 +18,7 @@ class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 	 */
 	public function compile($key, $content) {
 		return '<?php $_tpl_forward = Wind::getApp()->getComponent(\'forward\');
-					$_tpl_forward->forwardAction(' . $this->action . ');
+					$_tpl_forward->forwardAction(\'' . $this->action . '\');
 					Wind::getApp()->doDispatch($_tpl_forward, true); ?>';
 	}
 
