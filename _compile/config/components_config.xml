@@ -8,32 +8,32 @@
 <!-- </component> -->
 
 <components>
-	<component name='windWebApp' path='WIND:core.web.WindWebApplication'
+	<component name='windWebApp' path='WIND:web.WindWebApplication'
 		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
 			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
-	<component name='windLogger' path='COM:log.WindLogger' scope='singleton'>
+	<component name='windLogger' path='WIND:log.WindLogger'
+		scope='singleton'>
 		<constructor-arg value='data.log' />
 		<constructor-arg value='0' />
 	</component>
-	<component name='dispatcher' path='WIND:core.web.WindDispatcher'
+	<component name='dispatcher' path='WIND:web.WindDispatcher'
 		scope='application'>
 	</component>
-	<component name='forward' path='WIND:core.web.WindForward'
-		scope='prototype'>
+	<component name='forward' path='WIND:web.WindForward' scope='prototype'>
 		<properties>
 			<property name='windView' ref='windView' />
 		</properties>
 	</component>
-	<component name='router' path='COM:router.WindRouter' scope="application">
+	<component name='router' path='WIND:router.WindRouter' scope="application">
 	</component>
-	<component name='urlHelper' path='WIND:core.web.WindUrlHelper'
+	<component name='urlHelper' path='WIND:web.WindUrlHelper'
 		scope='application'>
 	</component>
-	<component name='windView' path='COM:viewer.WindView' scope='prototype'>
+	<component name='windView' path='WIND:viewer.WindView' scope='prototype'>
 		<config>
 			<template-dir>template</template-dir>
 			<template-ext>htm</template-ext>
@@ -46,28 +46,28 @@
 			<property name='viewCache' ref='viewCache' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
+	<component name='viewResolver' path='WIND:viewer.WindViewerResolver'
 		scope='prototype'>
 		<properties>
 			<property name='windLayout' ref='layout' />
 		</properties>
 	</component>
-	<component name='layout' path='COM:viewer.WindLayout' scope='prototype'>
+	<component name='layout' path='WIND:viewer.WindLayout' scope='prototype'>
 	</component>
-	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
+	<component name='template' path='WIND:viewer.compiler.WindViewTemplate'
 		scope='prototype'>
 	</component>
-	<component name='db' path='COM:db.WindConnection' scope='singleton'>
+	<component name='db' path='WIND:db.WindConnection' scope='singleton'>
 		<config resource='db_config.xml' />
 	</component>
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'>
 	</component>
-	<component name='configParser' path='COM:parser.WindConfigParser'
+	<component name='configParser' path='WIND:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
 	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
-	<component name='windCache' path="COM:cache.strategy.WindFileCache">
+	<component name='windCache' path="WIND:cache.strategy.WindFileCache">
 		<config>
 			<dir>data.config</dir>
 			<suffix>php</suffix>
@@ -75,7 +75,7 @@
 		</config>
 	</component>
 
-	<component name='viewCache' path='COM:cache.strategy.WindFileCache'>
+	<component name='viewCache' path='WIND:cache.strategy.WindFileCache'>
 		<config>
 			<dir>data.view</dir>
 			<suffix>php</suffix>

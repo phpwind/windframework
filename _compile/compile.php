@@ -8,19 +8,20 @@ define('WIND_DEBUG', 1);
 include '../wind/Wind.php';
 define('_COMPILE_PATH', dirname(__FILE__) . '/');
 Wind::clear();
-Wind::import('COM:log.WindLogger');
-Wind::import('WIND:core.*', true);
-Wind::import('COM:parser.*', true);
-Wind::import('COM:router.*', true);
-Wind::import('COM:http.*', true);
-Wind::import('COM:utility.*', true);
+Wind::import('WIND:base.*', true);
+Wind::import('WIND:filter.*', true);
+Wind::import('WIND:web.*', true);
+Wind::import('WIND:router.*', true);
+Wind::import('WIND:http.request.*', true);
+Wind::import('WIND:http.response.*', true);
+Wind::import('WIND:utility.*', true);
 
 $imports = Wind::getImports();
 /* 载入需要的文件信息 */
-Wind::import('COM:utility.WindPack');
-Wind::import('COM:utility.WindFile');
-Wind::import('COM:utility.WindString');
-Wind::import('COM:parser.WindConfigParser');
+Wind::import('WIND:utility.WindPack');
+Wind::import('WIND:utility.WindFile');
+Wind::import('WIND:utility.WindString');
+Wind::import('WIND:parser.WindConfigParser');
 
 /* 打包 */
 $pack = new WindPack();
@@ -31,8 +32,8 @@ foreach ($imports as $key => $value) {
 	$fileList[$_key] = array($key, $value);
 	$content[$value] = parseFilePath($key);
 }
+$pack->setContentInjectionCallBack('addImports');
 $pack->packFromFileList($fileList, _COMPILE_PATH . 'wind_basic.php', WindPack::STRIP_PHP, true);
-/* import信息写入编译文件 */
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
 
 /* 编译配置文件信息 */
@@ -43,12 +44,17 @@ while (($file = readdir($dh)) !== false) {
 		$result = $windConfigParser->parse(_COMPILE_PATH . 'config/' . $file);
 		$file = preg_replace('/\.(\w)*$/i', '', $file);
 		WindFile::write(_COMPILE_PATH . $file . '.php', '<?php return ' . WindString::varToString($result) . ';');
-		/*WindFile::write(WIND_PATH . $file . '.php', 
-			'<?php return ' . WindString::varToString($result) . ';');*/
+		//WindFile::write(WIND_PATH . $file . '.php', '<?php return ' . WindString::varToString($result) . ';');
 	}
 }
 
 echo 'compile successful!';
+
+function addImports() {
+	$_content = WindString::varToString($GLOBALS['imports']);
+	$_content = str_replace(array("\r\n", "\t", " "), '', $_content);
+	return 'Wind::setImports(' . $_content . ')';
+}
 
 /* 清理所有缓存 */
 function parseFilePath($filePath) {
