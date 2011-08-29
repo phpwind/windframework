@@ -40,7 +40,7 @@ class WindDaoFactory extends WindModule {
 			return $daoInstance;
 		} catch (Exception $exception) {
 			throw new WindDaoException(
-				'[component.dao.WindDaoFactory] create dao ' . $className . ' fail.' . $exception->getMessage());
+				'[dao.WindDaoFactory] create dao ' . $className . ' fail.' . $exception->getMessage());
 		}
 	}
 
