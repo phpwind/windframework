@@ -58,17 +58,22 @@ class WindView extends WindModule implements IWindView {
 	 * @var string
 	 */
 	public $compileExt = 'tpl';
+	/**
+	 * 布局文件
+	 * @var string
+	 */
+	public $layout;
+	/**
+	 * 主题包目录
+	 * @var string
+	 */
+	public $theme;
 	
 	/**
 	 * 视图解析引擎
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
-	/**
-	 * 布局文件
-	 * @var string
-	 */
-	protected $layout;
 
 	/**
 	 * 视图渲染
@@ -160,20 +165,4 @@ class WindView extends WindModule implements IWindView {
 		$this->viewResolver->registerEventListener('windFetch', new $listener($this));
 		return $this->viewResolver;
 	}
-
-	/**
-	 * @return the $layout
-	 */
-	public function getLayout() {
-		return $this->layout;
-	}
-
-	/**
-	 * @param string $layout
-	 * @return string
-	 */
-	public function setLayout($layout) {
-		return $this->layout = $layout;
-	}
-
 }

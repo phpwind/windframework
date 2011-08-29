@@ -1,6 +1,6 @@
 <?php
 Wind::import('COM:viewer.AbstractWindTemplateCompiler');
-Wind::import('COM:utility.WindHtmlHelper');
+Wind::import('COM:utility.WindSecurity');
 /**
  * 变量输出解析 
  * 变量名称|变量格式（html，text）
@@ -28,7 +28,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 		if (!strcasecmp($type, 'html'))
 			return '<?php echo ' . $_output . ';?>';
 		else
-			return '<?php echo WindHtmlHelper::encode(' . $_output . ');?>';
+			return '<?php echo WindSecurity::escapeHTML(' . $_output . ');?>';
 	}
 }
 ?>

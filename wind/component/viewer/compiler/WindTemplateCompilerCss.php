@@ -6,28 +6,18 @@ Wind::import('COM:viewer.AbstractWindTemplateCompiler');
  * @version $Id$
  * @package 
  */
-class WindTemplateCompilerScript extends AbstractWindTemplateCompiler {
-	protected $compile = 'true';
+class WindTemplateCompilerCss extends AbstractWindTemplateCompiler {
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
 	public function compile($key, $content) {
-		if ($this->compile === 'false') return $content;
 		foreach ($this->windViewTemplate->getCompiledBlockData() as $key => $value) {
 			$content = str_replace('#' . $key . '#', ($value ? $value : ' '), $content);
 		}
-		$this->windViewerResolver->getWindLayout()->setScript($content);
+		$this->windViewerResolver->getWindLayout()->setcss($content);
 		return '';
 	}
-
-	/**
-	 * 返回该标签支持的属性信息
-	 */
-	protected function getProperties() {
-		return array('compile');
-	}
-
 }
 
 ?>

@@ -14,9 +14,6 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	
 	const COMPILER_ECHO = 'COM:viewer.compiler.WindTemplateCompilerEcho';
 	
-	/* 编译结果缓存 */
-	protected $blockKey = "<pw-wind key='\$' />";
-	
 	protected $compiledBlockData = array();
 	
 	/**
@@ -38,7 +35,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 				$this->windHandlerInterceptorChain->getHandler()->handle();
 			}
 			foreach (array_reverse($this->compiledBlockData) as $key => $value) {
-				if (!$key) continue;
+				if (!$key)
+					continue;
 				$content = str_replace($this->getBlockTag($key), ($value ? $value : ' '), $content);
 			}
 			$content = preg_replace('/\?>(\s|\n)*?<\?php/i', "\r\n", $content);
@@ -60,8 +58,10 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$compiler = isset($value[self::COMPILER]) ? $value[self::COMPILER] : '';
 			$regex = isset($value[self::PATTERN]) ? $value[self::PATTERN] : '';
 			$tag = isset($value[self::TAG]) ? $value[self::TAG] : '';
-			if (!$compiler || !$tag) continue;
-			if ($regex === '') $regex = '/<(' . preg_quote($tag) . ')[^<>\n]*(\/>|>[^<>]*<\/\1>)/i';
+			if (!$compiler || !$tag)
+				continue;
+			if ($regex === '')
+				$regex = '/<(' . preg_quote($tag) . ')[^<>\n]*(\/>|>[^<>]*<\/\1>)/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
 		return $content;
@@ -93,16 +93,23 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	protected function getTags() {
 		$_tags['internal'] = $this->createTag('internal', 'COM:viewer.compiler.WindTemplateCompilerInternal', 
 			'/<\?php(.|\n)*?\?>/i');
-		/*标签体增加在该位置*/
 		$_tags['template'] = $this->createTag('template', 'COM:viewer.compiler.WindTemplateCompilerTemplate');
-		$_tags['page'] = $this->createTag('page', 'COM:viewer.compiler.WindTemplateCompilerPage');
-		$_tags['action'] = $this->createTag('action', 'COM:viewer.compiler.WindTemplateCompilerAction');
-		$_tags['component'] = $this->createTag('component', 'COM:viewer.compiler.WindTemplateCompilerComponent');
-		/*标签解析结束*/
-		$_tags += (array) parent::getTags();
 		$_tags['expression'] = $this->createTag('expression', 'COM:viewer.compiler.WindTemplateCompilerEcho', 
 			'/({@|{\$[\w$]{1})[^}{@=\n]*}/i');
 		$_tags['echo'] = $this->createTag('echo', 'COM:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
+		/*标签体增加在该位置*/
+		$_tags['page'] = $this->createTag('page', 'COM:viewer.compiler.WindTemplateCompilerPage');
+		$_tags['action'] = $this->createTag('action', 'COM:viewer.compiler.WindTemplateCompilerAction');
+		$_tags['script'] = $this->createTag('script', 'COM:viewer.compiler.WindTemplateCompilerScript', 
+			'/(<!--\[[\w\s]*\]>[\n\s]*)*<(script)[^<>\n]*(\/>|>[^<>]*<\/\2>)([\n\s]*<!\[[\w\s]*\]-->)*/i');
+		//$_tags['link'] = $this->createTag('link', 'COM:viewer.compiler.WindTemplateCompilerCss');
+		//$_tags['style'] = $this->createTag('style', 'COM:viewer.compiler.WindTemplateCompilerCss');
+		$_tags['component'] = $this->createTag('component', 'COM:viewer.compiler.WindTemplateCompilerComponent');
+		/*标签解析结束*/
+		$_tags += (array) parent::getTags();
+		/*$_tags['expression'] = $this->createTag('expression', 'COM:viewer.compiler.WindTemplateCompilerEcho', 
+			'/({@|{\$[\w$]{1})[^}{@=\n]*}/i');
+		$_tags['echo'] = $this->createTag('echo', 'COM:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');*/
 		return $_tags;
 	}
 
@@ -122,7 +129,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 */
 	private function _creatTagCompiler($content) {
 		$_content = $content[0];
-		if (!$_content) return '';
+		if (!$_content)
+			return '';
 		
 		$key = $this->getCompiledBlockKey();
 		$this->_compilerCache[] = array($key, $_content);
@@ -139,8 +147,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return string|mixed | 处理后结果
 	 */
 	private function getBlockTag($key) {
-		if (!$this->blockKey) return '<pw-wind key=\'' . $key . '\' />';
-		return str_replace('$', $key, $this->blockKey);
+		return '#' . $key . '#';
 	}
 
 	/**
@@ -174,7 +181,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @param boolean $isTag | 再结果处理时是否添加php脚本定界符 true 添加 ，flase 不添加
 	 */
 	public function setCompiledBlockData($key, $compiledBlockData) {
-		if ($key) $this->compiledBlockData[$key] = $compiledBlockData;
+		if ($key)
+			$this->compiledBlockData[$key] = $compiledBlockData;
 	}
 
 }
