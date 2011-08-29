@@ -48,6 +48,11 @@
 	</component>
 	<component name='viewResolver' path='COM:viewer.WindViewerResolver'
 		scope='prototype'>
+		<properties>
+			<property name='windLayout' ref='layout' />
+		</properties>
+	</component>
+	<component name='layout' path='COM:viewer.WindLayout' scope='prototype'>
 	</component>
 	<component name='template' path='COM:viewer.compiler.WindViewTemplate'
 		scope='prototype'>

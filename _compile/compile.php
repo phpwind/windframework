@@ -4,6 +4,7 @@
  * @author wuq
  **/
 error_reporting(E_ALL);
+define('WIND_DEBUG', 1);
 include '../wind/Wind.php';
 define('_COMPILE_PATH', dirname(__FILE__) . '/');
 Wind::clear();
@@ -32,8 +33,7 @@ foreach ($imports as $key => $value) {
 }
 $pack->packFromFileList($fileList, _COMPILE_PATH . 'wind_basic.php', WindPack::STRIP_PHP, true);
 /* import信息写入编译文件 */
-WindFile::write(_COMPILE_PATH . 'wind_imports.php', 
-	'<?php return ' . WindString::varToString($content) . ';');
+WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
 
 /* 编译配置文件信息 */
 $windConfigParser = new WindConfigParser();
@@ -42,8 +42,9 @@ while (($file = readdir($dh)) !== false) {
 	if (is_file(_COMPILE_PATH . 'config/' . $file) && $file !== '.' && $file !== '..') {
 		$result = $windConfigParser->parse(_COMPILE_PATH . 'config/' . $file);
 		$file = preg_replace('/\.(\w)*$/i', '', $file);
-		WindFile::write(WIND_PATH . $file . '.php', 
-			'<?php return ' . WindString::varToString($result) . ';');
+		WindFile::write(_COMPILE_PATH . $file . '.php', '<?php return ' . WindString::varToString($result) . ';');
+		/*WindFile::write(WIND_PATH . $file . '.php', 
+			'<?php return ' . WindString::varToString($result) . ';');*/
 	}
 }
 
