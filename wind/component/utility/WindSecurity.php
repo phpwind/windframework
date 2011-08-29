@@ -1,12 +1,5 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-21
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * 字符、路径过滤等安全处理
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
@@ -14,14 +7,38 @@
  * @package 
  */
 class WindSecurity {
+
 	/**
-	 * html转换输出
-	 * @param $param
+	 * Convert special characters to HTML entities
+	 * @param array $data
+	 * @return array
+	 */
+	public static function escapeHTMLForArray($data) {
+		$_tmp = array();
+		$_charset = Wind::getApp()->getRequest()->getCharset();
+		foreach ($data as $key => $value) {
+			if (is_string($key))
+				$key = htmlspecialchars($key, ENT_QUOTES, $_charset);
+			if (is_string($value))
+				$value = htmlspecialchars($value, ENT_QUOTES, $_charset);
+			elseif (is_array($value))
+				$value = self::escapeHTMLForArray($value);
+			$_tmp[$key] = $value;
+		}
+		return $_tmp;
+	}
+
+	/**
+	 * Convert special characters to HTML entities
+	 * @param string $str
 	 * @return string
 	 */
 	public static function escapeHTML($str) {
-		return htmlspecialchars($str, ENT_QUOTES);
+		if (is_array($str))
+			return self::escapeHTMLForArray($str);
+		return htmlspecialchars($str, ENT_QUOTES, Wind::getApp()->getResponse()->getCharset());
 	}
+
 	/**
 	 * 过滤标签
 	 * @param $param
@@ -30,6 +47,7 @@ class WindSecurity {
 	public static function stripTags($str, $allowTags = "") {
 		return strip_tags($str, $allowTags);
 	}
+
 	/**
 	 * 路径转换
 	 * @param $fileName
@@ -42,15 +60,19 @@ class WindSecurity {
 		}
 		return $fileName;
 	}
+
 	/**
 	 * 目录转换
 	 * @param string $dir
 	 * @return string
 	 */
 	public static function escapeDir($dir) {
-		$dir = strtr($dir, array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', ';' => ''));
+		$dir = strtr($dir, 
+			array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', 
+				';' => ''));
 		return rtrim(preg_replace('/(\/){2,}|(\\\){1,}/', '/', $dir), '/');
 	}
+
 	/**
 	 * 通用多类型转换
 	 * @param  mixed $value
@@ -68,19 +90,22 @@ class WindSecurity {
 		}
 		return $value;
 	}
+
 	/**
 	 * 字符转换
 	 * @param string $string
 	 * @return string
 	 */
 	public static function escapeString($string) {
-		$string = strtr($string, array("\0" => '', "%00" => '', "\t" => '    ', '  ' => '&nbsp;&nbsp;', "\r" => '', 
-			"\r\n" => '', "\n" => '', "%3C" => '&lt;', '<' => '&lt;', "%3E" => '&gt;', '>' => '&gt;', '"' => '&quot;', 
-			"'" => '&#39;'));
-		return preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/', '/&(?!(#[0-9]+|[a-z]+);)/is'), array('', 
-			'&amp;'), $string);
+		$string = strtr($string, 
+			array("\0" => '', "%00" => '', "\t" => '    ', '  ' => '&nbsp;&nbsp;', "\r" => '', 
+				"\r\n" => '', "\n" => '', "%3C" => '&lt;', '<' => '&lt;', "%3E" => '&gt;', 
+				'>' => '&gt;', '"' => '&quot;', "'" => '&#39;'));
+		return preg_replace(
+			array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/', '/&(?!(#[0-9]+|[a-z]+);)/is'), 
+			array('', '&amp;'), $string);
 	}
-	
+
 	/**
 	 * 该函数可用于转义拥有特殊意义的字符，比如 SQL 中的 ( )、[ ] 以及 *。
 	 * @param string $string
@@ -89,6 +114,7 @@ class WindSecurity {
 	public static function quotemeta($string) {
 		return quotemeta($string);
 	}
+
 	/**
 	 * 对字符串转义
 	 * @param string $value
@@ -102,10 +128,11 @@ class WindSecurity {
 		} elseif (is_float($value)) {
 			$value = (float) $value;
 		} elseif (is_object($value) || is_array($value)) {
-			$value = "'" . addslashes(serialize($value)). "'";
+			$value = "'" . addslashes(serialize($value)) . "'";
 		}
 		return $value;
 	}
+
 	/**
 	 * 对cookie/post/get方式的值添加反斜线
 	 * @param string $str
@@ -117,7 +144,7 @@ class WindSecurity {
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * 对从db或者file里面读取的内容添加反斜线
 	 * @return string
@@ -128,7 +155,7 @@ class WindSecurity {
 		}
 		return $str;
 	}
-	
+
 	/**
 	 * 添加反斜线,转义字符
 	 * @param mixed $value 要处理的数组
@@ -137,10 +164,10 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function addSlashes($value, $gpc = false, $df = false) {
-		if (!$value || (!is_array($value) && !is_string($value) && !($value instanceof Traversable) )) {
+		if (!$value || (!is_array($value) && !is_string($value) && !($value instanceof Traversable))) {
 			return $value;
 		}
-		if(is_string($value)){
+		if (is_string($value)) {
 			if (false === $gpc && true === $df) {
 				return self::addSlashesForOutput($value);
 			}
@@ -149,26 +176,30 @@ class WindSecurity {
 			}
 			return addslashes($value);
 		}
-		foreach($value as $key=>$_value){
-			$value[$key] = self::addSlashes($_value,$gpc,$df);
+		foreach ($value as $key => $_value) {
+			$value[$key] = self::addSlashes($_value, $gpc, $df);
 		}
 		return $value;
 	}
+
 	/**
 	 * 去除反 斜线
 	 * @param mixed $array
 	 * @return string
 	 */
 	public static function stripSlashes($value) {
-		if (!$value) return $value;
-		if (is_string($value)) return stripslashes($value);
-		if (!is_array($value) && !($value instanceof Traversable)) return $value;
+		if (!$value)
+			return $value;
+		if (is_string($value))
+			return stripslashes($value);
+		if (!is_array($value) && !($value instanceof Traversable))
+			return $value;
 		foreach ($value as $key => $_value) {
 			$value[$key] = self::stripSlashes($_value);
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * 通用多类型混合转义函数
 	 * @param $var
@@ -176,9 +207,10 @@ class WindSecurity {
 	 * @param $isArray
 	 * @return mixture
 	 */
-	public static  function sqlEscape($var, $strip = true, $isArray = false) {
+	public static function sqlEscape($var, $strip = true, $isArray = false) {
 		if (is_array($var)) {
-			if (!$isArray) return " '' ";
+			if (!$isArray)
+				return " '' ";
 			foreach ($var as $key => $value) {
 				$var[$key] = trim(self::sqlEscape($value, $strip));
 			}
@@ -189,6 +221,7 @@ class WindSecurity {
 			return " '" . addslashes($strip ? stripslashes($var) : $var) . "' ";
 		}
 	}
+
 	/**
 	 * 通过","字符连接数组转换的字符
 	 * @param $array
@@ -198,6 +231,7 @@ class WindSecurity {
 	public static function sqlImplode($array, $strip = true) {
 		return implode(',', self::sqlEscape($array, $strip, true));
 	}
+
 	/**
 	 * 组装单条 key=value 形式的SQL查询语句值 insert/update
 	 * @param $array
@@ -205,7 +239,8 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function sqlSingle($array, $strip = true) {
-		if (!is_array($array)) return ''; 
+		if (!is_array($array))
+			return '';
 		$array = self::sqlEscape($array, $strip, true);
 		$str = '';
 		foreach ($array as $key => $val) {
@@ -213,6 +248,7 @@ class WindSecurity {
 		}
 		return $str;
 	}
+
 	/**
 	 * 组装多条 key=value 形式的SQL查询语句 insert
 	 * @param $array
@@ -221,28 +257,30 @@ class WindSecurity {
 	 */
 	public static function sqlMulti($array, $strip = true) {
 		if (!is_array($array)) {
-			return ''; 
+			return '';
 		}
 		$str = '';
 		foreach ($array as $val) {
-			if (!empty($val) && is_array($val)) { 
+			if (!empty($val) && is_array($val)) {
 				$str .= ($str ? ', ' : ' ') . '(' . self::sqlImplode($val, $strip) . ') ';
 			}
 		}
 		return $str;
 	}
+
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
 	 * @param $data 元数据
 	 * @param $tlists 白名单
 	 * @return string 经过转义的元数据字符串
 	 */
-	public static function sqlMetadata($data ,$tlists=array()) {
-		if (empty($tlists) || !in_array($data , $tlists)) {
-			$data = str_replace(array('`', ' '), '',$data);
+	public static function sqlMetadata($data, $tlists = array()) {
+		if (empty($tlists) || !in_array($data, $tlists)) {
+			$data = str_replace(array('`', ' '), '', $data);
 		}
-		return ' `'.$data.'` ';
+		return ' `' . $data . '` ';
 	}
+
 	/**
 	 * 私用路径转换
 	 * @param string  $fileName
@@ -258,5 +296,5 @@ class WindSecurity {
 		}
 		return true;
 	}
-	
+
 }
