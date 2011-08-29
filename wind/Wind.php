@@ -40,9 +40,6 @@ class Wind {
 			$factory = new WindFactory(@include (Wind::getRealPath(self::$_components)));
 			if ($config && !is_array($config))
 				$config = $factory->getInstance('configParser')->parse($config);
-			Wind::register(
-				($rootPath ? $rootPath : (isset($config['root-path']) ? $config['root-path'] : dirname(
-					$_SERVER['SCRIPT_FILENAME']))), $appName, true);
 			$appClass = @$config['class'] ? $config['class'] : 'windWebApp';
 			$application = $factory->getInstance($appClass, array($config, $factory));
 			if (!$application instanceof IWindApplication)
