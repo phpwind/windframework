@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<title>{@G:title}</title>
+<style>
+.tips {
+	border: 3px solid #dcc7ab;
+	background: #fffef5;
+	font: 12px/1.5 Arial, Microsoft Yahei, Simsun;
+	color: #000;
+	padding: 20px;
+	width: 500px;
+	margin: 50px auto;
+	-moz-box-shadow: 0 0 5px #eaeaea;
+	box-shadow: 0 0 5px #eaeaea;
+}
+
+a {
+	text-decoration: none;
+	color: #014c90;
+}
+
+a:hover,.alink a,.link {
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div class="tips">
+<table width="100%">
+	<tr>
+		<td>
+		<h2 class="f14 b">{$errorHeader}:</h2>
+		<p><!--#foreach ($errors as $key => $error):$key = $key + 1;#-->
+			{$key}. {$error}<br>
+		<!--#endforeach;#--></p>
+		<h2 class="f14 b">You Can Get Help In:</h2>
+		<p>{@WindHelper::errorInfo()}</p>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>
