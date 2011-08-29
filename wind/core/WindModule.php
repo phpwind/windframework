@@ -133,19 +133,6 @@ class WindModule {
 	}
 
 	/**
-	 * @return string|array
-	 */
-	public function _getConfig() {
-		$args = func_get_args();
-		$_tmp = '';
-		foreach ($args as $value) {
-			if (!isset($this->_config[$value]))
-				continue;
-			$_tmp = $this->_config[$value];
-		}
-	}
-
-	/**
 	 * Config配置,如果配置信息已经存在，则会合并配置
 	 * 
 	 * @param string|array|windConfig $config

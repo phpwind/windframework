@@ -79,6 +79,7 @@ class WindHelper {
 				$trace[$key] = $traceLine;
 			}
 			/* format error code */
+			$fileLines = array();
 			if (is_file($file)) {
 				$currentLine = $line - 1;
 				$fileLines = explode("\n", file_get_contents($file, null, null, 0, 10000000));
