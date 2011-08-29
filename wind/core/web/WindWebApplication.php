@@ -125,7 +125,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$__filters = $__handler->resolveActionFilter($this->handlerAdapter->getAction());
 		foreach ((array) $__filters as $__filter) {
 			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
-				var_dump(@eval('return ' . addcslashes($__filter['expression'], '"') . ';'));
+				if (!@eval('return ' . $__filter['expression'] . ';'))
+					continue;
 				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
 				if ($this->getRequest()->getRequest($p) != $v)
 					continue;*/

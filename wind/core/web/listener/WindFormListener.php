@@ -35,16 +35,14 @@ class WindFormListener extends WindHandlerInterceptor {
 		if (!class_exists($className))
 			throw new WindException('the form \'' . $this->formPath . '\' is not exists!');
 		if ('WindEnableValidateModule' != get_parent_class($className))
-			throw new WindException(
-				'the form \'' . $this->formPath . '\' is not extends \'WindEnableValidateModule\'!');
+			throw new WindException('the form \'' . $this->formPath . '\' is not extends \'WindEnableValidateModule\'!');
 		$form = new $className();
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
 			if ((0 !== strpos($method, 'set')) || ('' == ($_tmp = substr($method, 3))))
 				continue;
 			$_tmp[0] = strtolower($_tmp[0]);
-			$value = $this->request->getPost($_tmp) ? $this->request->getPost($_tmp) : $this->request->getGet(
-				$_tmp);
+			$value = $this->request->getPost($_tmp) ? $this->request->getPost($_tmp) : $this->request->getGet($_tmp);
 			if (null === $value)
 				continue;
 			call_user_func_array(array($form, $method), array($value));
@@ -64,6 +62,12 @@ class WindFormListener extends WindHandlerInterceptor {
 		$this->errorMessage->sendError();
 	}
 
+	/* (non-PHPdoc)
+	 * @see WindHandlerInterceptor::postHandle()
+	 */
+	public function postHandle() {
+		// TODO Auto-generated method stub
+	}
 }
 
 ?>

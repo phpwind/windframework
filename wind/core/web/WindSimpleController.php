@@ -144,13 +144,21 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	}
 
 	/**
+	 * 设置主题包位置
+	 * @param string $theme
+	 * @return
+	 */
+	protected function setTheme($theme) {
+		$this->getForward()->getWindView()->thems = $theme;
+	}
+
+	/**
 	 * 设置页面布局
-	 * 可以是一个布局对象或者一个布局文件
-	 * @param WindLayout|string $layout
+	 * @param string $layout
 	 * @return 
 	 */
 	protected function setLayout($layout) {
-		$this->getForward()->getWindView()->setLayout($layout);
+		$this->getForward()->getWindView()->layout = $layout;
 	}
 
 	/* 错误处理 */
