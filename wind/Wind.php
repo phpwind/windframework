@@ -40,7 +40,7 @@ class Wind {
 			$factory = new WindFactory(@include (Wind::getRealPath(self::$_components)));
 			if ($config && !is_array($config))
 				$config = $factory->getInstance('configParser')->parse($config);
-			$appClass = @$config['class'] ? $config['class'] : 'windWebApp';
+			$appClass = isset($config['class']) ? $config['class'] : 'windWebApp';
 			$application = $factory->getInstance($appClass, array($config, $factory));
 			if (!$application instanceof IWindApplication)
 				throw new WindException('[Wind.application] ' . get_class($application), 
@@ -311,56 +311,32 @@ class Wind {
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		self::$_classes = array(
-			'IWindApplication' => 'base/IWindApplication',
-			'IWindFactory' => 'base/IWindFactory',
-			'WindActionException' => 'base/WindActionException',
-			'WindClassProxy' => 'base/WindClassProxy',
-			'WindEnableValidateModule' => 'base/WindEnableValidateModule',
-			'WindErrorMessage' => 'base/WindErrorMessage',
-			'WindException' => 'base/WindException',
-			'WindFactory' => 'base/WindFactory',
-			'WindFinalException' => 'base/WindFinalException',
-			'WindHelper' => 'base/WindHelper',
-			'WindModule' => 'base/WindModule',
-			'WindActionFilter' => 'filter/WindActionFilter',
-			'WindFilter' => 'filter/WindFilter',
-			'WindFilterChain' => 'filter/WindFilterChain',
-			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor',
-			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain',
-			'WindUrlFilter' => 'web/filter/WindUrlFilter',
-			'WindFormListener' => 'web/listener/WindFormListener',
-			'WindValidateListener' => 'web/listener/WindValidateListener',
-			'WindController' => 'web/WindController',
-			'WindDispatcher' => 'web/WindDispatcher',
-			'WindErrorHandler' => 'web/WindErrorHandler',
-			'WindForward' => 'web/WindForward',
-			'WindSimpleController' => 'web/WindSimpleController',
-			'WindSystemConfig' => 'web/WindSystemConfig',
-			'WindUrlHelper' => 'web/WindUrlHelper',
-			'WindWebApplication' => 'web/WindWebApplication',
-			'AbstractWindRouter' => 'router/AbstractWindRouter',
-			'AbstractWindRoute' => 'router/route/AbstractWindRoute',
-			'WindRewriteRoute' => 'router/route/WindRewriteRoute',
-			'WindRoute' => 'router/route/WindRoute',
-			'WindRouter' => 'router/WindRouter',
-			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter',
-			'IWindRequest' => 'http/request/IWindRequest',
-			'WindHttpRequest' => 'http/request/WindHttpRequest',
-			'IWindResponse' => 'http/response/IWindResponse',
-			'WindHttpResponse' => 'http/response/WindHttpResponse',
-			'WindDate' => 'utility/date/WindDate',
-			'WindGeneralDate' => 'utility/date/WindGeneralDate',
-			'WindDecoder' => 'utility/json/WindDecoder',
-			'WindEncoder' => 'utility/json/WindEncoder',
-			'WindArray' => 'utility/WindArray',
-			'WindFile' => 'utility/WindFile',
-			'WindImage' => 'utility/WindImage',
-			'WindPack' => 'utility/WindPack',
-			'WindSecurity' => 'utility/WindSecurity',
-			'WindString' => 'utility/WindString',
-			'WindUtility' => 'utility/WindUtility',
-			'WindValidator' => 'utility/WindValidator');			
+		self::$_classes = array('IWindApplication' => 'base/IWindApplication', 'IWindFactory' => 'base/IWindFactory', 
+			'WindActionException' => 'base/WindActionException', 'WindClassProxy' => 'base/WindClassProxy', 
+			'WindEnableValidateModule' => 'base/WindEnableValidateModule', 'WindErrorMessage' => 'base/WindErrorMessage', 
+			'WindException' => 'base/WindException', 'WindFactory' => 'base/WindFactory', 
+			'WindFinalException' => 'base/WindFinalException', 'WindHelper' => 'base/WindHelper', 
+			'WindModule' => 'base/WindModule', 'WindActionFilter' => 'filter/WindActionFilter', 
+			'WindFilter' => 'filter/WindFilter', 'WindFilterChain' => 'filter/WindFilterChain', 
+			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
+			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
+			'WindUrlFilter' => 'web/filter/WindUrlFilter', 'WindFormListener' => 'web/listener/WindFormListener', 
+			'WindValidateListener' => 'web/listener/WindValidateListener', 'WindController' => 'web/WindController', 
+			'WindDispatcher' => 'web/WindDispatcher', 'WindErrorHandler' => 'web/WindErrorHandler', 
+			'WindForward' => 'web/WindForward', 'WindSimpleController' => 'web/WindSimpleController', 
+			'WindSystemConfig' => 'web/WindSystemConfig', 'WindUrlHelper' => 'web/WindUrlHelper', 
+			'WindWebApplication' => 'web/WindWebApplication', 'AbstractWindRouter' => 'router/AbstractWindRouter', 
+			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
+			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 'WindRoute' => 'router/route/WindRoute', 
+			'WindRouter' => 'router/WindRouter', 'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter', 
+			'IWindRequest' => 'http/request/IWindRequest', 'WindHttpRequest' => 'http/request/WindHttpRequest', 
+			'IWindResponse' => 'http/response/IWindResponse', 'WindHttpResponse' => 'http/response/WindHttpResponse', 
+			'WindDate' => 'utility/date/WindDate', 'WindGeneralDate' => 'utility/date/WindGeneralDate', 
+			'WindDecoder' => 'utility/json/WindDecoder', 'WindEncoder' => 'utility/json/WindEncoder', 
+			'WindArray' => 'utility/WindArray', 'WindFile' => 'utility/WindFile', 'WindImage' => 'utility/WindImage', 
+			'WindPack' => 'utility/WindPack', 'WindSecurity' => 'utility/WindSecurity', 
+			'WindString' => 'utility/WindString', 'WindUtility' => 'utility/WindUtility', 
+			'WindValidator' => 'utility/WindValidator');
 	}
 }
 Wind::init();
