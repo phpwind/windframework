@@ -128,9 +128,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if (!$_errorAction = $errorMessage->getErrorAction()) {
 			$module = $this->getModules($moduleName);
 			if (empty($module))
-				$module = $this->setModules('default');
+				$module = $this->getModules('default');
 			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
-			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]))));
+			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
 				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
