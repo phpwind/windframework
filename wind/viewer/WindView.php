@@ -111,23 +111,18 @@ class WindView extends WindModule implements IWindView {
 	/**
 	 * 模板路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
-	 * 
-	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head 或是module.common.template.head
+	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head
 	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
 	 * @return string | false
 	 */
 	public function getViewTemplate($template = '', $ext = '') {
-		if (!$template) {
+		if (!$template)
 			$template = $this->templateName;
-		}
 		!$ext && $ext = $this->templateExt;
-		
-		//#命名空间的方式表示含有.号
-		if (false === strpos($template, '.')) {
+		if (false === strpos($template, ':'))
 			$template = $this->templateDir . '.' . $template;
-		}
 		return Wind::getRealPath($template, ($ext ? $ext : false));
 	}
 
@@ -135,7 +130,7 @@ class WindView extends WindModule implements IWindView {
 	 * 模板编译路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
 	 * 
-	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head 或是module.common.template.head
+	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head
 	 * 如果含有命名空间的格式，则将该模板编译文件设置为"template_"前缀保存
 	 * 
 	 * @param string $templateName
@@ -145,20 +140,23 @@ class WindView extends WindModule implements IWindView {
 	public function getCompileFile($template = '') {
 		if (!$this->compileDir)
 			return;
-		if (!$template) {
+		if (!$template)
 			$template = $this->templateName;
-		} elseif (false !== ($pos = strrpos($template, '.'))) {//#支持命名空间的方式
-			$template = 'include.' . substr($template, $pos + 1);
-		}
-		
+		elseif (false !== ($pos = strpos($template, ':')))
+			$template = 'external.' . substr($template, $pos + 1);
+		else
+			$template = $template;
 		$dir = Wind::getRealDir($this->compileDir, true);
-		if (!is_dir($dir))
-			throw new WindViewException('[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
-		$_tmp = explode('.', $template);
+		if (!is_dir($dir)) {
+			throw new WindViewException(
+				'[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
+		}
+		$dir .= '/' . str_replace('.', '_', $template);
+		/*$_tmp = explode('.', $template);
 		foreach ($_tmp as $_dir) {
 			!is_dir($dir) && @mkdir($dir);
 			$dir .= DIRECTORY_SEPARATOR . $_dir;
-		}
+		}*/
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
 
