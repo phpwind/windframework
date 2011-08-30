@@ -62,11 +62,7 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	/* (non-PHPdoc)
 	 * @see IWindViewerResolver::windAssign()
 	 */
-	public function windAssign($vars, $key = '') {
-		/*if ($key === '')
-			$key = $this->windView->templateName;
-		$this->vars[$key] = $vars;*/
-	}
+	public function windAssign($vars, $key = '') {}
 
 	/**
 	 * 编译模板并返回编译后模板名称,
@@ -105,16 +101,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	}
 
 	/**
-	 * 当前模板内容
-	 * @param string $template
-	 */
-	private function getContent($template = '') {
-		!$template && $template = $this->windView->templateName;
-		if ($template)
-			echo $this->windFetch($template);
-	}
-
-	/**
 	 * @return WindView
 	 */
 	public function getWindView() {
@@ -134,7 +120,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	public function getWindLayout() {
 		return $this->_getWindLayout('', $this);
 	}
-
 }
 
 /**
