@@ -143,7 +143,7 @@ class WindView extends WindModule implements IWindView {
 		if (!$template)
 			$template = $this->templateName;
 		elseif (false !== ($pos = strpos($template, ':')))
-			$template = 'external.' . substr($template, $pos + 1);
+			$template = '__external.' . substr($template, $pos + 1);
 		else
 			$template = $template;
 		$dir = Wind::getRealDir($this->compileDir, true);
