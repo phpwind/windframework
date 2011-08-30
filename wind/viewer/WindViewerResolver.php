@@ -91,7 +91,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
 		if ($output === false) {
-			$compileFile = $this->windView->getCompileFile($template);
 			WindFile::write($compileFile, $_output);
 		}
 		return array($compileFile, $_output);
