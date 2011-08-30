@@ -112,6 +112,8 @@ class WindView extends WindModule implements IWindView {
 	 * 模板路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
 	 * 
+	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head 或是module.common.template.head
+	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
 	 * @return string | false
@@ -121,13 +123,20 @@ class WindView extends WindModule implements IWindView {
 			$template = $this->templateName;
 		}
 		!$ext && $ext = $this->templateExt;
-		//TODO
-		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
+		
+		//#命名空间的方式表示含有.号
+		if (false === strpos($template, '.')) {
+			$template = $this->templateDir . '.' . $template;
+		}
+		return Wind::getRealPath($template, ($ext ? $ext : false));
 	}
 
 	/**
 	 * 模板编译路径解析
 	 * 根据模板的逻辑名称，返回模板的绝对路径信息
+	 * 
+	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head 或是module.common.template.head
+	 * 如果含有命名空间的格式，则将该模板编译文件设置为"template_"前缀保存
 	 * 
 	 * @param string $templateName
 	 * @param string $templateExt
@@ -138,8 +147,10 @@ class WindView extends WindModule implements IWindView {
 			return;
 		if (!$template) {
 			$template = $this->templateName;
+		} elseif (false !== ($pos = strrpos($template, '.'))) {//#支持命名空间的方式
+			$template = 'include.' . substr($template, $pos + 1);
 		}
-		//TODO
+		
 		$dir = Wind::getRealDir($this->compileDir, true);
 		if (!is_dir($dir))
 			throw new WindViewException('[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
