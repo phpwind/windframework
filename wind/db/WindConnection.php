@@ -243,7 +243,7 @@ class WindConnection extends WindModule {
 		$this->_pwd = $this->getConfig('pwd', '', $this->_pwd);
 		$this->_enableLog = $this->getConfig('enablelog', '', $this->_enableLog);
 		$this->_charset = $this->getConfig('charset', '', $this->_charset);
-		$this->_tablePrefix = $this->getConfig('tableprefix', '', $this->_tablePrefix);
+		$this->_tablePrefix = $this->getConfig('prefix', '', '');
 	}
 
 	/**
