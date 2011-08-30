@@ -123,6 +123,13 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	}
 
 	/**
+	 * @param WindView $windView
+	 */
+	public function setWindView($windView) {
+		$this->windView = $windView;
+	}
+
+	/**
 	 * @return WindLayout
 	 */
 	public function getWindLayout() {
@@ -140,37 +147,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 class WindRender {
 
 	/**
-	 * Convert special characters to HTML entities
-	 * 
-	 * @param string $text | 
-	 * @return string | string The converted string
-	 */
-	public static function encode($text) {
-		return htmlspecialchars($text, ENT_QUOTES, Wind::getApp()->getResponse()->getCharset());
-	}
-
-	/**
-	 * Convert special characters to HTML entities
-	 * 
-	 * @param array $data
-	 * @return array
-	 */
-	public static function encodeArray($data) {
-		$_tmp = array();
-		$_charset = Wind::getApp()->getRequest()->getCharset();
-		foreach ($data as $key => $value) {
-			if (is_string($key))
-				$key = htmlspecialchars($key, ENT_QUOTES, $_charset);
-			if (is_string($value))
-				$value = htmlspecialchars($value, ENT_QUOTES, $_charset);
-			elseif (is_array($value))
-				$value = self::encodeArray($value);
-			$_tmp[$key] = $value;
-		}
-		return $_tmp;
-	}
-
-	/**
 	 * @param string $tpl
 	 * @param array $vars
 	 * @param WindViewerResolver $viewer
@@ -179,8 +155,7 @@ class WindRender {
 	public static function render($tpl, $vars, $viewer) {
 		@extract($vars, EXTR_REFS);
 		if (!@include ($tpl)) {
-			throw new WindViewException(
-				'[component.viewer.ViewerResolver.render] template name ' . $tpl, 
+			throw new WindViewException('[component.viewer.ViewerResolver.render] template name ' . $tpl, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
 	}

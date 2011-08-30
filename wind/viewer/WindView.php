@@ -84,7 +84,8 @@ class WindView extends WindModule implements IWindView {
 			return;
 		
 		//TODO 其他输出类型
-		$viewResolver = $this->_getViewResolver($this);
+		$viewResolver = $this->_getViewResolver();
+		$viewResolver->setWindView($this);
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
 			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
@@ -103,8 +104,7 @@ class WindView extends WindModule implements IWindView {
 			$this->compileDir = $this->getConfig('compile-dir', '', $this->compileDir);
 			$this->compileExt = $this->getConfig('compile-ext', '', $this->compileExt);
 			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
-			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', 
-				$this->htmlspecialchars);
+			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
 		}
 	}
 
@@ -140,8 +140,7 @@ class WindView extends WindModule implements IWindView {
 		}
 		$dir = Wind::getRealDir($this->compileDir, true);
 		if (!is_dir($dir))
-			throw new WindViewException(
-				'[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
+			throw new WindViewException('[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
 		$_tmp = explode('.', $template);
 		foreach ($_tmp as $_dir) {
 			!is_dir($dir) && @mkdir($dir);
