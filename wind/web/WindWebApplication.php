@@ -83,6 +83,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			$module = WindUtility::mergeArray($this->defaultModule, $module);
+			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = @$module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . @$module['controller-suffix'];
 			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
@@ -159,21 +160,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @param array $config
 	 * @return array
 	 */
-	public function setModules($name, $config = array()) {
-		if (!isset($this->_config['modules'][$name])) {
+	public function setModules($name, $config = array(), $replace = false) {
+		if ($replace || !isset($this->_config['modules'][$name]))
 			$this->_config['modules'][$name] = (array) $config;
-		}
-		
-	/*if (isset($this->_config['modules']['default']))
-			$_default = $this->_config['modules']['default'];
-		else {
-			$this->_config['modules']['default'] = $_default;
-		}
-		if (!$config)
-			$this->_config['modules'][$name] = $_default;
-		else
-			$this->_config['modules'][$name] = WindUtility::mergeArray($_default, $config);
-		return $this->_config['modules'][$name];*/
 	}
 
 	/**
