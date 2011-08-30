@@ -82,7 +82,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				throw new WindActionException(
 					'[core.web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
-			$module = WindUtility::mergeArray($this->defaultModule, $module);
+			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = @$module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . @$module['controller-suffix'];
 			if (WIND_DEBUG & 2)
