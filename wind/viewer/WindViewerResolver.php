@@ -136,11 +136,10 @@ class WindRender {
 	 * @param WindViewerResolver $viewer
 	 * @throws WindViewException
 	 */
-	public static function render($tpl, $vars, $viewer) {
-		@extract($vars, EXTR_REFS);
-		if (!@include ($tpl)) {
-			throw new WindViewException('[component.viewer.ViewerResolver.render] template name ' . $tpl, 
+	public static function render($__tpl, $__vars, $__viewer) {
+		@extract($__vars, EXTR_REFS);
+		if (!@include ($__tpl))
+			throw new WindViewException('[component.viewer.ViewerResolver.render] template name ' . $__tpl, 
 				WindViewException::VIEW_NOT_EXIST);
-		}
 	}
 }
