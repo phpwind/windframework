@@ -89,7 +89,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				Wind::getApp()->getComponent('windLogger')->info(
 					'[core.web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
 			
-			$this->getSystemFactory()->addClassDefinitions($handlerPath, 
+			$this->windFactory->addClassDefinitions($handlerPath, 
 				array('path' => $handlerPath, 'scope' => 'prototype', 'proxy' => true, 
 					'config' => $this->getConfig('actionmap'), 
 					'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
