@@ -38,7 +38,7 @@ class WindDispatcher extends WindModule {
 			if ($view->templateName) {
 				$vars = $forward->getVars();
 				Wind::getApp()->getResponse()->setData($vars, $view->templateName);
-				Wind::getApp()->getResponse()->setData($vars['G'], true);
+				Wind::getApp()->getResponse()->setData($vars['G'], '', true);
 				$view->render($this->display);
 			}
 			$this->display = false;
@@ -54,8 +54,8 @@ class WindDispatcher extends WindModule {
 	protected function dispatchWithRedirect($forward, $router) {
 		$_url = $forward->getUrl();
 		if (!$_url && $forward->getIsReAction()) {
-			$_url = $this->_getUrlHelper()->createUrl($forward->getAction(), 
-				$forward->getController(), $forward->getArgs());
+			$_url = $this->_getUrlHelper()->createUrl($forward->getAction(), $forward->getController(), 
+				$forward->getArgs());
 			if ($this->checkToken($router))
 				throw new WindFinalException(
 					'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
