@@ -203,7 +203,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @param string $componentName
 	 */
 	public function registeComponent($componentName, $componentInstance, $scope) {
-		return $this->windFactory->registInstance($componentInstance, $componentName);
+		return $this->windFactory->registInstance($componentInstance, $componentName, $scope);
 	}
 
 	/**
