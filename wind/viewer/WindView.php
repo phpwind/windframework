@@ -121,6 +121,7 @@ class WindView extends WindModule implements IWindView {
 			$template = $this->templateName;
 		}
 		!$ext && $ext = $this->templateExt;
+		//TODO
 		return Wind::getRealPath($this->templateDir . '.' . $template, ($ext ? $ext : false));
 	}
 
@@ -138,6 +139,7 @@ class WindView extends WindModule implements IWindView {
 		if (!$template) {
 			$template = $this->templateName;
 		}
+		//TODO
 		$dir = Wind::getRealDir($this->compileDir, true);
 		if (!is_dir($dir))
 			throw new WindViewException('[component.viewer.WindView.getCompileFile] Template compile dir is not exist.');
