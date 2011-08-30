@@ -93,23 +93,21 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	protected function getTags() {
 		$_tags['internal'] = $this->createTag('internal', 'WIND:viewer.compiler.WindTemplateCompilerInternal', 
 			'/<\?php(.|\n)*?\?>/i');
+		/*标签体增加在该位置*/
 		$_tags['template'] = $this->createTag('template', 'WIND:viewer.compiler.WindTemplateCompilerTemplate');
+		$_tags['page'] = $this->createTag('page', 'WIND:viewer.compiler.WindTemplateCompilerPage');
+		$_tags['action'] = $this->createTag('action', 'WIND:viewer.compiler.WindTemplateCompilerAction');
+		$_tags['component'] = $this->createTag('component', 'WIND:viewer.compiler.WindTemplateCompilerComponent');
+		/*标签解析结束*/
+		$_tags += (array) parent::getTags();
 		$_tags['expression'] = $this->createTag('expression', 'WIND:viewer.compiler.WindTemplateCompilerEcho', 
 			'/({@|{\$[\w$]{1})[^}{@=\n]*}/i');
 		$_tags['echo'] = $this->createTag('echo', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
-		/*标签体增加在该位置*/
-		$_tags['page'] = $this->createTag('page', 'WIND:viewer.compiler.WindTemplateCompilerPage');
-		$_tags['action'] = $this->createTag('action', 'WIND:viewer.compiler.WindTemplateCompilerAction');
+		/* 块编译标签，嵌套变量处理 */
 		$_tags['script'] = $this->createTag('script', 'WIND:viewer.compiler.WindTemplateCompilerScript', 
 			'/(<!--\[[\w\s]*\]>[\n\s]*)*<(script)[^<>\n]*(\/>|>[^<>]*<\/\2>)([\n\s]*<!\[[\w\s]*\]-->)*/i');
 		//$_tags['link'] = $this->createTag('link', 'WIND:viewer.compiler.WindTemplateCompilerCss');
 		//$_tags['style'] = $this->createTag('style', 'WIND:viewer.compiler.WindTemplateCompilerCss');
-		$_tags['component'] = $this->createTag('component', 'WIND:viewer.compiler.WindTemplateCompilerComponent');
-		/*标签解析结束*/
-		$_tags += (array) parent::getTags();
-		/*$_tags['expression'] = $this->createTag('expression', 'WIND:viewer.compiler.WindTemplateCompilerEcho', 
-			'/({@|{\$[\w$]{1})[^}{@=\n]*}/i');
-		$_tags['echo'] = $this->createTag('echo', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');*/
 		return $_tags;
 	}
 
