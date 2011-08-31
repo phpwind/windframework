@@ -13,21 +13,20 @@ class WindConnection extends WindModule {
 	 * PDO 链接字符串
 	 * @var string
 	 */
-	private $_dsn;
-	private $_driverName;
-	private $_user;
-	private $_pwd;
-	private $_tablePrefix;
-	private $_charset;
-	private $_enableLog = false;
+	protected $_dsn;
+	protected $_driverName;
+	protected $_user;
+	protected $_pwd;
+	protected $_tablePrefix;
+	protected $_charset;
 	/**
 	 * @var array
 	 */
-	private $_attributes = array();
+	protected $_attributes = array();
 	/**
 	 * @var PDO
 	 */
-	private $_dbHandle = null;
+	protected $_dbHandle = null;
 
 	/**
 	 * @param string $dsn
@@ -46,7 +45,7 @@ class WindConnection extends WindModule {
 	 * @return WindSqlStatement
 	 */
 	public function createStatement($sql = null) {
-		return new WindSqlStatement($this, $sql);
+		return new WindSqlStatement($this, $this->parseQueryString($sql));
 	}
 
 	/**
@@ -54,8 +53,7 @@ class WindConnection extends WindModule {
 	 * @return WindMysqlPdoAdapter
 	 */
 	public function getDbHandle() {
-		if ($this->_dbHandle === null)
-			$this->init();
+		$this->init();
 		return $this->_dbHandle;
 	}
 
@@ -64,9 +62,7 @@ class WindConnection extends WindModule {
 	 * @param string $attribute
 	 * @return string
 	 * */
-	public function getAttribute($attribute = '') {
-		if (!$attribute)
-			return;
+	public function getAttribute($attribute) {
 		if ($this->_dbHandle !== null) {
 			return $this->_dbHandle->getAttribute($attribute);
 		} else
@@ -82,7 +78,7 @@ class WindConnection extends WindModule {
 	public function setAttribute($attribute, $value = null) {
 		if (!$attribute)
 			return;
-		if ($this->_dbHandle !== null && $this->_dbHandle instanceof PDO) {
+		if ($this->_dbHandle !== null) {
 			$this->_dbHandle->setAttribute($attribute, $value);
 		} else
 			$this->_attributes[$attribute] = $value;
@@ -110,11 +106,10 @@ class WindConnection extends WindModule {
 	 */
 	public function execute($sql) {
 		try {
-			$result = $this->getDbHandle()->exec($sql);
+			$result = $this->getDbHandle()->exec($this->parseQueryString($sql));
 			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindConnection.execute] \r\n\tSQL: " . $sql . 
-					" \r\n\tResult:" . WindString::varToString(
+					"[db.WindConnection.execute] \r\n\tSQL: " . $sql . " \r\n\tResult:" . WindString::varToString(
 						$result));
 			return $result;
 		} catch (PDOException $e) {
@@ -130,8 +125,8 @@ class WindConnection extends WindModule {
 	 */
 	public function query($sql) {
 		try {
-			$statement = $this->getDbHandle()->query($sql);
-			return new WindResultSet($statement);
+			$sql = $this->parseQueryString($sql);
+			return new WindResultSet($this->getDbHandle()->query($sql));
 		} catch (PDOException $e) {
 			throw new WindDbException();
 		}
@@ -139,7 +134,6 @@ class WindConnection extends WindModule {
 
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
-	 * 
 	 * @param string $data
 	 * @throws WindDbException
 	 */
@@ -150,7 +144,6 @@ class WindConnection extends WindModule {
 
 	/**
 	 * 过滤数组变量，将数组变量转换为字符串，并用逗号分隔每个数组元素支持多维数组
-	 * 
 	 * @param array $array
 	 */
 	public function quoteArray($array) {
@@ -159,7 +152,6 @@ class WindConnection extends WindModule {
 
 	/**
 	 * sql元数据安全过滤
-	 * 
 	 * @param string $string
 	 */
 	public function quote($string) {
@@ -168,7 +160,6 @@ class WindConnection extends WindModule {
 
 	/**
 	 * 组装单条 key=value 形式的SQL查询语句值 insert/update并进行安全过滤
-	 * 
 	 * @param array $array
 	 */
 	public function sqlSingle($array) {
@@ -177,18 +168,15 @@ class WindConnection extends WindModule {
 
 	/**
 	 * 创建表
-	 * 
 	 * @param string $tableName
 	 * @param array $fileds
 	 */
 	public function createTable($tableName, $values, $engine = '', $autoIncrement = '') {
-		return $this->getDbHandle()->createTable($tableName, $values, $engine, $this->_charset, 
-			$autoIncrement);
+		return $this->getDbHandle()->createTable($tableName, $values, $engine, $this->_charset, $autoIncrement);
 	}
 
 	/**
 	 * 返回最后一条插入数据ID
-	 * 
 	 * @param string $name
 	 * @return int 
 	 */
@@ -208,24 +196,23 @@ class WindConnection extends WindModule {
 
 	/**
 	 * 初始化DB句柄
-	 * 
 	 * @throws Exception
 	 * @return 
 	 */
 	public function init() {
 		try {
+			if ($this->_dbHandle !== null)
+				return;
 			$driverName = $this->getDriverName();
 			$dbHandleClass = "WIND:db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
 			$dbHandleClass = Wind::import($dbHandleClass);
-			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
-				(array) $this->_attributes);
+			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
-			if (WIND_DEBUG & 2) {
+			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindConnection.init] Initialize db connection success. \r\n\tDSN:" . $this->_dsn . "\r\n\tUser:" . $this->_user . "\r\n\tCharset:" . $this->_charset . "\r\n\tTablePrefix:" . $this->_tablePrefix . "\r\n\tDriverName:" . $this->_driverName, 
-					'component.db');
-			}
+					"[db.WindConnection.init] Initialize db connection success. \r\n\tDSN:" . $this->_dsn . "\r\n\tUser:" . $this->_user . "\r\n\tCharset:" . $this->_charset . "\r\n\tTablePrefix:" . $this->_tablePrefix . "\r\n\tDriverName:" . $this->_driverName, 
+					'db');
 		} catch (PDOException $e) {
 			$this->close();
 			throw new WindDbException($e->getMessage());
@@ -238,28 +225,31 @@ class WindConnection extends WindModule {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->_dsn = $this->getConfig('dsn', '', $this->_dsn);
-		$this->_user = $this->getConfig('user', '', $this->_user);
-		$this->_pwd = $this->getConfig('pwd', '', $this->_pwd);
-		$this->_enableLog = $this->getConfig('enablelog', '', $this->_enableLog);
-		$this->_charset = $this->getConfig('charset', '', $this->_charset);
-		$this->_tablePrefix = $this->getConfig('prefix', '', '');
+		$this->_attributes = array();
+		$this->_initConfig();
 	}
 
 	/**
-	 * 获得是否启用日志记录功能
-	 * @return boolean $enableLog
+	 * 根据配置信息，初始化当前连接对象
+	 * @param array $config
 	 */
-	public function getEnableLog() {
-		return $this->_enableLog;
+	protected function _initConfig($config = array()) {
+		$this->_dsn = $this->getConfig('dsn', '', '', $config);
+		$this->_user = $this->getConfig('user', '', '', $config);
+		$this->_pwd = $this->getConfig('pwd', '', '', $config);
+		$this->_charset = $this->getConfig('charset', '', '', $config);
+		$this->_tablePrefix = $this->getConfig('tableprefix', '', '', $config);
 	}
 
 	/**
-	 * 设置是否启用日志记录功能
-	 * @param boolean $enableLog
+	 * @param string $sql
 	 */
-	public function setEnableLog($enableLog) {
-		$this->_enableLog = (boolean) $enableLog;
+	protected function parseQueryString($sql) {
+		if ($_prefix = $this->getTablePrefix()) {
+			list($new, $old) = explode('|', $_prefix . '|');
+			$sql = preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $sql);
+		}
+		return $sql;
 	}
 
 	/**
