@@ -80,14 +80,14 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				$this->handlerAdapter->setModule('default');
 			if (!($module = $this->getModules()))
 				throw new WindActionException(
-					'[core.web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
+					'[web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = @$module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . @$module['controller-suffix'];
 			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
-					'[core.web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
+					'[web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
 			
 			$this->windFactory->addClassDefinitions($handlerPath, 
 				array('path' => $handlerPath, 'scope' => 'prototype', 'proxy' => true, 
@@ -98,7 +98,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			
 			if (!$handler)
 				throw new WindActionException(
-					'[core.web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
+					'[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			$this->doDispatch($handler->doAction($this->handlerAdapter));
 		} catch (WindActionException $e) {

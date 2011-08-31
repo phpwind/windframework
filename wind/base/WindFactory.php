@@ -96,7 +96,7 @@ class WindFactory implements IWindFactory {
 			}
 		} catch (Exception $e) {
 			throw new WindException(
-				'[core.factory.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
+				'[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
 				WindException::ERROR_CLASS_NOT_EXIST);
 		}
 	}
@@ -120,7 +120,7 @@ class WindFactory implements IWindFactory {
 				$this->classDefinitions[$alias] = $classDefinition;
 		} else
 			throw new WindException(
-				'[core.factory.WindFactory.addClassDefinitions] class alias is empty.', 
+				'[base.WindFactory.addClassDefinitions] class alias is empty.', 
 				WindException::ERROR_PARAMETER_TYPE_ERROR);
 	}
 
@@ -207,7 +207,7 @@ class WindFactory implements IWindFactory {
 			return call_user_func_array(array($instance, $initMethod), array());
 		} catch (Exception $e) {
 			throw new WindException(
-				'[core.factory.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
+				'[base.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
 				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		}
 	}

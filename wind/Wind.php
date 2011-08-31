@@ -92,8 +92,8 @@ class Wind {
 	 * 如果加载的包中有子文件夹不进行循环加载
 	 * 参数格式说明：'WIND:base.WFrontController'
 	 * WIND 注册的应用名称，应用名称与路径信息用‘:’号分隔
-	 * core.base.WFrontController 相对的路径信息
-	 * 如果不填写应用名称 ，例如‘core.base.WFrontController’，那么加载路径则相对于默认的应用路径
+	 * base.WFrontController 相对的路径信息
+	 * 如果不填写应用名称 ，例如‘base.WFrontController’，那么加载路径则相对于默认的应用路径
 	 *
 	 * 加载一个类的参数方式：'WIND:base.WFrontController'
 	 * 加载一个包的参数方式：'WIND:base.*'

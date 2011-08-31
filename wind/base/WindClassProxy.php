@@ -36,7 +36,7 @@ class WindClassProxy {
 		if (!in_array($type, 
 			array(self::EVENT_TYPE_METHOD, self::EVENT_TYPE_GETTER, self::EVENT_TYPE_SETTER))) {
 			throw new WindException(
-				'[core.factory.proxy.WindClassProxy.registerEventListener] Unsupport event type:' . $type, 
+				'[base.WindClassProxy.registerEventListener] Unsupport event type:' . $type, 
 				WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
 		!isset($this->_listener[$type][$event]) && $this->_listener[$type][$event] = array();
@@ -123,7 +123,7 @@ class WindClassProxy {
 				$this->_interceptorChainObj = $interceptorChain;
 			} else
 				throw new WindException(
-					'[core.factory.proxy.WindClassProxy._getInterceptorChain] Unable to create interceptorChain.');
+					'[base.WindClassProxy._getInterceptorChain] Unable to create interceptorChain.');
 		}
 		$this->_interceptorChainObj->reset();
 		return $this->_interceptorChainObj;

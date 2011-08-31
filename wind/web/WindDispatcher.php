@@ -58,7 +58,7 @@ class WindDispatcher extends WindModule {
 				$forward->getArgs());
 			if ($this->checkToken($router))
 				throw new WindFinalException(
-					'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
+					'[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
 					WindException::ERROR_SYSTEM_ERROR);
 		
 		} else
@@ -76,7 +76,7 @@ class WindDispatcher extends WindModule {
 	 */
 	protected function dispatchWithAction($forward, $router, $display) {
 		if (!$action = $forward->getAction())
-			throw new WindException('[core.web.WindDispatcher.dispatchWithAction] forward fail.', 
+			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', 
 				WindException::ERROR_PARAMETER_TYPE_ERROR);
 		
 		$args = $forward->getArgs();
@@ -93,7 +93,7 @@ class WindDispatcher extends WindModule {
 			$router->setModule($_tmp);
 		if ($this->checkToken($router))
 			throw new WindFinalException(
-				'[core.web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
+				'[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
 				WindException::ERROR_SYSTEM_ERROR);
 		
 		Wind::getApp()->processRequest();
