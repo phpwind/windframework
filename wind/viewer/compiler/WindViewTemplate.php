@@ -105,7 +105,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		$_tags['echo'] = $this->createTag('echo', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
 		/* 块编译标签，嵌套变量处理 */
 		$_tags['script'] = $this->createTag('script', 'WIND:viewer.compiler.WindTemplateCompilerScript', 
-			'/(<!--\[[\w\s]*\]>[\n\s]*)*<(script)[^<>\n]*(\/>|>[^<>]*<\/\2>)([\n\s]*<!\[[\w\s]*\]-->)*/i');
+			'/(<!--\[[\w\s]*\]>[\n\s]*)*<(script)[^<>\n]*(\/>|>(.|\n)*<\/\2>)([\n\s]*<!\[[\w\s]*\]-->)*/i');
 		//$_tags['link'] = $this->createTag('link', 'WIND:viewer.compiler.WindTemplateCompilerCss');
 		//$_tags['style'] = $this->createTag('style', 'WIND:viewer.compiler.WindTemplateCompilerCss');
 		return $_tags;
