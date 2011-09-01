@@ -33,7 +33,7 @@ class WindConnectionManager extends WindConnection {
 	 * 数据库连接池策略部署配置信息
 	 * @var array
 	 */
-	private $except = array('_current' => '', '_default' => '');
+	private $except = array('_current' => '', '_default' => array(), '_except' => array(), '_db' => array());
 	/**
 	 * 链接池
 	 * @var array
@@ -49,7 +49,6 @@ class WindConnectionManager extends WindConnection {
 	 * @var string
 	 */
 	private $sqlType;
-	private $dbNames = array();
 
 	/* (non-PHPdoc)
 	 * @see WindConnection::getDbHandle()
@@ -90,15 +89,23 @@ class WindConnectionManager extends WindConnection {
 		$sql = preg_replace_callback('/^([a-zA-Z]*)\s[\w\*\s]+(\{([\w]+\:)?([\w]+\.)?([\w]+)\})?[\w\s\<\=\:]*/i', 
 			array($this, '_pregQueryString'), $sql);
 		if (!$this->except['_current']) {
-			//TODO 通配符支持
-			$_c = isset($this->except[$this->tableName]) ? $this->except[$this->tableName] : $this->except['_default'];
+			if (!isset($this->except['_db'][$this->tableName])) {
+				$_c = $this->except['_default'];
+				foreach ((array) $this->except['_except'] as $value) {
+					preg_match('/' . str_replace('*', '\w*', $value) . '/i', $this->tableName, $matchs);
+					if (!empty($matchs)) {
+						$_c = $this->except['_db'][$value];
+						break;
+					}
+				}
+			} else
+				$_c = $this->except['_db'][$this->tableName];
 			$this->_resolveCurrentDb($_c);
-			!$this->except['_current'] && $this->except['_current'] = $this->dbNames[0];
 		}
 		$_config = $this->getConfig($this->except['_current']);
 		if (!$_config)
 			throw new WindDbException(
-				'[db.WindConnectionManager.init] db connection ' . $this->except['_current'] . ' is not exist.');
+				'[db.WindConnectionManager.parseQueryString] db connection ' . $this->except['_current'] . ' is not exist.');
 		parent::_initConfig($_config);
 		return parent::parseQueryString($sql);
 	}
@@ -110,7 +117,7 @@ class WindConnectionManager extends WindConnection {
 		if ($_c)
 			switch ($this->sqlType) {
 				case 'SELECT':
-					if (is_array($_c['_s']) && !empty($_c['_s'])) {
+					if (isset($_c['_s']) && is_array($_c['_s']) && !empty($_c['_s'])) {
 						$_count = count((array) $_c['_s']);
 						if ($_count > 1)
 							$this->except['_current'] = $_c['_s'][rand(0, $_count - 1)];
@@ -140,24 +147,24 @@ class WindConnectionManager extends WindConnection {
 		if (isset($matchs[2])) {
 			$this->tableName = $matchs[5];
 			$this->except['_current'] = trim($matchs[3], ':');
-			$_return = str_replace($matchs[3] . $matchs[4], '', $matchs[0]);
-		} else
-			$_return = $matchs[0];
-		return $_return;
+			$matchs[0] = str_replace($matchs[3] . $matchs[4], '', $matchs[0]);
+		}
+		return $matchs[0];
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindConnection::_initConfig()
 	 */
 	protected function _initConfig() {
-		if ($_except = $this->getConfig('connections', 'except')) {
-			preg_replace_callback('/([\w\*\,]+):([\w]+)\|*([\w\,]+)*/i', array($this, '_pregExcept'), $_except);
-			unset($this->_config['connections']['except']);
-		}
-		$this->_config = $this->getConfig('connections');
-		$this->dbNames = array_keys($this->_config);
-		if (empty($this->dbNames))
+		$_except = $this->getConfig('connections', 'except');
+		unset($this->_config['connections']['except']);
+		$this->_config = $this->_config['connections'];
+		$_dbNames = array_keys($this->_config);
+		if (empty($_dbNames))
 			throw new WindDbException('[db.WindConnectionManager._initConfig] db config is required.');
+		$this->except['_default']['_m'] = $_dbNames[0];
+		if ($_except)
+			preg_replace_callback('/([\w\*\,]+):([\w]+)\|*([\w\,]+)*/i', array($this, '_pregExcept'), $_except);
 	}
 
 	/**
@@ -173,8 +180,10 @@ class WindConnectionManager extends WindConnection {
 				$this->except['_default']['_s'] = isset($matchs[3]) ? explode(',', $matchs[3]) : array();
 				break;
 			}
-			$this->except[$_v]['_m'] = $matchs[2];
-			$this->except[$_v]['_s'] = isset($matchs[3]) ? explode(',', $matchs[3]) : array();
+			if (strpos($_v, '*') !== false)
+				$this->except['_except'][] = $_v;
+			$this->except['_db'][$_v]['_m'] = $matchs[2];
+			$this->except['_db'][$_v]['_s'] = isset($matchs[3]) ? explode(',', $matchs[3]) : array();
 		}
 	}
 }
