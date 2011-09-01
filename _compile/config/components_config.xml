@@ -67,19 +67,14 @@
 		scope='singleton'>
 	</component>
 	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
-	<component name='windCache' path="WIND:cache.strategy.WindFileCache">
+	<component name='windCache' path="WIND:cache.strategy.WindFileCache"
+		scope='singleton'>
+		<!-- dbCache 需要配置properties属性 -->
+		<!--<properties> <property name='connection' ref='db' /> </properties> -->
 		<config>
 			<dir>data.config</dir>
 			<suffix>php</suffix>
 			<expires>0</expires>
-		</config>
-	</component>
-
-	<component name='viewCache' path='WIND:cache.strategy.WindFileCache'>
-		<config>
-			<dir>data.view</dir>
-			<suffix>php</suffix>
-			<expires>10</expires>
 		</config>
 	</component>
 </components>
