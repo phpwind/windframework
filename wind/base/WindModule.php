@@ -61,7 +61,7 @@ class WindModule {
 		$_propertyName = substr($methodName, 4);
 		$_propertyName = WindUtility::lcfirst($_propertyName);
 		if ($_prefix == '_get') {
-			if (isset($this->delayAttributes[$_propertyName])) {
+			if (!$this->$_propertyName && isset($this->delayAttributes[$_propertyName])) {
 				$_property = $this->delayAttributes[$_propertyName];
 				$_value = null;
 				if (isset($_property['value'])) {
@@ -73,7 +73,7 @@ class WindModule {
 					$_value = $this->getSystemFactory()->createInstance($_className, $args);
 				}
 				$this->$_propertyName = $_value;
-				unset($this->delayAttributes[$_propertyName]);
+				//unset($this->delayAttributes[$_propertyName]);
 			}
 			return $this->$_propertyName;
 		} elseif ($_prefix == '_set') {
