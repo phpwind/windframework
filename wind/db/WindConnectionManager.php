@@ -29,6 +29,7 @@ Wind::import("WIND:db.WindConnection");
  * @package 
  */
 class WindConnectionManager extends WindConnection {
+	private $wildcard = '*';
 	/**
 	 * 数据库连接池策略部署配置信息
 	 * @var array
@@ -92,7 +93,7 @@ class WindConnectionManager extends WindConnection {
 			if (!isset($this->except['_db'][$this->tableName])) {
 				$_c = $this->except['_default'];
 				foreach ((array) $this->except['_except'] as $value) {
-					preg_match('/' . str_replace('*', '\w*', $value) . '/i', $this->tableName, $matchs);
+					preg_match('/' . str_replace($this->wildcard, '\w*', $value) . '/i', $this->tableName, $matchs);
 					if (!empty($matchs)) {
 						$_c = $this->except['_db'][$value];
 						break;
@@ -175,12 +176,12 @@ class WindConnectionManager extends WindConnection {
 	private function _pregExcept($matchs) {
 		$_keys = explode(',', $matchs[1]);
 		foreach ($_keys as $_v) {
-			if ($_v === '*') {
+			if ($_v === $this->wildcard) {
 				$this->except['_default']['_m'] = $matchs[2];
 				$this->except['_default']['_s'] = isset($matchs[3]) ? explode(',', $matchs[3]) : array();
 				break;
 			}
-			if (strpos($_v, '*') !== false)
+			if (strpos($_v, $this->wildcard) !== false)
 				$this->except['_except'][] = $_v;
 			$this->except['_db'][$_v]['_m'] = $matchs[2];
 			$this->except['_db'][$_v]['_s'] = isset($matchs[3]) ? explode(',', $matchs[3]) : array();
