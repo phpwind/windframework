@@ -26,7 +26,7 @@ class WindHttpResponse implements IWindResponse {
 	
 	private $_status = '';
 	
-	private $_data = array('G' => array());
+	private $_data = array('G' => array(), 'F' => array());
 	
 	/*
      * Server status codes; see RFC 2068.
@@ -297,19 +297,16 @@ class WindHttpResponse implements IWindResponse {
 	const W_HTTP_VERSION_NOT_SUPPORTED = 505;
 
 	public function codeMap($code) {
-		$map = array(505 => 'http version not supported', 504 => 'gateway timeout', 
-			503 => 'service unavailable', 503 => 'bad gateway', 502 => 'bad gateway', 
-			501 => 'not implemented', 500 => 'internal server error', 417 => 'expectation failed', 
-			416 => 'requested range not satisfiable', 415 => 'unsupported media type', 
-			414 => 'request uri too long', 413 => 'request entity too large', 
-			412 => 'precondition failed', 411 => 'length required', 410 => 'gone', 409 => 'conflict', 
-			408 => 'request timeout', 407 => 'proxy authentication required', 
-			406 => 'not acceptable', 405 => 'method not allowed', 404 => 'not found', 
-			403 => 'forbidden', 402 => 'payment required', 401 => 'unauthorized', 
-			400 => 'bad request', 300 => 'multiple choices', 301 => 'moved permanently', 
-			302 => 'moved temporarily', 302 => 'found', 303 => 'see other', 304 => 'not modified', 
-			305 => 'use proxy', 307 => 'temporary redirect', 100 => 'continue', 
-			101 => 'witching protocols', 200 => 'ok', 201 => 'created', 202 => 'accepted', 
+		$map = array(505 => 'http version not supported', 504 => 'gateway timeout', 503 => 'service unavailable', 
+			503 => 'bad gateway', 502 => 'bad gateway', 501 => 'not implemented', 500 => 'internal server error', 
+			417 => 'expectation failed', 416 => 'requested range not satisfiable', 415 => 'unsupported media type', 
+			414 => 'request uri too long', 413 => 'request entity too large', 412 => 'precondition failed', 
+			411 => 'length required', 410 => 'gone', 409 => 'conflict', 408 => 'request timeout', 
+			407 => 'proxy authentication required', 406 => 'not acceptable', 405 => 'method not allowed', 
+			404 => 'not found', 403 => 'forbidden', 402 => 'payment required', 401 => 'unauthorized', 
+			400 => 'bad request', 300 => 'multiple choices', 301 => 'moved permanently', 302 => 'moved temporarily', 
+			302 => 'found', 303 => 'see other', 304 => 'not modified', 305 => 'use proxy', 307 => 'temporary redirect', 
+			100 => 'continue', 101 => 'witching protocols', 200 => 'ok', 201 => 'created', 202 => 'accepted', 
 			203 => 'non authoritative information', 204 => 'no content', 205 => 'reset content', 
 			206 => 'partial content');
 		return isset($map[$code]) ? $map[$code] : '';
@@ -328,8 +325,7 @@ class WindHttpResponse implements IWindResponse {
 		$setted = false;
 		foreach ($this->_headers as $key => $one) {
 			if ($one['name'] == $name) {
-				$this->_headers[$key] = array('name' => $name, 'value' => $value, 
-					'replace' => $replace);
+				$this->_headers[$key] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 				$setted = true;
 				break;
 			}
@@ -490,8 +486,7 @@ class WindHttpResponse implements IWindResponse {
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
 		if ($throw && $sended)
-			throw new WindException(
-				__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+			throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
