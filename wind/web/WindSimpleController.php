@@ -26,8 +26,9 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @see IWindController::doAction()
 	 */
 	public function doAction($handlerAdapter) {
+		$this->_vars = $this->getResponse()->getData('F');
 		if ($this->forward !== null)
-			$this->_vars = $this->forward->getVars();
+			$this->_vars += $this->forward->getVars();
 		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$method = $this->resolvedActionMethod($handlerAdapter);

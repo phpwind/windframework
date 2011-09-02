@@ -84,7 +84,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					404);
 			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
-			$handlerPath = @$module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . @$module['controller-suffix'];
+			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2)
 				Wind::getApp()->getComponent('windLogger')->info(
 					'[web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
@@ -95,7 +95,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'properties' => array('errorMessage' => array('ref' => 'errorMessage'), 
 						'forward' => array('ref' => 'forward'), 'urlHelper' => array('ref' => 'urlHelper'))));
 			$handler = $this->windFactory->getInstance($handlerPath);
-			
 			if (!$handler)
 				throw new WindActionException(
 					'[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
@@ -135,10 +134,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->setModules('error', 
 				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
 		}
+		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
 		$forward->forwardAction($_errorAction);
-		$this->getRequest()->setAttribute($errorMessage->getError(), 'error');
-		$this->getRequest()->setAttribute($exception->getCode(), 'errorCode');
+		$forward->setVars($errorMessage->getError(), 'error');
+		$forward->setVars($exception->getCode(), 'errorCode');
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
 	}
 
@@ -175,16 +175,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if ($name === '')
 			return $this->getConfig('modules', $this->handlerAdapter->getModule());
 		return $this->getConfig('modules', $name, array());
-	}
-
-	/* (non-PHPdoc)
-	 * @see WindModule::setConfig()
-	 */
-	public function setConfig($config) {
-		if (!$config)
-			return;
-		$config = @$config[Wind::getAppName()] ? $config[Wind::getAppName()] : $config;
-		$this->_config = $config;
 	}
 
 	/**

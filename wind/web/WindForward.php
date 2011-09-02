@@ -33,25 +33,7 @@ class WindForward extends WindModule {
 	 */
 	private $url;
 	private $action;
-	private $controller;
-	private $args;
-
-	/**
-	 * 将请求重定向到另外一个Action操作
-	 * @param string $action | $action 操作
-	 * @param string $controller | controller 路径 , controller 为空是则指向当前的控制器
-	 * @param array $args | 参数
-	 * @param boolean $isRedirect | 是否重定向
-	 * 
-	 * @return
-	 */
-	public function forwardAnotherAction($action = 'run', $controller = '', $args = array(), $isRedirect = false) {
-		$this->setIsReAction(true);
-		$this->setAction($action);
-		$this->setController($controller);
-		$this->setArgs($args);
-		$this->setIsRedirect($isRedirect);
-	}
+	private $args = array();
 
 	/**
 	 * 将请求重定向到另外一个Action操作
@@ -150,13 +132,6 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * @return the $controller
-	 */
-	public function getController() {
-		return $this->controller;
-	}
-
-	/**
 	 * @return the $args
 	 */
 	public function getArgs() {
@@ -168,13 +143,6 @@ class WindForward extends WindModule {
 	 */
 	public function setAction($action) {
 		$this->action = $action;
-	}
-
-	/**
-	 * @param field_type $controller
-	 */
-	public function setController($controller) {
-		$this->controller = $controller;
 	}
 
 	/**
