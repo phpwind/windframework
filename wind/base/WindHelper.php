@@ -89,14 +89,14 @@ class WindHelper {
 					$padLen = strlen($count);
 					foreach ($fileLines as $line => &$fileLine)
 						$fileLine = " " . htmlspecialchars(
-							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace(
-								"\t", "    ", rtrim($fileLine)), null, "UTF-8");
+							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", 
+								rtrim($fileLine)), null, "UTF-8");
 				}
 			}
 			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
 		} else
 			$_errorPage = '404.htm';
-			
+		
 		if ($status >= 400 && $status <= 505) {
 			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
 			$topic = "$status - " . $_statusMsg . "\n";
@@ -106,8 +106,7 @@ class WindHelper {
 		$msg = "$topic\n$errmessage\n" . $msg . "\n\n" . self::errorInfo();
 		
 		if (WIND_DEBUG & 2)
-			Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', 'core.error', 
-				true);
+			Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', 'core.error', true);
 		
 		if ($_errhtml) {
 			ob_start();
@@ -118,8 +117,7 @@ class WindHelper {
 				header('Status: ' . $status . ' ' . $_statusMsg);
 				is_file(Wind::getRealPath($errDir) . '.' . $status . '.htm') && $_errorPage = $status . '.htm';
 			}
-			require Wind::getRealPath(($errDir ? $errDir : self::$errorDir) . '.' . $_errorPage, 
-				true);
+			require Wind::getRealPath(($errDir ? $errDir : self::$errorDir) . '.' . $_errorPage, true);
 			$msg = ob_get_clean();
 		}
 		$msg = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $msg);
@@ -165,12 +163,11 @@ class WindHelper {
 	 * @return string
 	 */
 	protected static function getErrorName($errorNumber) {
-		$errorMap = array(E_ERROR => "E_ERROR", E_WARNING => "E_WARNING", E_PARSE => "E_PARSE", 
-			E_NOTICE => "E_NOTICE ", E_CORE_ERROR => "E_CORE_ERROR", 
-			E_CORE_WARNING => "E_CORE_WARNING", E_COMPILE_ERROR => "E_COMPILE_ERROR", 
-			E_COMPILE_WARNING => "E_COMPILE_WARNING", E_USER_ERROR => "E_USER_ERROR", 
-			E_USER_WARNING => "E_USER_WARNING", E_USER_NOTICE => "E_USER_NOTICE", 
-			E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", E_ALL => "E_ALL");
+		$errorMap = array(E_ERROR => "E_ERROR", E_WARNING => "E_WARNING", E_PARSE => "E_PARSE", E_NOTICE => "E_NOTICE ", 
+			E_CORE_ERROR => "E_CORE_ERROR", E_CORE_WARNING => "E_CORE_WARNING", E_COMPILE_ERROR => "E_COMPILE_ERROR", 
+			E_COMPILE_WARNING => "E_COMPILE_WARNING", E_USER_ERROR => "E_USER_ERROR", E_USER_WARNING => "E_USER_WARNING", 
+			E_USER_NOTICE => "E_USER_NOTICE", E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", 
+			E_ALL => "E_ALL");
 		return isset($errorMap[$errorNumber]) ? $errorMap[$errorNumber] : 'E_UNKNOWN';
 	}
 
@@ -187,17 +184,11 @@ class WindHelper {
 	 * @param string $controllerPath
 	 * @return array
 	 */
-	public static function resolveController($controllerPath) {
-		$_m = $_c = '';
-		if (!$controllerPath)
-			return array($_c, $_m);
-		if (false !== ($pos = strrpos($controllerPath, '.'))) {
-			$_m = substr($controllerPath, 0, $pos);
-			$_c = substr($controllerPath, $pos + 1);
-		} else {
-			$_c = $controllerPath;
-		}
-		return array($_c, $_m);
+	public static function resolveAction($action, $args = array()) {
+		list($action, $_args) = explode('?', $action . '?');
+		$action = explode('/', trim($action, '/') . '/');
+		end($action);
+		return array(prev($action), prev($action), prev($action), $args);
 	}
 }
 ?>
