@@ -58,7 +58,7 @@ class WindHandlerInterceptorChain extends WindModule {
 		}
 		return $this->getHandler();
 	}
-
+	
 	/**
 	 * 添加过滤连中的拦截器对象, 支持数组和对象两种类型
 	 * 
