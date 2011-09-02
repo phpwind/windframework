@@ -8,7 +8,7 @@
  * @package 
  */
 class WindUtility {
-
+	
 	/**
 	 * 递归合并两个数组
 	 * 
