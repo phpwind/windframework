@@ -36,9 +36,7 @@ class WindDispatcher extends WindModule {
 		else {
 			$view = $forward->getWindView();
 			if ($view->templateName) {
-				$vars = $forward->getVars();
-				Wind::getApp()->getResponse()->setData($vars, $view->templateName);
-				Wind::getApp()->getResponse()->setData($vars['G'], '', true);
+				Wind::getApp()->getResponse()->setData($forward->getVars(), $view->templateName);
 				$view->render($this->display);
 			}
 			$this->display = false;
