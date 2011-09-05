@@ -50,6 +50,16 @@ class WindConnectionManager extends WindConnection {
 	 * @var string
 	 */
 	private $sqlType;
+	
+	private $forceMaster = false;
+
+	/* (non-PHPdoc)
+	 * @see WindConnection::createStatement()
+	 */
+	public function createStatement($sql = null, $forceMaster = false) {
+		$this->forceMaster = $forceMaster;
+		return parent::createStatement($sql);
+	}
 
 	/* (non-PHPdoc)
 	 * @see WindConnection::getDbHandle()
@@ -118,8 +128,8 @@ class WindConnectionManager extends WindConnection {
 		if ($_c)
 			switch ($this->sqlType) {
 				case 'SELECT':
-					if (isset($_c['_s']) && is_array($_c['_s']) && !empty($_c['_s'])) {
-						$_count = count((array) $_c['_s']);
+					if (!$this->forceMaster && !empty($_c['_s'])) {
+						$_count = count($_c['_s']);
 						if ($_count > 1)
 							$this->except['_current'] = $_c['_s'][rand(0, $_count - 1)];
 						else
