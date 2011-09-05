@@ -16,7 +16,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $module;
 	protected $controller = 'index';
 	protected $action = 'run';
-	
+	/**
+	 * @var AbstractWindRoute
+	 */
 	protected $currentRoute = null;
 
 	/**
@@ -29,7 +31,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * 创建Url，并返回
 	 * @return string
 	 */
-	abstract public function assemble();
+	abstract public function assemble($action, $args = array(), $route = null);
 
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
@@ -48,7 +50,6 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 
 	/**
 	 * 设置路由变量信息
-	 * 
 	 * @param string $params
 	 */
 	protected function setParams($params) {
@@ -59,9 +60,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				$this->setController($value);
 			elseif ($this->moduleKey === $key)
 				$this->setModule($value);
-			else {
+			else
 				$this->getRequest()->setAttribute($value, $key);
-			}
 		}
 	}
 
