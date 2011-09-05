@@ -23,7 +23,12 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 		list($_output, $type) = explode('|', $_output . '|');
 		if (strpos($_output, '::') === false && strpos($_output, ':') !== false) {
 			list($_namespace, $_var) = explode(':', $_output);
-			$_output = 'Wind::getApp()->getResponse()->getData(\'' . $_namespace . '\', \'' . $_var . '\')';
+			$_args = explode(',', $_var . ',');
+			$_output = 'Wind::getApp()->getResponse()->getData(\'' . $_namespace . '\'';
+			foreach ($_args as $_arg) {
+				$_arg && $_output .= ',\'' . $_arg . '\'';
+			}
+			$_output .= ')';
 		}
 		if (!strcasecmp($type, 'html'))
 			return '<?php echo ' . $_output . ';?>';
