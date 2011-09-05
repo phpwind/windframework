@@ -530,33 +530,28 @@ class WindHttpResponse implements IWindResponse {
 	/**
 	 * @return array
 	 */
-	public function getData($key1 = '', $key2 = '') {
-		if (!$key1)
-			return $this->_data;
-		if (!$key2)
-			return isset($this->_data[$key1]) ? $this->_data[$key1] : '';
-		return isset($this->_data[$key1]) ? (isset($this->_data[$key1][$key2]) ? $this->_data[$key1][$key2] : '') : '';
+	public function getData() {
+		$_tmp = $this->_data;
+		foreach (func_get_args() as $arg) {
+			if (is_array($_tmp) && isset($_tmp[$arg]))
+				$_tmp = $_tmp[$arg];
+			else
+				return '';
+		}
+		return $_tmp;
 	}
 
 	/**
 	 * @param $data
 	 */
-	public function setData($data, $key = '', $isG = false) {
-		if ($key) {
-			if ($isG)
-				$this->_data['G'][$key] = $data;
-			else
-				$this->_data[$key] = $data;
-			return;
-		}
-		if (is_object($data))
-			$data = get_object_vars($data);
-		if (is_array($data)) {
-			if ($isG)
-				$this->_data['G'] += $data;
-			else
+	public function setData($data, $key = '') {
+		if ($key)
+			$this->_data[$key] = $data;
+		else {
+			if (is_object($data))
+				$data = get_object_vars($data);
+			if (is_array($data))
 				$this->_data += $data;
-		
 		}
 	}
 
