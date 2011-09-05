@@ -7,7 +7,6 @@
  * @package 
  */
 abstract class WindSimpleController extends WindModule implements IWindController {
-	protected $_vars = array();
 	/**
 	 * @var WindForward
 	 */
@@ -26,9 +25,10 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @see IWindController::doAction()
 	 */
 	public function doAction($handlerAdapter) {
-		$this->_vars = $this->getResponse()->getData('F');
-		if ($this->forward !== null)
-			$this->_vars += $this->forward->getVars();
+		$_vars = $this->getResponse()->getData('F');
+		if ($_vars)
+			$this->getForward()->setVars($_vars);
+		
 		$this->beforeAction($handlerAdapter);
 		$this->setDefaultTemplateName($handlerAdapter);
 		$method = $this->resolvedActionMethod($handlerAdapter);
@@ -43,10 +43,10 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @see IWindController::resolveActionFilter($action)
 	 */
 	protected function resolveActionFilter($__filters) {
-		@extract(@$this->getRequest()->getRequest(), EXTR_REFS);
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
 		foreach ((array) $__filters as $__filter) {
 			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
+				
 				if (!@eval('return ' . $__filter['expression'] . ';'))
 					continue;
 				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
@@ -111,7 +111,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @return
 	 */
 	protected function setGlobal($data, $key = '') {
-		$this->getForward()->setVars($data, $key, true);
+		Wind::getApp()->setGlobal($data, $key);
 	}
 
 	/**
