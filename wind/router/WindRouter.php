@@ -27,9 +27,9 @@ class WindRouter extends AbstractWindRouter {
 			return $this->currentRoute->build($action, $args);
 		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
 		$_baseUrl = $this->getRequest()->getBaseUrl(true) . '/' . $this->getRequest()->getScript();
-		$_url = sprintf($_baseUrl . "?$this->moduleKey=%s&$this->controllerKey=%s&$this->actionKey=%s&%s", 
-			($_m ? $_m : $this->module), ($_c ? $_c : $this->controller), ($_a ? $_a : $this->action), $args);
-		return WindUrlHelper::checkUrl($_url);
+		$_url = sprintf($this->reverse, $_baseUrl, ($_m ? $_m : $this->module), ($_c ? $_c : $this->controller), 
+			($_a ? $_a : $this->action));
+		return WindUrlHelper::checkUrl($_url . $args);
 	}
 
 	/**
