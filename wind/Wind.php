@@ -46,11 +46,10 @@ class Wind {
 			if (!$application instanceof IWindApplication)
 				throw new WindException('[Wind.application] ' . get_class($application), 
 					WindException::ERROR_CLASS_TYPE_ERROR);
-			$rootPath = $rootPath ? self::getRealPath($rootPath, true) : (isset($config['root-path']) && !empty(
-				$config['root-path']) ? self::getRealPath($config['root-path'], true) : dirname(
-				$_SERVER['SCRIPT_FILENAME']));
+			$rootPath = $rootPath ? self::getRealPath($rootPath, false) : (!empty($config['root-path']) ? self::getRealPath(
+				$config['root-path'], false) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
-			self::$_app[$appName] = $application;
+			self::$_app[$appName] = $application; 
 		}
 		return self::$_app[$appName];
 	}
@@ -223,6 +222,8 @@ class Wind {
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
 	public static function getRealPath($filePath, $suffix = '', $absolut = false) {
+		if (false !== strpos($filePath, DIRECTORY_SEPARATOR))
+			return realpath($filePath);
 		if (false !== ($pos = strpos($filePath, ':'))) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
 			$filePath = substr($filePath, $pos + 1);
@@ -230,11 +231,9 @@ class Wind {
 			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
 		if ($suffix === '') {
 			$suffix = self::$_extensions;
-		} elseif ($suffix === true) {
-			if ($pos = strrpos($filePath, '.')) {
-				$suffix = substr($filePath, $pos + 1);
-				$filePath = substr($filePath, 0, $pos);
-			}
+		} elseif ($suffix === true && false !== ($pos = strrpos($filePath, '.'))) {
+			$suffix = substr($filePath, $pos + 1);
+			$filePath = substr($filePath, 0, $pos);
 		}
 		$filePath = str_replace('.', '/', $filePath);
 		$namespace && $filePath = $namespace . $filePath;
@@ -253,7 +252,7 @@ class Wind {
 			$dirPath = substr($dirPath, $pos + 1);
 		} else
 			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
-		$namespace && $dirPath = $namespace . '/' . str_replace('.', '/', $dirPath);
+		$namespace && $dirPath = $namespace . str_replace('.', '/', $dirPath);
 		return $dirPath;
 	}
 
