@@ -6,7 +6,6 @@
  * @package 
  */
 abstract class WindActionFilter extends WindHandlerInterceptor {
-	protected $_vars = array();
 	/**
 	 * @var WindForward
 	 */
@@ -27,7 +26,6 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 		unset($args[0], $args[1]);
 		foreach ($args as $key => $value)
 			property_exists(get_class($this), $key) && $this->$key = $value;
-		$this->_vars = $forward->getVars();
 	}
 
 	/**
@@ -47,7 +45,7 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 	 * @return
 	 */
 	protected function setGlobal($data, $key = '') {
-		$this->forward->setVars($data, $key, true);
+		Wind::getApp()->setGlobal($data, $key);
 	}
 
 	/**
