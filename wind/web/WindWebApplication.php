@@ -108,38 +108,23 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * 异常处理请求
-	 * @param WindActionException actionException
-	 * @return
+	 * 设置全局变量
+	 * @param array|object|string $data
+	 * @param string $key
+	 * @return 
 	 */
-	protected function sendErrorMessage($exception) {
-		$moduleName = $this->handlerAdapter->getModule();
-		if ($moduleName === 'error')
-			throw new WindFinalException($exception->getMessage());
-		
-		$errorMessage = null;
-		if ($exception instanceof WindActionException)
-			$errorMessage = $exception->getError();
-		if (!$errorMessage) {
-			$errorMessage = $this->windFactory->getInstance('errorMessage');
-			$errorMessage->addError($exception->getMessage());
-		}
-		if (!$_errorAction = $errorMessage->getErrorAction()) {
-			$module = $this->getModules($moduleName);
-			if (empty($module))
-				$module = $this->getModules('default');
-			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
-			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
-			$_errorAction = 'error/' . @$matchs[0] . '/run/';
-			$this->setModules('error', 
-				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
-		}
-		/* @var $forward WindForward */
-		$forward = $this->getSystemFactory()->getInstance('forward');
-		$forward->forwardAction($_errorAction);
-		$forward->setVars($errorMessage->getError(), 'error');
-		$forward->setVars($exception->getCode(), 'errorCode');
-		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
+	public function setGlobal($data, $key = '') {
+		$data = $key ? array($key => $data) : $data;
+		$this->response->setData($data, 'G');
+	}
+
+	/**
+	 * 获取全局变量
+	 * @return string|object|array
+	 */
+	public function getGlobal() {
+		$args = array('G') + func_get_args();
+		return call_user_func_array(array($this->response, 'getData'), $args);
 	}
 
 	/**
@@ -222,5 +207,40 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function getWindFactory() {
 		return $this->windFactory;
+	}
+
+	/**
+	 * 异常处理请求
+	 * @param WindActionException actionException
+	 * @return
+	 */
+	protected function sendErrorMessage($exception) {
+		$moduleName = $this->handlerAdapter->getModule();
+		if ($moduleName === 'error')
+			throw new WindFinalException($exception->getMessage());
+		
+		$errorMessage = null;
+		if ($exception instanceof WindActionException)
+			$errorMessage = $exception->getError();
+		if (!$errorMessage) {
+			$errorMessage = $this->windFactory->getInstance('errorMessage');
+			$errorMessage->addError($exception->getMessage());
+		}
+		if (!$_errorAction = $errorMessage->getErrorAction()) {
+			$module = $this->getModules($moduleName);
+			if (empty($module))
+				$module = $this->getModules('default');
+			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
+			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
+			$_errorAction = 'error/' . @$matchs[0] . '/run/';
+			$this->setModules('error', 
+				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
+		}
+		/* @var $forward WindForward */
+		$forward = $this->getSystemFactory()->getInstance('forward');
+		$forward->forwardAction($_errorAction);
+		$forward->setVars($errorMessage->getError(), 'error');
+		$forward->setVars($exception->getCode(), 'errorCode');
+		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
 	}
 }
