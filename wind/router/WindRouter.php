@@ -36,12 +36,9 @@ class WindRouter extends AbstractWindRouter {
 	 * 默认路由规则
 	 */
 	public function defaultRoute() {
-		$params[$this->actionKey] = $this->getRequest()->getRequest($this->actionKey, $this->action);
-		$params[$this->controllerKey] = $this->getRequest()->getRequest($this->controllerKey, $this->controller);
-		$params[$this->moduleKey] = $this->getRequest()->getRequest($this->moduleKey, $this->module);
-		return $params;
+		$_pathInfo = $this->getRequest()->getPathInfo();
+		return $_pathInfo ? WindUrlHelper::urlToArgs($_pathInfo) : array();
 	}
-
 }
 
 ?>
