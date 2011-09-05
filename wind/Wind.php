@@ -49,7 +49,7 @@ class Wind {
 			$rootPath = $rootPath ? self::getRealPath($rootPath, false) : (!empty($config['root-path']) ? self::getRealPath(
 				$config['root-path'], false) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
-			self::$_app[$appName] = $application; 
+			self::$_app[$appName] = $application;
 		}
 		return self::$_app[$appName];
 	}
@@ -118,7 +118,7 @@ class Wind {
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
-			$dirPath = self::getRealDir($filePath);
+			$dirPath = self::getRealPath($filePath, false);
 			if (!$dh = opendir($dirPath))
 				throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
