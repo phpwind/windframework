@@ -177,18 +177,5 @@ class WindHelper {
 		return $info;
 	}
 
-	/**
-	 * 解析ControllerPath
-	 * 返回解析后的controller信息，controller，module，app
-	 * 
-	 * @param string $controllerPath
-	 * @return array
-	 */
-	public static function resolveAction($action, $args = array()) {
-		list($action, $_args) = explode('?', $action . '?');
-		$action = explode('/', trim($action, '/') . '/');
-		end($action);
-		return array(prev($action), prev($action), prev($action), $args);
-	}
 }
 ?>
