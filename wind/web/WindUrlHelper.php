@@ -20,11 +20,9 @@ class WindUrlHelper {
 	 * @param unknown_type $args
 	 */
 	public static function urlToArgs($url, $decode = true) {
-		if (!$url)
-			return array();
 		if (false !== ($pos = strpos($url, '?')))
 			$url = substr($url, $pos + 1);
-		$url = explode('&', $url);
+		$url = explode('&', $url . '&');
 		$args = array();
 		foreach ($url as $value) {
 			list($_k, $_v) = explode('=', $value . '=');
@@ -67,7 +65,7 @@ class WindUrlHelper {
 	 */
 	public static function resolveAction($action, $args = array()) {
 		list($action, $_args) = explode('?', $action . '?');
-		$args = array_merge($args, self::urlToArgs($_args, false));
+		$args = array_merge($args, ($_args ? self::urlToArgs($_args, false) : array()));
 		$action = explode('/', trim($action, '/') . '/');
 		end($action);
 		return array(prev($action), prev($action), prev($action), self::argsToUrl($args));
