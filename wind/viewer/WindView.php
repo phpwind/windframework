@@ -80,9 +80,7 @@ class WindView extends WindModule implements IWindView {
 	 * @param boolean $display
 	 */
 	public function render($display = false) {
-		if (!$this->templateName)
-			return;
-		
+		if (!$this->templateName) {return;}
 		//TODO 其他输出类型
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
@@ -118,8 +116,7 @@ class WindView extends WindModule implements IWindView {
 	 * @return string | false
 	 */
 	public function getViewTemplate($template = '', $ext = '') {
-		if (!$template)
-			$template = $this->templateName;
+		!$template && $template = $this->templateName;
 		!$ext && $ext = $this->templateExt;
 		if (false === strpos($template, ':'))
 			$template = $this->templateDir . '.' . $template;
@@ -138,39 +135,18 @@ class WindView extends WindModule implements IWindView {
 	 * @return string | false
 	 */
 	public function getCompileFile($template = '') {
-		if (!$this->compileDir)
-			return;
+		if (!$this->compileDir) {return;}
+		if ($this->compileDir == $this->templateDir)
+			throw new WindViewException('[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
 		if (!$template)
 			$template = $this->templateName;
 		elseif (false !== ($pos = strpos($template, ':')))
 			$template = '__external.' . substr($template, $pos + 1);
-		
-		$dir = Wind::getRealDir($this->compileDir, true);
+		$dir = realpath(Wind::getRealPath($this->compileDir, false, true));
 		if (!is_dir($dir))
 			throw new WindViewException(
 				'[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
 		$dir .= '/' . str_replace('.', '_', $template);
-		/*$_tmp = explode('.', $template);
-		foreach ($_tmp as $_dir) {
-			!is_dir($dir) && @mkdir($dir);
-			$dir .= DIRECTORY_SEPARATOR . $_dir;
-		}*/
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
-	}
-
-	/**
-	 * @return WindViewerResolver
-	 */
-	public function getViewResolver() {
-		if (null !== $this->viewResolver)
-			return $this->viewResolver;
-		$this->_getViewResolver();
-		$this->viewResolver->setWindView($this);
-		if (!$this->getIsCache())
-			return $this->viewResolver;
-		$this->viewResolver = new WindClassProxy($this->viewResolver);
-		$listener = Wind::import('WIND:viewer.listener.WindViewCacheListener');
-		$this->viewResolver->registerEventListener('windFetch', new $listener($this));
-		return $this->viewResolver;
 	}
 }
