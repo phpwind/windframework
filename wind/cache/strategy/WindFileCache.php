@@ -44,7 +44,8 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::get()
 	 */
 	protected function getValue($key) {
-		if (!is_file($key)) return null;
+		if (!is_file($key))
+			return null;
 		return WindFile::read($key);
 	}
 
@@ -70,15 +71,17 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	protected function buildSecurityKey($key) {
 		$key = parent::buildSecurityKey($key);
-		if (false !== ($dir = $this->checkCacheDir($key))) return $dir;
+		if (false !== ($dir = $this->checkCacheDir($key)))
+			return $dir;
 		$_dir = $this->getCacheDir();
 		if (0 < ($level = $this->getCacheDirectoryLevel())) {
 			$_subdir = substr(md5($key), 0, $level);
-			$_dir .= DIRECTORY_SEPARATOR . $_subdir;
-			if (!is_dir($_dir)) mkdir($_dir, 0777, true);
+			$_dir .= '/' . $_subdir;
+			if (!is_dir($_dir))
+				mkdir($_dir, 0777, true);
 		}
 		$filename = $key . '.' . $this->getCacheFileSuffix();
-		$this->cacheFileList[$key] = ($_dir ? $_dir . DIRECTORY_SEPARATOR . $filename : $filename);
+		$this->cacheFileList[$key] = ($_dir ? $_dir . '/' . $filename : $filename);
 		return $this->cacheFileList[$key];
 	}
 
@@ -97,8 +100,9 @@ class WindFileCache extends AbstractWindCache {
 	 * @param string $dir
 	 */
 	public function setCacheDir($dir) {
-		$_dir = Wind::getRealDir($dir);
-		if (!is_dir($_dir)) mkdir($_dir, 0777, true);
+		$_dir = Wind::getRealPath($dir, false, true);
+		if (!is_dir($_dir))
+			mkdir($_dir, 0777, true);
 		$this->cacheDir = $_dir;
 	}
 
