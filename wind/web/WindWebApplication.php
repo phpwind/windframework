@@ -33,7 +33,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 
 	/**
 	 * 应用初始化操作
-	 * 
 	 * @param array|string $config
 	 * @param WindFactory $factory
 	 * @param string $runCallBack
@@ -214,13 +213,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return
 	 */
 	protected function resolveActionMapping($handler) {
-		//TODO 缓存处理解析结果
+		$filters = $this->getConfig('filters', '', array());
+		if (!$filters) {return;}
 		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
-		$_filters = $this->getConfig('filters', '', array());
-		foreach ($_filters as $_filter) {
-			if (!isset($_filter['class']))
-				continue;
-			if (!empty($_filter['pattern'])) {
+		foreach ($filters as $_filter) {
+			if (isset($_filter['class']) && !empty($_filter['pattern'])) {
 				preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token, $_matchs);
 				if ($_matchs)
 					$handler->registerEventListener('doAction', 
