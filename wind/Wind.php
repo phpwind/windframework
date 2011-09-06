@@ -193,11 +193,7 @@ class Wind {
 	 */
 	public static function autoLoad($className, $path = '') {
 		$path || $path = isset(self::$_classes[$className]) ? self::$_classes[$className] : $className;
-		
-		if (WIND_DEBUG & 1)
-			include $path . '.' . self::$_extensions;
-		else
-			@include $path . '.' . self::$_extensions;
+		include $path . '.' . self::$_extensions;
 	}
 
 	/**
