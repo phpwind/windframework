@@ -170,9 +170,8 @@ class Wind {
 					unset(self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
-			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
-				throw new Exception('set include path error.');
-			}
+			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {throw new Exception(
+					'set include path error.');}
 		}
 	}
 
@@ -193,8 +192,7 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className]))
-			$path = self::$_classes[$className];
+		$path || $path = isset(self::$_classes[$className]) ? self::$_classes[$className] : $className;
 		
 		if (WIND_DEBUG & 1)
 			include $path . '.' . self::$_extensions;
