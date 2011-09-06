@@ -1,5 +1,5 @@
 <?php return array(
-	'windWebApp' => array(
+	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
 		'properties' => array(
@@ -97,18 +97,11 @@
 	),
 	'windCache' => array(
 		'path' => 'WIND:cache.strategy.WindFileCache',
+		'scope' => 'singleton',
 		'config' => array(
 			'dir' => 'data.config',
 			'suffix' => 'php',
 			'expires' => '0',
-		),
-	),
-	'viewCache' => array(
-		'path' => 'WIND:cache.strategy.WindFileCache',
-		'config' => array(
-			'dir' => 'data.view',
-			'suffix' => 'php',
-			'expires' => '10',
 		),
 	),
 );
