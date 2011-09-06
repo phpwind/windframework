@@ -98,6 +98,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				throw new WindActionException(
 					'[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
+			$this->resolveActionMapping($handler);
 			$this->doDispatch($handler->doAction($this->handlerAdapter));
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
@@ -206,6 +207,26 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function getWindFactory() {
 		return $this->windFactory;
+	}
+
+	/**
+	 * @param WindClassProxy $handler
+	 * @return
+	 */
+	protected function resolveActionMapping($handler) {
+		//TODO 缓存处理解析结果
+		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
+		$_filters = $this->getConfig('filters');
+		foreach ($_filters as $_filter) {
+			if (!isset($_filter['class']))
+				continue;
+			if (!empty($_filter['pattern'])) {
+				preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token, $_matchs);
+				if ($_matchs)
+					$handler->registerEventListener('doAction', 
+						WindFactory::createInstance(Wind::import($_filter['class'])));
+			}
+		}
 	}
 
 	/**
