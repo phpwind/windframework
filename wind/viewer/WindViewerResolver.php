@@ -77,7 +77,7 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	public function compile($template, $suffix = '', $output = false) {
 		$templateFile = $this->windView->getViewTemplate($template, $suffix);
 		if (!is_file($templateFile))
-			throw new WindViewException('[component.viewer.WindView.parseFilePath] ' . $templateFile, 
+			throw new WindViewException('[component.viewer.WindViewerResolver.compile] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
 		
 		$compileFile = $this->windView->getCompileFile($template);
@@ -139,7 +139,7 @@ class WindRender {
 	public static function render($__tpl, $__vars, $__viewer) {
 		@extract($__vars, EXTR_REFS);
 		if (!@include ($__tpl))
-			throw new WindViewException('[component.viewer.ViewerResolver.render] template name ' . $__tpl, 
+			throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, 
 				WindViewException::VIEW_NOT_EXIST);
 	}
 }
