@@ -222,10 +222,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				continue;
 			if (!empty($_filter['pattern'])) {
 				preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token, $_matchs);
-				if (!$_matchs)
-					continue;
-				$handler->registerEventListener('doAction', 
-					WindFactory::createInstance(Wind::import($_filter['class'])));
+				if ($_matchs)
+					$handler->registerEventListener('doAction', 
+						WindFactory::createInstance(Wind::import($_filter['class'])));
 			}
 		}
 	}
