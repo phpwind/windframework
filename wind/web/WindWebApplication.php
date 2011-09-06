@@ -216,15 +216,16 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	protected function resolveActionMapping($handler) {
 		//TODO 缓存处理解析结果
 		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
-		$_filters = $this->getConfig('filters');
+		$_filters = $this->getConfig('filters', '', array());
 		foreach ($_filters as $_filter) {
 			if (!isset($_filter['class']))
 				continue;
 			if (!empty($_filter['pattern'])) {
 				preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token, $_matchs);
-				if ($_matchs)
-					$handler->registerEventListener('doAction', 
-						WindFactory::createInstance(Wind::import($_filter['class'])));
+				if (!$_matchs)
+					continue;
+				$handler->registerEventListener('doAction', 
+					WindFactory::createInstance(Wind::import($_filter['class'])));
 			}
 		}
 	}
