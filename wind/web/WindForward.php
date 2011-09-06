@@ -159,8 +159,10 @@ class WindForward extends WindModule {
 		if ($this->windView === null)
 			$this->_getWindView();
 		$module = Wind::getApp()->getModules();
-		isset($module['template-dir']) && $this->windView->templateDir = $module['template-dir'];
-		isset($module['compile-dir']) && $this->windView->compileDir = $module['compile-dir'];
+		if (!$this->windView->templateDir && isset($module['template-dir']))
+			$this->windView->templateDir = $module['template-dir'];
+		if (!$this->windView->compileDir && isset($module['compile-dir']))
+			$this->windView->compileDir = $module['compile-dir'];
 		return $this->windView;
 	}
 
