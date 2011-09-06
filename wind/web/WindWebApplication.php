@@ -51,8 +51,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	public function run() {
 		set_error_handler('WindHelper::errorHandle');
 		set_exception_handler('WindHelper::exceptionHandle');
-		$_modules = $this->getConfig('modules', '', array());
-		$this->setModules('default', !empty($_modules) ? current($_modules) : $this->defaultModule);
+		$this->setModules('default', $this->defaultModule);
 		$this->_getHandlerAdapter()->route();
 		$this->processRequest();
 		restore_error_handler();
