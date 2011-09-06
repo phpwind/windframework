@@ -337,10 +337,8 @@ class WindUrlRewriteRouter extends AbstractWindRouter {
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::assemble()
 	 */
-	public function assemble() {
+	public function assemble($action, $args = array(), $route = null) {
 		// TODO Auto-generated method stub
-	
-
 	}
 
 }
