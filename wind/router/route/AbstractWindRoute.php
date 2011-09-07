@@ -5,7 +5,11 @@
  * @version $Id$
  * @package 
  */
-abstract class AbstractWindRoute extends WindModule {
+abstract class AbstractWindRoute extends WindHandlerInterceptor {
+	protected $regex = '';
+	/*反向生成url规则*/
+	protected $reverse = '';
+	protected $params = array();
 
 	/**
 	 * 根据匹配的路由规则，构建Url
@@ -33,10 +37,24 @@ abstract class AbstractWindRoute extends WindModule {
 		if (null !== ($handler = $this->interceptorChain->getHandler())) {
 			$this->result = call_user_func_array(array($handler, 'handle'), $args);
 		} else {
-			$this->result = $this->interceptorChain->execute();
+			$this->result = $this->interceptorChain->handle();
 		}
 		return $this->result;
 	}
+	
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		$this->regex   = trim($this->getConfig('regex'), '/');
+		$this->reverse = trim($this->getConfig('reverse'), '/');
+		$this->params  = $config['params'];
+	}
+	
+	public function preHandle(){}
+
+	public function postHandle(){}
 }
 
 ?>

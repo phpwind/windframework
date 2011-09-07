@@ -44,15 +44,15 @@ class WindUrlHelper {
 	 * @return string
 	 */
 	public static function argsToUrl($args) {
-		$_tmp = '';
+		$_tmp = array();
 		foreach ((array) $args as $key => $value) {
 			if (is_array($value)) {
-				$_tmp .= self::$_sep . "$key=" . urlencode(serialize($value)) . "&";
+				$_tmp[] = self::$_sep . "$key=" . urlencode(serialize($value));
 				continue;
 			}
-			$_tmp .= "$key=" . urlencode($value) . "&";
+			$_tmp[] = "$key=" . urlencode($value);
 		}
-		return $_tmp;
+		return implode('&', $_tmp);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class WindUrlHelper {
 		$args = array_merge($args, ($_args ? self::urlToArgs($_args, false) : array()));
 		$action = explode('/', trim($action, '/') . '/');
 		end($action);
-		return array(prev($action), prev($action), prev($action), self::argsToUrl($args));
+		return array(prev($action), prev($action), prev($action), $args);
 	}
 
 	/**
@@ -79,7 +79,7 @@ class WindUrlHelper {
 	 * @param AbstractWindRoute $route
 	 * @return string
 	 */
-	public static function createUrl($action, $args = array(), $route = null) {
+	public static function createUrl($action, $args = array(), $route = null) { 
 		/* @var $router AbstractWindRouter */
 		$router = Wind::getApp()->getComponent('router');
 		return $router->assemble($action, $args, $route);
