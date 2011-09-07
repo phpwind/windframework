@@ -17,10 +17,6 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $controller = 'index';
 	protected $action = 'run';
 	protected $reverse = "%s?m=%s&c=%s&a=%s&";
-	/**
-	 * @var AbstractWindRoute
-	 */
-	protected $currentRoute = null;
 
 	/**
 	 * 解析请求参数，并返回路由结果
@@ -46,11 +42,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 			$this->moduleKey = $this->getConfig('module', 'url-param', $this->moduleKey);
 			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
 			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
-			foreach ($this->getConfig('rules', '', array()) as $ruleName => $rule) {
+			foreach ($this->getConfig('routes', '', array()) as $ruleName => $rule) {
 				$class = isset($rule['class']) ? $rule['class'] : 'WIND:router.route.WindRoute';
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($class));
-				if (!$instance instanceof AbstractWindRoute)
-					continue;
 				$instance->setConfig($rule);
 				$this->addRoute($ruleName, $instance);
 			}
@@ -63,14 +57,15 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 */
 	protected function setParams($params) {
 		foreach ($params as $key => $value) {
+			$this->getRequest()->setAttribute($value, $key);
+			if (!$value)
+				continue;
 			if ($this->actionKey === $key)
 				$this->setAction($value);
 			elseif ($this->controllerKey === $key)
 				$this->setController($value);
 			elseif ($this->moduleKey === $key)
 				$this->setModule($value);
-			else
-				$this->getRequest()->setAttribute($value, $key);
 		}
 	}
 
@@ -81,9 +76,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @throws WindException
 	 * @return 
 	 */
-	public function addRoute($alias, $route, $current = false) {
+	public function addRoute($alias, $route) {
 		$this->addInterceptors(array($alias => $route));
-		$current === true && $this->currentRoute = $alias;
 	}
 
 	/**

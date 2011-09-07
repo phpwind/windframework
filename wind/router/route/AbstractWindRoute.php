@@ -6,55 +6,46 @@
  * @package 
  */
 abstract class AbstractWindRoute extends WindHandlerInterceptor {
-	protected $regex = '';
-	/*反向生成url规则*/
+	protected $pattern = '';
 	protected $reverse = '';
 	protected $params = array();
 
 	/**
 	 * 根据匹配的路由规则，构建Url
-	 * 
+	 * @param AbstractWindRouter
+	 * @param string $action
+	 * @param array $args
 	 * @return string
 	 */
-	abstract public function build();
+	abstract public function build($route, $action, $args = array());
 
 	/**
 	 * 路由规则匹配方法，返回匹配到的参数列表
-	 * 
 	 * @return array
 	 */
 	abstract public function match();
 
 	/* (non-PHPdoc)
-	 * @see WindHandlerInterceptor::handle()
+	 * @see WindHandlerInterceptor::preHandle()
 	 */
-	public function handle() {
-		$args = func_get_args();
-		$this->result = call_user_func_array(array($this, 'match'), $args);
-		if ($this->result !== null) {
-			return $this->result;
-		}
-		if (null !== ($handler = $this->interceptorChain->getHandler())) {
-			$this->result = call_user_func_array(array($handler, 'handle'), $args);
-		} else {
-			$this->result = $this->interceptorChain->handle();
-		}
-		return $this->result;
+	public function preHandle() {
+		return $this->match();
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see WindHandlerInterceptor::postHandle()
+	 */
+	public function postHandle() {}
+
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->regex   = trim($this->getConfig('regex'), '/');
-		$this->reverse = trim($this->getConfig('reverse'), '/');
-		$this->params  = $config['params'];
+		$this->pattern = $this->getConfig('pattern', '', $this->pattern); //trim($this->getConfig('regex'), '/');
+		$this->reverse = $this->getConfig('reverse', '', $this->reverse); //trim($this->getConfig('reverse'), '/');
+		$this->params = $this->getConfig('params', '', $this->params);
 	}
-	
-	public function preHandle(){}
-
-	public function postHandle(){}
 }
 
 ?>

@@ -12,7 +12,7 @@ class WindRouter extends AbstractWindRouter {
 	 * @see IWindRouter::route()
 	 */
 	public function route() {
-		$this->setCallBack(array($this, 'defaultRoute'), array($this));
+		$this->setCallBack(array($this, 'defaultRoute'));
 		$params = $this->getHandler()->handle();
 		$this->setParams($params);
 	}
@@ -21,15 +21,17 @@ class WindRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::assemble()
 	 */
 	public function assemble($action, $args = array(), $route = null) {
-		if (null !== ($route = $this->getRoute($route)))
-			return $route->build($action, $args);
-		if ($this->currentRoute !== null)
-			return $this->currentRoute->build($action, $args);
-		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
-		$_baseUrl = $this->getRequest()->getBaseUrl(true) . '/' . $this->getRequest()->getScript();
-		$_url = sprintf($this->reverse, $_baseUrl, ($_m ? $_m : $this->module), ($_c ? $_c : $this->controller), 
-			($_a ? $_a : $this->action));
-		return WindUrlHelper::checkUrl($_url . WindUrlHelper::argsToUrl($args));
+		$route || $route = current($this->_interceptors);
+		if ($route)
+			$_url = $route->build($this, $action, $args);
+		else {
+			list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
+			$_baseUrl = $this->getRequest()->getBaseUrl(true) . '/' . $this->getRequest()->getScript();
+			$_url = sprintf($this->reverse, $_baseUrl, ($_m ? $_m : $this->module), ($_c ? $_c : $this->controller), 
+				($_a ? $_a : $this->action));
+			$_url .= WindUrlHelper::argsToUrl($args);
+		}
+		return WindUrlHelper::checkUrl($_url);
 	}
 
 	/**

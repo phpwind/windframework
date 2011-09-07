@@ -6,73 +6,55 @@
  * @package 
  */
 class WindRoute extends AbstractWindRoute {
+	protected $pattern = '\?(\w+)(\/\w+)?(\/\w+)?';
+	protected $reverse = '%s/%s/%s/&';
+	protected $params = array('a' => array('map' => 1), 'c' => array('map' => 2), 'm' => array('map' => 3));
 	private $separator = '&';
 	private $keyValue = '=';
 	private $arrayKey = '_array_';
-	
+
 	/* (non-PHPdoc)
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
-		$requireUri = $this->getRequest()->getBaseUrl(true) . '/' . trim($this->getRequest()->getPathInfo(), '?/');
-		if (!preg_match_all('/' . $this->regex . '/', $requireUri, $matches)) return null;
-		$this->interceptorChain->setCurrentRoute($this);
-		$args = array();
-		foreach ($this->params as $key => $value) {
-		    if (!isset($matches[$value])) continue;
-			$temp = $matches[$value][0];
-			$args[$key] = $temp;
+		if (!preg_match_all('/' . $this->pattern . '/i', $this->getRequest()->getRequestUri(), $matches))
+			return null;
+		$params = array();
+		foreach ($this->params as $_n => $_p) {
+			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
+				$_value = $matches[$_p['map']][0];
+			else
+				$_value = isset($_p['default']) ? $_p['default'] : '';
+			$params[$_n] = trim($_value, '-/');
 		}
-		$args = array_merge($args, $this->urlToArgs($args['*']));
-		unset($args['*']);
-		$_GET = array_merge($_GET, $args);
-		return $args;
+		$_pathInfo = $this->getRequest()->getPathInfo();
+		$_pathInfo && $params += WindUrlHelper::urlToArgs($_pathInfo);
+		return $params;
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindRoute::build()
 	 */
-	public function build() {
-		list($action, $args)   = func_get_args();
-		list($params, $anchor) = $this->resolveParaments($action, $args);
-		
-		$temp = array();
+	public function build($router, $action, $args = array()) {
+		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
+		$_args[] = $this->reverse;
 		foreach ($this->params as $key => $val) {
-			if ($key != '*') {
-				$temp[$key] = $params[$key];
-				unset($params[$key]);
-			}
+			if (!isset($val['map']))
+				continue;
+			if ($key === $router->getModuleKey())
+				$_args[$val['map']] = $_m ? $_m : $router->getModule();
+			elseif ($key === $router->getControllerKey())
+				$_args[$val['map']] = $_c ? $_c : $router->getController();
+			elseif ($key === $router->getActionKey())
+				$_args[$val['map']] = $_a ? $_a : $router->getAction();
+			else
+				$_args[$val['map']] = $args[$key];
+			unset($args[$key]);
 		}
-		
-		$temp['*'] = str_replace(array('&', '='), array($this->separator, $this->keyValue), WindUrlHelper::argsToUrl($params));
-		$url = strtr($this->reverse, $temp);
-		
-		return $this->getRequest()->getBaseUrl(true) . '/' . $url . $anchor;
-	}
-	
-	/**
-	 * 解析
-	 * 解析传入的action和参数，及锚点
-	 * 
-	 * @param string $action
-	 * @param array $args
-	 * @return array
-	 */
-	private function resolveParaments($action ,$args) {
-		$temp = explode('#', $action, 2);
-		$anchor = isset($temp[1]) ? $temp[1] : '';
-		$action = $temp[0];
-		
-		list($_a, $_c, $_m, $params) = WindUrlHelper::resolveAction($action, $args);
-		if (isset($params['#'])) {
-			$anchor = $params['#'];
-			unset($params['#']);
-		}
-		
-		$params[$this->interceptorChain->getControllerKey()] = $_c;
-		$params[$this->interceptorChain->getModuleKey()] 	 = $_m;
-		$params[$this->interceptorChain->getActionKey()] 	 = $_a;
-		return array($params, $anchor ? '#' . $anchor : '');
+		ksort($_args);
+		$url = call_user_func_array("sprintf", $_args);
+		$url .= WindUrlHelper::argsToUrl($args);
+		return $url;
 	}
 
 	/**
@@ -81,15 +63,16 @@ class WindRoute extends AbstractWindRoute {
 	 * @return boolean
 	 */
 	private function urlToArgs($pathinfo) {
-		if (!$pathinfo) return array();
+		if (!$pathinfo)
+			return array();
 		$params = explode($this->separator, $pathinfo);
 		$num = count($params);
 		$args = array();
-		for($i = 0; $i < $num; $i++) {
+		for ($i = 0; $i < $num; $i++) {
 			if ($this->separator == $this->keyValue) {
 				$key = $params[$i];
-				$value = isset($params[$i+1]) ? urldecode($params[$i+1]) : null;
-				$i ++;
+				$value = isset($params[$i + 1]) ? urldecode($params[$i + 1]) : null;
+				$i++;
 			} else {
 				list($key, $value) = explode($this->keyValue, $params[$i], 2);
 				$value = urldecode($value);
@@ -103,16 +86,15 @@ class WindRoute extends AbstractWindRoute {
 		}
 		return $args;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see AbstractWindRoute::setConfig()
 	 */
 	public function setConfig($config) {
-		if (!$config) return null;
- 		parent::setConfig($config);
+		parent::setConfig($config);
 		$this->separator = $this->getConfig('var-separator', '', '&');
-		$this->keyValue  = $this->getConfig('key-separator', '', '=');
+		$this->keyValue = $this->getConfig('key-separator', '', '=');
 	}
 }
 ?>
