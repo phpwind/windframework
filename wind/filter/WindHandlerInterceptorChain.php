@@ -6,10 +6,9 @@
  * @package 
  */
 class WindHandlerInterceptorChain extends WindModule {
-	protected $_interceptors = array();
+	protected $_interceptors = array('_Na' => null);
 	protected $_callBack = null;
 	protected $_args = array();
-	protected $_state = 0;
 
 	/**
 	 * 设置回调方法
@@ -30,13 +29,12 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return void|mixed
 	 */
 	public function handle() {
+		reset($this->_interceptors);
 		if ($this->_callBack === null)
 			return null;
-		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {
-			throw new WindException(
+		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {throw new WindException(
 				'[filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
-				WindException::ERROR_FUNCTION_NOT_EXIST);
-		}
+				WindException::ERROR_FUNCTION_NOT_EXIST);}
 		return call_user_func_array($this->_callBack, (array) $this->_args);
 	}
 
@@ -46,19 +44,16 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return WindHandlerInterceptor
 	 */
 	public function getHandler() {
-		if (count($this->_interceptors) <= 0) {
-			return $this;
-		}
-		if ($this->_state >= count($this->_interceptors))
-			return null;
-		$handler = $this->_interceptors[$this->_state++];
-		if ($handler instanceof WindHandlerInterceptor) {
+		if (count($this->_interceptors) <= 1) {return $this;}
+		$handler = next($this->_interceptors);
+		if ($handler === false) {return null;}
+		if (method_exists($handler, 'handle')) {
 			$handler->setHandlerInterceptorChain($this);
 			return $handler;
 		}
 		return $this->getHandler();
 	}
-	
+
 	/**
 	 * 添加过滤连中的拦截器对象, 支持数组和对象两种类型
 	 * 
@@ -77,10 +72,9 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return boolean
 	 */
 	public function reset() {
-		$this->_interceptors = array();
+		$this->_interceptors = array('_Na' => null);
 		$this->_callBack = null;
 		$this->_args = array();
-		$this->_state = 0;
 		return true;
 	}
 }
