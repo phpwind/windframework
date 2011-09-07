@@ -12,7 +12,7 @@ class WindRouter extends AbstractWindRouter {
 	 * @see IWindRouter::route()
 	 */
 	public function route() {
-		$this->setCallBack(array($this, 'defaultRoute'));
+		$this->setCallBack(array($this, 'defaultRoute'), array($this));
 		$params = $this->getHandler()->handle();
 		$this->setParams($params);
 	}
@@ -27,8 +27,8 @@ class WindRouter extends AbstractWindRouter {
 			return $this->currentRoute->build($action, $args);
 		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
 		$_baseUrl = $this->getRequest()->getBaseUrl(true) . '/' . $this->getRequest()->getScript();
-		$_url = sprintf($this->reverse, $_baseUrl, $this->moduleKey, ($_m ? $_m : $this->module),  $this->controllerKey, ($_c ? $_c : $this->controller), 
-			$this->actionKey, ($_a ? $_a : $this->action));
+		$_url = sprintf($this->reverse, $_baseUrl, ($_m ? $_m : $this->module), ($_c ? $_c : $this->controller), 
+			($_a ? $_a : $this->action));
 		return WindUrlHelper::checkUrl($_url . WindUrlHelper::argsToUrl($args));
 	}
 
