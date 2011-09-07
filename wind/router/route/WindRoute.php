@@ -16,7 +16,6 @@ class WindRoute extends AbstractWindRoute {
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
-		echo $this->getRequest()->getPathInfo();exit;
 		if (!preg_match_all('/' . $this->pattern . '/i', $this->getRequest()->getRequestUri(), $matches))
 			return null;
 		$params = array();
