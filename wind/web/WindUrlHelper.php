@@ -79,10 +79,10 @@ class WindUrlHelper {
 	 * @param AbstractWindRoute $route
 	 * @return string
 	 */
-	public static function createUrl($action, $args = array(), $route = null) { 
+	public static function createUrl($action, $args = array(), $anchor = '', $route = null) {
 		/* @var $router AbstractWindRouter */
 		$router = Wind::getApp()->getComponent('router');
-		return $router->assemble($action, $args, $route);
+		return $router->assemble($action, $args, $route) . ($anchor ? '#' . $anchor : '');
 	}
 }
 ?>
