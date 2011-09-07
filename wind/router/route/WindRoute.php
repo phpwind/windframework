@@ -11,12 +11,12 @@ class WindRoute extends AbstractWindRoute {
 	protected $params = array('a' => array('map' => 1), 'c' => array('map' => 2), 'm' => array('map' => 3));
 	private $separator = '&';
 	private $keyValue = '=';
-	private $arrayKey = '_array_';
 
 	/* (non-PHPdoc)
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
+		echo $this->getRequest()->getPathInfo();exit;
 		if (!preg_match_all('/' . $this->pattern . '/i', $this->getRequest()->getRequestUri(), $matches))
 			return null;
 		$params = array();
