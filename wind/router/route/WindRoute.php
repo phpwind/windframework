@@ -6,17 +6,17 @@
  * @package 
  */
 class WindRoute extends AbstractWindRoute {
-	protected $pattern = '\?(\w+)(\/\w+)?(\/\w+)?';
+	protected $pattern = '(\w+)(\/\w+)?(\/\w+)?\/*(&[\w+\/]*)*';
 	protected $reverse = '%s/%s/%s/&';
 	protected $params = array('a' => array('map' => 1), 'c' => array('map' => 2), 'm' => array('map' => 3));
-	private $separator = '&';
-	private $keyValue = '=';
+	protected $separator = '/';
 
 	/* (non-PHPdoc)
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
-		if (!preg_match_all('/' . $this->pattern . '/i', $this->getRequest()->getRequestUri(), $matches))
+		$_pathInfo = $this->getRequest()->getPathInfo();
+		if (!preg_match_all('/' . $this->pattern . '/i', $_pathInfo, $matches))
 			return null;
 		$params = array();
 		foreach ($this->params as $_n => $_p) {
@@ -26,8 +26,8 @@ class WindRoute extends AbstractWindRoute {
 				$_value = isset($_p['default']) ? $_p['default'] : '';
 			$params[$_n] = trim($_value, '-/');
 		}
-		$_pathInfo = $this->getRequest()->getPathInfo();
-		$_pathInfo && $params += WindUrlHelper::urlToArgs($_pathInfo);
+		list(, $_args) = explode('&', $_pathInfo . '&');
+		$_args && $params += WindUrlHelper::urlToArgs($_args, true, $this->separator);
 		return $params;
 	}
 
@@ -52,48 +52,8 @@ class WindRoute extends AbstractWindRoute {
 		}
 		ksort($_args);
 		$url = call_user_func_array("sprintf", $_args);
-		$url .= WindUrlHelper::argsToUrl($args);
+		$url .= WindUrlHelper::argsToUrl($args, true, $this->separator);
 		return $url;
-	}
-
-	/**
-	 * 从url转化为数组
-	 * @param string $pathinfo
-	 * @return boolean
-	 */
-	private function urlToArgs($pathinfo) {
-		if (!$pathinfo)
-			return array();
-		$params = explode($this->separator, $pathinfo);
-		$num = count($params);
-		$args = array();
-		for ($i = 0; $i < $num; $i++) {
-			if ($this->separator == $this->keyValue) {
-				$key = $params[$i];
-				$value = isset($params[$i + 1]) ? urldecode($params[$i + 1]) : null;
-				$i++;
-			} else {
-				list($key, $value) = explode($this->keyValue, $params[$i], 2);
-				$value = urldecode($value);
-			}
-			
-			if (strpos($key, $this->arrayKey) === 0) {
-				$key = substr($key, strlen($this->arrayKey));
-				$value = unserialize($value);
-			}
-			$args[$key] = $value;
-		}
-		return $args;
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see AbstractWindRoute::setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		$this->separator = $this->getConfig('var-separator', '', '&');
-		$this->keyValue = $this->getConfig('key-separator', '', '=');
 	}
 }
 ?>
