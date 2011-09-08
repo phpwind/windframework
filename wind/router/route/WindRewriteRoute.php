@@ -6,12 +6,12 @@ Wind::import('WIND:router.route.AbstractWindRoute');
  * @version $Id$
  * @package 
  */
-class WindRewriteRoute extends AbstractWindRoute {
+class WindRewriteRoute extends AbstractWindRoute { 
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindRoute::build()
 	 */
-	public function build() {
+	public function build($router, $action, $args = array()) {
 		// TODO Auto-generated method stub
 	
 

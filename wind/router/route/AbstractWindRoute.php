@@ -12,12 +12,12 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 
 	/**
 	 * 根据匹配的路由规则，构建Url
-	 * @param AbstractWindRouter
+	 * @param AbstractWindRouter $router
 	 * @param string $action
 	 * @param array $args
 	 * @return string
 	 */
-	abstract public function build($route, $action, $args = array());
+	abstract public function build($router, $action, $args = array());
 
 	/**
 	 * 路由规则匹配方法，返回匹配到的参数列表
