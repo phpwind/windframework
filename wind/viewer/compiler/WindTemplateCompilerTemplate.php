@@ -26,19 +26,19 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 		if (!$this->source)
 			return $content;
 		
-		preg_match('/^{?\$(\w+)}?$/Ui', $this->source, $_tmp);
-		if (!empty($_tmp)) {
-			$_tpl = $this->windViewerResolver->getWindView()->templateName;
-			$this->source = Wind::getApp()->getResponse()->getData($_tpl, $_tmp[1]);
-		}
-		if ($this->load === 'false') {
-			list($compileFile) = $this->windViewerResolver->compile($this->source, $this->suffix);
-			if (!empty($_tmp))
-				$compileFile = str_replace($this->source, '{$' . $_tmp[1] . '}', $compileFile);
-			$content = '<?php include("' . addslashes($compileFile) . '"); ?>';
+		if (preg_match('/^{?\$(\w+)}?$/Ui', $this->source, $_tmp)) {
+			$content = '<?php if (!isset($' . $this->source . '))';
+			$content .= 'list($' . $this->source . ') = $__viewer->compile(' . $this->source . ', ' . $this->suffix . ');';
+			$content .= 'include_once($' . $this->source . ');?>';
 		} else {
-			list(, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, 
-				true);
+			if ($this->load === 'false') {
+				list($compileFile) = $this->windViewerResolver->compile($this->source, $this->suffix);
+				if (!empty($_tmp))
+					$compileFile = str_replace($this->source, '{$' . $_tmp[1] . '}', $compileFile);
+				$content = '<?php include("' . addslashes($compileFile) . '"); ?>';
+			} else {
+				list(, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, true);
+			}
 		}
 		return $content;
 	}
