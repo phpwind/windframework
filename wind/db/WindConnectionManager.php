@@ -131,7 +131,7 @@ class WindConnectionManager extends WindConnection {
 					if (!$this->forceMaster && !empty($_c['_s'])) {
 						$_count = count($_c['_s']);
 						if ($_count > 1)
-							$this->except['_current'] = $_c['_s'][rand(0, $_count - 1)];
+							$this->except['_current'] = $_c['_s'][mt_rand(0, $_count - 1)];
 						else
 							$this->except['_current'] = $_c['_s'][0];
 						break;
