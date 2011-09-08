@@ -20,8 +20,8 @@ class WindRoute extends AbstractWindRoute {
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
-		$_pathInfo = str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri());
-		if (!preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) {return null;}
+		$_pathInfo = trim(str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri()), '/');
+		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) {return null;}
 		foreach ($this->params as $_n => $_p) {
 			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
 				$_value = $matches[$_p['map']][0];
