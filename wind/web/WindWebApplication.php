@@ -188,27 +188,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * @return WindHttpRequest $request
-	 */
-	public function getRequest() {
-		return $this->request;
-	}
-
-	/**
-	 * @return WindHttpResponse $response
-	 */
-	public function getResponse() {
-		return $this->response;
-	}
-
-	/**
-	 * @return WindFactory $windFactory
-	 */
-	public function getWindFactory() {
-		return $this->windFactory;
-	}
-
-	/**
 	 * @param WindClassProxy $handler
 	 * @return
 	 */
@@ -217,11 +196,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if (!$filters) {return;}
 		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
 		foreach ($filters as $_filter) {
-			if (isset($_filter['class']) && !empty($_filter['pattern'])) {
-				preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token, $_matchs);
-				if ($_matchs)
-					$handler->registerEventListener('doAction', 
-						WindFactory::createInstance(Wind::import($_filter['class'])));
+			if (!isset($_filter['class']))
+				continue;
+			if (!$_filter['pattern'] || preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token)) {
+				$handler->registerEventListener('doAction', 
+					WindFactory::createInstance(Wind::import($_filter['class'])));
 			}
 		}
 	}
@@ -259,5 +238,26 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$forward->setVars($errorMessage->getError(), 'error');
 		$forward->setVars($exception->getCode(), 'errorCode');
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
+	}
+
+	/**
+	 * @return WindHttpRequest $request
+	 */
+	public function getRequest() {
+		return $this->request;
+	}
+
+	/**
+	 * @return WindHttpResponse $response
+	 */
+	public function getResponse() {
+		return $this->response;
+	}
+
+	/**
+	 * @return WindFactory $windFactory
+	 */
+	public function getWindFactory() {
+		return $this->windFactory;
 	}
 }
