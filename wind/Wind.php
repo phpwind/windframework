@@ -85,8 +85,6 @@ class Wind {
 	 * @return
 	 */
 	public static function resetApp() {
-		if (WIND_DEBUG & 2)
-			self::getApp()->getComponent('windLogger')->flush();
 		array_pop(self::$_currentApp);
 		self::$_currentAppName = end(self::$_currentApp);
 	}
