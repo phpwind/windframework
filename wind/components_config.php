@@ -14,6 +14,7 @@
 	'windLogger' => array(
 		'path' => 'WIND:log.WindLogger',
 		'scope' => 'singleton',
+		'destroy' => 'flush',
 		'constructor-arg' => array(
 			'0' => array(
 				'value' => 'data.log',
@@ -99,7 +100,7 @@
 		'path' => 'WIND:cache.strategy.WindFileCache',
 		'scope' => 'singleton',
 		'config' => array(
-			'dir' => 'data.config',
+			'dir' => 'data.caches',
 			'suffix' => 'php',
 			'expires' => '0',
 		),
