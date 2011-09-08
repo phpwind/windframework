@@ -8,7 +8,24 @@
  * @package 
  */
 class WindUtility {
-	
+
+	/**
+	 * 执行简单的条件表达式
+	 * @param string $v1
+	 * @param string $v2
+	 * @param string $expression
+	 * @return
+	 */
+	public static function evalExpression($v1, $v2, $expression) {
+		switch ($expression) {
+			case '==':
+				return $v1 == $v2;
+			case '===':
+				return $v1 === $v2;
+			 
+		}
+	}
+
 	/**
 	 * 递归合并两个数组
 	 * 
@@ -73,8 +90,8 @@ class WindUtility {
 	 * @return array
 	 */
 	public static function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
-		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 
-			'default' => $default, 'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
+		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
+			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
 
 }
