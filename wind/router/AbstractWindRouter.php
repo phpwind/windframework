@@ -10,6 +10,7 @@
  * @package 
  */
 abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
+	protected $defaultRoute = 'WIND:router.route.WindRoute';
 	protected $moduleKey = 'm';
 	protected $controllerKey = 'c';
 	protected $actionKey = 'a';
@@ -42,11 +43,11 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 			$this->moduleKey = $this->getConfig('module', 'url-param', $this->moduleKey);
 			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
 			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
-			foreach ($this->getConfig('routes', '', array()) as $ruleName => $rule) {
-				$class = isset($rule['class']) ? $rule['class'] : 'WIND:router.route.WindRoute';
+			foreach ($this->getConfig('routes', '', array()) as $routeName => $route) {
+				$class = isset($route['class']) ? $route['class'] : $this->defaultRoute;
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($class));
-				$instance->setConfig($rule);
-				$this->addRoute($ruleName, $instance);
+				$instance->setConfig($route);
+				$this->addRoute($routeName, $instance);
 			}
 		}
 	}
