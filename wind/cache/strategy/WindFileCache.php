@@ -59,8 +59,8 @@ class WindFileCache extends AbstractWindCache {
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::clear()
 	 */
-	public function clear() {
-		return WindFile::clearDir($this->getCacheDir());
+	public function clear($expireOnly = false) {
+		return WindFile::clearDir($this->getCacheDir(), $expireOnly);
 	}
 
 	/**

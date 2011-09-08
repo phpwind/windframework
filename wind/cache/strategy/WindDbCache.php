@@ -50,15 +50,15 @@ class WindDbCache extends AbstractWindCache {
 		$config && $this->setConfig($config);
 	}
 
-	/* 
-	 * @see AbstractWindCache#setValue()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::setValue()
 	 */
 	protected function setValue($key, $value, $expire = 0) {
 		return $this->store($key, $value, $expire);
 	}
 
-	/* 
-	 * @see AbstractWindCache#getValue()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::getValue()
 	 */
 	protected function getValue($key) {
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` =? AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
@@ -66,8 +66,8 @@ class WindDbCache extends AbstractWindCache {
 		return $data[$this->valueField];
 	}
 
-	/* 
-	 * @see AbstractWindCache#batchFetch()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::batchFetch()
 	 */
 	public function batchGet(array $keys) {
 		foreach ($keys as $key => $value) {
@@ -83,16 +83,16 @@ class WindDbCache extends AbstractWindCache {
 		return $result;
 	}
 
-	/* 
-	 * @see AbstractWindCache#deleteValue()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::deleteValue()
 	 */
 	protected function deleteValue($key) {
 		$sql = 'DELETE FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` = ? ';
 		return $this->getConnection()->createStatement($sql)->update(array($key));
 	}
 
-	/* 
-	 * @see AbstractWindCache#batchDelete()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::batchDelete()
 	 */
 	public function batchDelete(array $keys) {
 		foreach ($keys as $key => $value) {
@@ -103,11 +103,16 @@ class WindDbCache extends AbstractWindCache {
 		return $this->getConnection()->execute($sql);
 	}
 
-	/* 
-	 * @see AbstractWindCache#clear()
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::clear()
+	 * 删除过期数据或是全部删除
 	 */
-	public function clear() {
-		return $this->getConnection()->execute('DELETE FROM ' . $this->getTableName());
+	public function clear($expireOnly = false) {
+		$sql = sprintf('DELETE FROM `%s`', $this->getTableName());
+		if ($expireOnly) {
+			$sql = sprintf('DELETE FROM `%s` WHERE `%s` < ', $this->getTableName(), $this->expireField) . $this->getConnection()->quote(time());
+		}
+		return $this->getConnection()->execute($sql);
 	}
 
 	/* (non-PHPdoc)
