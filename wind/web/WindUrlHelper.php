@@ -17,23 +17,31 @@ class WindUrlHelper {
 	}
 
 	/**
-	 * @param unknown_type $args
+	 * @param string $url
+	 * @param boolean $decode
+	 * @param string $separator
+	 * @return array
 	 */
-	public static function urlToArgs($url, $decode = true) {
-		if (false !== ($pos = strpos($url, '?')))
-			$url = substr($url, $pos + 1);
-		$url = explode('&', $url . '&');
+	public static function urlToArgs($url, $decode = true, $separator = '&=') {
+		!$separator && $separator = '&=';
+		false !== ($pos = strpos($url, '?')) && $url = substr($url, $pos + 1);
+		$_sep1 = substr($separator, 0, 1);
+		if ($_sep2 = substr($separator, 1, 1)) {
+			$url = preg_replace('/' . preg_quote($_sep1) . '[\w+]' . preg_quote($_sep1) . '/i', $_sep1, $url);
+			$url = str_replace($_sep2, $_sep1, $url);
+		}
+		$url = explode($_sep1, trim($url, $_sep1) . $_sep1);
 		$args = array();
-		foreach ($url as $value) {
-			list($_k, $_v) = explode('=', $value . '=');
-			if ($_k) {
-				$decode && $_v = urldecode($_v);
-				if (strpos($_k, self::$_sep) === 0) {
-					$_k = substr($_k, strlen(self::$_sep));
-					$_v = unserialize($_v);
-				}
-				$args[$_k] = $_v;
+		for ($i = 0; $i < count($url); $i = $i + 2) {
+			if (!isset($url[$i]) || !isset($url[$i + 1]))
+				continue;
+			$_v = $decode ? urldecode($url[$i + 1]) : $url[$i + 1];
+			$_k = $url[$i];
+			if (strpos($_k, self::$_sep) === 0) {
+				$_k = substr($_k, strlen(self::$_sep));
+				$_v = unserialize($_v);
 			}
+			$args[$_k] = $_v;
 		}
 		return $args;
 	}
@@ -43,16 +51,20 @@ class WindUrlHelper {
 	 * @param array $args
 	 * @return string
 	 */
-	public static function argsToUrl($args) {
-		$_tmp = array();
+	public static function argsToUrl($args, $encode = true, $separator = '&=') {
+		!$separator && $separator = '&=';
+		$_sep1 = substr($separator, 0, 1);
+		$_sep2 = substr($separator, 1, 1);
+		!$_sep2 && $_sep2 = $_sep1;
+		$_tmp = '';
 		foreach ((array) $args as $key => $value) {
-			if (is_array($value)) {
-				$_tmp[] = self::$_sep . "$key=" . urlencode(serialize($value));
-				continue;
-			}
-			$_tmp[] = "$key=" . urlencode($value);
+			if (is_array($value))
+				$_tmp .= self::$_sep . "$key" . $_sep2 . urlencode(serialize($value));
+			else
+				$_tmp .= "$key" . $_sep2 . urlencode($value);
+			$_tmp .= $_sep1;
 		}
-		return implode('&', $_tmp);
+		return $_tmp;
 	}
 
 	/**
