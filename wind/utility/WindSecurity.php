@@ -55,9 +55,8 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function escapePath($fileName, $ifCheck = true) {
-		if (!self::_escapePath($fileName, $ifCheck)) {
-			throw new WindException('file name is illegal');
-		}
+		if (!self::_escapePath($fileName, $ifCheck))
+			throw new WindException('[utility.WindSecurity.escapePath] file name is illegal');
 		return $fileName;
 	}
 
@@ -68,8 +67,7 @@ class WindSecurity {
 	 */
 	public static function escapeDir($dir) {
 		$dir = strtr($dir, 
-			array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', 
-				';' => ''));
+			array("'" => '', '#' => '', '=' => '', '`' => '', '$' => '', '%' => '', '&' => '', ';' => ''));
 		return rtrim(preg_replace('/(\/){2,}|(\\\){1,}/', '/', $dir), '/');
 	}
 
@@ -98,11 +96,9 @@ class WindSecurity {
 	 */
 	public static function escapeString($string) {
 		$string = strtr($string, 
-			array("\0" => '', "%00" => '', "\t" => '    ', '  ' => '&nbsp;&nbsp;', "\r" => '', 
-				"\r\n" => '', "\n" => '', "%3C" => '&lt;', '<' => '&lt;', "%3E" => '&gt;', 
-				'>' => '&gt;', '"' => '&quot;', "'" => '&#39;'));
-		return preg_replace(
-			array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/', '/&(?!(#[0-9]+|[a-z]+);)/is'), 
+			array("\0" => '', "%00" => '', "\t" => '    ', '  ' => '&nbsp;&nbsp;', "\r" => '', "\r\n" => '', "\n" => '', 
+				"%3C" => '&lt;', '<' => '&lt;', "%3E" => '&gt;', '>' => '&gt;', '"' => '&quot;', "'" => '&#39;'));
+		return preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/', '/&(?!(#[0-9]+|[a-z]+);)/is'), 
 			array('', '&amp;'), $string);
 	}
 
@@ -164,16 +160,10 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function addSlashes($value, $gpc = false, $df = false) {
-		if (!$value || (!is_array($value) && !is_string($value) && !($value instanceof Traversable))) {
-			return $value;
-		}
+		if (!$value || (!is_array($value) && !is_string($value) && !($value instanceof Traversable))) {return $value;}
 		if (is_string($value)) {
-			if (false === $gpc && true === $df) {
-				return self::addSlashesForOutput($value);
-			}
-			if (false === $df && true === $gpc) {
-				return self::addSlashesForInput($value);
-			}
+			if (false === $gpc && true === $df) {return self::addSlashesForOutput($value);}
+			if (false === $df && true === $gpc) {return self::addSlashesForInput($value);}
 			return addslashes($value);
 		}
 		foreach ($value as $key => $_value) {
@@ -256,9 +246,7 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function sqlMulti($array, $strip = true) {
-		if (!is_array($array)) {
-			return '';
-		}
+		if (!is_array($array)) {return '';}
 		$str = '';
 		foreach ($array as $val) {
 			if (!empty($val) && is_array($val)) {
@@ -291,9 +279,7 @@ class WindSecurity {
 		$tmpname = strtolower($fileName);
 		$tmparray = array('://' => '', "\0" => '');
 		$ifCheck && $tmparray['..'] = '';
-		if (strtr($tmpname, $tmparray) != $tmpname) {
-			return false;
-		}
+		if (strtr($tmpname, $tmparray) != $tmpname) {return false;}
 		return true;
 	}
 

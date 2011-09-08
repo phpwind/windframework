@@ -141,9 +141,7 @@ class WindFile {
 	 */
 	public static function delFiles($path, $delDir = false, $level = 0) {
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
-		if (!$handler = opendir($path)) {
-			return false;
-		}
+		if (!$handler = opendir($path)) {return false;}
 		while (false !== ($filename = readdir($handler))) {
 			if ("." != $filename && ".." != $filename) {
 				if (is_dir($path . DIRECTORY_SEPARATOR . $filename)) {
@@ -192,9 +190,7 @@ class WindFile {
 	 * @return string|number
 	 */
 	public static function getFileInfo($fileName) {
-		if (false === is_file($fileName)) {
-			return array();
-		}
+		if (false === is_file($fileName)) {return array();}
 		$fileInfo['name'] = substr(strrchr($fileName, DIRECTORY_SEPARATOR), 1);
 		$fileInfo['path'] = $fileName;
 		$fileInfo['size'] = filesize($fileName);
@@ -217,9 +213,7 @@ class WindFile {
 	 * @return string|multitype:
 	 */
 	public static function getDirectoryInfo($dir) {
-		if (false !== is_dir($dir)) {
-			return array();
-		}
+		if (false !== is_dir($dir)) {return array();}
 		return stat($dir);
 	}
 
