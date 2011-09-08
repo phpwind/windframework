@@ -131,12 +131,15 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 class WindRender {
 
 	/**
-	 * @param string $tpl
-	 * @param array $vars
-	 * @param WindViewerResolver $viewer
+	 * @param string $__tpl
+	 * @param array $__vars
+	 * @param WindViewerResolver $__viewer
 	 * @throws WindViewException
 	 */
 	public static function render($__tpl, $__vars, $__viewer) {
+		$__theme = $__viewer->getWindView()->theme;
+		$themeUrl = $__theme ? $__theme : Wind::getApp()->getRequest()->getBaseUrl(true);
+		unset($__theme);
 		@extract($__vars, EXTR_REFS);
 		if (!@include ($__tpl))
 			throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, 

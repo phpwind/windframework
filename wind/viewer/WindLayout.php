@@ -12,11 +12,6 @@ class WindLayout extends WindModule {
 	/* 编译结果缓存 */
 	protected $blockKey = "<pw-wind key='\$' />";
 	/**
-	 * 定义主题包的位置
-	 * @var string
-	 */
-	private $theme;
-	/**
 	 * javascript集合
 	 * @var string
 	 */
@@ -53,24 +48,24 @@ class WindLayout extends WindModule {
 	 */
 	public function parser($viewer) {
 		$this->viewer = $viewer;
-		$content = '';
 		ob_start();
 		if ($this->layout) {
+			$__theme = $this->viewer->getWindView()->theme;
+			$themeUrl = $__theme ? $__theme : $this->getRequest()->getBaseUrl(true);
+			unset($__theme);
 			list($tpl) = $this->viewer->compile($this->layout);
-			if (!@include ($tpl)) {
-				throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
-					WindViewException::VIEW_NOT_EXIST);
-			}
+			if (!@include ($tpl)) {throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
+					WindViewException::VIEW_NOT_EXIST);}
 		} else
 			$this->content();
-		$content = ob_get_clean();
-		foreach ($this->segments as $key => $value) {
-			if ($key)
-				$content = str_replace("<pw-wind key='" . $key . "' />", $value[1], $content);
+		$__content = ob_get_clean();
+		foreach ($this->segments as $__key => $__value) {
+			if ($__key)
+				$__content = str_replace("<pw-wind key='" . $__key . "' />", $__value[1], $__content);
 		}
-		$content = preg_replace('/(<\/body>)/i', $this->script . '\\1', $content);
-		//$content = preg_replace('/<\/head>/i', $this->css . '</head>', $content);
-		return $content;
+		$this->script && $__content = preg_replace('/(<\/body>)/i', $this->script . '\\1', $__content);
+		$this->css && $__content = preg_replace('/<\/head>/i', $this->css . '</head>', $__content);
+		return $__content;
 	}
 
 	/**
@@ -89,13 +84,6 @@ class WindLayout extends WindModule {
 	public function content() {
 		$template = $this->viewer->getWindView()->templateName;
 		$this->segment($template);
-	}
-
-	/**
-	 * @param string $theme
-	 */
-	public function setTheme($theme) {
-		$this->theme = $theme;
 	}
 
 	/**
@@ -118,5 +106,4 @@ class WindLayout extends WindModule {
 	public function setCss($css) {
 		$this->css .= $css;
 	}
-
 }

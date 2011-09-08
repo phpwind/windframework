@@ -102,6 +102,8 @@ class WindView extends WindModule implements IWindView {
 			$this->compileDir = $this->getConfig('compile-dir', '', $this->compileDir);
 			$this->compileExt = $this->getConfig('compile-ext', '', $this->compileExt);
 			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
+			$this->layout = $this->getConfig('layout', '', $this->layout);
+			$this->theme = $this->getConfig('theme', '', $this->theme);
 			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
 		}
 	}
