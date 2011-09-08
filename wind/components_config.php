@@ -17,7 +17,7 @@
 		'destroy' => 'flush',
 		'constructor-arg' => array(
 			'0' => array(
-				'value' => 'data.log',
+				'value' => 'DATA:log',
 			),
 			'1' => array(
 				'value' => '0',
@@ -100,7 +100,7 @@
 		'path' => 'WIND:cache.strategy.WindFileCache',
 		'scope' => 'singleton',
 		'config' => array(
-			'dir' => 'data.caches',
+			'dir' => 'DATA:caches',
 			'suffix' => 'php',
 			'expires' => '0',
 		),
