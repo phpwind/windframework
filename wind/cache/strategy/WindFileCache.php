@@ -103,7 +103,7 @@ class WindFileCache extends AbstractWindCache {
 		$_dir = Wind::getRealPath($dir, false, true);
 		if (!is_dir($_dir))
 			mkdir($_dir, 0777, true);
-		$this->cacheDir = $_dir;
+		$this->cacheDir = realpath($_dir);
 	}
 
 	/**
