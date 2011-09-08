@@ -106,8 +106,7 @@ class WindLogger extends WindModule {
 		else
 			$this->_logCount >= $this->_autoFlush && $this->flush();
 		if ($level === self::LEVEL_PROFILE)
-			$message = $this->_build($msg, $level, $type, microtime(true), 
-				$this->getMemoryUsage(false));
+			$message = $this->_build($msg, $level, $type, microtime(true), $this->getMemoryUsage(false));
 		elseif ($level === self::LEVEL_DEBUG)
 			$message = $this->_build($msg, $level, $type, microtime(true));
 		else
@@ -130,9 +129,8 @@ class WindLogger extends WindModule {
 			return false;
 		Wind::import('WIND:utility.WindFile');
 		$_l = $_logTypes = $_logLevels = array();
-		$_map = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error', 
-			self::LEVEL_DEBUG => 'debug', self::LEVEL_TRACE => 'trace', 
-			self::LEVEL_PROFILE => 'profile');
+		$_map = array(self::LEVEL_INFO => 'info', self::LEVEL_ERROR => 'error', self::LEVEL_DEBUG => 'debug', 
+			self::LEVEL_TRACE => 'trace', self::LEVEL_PROFILE => 'profile');
 		
 		foreach ($this->_logs as $key => $value) {
 			$_l[] = $value[2];
@@ -223,8 +221,8 @@ class WindLogger extends WindModule {
 		if (strncasecmp($msg, self::TOKEN_BEGIN, strlen(self::TOKEN_BEGIN)) == 0) {
 			$_token = substr($msg, strlen(self::TOKEN_BEGIN));
 			$_token = substr($_token, 0, strpos($_token, ':'));
-			$this->_profiles[] = array($_token, 
-				substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, $timer, $mem);
+			$this->_profiles[] = array($_token, substr($msg, strpos($msg, ':', strlen(self::TOKEN_BEGIN)) + 1), $type, 
+				$timer, $mem);
 		} elseif (strncasecmp(self::TOKEN_END, $msg, strlen(self::TOKEN_END)) == 0) {
 			$_msg = "PROFILE! Message:";
 			$_token = substr($msg, strlen(self::TOKEN_END));
@@ -352,18 +350,12 @@ class WindLogger extends WindModule {
 		$_maxsize = ($this->_maxFileSize ? $this->_maxFileSize : 100) * 1024;
 		$_logfile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '.txt';
 		if (is_file($_logfile) && $_maxsize <= filesize($_logfile)) {
-			$counter = 0;
 			do {
-				$counter++;
-				$_newFile = $_logfile . '_' . date("Y_m_d_{$counter}");
+				$_newFile = $this->_logDir . '/log' . ($suffix ? '_' . $suffix : '') . '_' . time() . '.txt';
 			} while (is_file($_newFile));
 			@rename($_logfile, $_newFile);
 		}
 		return $_logfile;
-	}
-
-	public function __destruct() {
-		$this->flush();
 	}
 
 	/**
@@ -372,7 +364,7 @@ class WindLogger extends WindModule {
 	public function setLogDir($logDir) {
 		if (!is_dir($logDir))
 			$logDir = Wind::getRealDir($logDir);
-		$this->_logDir = $logDir;
+		$this->_logDir = realpath($logDir);
 	}
 
 	/**
