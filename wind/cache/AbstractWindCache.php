@@ -101,7 +101,7 @@ abstract class AbstractWindCache extends WindModule {
 			}
 			return $this->setValue($this->buildSecurityKey($key), serialize($data), $data[self::EXPIRE]);
 		} catch (Exception $e) {
-			throw new WindCacheException('Setting cache failed.' . $e->getMessage());
+			throw new WindCacheException('[cache.AbstractWindCache.set]Setting cache failed.' . $e->getMessage());
 		}
 	}
 
