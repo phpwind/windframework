@@ -22,7 +22,7 @@ class WindUtility {
 				return $v1 == $v2;
 			case '===':
 				return $v1 === $v2;
-			 
+		
 		}
 	}
 
@@ -67,7 +67,7 @@ class WindUtility {
 	public static function generateRandStr($length) {
 		$randstr = "";
 		for ($i = 0; $i < (int) $length; $i++) {
-			$randnum = rand(0, 61);
+			$randnum = mt_rand(0, 61);
 			if ($randnum < 10) {
 				$randstr .= chr($randnum + 48);
 			} else if ($randnum < 36) {
