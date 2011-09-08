@@ -56,6 +56,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		restore_error_handler();
 		restore_exception_handler();
 		$this->response->sendResponse();
+		$this->windFactory->executeDestroyMethod();
 		Wind::resetApp();
 	}
 
@@ -97,7 +98,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				throw new WindActionException(
 					'[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
-			$this->resolveActionMapping($handler);
+			if ($filters = $this->getConfig('filters'))
+				$this->resolveActionMapping($filters, $handler);
 			$this->doDispatch($handler->doAction($this->handlerAdapter));
 		} catch (WindActionException $e) {
 			$this->sendErrorMessage($e);
@@ -188,20 +190,31 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
+	 * @param array $filters
 	 * @param WindClassProxy $handler
 	 * @return
 	 */
-	protected function resolveActionMapping($handler) {
-		$filters = $this->getConfig('filters', '', array());
-		if (!$filters) {return;}
+	protected function resolveActionMapping($filters, $handler) {
+		/* @var $cache AbstractWindCache */
+		$_filters = array();
+		if ($cache = $this->getComponent('windCache')) {
+			$key = md5(serialize($filters));
+			$_filters = $cache->get($key);
+		}
 		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
-		foreach ($filters as $_filter) {
-			if (!isset($_filter['class']))
-				continue;
-			if (!$_filter['pattern'] || preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token)) {
-				$handler->registerEventListener('doAction', 
-					WindFactory::createInstance(Wind::import($_filter['class'])));
+		if (!isset($_filters[$_token])) {
+			foreach ($filters as $_filter) {
+				if (isset($_filter['class']))
+					if (!$_filter['pattern'] || preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', 
+						$_token)) {
+						$_filters[$_token][] = $_filter['class'];
+					}
 			}
+			$cache && $cache->set($key, $_filters);
+		}
+		if (empty($_filters[$_token])) {return;}
+		foreach ($_filters[$_token] as $key => $value) {
+			$handler->registerEventListener('doAction', $this->windFactory->createInstance(Wind::import($value)));
 		}
 	}
 
