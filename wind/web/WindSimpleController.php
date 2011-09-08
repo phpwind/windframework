@@ -45,13 +45,29 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	protected function resolveActionFilter($__filters) {
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
 		foreach ((array) $__filters as $__filter) {
-			if (isset($__filter['expression']) && !empty($__filter['expression'])) {
+			if (!empty($__filter['expression'])) {
+				$__v1 = '';
+				list($__p, $__o, $__v2) = explode('#', str_replace(array('=='), '#==#', $__filter['expression']));
+				$__p = explode('.', $__p);
+				switch (strtolower($__p[0])) {
+					case 'forward':
+						unset($__p[0]);
+						$__v1 = call_user_func_array(array($this->getForward(), 'getVars'), $__p);
+						break;
+					case 'g':
+						unset($__p[0]);
+						$__v1 = call_user_func_array(array(Wind::getApp(), 'getGlobal'), $__p);
+						break;
+					case 'requset':
+						unset($__p[0]);
+						$__v1 = $this->getInput($__p[2], $__p[1]);
+						break;
+					default:
+						isset($__p[1]) && $__v1 = $this->getInput($__p[1], $__p[0]);
+						break;
+				}
 				
-				if (!@eval('return ' . $__filter['expression'] . ';'))
-					continue;
-				/*list($p, $v) = explode('=', $__filter['expression'] . '=');
-				if ($this->getRequest()->getRequest($p) != $v)
-					continue;*/
+				continue;
 			}
 			$__args = array($this->getForward(), $this->getErrorMessage());
 			if (isset($__filter['args']))
@@ -79,7 +95,6 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @return 
 	 */
 	protected function forwardAction($action = 'run', $args = array(), $isRedirect = false) {
-		//$this->getForward()->forwardAnotherAction($action, $controller, $args, $isRedirect);
 		$this->getForward()->forwardAction($action, $args, $isRedirect);
 	}
 
