@@ -9,6 +9,12 @@
  */
 class WindUtility {
 
+	public static function resolveExpression($expression) {
+		$operators = array('==', '!=', '<', '>', '<=', '>=');
+		$operatorsReplace = array('#==#', '#!=#', '#<#', '#>#', '#<=#', '#>=#');
+		return explode('#', str_replace($operators, $operatorsReplace, $expression));
+	}
+
 	/**
 	 * 执行简单的条件表达式
 	 * @param string $v1
@@ -16,14 +22,24 @@ class WindUtility {
 	 * @param string $expression
 	 * @return
 	 */
-	public static function evalExpression($v1, $v2, $expression) {
-		switch ($expression) {
+	public static function evalExpression($v1, $v2, $operator) {
+		switch ($operator) {
 			case '==':
 				return $v1 == $v2;
-			case '===':
-				return $v1 === $v2;
-		
+			case '!=':
+				return $v1 != $v2;
+			case '<':
+				return $v1 < $v2;
+			case '>':
+				return $v1 > $v2;
+			case '<=':
+				return $v1 <= $v2;
+			case '>=':
+				return $v1 >= $v2;
+			default:
+				return false;
 		}
+		return false;
 	}
 
 	/**
