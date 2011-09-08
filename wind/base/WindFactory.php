@@ -37,6 +37,8 @@ class WindFactory implements IWindFactory {
 		$definition = isset($this->classDefinitions[$alias]) ? $this->classDefinitions[$alias] : array();
 		if (isset($this->prototype[$alias])) {
 			$instance = clone $this->prototype[$alias];
+			if (isset($definition['destroy']))
+				$this->destories[] = array($instance, $definition['destroy']);
 		} elseif (isset($this->instances[$alias])) {
 			$instance = $this->instances[$alias];
 		} else {
@@ -60,10 +62,8 @@ class WindFactory implements IWindFactory {
 			if (isset($definition['initMethod']))
 				$this->executeInitMethod($definition['initMethod'], $instance);
 			!isset($definition['scope']) && $definition['scope'] = 'application';
-			$this->setScope($alias, $definition['scope'], $instance);
+			$this->setScope($alias, $definition['scope'], $instance, $definition);
 		}
-		if (isset($definition['destroy']))
-			$this->setDestroy($definition['destroy'], $instance);
 		if (isset($definition['proxy']))
 			$instance = $this->setProxyForClass($definition['proxy'], $instance);
 		return $instance;
@@ -159,18 +159,12 @@ class WindFactory implements IWindFactory {
 	 * @return boolean
 	 */
 	public function executeDestroyMethod() {
-		foreach ($this->destories as $call) {
-			call_user_func_array($call);
+		try {
+			foreach ($this->destories as $call)
+				call_user_func_array($call, array());
+		} catch (Exception $e) {
+			throw new WindException($e->getMessage());
 		}
-	}
-
-	/**
-	 * @param string $destroy
-	 * @param string $instance
-	 * @return
-	 */
-	protected function setDestroy($destroy, $instance) {
-		$this->destories[] = array($instance, $destroy);
 	}
 
 	/**
@@ -178,18 +172,19 @@ class WindFactory implements IWindFactory {
 	 * @param string $scope
 	 * @param object $instance
 	 */
-	protected function setScope($alias, $scope, $instance) {
+	protected function setScope($alias, $scope, $instance, $definition) {
 		switch ($scope) {
 			case 'prototype':
 				$this->prototype[$alias] = clone $instance;
 				break;
 			case 'application':
 				$this->instances[$alias] = $instance;
-				break;
-			default:
+			case 'singleton':
 				$this->instances[$alias] = $instance;
+			default:
+				if (isset($definition['destroy']))
+					$this->destories[$alias] = array($instance, $definition['destroy']);
 				break;
-		
 		}
 		return true;
 	}
