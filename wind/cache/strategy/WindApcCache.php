@@ -38,7 +38,7 @@ class WindApcCache extends AbstractWindCache {
 	/*
 	 * @see AbstractWindCache#clear()
 	 */
-	public function clear() {
+	public function clear($expireOnly = false) {
 		apc_clear_cache();
 		return apc_clear_cache('user');
 	}

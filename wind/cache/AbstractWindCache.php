@@ -78,10 +78,12 @@ abstract class AbstractWindCache extends WindModule {
 	protected abstract function deleteValue($key);
 
 	/**
-	 * 清空所有缓存
+	 * 清楚缓存，过期及所有缓存
+	 * 
+	 * @param boolean $expireOnly 如果为true则仅仅只删除过期的数据
 	 * @return
 	 */
-	public abstract function clear();
+	public abstract function clear($expireOnly = false);
 
 	/**
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。

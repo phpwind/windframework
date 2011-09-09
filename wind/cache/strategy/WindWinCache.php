@@ -39,8 +39,8 @@ class WindWinCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache#clear()
 	 */
-	public function clear() {
-		return wincache_ucache_clear();
+	public function clear($expireOnly = false) {
+		return false === $expireOnly ? wincache_ucache_clear() : true;
 	}
 
 }

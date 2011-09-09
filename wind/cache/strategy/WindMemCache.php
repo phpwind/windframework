@@ -62,8 +62,8 @@ class WindMemCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache::clear()
 	 */
-	public function clear() {
-		return $this->memcache->flush();
+	public function clear($expireOnly = false) {
+		return false === $expireOnly ? $this->memcache->flush() : true;
 	}
 
 	/* (non-PHPdoc)
