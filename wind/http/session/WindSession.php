@@ -34,9 +34,11 @@
  * 		'scope' => 'singleton',
  * 	)
  * </pre>
- * 【扩展】:
- * 如果用户实现了自己的实现，需要调用自己的实现，则只需要更改path的值指定到自己的实现，即可。
- * 
+ * 【切忌】：
+ *    虽然框架的组件支持初始化方法的配置initMethod，但是在session这个配置中，当你需要使用其他的存储方式来存储session内容的时候，
+ *    是【不允许】被配置的，因为session_set_save_handler必须在session_start之前被设置，而设置了initMethod之后，将会使
+ *    session_start在session_set_save_handler之前被启动。
+ *    
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
