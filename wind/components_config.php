@@ -15,11 +15,11 @@
 		'path' => 'WIND:log.WindLogger',
 		'scope' => 'singleton',
 		'destroy' => 'flush',
-		'constructor-arg' => array(
-			'0' => array(
+		'constructor-args' => array(
+			'constructor-arg' => array(
 				'value' => 'DATA:log',
 			),
-			'1' => array(
+			'0' => array(
 				'value' => '0',
 			),
 		),
@@ -53,7 +53,9 @@
 			'template-ext' => 'htm',
 			'is-compile' => '0',
 			'compile-dir' => 'compile.template',
-			'is-cache' => '0',
+			'compile-ext' => 'tpl',
+			'layout' => '',
+			'theme' => '',
 		),
 		'properties' => array(
 			'viewResolver' => array(
@@ -104,5 +106,9 @@
 			'suffix' => 'php',
 			'expires' => '0',
 		),
+	),
+	'windSession' => array(
+		'path' => 'WIND:http.session.WindSession',
+		'scope' => 'singleton',
 	),
 );
