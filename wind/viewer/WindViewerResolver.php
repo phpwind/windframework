@@ -45,17 +45,18 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 		ob_start();
 		if (!$template) {
 			$template = $this->windView->templateName;
-			$_tpl = $this->windView->getCompileFile($template);
-			if ($this->checkReCompile()) {
+			$templateFilePath = $this->windView->getViewTemplate($template);
+			$compileFilePath = $this->windView->getCompileFile($template);
+			if ($this->checkReCompile($templateFilePath, $compileFilePath)) {
 				$layout = $this->getWindLayout();
 				$layout->setLayout($this->windView->layout);
 				$layout->setTheme($this->windView->theme);
-				WindFile::write($_tpl, $layout->parser($this));
+				WindFile::write($compileFilePath, $layout->parser($this));
 			}
 		} else
-			list($_tpl) = $this->compile($template);
+			list($compileFilePath) = $this->compile($template);
 		
-		WindRender::render($_tpl, Wind::getApp()->getResponse()->getData($template), $this);
+		WindRender::render($compileFilePath, Wind::getApp()->getResponse()->getData($template), $this);
 		return ob_get_clean();
 	}
 
@@ -94,10 +95,19 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 
 	/**
 	 * 检查是否需要重新编译,需要编译返回false，不需要编译返回true
+	 * 
+	 * @param string $templateFilePath
+	 * @param string $compileFilePath
 	 * @return boolean
 	 */
-	private function checkReCompile() {
-		return WIND_DEBUG || $this->getWindView()->isCompile;
+	private function checkReCompile($templateFilePath, $compileFilePath) {
+		if (WIND_DEBUG) {return true;}
+		if ($this->getWindView()->isCompile) {
+			$_c_m_t = @filemtime($compileFilePath);
+			if ((int) $_c_m_t <= (int) @filemtime($templateFilePath))
+				return true;
+		}
+		return false;
 	}
 
 	/**
