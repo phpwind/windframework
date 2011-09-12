@@ -68,7 +68,7 @@ class WindXmlParser {
 			}
 			if (1 !== $node->nodeType) continue;
 			
-			$nodeName = ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
+			$nodeName = "" !== ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
 			$tempChilds = $this->getChilds($node);
 			$tempChilds = array_merge($attributes, $tempChilds);
 			if (empty($tempChilds)) $tempChilds = '';
