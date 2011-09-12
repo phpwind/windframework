@@ -17,8 +17,10 @@
 	</component>
 	<component name='windLogger' path='WIND:log.WindLogger'
 		scope='singleton' destroy='flush'>
-		<constructor-arg value='DATA:log' />
-		<constructor-arg value='0' />
+		<constructor-args>
+			<constructor-arg name='0' value='DATA:log' />
+			<constructor-arg name='1' value='0' />
+		</constructor-args>
 	</component>
 	<component name='dispatcher' path='WIND:web.WindDispatcher'
 		scope='application'>
@@ -69,7 +71,7 @@
 		scope='singleton'>
 	</component>
 	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
-	<component name='windCache' path="WIND:cache.strategy.WindFileCache"
+	<component name='windCache' path='WIND:cache.strategy.WindFileCache'
 		scope='singleton'>
 		<!-- dbCache 需要配置properties属性 -->
 		<!--<properties> <property name='connection' ref='db' /> </properties> -->
@@ -78,5 +80,8 @@
 			<suffix>php</suffix>
 			<expires>0</expires>
 		</config>
+	</component>
+	<component name='windSession' path='WIND:http.session.WindSession'
+		scope='singleton'>
 	</component>
 </components>
