@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- <component name='' path='' factory-method='' init-method='' scope="application/singleton/prototype/" 
-	proxy=''> -->
+	proxy='' destroy=''> -->
 <!-- <property property-name='' ref/value/path=''> -->
 <!-- <constructor-arg ref/value=''> -->
 <!-- <config resource=''> -->
 <!-- </component> -->
 
 <components>
-	<component name='windWebApp' path='WIND:web.WindWebApplication'
+	<component name='windApplication' path='WIND:web.WindWebApplication'
 		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
@@ -16,8 +16,8 @@
 		</properties>
 	</component>
 	<component name='windLogger' path='WIND:log.WindLogger'
-		scope='singleton'>
-		<constructor-arg value='data.log' />
+		scope='singleton' destroy='flush'>
+		<constructor-arg value='DATA:log' />
 		<constructor-arg value='0' />
 	</component>
 	<component name='dispatcher' path='WIND:web.WindDispatcher'
@@ -39,7 +39,9 @@
 			<template-ext>htm</template-ext>
 			<is-compile>0</is-compile>
 			<compile-dir>compile.template</compile-dir>
-			<is-cache>0</is-cache>
+			<compile-ext>tpl</compile-ext>
+			<layout></layout>
+			<theme></theme>
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
@@ -72,7 +74,7 @@
 		<!-- dbCache 需要配置properties属性 -->
 		<!--<properties> <property name='connection' ref='db' /> </properties> -->
 		<config>
-			<dir>data.config</dir>
+			<dir>DATA:caches</dir>
 			<suffix>php</suffix>
 			<expires>0</expires>
 		</config>
