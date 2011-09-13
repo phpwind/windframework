@@ -18,7 +18,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $action = 'run';
 	protected $reverse = "%s?m=%s&c=%s&a=%s&";
 	
-	protected $currentRoute = '';
+	protected $defaultRoute = '';
 
 	/**
 	 * 解析请求参数，并返回路由结果
@@ -48,7 +48,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				if (!isset($route['class'])) continue;
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
-				$this->addRoute($routeName, $instance, (isset($route['current']) && $route['current'] === 'true'));
+				$this->addRoute($routeName, $instance, (isset($route['default']) && $route['default'] === 'true'));
 			}
 		}
 	}
@@ -77,9 +77,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @throws WindException
 	 * @return 
 	 */
-	public function addRoute($alias, $route, $current = false) {
+	public function addRoute($alias, $route, $default = false) {
 		$this->addInterceptors(array($alias => $route));
-		if ($current) $this->currentRoute = $alias;
+		if ($default) $this->defaultRoute = $alias;
 	}
 
 	/**

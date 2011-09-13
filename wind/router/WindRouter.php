@@ -21,7 +21,7 @@ class WindRouter extends AbstractWindRouter {
 	 * @see AbstractWindRouter::assemble()
 	 */
 	public function assemble($action, $args = array(), $route = null) {
-		$route || $route = $this->currentRoute;
+		$route || $route = $this->defaultRoute;
 		if ($route && (null !== $route = $this->getRoute($route))) {
 			$_url = $route->build($this, $action, $args);
 		} else {
