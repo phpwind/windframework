@@ -50,8 +50,10 @@ class WindDispatcher extends WindModule {
 	 * @return
 	 */
 	protected function dispatchWithRedirect($forward, $router) {
-		if (!($_url = $forward->getUrl()))
+		if (!($_url = $forward->getUrl())) {
 			$_url = $router->assemble($forward->getAction(), $forward->getArgs());
+		}
+		$_url = WindUrlHelper::checkUrl($_url, true);
 		$this->getResponse()->sendRedirect($_url);
 	}
 
@@ -64,19 +66,17 @@ class WindDispatcher extends WindModule {
 	 * @return
 	 */
 	protected function dispatchWithAction($forward, $router, $display) {
-		if (!$action = $forward->getAction())
-			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', 
-				WindException::ERROR_PARAMETER_TYPE_ERROR);
+		if (!$action = $forward->getAction()) throw new WindException(
+			'[web.WindDispatcher.dispatchWithAction] forward fail.', WindException::ERROR_PARAMETER_TYPE_ERROR);
 		$this->display = $display;
 		list($_a, $_c, $_m) = WindUrlHelper::resolveAction($action);
-		if ($_var = $forward->getVars())
-			$this->getResponse()->setData($_var, 'F');
+		if ($_var = $forward->getVars()) $this->getResponse()->setData($_var, 'F');
 		$_a && $router->setAction($_a);
 		$_c && $router->setController($_c);
 		$_m && $router->setModule($_m);
-		if ($this->checkToken($router))
-			throw new WindFinalException('[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
-				WindException::ERROR_SYSTEM_ERROR);
+		if ($this->checkToken($router)) throw new WindFinalException(
+			'[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, 
+			WindException::ERROR_SYSTEM_ERROR);
 		Wind::getApp()->processRequest();
 	}
 
