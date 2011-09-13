@@ -15,12 +15,12 @@
  * @package 
  */
 class WindXmlParser {
-
+	
 	/**
 	 * @var string 节点名称
 	 */
 	const NAME = 'name';
-
+	
 	/**
 	 * @var Domdocument DOM解析器
 	 */
@@ -59,29 +59,30 @@ class WindXmlParser {
 	public function getChilds($node) {
 		if (!$node instanceof DOMElement) return array();
 		$childs = array();
-		foreach ($node->childNodes as $node) {
+		foreach ($node->childNodes as $_node) {
 			$tempChilds = $attributes = array();
-			($node->hasAttributes()) && $attributes = $this->getAttributes($node);
-            if (3 == $node->nodeType) {
-				$value = trim($node->nodeValue);
-				(is_numeric($value) || $value) && $childs[0] = $value;//值为0的情况
+			$_node->hasAttributes() && $attributes = $this->getAttributes($_node);
+			if (3 == $_node->nodeType) {
+				$value = trim($_node->nodeValue);
+				(is_numeric($value) || $value) && $childs['__value'] = $value; //值为0的情况
 			}
-			if (1 !== $node->nodeType) continue;
+			if (1 !== $_node->nodeType) continue;
 			
-			$nodeName = "" !== ($name = $node->getAttribute(self::NAME)) ? $name : $node->nodeName;
-			$tempChilds = $this->getChilds($node);
+			$tempChilds = $this->getChilds($_node);
 			$tempChilds = array_merge($attributes, $tempChilds);
-			if (empty($tempChilds)) $tempChilds = '';
 			
-			$tempChilds = (isset($tempChilds[0]) && count($tempChilds) == 1) ? $tempChilds[0] : $tempChilds;
-			if (!isset($childs[$nodeName])) {
+			if (empty($tempChilds))
+				$tempChilds = '';
+			else
+				$tempChilds = (isset($tempChilds['__value']) && count($tempChilds) == 1) ? $tempChilds['__value'] : $tempChilds;
+			
+			$nodeName = "" !== ($name = $_node->getAttribute(self::NAME)) ? $name : $_node->nodeName;
+			if (!isset($childs[$nodeName]))
 				$childs[$nodeName] = $tempChilds;
-				continue;
-			} else {
+			else {
 				$element = $childs[$nodeName];
-				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? array_merge(array(
-					$element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
-				continue;
+				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? array_merge(
+					array($element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
 			}
 		}
 		return $childs;
