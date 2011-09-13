@@ -79,11 +79,11 @@ abstract class AbstractWindCache extends WindModule {
 
 	/**
 	 * 清楚缓存，过期及所有缓存
-	 * 
+	 * 默认为true，只清理过期或者散落的数据
 	 * @param boolean $expireOnly 如果为true则仅仅只删除过期的数据
 	 * @return
 	 */
-	public abstract function clear($expireOnly = false);
+	public abstract function clear($expireOnly = true);
 
 	/**
 	 * 设置缓存，如果key不存在，设置缓存，否则，替换已有key的缓存。
@@ -93,13 +93,18 @@ abstract class AbstractWindCache extends WindModule {
 	 * @param IWindCacheDependency $denpendency 缓存依赖
 	 * @return boolean
 	 */
-	public function set($key, $value, $expires = 0, AbstractWindCacheDependency $denpendency = null) {
+	public function set($key, $value, $expires = 0, AbstractWindCacheDependency $dependency = null) {
 		try {
-			$data = array(self::DATA => $value, self::EXPIRE => $expires ? $expires : $this->getExpire(), self::STORETIME => time(), self::DEPENDENCY => null, self::DEPENDENCYCLASS => '');
-			if (null != $denpendency) {
-				$denpendency->injectDependent();
-				$data[self::DEPENDENCY] = serialize($denpendency);
-				$data[self::DEPENDENCYCLASS] = get_class($denpendency);
+			$data = array(
+				self::DATA => $value, 
+				self::EXPIRE => $expires ? $expires : $this->getExpire(), 
+				self::STORETIME => time(), 
+				self::DEPENDENCY => null, 
+				self::DEPENDENCYCLASS => '');
+			if (null != $dependency) {
+				$dependency->injectDependent();
+				$data[self::DEPENDENCY] = serialize($dependency);
+				$data[self::DEPENDENCYCLASS] = get_class($dependency);
 			}
 			return $this->setValue($this->buildSecurityKey($key), serialize($data), $data[self::EXPIRE]);
 		} catch (Exception $e) {
@@ -198,7 +203,9 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return string
 	 */
 	protected function buildSecurityKey($key) {
-		return md5($this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode());
+		return md5(
+			$this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key .
+				 $this->getSecurityCode());
 	}
 
 	/**
