@@ -10,7 +10,6 @@
  * @package 
  */
 abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
-	protected $defaultRoute = 'WIND:router.route.WindRoute';
 	protected $moduleKey = 'm';
 	protected $controllerKey = 'c';
 	protected $actionKey = 'a';
@@ -18,6 +17,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $controller = 'index';
 	protected $action = 'run';
 	protected $reverse = "%s?m=%s&c=%s&a=%s&";
+	
+	protected $currentRoute = '';
 
 	/**
 	 * 解析请求参数，并返回路由结果
@@ -44,10 +45,10 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
 			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
 			foreach ($this->getConfig('routes', '', array()) as $routeName => $route) {
-				$class = isset($route['class']) ? $route['class'] : $this->defaultRoute;
-				$instance = $this->getSystemFactory()->createInstance(Wind::import($class));
+				if (!isset($route['class'])) continue;
+				$instance = $this->getSystemFactory()->createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
-				$this->addRoute($routeName, $instance);
+				$this->addRoute($routeName, $instance, (isset($route['current']) && $route['current'] === 'true'));
 			}
 		}
 	}
@@ -59,8 +60,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected function setParams($params) {
 		foreach ($params as $key => $value) {
 			$this->getRequest()->setAttribute($value, $key);
-			if (!$value)
-				continue;
+			if (!$value) continue;
 			if ($this->actionKey === $key)
 				$this->setAction($value);
 			elseif ($this->controllerKey === $key)
@@ -77,8 +77,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @throws WindException
 	 * @return 
 	 */
-	public function addRoute($alias, $route) {
+	public function addRoute($alias, $route, $current = false) {
 		$this->addInterceptors(array($alias => $route));
+		if ($current) $this->currentRoute = $alias;
 	}
 
 	/**
