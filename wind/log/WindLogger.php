@@ -139,7 +139,7 @@ class WindLogger extends WindModule {
 		}
 		if ($this->_writeType & 1) {
 			foreach ($_logLevels as $key => $value) {
-				if (!$fileName = $this->_getFileName($key))
+				if (!$fileName = $this->_getFileName($_map[$key]))
 					continue;
 				WindFile::write($fileName, join("", $value), 'a');
 			}
