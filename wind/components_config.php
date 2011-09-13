@@ -1,4 +1,18 @@
 <?php return array(
+	'aaa' => array(
+		'0' => array(
+			'value' => '1',
+		),
+		'1' => array(
+			'value' => '2',
+		),
+		'2' => array(
+			'value' => '3',
+		),
+		'3' => array(
+			'value' => '4',
+		),
+	),
 	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
@@ -16,11 +30,11 @@
 		'scope' => 'singleton',
 		'destroy' => 'flush',
 		'constructor-args' => array(
-			'constructor-arg' => array(
+			'0' => array(
 				'value' => 'DATA:log',
 			),
-			'0' => array(
-				'value' => '0',
+			'1' => array(
+				'value' => '2',
 			),
 		),
 	),
@@ -109,6 +123,15 @@
 	),
 	'windSession' => array(
 		'path' => 'WIND:http.session.WindSession',
+		'scope' => 'singleton',
+		'constructor-args' => array(
+			'0' => array(
+				'ref' => 'windCache',
+			),
+		),
+	),
+	'sessionCache' => array(
+		'path' => 'WIND:cache.strategy.WindDbCache',
 		'scope' => 'singleton',
 	),
 );
