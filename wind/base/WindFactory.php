@@ -44,14 +44,8 @@ class WindFactory implements IWindFactory {
 		} else {
 			if (!$definition)
 				throw new WindException('[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
-			
-			if (isset($definition['constructor-arg']))
-				foreach ((array) $definition['constructor-arg'] as $_var) {
-					if (isset($_var['value'])) {
-						$args[] = $_var['value'];
-					} elseif (isset($_var['ref']))
-						$args[] = $this->getInstance($_var['ref']);
-				}
+			if (isset($definition['constructor-args']) && !$args)
+				$this->buildArgs($definition['constructor-args'], $args);
 			if (!isset($definition['className']))
 				$definition['className'] = Wind::import(@$definition['path']);
 			$instance = $this->createInstance($definition['className'], $args);
@@ -165,6 +159,25 @@ class WindFactory implements IWindFactory {
 		} catch (Exception $e) {
 			throw new WindException($e->getMessage());
 		}
+	}
+
+	/**
+	 * @param $constructors
+	 * @param args
+	 */
+	protected function buildArgs($constructors, &$args) {
+		foreach ((array) $constructors as $key => $_var) {
+			$key = intval($key);
+			if (isset($_var['value'])) {
+				$args[$key] = $_var['value'];
+			} elseif (isset($_var['ref']))
+				$args[$key] = $this->getInstance($_var['ref']);
+			elseif (isset($_var['path'])) {
+				$_className = Wind::import($_var['path']);
+				$args[$key] = $this->createInstance($_className);
+			}
+		}
+		ksort($args);
 	}
 
 	/**
