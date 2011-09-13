@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="<?php echo Wind::getApp()->getResponse()->getCharset();?>" />
 <title><?php echo $topic; ?></title>
 <style>
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,p,blockquote,th,td {
@@ -74,8 +73,9 @@ h1 {
 	background: #f7f7f7;
 	background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f3f3f3) );
 	background: -moz-linear-gradient(top, #ffffff, #f3f3f3);
-	filter: progid : DXImageTransform.Microsoft.gradient ( startColorstr = '#ffffff', endColorstr =
-		'#f3f3f3' );
+	filter: progid :     DXImageTransform.Microsoft.gradient (     startColorstr =     '#ffffff',
+		endColorstr =  
+		  '#f3f3f3' );
 }
 
 h1 span {
@@ -144,9 +144,9 @@ ul li:hover {
 
 <h3>__Stack:</h3>
 <ul>
-<?php foreach($trace as $value): ?>
+	<?php foreach($trace as $value): ?>
 	<li><?php echo $value; ?></li>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 </ul>
 <div class="tips"><?php echo self::errorInfo(); ?></div>
 </div>
