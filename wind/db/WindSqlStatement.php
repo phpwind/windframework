@@ -268,15 +268,15 @@ class WindSqlStatement {
 	public function execute($params = array(), $rowCount = true) {
 		try {
 			if (WIND_DEBUG & 2)
-				Wind::getApp()->getComponent('windLogger')->profileBegin('SQL:execute sql statement.', 'component.db');
+				Wind::getApp()->getComponent('windLogger')->profileBegin('SQL:execute sql statement.', 'db');
 			$this->init();
 			$this->bindValues($params);
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			if (WIND_DEBUG & 2) {
-				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'component.db');
+				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'db');
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 'component.db');
+					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 'db');
 			}
 			return $_result;
 		} catch (PDOException $e) {
@@ -329,7 +329,7 @@ class WindSqlStatement {
 				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
 				if (WIND_DEBUG & 2)
 					Wind::getApp()->getComponent('windLogger')->info(
-						"[component.db.WindSqlStatement.init] Initialize statement success.", 'component.db');
+						"[component.db.WindSqlStatement.init] Initialize statement success.", 'db');
 			} catch (PDOException $e) {
 				throw new WindDbException("Initialization WindSqlStatement failed." . $e->getMessage());
 			}
