@@ -82,7 +82,7 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 				WindViewException::VIEW_NOT_EXIST);
 		
 		$compileFile = $this->windView->getCompileFile($template);
-		if (!$this->checkReCompile())
+		if (!$this->checkReCompile($templateFile, $compileFile))
 			return array($compileFile, '');
 			/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
