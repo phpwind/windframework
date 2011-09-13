@@ -154,7 +154,7 @@ class WindSession extends WindModule {
 	public function setDataStoreHandler($dataStoreHandler, $sessionHandler) {
 		if (!$dataStoreHandler) return;
 		if ($sessionHandler === null) {
-			Wind::import('WIND:http.session.WindSessionHandler');
+			Wind::import('WIND:http.session.handler.WindSessionHandler');
 			$sessionHandler = new WindSessionHandler();
 		}
 		$sessionHandler->registerHandler($dataStoreHandler);
