@@ -78,7 +78,6 @@ class WindSession extends WindModule {
 	 * @return mixed
 	 */
 	public function get($key) {
-		var_dump(session_is_registered($key));
 		return $this->isRegistered($key) ? $_SESSION[$key] : '';
 	}
 
@@ -151,13 +150,14 @@ class WindSession extends WindModule {
 	 * @param AbstractWindCache $handler
 	 * @param WindSessionHandler $sessionHandler
 	 */
-	public function setDataStoreHandler($dataStoreHandler, $sessionHandler) {
-		if (!$dataStoreHandler) return;
-		if ($sessionHandler === null) {
-			Wind::import('WIND:http.session.handler.WindSessionHandler');
-			$sessionHandler = new WindSessionHandler();
+	public function setDataStoreHandler($dataStoreHandler, $sessionHandler = null) {
+		if ($dataStoreHandler) {
+			if ($sessionHandler === null) {
+				Wind::import('WIND:http.session.handler.WindSessionHandler');
+				$sessionHandler = new WindSessionHandler();
+			}
+			$sessionHandler->registerHandler($dataStoreHandler);
 		}
-		$sessionHandler->registerHandler($dataStoreHandler);
 		$this->start();
 	}
 }
