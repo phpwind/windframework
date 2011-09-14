@@ -572,7 +572,7 @@ class WindHttpResponse implements IWindResponse {
 			$this->_data[$key] = $data;
 		else {
 			if (is_object($data)) $data = get_object_vars($data);
-			if (is_array($data)) $this->_data += $data;
+			if (is_array($data)) $this->_data = array_merge($this->_data, $data);
 		}
 	}
 

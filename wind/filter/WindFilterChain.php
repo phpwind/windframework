@@ -43,7 +43,7 @@ class WindFilterChain extends WindHandlerInterceptorChain {
 			unset($this->_interceptors[$key]);
 		}
 		$_interceptors[get_class($filter)] = $filter;
-		$this->_interceptors = (array) $_interceptors + (array) $this->_interceptors;
+		$this->_interceptors = array_merge((array) $_interceptors, (array) $this->_interceptors);
 	}
 
 	/**

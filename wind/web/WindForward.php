@@ -63,7 +63,7 @@ class WindForward extends WindModule {
 			if (is_object($vars))
 				$vars = get_object_vars($vars);
 			if (is_array($vars))
-				$this->vars += $vars;
+				$this->vars = array_merge($this->vars, $vars);
 		} else
 			$this->vars[$key] = $vars;
 	}

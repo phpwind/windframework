@@ -35,7 +35,7 @@ class WindRoute extends AbstractWindRoute {
 			$this->params[$_n]['value'] = $params[$_n] = trim($_value, '-/');
 		}
 		list(, $_args) = explode('&', $_pathInfo . '&', 2);
-		$_args && $params += WindUrlHelper::urlToArgs($_args, true, $this->separator);
+		$_args && $params = array_merge($params, WindUrlHelper::urlToArgs($_args, true, $this->separator));
 		return $params;
 	}
 

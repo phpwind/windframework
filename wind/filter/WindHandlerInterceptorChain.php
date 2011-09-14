@@ -62,7 +62,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	 */
 	public function addInterceptors($interceptors) {
 		if (is_array($interceptors))
-			$this->_interceptors += $interceptors;
+			$this->_interceptors = array_merge($this->_interceptors, $interceptors);
 		else
 			$this->_interceptors[] = $interceptors;
 	}

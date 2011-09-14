@@ -52,7 +52,7 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 			elseif (is_object($error))
 				$error = get_object_vars($error);
 			if (is_array($error))
-				$this->error += $error;
+				$this->error = array_merge($this->error, $error);
 		} else
 			$this->error[$key] = $error;
 	}
