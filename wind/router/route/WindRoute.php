@@ -10,18 +10,23 @@
  * @package 
  */
 class WindRoute extends AbstractWindRoute {
-	protected $pattern = '^([\w-_\.]+\.\w+\?|\?|\w+\.\w+\?\/)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
-	protected $reverse = '%s%s/%s/%s/';
-	protected $params = array('script' => array('map' => 1), 'a' => array('map' => 2), 'c' => array('map' => 3), 
-		'm' => array('map' => 4));
+	protected $pattern = '^([\w-_\.]+\.\w+[\?\/]|\?|\w+\.\w+\?\/)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
+	protected $reverse = '%s/%s/%s/%s/';
 	protected $separator = '/';
+	protected $params = array(
+		'script' => array('map' => 1), 
+		'a' => array('map' => 2), 
+		'c' => array('map' => 3), 
+		'm' => array('map' => 4));
 
 	/* (non-PHPdoc)
 	 * @see IWindRoute::match()
 	 */
 	public function match() {
 		$_pathInfo = trim(str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri()), '/');
-		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) {return null;}
+		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) {
+			return null;
+		}
 		foreach ($this->params as $_n => $_p) {
 			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
 				$_value = $matches[$_p['map']][0];
@@ -41,8 +46,7 @@ class WindRoute extends AbstractWindRoute {
 		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
 		$_args[] = $this->reverse;
 		foreach ($this->params as $key => $val) {
-			if (!isset($val['map']))
-				continue;
+			if (!isset($val['map'])) continue;
 			if ($key === $router->getModuleKey())
 				$_args[$val['map']] = $_m ? $_m : $router->getModule();
 			elseif ($key === $router->getControllerKey())
