@@ -546,7 +546,7 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function setData($data, $key = '') {
 		if ($key)
-			$this->_data[$key] = $data;
+			$key === 'G' ? $this->_data[$key] += $data : $this->_data[$key] = $data;
 		else {
 			if (is_object($data))
 				$data = get_object_vars($data);

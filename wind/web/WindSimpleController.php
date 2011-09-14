@@ -52,26 +52,27 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
 		if (!$_fitlers) {
 			foreach ((array) $filters as $filter) {
-				if (empty($filter['class'])) {
+				if (!empty($filter['class'])) {
 					if (!empty($filter['expression'])) {
 						$v1 = '';
-						list($p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
-						$p = explode('.', $p);
-						switch (strtolower($p[0])) {
+						list($p1, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
+						$p = explode('.', $p1);
+						switch (strtolower(array_shift($p))) {
 							case 'forward':
 								$call = array($this->getForward(), 'getVars');
+								break;
 							case 'g':
 								$call = array(Wind::getApp(), 'getGlobal');
+								break;
 							case 'request':
 								$call = array($this->getRequest(), 'getRequest');
+								break;
 							default:
-								if (!isset($call))
-									$call = array($this, 'getInput');
-								else
-									unset($p[0]);
-								$v1 = call_user_func_array($call, $p);
+								$call = array($this, 'getInput');
+								$p = (array)$p1;
 								break;
 						}
+						$v1 = call_user_func_array($call, $p);
 						if (!WindUtility::evalExpression($v1, $v2, $o))
 							continue;
 					}
