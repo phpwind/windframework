@@ -19,7 +19,7 @@
 		scope='singleton' destroy='flush'>
 		<constructor-args>
 			<constructor-arg name='0' value='DATA:log' />
-			<constructor-arg name='1' value='0' />
+			<constructor-arg name='1' value='2' />
 		</constructor-args>
 	</component>
 	<component name='dispatcher' path='WIND:web.WindDispatcher'
@@ -66,7 +66,7 @@
 	</component>
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'>
-	</component>
+	</component
 	<component name='configParser' path='WIND:parser.WindConfigParser'
 		scope='singleton'>
 	</component>
@@ -82,6 +82,9 @@
 		</config>
 	</component>
 	<component name='windSession' path='WIND:http.session.WindSession'
-		scope='singleton'>
+		scope='singleton' destroy='commit'>
+		<constructor-args>
+			<constructor-arg name='0' ref='windCache' />
+		</constructor-args>
 	</component>
 </components>
