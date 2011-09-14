@@ -117,7 +117,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		 * @return 
 		 */
 		public function setGlobal($data, $key = '') {
-			$_G = $this->getGlobal();
+			$_G = (array)$this->getGlobal();
 			if ($key)
 				$_G[$key] = $data;
 			else {

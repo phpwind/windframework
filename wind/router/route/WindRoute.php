@@ -12,11 +12,11 @@
 class WindRoute extends AbstractWindRoute {
 	protected $pattern = '^([\w-_\.]+\.\w+[\?\/]{1,2}|\?)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
 	protected $reverse = '%s/%s/%s/%s/';
-	protected $separator = '/';
+	protected $separator = '&=';
 	protected $params = array(
-		'script' => array('map' => 1), 
-		'a' => array('map' => 2), 
-		'c' => array('map' => 3), 
+		'script' => array('map' => 1),
+		'a' => array('map' => 2),
+		'c' => array('map' => 3),
 		'm' => array('map' => 4));
 
 	/* (non-PHPdoc)
@@ -34,7 +34,7 @@ class WindRoute extends AbstractWindRoute {
 				$_value = isset($_p['default']) ? $_p['default'] : '';
 			$this->params[$_n]['value'] = $params[$_n] = trim($_value, '-/');
 		}
-		list(, $_args) = explode('&', $_pathInfo . '&');
+		list(, $_args) = explode('&', $_pathInfo . '&', 2);
 		$_args && $params += WindUrlHelper::urlToArgs($_args, true, $this->separator);
 		return $params;
 	}
