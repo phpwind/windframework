@@ -9,10 +9,22 @@
  */
 class WindUtility {
 
+	/**
+	 * 解析表达式
+	 * 表达式格式: namespace:arg1.arg2.arg3.arg4.arg5==value
+	 * 返回: array($namespace,$param,$operator,$value)
+	 * @param string $expression
+	 * @return multitype:unknown Ambigous <string, multitype:> multitype: 
+	 */
 	public static function resolveExpression($expression) {
 		$operators = array('==', '!=', '<', '>', '<=', '>=');
 		$operatorsReplace = array('#==#', '#!=#', '#<#', '#>#', '#<=#', '#>=#');
-		return explode('#', str_replace($operators, $operatorsReplace, $expression));
+		list($p, $o, $v2) = explode('#', str_replace($operators, $operatorsReplace, $expression));
+		if (strpos($p, ":") !== false)
+			list($_namespace, $p) = explode(':', trim($p, ':'));
+		else
+			$_namespace = '';
+		return array($_namespace, $p, $o, $v2);
 	}
 
 	/**
@@ -67,8 +79,7 @@ class WindUtility {
 	 * @return string
 	 */
 	public static function lcfirst($str) {
-		if (function_exists('lcfirst'))
-			return lcfirst($str);
+		if (function_exists('lcfirst')) return lcfirst($str);
 		
 		$str[0] = strtolower($str[0]);
 		return $str;
@@ -106,7 +117,11 @@ class WindUtility {
 	 * @return array
 	 */
 	public static function buildValidateRule($field, $validator, $args = array(), $default = null, $message = '') {
-		return array('field' => $field, 'validator' => $validator, 'args' => (array) $args, 'default' => $default, 
+		return array(
+			'field' => $field, 
+			'validator' => $validator, 
+			'args' => (array) $args, 
+			'default' => $default, 
 			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
 
