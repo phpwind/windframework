@@ -117,7 +117,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		 * @return 
 		 */
 		public function setGlobal($data, $key = '') {
-			$_G = (array)$this->getGlobal();
+			$_G = $this->getGlobal();
+			$_G = is_array($_G) ? $_G : array();
 			if ($key)
 				$_G[$key] = $data;
 			else {
@@ -132,7 +133,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		 * @return string|object|array
 		 */
 		public function getGlobal() {
-			$args = array('G') + func_get_args();
+			$args = array_merge(array('G'), func_get_args());
 			return call_user_func_array(array($this->response, 'getData'), $args);
 		}
 
