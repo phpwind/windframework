@@ -26,7 +26,7 @@ class WindHttpResponse implements IWindResponse {
 	
 	private $_status = '';
 	
-	private $_data = array('G' => array(), 'F' => array());
+	private $_data = array();
 	
 	/*
      * Server status codes; see RFC 2068.
@@ -297,17 +297,48 @@ class WindHttpResponse implements IWindResponse {
 	const W_HTTP_VERSION_NOT_SUPPORTED = 505;
 
 	public function codeMap($code) {
-		$map = array(505 => 'http version not supported', 504 => 'gateway timeout', 503 => 'service unavailable', 
-			503 => 'bad gateway', 502 => 'bad gateway', 501 => 'not implemented', 500 => 'internal server error', 
-			417 => 'expectation failed', 416 => 'requested range not satisfiable', 415 => 'unsupported media type', 
-			414 => 'request uri too long', 413 => 'request entity too large', 412 => 'precondition failed', 
-			411 => 'length required', 410 => 'gone', 409 => 'conflict', 408 => 'request timeout', 
-			407 => 'proxy authentication required', 406 => 'not acceptable', 405 => 'method not allowed', 
-			404 => 'not found', 403 => 'forbidden', 402 => 'payment required', 401 => 'unauthorized', 
-			400 => 'bad request', 300 => 'multiple choices', 301 => 'moved permanently', 302 => 'moved temporarily', 
-			302 => 'found', 303 => 'see other', 304 => 'not modified', 305 => 'use proxy', 307 => 'temporary redirect', 
-			100 => 'continue', 101 => 'witching protocols', 200 => 'ok', 201 => 'created', 202 => 'accepted', 
-			203 => 'non authoritative information', 204 => 'no content', 205 => 'reset content', 
+		$map = array(
+			505 => 'http version not supported', 
+			504 => 'gateway timeout', 
+			503 => 'service unavailable', 
+			503 => 'bad gateway', 
+			502 => 'bad gateway', 
+			501 => 'not implemented', 
+			500 => 'internal server error', 
+			417 => 'expectation failed', 
+			416 => 'requested range not satisfiable', 
+			415 => 'unsupported media type', 
+			414 => 'request uri too long', 
+			413 => 'request entity too large', 
+			412 => 'precondition failed', 
+			411 => 'length required', 
+			410 => 'gone', 
+			409 => 'conflict', 
+			408 => 'request timeout', 
+			407 => 'proxy authentication required', 
+			406 => 'not acceptable', 
+			405 => 'method not allowed', 
+			404 => 'not found', 
+			403 => 'forbidden', 
+			402 => 'payment required', 
+			401 => 'unauthorized', 
+			400 => 'bad request', 
+			300 => 'multiple choices', 
+			301 => 'moved permanently', 
+			302 => 'moved temporarily', 
+			302 => 'found', 
+			303 => 'see other', 
+			304 => 'not modified', 
+			305 => 'use proxy', 
+			307 => 'temporary redirect', 
+			100 => 'continue', 
+			101 => 'witching protocols', 
+			200 => 'ok', 
+			201 => 'created', 
+			202 => 'accepted', 
+			203 => 'non authoritative information', 
+			204 => 'no content', 
+			205 => 'reset content', 
 			206 => 'partial content');
 		return isset($map[$code]) ? $map[$code] : '';
 	}
@@ -319,8 +350,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function setHeader($name, $value, $replace = false) {
-		if (!$name || !$value)
-			return;
+		if (!$name || !$value) return;
 		$name = $this->_normalizeHeader($name);
 		$setted = false;
 		foreach ($this->_headers as $key => $one) {
@@ -330,8 +360,7 @@ class WindHttpResponse implements IWindResponse {
 				break;
 			}
 		}
-		if ($setted === false)
-			$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
+		if ($setted === false) $this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
 
 	/**
@@ -341,8 +370,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $value 响应头的字段取值
 	 */
 	public function addHeader($name, $value, $replace = false) {
-		if ($name == '' || $value == '')
-			return;
+		if ($name == '' || $value == '') return;
 		$name = $this->_normalizeHeader($name);
 		$this->_headers[] = array('name' => $name, 'value' => $value, 'replace' => $replace);
 	}
@@ -369,8 +397,7 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function setStatus($status, $message = '') {
 		$status = intval($status);
-		if ($status < 100 || $status > 505)
-			return;
+		if ($status < 100 || $status > 505) return;
 		
 		$this->_status = (int) $status;
 	}
@@ -382,8 +409,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $name
 	 */
 	public function setBody($content, $name = null) {
-		if (!$content)
-			return;
+		if (!$content) return;
 		!$name && $name = 'default';
 		array_push($this->_bodyIndex, $name);
 		$this->_body[$name] = $content;
@@ -405,8 +431,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $message
 	 */
 	public function sendError($status = self::W_NOT_FOUND, $message = '') {
-		if (!is_int($status) || $status < 400 || $status > 505)
-			return;
+		if (!is_int($status) || $status < 400 || $status > 505) return;
 		$this->setBody($message, 'error');
 		$this->setStatus($status);
 		$this->sendResponse();
@@ -418,8 +443,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @param string $location
 	 */
 	public function sendRedirect($location, $status = 302) {
-		if (!is_int($status) || $status < 300 || $status > 399)
-			return;
+		if (!is_int($status) || $status < 300 || $status > 399) return;
 		
 		$this->addHeader('Location', $location, true);
 		$this->setStatus($status);
@@ -440,8 +464,7 @@ class WindHttpResponse implements IWindResponse {
 	 * 发送响应头部信息
 	 */
 	public function sendHeaders() {
-		if ($this->isSendedHeader())
-			return;
+		if ($this->isSendedHeader()) return;
 		foreach ($this->_headers as $header) {
 			header($header['name'] . ': ' . $header['value'], $header['replace']);
 		}
@@ -485,8 +508,8 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
-		if ($throw && $sended)
-			throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+		if ($throw && $sended) throw new WindException(
+			__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
@@ -546,12 +569,10 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function setData($data, $key = '') {
 		if ($key)
-			$key === 'G' ? $this->_data[$key] += $data : $this->_data[$key] = $data;
+			$this->_data[$key] = $data;
 		else {
-			if (is_object($data))
-				$data = get_object_vars($data);
-			if (is_array($data))
-				$this->_data += $data;
+			if (is_object($data)) $data = get_object_vars($data);
+			if (is_array($data)) $this->_data += $data;
 		}
 	}
 
