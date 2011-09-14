@@ -133,7 +133,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		 * @return string|object|array
 		 */
 		public function getGlobal() {
-			$args = array_merge(array('G'), func_get_args());
+			$_args = func_get_args();
+			$args = array_merge(array('G'), $_args);
 			return call_user_func_array(array($this->response, 'getData'), $args);
 		}
 
