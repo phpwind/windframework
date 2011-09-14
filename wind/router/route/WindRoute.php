@@ -10,7 +10,7 @@
  * @package 
  */
 class WindRoute extends AbstractWindRoute {
-	protected $pattern = '^([\w-_\.]+\.\w+[\?\/]|\?|\w+\.\w+\?\/)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
+	protected $pattern = '^([\w-_\.]+\.\w+[\?\/]{1,2}|\?)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
 	protected $reverse = '%s/%s/%s/%s/';
 	protected $separator = '/';
 	protected $params = array(
