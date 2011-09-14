@@ -50,6 +50,8 @@ while (($file = readdir($dh)) !== false) {
 
 echo 'compile successful!';
 
+/*********************************************************************/
+/* 向wind包中注入imports文件目录信息 */
 function addImports() {
 	$_content = WindString::varToString($GLOBALS['imports']);
 	$_content = str_replace(array("\r\n", "\t", " "), '', $_content);
