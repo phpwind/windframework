@@ -81,7 +81,6 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function render($display = false) {
 		if (!$this->templateName) {return;}
-		//TODO 其他输出类型
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
