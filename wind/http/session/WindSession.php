@@ -3,16 +3,19 @@
  * 会话机制，依赖Cache机制实现，应用可以根据自己的需求配置需要的存储方式实现会话存储
  * 【配置】支持组件配置格式:
  * <pre>
- * 'WindSession' => array(
- * 'path'       => 'WIND:http.session.WindSession',
- * 'scope'      => 'singleton',
- * 'destroy'    => 'close',  //配置在进程结束时使用的方法，执行session  write和close
- * 'properties' => array(
- * 'handler' => array(
- * 'ref' => 'sessionSave',//用户配置的缓存类型--缓存组件的配置格式参照缓存配置文件
- * ),
- * ),
- * )
+ *  'windSession' => array(
+ *		'path' => 'WIND:http.session.WindSession',
+ *		'scope' => 'singleton',
+ *		'constructor-args' => array(
+ *			'0' => array(
+ *				'ref' => 'windCache',
+ *			),
+ *		),
+ *	)，
+ * 'sessionCache' => array(
+ *		'path' => 'WIND:cache.strategy.WindDbCache',
+ *		'scope' => 'singleton',
+ *	),
  * </pre>
  * 【使用】调用时使用：
  * <pre>
@@ -29,15 +32,11 @@
  * 【使用原生】：
  * 如果用户不需要配置自己其他存储方式的session，则不许要修改任何调用，只要在WindSession的配置中将properties配置项去掉即可。如下：
  * <pre>
- * 'WindSession' => array(
- * 'path' => 'WIND:http.session.WindSession',
- * 'scope' => 'singleton',
- * )
+ *  'WindSession' => array(
+ * 		'path' => 'WIND:http.session.WindSession',
+ * 		'scope' => 'singleton',
+ *  )
  * </pre>
- * 【切忌】：
- * 虽然框架的组件支持初始化方法的配置initMethod，但是在session这个配置中，当你需要使用其他的存储方式来存储session内容的时候，
- * 是【不允许】被配置的，因为session_set_save_handler必须在session_start之前被设置，而设置了initMethod之后，将会使
- * session_start在session_set_save_handler之前被启动。
  * 
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
