@@ -16,7 +16,6 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $module;
 	protected $controller = 'index';
 	protected $action = 'run';
-	protected $reverse = "%s?%s=%s&%s=%s&%s=%s&";
 	
 	protected $defaultRoute = '';
 

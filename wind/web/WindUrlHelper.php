@@ -74,7 +74,7 @@ class WindUrlHelper {
 				$_tmp .= "$key" . $_sep2 . urlencode($value);
 			$_tmp .= $_sep1;
 		}
-		return $_tmp;
+		return trim($_tmp, $_sep1);
 	}
 
 	/**
