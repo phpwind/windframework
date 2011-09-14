@@ -6,23 +6,25 @@
 	<user>root</user>
 	<pwd>root</pwd>
 	<charset>utf8</charset>
-	<tablePrefix>pw_</tablePrefix>
+	<tableprefix>pw_</tableprefix>
 </WIND>
 
 <!-- COM:db.WindConnectionManager 配置格式 -->
 <WIND>
-	<connection name='master'>
-		<dsn>mysql:host=localhost;dbname=test</dsn>
-		<user>root</user>
-		<pwd>root</pwd>
-		<charset>utf8</charset>
-		<tablePrefix>pw_</tablePrefix>
-	</connection>
-	<connection name='slave'>
-		<dsn>mysql:host=localhost;dbname=test</dsn>
-		<user>root</user>
-		<pwd>root</pwd>
-		<charset>utf8</charset>
-		<tablePrefix>pw_</tablePrefix>
-	</connection>
+	<connections except='*:(db1);user*,tablename2:(db1|db2);'>
+		<connection name='db1'>
+			<dsn>mysql:host=localhost;dbname=test</dsn>
+			<user>root</user>
+			<pwd>root</pwd>
+			<charset>utf8</charset>
+			<tableprefix>pw_</tableprefix>
+		</connection>
+		<connection name='db2'>
+			<dsn>mysql:host=localhost;dbname=test</dsn>
+			<user>root</user>
+			<pwd>root</pwd>
+			<charset>utf8</charset>
+			<tableprefix>pw_</tableprefix>
+		</connection>
+	</connections>
 </WIND>
