@@ -46,10 +46,8 @@ class Wind {
 				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
 			}
 			$application = $factory->getInstance('windApplication', array($config, $factory));
-			if (!$application instanceof IWindApplication) throw new WindException(
-				'[Wind.application] ' . get_class($application), WindException::ERROR_CLASS_TYPE_ERROR);
-			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath(
-				$config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
+			if (!$application instanceof IWindApplication) throw new WindException('[Wind.application] ' . get_class($application), WindException::ERROR_CLASS_TYPE_ERROR);
+			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath($config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
 			self::$_app[$appName] = $application;
 		}
@@ -75,8 +73,7 @@ class Wind {
 		if (isset(self::$_app[$_appName]))
 			return self::$_app[$_appName];
 		else
-			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
-				WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', WindException::ERROR_CLASS_NOT_EXIST);
 	}
 
 	/**
@@ -161,7 +158,7 @@ class Wind {
 			}
 			array_unshift(self::$_includePaths, $path);
 			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
-				throw new Exception('set include path error.');
+				throw new Exception('[wind.register] set include path error.');
 			}
 		}
 	}
@@ -271,8 +268,9 @@ class Wind {
 	 * @return
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
-		if (!$appName || in_array($appName, self::$_currentApp)) throw new WindException('Nested request', 
-			WindException::ERROR_SYSTEM_ERROR);
+		if (!$appName || in_array($appName, self::$_currentApp)) {
+			throw new WindException('[wind.beforRun] Nested request', WindException::ERROR_SYSTEM_ERROR);
+		}
 		array_push(self::$_currentApp, $appName);
 		self::$_currentAppName = $appName;
 	}
