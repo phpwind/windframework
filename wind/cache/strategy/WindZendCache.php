@@ -38,8 +38,8 @@ class WindZendCache extends AbstractWindCache {
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::clear()
 	 */
-	public function clear($expireOnly = false) {
-		return (false === $expireOnly) ? zend_shm_cache_clear() : true;
+	public function clear() {
+		return zend_shm_cache_clear();
 	}
 
 }

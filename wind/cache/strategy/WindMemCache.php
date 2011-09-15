@@ -32,7 +32,7 @@ class WindMemCache extends AbstractWindCache {
 	protected $compress = 0;
 
 	public function __construct() {
-		if (!extension_loaded('Memcache')) { 
+		if (!extension_loaded('Memcache')) {
 			throw new WindCacheException('WindMemCache requires PHP `Memcache` extension to be loaded !');
 		}
 		$this->memcache = new Memcache();
@@ -62,8 +62,8 @@ class WindMemCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache::clear()
 	 */
-	public function clear($expireOnly = false) {
-		return false === $expireOnly ? $this->memcache->flush() : true;
+	public function clear() {
+		return $this->memcache->flush();
 	}
 
 	/* (non-PHPdoc)
@@ -73,8 +73,15 @@ class WindMemCache extends AbstractWindCache {
 		parent::setConfig($config);
 		$this->compress = $this->getConfig('compress', '', '0');
 		$servers = $this->getConfig('servers', '', array());
-		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 'timeout' => 15, 
-			'retry' => 15, 'status' => true, 'fcallback' => null);
+		$defaultServer = array(
+			'host' => '', 
+			'port' => '', 
+			'pconn' => true, 
+			'weight' => 1, 
+			'timeout' => 15, 
+			'retry' => 15, 
+			'status' => true, 
+			'fcallback' => null);
 		foreach ((array) $servers as $server) {
 			if (!is_array($server)) throw new WindException('The memcache config is incorrect');
 			if (!isset($server['host'])) throw new WindException('The memcache server ip address is not exist');

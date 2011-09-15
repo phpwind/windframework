@@ -40,8 +40,7 @@ class WindXCache extends AbstractWindCache {
 	/* 
 	 * @see AbstractWindCache#clear()
 	 */
-	public function clear($expireOnly = false) {
-		if (true === $expireOnly) return true;
+	public function clear() {
 		//xcache_clear_cache需要验证权限
 		$tmp['user'] = isset($_SERVER['PHP_AUTH_USER']) ? null : $_SERVER['PHP_AUTH_USER'];
 		$tmp['pwd'] = isset($_SERVER['PHP_AUTH_PW']) ? null : $_SERVER['PHP_AUTH_PW'];

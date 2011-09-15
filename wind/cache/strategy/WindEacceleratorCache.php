@@ -42,12 +42,7 @@ class WindEacceleratorCache extends AbstractWindCache {
 	 * @see AbstractWindCache#clear()
 	 * @return boolean
 	 */
-	public function clear($expireOnly = false) {
+	public function clear() {
 		eaccelerator_gc();
-	    if ($expireOnly) return true;
-		$cacheKeys = eaccelerator_list_keys();
-		foreach ($cacheKeys as $key) {
-			$this->delete(substr($key['name'], 1));
-		}
 	}
 }

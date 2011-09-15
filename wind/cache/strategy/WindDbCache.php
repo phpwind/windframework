@@ -75,7 +75,7 @@ class WindDbCache extends AbstractWindCache {
 		}
 		list($sql, $result) = array('', array());
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` IN ' . $this->getConnection()->quoteArray(
-			$keys) . ' AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
+		$keys) . ' AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
 		$data = $this->getConnection()->createStatement($sql)->queryAll(array(time()));
 		foreach ($data as $tmp) {
 			$result[] = $this->formatData(array_search($tmp[$this->keyField], $keys), $tmp[$this->valueField]);
@@ -99,7 +99,7 @@ class WindDbCache extends AbstractWindCache {
 			$keys[$key] = $this->buildSecurityKey($value);
 		}
 		$sql = 'DELETE FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` IN ' . $this->getConnection()->quoteArray(
-			$keys);
+		$keys);
 		return $this->getConnection()->execute($sql);
 	}
 
@@ -107,10 +107,11 @@ class WindDbCache extends AbstractWindCache {
 	 * @see AbstractWindCache::clear()
 	 * 删除过期数据或是全部删除
 	 */
-	public function clear($expireOnly = false) {
+	public function clear($expireOnly = true) {
 		$sql = sprintf('DELETE FROM `%s`', $this->getTableName());
 		if ($expireOnly) {
-			$sql = sprintf('DELETE FROM `%s` WHERE `%s` < ', $this->getTableName(), $this->expireField) . $this->getConnection()->quote(time());
+			$sql = sprintf('DELETE FROM `%s` WHERE `%s` < ', $this->getTableName(), $this->expireField) . $this->getConnection()->quote(
+			time());
 		}
 		return $this->getConnection()->execute($sql);
 	}
@@ -132,8 +133,7 @@ class WindDbCache extends AbstractWindCache {
 	 * @param WindConnection $connection
 	 */
 	public function setConnection($connection) {
-		if ($connection instanceof WindConnection)
-			$this->connection = $connection;
+		if ($connection instanceof WindConnection) $this->connection = $connection;
 	}
 
 	/**
