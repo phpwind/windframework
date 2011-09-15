@@ -14,9 +14,9 @@ class WindRoute extends AbstractWindRoute {
 	protected $reverse = '%s/%s/%s/%s/';
 	protected $separator = '&=';
 	protected $params = array(
-		'script' => array('map' => 1),
-		'a' => array('map' => 2),
-		'c' => array('map' => 3),
+		'script' => array('map' => 1), 
+		'a' => array('map' => 2), 
+		'c' => array('map' => 3), 
 		'm' => array('map' => 4));
 
 	/* (non-PHPdoc)
@@ -24,9 +24,7 @@ class WindRoute extends AbstractWindRoute {
 	 */
 	public function match() {
 		$_pathInfo = trim(str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri()), '/');
-		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) {
-			return null;
-		}
+		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) return null;
 		foreach ($this->params as $_n => $_p) {
 			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
 				$_value = $matches[$_p['map']][0];
