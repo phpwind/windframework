@@ -246,7 +246,6 @@ class Wind {
 	public static function init() {
 		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
 		self::register(WIND_PATH, 'WIND', true);
-		
 		if (!self::$_isAutoLoad) return;
 		if (function_exists('spl_autoload_register'))
 			spl_autoload_register('Wind::autoLoad');
