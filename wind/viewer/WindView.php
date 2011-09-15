@@ -80,7 +80,9 @@ class WindView extends WindModule implements IWindView {
 	 * @param boolean $display
 	 */
 	public function render($display = false) {
-		if (!$this->templateName) {return;}
+		if (!$this->templateName) {
+			return;
+		}
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
@@ -119,9 +121,8 @@ class WindView extends WindModule implements IWindView {
 	public function getViewTemplate($template = '', $ext = '') {
 		!$template && $template = $this->templateName;
 		!$ext && $ext = $this->templateExt;
-		if (false === strpos($template, ':'))
-			$template = $this->templateDir . '.' . $template;
-		return Wind::getRealPath($template, ($ext ? $ext : false));
+		if (false === strpos($template, ':')) $template = $this->templateDir . '.' . $template;
+		return Wind::getRealPath($template, ($ext ? $ext : false), true);
 	}
 
 	/**
@@ -136,17 +137,16 @@ class WindView extends WindModule implements IWindView {
 	 * @return string | false
 	 */
 	public function getCompileFile($template = '') {
-		if (!$this->compileDir) {return;}
-		if ($this->compileDir == $this->templateDir)
-			throw new WindViewException('[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
+		if (!$this->compileDir) {
+			return;
+		}
+		if ($this->compileDir == $this->templateDir) throw new WindViewException('[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
 		if (!$template)
 			$template = $this->templateName;
 		elseif (false !== ($pos = strpos($template, ':')))
 			$template = '__external.' . substr($template, $pos + 1);
 		$dir = realpath(Wind::getRealPath($this->compileDir, false, true));
-		if (!is_dir($dir))
-			throw new WindViewException(
-				'[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
+		if (!is_dir($dir)) throw new WindViewException('[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
 		$dir .= '/' . str_replace('.', '_', $template);
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
