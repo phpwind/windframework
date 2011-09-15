@@ -1,18 +1,4 @@
 <?php return array(
-	'aaa' => array(
-		'0' => array(
-			'value' => '1',
-		),
-		'1' => array(
-			'value' => '2',
-		),
-		'2' => array(
-			'value' => '3',
-		),
-		'3' => array(
-			'value' => '4',
-		),
-	),
 	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
@@ -130,9 +116,5 @@
 				'ref' => 'windCache',
 			),
 		),
-	),
-	'sessionCache' => array(
-		'path' => 'WIND:cache.strategy.WindDbCache',
-		'scope' => 'singleton',
 	),
 );
