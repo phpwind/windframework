@@ -47,7 +47,7 @@ class WindSessionHandler extends AbstractWindSessionHandler {
 	 * @see AbstractWindSessionHandler::gc($maxlifetime)
 	 */
 	public function gc($maxlifetime) {
-		return $this->dataStore->clear();
+		return true;
 	}
 
 	/* (non-PHPdoc)
@@ -130,12 +130,11 @@ abstract class AbstractWindSessionHandler {
 	 */
 	public function registerHandler($dataStore) {
 		if (!$dataStore instanceof AbstractWindCache) {
-			throw new WindException(
-				'[http.session.WindSessionHandler.registerHandler] register session save handler fail.', 
-				WindException::ERROR_PARAMETER_TYPE_ERROR);
+			throw new WindException('[http.session.WindSessionHandler.registerHandler] register session save handler fail.', WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
 		$this->dataStore = $dataStore;
-		session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), 
-			array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
+		session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array(
+			$this, 
+			'write'), array($this, 'destroy'), array($this, 'gc'));
 	}
 }
