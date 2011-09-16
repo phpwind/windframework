@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- <component name='' path='' factory-method='' init-method='' scope="application/singleton/prototype/" 
+<!-- <component name='' path='' initMethod='' scope="application/singleton/prototype/" 
 	proxy='' destroy=''> -->
 <!-- <property property-name='' ref/value/path=''> -->
-<!-- <constructor-arg ref/value=''> -->
+<!-- <constructor-arg ref/value/path=''> -->
 <!-- <config resource=''> -->
 <!-- </component> -->
 
