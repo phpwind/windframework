@@ -1,5 +1,4 @@
 <?php
-Wind::import("WIND:utility.WindSecurity");
 Wind::import("WIND:utility.WindString");
 /**
  * 文件工具类
@@ -52,8 +51,7 @@ class WindFile {
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ($data as $key => $value) {
-				if (!preg_match('/^\w+$/', $key))
-					continue;
+				if (!preg_match('/^\w+$/', $key)) continue;
 				$temp .= "\$" . $key . " = " . WindString::varToString($value) . ";\r\n";
 			}
 			$temp .= "\r\n?>";
@@ -76,10 +74,8 @@ class WindFile {
 	 * @return int 返回写入的字节数
 	 */
 	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
-		$fileName = WindSecurity::escapePath($fileName);
 		touch($fileName);
-		if (!$handle = fopen($fileName, $method))
-			return false;
+		if (!$handle = fopen($fileName, $method)) return false;
 		$ifLock && flock($handle, LOCK_EX);
 		$writeCheck = fwrite($handle, $data);
 		$method == self::READWRITE && ftruncate($handle, strlen($data));
@@ -96,7 +92,6 @@ class WindFile {
 	 * @return string
 	 */
 	public static function read($fileName, $method = self::READ) {
-		$fileName = WindSecurity::escapePath($fileName);
 		$data = '';
 		if (false !== ($handle = fopen($fileName, $method))) {
 			flock($handle, LOCK_SH);
@@ -115,11 +110,9 @@ class WindFile {
 	 */
 	public static function clearDir($dir, $ifexpiled = false) {
 		//TODO 删除掉是否过期相关处理，不要将外部业务需求，耦合进工具库方法
-		if (!$handle = @opendir($dir))
-			return false;
+		if (!$handle = @opendir($dir)) return false;
 		while (false !== ($file = readdir($handle))) {
-			if ('.' === $file[0] || '..' === $file[0])
-				continue;
+			if ('.' === $file[0] || '..' === $file[0]) continue;
 			$fullPath = $dir . DIRECTORY_SEPARATOR . $file;
 			if (is_dir($fullPath)) {
 				self::clearDir($fullPath, $ifexpiled);
@@ -141,7 +134,9 @@ class WindFile {
 	 */
 	public static function delFiles($path, $delDir = false, $level = 0) {
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
-		if (!$handler = opendir($path)) {return false;}
+		if (!$handler = opendir($path)) {
+			return false;
+		}
 		while (false !== ($filename = readdir($handler))) {
 			if ("." != $filename && ".." != $filename) {
 				if (is_dir($path . DIRECTORY_SEPARATOR . $filename)) {
@@ -190,7 +185,9 @@ class WindFile {
 	 * @return string|number
 	 */
 	public static function getFileInfo($fileName) {
-		if (false === is_file($fileName)) {return array();}
+		if (false === is_file($fileName)) {
+			return array();
+		}
 		$fileInfo['name'] = substr(strrchr($fileName, DIRECTORY_SEPARATOR), 1);
 		$fileInfo['path'] = $fileName;
 		$fileInfo['size'] = filesize($fileName);
@@ -213,7 +210,9 @@ class WindFile {
 	 * @return string|multitype:
 	 */
 	public static function getDirectoryInfo($dir) {
-		if (false !== is_dir($dir)) {return array();}
+		if (false !== is_dir($dir)) {
+			return array();
+		}
 		return stat($dir);
 	}
 
