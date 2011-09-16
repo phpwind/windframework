@@ -76,8 +76,7 @@ class WindConnection extends WindModule {
 	 * @return 
 	 * */
 	public function setAttribute($attribute, $value = null) {
-		if (!$attribute)
-			return;
+		if (!$attribute) return;
 		if ($this->_dbHandle !== null) {
 			$this->_dbHandle->setAttribute($attribute, $value);
 		} else
@@ -89,8 +88,7 @@ class WindConnection extends WindModule {
 	 * @return string
 	 */
 	public function getDriverName() {
-		if ($this->_driverName)
-			return $this->_driverName;
+		if ($this->_driverName) return $this->_driverName;
 		if ($this->_dbHandle !== null) {
 			$this->_driverName = $this->_dbHandle->getAttribute(PDO::ATTR_DRIVER_NAME);
 		} elseif (($pos = strpos($this->_dsn, ':')) !== false) {
@@ -107,10 +105,10 @@ class WindConnection extends WindModule {
 	public function execute($sql) {
 		try {
 			$result = $this->getDbHandle()->exec($this->parseQueryString($sql));
-			if (WIND_DEBUG & 2)
-				Wind::getApp()->getComponent('windLogger')->info(
-					"[db.WindConnection.execute] \r\n\tSQL: " . $sql . " \r\n\tResult:" . WindString::varToString(
-						$result));
+			if (WIND_DEBUG & 2) {
+				Wind::getApp()->getComponent('windLogger')->info("[db.WindConnection.execute] \r\n\tSQL: " . $sql .
+					 " \r\n\tResult:" . WindString::varToString($result));
+			}
 			return $result;
 		} catch (PDOException $e) {
 			$this->close();
@@ -201,71 +199,69 @@ class WindConnection extends WindModule {
 	 */
 	public function init() {
 		try {
-			if ($this->_dbHandle !== null)
-				return;
+			if ($this->_dbHandle !== null) return;
 			$driverName = $this->getDriverName();
 			$dbHandleClass = "WIND:db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
 			$dbHandleClass = Wind::import($dbHandleClass);
 			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
-			if (WIND_DEBUG & 2)
-				Wind::getApp()->getComponent('windLogger')->info(
-					"[db.WindConnection.init] Initialize db connection success. \r\n\tDSN:" . $this->_dsn . "\r\n\tUser:" . $this->_user . "\r\n\tCharset:" . $this->_charset . "\r\n\tTablePrefix:" . $this->_tablePrefix . "\r\n\tDriverName:" . $this->_driverName, 
-					'db');
-		} catch (PDOException $e) {
-			$this->close();
-			throw new WindDbException($e->getMessage());
-		}
+			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info("[db.WindConnection.init] Initialize db connection success. \r\n\tDSN:" .
+				 $this->_dsn . "\r\n\tUser:" . $this->_user . "\r\n\tCharset:" . $this->_charset . "\r\n\tTablePrefix:" .
+				 $this->_tablePrefix . "\r\n\tDriverName:" . $this->_driverName, 'db');
+	} catch (PDOException $e) {
+		$this->close();
+		throw new WindDbException($e->getMessage());
 	}
+}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see WindModule::setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		$this->_attributes = array();
-		$this->_initConfig();
-	}
+/**
+ * (non-PHPdoc)
+ * @see WindModule::setConfig()
+ */
+public function setConfig($config) {
+	parent::setConfig($config);
+	$this->_attributes = array();
+	$this->_initConfig();
+}
 
-	/**
-	 * 根据配置信息，初始化当前连接对象
-	 * @param array $config
-	 */
-	protected function _initConfig($config = array()) {
-		$this->_dsn = $this->getConfig('dsn', '', '', $config);
-		$this->_user = $this->getConfig('user', '', '', $config);
-		$this->_pwd = $this->getConfig('pwd', '', '', $config);
-		$this->_charset = $this->getConfig('charset', '', '', $config);
-		$this->_tablePrefix = $this->getConfig('tableprefix', '', '', $config);
-	}
+/**
+ * 根据配置信息，初始化当前连接对象
+ * @param array $config
+ */
+protected function _initConfig($config = array()) {
+	$this->_dsn = $this->getConfig('dsn', '', '', $config);
+	$this->_user = $this->getConfig('user', '', '', $config);
+	$this->_pwd = $this->getConfig('pwd', '', '', $config);
+	$this->_charset = $this->getConfig('charset', '', '', $config);
+	$this->_tablePrefix = $this->getConfig('tableprefix', '', '', $config);
+}
 
-	/**
-	 * @param string $sql
-	 */
-	protected function parseQueryString($sql) {
-		if ($_prefix = $this->getTablePrefix()) {
-			list($new, $old) = explode('|', $_prefix . '|');
-			$sql = preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $sql);
-		}
-		return $sql;
+/**
+ * @param string $sql
+ */
+protected function parseQueryString($sql) {
+	if ($_prefix = $this->getTablePrefix()) {
+		list($new, $old) = explode('|', $_prefix . '|');
+		$sql = preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $sql);
 	}
+	return $sql;
+}
 
-	/**
-	 * 获得表前缀
-	 * @return string $tablePrefix
-	 */
-	public function getTablePrefix() {
-		return $this->_tablePrefix;
-	}
+/**
+ * 获得表前缀
+ * @return string $tablePrefix
+ */
+public function getTablePrefix() {
+	return $this->_tablePrefix;
+}
 
-	/**
-	 * 设置表前缀
-	 * @param string $tablePrefix
-	 */
-	public function setTablePrefix($tablePrefix) {
-		$this->_tablePrefix = $tablePrefix;
-	}
+/**
+ * 设置表前缀
+ * @param string $tablePrefix
+ */
+public function setTablePrefix($tablePrefix) {
+	$this->_tablePrefix = $tablePrefix;
+}
 }
 ?>
