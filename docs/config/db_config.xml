@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- dbConfig的配置，可以配置多个链接，多个链接的时候必需指定每个链接的type类型是master/slave，当配置一个的时候可以不配置type项 -->
-<!-- COM:db.WindConnection 配置格式 -->
+
+<!-- WIND:db.WindConnection 配置格式，适合单链接应用，同时不支持连接池 -->
 <WIND>
-	<dsn>mysql:host=localhost;dbname=test</dsn>
+	<!-- 链接的DSN，方式：类型:name=value;   链接类型mysql  host为localhost，链接的数据库名字为test,  链接端口为3306 -->
+	<dsn>mysql:host=localhost;dbname=test;port=3306</dsn>
+	<!-- 链接数据库的用户名 -->
 	<user>root</user>
+	<!-- 链接数据库的密码 -->
 	<pwd>root</pwd>
+	<!-- 存取数据库的链接字符集 -->
 	<charset>utf8</charset>
+	<!-- 表前缀，需要“{}”符号，将表名进行标识，才能进行正确替换 -->
 	<tableprefix>pw_</tableprefix>
 </WIND>
 
-<!-- COM:db.WindConnectionManager 配置格式 -->
+<!-- WIND:db.WindConnectionManager 配置格式 ，支持链接池，允许配置多个链接-->
 <WIND>
+<!-- except: 配置多链接的分配规则 -->
 	<connections except='*:(db1);user*,tablename2:(db1|db2);'>
+	    <!-- 各个链接的配置，配置格式如单个链接的配置 -->
 		<connection name='db1'>
 			<dsn>mysql:host=localhost;dbname=test</dsn>
 			<user>root</user>

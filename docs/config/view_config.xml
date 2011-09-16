@@ -10,3 +10,13 @@
 	<!-- 是否开启缓存 -->
 	<is-cache>false</is-cache>
 </WIND>
+
+
+
+<!-- 自定义模板标签的配置 -->
+<WIND>
+	<support-tags>
+<!-- 标签配置：name:标签名字，tag:具体的标签，pattern:匹配表达式 ， compiler:解析类文件-->
+<!--<tag name='' tag='' pattern='' compiler='' /> -->
+	</support-tags>
+</WIND>
