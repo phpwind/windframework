@@ -59,8 +59,10 @@ class Wind {
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (!self::$_currentAppName) throw new WindException('Get appName failed.', WindException::ERROR_SYSTEM_ERROR);
-		return self::$_currentAppName; //end(self::$_currentApp);
+		if (!self::$_currentAppName) {
+			throw new WindException('[Wind.getAppName] get appName failed', WindException::ERROR_SYSTEM_ERROR);
+		}
+		return self::$_currentAppName;
 	}
 
 	/**
@@ -267,7 +269,7 @@ class Wind {
 	 * @return
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
-		if (!$appName || in_array($appName, self::$_currentApp)) {
+		if (in_array($appName, self::$_currentApp)) {
 			throw new WindException('[wind.beforRun] Nested request', WindException::ERROR_SYSTEM_ERROR);
 		}
 		array_push(self::$_currentApp, $appName);
