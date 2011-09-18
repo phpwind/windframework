@@ -101,8 +101,8 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @param boolean $isRedirect
 	 * @return 
 	 */
-	protected function forwardAction($action = 'run', $args = array(), $isRedirect = false) {
-		$this->getForward()->forwardAction($action, $args, $isRedirect);
+	protected function forwardAction($action = 'run', $args = array(), $isRedirect = false, $immediately = true) {
+		$this->getForward()->forwardAction($action, $args, $isRedirect, $immediately);
 	}
 
 	/**
@@ -111,8 +111,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @return 
 	 */
 	protected function forwardRedirect($url) {
-		$this->getForward()->setIsRedirect(true);
-		$this->getForward()->setUrl($url);
+		$this->getForward()->forwardRedirect($url);
 	}
 
 	/* 数据处理 */
