@@ -27,6 +27,7 @@ class WindSecurity {
 
 	/**
 	 * 路径转换
+	 * 
 	 * @param $fileName
 	 * @param $ifCheck
 	 * @return string
