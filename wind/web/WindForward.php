@@ -69,8 +69,8 @@ class WindForward extends WindModule {
 	 * @throws WindForwardException
 	 */
 	public function forwardRedirect($url) {
-		$this->setUrl($url);
 		$this->setIsRedirect(true);
+		$this->setUrl($url);
 		throw new WindForwardException($this);
 	}
 
