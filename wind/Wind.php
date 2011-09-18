@@ -303,6 +303,7 @@ class Wind {
 			'WindClassProxy' => 'base/WindClassProxy', 
 			'WindEnableValidateModule' => 'base/WindEnableValidateModule', 
 			'WindErrorMessage' => 'base/WindErrorMessage', 
+			'WindForwardException' => 'base/WindForwardException', 
 			'WindException' => 'base/WindException', 
 			'WindFactory' => 'base/WindFactory', 
 			'WindFinalException' => 'base/WindFinalException', 
