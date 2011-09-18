@@ -74,8 +74,7 @@ class WindHelper {
 					$call['file'] = self::INTERNAL_LOCATION;
 					$call['line'] = 'N/A';
 				}
-				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
-					$call);
+				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine($call);
 				$trace[$key] = $traceLine;
 			}
 			/* format error code */
@@ -88,9 +87,7 @@ class WindHelper {
 				if (($count = count($fileLines)) > 0) {
 					$padLen = strlen($count);
 					foreach ($fileLines as $line => &$fileLine)
-						$fileLine = " " . htmlspecialchars(
-							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", 
-								rtrim($fileLine)), null, "UTF-8");
+						$fileLine = " " . htmlspecialchars(str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", rtrim($fileLine)), null, "UTF-8");
 				}
 			}
 			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
@@ -104,10 +101,9 @@ class WindHelper {
 			$topic = "Wind Framework - Error Caught";
 		
 		$msg = "$topic\n$errmessage\n" . $msg . "\n\n" . self::errorInfo();
-		
-		if (WIND_DEBUG & 2)
+		if (WIND_DEBUG & 2) {
 			Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', 'core.error', true);
-		
+		}
 		if ($_errhtml) {
 			ob_start();
 			$errDir = Wind::getApp()->getConfig('errorpage');
@@ -130,10 +126,8 @@ class WindHelper {
 	 */
 	private static function getCallLine($call) {
 		$call_signature = "";
-		if (isset($call['file']))
-			$call_signature .= $call['file'] . " ";
-		if (isset($call['line']))
-			$call_signature .= "(" . $call['line'] . ") ";
+		if (isset($call['file'])) $call_signature .= $call['file'] . " ";
+		if (isset($call['line'])) $call_signature .= "(" . $call['line'] . ") ";
 		if (isset($call['function'])) {
 			$call_signature .= $call['function'] . "(";
 			if (isset($call['args'])) {
@@ -163,10 +157,20 @@ class WindHelper {
 	 * @return string
 	 */
 	protected static function getErrorName($errorNumber) {
-		$errorMap = array(E_ERROR => "E_ERROR", E_WARNING => "E_WARNING", E_PARSE => "E_PARSE", E_NOTICE => "E_NOTICE ", 
-			E_CORE_ERROR => "E_CORE_ERROR", E_CORE_WARNING => "E_CORE_WARNING", E_COMPILE_ERROR => "E_COMPILE_ERROR", 
-			E_COMPILE_WARNING => "E_COMPILE_WARNING", E_USER_ERROR => "E_USER_ERROR", E_USER_WARNING => "E_USER_WARNING", 
-			E_USER_NOTICE => "E_USER_NOTICE", E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", 
+		$errorMap = array(
+			E_ERROR => "E_ERROR", 
+			E_WARNING => "E_WARNING", 
+			E_PARSE => "E_PARSE", 
+			E_NOTICE => "E_NOTICE ", 
+			E_CORE_ERROR => "E_CORE_ERROR", 
+			E_CORE_WARNING => "E_CORE_WARNING", 
+			E_COMPILE_ERROR => "E_COMPILE_ERROR", 
+			E_COMPILE_WARNING => "E_COMPILE_WARNING", 
+			E_USER_ERROR => "E_USER_ERROR", 
+			E_USER_WARNING => "E_USER_WARNING", 
+			E_USER_NOTICE => "E_USER_NOTICE", 
+			E_STRICT => "E_STRICT", 
+			E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", 
 			E_ALL => "E_ALL");
 		return isset($errorMap[$errorNumber]) ? $errorMap[$errorNumber] : 'E_UNKNOWN';
 	}

@@ -7,9 +7,17 @@
  * @version $Id$
  * @package 
  */
-class WindFinalException extends Exception{
-	
-	
+class WindFinalException extends Exception {
+
+	/**
+	 * 异常构造函数
+	 * @param $message		     异常信息
+	 * @param $code			     异常代号
+	 * @param $innerException 内部异常
+	 */
+	public function __construct($message = '', $code = 0) {
+		parent::__construct($message, $code);
+	}
 }
 
 ?>
