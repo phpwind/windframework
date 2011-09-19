@@ -13,7 +13,7 @@ Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 	protected $action = '';
 	protected $args = array();
-	protected $isRedirect = false;
+	protected $isRedirect = 'false';
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
