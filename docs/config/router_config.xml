@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- router规则配置及mvc配置 -->
+<WIND>
+	<!-- MVC 配置，url-param：配置访问的别名，default-value:配置缺省值 -->
+	<module url-param='m' default-value='default' />
+	<controller url-param='c' default-value='index' />
+	<action url-param='a' default-value='run' />
+	
+	<!-- 路由规则配置 -->
+	<!-- 用户可以轻易的实现自己的额route，继承AbstractWindRoute，同时配置到routes下即可，所有的route下的规则根据自己的实现进行更改调整config -->
+	<routes>
+		<!-- 每个路由有唯一的一个名字,以下是框架提供的一个路由的规则配置 -->
+	   	<route name='WindRoute'>
+	   		<!-- 路由的实现 -->
+	   		<class>WIND:router.route.WindRoute</class>
+	   		<!-- 路由的正则匹配-->
+	   		<pattern>^([\w-_\.]+\.\w+[\?\/]{1,2}|\?)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$</pattern>
+	   		<!-- 参数匹配设置，针对正则中的每个匹配项 -->
+	   		<params>
+	   			<!-- 参数的名字 -->
+	   			<param name='script'>
+	   				<!-- 匹配上述正则中的子匹配的位置 -->
+	   				<map>1</map>
+	   				<!-- 缺省的值 -->
+	   				<default>index.php</default>
+	   			</param>
+	   			<!-- 参数匹配：针对MVC的参数名字，需要注意和MVC配置中的别名一一对应，否则不能正确进行路由 -->
+	   			<param name="a">
+	   				<map>2</map>
+	   				<default>run</default>
+	   			</param>
+	   			<param name='c'>
+					<map>3</map>
+	   				<default>index</default>
+				</param>
+	   			<param name="m">
+	   				<map>4</map>
+	   				<default>default</default>
+	   			</param>
+	   		</params>
+	   		<!-- 普通参数的链接分隔符，支持两个字符的配置，第一个字符为参数之间的配置，第二个字符为参数key-value之间的分隔符，默认为&= -->
+	   		<separator>&=</separator>
+	   		<!-- build的格式，将会依次根据params中配置的map的顺序依次替换%s占位符，普通变量将会跟在其之后 -->
+	   		<reverse>%s/%s/%s/%s/</reverse>
+		</route>
+	</routes>
+</WIND>

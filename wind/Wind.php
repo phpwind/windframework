@@ -1,17 +1,15 @@
 <?php
 /* 框架版本信息 */
-define('VERSION', '0.5');
-define('PHPVERSION', '5.1.2');
+define('WIND_VERSION', '0.5.0');
 /* 路径相关配置信息  */
-!defined('D_S') && define('D_S', DIRECTORY_SEPARATOR);
-!defined('WIND_PATH') && define('WIND_PATH', dirname(__FILE__) . D_S);
-!defined('COMPILE_PATH') && define('COMPILE_PATH', WIND_PATH . D_S);
-!defined('COMPILE_LIBRARY_PATH') && define('COMPILE_LIBRARY_PATH', WIND_PATH . 'windBasic.php');
-/* debug/log */
-!defined('IS_DEBUG') && define('IS_DEBUG', 1);
-!defined('DEBUG_TIME') && define('DEBUG_TIME', microtime(true));
-!defined('LOG_DIR') && define('LOG_DIR', COMPILE_PATH . 'log');
-!defined('LOG_WRITE_LEVEL') && define('LOG_WRITE_LEVEL', 1);
+define('WIND_PATH', dirname(__FILE__) . '/');
+/* 二进制:十进制  模式描述
+ * 00: 0 关闭
+ * 01: 1 window
+ * 10: 2 log
+ * 11: 3 window|log
+ * */
+!defined('WIND_DEBUG') && define('WIND_DEBUG', 0);
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
@@ -19,37 +17,85 @@ define('PHPVERSION', '5.1.2');
  * @package 
  */
 class Wind {
-	private static $_namespace = array();
 	private static $_imports = array();
 	private static $_classes = array();
-	private static $_instances = array();
+	private static $_components = 'WIND:components_config';
 	private static $_extensions = 'php';
-	private static $_includePaths = array();
 	private static $_isAutoLoad = true;
-	private static $_logger = null;
+	private static $_namespace = array();
+	private static $_includePaths = array();
+	private static $_app = array();
+	private static $_currentApp = array();
+	private static $_currentAppName;
 
 	/**
-	 * 加载应用
 	 * @param string $appName
-	 * @param string $config
-	 * @throws WindException
-	 * @return 
+	 * @param string|array|WindSystemConfig $config
+	 * @param string $rootPath
+	 * @return IWindApplication
 	 */
-	public static function run($appName = '', $config = '') {
-		$frontController = new WindFrontController($appName, $config);
-		$frontController->run();
+	public static function application($appName = 'default', $config = array(), $rootPath = '') {
+		self::beforRun($appName, $config, $rootPath);
+		if (!isset(self::$_app[$appName])) {
+			$factory = new WindFactory(@include (Wind::getRealPath(self::$_components)));
+			if ($config) {
+				is_string($config) && $config = $factory->getInstance('configParser')->parse($config);
+				$_default = isset($config['default']) ? $config['default'] : array();
+				$config = isset($config[$appName]) ? $config[$appName] : $config;
+				$_default && $config = WindUtility::mergeArray($_default, $config);
+				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
+			}
+			$application = $factory->getInstance('windApplication', array($config, $factory));
+			if (!$application instanceof IWindApplication) throw new WindException('[Wind.application] ' . get_class($application), WindException::ERROR_CLASS_TYPE_ERROR);
+			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath($config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
+			Wind::register($rootPath, $appName, true);
+			self::$_app[$appName] = $application;
+		}
+		return self::$_app[$appName];
+	}
+
+	/**
+	 * 返回当前appName
+	 * @return string
+	 */
+	public static function getAppName() {
+		if (!self::$_currentAppName) {
+			throw new WindException('[Wind.getAppName] get appName failed', WindException::ERROR_SYSTEM_ERROR);
+		}
+		return self::$_currentAppName;
+	}
+
+	/**
+	 * 返回当前的app应用
+	 * @param string $appName
+	 * @return WindWebApplication
+	 */
+	public static function getApp() {
+		$_appName = self::$_currentAppName; //self::getAppName();
+		if (isset(self::$_app[$_appName]))
+			return self::$_app[$_appName];
+		else
+			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', WindException::ERROR_CLASS_NOT_EXIST);
+	}
+
+	/**
+	 * @return
+	 */
+	public static function resetApp() {
+		array_pop(self::$_currentApp);
+		self::$_currentAppName = end(self::$_currentApp);
 	}
 
 	/**
 	 * 加载一个类或者加载一个包
 	 * 如果加载的包中有子文件夹不进行循环加载
-	 * 参数格式说明：'WIND:core.base.WFrontController'
+	 * 参数格式说明：'WIND:base.WFrontController'
 	 * WIND 注册的应用名称，应用名称与路径信息用‘:’号分隔
-	 * core.base.WFrontController 相对的路径信息
-	 * 如果不填写应用名称 ，例如‘core.base.WFrontController’，那么加载路径则相对于默认的应用路径
+	 * base.WFrontController 相对的路径信息
+	 * 如果不填写应用名称 ，例如‘base.WFrontController’，那么加载路径则相对于默认的应用路径
 	 *
-	 * 加载一个类的参数方式：'WIND:core.base.WFrontController'
-	 * 加载一个包的参数方式：'WIND:core.base.*'
+	 * 加载一个类的参数方式：'WIND:base.WFrontController'
+	 * 加载一个包的参数方式：'WIND:base.*'
 	 * 
 	 * @param string $filePath | 文件路径信息 或者className
 	 * @param boolean $autoIncludes | 是否采用自动加载方式
@@ -57,8 +103,8 @@ class Wind {
 	 * @return string|null
 	 */
 	public static function import($filePath, $recursivePackage = false) {
-		if (!$filePath) return false;
-		if ($className = self::_isImported($filePath)) return $className;
+		if (!$filePath) return;
+		if (isset(self::$_imports[$filePath])) return self::$_imports[$filePath];
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
 		elseif (($pos1 = strrpos($filePath, ':')) !== false)
@@ -68,10 +114,10 @@ class Wind {
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
-			$dirPath = self::getRealPath($filePath, true);
+			$dirPath = self::getRealPath($filePath, false);
 			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
 			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dirPath . D_S . $file)) {
+				if (is_dir($dirPath . '/' . $file)) {
 					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
 						$_filePath = $filePath . '.' . $file . '.' . '*';
 						self::import($_filePath, $recursivePackage);
@@ -79,11 +125,10 @@ class Wind {
 				} else {
 					if (($pos = strrpos($file, '.')) === false) {
 						$fileName = $file;
-					} else {
-						if (substr($file, $pos + 1) === self::$_extensions) {
-							$fileName = substr($file, 0, $pos);
-						}
-					}
+					} elseif (substr($file, $pos + 1) === self::$_extensions) {
+						$fileName = substr($file, 0, $pos);
+					} else
+						continue;
 					self::_setImport($fileName, $filePath . '.' . $fileName);
 				}
 			}
@@ -104,9 +149,9 @@ class Wind {
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
 		if (!$path) return;
-		$alias = strtolower(trim($alias));
+		$alias = strtolower($alias);
 		if (!empty($alias)) {
-			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = $path;
+			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = rtrim($path, '/') . '/';
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
@@ -115,9 +160,19 @@ class Wind {
 			}
 			array_unshift(self::$_includePaths, $path);
 			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
-				throw new Exception('set include path error.');
+				throw new Exception('[wind.register] set include path error.');
 			}
 		}
+	}
+
+	/**
+	 * 返回命名空间的路径信息
+	 * @param string $namespace
+	 * @return string|Ambigous <string, multitype:>
+	 */
+	public static function getRootPath($namespace) {
+		$namespace = strtolower($namespace);
+		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
 	}
 
 	/**
@@ -127,14 +182,8 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		if (isset(self::$_classes[$className])) $path = self::$_classes[$className];
-		if ($path === '') {
-			throw new Exception('auto load ' . $className . ' failed.');
-		}
-		$path = self::getRealPath($path . '.' . self::$_extensions);
-		if ((include $path) === false) {
-			throw new Exception('include file ' . $path . ' failed.');
-		}
+		$path || $path = isset(self::$_classes[$className]) ? self::$_classes[$className] : $className;
+		include $path . '.' . self::$_extensions;
 	}
 
 	/**
@@ -146,126 +195,85 @@ class Wind {
 	}
 
 	/**
-	 * 返回命名空间的路径信息
-	 * @param string $namespace
-	 * @return string|Ambigous <string, multitype:>
+	 * 设置imports信息
+	 * @param array $imports
 	 */
-	public static function getRootPath($namespace = '') {
-		if (!$namespace) return '';
-		$namespace = strtolower($namespace);
-		return isset(self::$_namespace[$namespace]) ? self::$_namespace[$namespace] : '';
+	public static function setImports($imports) {
+		self::$_imports = array_merge(self::$_imports, $imports);
 	}
 
 	/**
 	 * 解析路径信息，并返回路径的详情
 	 * @param string $filePath 路径信息
-	 * @param boolean $info 是否为目录路径
+	 * @param boolean $suffix 是否存在文件后缀true，false，default
 	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	public static function getRealPath($filePath, $isDir = false) {
-		$filePath = trim($filePath, ' ');
-		$namespace = $suffix = '';
-		if (!$isDir) {
-			$_pos1 = strrpos($filePath, '.');
-			$suffix = trim(substr($filePath, $_pos1 + 1), '.');
-			$filePath = substr($filePath, 0, $_pos1);
-		}
-		if (($pos = strpos($filePath, ':')) !== false) {
+	public static function getRealPath($filePath, $suffix = '', $absolut = false) {
+		if (false !== strpos($filePath, DIRECTORY_SEPARATOR)) return realpath($filePath);
+		if (false !== ($pos = strpos($filePath, ':'))) {
 			$namespace = self::getRootPath(substr($filePath, 0, $pos));
+			$filePath = substr($filePath, $pos + 1);
+		} else
+			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
+		if ($suffix === '') {
+			$suffix = self::$_extensions;
+		} elseif ($suffix === true && false !== ($pos = strrpos($filePath, '.'))) {
+			$suffix = substr($filePath, $pos + 1);
+			$filePath = substr($filePath, 0, $pos);
 		}
-		$filePath = str_replace('.', D_S, $filePath);
-		if ($namespace) $filePath = rtrim($namespace, D_S) . D_S . substr($filePath, $pos + 1);
+		$filePath = str_replace('.', '/', $filePath);
+		$namespace && $filePath = $namespace . $filePath;
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 
 	/**
-	 * 将核心库文件打包
-	 * @throws Exception
-	 * @return
+	 * 解析路径信息，并返回路径的详情
+	 * @param string $filePath 路径信息
+	 * @param boolean $absolut 是否返回绝对路径
+	 * @return string|array('isPackage','fileName','extension','realPath')
 	 */
-	public static function perLoadCoreLibrary($libPath) {
-		self::import('COM:utility.WindPack');
-		$pack = new WindPack();
-		$fileList = array();
-		foreach (self::$_imports as $key => $value) {
-			$_key = self::getRealPath($key . '.' . self::$_extensions);
-			$fileList[$_key] = array($key, $value);
-		}
-		$pack->packFromFileList($fileList, $libPath, WindPack::STRIP_PHP, true);
+	public static function getRealDir($dirPath, $absolut = false) {
+		if (false !== ($pos = strpos($dirPath, ':'))) {
+			$namespace = self::getRootPath(substr($dirPath, 0, $pos));
+			$dirPath = substr($dirPath, $pos + 1);
+		} else
+			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
+		$namespace && $dirPath = $namespace . str_replace('.', '/', $dirPath);
+		return $dirPath;
 	}
 
 	/**
 	 * 初始化框架
 	 */
 	public static function init() {
-		self::_checkEnvironment();
-		self::_setDefaultSystemNamespace();
-		self::_registerAutoloader();
+		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
+		self::register(WIND_PATH, 'WIND', true);
+		if (!self::$_isAutoLoad) return;
+		if (function_exists('spl_autoload_register'))
+			spl_autoload_register('Wind::autoLoad');
+		else
+			self::$_isAutoLoad = false;
 		self::_loadBaseLib();
 	}
 
 	/**
-	 * @param string $message
-	 * @param int $level
+	 * 清理Wind import变量信息
+	 * @return
 	 */
-	public static function log($message, $level = WindLogger::LEVEL_INFO, $type = 'wind.core') {
-		if (IS_DEBUG && $level >= IS_DEBUG && $level != WindLogger::LEVEL_PROFILE) {
-			self::getLogger()->log($message, $level, $type);
+	public static function clear() {
+		self::$_imports = array();
+		self::$_classes = array();
+	}
+
+	/**
+	 * @return
+	 */
+	protected static function beforRun($appName, $config, $rootPath) {
+		if (in_array($appName, self::$_currentApp)) {
+			throw new WindException('[wind.beforRun] Nested request', WindException::ERROR_SYSTEM_ERROR);
 		}
-	}
-
-	/**
-	 * @param $token
-	 * @param $message
-	 * @param $type
-	 */
-	public static function profileBegin($token, $message = '', $type = 'wind.core') {
-		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
-			$msg = $token . ':' . $message;
-			self::getLogger()->profileBegin($msg, $type);
-		}
-	}
-
-	/**
-	 * @param $token
-	 * @param $message
-	 * @param $type
-	 */
-	public static function profileEnd($token, $message = '', $type = 'wend.core') {
-		if (IS_DEBUG && WindLogger::LEVEL_PROFILE >= IS_DEBUG) {
-			$msg = $token . ':' . $message;
-			self::getLogger()->profileEnd($msg, $type);
-		}
-	}
-
-	/**
-	 * 返回系统日志对象
-	 * @return WindLogger
-	 */
-	public static function getLogger() {
-		if (self::$_logger === null) {
-			self::$_logger = new WindLogger(LOG_DIR, LOG_WRITE_LEVEL);
-		}
-		return self::$_logger;
-	}
-
-	/**
-	 * 系统命名空间注册方法
-	 * @return 
-	 */
-	private static function _setDefaultSystemNamespace() {
-		self::register(WIND_PATH, 'WIND');
-		self::register(WIND_PATH . 'component' . D_S, 'COM');
-	}
-
-	/**
-	 * 检查框架运行环境
-	 * @return 
-	 */
-	private static function _checkEnvironment() {
-		if (!self::_checkPhpVersion()) throw new Exception('php version is too old, php ' . PHPVERSION . ' or later.', E_WARNING);
-		if (!defined('COMPILE_PATH')) throw new Exception('compile path undefined.');
-		function_exists('date_default_timezone_set') && date_default_timezone_set('Etc/GMT+0');
+		array_push(self::$_currentApp, $appName);
+		self::$_currentAppName = $appName;
 	}
 
 	/**
@@ -274,35 +282,13 @@ class Wind {
 	 * @return 
 	 */
 	private static function _setImport($className, $classPath) {
-		if (self::_isImported($className)) return;
 		self::$_imports[$classPath] = $className;
-		if (self::$_isAutoLoad)
-			self::$_classes[$className] = $classPath;
-		else
-			self::autoLoad($className, $classPath);
-	}
-
-	/**
-	 * 判断是否类是否已经被加载，如果已经被加载则返回路径信息，如果没有被加载则返回false
-	 * @param string $path
-	 * @return boolean|string
-	 */
-	private static function _isImported($param) {
-		if (isset(self::$_imports[$param])) return self::$_imports[$param];
-		if (in_array($param, self::$_imports)) return $param;
-		return false;
-	}
-
-	/**
-	 * 注册自动加载回调方法
-	 * @return
-	 */
-	private static function _registerAutoloader() {
-		if (!self::$_isAutoLoad) return;
-		if (function_exists('spl_autoload_register'))
-			spl_autoload_register('Wind::autoLoad');
-		else
-			self::$_isAutoLoad = false;
+		if (!isset(self::$_classes[$className])) {
+			$_classPath = self::getRealPath($classPath, false);
+			self::$_classes[$className] = $_classPath;
+		} else
+			$_classPath = self::$_classes[$className];
+		if (!self::$_isAutoLoad) self::autoLoad($className, $_classPath);
 	}
 
 	/**
@@ -310,55 +296,57 @@ class Wind {
 	 * @return 
 	 */
 	private static function _loadBaseLib() {
-		$_core = self::_coreLib();
-		foreach ($_core as $key => $value) {
-			self::_setImport($key, $value);
-		}
-	}
-
-	/* private utility */
-	private static function _checkPhpVersion() {
-		$v1 = $v2 = $v3 = $m1 = $m2 = $m3 = 0;
-		$phpversion = phpversion();
-		sscanf($phpversion, "%d.%d.%d", $v1, $v2, $v3);
-		sscanf(PHPVERSION, "%d.%d.%d", $m1, $m2, $m3);
-		if ($v1 > $m1) return true;
-		if ($v1 < $m1) return false;
-		if ($v2 > $m2) return true;
-		if ($v2 < $m2) return false;
-		if ($v3 > $m3) return true;
-		if ($v3 < $m3) return false;
-		return true;
-	}
-
-	/**
-	 * 核心库文件
-	 * @return
-	 */
-	private static function _coreLib() {
-		return array('AbstractWindServer' => 'WIND:core.AbstractWindServer', 'IWindConfigParser' => 'WIND:core.config.parser.IWindConfigParser', 'WindConfigParser' => 'WIND:core.config.parser.WindConfigParser', 'WindConfig' => 'WIND:core.config.WindConfig', 'WindSystemConfig' => 'WIND:core.config.WindSystemConfig', 'WindDaoCacheListener' => 'WIND:core.dao.listener.WindDaoCacheListener', 'WindActionException' => 'WIND:core.exception.WindActionException', 'WindCacheException' => 'WIND:core.exception.WindCacheException', 'WindDaoException' => 'WIND:core.exception.WindDaoException', 'WindException' => 'WIND:core.exception.WindException', 'WindFinalException' => 'WIND:core.exception.WindFinalException', 'WindSqlException' => 'WIND:core.exception.WindSqlException', 'WindViewException' => 'WIND:core.exception.WindViewException', 'IWindFactory' => 'WIND:core.factory.IWindFactory', 'IWindClassProxy' => 'WIND:core.factory.proxy.IWindClassProxy', 'WindClassProxy' => 'WIND:core.factory.proxy.WindClassProxy', 'WindClassDefinition' => 'WIND:core.factory.WindClassDefinition', 'WindComponentDefinition' => 'WIND:core.factory.WindComponentDefinition', 'WindComponentFactory' => 'WIND:core.factory.WindComponentFactory', 'WindFactory' => 'WIND:core.factory.WindFactory', 'WindFilter' => 'WIND:core.filter.WindFilter', 'WindFilterChain' => 'WIND:core.filter.WindFilterChain', 'WindHandlerInterceptor' => 'WIND:core.filter.WindHandlerInterceptor', 'WindHandlerInterceptorChain' => 'WIND:core.filter.WindHandlerInterceptorChain', 'IWindRequest' => 'WIND:core.request.IWindRequest', 'WindHttpRequest' => 'WIND:core.request.WindHttpRequest', 'IWindResponse' => 'WIND:core.response.IWindResponse', 'WindHttpResponse' => 'WIND:core.response.WindHttpResponse', 'AbstractWindRouter' => 'WIND:core.router.AbstractWindRouter', 'WindUrlBasedRouter' => 'WIND:core.router.WindUrlBasedRouter', 'AbstractWindTemplateCompiler' => 'WIND:core.viewer.AbstractWindTemplateCompiler', 'AbstractWindViewTemplate' => 'WIND:core.viewer.AbstractWindViewTemplate', 'WindTemplateCompilerAction' => 'WIND:core.viewer.compiler.WindTemplateCompilerAction', 'WindTemplateCompilerComponent' => 'WIND:core.viewer.compiler.WindTemplateCompilerComponent', 'WindTemplateCompilerEcho' => 'WIND:core.viewer.compiler.WindTemplateCompilerEcho', 'WindTemplateCompilerInternal' => 'WIND:core.viewer.compiler.WindTemplateCompilerInternal', 'WindTemplateCompilerPage' => 'WIND:core.viewer.compiler.WindTemplateCompilerPage', 'WindTemplateCompilerScript' => 'WIND:core.viewer.compiler.WindTemplateCompilerScript', 'WindTemplateCompilerTemplate' => 'WIND:core.viewer.compiler.WindTemplateCompilerTemplate', 'WindViewTemplate' => 'WIND:core.viewer.compiler.WindViewTemplate', 'IWindViewerResolver' => 'WIND:core.viewer.IWindViewerResolver', 'WindViewCacheListener' => 'WIND:core.viewer.listener.WindViewCacheListener', 'WindLayout' => 'WIND:core.viewer.WindLayout', 'WindView' => 'WIND:core.viewer.WindView', 'WindViewerResolver' => 'WIND:core.viewer.WindViewerResolver', 'WindLoggerFilter' => 'WIND:core.web.filter.WindLoggerFilter', 'WindUrlFilter' => 'WIND:core.web.filter.WindUrlFilter', 'IWindApplication' => 'WIND:core.web.IWindApplication', 'IWindErrorMessage' => 'WIND:core.web.IWindErrorMessage', 'WindFormListener' => 'WIND:core.web.listener.WindFormListener', 'WindLoggerListener' => 'WIND:core.web.listener.WindLoggerListener', 'WindValidateListener' => 'WIND:core.web.listener.WindValidateListener', 'WindAction' => 'WIND:core.web.WindAction', 'WindController' => 'WIND:core.web.WindController', 'WindDispatcher' => 'WIND:core.web.WindDispatcher', 'WindErrorHandler' => 'WIND:core.web.WindErrorHandler', 'WindErrorMessage' => 'WIND:core.web.WindErrorMessage', 'WindFormController' => 'WIND:core.web.WindFormController', 'WindForward' => 'WIND:core.web.WindForward', 'WindFrontController' => 'WIND:core.web.WindFrontController', 'WindUrlHelper' => 'WIND:core.web.WindUrlHelper', 'WindWebApplication' => 'WIND:core.web.WindWebApplication', 'WindComponentModule' => 'WIND:core.WindComponentModule', 'WindEnableValidateModule' => 'WIND:core.WindEnableValidateModule', 'WindHelper' => 'WIND:core.WindHelper', 'WindModule' => 'WIND:core.WindModule', 'WindLogger' => 'COM:log.WindLogger');
+		self::$_classes = array(
+			'IWindApplication' => 'base/IWindApplication', 
+			'IWindFactory' => 'base/IWindFactory', 
+			'WindActionException' => 'base/WindActionException', 
+			'WindClassProxy' => 'base/WindClassProxy', 
+			'WindEnableValidateModule' => 'base/WindEnableValidateModule', 
+			'WindErrorMessage' => 'base/WindErrorMessage', 
+			'WindForwardException' => 'base/WindForwardException', 
+			'WindException' => 'base/WindException', 
+			'WindFactory' => 'base/WindFactory', 
+			'WindFinalException' => 'base/WindFinalException', 
+			'WindHelper' => 'base/WindHelper', 
+			'WindModule' => 'base/WindModule', 
+			'WindActionFilter' => 'filter/WindActionFilter', 
+			'WindFilter' => 'filter/WindFilter', 
+			'WindFilterChain' => 'filter/WindFilterChain', 
+			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
+			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
+			'WindUrlFilter' => 'web/filter/WindUrlFilter', 
+			'WindFormListener' => 'web/listener/WindFormListener', 
+			'WindValidateListener' => 'web/listener/WindValidateListener', 
+			'WindController' => 'web/WindController', 
+			'WindDispatcher' => 'web/WindDispatcher', 
+			'WindErrorHandler' => 'web/WindErrorHandler', 
+			'WindForward' => 'web/WindForward', 
+			'WindSimpleController' => 'web/WindSimpleController', 
+			'WindSystemConfig' => 'web/WindSystemConfig', 
+			'WindUrlHelper' => 'web/WindUrlHelper', 
+			'WindWebApplication' => 'web/WindWebApplication', 
+			'AbstractWindRouter' => 'router/AbstractWindRouter', 
+			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
+			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 
+			'WindRoute' => 'router/route/WindRoute', 
+			'WindRouter' => 'router/WindRouter', 
+			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter', 
+			'IWindRequest' => 'http/request/IWindRequest', 
+			'WindHttpRequest' => 'http/request/WindHttpRequest', 
+			'IWindResponse' => 'http/response/IWindResponse', 
+			'WindHttpResponse' => 'http/response/WindHttpResponse', 
+			'WindDate' => 'utility/date/WindDate', 
+			'WindGeneralDate' => 'utility/date/WindGeneralDate', 
+			'WindDecoder' => 'utility/json/WindDecoder', 
+			'WindEncoder' => 'utility/json/WindEncoder', 
+			'WindArray' => 'utility/WindArray', 
+			'WindFile' => 'utility/WindFile', 
+			'WindImage' => 'utility/WindImage', 
+			'WindPack' => 'utility/WindPack', 
+			'WindSecurity' => 'utility/WindSecurity', 
+			'WindString' => 'utility/WindString', 
+			'WindUtility' => 'utility/WindUtility', 
+			'WindValidator' => 'utility/WindValidator');
 	}
 }
 Wind::init();
-/* 组件定义 */
-!defined('COMPONENT_WEBAPP') && define('COMPONENT_WEBAPP', 'windWebApp');
-!defined('COMPONENT_ERRORHANDLER') && define('COMPONENT_ERRORHANDLER', 'errorHandler');
-!defined('COMPONENT_LOGGER') && define('COMPONENT_LOGGER', 'windLogger');
-!defined('COMPONENT_FORWARD') && define('COMPONENT_FORWARD', 'forward');
-!defined('COMPONENT_ROUTER') && define('COMPONENT_ROUTER', 'urlBasedRouter');
-!defined('COMPONENT_URLHELPER') && define('COMPONENT_URLHELPER', 'urlHelper');
-!defined('COMPONENT_VIEW') && define('COMPONENT_VIEW', 'windView');
-!defined('COMPONENT_VIEWRESOLVER') && define('COMPONENT_VIEWRESOLVER', 'viewResolver');
-!defined('COMPONENT_TEMPLATE') && define('COMPONENT_TEMPLATE', 'template');
-!defined('COMPONENT_ERRORMESSAGE') && define('COMPONENT_ERRORMESSAGE', 'errorMessage');
-!defined('COMPONENT_DB') && define('COMPONENT_DB', 'db');
-//TODO 迁移更新框架内部的常量定义到这里  配置/异常类型等 注意区分异常命名空间和类型
-//********************约定变量***********************************
-define('WIND_M_ERROR', 'windError');
-define('WIND_CONFIG_CACHE', 'wind_components_config');
-//**********配置*******通用常量定义***************************************
-define('WIND_CONFIG_CONFIG', 'config');
-define('WIND_CONFIG_CLASS', 'class');
-define('WIND_CONFIG_CLASSPATH', 'path');
-define('WIND_CONFIG_RESOURCE', 'resource');
-define('WIND_CONFIG_VALUE', 'value');

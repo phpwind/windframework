@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+<title><?php echo $topic; ?></title>
+<style>
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,p,blockquote,th,td {
+	margin: 0;
+	padding: 0;
+}
+
+ul,li {
+	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+th {
+	text-align: left;
+}
+
+td,th,div {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+form {
+	display: inline;
+}
+
+* {
+	outline: none
+}
+
+img {
+	border: 0;
+}
+
+em,cite {
+	font-style: normal;
+}
+
+blockquote {
+	quotes: none;
+}
+
+html {
+	font-size: 12px;
+}
+
+body {
+	font: 12px/1.5 Verdana;
+	color: #333;
+	background: #f3f3f3;
+}
+
+.wrap {
+	width: 80%;
+	margin: 50px auto;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+h1 {
+	border-bottom: 1px solid #ccc;
+	line-height: 40px;
+	height: 40px;
+	padding: 0 20px;
+	margin: 0;
+	font-size: 16px;
+	background: #f7f7f7;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f3f3f3) );
+	background: -moz-linear-gradient(top, #ffffff, #f3f3f3);
+	filter: progid :     DXImageTransform.Microsoft.gradient (     startColorstr =     '#ffffff',
+		endColorstr =  
+		  '#f3f3f3' );
+}
+
+h1 span {
+	color: #dd5925;
+}
+
+.main {
+	padding: 20px;
+	line-height: 1.8;
+}
+
+h2 {
+	color: #dd5925;
+	font-size: 14px;
+	background: #f9eeea;
+	margin-bottom: 10px;
+	line-height: 25px;
+	padding: 0 10px;
+}
+
+h3 {
+	padding-left: 24px;
+	background: #f7f7f7;
+	font-weight: 100;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+ul {
+	padding-left: 48px;
+	margin-bottom: 10px;
+}
+
+ul li:hover {
+	background: #f3f3f3;
+}
+
+.err {
+	color: #ff0000;
+	background: #faf6f4;
+}
+
+.tips {
+	padding: 5px 10px;
+	background: #ffffe3;
+	border: 1px solid #cccccc;
+	line-height: 20px;
+	color: #333;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><?php echo $topic; ?></h1>
+<div class="main">
+<h2><?php echo $errmessage; ?></h2>
+<h3><?php echo $file; ?></h3>
+<ul>
+	<?php foreach($fileLines as $key => $value):
+		if($key == $currentLine):?>
+	<li class="err"><?php echo $value; ?></li>
+	<?php else: ?>
+	<li><?php echo $value; ?></li>
+	<?php endif;endforeach; ?>
+</ul>
+
+<h3>__Stack:</h3>
+<ul>
+	<?php foreach($trace as $value): ?>
+	<li><?php echo $value; ?></li>
+	<?php endforeach; ?>
+</ul>
+<div class="tips"><?php echo self::errorInfo(); ?></div>
+</div>
+</div>
+</body>
+</html>

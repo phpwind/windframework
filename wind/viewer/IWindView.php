@@ -5,11 +5,16 @@
  * @version $Id$
  * @package 
  */
-class IndexController extends WindController {
+interface IWindView {
 
-	public function run() {
-		echo 'hello world!';
-	}
+	/**
+	 * 视图渲染
+	 * 
+	 * @param WindForward $forward
+	 * @param WindUrlBasedRouter $router
+	 */
+	public function render();
 
 }
+
 ?>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- WIND:db.WindConnection 配置格式，适合单链接应用，同时不支持连接池 -->
+<WIND>
+	<!-- 链接的DSN，方式：类型:name=value;   链接类型mysql  host为localhost，链接的数据库名字为test,  链接端口为3306 -->
+	<dsn>mysql:host=localhost;dbname=test;port=3306</dsn>
+	<!-- 链接数据库的用户名 -->
+	<user>root</user>
+	<!-- 链接数据库的密码 -->
+	<pwd>root</pwd>
+	<!-- 存取数据库的链接字符集 -->
+	<charset>utf8</charset>
+	<!-- 表前缀，需要“{}”符号，将表名进行标识，才能进行正确替换 -->
+	<tableprefix>pw_</tableprefix>
+</WIND>
+
+<!-- WIND:db.WindConnectionManager 配置格式 ，支持链接池，允许配置多个链接-->
+<WIND>
+<!-- except: 配置多链接的分配规则 -->
+	<connections except='*:(db1);user*,tablename2:(db1|db2);'>
+	    <!-- 各个链接的配置，配置格式如单个链接的配置 -->
+		<connection name='db1'>
+			<dsn>mysql:host=localhost;dbname=test</dsn>
+			<user>root</user>
+			<pwd>root</pwd>
+			<charset>utf8</charset>
+			<tableprefix>pw_</tableprefix>
+		</connection>
+		<connection name='db2'>
+			<dsn>mysql:host=localhost;dbname=test</dsn>
+			<user>root</user>
+			<pwd>root</pwd>
+			<charset>utf8</charset>
+			<tableprefix>pw_</tableprefix>
+		</connection>
+	</connections>
+</WIND>

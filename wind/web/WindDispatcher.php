@@ -1,0 +1,105 @@
+<?php
+/**
+ * 职责描述：负责请求的分发
+ * 分发类型：
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @version $Id$
+ * @package 
+ */
+class WindDispatcher extends WindModule {
+	protected $maxForwrd = array();
+	/**
+	 * 将上一次请求信息缓存在这个变量中
+	 * @var array
+	 */
+	protected $token;
+	/**
+	 * @var boolean
+	 */
+	protected $display = false;
+
+	/**
+	 * 请求分发处理
+	 * 
+	 * @param WindForward $forward
+	 * @param WindRouter $router
+	 * @param boolean $display
+	 * @return
+	 */
+	public function dispatch($forward, $router, $display) {
+		//$this->checkToken($router, false);
+		if ($forward->getIsRedirect())
+			$this->dispatchWithRedirect($forward, $router);
+		elseif ($forward->getIsReAction()) {
+			if (count($this->maxForwrd) > 10) {
+				throw new WindFinalException('[web.WindDispatcher.dispatchWithAction] more than 10 times forward request. (' . implode(', ', $this->maxForwrd) . ')');
+			}
+			$token = $router->getModule() . '/' . $router->getController() . '/' . $router->getAction();
+			array_push($this->maxForwrd, $token);
+			$this->dispatchWithAction($forward, $router, $display);
+		} else {
+			$view = $forward->getWindView();
+			if ($view->templateName) {
+				Wind::getApp()->getResponse()->setData($forward->getVars(), $view->templateName);
+				$view->render($this->display);
+			}
+			$this->display = false;
+		}
+	}
+
+	/**
+	 * 请求分发一个重定向请求
+	 * @param WindForward $forward
+	 * @param AbstractWindRouter $router
+	 * @return
+	 */
+	protected function dispatchWithRedirect($forward, $router) {
+		if (!($_url = $forward->getUrl())) {
+			$_url = $router->assemble($forward->getAction(), $forward->getArgs());
+		}
+		$_url = WindUrlHelper::checkUrl($_url, true);
+		$this->getResponse()->sendRedirect($_url);
+	}
+
+	/**
+	 * 请求分发一个操作请求
+	 * module/controller/action/?param
+	 * @param WindForward $forward
+	 * @param WindRouter $router
+	 * @param boolean $display
+	 * @return
+	 */
+	protected function dispatchWithAction($forward, $router, $display) {
+		if (!$action = $forward->getAction()) {
+			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', WindException::ERROR_PARAMETER_TYPE_ERROR);
+		}
+		
+		$this->display = $display;
+		list($_a, $_c, $_m) = WindUrlHelper::resolveAction($action);
+		if ($_var = $forward->getVars()) $this->getResponse()->setData($_var, 'F');
+		$_a && $router->setAction($_a);
+		$_c && $router->setController($_c);
+		$_m && $router->setModule($_m);
+		/*if ($this->checkToken($router)) {
+			throw new WindFinalException('[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, WindException::ERROR_SYSTEM_ERROR);
+		}*/
+		Wind::getApp()->processRequest();
+	}
+
+	/**
+	 * 检查请求是否是重复请求
+	 * @param AbstractWindRouter $router
+	 * @param boolean $check
+	 * @return boolean
+	 */
+	protected function checkToken($router, $check = true) {
+		$token = $router->getModule() . '/' . $router->getController() . '/' . $router->getAction();
+		if ($check === false) {
+			$this->token = $token;
+		} else
+			return !strcasecmp($token, $this->token);
+	}
+
+}

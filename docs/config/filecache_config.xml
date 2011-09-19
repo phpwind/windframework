@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 文件缓存配置 -->
+<WIND>
+	<!-- 缓存文件的过期时间 -->
+	<expires>0</expires>
+	<!-- 缓存key的前缀 -->
+	<key-prefix></key-prefix>
+	<!-- 缓存key安全盐码 -->
+	<security-code></security-code>
+	
+	<!-- 缓存文件的保存路径（支持命名空间的方式配置该路径） -->
+	<dir>WIND:_compile</dir>
+	<!-- 缓存文件的后缀 -->
+	<suffix>php</suffix>
+	<!-- 缓存的目录支持级别 -->
+	<dir-level>0</dir-level>
+</WIND>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<title>{@G:title}</title>
+<template resource='style' />
+</head>
+<body>
+<div class="wrap">
+<h1>{$errorHeader}:</h1>
+<div class="main">
+<ul>
+	<!--#foreach ($errors as $key => $error):
+		$key = $key + 1;
+		if(!WIND_DEBUG)
+			$error = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $error);#-->
+	<li>{$key}. {$error}</li>
+	<!--#endforeach;#-->
+</ul>
+<h2 class="f14 b">You Can Get Help In:</h2>
+<p>{@WindHelper::errorInfo()}</p>
+</div>
+</div>
+</body>
+</html>

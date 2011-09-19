@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 默认view配置 -->
+<WIND>
+	<!-- 指定模板路径 -->
+	<template-dir>template</template-dir>
+	<!-- 指定模板后缀 -->
+	<template-ext>htm</template-ext>
+	<!-- 模板编译文件存放路径 -->
+	<compile-dir>data.template</compile-dir>
+	<!-- 是否开启缓存 -->
+	<is-cache>false</is-cache>
+</WIND>
+
+
+
+<!-- 自定义模板标签的配置 -->
+<WIND>
+	<support-tags>
+<!-- 标签配置：name:标签名字，tag:具体的标签，pattern:匹配表达式 ， compiler:解析类文件-->
+<!--<tag name='' tag='' pattern='' compiler='' /> -->
+	</support-tags>
+</WIND>
