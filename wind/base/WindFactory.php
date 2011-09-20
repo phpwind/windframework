@@ -1,14 +1,21 @@
 <?php
 /**
- * Wind容器基类，创建类对象（分为两种模式，一种是普通模式，一种为单利模式）
- * 职责：
- * 类创建
- * 统一类接口访问
+ * 工厂类
  * 
+ * 工厂类职责:加载组件配置并创建并管理组件对象作用域以及生命周期.通过组件工厂的方式创建组件对象,简化了组件的创建过程,统一了组件的管理接口并且具有很好的可扩展性.
+ * 组件配置方式<code>
+ * <component name='' path='' factory-method='' init-method='' 
+ * scope="application/singleton/prototype/" proxy='' destroy=''>
+ * <property property-name='' ref/value/path=''>
+ * <constructor-arg ref/value=''>
+ * <config resource=''>
+ * </component></code>支持定义类对象的别名,路径,工厂方法,初始化方法,作用域,是否启动代理,析构方法,属性值,构造参数,以及配置解析等.
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.base
  */
 class WindFactory implements IWindFactory {
 	protected $proxyType = 'WIND:factory.WindClassProxy';
@@ -18,15 +25,12 @@ class WindFactory implements IWindFactory {
 	protected $destories = array();
 
 	/**
-	 * 初始化抽象工厂类
-	 * 可以通过两种方式初始化该工厂
-	 * 1. 直接传递一个解析好的类配置信息
-	 * @param string $configFile
+	 * 初始化工厂类
+	 * 
+	 * @param array $classDefinitions 组件定义 默认值为空数组
 	 */
 	public function __construct($classDefinitions = array()) {
-		if (is_array($classDefinitions)) {
-			$this->classDefinitions = $classDefinitions;
-		}
+		if (is_array($classDefinitions)) $this->classDefinitions = $classDefinitions;
 	}
 
 	/* (non-PHPdoc)
@@ -37,43 +41,22 @@ class WindFactory implements IWindFactory {
 		$definition = isset($this->classDefinitions[$alias]) ? $this->classDefinitions[$alias] : array();
 		if (isset($this->prototype[$alias])) {
 			$instance = clone $this->prototype[$alias];
-			if (isset($definition['destroy']))
-				$this->destories[] = array($instance, $definition['destroy']);
+			if (isset($definition['destroy'])) $this->destories[] = array($instance, $definition['destroy']);
 		} elseif (isset($this->instances[$alias])) {
 			$instance = $this->instances[$alias];
 		} else {
-			if (!$definition)
-				throw new WindException('[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
-			if (isset($definition['constructor-args']) && !$args)
-				$this->buildArgs($definition['constructor-args'], $args);
-			if (!isset($definition['className']))
-				$definition['className'] = Wind::import(@$definition['path']);
+			if (!$definition) throw new WindException('[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
+			if (isset($definition['constructor-args']) && !$args) $this->buildArgs($definition['constructor-args'], $args);
+			if (!isset($definition['className'])) $definition['className'] = Wind::import(@$definition['path']);
 			$instance = $this->createInstance($definition['className'], $args);
-			if (isset($definition['config']))
-				$this->resolveConfig($definition['config'], $alias, $instance);
-			if (isset($definition['properties']))
-				$this->buildProperties($definition['properties'], $instance);
-			if (isset($definition['initMethod']))
-				$this->executeInitMethod($definition['initMethod'], $instance);
+			if (isset($definition['config'])) $this->resolveConfig($definition['config'], $alias, $instance);
+			if (isset($definition['properties'])) $this->buildProperties($definition['properties'], $instance);
+			if (isset($definition['initMethod'])) $this->executeInitMethod($definition['initMethod'], $instance);
 			!isset($definition['scope']) && $definition['scope'] = 'application';
 			$this->setScope($alias, $definition['scope'], $instance, $definition);
 		}
-		if (isset($definition['proxy']))
-			$instance = $this->setProxyForClass($definition['proxy'], $instance);
+		if (isset($definition['proxy'])) $instance = $this->setProxyForClass($definition['proxy'], $instance);
 		return $instance;
-	}
-
-	/**
-	 * 对象组件对象到应用工厂中
-	 * @param object $instance
-	 * @param string $alias
-	 * @param string $scope
-	 * @return boolean
-	 */
-	public function registInstance($instance, $alias, $scope = 'singleton') {
-		if (!is_object($instance) || !$alias)
-			return false;
-		return $this->setScope($alias, $scope, $instance);
 	}
 
 	/* (non-PHPdoc)
@@ -81,8 +64,7 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
-			if (!$className || !class_exists($className))
-				throw new WindException('class is not exist.');
+			if (!$className || !class_exists($className)) throw new WindException('class is not exist.');
 			if (empty($args)) {
 				return new $className();
 			} else {
@@ -90,43 +72,49 @@ class WindFactory implements IWindFactory {
 				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 			}
 		} catch (Exception $e) {
-			throw new WindException('[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
-				WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException('[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), WindException::ERROR_CLASS_NOT_EXIST);
 		}
 	}
 
-	/* (non-PHPdoc)
-	 * @see IWindFactory::getPrototype()
+	/**
+	 * 注册组件对象,如果已经存在则覆盖原有值
+	 * 
+	 * @param object $instance
+	 * @param string $alias
+	 * @param string $scope 对象作用域 默认为'singleton'
+	 * @return boolean
 	 */
-	public function getPrototype($alias) {
-		return isset($this->prototype[$alias]) ? clone $this->prototype[$alias] : null;
+	public function registInstance($instance, $alias, $scope = 'singleton') {
+		if (!is_object($instance) || !$alias) return false;
+		return $this->setScope($alias, $scope, $instance);
 	}
 
 	/**
-	 * 动态添加类定义对象
+	 * 动态添加组件定义
+	 * 
 	 * @param string $alias
 	 * @param array $classDefinition
-	 * @return 
+	 * @return void
+	 * @throws WindException
 	 */
 	public function addClassDefinitions($alias, $classDefinition) {
 		if (is_string($alias) && !empty($alias)) {
-			if (!isset($this->classDefinitions[$alias]))
-				$this->classDefinitions[$alias] = $classDefinition;
+			if (!isset($this->classDefinitions[$alias])) $this->classDefinitions[$alias] = $classDefinition;
 		} else
-			throw new WindException('[base.WindFactory.addClassDefinitions] class alias is empty.', 
-				WindException::ERROR_PARAMETER_TYPE_ERROR);
+			throw new WindException('[base.WindFactory.addClassDefinitions] class alias is empty.', WindException::ERROR_PARAMETER_TYPE_ERROR);
 	}
 
 	/**
-	 * 加载类定义,如果merge为true，则覆盖原有配置信息
+	 * 加载类定义
+	 * 
+	 * 调用该方法加载租价你定义,如果merge为true,则覆盖原有配置信息.
 	 * @param array $classDefinitions
-	 * @param boolean $merge
-	 * @return
+	 * @param boolean $merge 是否进行merge操作,默认为true
+	 * @return void
 	 */
 	public function loadClassDefinitions($classDefinitions, $merge = true) {
 		foreach ((array) $classDefinitions as $alias => $definition) {
-			if (!is_array($definition))
-				continue;
+			if (!is_array($definition)) continue;
 			if (!isset($this->classDefinitions[$alias]) || $merge === false) {
 				$this->classDefinitions[$alias] = $definition;
 				continue;
@@ -137,8 +125,10 @@ class WindFactory implements IWindFactory {
 	}
 
 	/**
-	 * 类定义检查，检查类型以是否已经存在
-	 * @param array $definition
+	 * 组件定义检查
+	 * 
+	 * 检查类定义是否已经存在,或者是否已经被创建.避免重复注册组件定义
+	 * @param string $alias
 	 * @return boolean
 	 */
 	public function checkAlias($alias) {
@@ -150,7 +140,12 @@ class WindFactory implements IWindFactory {
 	}
 
 	/**
-	 * @return boolean
+	 * 执行组件定义的注销方法
+	 * 
+	 * 调用全部组件的注销方法,按照组件的定义顺序依次调用,相关组件的定义方法<code><component destroy=''>...</component></code>
+	 * 该方法在应用结束时统一被调用.
+	 * @return void
+	 * @throws WindException
 	 */
 	public function executeDestroyMethod() {
 		try {
@@ -162,8 +157,15 @@ class WindFactory implements IWindFactory {
 	}
 
 	/**
-	 * @param $constructors
-	 * @param args
+	 * 解析组件对象构造方法参数信息,并返回参数列表
+	 * 
+	 * 该方法解析组件对象构造方法的参数信息,相关的组件配置<code><constructor-args>
+	 * <constructor-arg name='0' value='DATA:log' />
+	 * <constructor-arg name='1' value='2' />
+	 * </constructor-args></code>相关定义同properties相同.'name'为参数位置,生成的参数列表按照'name'一次排序.
+	 * @param array $constructors
+	 * @param array $args
+	 * @return void
 	 */
 	protected function buildArgs($constructors, &$args) {
 		foreach ((array) $constructors as $key => $_var) {
@@ -181,9 +183,15 @@ class WindFactory implements IWindFactory {
 	}
 
 	/**
+	 * 组件对象的作用域解析
+	 * 
+	 * 组件对象的作用域解析,目前支持的属性作用于为'prototype','application','singleton',默认为'application'.
+	 * 相关组件定义方式<code><component scope=''>...</component></code>
 	 * @param string $alias
 	 * @param string $scope
-	 * @param object $instance
+	 * @param WindModule $instance
+	 * @param array $definition
+	 * @return boolean
 	 */
 	protected function setScope($alias, $scope, $instance, $definition) {
 		switch ($scope) {
@@ -195,71 +203,83 @@ class WindFactory implements IWindFactory {
 			case 'singleton':
 				$this->instances[$alias] = $instance;
 			default:
-				if (isset($definition['destroy']))
-					$this->destories[$alias] = array($instance, $definition['destroy']);
+				if (isset($definition['destroy'])) $this->destories[$alias] = array($instance, $definition['destroy']);
 				break;
 		}
 		return true;
 	}
 
 	/**
-	 * 为类对象设置配置
+	 * 解析组件配置
+	 * 
+	 * 解析组件配置并将配置信息设置进组件,默认调用windCache组件对进行配置缓存处理,可以通过配置'isCache'开启或关闭系统缓存.
+	 * 组件配置定义<code><component ...><config resource=''>...</config></component></code>,
+	 * 可以通过配置'resource'引入外部配置(支持命名空间方式定义路径地址),也可以直接将配置定义到config标签下.
 	 * @param array|string $config
 	 * @param string $alias
 	 * @param WindModule $instance
-	 * @return
+	 * @return void
 	 */
 	protected function resolveConfig($config, $alias, $instance) {
 		if (isset($config['resource'])) {
-			$_configPath = Wind::getRealPath($config['resource'], true);
+			$_configPath = Wind::getRealPath($config['resource'], true, true);
 			$configParser = $this->getInstance('configParser');
-			$config = $configParser->parse($_configPath, $alias, true, Wind::getApp()->getComponent('windCache'));
+			$config = $configParser->parse($_configPath, $alias, false, Wind::getApp()->getComponent('windCache'));
 		}
-		if ($config && method_exists($instance, 'setConfig'))
-			$instance->setConfig($config);
+		if ($config && method_exists($instance, 'setConfig')) $instance->setConfig($config);
 	}
 
 	/**
-	 * 执行用户配置的初始化操作
+	 * 执行类的初始化方法
+	 * 
+	 * 类的初始化方法的组件定义<code><component init-method=''>...</component></code>
 	 * @param string $initMethod
 	 * @param object $instance
-	 * @return
+	 * @return mixed
+	 * @throws WindException
 	 */
 	protected function executeInitMethod($initMethod, $instance) {
 		try {
 			return call_user_func_array(array($instance, $initMethod), array());
 		} catch (Exception $e) {
-			throw new WindException(
-				'[base.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
-				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+			throw new WindException('[base.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		}
 	}
 
 	/**
-	 * 为类设置代理
-	 * @param string $definition
+	 * 设置类代理对象,并返回代理类对象
+	 * 
+	 * 代理类同当前类拥有同样的职责和功能,可以通过访问代理类对象访问当前类.
+	 * 类的代理信息对应的组件配置为<code><component proxy=''>...</component></code>当'proxy'设置为false时返回该类的代理类型,
+	 * 类默认的代理类型为WindClassProxy,不可以通过配置进行修改.
+	 * @param string $proxy
 	 * @param WindModule $instance
 	 * @return WindClassProxy
 	 */
 	protected function setProxyForClass($proxy, $instance) {
-		if ($proxy === 'false' || $proxy === false)
-			return $instance;
-		
-		if ($proxy === 'true' || $proxy === true)
-			$proxy = $this->proxyType;
+		if ($proxy === 'false' || $proxy === false) return $instance;
+		if ($proxy === 'true' || $proxy === true) $proxy = $this->proxyType;
 		$this->addClassDefinitions($proxy, array('path' => $proxy, 'scope' => 'prototype'));
-		return $this->getInstance($proxy)->registerTargetObject($instance);
+		$proxy = $this->getInstance($proxy);
+		$proxy->registerTargetObject($instance);
+		$instance->_proxy = $proxy;
+		return $proxy;
 	}
 
 	/**
-	 * 将类实例的依赖注入到类实例中
-	 * @param string $properties
-	 * @param WindModule  $instance
+	 * 构建类的属性信息
+	 * 
+	 * 类的属性信息对应的组件配置为<code><properties delay=''><property property-name='' ref/value/path='' />
+	 * </properties></code>他支持的标签为'delay','property-name','ref','value','path'.
+	 * 当'delay'设置为true时该属性延迟加载.'property-name'设置了属性名称.'ref','value','path'是定义属性值的三种方式,'ref'指向另外的组件定义名称,
+	 * 'value'直接输入属性的值,'path'定义一个属性对象的路径,系统会自动创建该属性的对象.
+	 * @param string $properties 属性定义
+	 * @param WindModule  $instance 类对象
+	 * @return void
 	 */
 	protected function buildProperties($properties, $instance) {
-		if (!isset($properties['delay'])) {
-			$instance->setDelayAttributes($properties);
-		} elseif ($properties['delay'] === 'false' || $properties['delay'] === false) {
+		isset($properties['delay']) || $properties['delay'] = true;
+		if ($properties['delay'] === 'false' || $properties['delay'] === false) {
 			foreach ($properties as $key => $subDefinition) {
 				$_value = '';
 				if (isset($subDefinition['value']))
@@ -271,8 +291,7 @@ class WindFactory implements IWindFactory {
 					$_value = $this->createInstance($_className);
 				}
 				$_setter = 'set' . ucfirst(trim($key, '_'));
-				if (method_exists($instance, $_setter))
-					call_user_func_array(array($instance, $_setter), array($_value));
+				if (method_exists($instance, $_setter)) call_user_func_array(array($instance, $_setter), array($_value));
 			}
 		} else
 			$instance->setDelayAttributes($properties);
