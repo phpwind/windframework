@@ -16,7 +16,7 @@ Wind::import('WIND:cache.exception.WindCacheException');
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Su Qian <aoxue.1988.su.qian@163.com> 
- * @copyright Copyright &copy; 2003-2010 phpwind.com
+ * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$ 
  * @package wind.cache

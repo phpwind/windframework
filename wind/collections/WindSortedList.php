@@ -1,18 +1,10 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
-
-/**
  * 表示键/值对的集合，这些键值对按键排序并可按照键和索引访问。
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
- * @package 
+ * @package wind.collections
  */
 class WindSortedList implements IteratorAggregate, ArrayAccess, Countable {
 	/**

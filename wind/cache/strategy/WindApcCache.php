@@ -53,7 +53,7 @@ Wind::import('WIND:cache.AbstractWindCache');
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
  * @author xiaoxiao <xiaoxia.xuxx@aliyun-inc.com>
- * @copyright Copyright &copy; 2003-2010 phpwind.com
+ * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
  * @package wind.cache.strategy
