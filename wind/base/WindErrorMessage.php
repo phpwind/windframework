@@ -2,6 +2,8 @@
 /**
  * 错误消息类
  * 
+ * 错误消息处理类,实现了'IWindErrorMessage'接口,拥有通用的错误存储能力.在此基础上该类还可以发送错误,并且自定义错误处理操作.
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
