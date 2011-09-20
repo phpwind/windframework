@@ -32,7 +32,7 @@ Wind::import('WIND:cache.AbstractWindCache');
  * </code>
  * 2、采用组件配置的方式，通过组件机制调用
  * 在应用配置的components组件配置块中,配置xCache(<i>该名字将决定调用的时候使用的组件名字</i>):
- * <pre>
+ * <code>
  *  'xCache' => array(
  *  	'path' => 'WIND:cache.strategy.WindXCache',
  *		'scope' => 'singleton',
@@ -44,7 +44,7 @@ Wind::import('WIND:cache.AbstractWindCache');
  *      	'expires' => '0',
  *		),
  *  ),
- * </pre>
+ * </code>
  * 在应用中可以通过如下方式获得xCache对象:
  * <code>
  * $cache = Wind::getApp()->getComponent('xCache');	//xCache的名字来自于组件配置中的名字

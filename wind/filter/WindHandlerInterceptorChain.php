@@ -35,9 +35,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	/**
 	 * 设置回调方法
 	 * 
-	 * @param string|array $callBack <pre>
-	 * 回调方法,可以是字符串: 函数；也可以是数组: 类中的方法
-	 * </pre>
+	 * @param string|array $callBack 回调方法,可以是字符串: 函数；也可以是数组: 类中的方法
 	 * @param array $args 回调函数的参数列表
 	 */
 	public function setCallBack($callBack, $args = array()) {
@@ -48,7 +46,7 @@ class WindHandlerInterceptorChain extends WindModule {
 	/**
 	 * 执行callback方法
 	 * 
-	 * @return mixed 如果callBack没有被设置则返回null,否则返回回调函数的结果
+	 * @return mixed $var=.. 如果callBack没有被设置则返回null,否则返回回调函数的结果
 	 * @throws WindException 如果回调函数调用失败则抛出异常
 	 */
 	public function handle() {

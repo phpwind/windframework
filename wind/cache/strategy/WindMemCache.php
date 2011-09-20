@@ -45,7 +45,7 @@ Wind::import('WIND:cache.AbstractWindCache');
  * </code>
  * 2、采用组件配置的方式，通过组件机制调用
  * 在应用配置的components组件配置块中,配置memCache(<i>该名字将决定调用的时候使用的组件名字</i>):
- * <pre>
+ * <code>
  * 'memCache' => array(
  * 		'path' => 'WIND:cache.strategy.WindMemCache',
 		'scope' => 'singleton',
@@ -68,10 +68,10 @@ Wind::import('WIND:cache.AbstractWindCache');
  * 			),
  * 		),
  * ),
- * </pre>
+ * </code>
  * 如果含有多个memCache主机,可以设置多组host在config中,如host1,host2,其key值也可以自定义.
  * 
- * <note><b注意：</b>要使用该组件需要安装memcache扩展库.</note>
+ * <note><b>注意：</b>要使用该组件需要安装memcache扩展库.</note>
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
  * @author xiaoxiao <xiaoxia.xuxx@aliyun-inc.com>

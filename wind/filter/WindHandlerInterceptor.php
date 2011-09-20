@@ -5,8 +5,8 @@
  * 该类是拦截器机制的核心实现，提供接口:
  * <ul>
  * <li>{@link preHandle()}: 抽象接口,前置操作,需要子类实现</li>
- * <li>{@link postHandle)}: 抽象接口,后置操作,需要子类实现</li>
- * <li>{@link $handle()}： 入口接口,调用拦截器的实现.</li>
+ * <li>{@link postHandle()}: 抽象接口,后置操作,需要子类实现</li>
+ * <li>{@link handle()}： 入口接口,调用拦截器的实现.</li>
  * </ul>
  * 该拦截器需要配合拦截链WindHandlerInterceptorChain实现真正的拦截链.
  *
@@ -36,7 +36,7 @@ abstract class WindHandlerInterceptor extends WindModule {
 	/**
 	 * 拦截器的前置操作
 	 * 
-	 * @param mixed 参数列表将会从handle接口中传递的一直
+	 * @param mixed $var=.. 参数列表将会从handle接口中传递继承
 	 * @return null|mixed 如果返回为null则将会继续执行下一个拦截器,如果返回不为null则会中断拦截链的执行
 	 */
 	abstract public function preHandle();
@@ -44,14 +44,14 @@ abstract class WindHandlerInterceptor extends WindModule {
 	/**
 	 * 拦截器的后置操作
 	 * 
-	 * @param mixed 参数列表将会从handle接口中传递的一直
+	 * @param mixed $var=.. 参数列表将会从handle接口中传递继承
 	 */
 	abstract public function postHandle();
 
 	/**
 	 * 拦截器的执行入口
 	 * 
-	 * @param mixed 该接口接受任意参数,并将依次传递给拦截器的前置和后置操作
+	 * @param mixed $var=.. 该接口接受任意参数,并将依次传递给拦截器的前置和后置操作
 	 * @return mixed 返回拦截链执行的最终结果
 	 */
 	public function handle() {
