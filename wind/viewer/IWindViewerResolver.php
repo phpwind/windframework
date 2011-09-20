@@ -1,25 +1,35 @@
 <?php
 /**
- * 视图引擎基类
- * 通过继承该方法可以实现对视图模板的调用解析
+ * 视图渲染器接口类
+ * 
+ * 视图渲染器接口,主要定义了两个接口方法<i>windAssign</i>和<i>windFetch</i><pre>
+ * IWindViewerResolver接口是框架定义的基础的视图渲染器接口,通过实现该接口类来自定义视图渲染器
+ * <i>WindViewerResolver</i>类是该接口的基本实现
+ * </pre>
  * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright Copyright &copy; 2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.viewer
  */
 interface IWindViewerResolver {
 
 	/**
-	 * 设置视图变量信息
+	 * 设置视图变量设置进当前模板
 	 * 
-	 * @param array $vars
-	 * @param string $key
+	 * @param array|string|object $vars
+	 * @param string $key 可选 默认值为空
+	 * @return void
 	 */
 	public function windAssign($vars, $key = '');
 
 	/**
 	 * 获取模板内容与变量信息
+	 * 
+	 * @param string $template 可选 默认值为空
+	 * @return void
 	 */
 	public function windFetch($template = '');
 
