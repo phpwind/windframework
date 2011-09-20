@@ -1,68 +1,88 @@
 <?php
 /**
  * 所有module的基础抽象类
- * 主要实现__get(), __set()等方法
  * 
+ * 在module类中基本实现了对组件特性的支持,包括:配置解析,延迟加载,类代理以及提供获取基础对象的方法.
+ * 如果需要用组件配置管理方式创建类对象,需要继承该类.支持config路径解析.
+ * 
+ * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.base
  */
 class WindModule {
 	/**
+	 * 代理类对象
+	 * 
+	 * @var WindClassProxy
+	 */
+	public $_proxy = null;
+	/**
+	 * 配置数据
+	 * 
 	 * @var array
 	 */
 	protected $_config = array();
 	/**
 	 * 是否进行类型验证
-	 *
+	 * 
+	 * @deprecated
 	 * @var boolean
 	 */
 	protected $_typeValidation = false;
 	/**
-	 * 请求参数信息
+	 * 在延迟加载策略中使用,保存需要延迟加载的属性配置信息
 	 * 
 	 * @var array
 	 */
-	private $delayAttributes = array();
+	private $_delayAttributes = array();
 
 	/**
-	 * 设置属性值，该属性的访问类型不能为‘private’类型
+	 * 重载了魔术方法__set
 	 * 
+	 * 当属性访问不到时该方法被调用,该方法会尝试去访问对应属性的setter设置器,如果不存在则什么也不做
 	 * @param string $propertyName
-	 * @param string $value
-	 * @return
+	 * @param mixed $value
+	 * @return void
 	 */
 	public function __set($propertyName, $value) {
 		$_setter = 'set' . ucfirst($propertyName);
-		if (method_exists($this, $_setter))
-			$this->$_setter($value);
+		if (method_exists($this, $_setter)) $this->$_setter($value);
 	}
 
 	/**
-	 * 返回输入的属性的值，如果该属性不存在或访问类型为‘private’类型，则返回null
+	 * 重载了魔术方法__get
 	 * 
+	 * 当属性访问不到时该方法被调用,该方法会尝试去访问对应属性的getter并返回对应的值,如果不存在则什么也不做
 	 * @param string $propertyName
-	 * @return value of the property or null
+	 * @return mixed
 	 */
 	public function __get($propertyName) {
 		$_getter = 'get' . ucfirst($propertyName);
-		if (method_exists($this, $_getter))
-			return $this->$_getter();
+		if (method_exists($this, $_getter)) return $this->$_getter();
 	}
 
 	/**
-	 * 实现setter或者getter方法调用,并返回你调用方法的返回值
+	 * 重载了魔术方法__call
 	 * 
+	 * 当类的方法访问不到时调用该方法,在这里的实现是配置类属性对象的延迟加载策略
+	 * <code>
+	 * //延迟访问某个属性,当使用这种方式调用时该方法被调用,并访问该类中的$_delayAttributes属性,并创建该属性对象并返回
+	 * $this->_getMethodName(); 
+	 * </code>
 	 * @param string $methodName
 	 * @param array $args
-	 * @return the return of the method your call
+	 * @return mixed
 	 */
 	public function __call($methodName, $args) {
 		$_prefix = substr($methodName, 0, 4);
 		$_propertyName = substr($methodName, 4);
 		$_propertyName = WindUtility::lcfirst($_propertyName);
 		if ($_prefix == '_get') {
-			if (!$this->$_propertyName && isset($this->delayAttributes[$_propertyName])) {
-				$_property = $this->delayAttributes[$_propertyName];
+			if (!$this->$_propertyName && isset($this->_delayAttributes[$_propertyName])) {
+				$_property = $this->_delayAttributes[$_propertyName];
 				$_value = null;
 				if (isset($_property['value'])) {
 					$_value = $_property['value'];
@@ -73,7 +93,8 @@ class WindModule {
 					$_value = $this->getSystemFactory()->createInstance($_className, $args);
 				}
 				$this->$_propertyName = $_value;
-				//unset($this->delayAttributes[$_propertyName]);
+			
+		//unset($this->delayAttributes[$_propertyName]);
 			}
 			return $this->$_propertyName;
 		} elseif ($_prefix == '_set') {
@@ -82,12 +103,15 @@ class WindModule {
 	}
 
 	/**
-	 * 对象clone魔术方法
+	 * 重载魔术方法__clone
+	 * 
+	 * 当clone类对象时该方法被调用,通过配置白名单选择是否clone类中的属性对象.
+	 * @deprecated
+	 * @return void
 	 */
 	public function __clone() {
 		foreach ($this->writeTableCloneProperty() as $value) {
-			if (!is_object($this->$value) || !isset($this->$value))
-				continue;
+			if (!is_object($this->$value) || !isset($this->$value)) continue;
 			$this->$value = clone $this->$value;
 		}
 	}
@@ -111,36 +135,35 @@ class WindModule {
 	/**
 	 * 根据配置名取得相应的配置
 	 * 
+	 * 当<i>configName</i>为空时则返回整个配置.当配置值不存在时返回默认值.默认值默认为空
 	 * @param string $configName 键名
 	 * @param string $subConfigName 二级键名
 	 * @param string $default 默认值
-	 * @param array $config 
-	 * @return string|array
+	 * @param array $config 外部配置
+	 * @return mixed
 	 */
 	public function getConfig($configName = '', $subConfigName = '', $default = '', $config = array()) {
-		if (empty($config))
-			$config = $this->_config;
-		if ($configName === '')
-			return $config;
-		if (!isset($config[$configName]))
-			return $default;
-		if ($subConfigName === '')
-			return $config[$configName];
-		if (!isset($config[$configName][$subConfigName]))
-			return $default;
+		if (empty($config)) $config = $this->_config;
+		if ($configName === '') return $config;
+		if (!isset($config[$configName])) return $default;
+		if ($subConfigName === '') return $config[$configName];
+		if (!isset($config[$configName][$subConfigName])) return $default;
 		return $config[$configName][$subConfigName];
 	}
 
 	/**
-	 * Config配置,如果配置信息已经存在，则会合并配置
+	 * 设置类配置
 	 * 
-	 * @param string|array|windConfig $config
-	 * @return
+	 * 设置类配置信息,如果配置已经存在,则将以存在配置和输入配置进行合并. 重复配置后者将覆盖前者.
+	 * 支持配置路径解析,当输入值为配置路径时则会调用配置解析器进行解析并自动缓存当前配置值.(缓存是由wind_config中的isCache配置值决定是否开启)
+	 * @param string|array $config
+	 * @return void
 	 */
 	public function setConfig($config) {
 		if ($config) {
-			if (is_string($config))
-				$config = Wind::getApp()->getComponent('configParser')->parse($config);
+			if (is_string($config)) {
+				$config = Wind::getApp()->getComponent('configParser')->parse($config, get_class($this), false, Wind::getApp()->getComponent('windCache'));
+			}
 			if (!empty($this->_config)) {
 				$this->_config = array_merge($this->_config, (array) $config);
 			} else
@@ -149,19 +172,9 @@ class WindModule {
 	}
 
 	/**
-	 * 设置自动实现Getter/Setter方法的属性名称
-	 * 当该方法返回值为空时，类属性的可访问性跟默认相同
-	 * @deprecated
-	 * @return array
-	 */
-	protected function writeTableForProperty() {
-		return array('delayAttributes' => 'array');
-	}
-
-	/**
-	 * 通过重载该方法，可以实现对对象内部的对象同时进行clone
-	 * 返回需要被clone的对象数组
+	 * 类对象clone白名单
 	 * 
+	 * 当类对象被clone时,会访问该方法,该方法返回该类中需要被同时clone的类属性名称,默认返回空数组
 	 * @return array
 	 */
 	protected function writeTableCloneProperty() {
@@ -169,6 +182,8 @@ class WindModule {
 	}
 
 	/**
+	 * 返回当前应用的WindFactory对象
+	 * 
 	 * @return WindFactory
 	 */
 	protected function getSystemFactory() {
@@ -176,6 +191,8 @@ class WindModule {
 	}
 
 	/**
+	 * 返回当前应用的WindHttpRequest对象
+	 * 
 	 * @return WindHttpRequest
 	 */
 	protected function getRequest() {
@@ -183,6 +200,8 @@ class WindModule {
 	}
 
 	/**
+	 * 返回当前应用的WindHttpResponse对象
+	 * 
 	 * @return WindHttpResponse
 	 */
 	protected function getResponse() {
@@ -190,10 +209,13 @@ class WindModule {
 	}
 
 	/**
+	 * 设置延迟加载类属性相关组件配置信息
+	 * 
 	 * @param array $delayAttributes
+	 * @return void
 	 */
 	public function setDelayAttributes($delayAttributes) {
-		$this->delayAttributes = array_merge($this->delayAttributes, $delayAttributes);
+		$this->_delayAttributes = array_merge($this->_delayAttributes, $delayAttributes);
 	}
 
 }
