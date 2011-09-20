@@ -1,11 +1,13 @@
 <?php
 /**
- * 异常处理机制
+ * 通用异常类型,大部分异常都是继承自该异常
  * 
- * the last known user to change this file in the repository  <$LastChangedBy: weihu $>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id: WindException.php 37 2010-11-08 12:57:04Z weihu $ 
- * @package
+ * the last known user to change this file in the repository  <$LastChangedBy$>
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.base
  */
 class WindException extends Exception {
 	/* 系统错误 */
@@ -21,49 +23,21 @@ class WindException extends Exception {
 	const ERROR_CONFIG_ERROR = '120';
 	/* 返回值类型错误 */
 	const ERROR_RETURN_TYPE_ERROR = '130';
-	
-	private $innerException = null;
 
 	/**
 	 * 异常构造函数
+	 * 
 	 * @param $message		     异常信息
-	 * @param $code			     异常代号
-	 * @param $innerException 内部异常
+	 * @param $code			     异常代号 默认为0
+	 * @param $innerException 内部异常 默认为null
 	 */
-	public function __construct($message = '', $code = 0, Exception $innerException = null) {
+	public function __construct($message, $code = 0) {
 		$message = $this->buildMessage($message, $code);
 		parent::__construct($message, $code);
-		$this->innerException = $innerException;
 	}
 
 	/**
-	 * 取得内部异常
-	 */
-	public function getInnerException() {
-		return $this->innerException;
-	}
-
-	/**
-	 * 取得异常堆栈信息
-	 */
-	public function getStackTrace() {
-		if ($this->innerException) {
-			$thisTrace = $this->getTrace();
-			$class = __CLASS__;
-			$innerTrace = $this->innerException instanceof $class ? $this->innerException->getStackTrace() : $this->innerException->getTrace();
-			foreach ($innerTrace as $trace)
-				$thisTrace[] = $trace;
-			return $thisTrace;
-		} else {
-			return $this->getTrace();
-		}
-		return array();
-	}
-
-	/**
-	 * 组装异常信息
-	 * 
-	 * 根据输入的异常号组装相对应的异常信息
+	 * 根据exception code返回构建的异常信息描述
 	 * 
 	 * @param string $message 用户自定义的信息
 	 * @param int $code  异常号
@@ -78,11 +52,12 @@ class WindException extends Exception {
 	/**
 	 * 自定义异常号的对应异常信息
 	 * 
-	 * @param int $code  异常号
+	 * @param int $code 异常号
 	 * @return string 返回异常号对应的异常组装信息原型
 	 */
 	protected function messageMapper($code) {
-		$messages = array(self::ERROR_SYSTEM_ERROR => 'System error \'$message\'.', 
+		$messages = array(
+			self::ERROR_SYSTEM_ERROR => 'System error \'$message\'.', 
 			self::ERROR_CLASS_TYPE_ERROR => 'Incorrect class type \'$message\'.', 
 			self::ERROR_CLASS_NOT_EXIST => 'Unable to create instance for \'$message\' , class is not exist.', 
 			self::ERROR_CLASS_METHOD_NOT_EXIST => 'Unable to access the method \'$message\' in current class , the method is not exist or is protected.', 
