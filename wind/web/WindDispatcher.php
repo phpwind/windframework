@@ -11,11 +11,6 @@
 class WindDispatcher extends WindModule {
 	protected $maxForwrd = array();
 	/**
-	 * 将上一次请求信息缓存在这个变量中
-	 * @var array
-	 */
-	protected $token;
-	/**
 	 * @var boolean
 	 */
 	protected $display = false;
@@ -29,7 +24,6 @@ class WindDispatcher extends WindModule {
 	 * @return
 	 */
 	public function dispatch($forward, $router, $display) {
-		//$this->checkToken($router, false);
 		if ($forward->getIsRedirect())
 			$this->dispatchWithRedirect($forward, $router);
 		elseif ($forward->getIsReAction()) {
@@ -85,21 +79,6 @@ class WindDispatcher extends WindModule {
 		/*if ($this->checkToken($router)) {
 			throw new WindFinalException('[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, WindException::ERROR_SYSTEM_ERROR);
 		}*/
-		Wind::getApp()->processRequest();
+		Wind::getApp()->run();
 	}
-
-	/**
-	 * 检查请求是否是重复请求
-	 * @param AbstractWindRouter $router
-	 * @param boolean $check
-	 * @return boolean
-	 */
-	protected function checkToken($router, $check = true) {
-		$token = $router->getModule() . '/' . $router->getController() . '/' . $router->getAction();
-		if ($check === false) {
-			$this->token = $token;
-		} else
-			return !strcasecmp($token, $this->token);
-	}
-
 }
