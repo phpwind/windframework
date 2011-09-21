@@ -2,12 +2,13 @@
 Wind::import('WIND:http.request.WindHttpRequest');
 Wind::import('WIND:http.response.WindHttpResponse');
 /**
- * 
- * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 应用控制器,协调处理用户请求,处理,跳转分发等工作
+ *
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.web
  */
 class WindWebApplication extends WindModule implements IWindApplication {
 	/**
@@ -39,6 +40,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 
 	/**
 	 * 应用初始化操作
+	 * 
 	 * @param array|string $config
 	 * @param WindFactory $factory
 	 * @param string $runCallBack
@@ -123,6 +125,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * 
 	 * @param IWindController $handler
 	 * @return void
+	 * @throws WindFinalException
 	 */
 	public function runProcess($handler) {
 		if (!$handler instanceof IWindController) throw new WindFinalException();
@@ -131,9 +134,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 
 	/**
 	 * 设置全局变量
+	 * 
 	 * @param array|object|string $data
 	 * @param string $key
-	 * @return 
+	 * @return void
 	 */
 	public function setGlobal($data, $key = '') {
 		$_G = $this->getGlobal();
@@ -149,7 +153,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 
 	/**
 	 * 获取全局变量
-	 * @return string|object|array
+	 * 
+	 * @return mixed
 	 */
 	public function getGlobal() {
 		$_args = func_get_args();
@@ -158,7 +163,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * 添加module
+	 * 添加module配置
+	 * <code>
 	 * <controller-path>controller</controller-path>
 	 * <!-- 指定该模块下的controller的后缀格式 -->
 	 * <controller-suffix>Controller</controller-suffix>
@@ -169,23 +175,26 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * <!-- 指定模板路径 -->
 	 * <template-dir>template</template-dir>
 	 * <!-- 指定模板后缀 -->
-	 * <template-ext>htm</template-ext>
+	 * <template-ext>htm</template-ext></code>
 	 * 
-	 * @param string $name
-	 * @param array $config
+	 * @param string $name module名称
+	 * @param array $config 配置数组
+	 * @param boolean $replace 如果module已经存在是否覆盖他 默认值为false不进行覆盖
 	 * @return array
 	 */
-	public function setModules($name, $config = array(), $replace = false) {
+	public function setModules($name, $config, $replace = false) {
 		if ($replace || !isset($this->_config['modules'][$name])) {
 			$this->_config['modules'][$name] = (array) $config;
 		}
 	}
 
 	/**
-	 * @param string $name
+	 * 获得module配置,$name为空时返回当前module配置
+	 * 
+	 * @param string $name module名称 默认为空
+	 * @return array
 	 * @throws WindActionException
 	 * @throws WindException
-	 * @return array
 	 */
 	public function getModules($name = '') {
 		if ($name === '') return $this->getConfig('modules', $this->handlerAdapter->getModule());
@@ -193,15 +202,20 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
+	 * 注册组件对象
+	 * 
 	 * @param object $componentInstance
 	 * @param string $componentName
+	 * @param string $scope 默认值为 'application'
 	 */
-	public function registeComponent($componentName, $componentInstance, $scope) {
+	public function registeComponent($componentName, $componentInstance, $scope = 'application') {
 		return $this->windFactory->registInstance($componentInstance, $componentName, $scope);
 	}
 
 	/**
-	 * @param string $componentName
+	 * 获得组件对象
+	 * 
+	 * @param string $componentName 组件名称呢个
 	 * @return object
 	 */
 	public function getComponent($componentName) {
@@ -220,9 +234,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
+	 * 解析action过滤链的配置信息
+	 * 
 	 * @param array $filters
 	 * @param WindSimpleController $handler
-	 * @return
+	 * @return void
 	 */
 	protected function resolveActionMapping($filters, $handler) {
 		/* @var $cache AbstractWindCache */
@@ -248,14 +264,16 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * 异常处理请求
+	 * 处理错误请求
+	 * 
+	 * 根据错误请求的相关信息,将程序转向到错误处理句柄进行错误处理
 	 * @param WindActionException actionException
-	 * @return
+	 * @return void
+	 * @throws WindFinalException
 	 */
 	protected function sendErrorMessage($exception) {
 		$moduleName = $this->handlerAdapter->getModule();
 		if ($moduleName === 'error') throw new WindFinalException($exception->getMessage());
-		
 		$errorMessage = null;
 		if ($exception instanceof WindActionException) $errorMessage = $exception->getError();
 		if (!$errorMessage) {
@@ -267,9 +285,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			if (empty($module)) $module = $this->getModules('default');
 			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
-			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', array(
-				'controller-path' => $_errorHandler, 
+				'controller-path' => 'error/' . @$matchs[0] . '/run/', 
 				'controller-suffix' => '', 
 				'error-handler' => ''));
 		}
@@ -284,7 +301,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	/**
 	 * 检查请求的合法性
 	 * 
-	 * 检查请求的合法性,当判断请求不合法时,抛出一个终止异常,终止当前进程
+	 * 检查请求的合法性,当判断请求不合法时,抛出一个终止异常并终止当前进程
 	 * @return void
 	 * @throws WindFinalException
 	 */
@@ -295,21 +312,21 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * @return WindHttpRequest $request
+	 * @return WindHttpRequest
 	 */
 	public function getRequest() {
 		return $this->request;
 	}
 
 	/**
-	 * @return WindHttpResponse $response
+	 * @return WindHttpResponse
 	 */
 	public function getResponse() {
 		return $this->response;
 	}
 
 	/**
-	 * @return WindFactory $windFactory
+	 * @return WindFactory
 	 */
 	public function getWindFactory() {
 		return $this->windFactory;
