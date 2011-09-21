@@ -4,12 +4,12 @@ Wind::import('WIND:fitler.WindHandlerInterceptor');
  * action拦截器父类
  *
  * 继承实现拦截链preHandle（前置）和postHandle（后置）职责.将实现的拦截链添加到应用配置中,使之生效:
- * 例如实现formFilter,则需要在应用配置中添加如下配置:
+ * 例如实现MyFilter,则需要在应用配置中添加如下配置:
  * <code>
  * 'filters' => array(
  * 		'class' => 'WIND:filter.WindFilterChain',	//设置使用的拦截链实现
  * 		'filter1' => array(
- * 			'class' => 'MYAPP:filter.formFilter',	//设置设置实现的formFilter类路径,MYAPP必须是一个有效的经过注册的命名空间
+ * 			'class' => 'MYAPP:filter.MyFilter',	//设置设置实现的MyFilter类路径,MYAPP必须是一个有效的经过注册的命名空间
  * 			'pattern' => '*',	//此处设置该拦截规则应用的范围,*意味着所有的action都将会应用该拦截规则
  *     )
  *  )
@@ -21,8 +21,19 @@ Wind::import('WIND:fitler.WindHandlerInterceptor');
  * <li>moduleA_index*: 则moduleA模块下的indexController下的所有Action请求都将会应用该拦截器</li>
  * <li>moduleA_index_add*: 则module模块下的indexController下的addAction将会应用该拦截器</li>
  * </ul>
+ * 用户可以在filter中添加自己的特殊配置:比如:
+ * <code>
+ * 'filters' => array(
+ * 		'class' => 'WIND:filter.WindFilterChain',	
+ * 		'filter1' => array(
+ * 			'class' => 'MYAPP:filter.TestFilter',	
+ * 			'pattern' => '*',	
+ * 			'isOpen' => '1',	//添加的配置
+ *     )
+ *  )
+ * </code>
+ * 则在自己的TestFilter中设置一个属性名为isOpen同时设置该属性为protected权限,那么在使用的时候该配置的值将会赋值给该属性.
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
@@ -50,12 +61,11 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 	 * 
 	 * @param WindForward $forward 设置当前的forward对象
 	 * @param WindErrorMessage $errorMessage 设置错误处理的errorMessage
+	 * @param array $args 接受数组传递,数组以关联数组的方式给出,如果存在属性和关联数组中的key相同则将该key对应值设置给该属性.
 	 */
-	public function __construct($forward, $errorMessage) {
+	public function __construct($forward, $errorMessage, $args = array()) {
 		$this->forward = $forward;
 		$this->errorMessage = $errorMessage;
-		$args = func_get_args();
-		unset($args[0], $args[1]);
 		foreach ($args as $key => $value)
 			property_exists(get_class($this), $key) && $this->$key = $value;
 	}
@@ -107,16 +117,16 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 		$value = '';
 		switch (strtolower($type)) {
 			case IWindRequest::INPUT_TYPE_GET:
-				$value = $this->getRequest()->getGet($name);
+				$value = $this->getRequest()->getGet($name, null);
 				break;
 			case IWindRequest::INPUT_TYPE_POST:
-				$value = $this->getRequest()->getPost($name);
+				$value = $this->getRequest()->getPost($name, null);
 				break;
 			case IWindRequest::INPUT_TYPE_COOKIE:
-				$value = $this->getRequest()->getCookie($name);
+				$value = $this->getRequest()->getCookie($name, null);
 				break;
 			default:
-				$value = $this->getRequest()->getAttribute($name);
+				$value = $this->getRequest()->getAttribute($name, null);
 		}
 		return $callback ? array($value, call_user_func_array($callback, array($value))) : $value;
 	}

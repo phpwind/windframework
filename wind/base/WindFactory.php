@@ -33,7 +33,7 @@ class WindFactory implements IWindFactory {
 	}
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindFactory::getInstance()
+	 * @see IWindFactory::getInstance()
 	 */
 	public function getInstance($alias, $args = array()) {
 		$instance = null;
@@ -59,7 +59,7 @@ class WindFactory implements IWindFactory {
 	}
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindFactory::createInstance()
+	 * @see IWindFactory::createInstance()
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
