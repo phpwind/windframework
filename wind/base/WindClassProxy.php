@@ -2,6 +2,18 @@
 /**
  * 类代理定义
  * 
+ * 通过使用类代理机制,可以实现对类方法或属性的监听过滤机制.<code>
+ * //相关组件配置,只需设置 proxy为true,就可以通过组件工厂创建一个具有代理功能的类实例对象.
+ * <component name='windApplication' path='WIND:web.WindWebApplication'
+ * scope='singleton' proxy='true'>
+ * <properties>
+ * <property name='dispatcher' ref='dispatcher' />
+ * <property name='handlerAdapter' ref='router' />
+ * </properties>
+ * </component>
+ * $object = Wind::getApp()->getFactory()->getInstance('windApplication');
+ * $object->registerEventListener('runProcess', new Listener());
+ * </code>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
