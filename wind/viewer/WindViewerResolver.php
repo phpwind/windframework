@@ -20,7 +20,6 @@ Wind::import('WIND:viewer.exception.WindViewException');
  * 我们可以通过修改view的component配置来注入不同的ViewerResolver实现.
  * </note>
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
@@ -120,7 +119,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 * 是否重新进行编译取决于两个变量'WIND_DEBUG'和'isCompile','WIND_DEBUG'是框架层面的'DEBUG'控制常量,当'DEBUG'开启时则总是重新生成编译模板.
 	 * 'isCompile'是一个配置值来自'WindView'对象,用户可以通过配置进行修改.当'isCompile'为'1'时,程序会进一步判断,当编译文件不存在或者已经过期时对模板进行重新编译.
 	 * 如果'isCompile'为'0',则不对模板文件进行重新编译.
-	 * 
 	 * @param string $templateFilePath 模板路径
 	 * @param string $compileFilePath 编译路径
 	 * @return boolean
@@ -160,7 +158,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 /**
  * 辅助WindViewerResolver完成视图渲染工作
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

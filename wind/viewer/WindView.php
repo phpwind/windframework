@@ -37,7 +37,6 @@ Wind::import('WIND:viewer.IWindView');
  * ))</code>
  * <note><b>注意:</b>框架默认视图组件,通过修改组件配置修改默认视图组件.(详细操作参考组件配置定义)</note>
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license {@link http://www.windframework.com}
@@ -46,22 +45,28 @@ Wind::import('WIND:viewer.IWindView');
  */
 class WindView extends WindModule implements IWindView {
 	/**
-	 * 模板目录,支持命名空间格式:<i>WIND:template</i>,当命名空间为空时以当前<i>app</i>的<i>rootpath</i>为默认命名空间
+	 * 模板目录
+	 * 
+	 * 支持命名空间格式:<i>WIND:template</i>,
+	 * 当命名空间为空时以当前<i>app</i>的<i>rootpath</i>为默认命名空间
 	 * @var string
 	 */
 	public $templateDir;
 	/**
 	 * 模板文件的扩展名
+	 * 
 	 * @var string
 	 */
 	public $templateExt;
 	/**
 	 * 模板名称
+	 * 
 	 * @var string
 	 */
 	public $templateName;
 	/**
 	 * 是否对模板变量进行html字符过滤
+	 * 
 	 * @var boolean
 	 */
 	public $htmlspecialchars = true;
@@ -76,26 +81,31 @@ class WindView extends WindModule implements IWindView {
 	public $isCompile = 0;
 	/**
 	 * 模板编译文件生成目录,目录定义规则同<i>templateDir</i>
+	 * 
 	 * @var string
 	 */
 	public $compileDir;
 	/**
 	 * 模板编译文件生成后缀,默认值为'tpl'
+	 * 
 	 * @var string
 	 */
 	public $compileExt = 'tpl';
 	/**
 	 * 模板布局文件
+	 * 
 	 * @var string
 	 */
 	public $layout;
 	/**
 	 * 主题包目录
+	 * 
 	 * @var string
 	 */
 	public $theme;
 	/**
 	 * 视图解析引擎,通过组件配置改变该类型
+	 * 
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
@@ -141,7 +151,6 @@ class WindView extends WindModule implements IWindView {
 	 * $template='subTemplateDir.templateName'; //return $templateDir/subTemplateDir/templateName.$ext
 	 * $template='namespace:templateName'; //return namespace:templateName.$ext</code>
 	 * <note><b>注意:</b>$template为空则返回当前的模板的路径信息.模板文件后缀名可以通过修改配置进行修改.</note>
-	 * 
 	 * @param string $template 模板名称, 默认值为空 , 为空则返回当前模板的绝对地址
 	 * @param string $ext 模板后缀, 默认值为空, 为空则返回使用默认的后缀
 	 * @return string
@@ -161,7 +170,6 @@ class WindView extends WindModule implements IWindView {
 	 * $template='subTemplateDir.templateName'; //return $compileDir/subTemplateDir_templateName.$ext
 	 * $template='namespace:templateName'; //return $compileDir/__external_subDir_templateName.$ext</code>
 	 * <note><b>注意:</b>$template为空则返回当前的模板的路径信息.</note>
-	 * 
 	 * @param string $template 模板名称, 默认值为空, 为空则返回当前模板的编译文件
 	 * @return string
 	 */

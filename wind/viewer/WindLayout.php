@@ -26,7 +26,6 @@
  * )</code>
  * <note><b>注意:</b>框架默认布局组件</note>
  *
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
@@ -122,7 +121,6 @@ class WindLayout extends WindModule {
 	 * 设置将JavaScript脚本输出到页脚
 	 * 
 	 * 将内容中的javascript脚本，按照顺序移动到<b><body>...js定义</body></b>
-	 * 
 	 * @param string $script
 	 * @return void
 	 */
@@ -134,7 +132,6 @@ class WindLayout extends WindModule {
 	 * 设置Css定义输出到页头
 	 * 
 	 * 将内容中的css定义，按照顺序移动到<b><head>...css定义</head></b>
-	 * 
 	 * @param string $css
 	 * @return void
 	 */

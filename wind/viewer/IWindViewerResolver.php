@@ -6,8 +6,6 @@
  * IWindViewerResolver接口是框架定义的基础的视图渲染器接口,通过实现该接口类来自定义视图渲染器
  * <i>WindViewerResolver</i>类是该接口的基本实现
  * </pre>
- * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
