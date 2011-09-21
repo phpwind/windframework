@@ -18,9 +18,10 @@ interface IWindFactory {
 	 * 通过调用该方法,获取类的实例对象.当类的实例对象不存在时调用{@link createInstance}方法创建.
 	 * 通过该方法创建类对象,需要确定该类的组件定义已经被加载.如果未被加载则返回一个null.
 	 * @param string $classAlias 类别名 组件定义名称 必须填写
+	 * @param array $args 参数列表
 	 * @return instance 返回类实例对象
 	 */
-	public function getInstance($classAlias);
+	public function getInstance($classAlias, $args = array());
 
 	/**
 	 * 创建并返回类对象
