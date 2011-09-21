@@ -2,6 +2,8 @@
 Wind::import('WIND:http.request.WindHttpRequest');
 Wind::import('WIND:http.response.WindHttpResponse');
 /**
+ * 
+ * 
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$ 
@@ -11,11 +13,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	/**
 	 * @var WindHttpRequest
 	 */
-	private $request;
+	protected $request;
 	/**
 	 * @var WindHttpResponse
 	 */
-	private $response;
+	protected $response;
 	/**
 	 * @var WindFactory
 	 */
@@ -24,6 +26,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @var WindDispatcher
 	 */
 	protected $dispatcher = null;
+	protected $started = false;
+	protected $token = '';
 	/**
 	 * @var WindRouter
 	 */
@@ -47,22 +51,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/* (non-PHPdoc)
-	 * @see IWindApplication::run()
-	 */
-	public function run() {
-		set_error_handler('WindHelper::errorHandle');
-		set_exception_handler('WindHelper::exceptionHandle');
-		$this->setModules('default', $this->defaultModule);
-		$this->_getHandlerAdapter()->route();
-		$this->processRequest();
-		restore_error_handler();
-		restore_exception_handler();
-		$this->response->sendResponse();
-		$this->windFactory->executeDestroyMethod();
-		Wind::resetApp();
-	}
-
-	/* (non-PHPdoc)
 	 * @see IWindApplication::doDispatch()
 	 */
 	public function doDispatch($forward, $display = false) {
@@ -70,32 +58,49 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, $display);
 	}
 
-	/**
-	 * 请求处理
-	 * @return
+	/* (non-PHPdoc)
+	 * @see IWindApplication::run()
 	 */
-	public function processRequest() {
+	public function run() {
+		if ($this->started !== true) {
+			$this->started = true;
+			set_error_handler('WindHelper::errorHandle');
+			set_exception_handler('WindHelper::exceptionHandle');
+			$this->setModules('default', $this->defaultModule);
+			$this->_getHandlerAdapter()->route();
+			$__state = true;
+		}
 		try {
-			if (!$this->handlerAdapter->getModule()) $this->handlerAdapter->setModule('default');
-			if (!($module = $this->getModules())) throw new WindActionException('[web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 404);
+			if (!$this->handlerAdapter->getModule()) {
+				$this->handlerAdapter->setModule('default');
+			}
+			$this->checkProcess();
+			if (!($module = $this->getModules())) {
+				throw new WindActionException('[web.WindWebApplication.processRequest] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 404);
+			}
 			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
-			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info('[web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
-			
+			if (WIND_DEBUG & 2) {
+				Wind::getApp()->getComponent('windLogger')->info('[web.WindWebApplication.processRequest] \r\n\taction handl:' . $handlerPath, 'wind.core');
+			}
 			$this->windFactory->addClassDefinitions($handlerPath, array(
 				'path' => $handlerPath, 
 				'scope' => 'prototype', 
-				'proxy' => true, 
 				'config' => $this->getConfig('actionmap'), 
 				'properties' => array(
 					'errorMessage' => array('ref' => 'errorMessage'), 
 					'forward' => array('ref' => 'forward'), 
 					'urlHelper' => array('ref' => 'urlHelper'))));
 			$handler = $this->windFactory->getInstance($handlerPath);
-			if (!$handler) throw new WindActionException('[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 404);
-			if ($filters = $this->getConfig('filters')) $this->resolveActionMapping($filters, $handler);
-			$this->doDispatch($handler->doAction($this->handlerAdapter));
+			if (!$handler) {
+				throw new WindActionException('[web.WindWebApplication.processRequest] Your requested \'' . $handlerPath . '\' was not found on this server.', 404);
+			}
+			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig('filters')) {
+				$this->resolveActionMapping($filters, $handler);
+				$this->_proxy->runProcess($handler);
+			} else
+				$this->runProcess($handler);
 		} catch (WindForwardException $e) {
 			$this->doDispatch($e->getForward());
 		} catch (WindActionException $e) {
@@ -103,6 +108,25 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindException $e) {
 			$this->sendErrorMessage($e);
 		}
+		if (isset($__state) && $__state === true) {
+			restore_error_handler();
+			restore_exception_handler();
+			$this->response->sendResponse();
+			$this->windFactory->executeDestroyMethod();
+			Wind::resetApp();
+			$this->started = false;
+		}
+	}
+
+	/**
+	 * 执行请求的进程
+	 * 
+	 * @param IWindController $handler
+	 * @return void
+	 */
+	public function runProcess($handler) {
+		if (!$handler instanceof IWindController) throw new WindFinalException();
+		$this->doDispatch($handler->doAction($this->handlerAdapter));
 	}
 
 	/**
@@ -152,7 +176,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return array
 	 */
 	public function setModules($name, $config = array(), $replace = false) {
-		if ($replace || !isset($this->_config['modules'][$name])) $this->_config['modules'][$name] = (array) $config;
+		if ($replace || !isset($this->_config['modules'][$name])) {
+			$this->_config['modules'][$name] = (array) $config;
+		}
 	}
 
 	/**
@@ -182,7 +208,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$component = null;
 		switch ($componentName) {
 			case 'windCache':
-				if ($this->getConfig('iscache', '', true)) $component = $this->windFactory->getInstance($componentName);
+				if ($this->getConfig('iscache', '', true)) {
+					$component = $this->windFactory->getInstance($componentName);
+				}
 				break;
 			default:
 				$component = $this->windFactory->getInstance($componentName);
@@ -215,7 +243,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if (empty($_filters[$_token])) return;
 		$args = array($handler->getForward(), $handler->getErrorMessage());
 		foreach ($_filters[$_token] as $key => $value) {
-			$handler->registerEventListener('doAction', $this->windFactory->createInstance(Wind::import($value), $args));
+			$this->_proxy->registerEventListener('runProcess', $this->windFactory->createInstance(Wind::import($value), $args));
 		}
 	}
 
@@ -247,10 +275,23 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		}
 		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
-		$forward->forwardAction($_errorAction);
+		$forward->forwardAction($_errorAction, array(), false, false);
 		$forward->setVars($errorMessage->getError(), 'error');
 		$forward->setVars($exception->getCode(), 'errorCode');
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
+	}
+
+	/**
+	 * 检查请求的合法性
+	 * 
+	 * 检查请求的合法性,当判断请求不合法时,抛出一个终止异常,终止当前进程
+	 * @return void
+	 * @throws WindFinalException
+	 */
+	protected function checkProcess() {
+		$token = $this->handlerAdapter->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
+		if (strcasecmp($token, $this->token) === 0) throw new WindFinalException();
+		$this->token = $token;
 	}
 
 	/**
