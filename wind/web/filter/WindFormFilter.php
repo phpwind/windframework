@@ -51,19 +51,16 @@ class WindFormFilter extends WindActionFilter {
 	public function preHandle() {
 		if (!$this->form) return null;
 		$className = Wind::import($this->form);
-		if (!class_exists($className)) throw new WindException('the form \'' . $this->formPath . '\' is not exists!');
-		if ('WindEnableValidateModule' != get_parent_class($className)) {
-			throw new WindException('The form \'' . $this->form . '\' is not extends \'WindEnableValidateModule\'!');
-		}
-		$form = new $className();
+		$form = $this->getSystemFactory()->createInstance($className);
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
 			if ((0 !== strpos($method, 'set')) || ('' == ($_tmp = substr($method, 3)))) continue;
-			call_user_func_array(array($form, $method), array($this->getInput(lcfirst($_tmp))));
+			if (null === ($input = $this->getRequest()->getRequest(lcfirst($_tmp), null))) continue;
+			call_user_func_array(array($form, $method), array($input));
 		}
 		$form->validate();
-		$this->sendError($form->getErrorAction(), $form->getErrors());
 		$this->getRequest()->setAttribute($form, lcfirst($className));
+		$this->sendError($form->getErrorAction(), $form->getErrors());
 	}
 
 	/**
