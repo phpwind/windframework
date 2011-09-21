@@ -55,11 +55,11 @@ class WindFormFilter extends WindActionFilter {
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
 			if ((0 !== strpos($method, 'set')) || ('' == ($_tmp = substr($method, 3)))) continue;
-			if (null === ($input = $this->getRequest()->getRequest(lcfirst($_tmp), null))) continue;
+			if (null === ($input = $this->getRequest()->getRequest(WindUtility::lcfirst($_tmp), null))) continue;
 			call_user_func_array(array($form, $method), array($input));
 		}
 		$form->validate();
-		$this->getRequest()->setAttribute($form, lcfirst($className));
+		$this->getRequest()->setAttribute($form, WindUtility::lcfirst($className));
 		$this->sendError($form->getErrorAction(), $form->getErrors());
 	}
 
