@@ -46,7 +46,6 @@ class Wind {
 				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
 			}
 			$application = $factory->getInstance('windApplication', array($config, $factory));
-			if (!$application instanceof IWindApplication) throw new WindException('[Wind.application] ' . get_class($application), WindException::ERROR_CLASS_TYPE_ERROR);
 			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath($config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
 			self::$_app[$appName] = $application;
