@@ -2,7 +2,6 @@
 /**
  * 通用异常类型,大部分异常都是继承自该异常
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

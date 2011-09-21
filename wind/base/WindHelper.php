@@ -2,7 +2,6 @@
 /**
  * 基础帮助类,提供框架错误处理基础操作
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

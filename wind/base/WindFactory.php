@@ -10,7 +10,6 @@
  * <constructor-arg ref/value=''>
  * <config resource=''>
  * </component></code>支持定义类对象的别名,路径,工厂方法,初始化方法,作用域,是否启动代理,析构方法,属性值,构造参数,以及配置解析等.
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

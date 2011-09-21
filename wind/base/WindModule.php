@@ -5,7 +5,6 @@
  * 在module类中基本实现了对组件特性的支持,包括:配置解析,延迟加载,类代理以及提供获取基础对象的方法.
  * 如果需要用组件配置管理方式创建类对象,需要继承该类.支持config路径解析.
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
