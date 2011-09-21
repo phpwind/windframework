@@ -1,32 +1,31 @@
 <?php
-/**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
-Wind::import ( 'WIND:mail.protocol.WindSocket' );
+Wind::import('WIND:mail.protocol.WindSocket');
 /**
  * 邮件传输协议操作
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.mail.protocol
  */
 class WindSmtp {
+
 	const CRLF = "\r\n";
+
 	/**
 	 * @var WindSocket
 	 */
 	protected $smtp = null;
+
 	protected $request = array();
+
 	protected $resonse = array();
-	
-	public function __construct($host, $port,$timeout = 60) {
-		$this->smtp = new WindSocket($host, $port ,$timeout);
+
+	public function __construct($host, $port, $timeout = 60) {
+		$this->smtp = new WindSocket($host, $port, $timeout);
 	}
-	
+
 	/**
 	 * 打开smtp服务器,建立连接
 	 * @return string
@@ -35,7 +34,7 @@ class WindSmtp {
 		$this->smtp->open();
 		return $this->checkResponse(220);
 	}
-	
+
 	/**
 	 * 向服务器标识用户身份
 	 * @param string $host 身份
@@ -45,7 +44,7 @@ class WindSmtp {
 		$this->request('EHLO ' . $host);
 		return $this->checkResponse(250);
 	}
-	
+
 	/**
 	 * 进行用户身份认证 
 	 * @param string $username 用户名
@@ -60,7 +59,7 @@ class WindSmtp {
 		$this->request(base64_encode($password));
 		return $this->checkResponse(array(235));
 	}
-	
+
 	/**
 	 * 指定的地址是发件人地址
 	 * @param string $from 邮件发送者
@@ -70,6 +69,7 @@ class WindSmtp {
 		$this->request('MAIL FROM:' . '<' . $from . '>');
 		return $this->checkResponse(250);
 	}
+
 	/**
 	 * 指定的地址是收件人地址
 	 * @param string $to 邮件发送者
@@ -79,7 +79,7 @@ class WindSmtp {
 		$this->request('RCPT TO:' . '<' . $to . '>');
 		return $this->checkResponse(array(250, 251));
 	}
-	
+
 	/**
 	 * 用于验证指定的用户/邮箱是否存在；由于安全方面的原因，服务器常禁止此命令
 	 * @param string $user
@@ -89,8 +89,9 @@ class WindSmtp {
 		$this->request('VRFY ' . $user);
 		return $this->checkResponse(array(250, 251, 252));
 	}
+
 	/**
-	 *  验证给定的邮箱列表是否存在，扩充邮箱列表，也常被禁用
+	 * 验证给定的邮箱列表是否存在，扩充邮箱列表，也常被禁用
 	 * @param string $name
 	 * @return string
 	 */
@@ -103,7 +104,7 @@ class WindSmtp {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * 无操作，服务器应响应 OK 
 	 * @return string
@@ -112,7 +113,7 @@ class WindSmtp {
 		$this->request('NOOP');
 		return $this->checkResponse(250);
 	}
-	
+
 	/**
 	 * 在单个或多个 RCPT 命令后，表示所有的邮件接收人已标识，并初始化数据传输，以 CRLF.CRLF 结束 
 	 * @param string $data 发送的数据
@@ -133,6 +134,7 @@ class WindSmtp {
 		$this->request('.');
 		return $this->checkResponse(250);
 	}
+
 	/**
 	 * 重置会话，当前传输被取消
 	 * @return string
@@ -141,6 +143,7 @@ class WindSmtp {
 		$this->request('RSET');
 		return $this->checkResponse(array(250, 220));
 	}
+
 	/**
 	 * 结束会话 
 	 * @return string
@@ -149,7 +152,7 @@ class WindSmtp {
 		$this->request('QUIT');
 		return $this->checkResponse(221);
 	}
-	
+
 	/**
 	 * 关闭smtp服务器
 	 */
@@ -157,7 +160,7 @@ class WindSmtp {
 		$this->smtp->close();
 		$this->smtp = null;
 	}
-	
+
 	/**
 	 * smtp响应请求
 	 * @param int $timeout
@@ -168,16 +171,16 @@ class WindSmtp {
 		}
 		return $this->smtp->responseLine();
 	}
-	
+
 	/**
 	 * 发送smtp命令
 	 * @param string $request
 	 */
 	public function request($request) {
-		$this->request[] = $request.self::CRLF;
+		$this->request[] = $request . self::CRLF;
 		return $this->smtp->request($request . self::CRLF);
 	}
-	
+
 	/**
 	 * 验证请求
 	 * @param string $expect
@@ -191,17 +194,15 @@ class WindSmtp {
 			$response .= $_response;
 			$this->resonse[] = $_response;
 			list($code, $info) = preg_split('/([\s-]+)/', $_response, 2);
-			if(null === $code || !in_array($code, $expect))  throw new WindException($info);
+			if (null === $code || !in_array($code, $expect)) throw new WindException($info);
 			if (" " == substr($_response, 3, 1)) {
 				break;
 			}
 		}
-		if(empty($response)) throw new WindException('No response');
+		if (empty($response)) throw new WindException('No response');
 		return $response;
 	}
-	
-	
-	
+
 	public function __destruct() {
 		if ($this->smtp) {
 			$this->close();

@@ -1,34 +1,33 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
-
-/**
  * socket套接字操作
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$ 
- * @package 
+ * @package wind.mail.protocol
  */
 class WindSocket {
-	
+
 	protected $host = '127.0.0.1';
+
 	protected $port = 80;
+
 	protected $timeout = 5;
+
 	protected $errno = 0;
+
 	protected $errstr = '';
+
 	protected $socket = null;
-	
+
 	public function __construct($host = '127.0.0.1', $port = 80, $timeout = 5) {
 		$this->setHost($host);
 		$this->setPort($port);
 		$this->setTimeout($timeout);
 	}
-	
+
 	/**
 	 * 打开一个连接
 	 */
@@ -37,7 +36,7 @@ class WindSocket {
 			$this->socket = fsockopen($this->host, $this->port, $this->errno, $this->errstr, $this->timeout);
 		}
 	}
-	
+
 	/**
 	 * 发送请求
 	 * @param string $request
@@ -45,7 +44,7 @@ class WindSocket {
 	public function request($request) {
 		return fputs($this->socket, $request);
 	}
-	
+
 	/**
 	 * 响应请求
 	 * @return string
@@ -57,7 +56,7 @@ class WindSocket {
 		}
 		return $response;
 	}
-	
+
 	/**
 	 * 响应请求,只返回一行
 	 * @return string
@@ -65,7 +64,7 @@ class WindSocket {
 	public function responseLine() {
 		return feof($this->socket) ? '' : fgets($this->socket);
 	}
-	
+
 	/**
 	 *关闭连接 
 	 */
@@ -76,6 +75,7 @@ class WindSocket {
 		}
 		return true;
 	}
+
 	/**
 	 * 获取请求中的错误
 	 * @return string
@@ -83,15 +83,15 @@ class WindSocket {
 	public function getError() {
 		return $this->errstr ? $this->errno . ':' . $this->errstr : '';
 	}
-	
+
 	/**
 	 * 取得socket操作对象
 	 * @return resource
 	 */
-	public function getSocket(){
+	public function getSocket() {
 		return $this->socket;
 	}
-	
+
 	/**
 	 * 设置主机
 	 * @param string $host
@@ -100,6 +100,7 @@ class WindSocket {
 		$this->host = $host;
 	
 	}
+
 	/**
 	 * 设置端口
 	 * @param string $port
@@ -107,6 +108,7 @@ class WindSocket {
 	public function setPort($port) {
 		$this->port = $port;
 	}
+
 	/**
 	 * 设置超时
 	 * @param int $timeout
@@ -114,7 +116,7 @@ class WindSocket {
 	public function setTimeout($timeout) {
 		$this->timeout = $timeout;
 	}
-	
+
 	public function setSocketTimeOut($timeout) {
 		return stream_set_timeout($this->socket, $timeout);
 	}

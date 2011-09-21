@@ -1,12 +1,15 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * Enter description here ...
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$ 
- * @package 
- * tags
+ * @package wind.mail.sender
  */
-interface IWindSendMail{
+interface IWindSendMail {
+
 	/**
 	 * 发送邮件
 	 * @param WindMail $mail 邮件消息封装对象
