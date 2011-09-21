@@ -17,7 +17,10 @@
 	<!--#endforeach;#-->
 </ul>
 <h2 class="f14 b">You Can Get Help In:</h2>
-<p>{@WindHelper::errorInfo()}</p>
+<p><?php echo "The server encountered an internal error and failed to process your request. 
+Please try again later. If this error is temporary, reloading the page might resolve the problem.
+\nIf you are able to contact the administrator report this error message.
+(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")" ; ?></p>
 </div>
 </div>
 </body>

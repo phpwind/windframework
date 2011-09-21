@@ -73,9 +73,9 @@ h1 {
 	background: #f7f7f7;
 	background: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f3f3f3) );
 	background: -moz-linear-gradient(top, #ffffff, #f3f3f3);
-	filter: progid :     DXImageTransform.Microsoft.gradient (     startColorstr =     '#ffffff',
-		endColorstr =  
-		  '#f3f3f3' );
+	filter: progid :         DXImageTransform.Microsoft.gradient (         startColorstr =        
+		'#ffffff', endColorstr =    
+		    '#f3f3f3' );
 }
 
 h1 span {
@@ -148,7 +148,10 @@ ul li:hover {
 	<li><?php echo $value; ?></li>
 	<?php endforeach; ?>
 </ul>
-<div class="tips"><?php echo self::errorInfo(); ?></div>
+<div class="tips"><?php echo "The server encountered an internal error and failed to process your request. 
+Please try again later. If this error is temporary, reloading the page might resolve the problem.
+\nIf you are able to contact the administrator report this error message.
+(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")" ; ?></div>
 </div>
 </div>
 </body>
