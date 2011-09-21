@@ -2,12 +2,14 @@
 /**
  * 启用了自动验证器的WindModule基类
  * 注入：验证器/异常处理器
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.base
  */
-class WindEnableValidateModule extends WindModule {
+class WindEnableValidateModule{
 	protected $_validatorClass = 'WIND:utility.WindValidator';
 	protected $errorController = '';
 	protected $errorAction = '';
@@ -88,8 +90,7 @@ class WindEnableValidateModule extends WindModule {
 				continue;
 			}
 			$setMethod = 'set' . ucfirst($rule['field']);
-			in_array($setMethod, $methods) && call_user_func_array(array($input, $setMethod), 
-				array($rule['default']));
+			in_array($setMethod, $methods) && call_user_func_array(array($input, $setMethod), array($rule['default']));
 		}
 	}
 
