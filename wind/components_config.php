@@ -2,6 +2,7 @@
 	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
+		'proxy' => 'true',
 		'properties' => array(
 			'dispatcher' => array(
 				'ref' => 'dispatcher',
@@ -56,13 +57,11 @@
 			'compile-ext' => 'tpl',
 			'layout' => '',
 			'theme' => '',
+			'htmlspecialchars' => 'true',
 		),
 		'properties' => array(
 			'viewResolver' => array(
 				'ref' => 'viewResolver',
-			),
-			'viewCache' => array(
-				'ref' => 'viewCache',
 			),
 		),
 	),
