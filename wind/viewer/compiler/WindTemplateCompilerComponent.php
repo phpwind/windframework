@@ -1,28 +1,24 @@
 <?php
 Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
- * <component name="test" args="my:index:run" templateDir="template" appConfig="WIND:config.config.php" componentPath="WIND:demos.helloworld"/>
+ * 组件标签编译器
  * 
- * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
+ * 标签使用例子:
+ * <code>
+ * <component name="test" args="my:index:run" templateDir="template" 
+ * appConfig="WIND:config.config.php" componentPath="WIND:demos.helloworld"/></code>
  * @author xiaoxiao <x_824@sina.com>
- * @version 2011-7-20  xiaoxiao
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.viewer.compiler
  */
 class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
-	
 	protected $name = ''; //组件名字
-	
-
 	protected $args = ''; //传递给组件的参数
-	
-
 	protected $templateDir = ''; //组件调用的模板路径
-	
-
 	protected $appConfig = ''; //组件的配置文件
-	
-	protected $appConfigSuffix = 'php';//配置文件的缺省格式
-	
-
+	protected $appConfigSuffix = 'php'; //配置文件的缺省格式
 	protected $componentPath = ''; //组件的入口地址
 
 	
@@ -39,31 +35,23 @@ class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
 	private function getScript($content) {
 		$params = $this->matchConfig($content);
 		if (!isset($params['name']) || !isset($params['componentPath'])) throw new WindException('组件编译错误!');
-		$content = "<?php\r\n" . $this->rebuildConfig($params) . 
-					(isset($params['args']) ? $this->registerUrlParams($params) : '') . 
-					"\$componentPath = Wind::getRealDir('" . $params['componentPath'] . "');\r\n" . 
-					"Wind::register(\$componentPath, '" . $params['name'] . "');\r\n" . 
-					"Wind::run('" . $params['name'] . "', \$config);\r\n?>";
+		$content = "<?php\r\n" . $this->rebuildConfig($params) . (isset($params['args']) ? $this->registerUrlParams($params) : '') . "\$componentPath = Wind::getRealDir('" . $params['componentPath'] . "');\r\n" . "Wind::register(\$componentPath, '" . $params['name'] . "');\r\n" . "Wind::run('" . $params['name'] . "', \$config);\r\n?>";
 		return $content;
 	}
 
 	/**
 	 * 编译获得配置文件
+	 * 
 	 * @param array $params
 	 * @return array
 	 */
 	private function rebuildConfig($params) {
-		$temp = "\$configParser = new WindConfigParser();\r\n" . 
-				"\$configPath = Wind::getRealPath('" . $params['appConfig'] . "', '" . $params['suffix'] . "');\r\n" . 
-				"\$config = \$configParser->parse(\$configPath);\r\n" .
-				"\$config = \$config['" . $params['name'] . "'];\r\n";
+		$temp = "\$configParser = new WindConfigParser();\r\n" . "\$configPath = Wind::getRealPath('" . $params['appConfig'] . "', '" . $params['suffix'] . "');\r\n" . "\$config = \$configParser->parse(\$configPath);\r\n" . "\$config = \$config['" . $params['name'] . "'];\r\n";
 		if (!isset($params['templateDir'])) return $temp;
-		if (isset($params['args']['m'])) 
+		if (isset($params['args']['m']))
 			$temp .= "\$config['modules']['" . $params['args']['m'] . "']['view']['config']['template-dir'] = '" . $params['templateDir'] . "';\r\n";
 		else {
-			$temp .= "foreach(\$config['modules'] as \$key => \$value) {\r\n" . 
-					 "\t\$config['modules'][\$key]['view']['config']['template-dir'] = '" . $params['templateDir'] . "';\r\n" . 
-					 "}\r\n";
+			$temp .= "foreach(\$config['modules'] as \$key => \$value) {\r\n" . "\t\$config['modules'][\$key]['view']['config']['template-dir'] = '" . $params['templateDir'] . "';\r\n" . "}\r\n";
 		}
 		return $temp;
 	}
@@ -74,16 +62,10 @@ class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
 	 * @param array $params 
 	 */
 	private function registerUrlParams($params) {
-		$temp = "\$routerConfig = \$config['router']['config'];\r\n"  . 
-		        "\$mKey = isset(\$routerConfig['module']['url-param']) ? \$routerConfig['module']['url-param'] : 'm';\r\n" . 
-				"\$cKey = isset(\$routerConfig['controller']['url-param']) ? \$routerConfig['controller']['url-param'] : 'c';\r\n" . 
-				"\$aKey = isset(\$routerConfig['action']['url-param']) ? \$routerConfig['action']['url-param'] : 'a';\r\n" . 
-				"\$_GET[\$mKey] = '" . $params['args']['m'] . "';\r\n" . 
-				"\$_GET[\$cKey] = '" . $params['args']['c'] . "';\r\n" . 
-				"\$_GET[\$aKey] = '" . $params['args']['a'] . "';\r\n";
+		$temp = "\$routerConfig = \$config['router']['config'];\r\n" . "\$mKey = isset(\$routerConfig['module']['url-param']) ? \$routerConfig['module']['url-param'] : 'm';\r\n" . "\$cKey = isset(\$routerConfig['controller']['url-param']) ? \$routerConfig['controller']['url-param'] : 'c';\r\n" . "\$aKey = isset(\$routerConfig['action']['url-param']) ? \$routerConfig['action']['url-param'] : 'a';\r\n" . "\$_GET[\$mKey] = '" . $params['args']['m'] . "';\r\n" . "\$_GET[\$cKey] = '" . $params['args']['c'] . "';\r\n" . "\$_GET[\$aKey] = '" . $params['args']['a'] . "';\r\n";
 		unset($params['args']['a'], $params['args']['c'], $params['args']['m']);
 		foreach ($params['args'] as $key => $value) {
-			$temp .= "\$_GET['" . $key . "'] = " . (is_array($value) ?  $value : "'" . $value . "'" ) . ";\r\n"; 
+			$temp .= "\$_GET['" . $key . "'] = " . (is_array($value) ? $value : "'" . $value . "'") . ";\r\n";
 		}
 		return $temp;
 	}

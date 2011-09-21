@@ -2,13 +2,19 @@
 Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
  * <doAction /> 标签解析脚本
- * 支持属性: action\controller
- * 
- * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 支持属性: 
+ * action: 处理操作,支持格式 /module/controller/action/?args
+ * args: 参数列表
+ * isRedirect: 是否用url重定向模式进行跳转
+ * <code>
+ * <action action='run' args='{$a}' isRedirect='true' />
+ * </code>
+ *
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.viewer.compiler
  */
 class WindTemplateCompilerAction extends AbstractWindTemplateCompiler {
 	protected $action = '';

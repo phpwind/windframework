@@ -1,10 +1,13 @@
 <?php
 Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 编译javascript标签
+ *
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.viewer.compiler
  */
 class WindTemplateCompilerScript extends AbstractWindTemplateCompiler {
 	protected $compile = 'true';
@@ -21,8 +24,8 @@ class WindTemplateCompilerScript extends AbstractWindTemplateCompiler {
 		return '';
 	}
 
-	/**
-	 * 返回该标签支持的属性信息
+	/* (non-PHPdoc)
+	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */
 	protected function getProperties() {
 		return array('compile');
