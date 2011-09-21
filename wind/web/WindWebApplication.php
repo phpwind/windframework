@@ -78,27 +78,35 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			}
 			$this->checkProcess();
 			if (!($module = $this->getModules())) {
-				throw new WindActionException('[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 404);
+				throw new WindActionException(
+					'[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
+					404);
 			}
 			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
-			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
+			$handlerPath = $module['controller-path'] . '.' . ucfirst(
+				$this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
-				Wind::getApp()->getComponent('windLogger')->info('[web.WindWebApplication.run] \r\n\taction handl:' . $handlerPath, 'wind.core');
+				Wind::getApp()->getComponent('windLogger')->info(
+					'[web.WindWebApplication.run] \r\n\taction handl:' . $handlerPath, 'wind.core');
 			}
-			$this->windFactory->addClassDefinitions($handlerPath, array(
-				'path' => $handlerPath, 
-				'scope' => 'prototype', 
-				'config' => $this->getConfig('actionmap'), 
-				'properties' => array(
-					'errorMessage' => array('ref' => 'errorMessage'), 
-					'forward' => array('ref' => 'forward'), 
-					'urlHelper' => array('ref' => 'urlHelper'))));
+			$this->windFactory->addClassDefinitions($handlerPath, 
+				array(
+					'path' => $handlerPath, 
+					'scope' => 'prototype', 
+					'config' => $this->getConfig('actionmap'), 
+					'properties' => array(
+						'errorMessage' => array('ref' => 'errorMessage'), 
+						'forward' => array('ref' => 'forward'), 
+						'urlHelper' => array('ref' => 'urlHelper'))));
 			$handler = $this->windFactory->getInstance($handlerPath);
 			if (!$handler) {
-				throw new WindActionException('[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 404);
+				throw new WindActionException(
+					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
+					404);
 			}
-			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig('filters')) {
+			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig(
+				'filters')) {
 				$this->resolveActionMapping($filters, $handler);
 				$this->_proxy->runProcess($handler);
 			} else
@@ -250,7 +258,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
 		if (!isset($_filters[$_token])) {
 			foreach ($filters as $_filter) {
-				if (isset($_filter['class'])) if (!$_filter['pattern'] || preg_match('/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token)) {
+				if (isset($_filter['class'])) if (!$_filter['pattern'] || preg_match(
+					'/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token)) {
+					unset($_filter['pattern']);
 					$_filters[$_token][] = $_filter;
 				}
 			}
@@ -259,7 +269,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if (empty($_filters[$_token])) return;
 		$args = array($handler->getForward(), $handler->getErrorMessage());
 		foreach ($_filters[$_token] as $key => $value) {
-			$this->_proxy->registerEventListener('runProcess', $this->windFactory->createInstance(Wind::import($value['class']), array_merge($args, array($value))));
+			$this->_proxy->registerEventListener('runProcess', 
+				$this->windFactory->createInstance(Wind::import($value['class']), 
+					array_merge($args, array($value))));
 		}
 	}
 
@@ -285,10 +297,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			if (empty($module)) $module = $this->getModules('default');
 			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
-			$this->setModules('error', array(
-				'controller-path' => 'error/' . @$matchs[0] . '/run/', 
-				'controller-suffix' => '', 
-				'error-handler' => ''));
+			$this->setModules('error', 
+				array(
+					'controller-path' => 'error/' . @$matchs[0] . '/run/', 
+					'controller-suffix' => '', 
+					'error-handler' => ''));
 		}
 		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
