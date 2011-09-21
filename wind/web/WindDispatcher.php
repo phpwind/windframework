@@ -1,27 +1,28 @@
 <?php
 /**
- * 职责描述：负责请求的分发
- * 分发类型：
+ * 请求分发重定向处理类
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 通过该类进行请求的分发以及重定向,请求分发有三种分发类型:'重定向类型','重定向到新的action处理操作','视图渲染'.
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.web
  */
 class WindDispatcher extends WindModule {
-	protected $maxForwrd = array();
 	/**
-	 * @var boolean
+	 * 存储请求的队列信息
+	 * 
+	 * @var array
 	 */
+	protected $maxForwrd = array();
 	protected $display = false;
 
 	/**
-	 * 请求分发处理
-	 * 
 	 * @param WindForward $forward
 	 * @param WindRouter $router
 	 * @param boolean $display
-	 * @return
+	 * @return void
 	 */
 	public function dispatch($forward, $router, $display) {
 		if ($forward->getIsRedirect())
@@ -44,10 +45,12 @@ class WindDispatcher extends WindModule {
 	}
 
 	/**
-	 * 请求分发一个重定向请求
+	 * 重定向请求到新的url地址
+	 * 
+	 * 重定向请求到新的url地址是通过head方式重新开启一个url访问请求.
 	 * @param WindForward $forward
 	 * @param AbstractWindRouter $router
-	 * @return
+	 * @return void
 	 */
 	protected function dispatchWithRedirect($forward, $router) {
 		if (!($_url = $forward->getUrl())) {
@@ -58,27 +61,26 @@ class WindDispatcher extends WindModule {
 	}
 
 	/**
-	 * 请求分发一个操作请求
-	 * module/controller/action/?param
+	 * 重定向请求到新的action操作
+	 * 
+	 * 该种重定向类型,是中断当前的请求执行过程,开启另外的action操作处理.是在一次请求内部进行重定向,
+	 * 所以之前的一些处理的结果变量,在重定向后是会继续存在,并可通过forward变量进行访问的.也就是不仅仅是过程的重定向,
+	 * 也是状态的重定向.
 	 * @param WindForward $forward
 	 * @param WindRouter $router
 	 * @param boolean $display
-	 * @return
+	 * @return void
 	 */
 	protected function dispatchWithAction($forward, $router, $display) {
 		if (!$action = $forward->getAction()) {
 			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
-		
 		$this->display = $display;
 		list($_a, $_c, $_m) = WindUrlHelper::resolveAction($action);
 		if ($_var = $forward->getVars()) $this->getResponse()->setData($_var, 'F');
 		$_a && $router->setAction($_a);
 		$_c && $router->setController($_c);
 		$_m && $router->setModule($_m);
-		/*if ($this->checkToken($router)) {
-			throw new WindFinalException('[web.WindDispatcher.dispatchWithRedirect] Duplicate request: ' . $this->token, WindException::ERROR_SYSTEM_ERROR);
-		}*/
 		Wind::getApp()->run();
 	}
 }
