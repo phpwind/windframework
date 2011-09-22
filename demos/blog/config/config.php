@@ -12,7 +12,14 @@ return array(
 			'windSession' => array(
 				'path' => 'WIND:http.session.WindSession',
 				'scope' => 'singleton',
-				
+				'destroy' => 'commit',
+			),
+			'windView' => array(
+	 			'config' => array(
+					'template-dir' => 'template',
+					'template-ext' => 'htm',
+					'is-compile' => '1',
+					),
 			),
 		),
 		'modules' => array(
@@ -21,12 +28,7 @@ return array(
 				'controller-suffix' => 'Controller',
 				'error-handler' => 'WIND:web.WindErrorHandler',
 				'template-dir'=> 'template',
-				'compile-dir' => 'compile.blog.template',
-			),
-			'error' => array(
-				'controller-path' => 'WIND:web',
-				'controller-suffix' => '',
-				'compile-dir' => 'compile.blog.template',
+				'compile-dir' => 'compile.template',
 			),
 		),
 		'filters' => array(
