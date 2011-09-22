@@ -7,12 +7,12 @@ Wind::import('WIND:fitler.WindHandlerInterceptor');
  * 例如实现MyFilter,则需要在应用配置中添加如下配置:
  * <code>
  * 'filters' => array(
- * 		'class' => 'WIND:filter.WindFilterChain',	//设置使用的拦截链实现
- * 		'filter1' => array(
- * 			'class' => 'MYAPP:filter.MyFilter',	//设置设置实现的MyFilter类路径,MYAPP必须是一个有效的经过注册的命名空间
- * 			'pattern' => '*',	//此处设置该拦截规则应用的范围,*意味着所有的action都将会应用该拦截规则
- *     )
- *  )
+ * 'class' => 'WIND:filter.WindFilterChain',	//设置使用的拦截链实现
+ * 'filter1' => array(
+ * 'class' => 'MYAPP:filter.MyFilter',	//设置设置实现的MyFilter类路径,MYAPP必须是一个有效的经过注册的命名空间
+ * 'pattern' => '*',	//此处设置该拦截规则应用的范围,*意味着所有的action都将会应用该拦截规则
+ * )
+ * )
  * </code>
  * 关于pattern的设置说明如下：
  * <ul>
@@ -24,13 +24,13 @@ Wind::import('WIND:fitler.WindHandlerInterceptor');
  * 用户可以在filter中添加自己的特殊配置:比如:
  * <code>
  * 'filters' => array(
- * 		'class' => 'WIND:filter.WindFilterChain',	
- * 		'filter1' => array(
- * 			'class' => 'MYAPP:filter.TestFilter',	
- * 			'pattern' => '*',	
- * 			'isOpen' => '1',	//添加的配置
- *     )
- *  )
+ * 'class' => 'WIND:filter.WindFilterChain',	
+ * 'filter1' => array(
+ * 'class' => 'MYAPP:filter.TestFilter',	
+ * 'pattern' => '*',	
+ * 'isOpen' => '1',	//添加的配置
+ * )
+ * )
  * </code>
  * 则在自己的TestFilter中设置一个属性名为isOpen同时设置该属性为protected权限,那么在使用的时候该配置的值将会赋值给该属性.
  * 
@@ -53,6 +53,12 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 	 * @var WindErrorMessage
 	 */
 	protected $errorMessage = null;
+	/**
+	 * 路由对象
+	 *
+	 * @var AbstractWindRouter
+	 */
+	protected $router = null;
 
 	/**
 	 * 构造函数
@@ -61,11 +67,13 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 	 * 
 	 * @param WindForward $forward 设置当前的forward对象
 	 * @param WindErrorMessage $errorMessage 设置错误处理的errorMessage
+	 * @param AbstractWindRouter $router 路由对象
 	 * @param array $args 接受数组传递,数组以关联数组的方式给出,如果存在属性和关联数组中的key相同则将该key对应值设置给该属性.
 	 */
-	public function __construct($forward, $errorMessage, $args = array()) {
+	public function __construct($forward, $errorMessage, $router, $args = array()) {
 		$this->forward = $forward;
 		$this->errorMessage = $errorMessage;
+		$this->router = $router;
 		foreach ($args as $key => $value)
 			property_exists(get_class($this), $key) && $this->$key = $value;
 	}
