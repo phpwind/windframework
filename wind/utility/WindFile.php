@@ -88,14 +88,15 @@ class WindFile {
 	 * 读取文件
 	 *
 	 * @param string $fileName 文件绝对路径
-	 * @param string $method 读取模式
-	 * @return string
+	 * @param string $method 读取模式默认模式为rb
+	 * @return string 从文件中读取的数据
 	 */
 	public static function read($fileName, $method = self::READ) {
 		$data = '';
-		if (false !== ($handle = fopen($fileName, $method))) {
+		$len = filesize($fileName);
+		if (false !== ($handle = fopen($fileName, $method)) && 0 < $len) {
 			flock($handle, LOCK_SH);
-			$data = fread($handle, filesize($fileName));
+			$data = fread($handle, $len);
 			fclose($handle);
 		}
 		return $data;
