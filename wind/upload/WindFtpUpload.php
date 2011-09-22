@@ -1,23 +1,30 @@
 <?php
-
 Wind::import('WIND:upload.AbstractWindUpload');
 /**
- * 
- * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
- * @author xiaoxiao <x_824@sina.com>
- * @version 2011-7-29  xiaoxiao
+ * ftp远程文件上传
+ *
+ * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id: WindFtpUpload.php 1532 2011-9-22下午03:14:09 xiaoxiao $
+ * @package wind.upload
  */
 class WindFtpUpload extends AbstractWindUpload {
+
 	private $config = array();
-	
+
 	private $ftp = null;
-	
+
+	/**
+	 * 构造函数设置远程ftp链接信息
+	 *
+	 * @param array $config
+	 */
 	public function __construct($config) {
 		$this->setConfig($config);
 	}
 
-	/**
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindUpload::postUpload()
 	 */
 	protected function postUpload($tmp_name, $filename) {
@@ -26,10 +33,11 @@ class WindFtpUpload extends AbstractWindUpload {
 		@unlink($tmp_name);
 		return $size;
 	}
-	
+
 	/**
-	 * 设置配置文件
-	 * @param array $config
+	 * 设置ftp链接配置文件
+	 * 
+	 * @param array $config ftp链接信息
 	 * @return bool
 	 */
 	public function setConfig($config) {
@@ -37,9 +45,10 @@ class WindFtpUpload extends AbstractWindUpload {
 		$this->config = $config;
 		return true;
 	}
-    
+
 	/**
 	 * 获得ftp链接对象
+	 * 
 	 * @return AbstractWindFtp
 	 */
 	private function getFtpConnection() {

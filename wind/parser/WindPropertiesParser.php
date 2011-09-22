@@ -1,63 +1,51 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-13
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * properties格式文件解析
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.parser
  */
 class WindPropertiesParser {
-	
-	const COMMENT = '#';
-	const LPROCESS = '[';
-	const RPROCESS = ']';
-	private $separator = '.';
-	
-	public function __construct() {
 
-	}
-	
+	const COMMENT = '#';
+
+	const LPROCESS = '[';
+
+	const RPROCESS = ']';
+
+	const ARRAY_SEP = '.';
+
+	public function __construct() {}
+
 	/**
-	 * 解析properties文件里的内容 
+	 * 解析properties文件里的内容
+	 * 
 	 * @param string $filename 文件名
-	 * @param boolean $process 是否处理指令
-	 * @param boolean $build   是否按格式解析数据
+	 * @param boolean $build   是否按格式解析数据默认为true
 	 * @return array
 	 */
-	public function parse($filename, $process = true, $build = true) {
-		$data = $this->parse_properties_file($filename, $process);
+	public function parse($filename, $build = true) {
+		$data = $this->parse_properties_file($filename);
 		return $build ? $this->buildData($data) : $data;
 	}
-	
-	private function delComment($filename, $process) {
-		
-	}
-	
+
 	/**
+	 * 解析properties文件并返回一个多维数组
+	 * 
 	 * 载入一个由 filename 指定的 properties 文件，
 	 * 并将其中的设置作为一个联合数组返回。
-	 * 如果将最后的 process参数设为 TRUE，
-	 * 将得到一个多维数组，包括了配置文件中每一节的名称和设置。
-	 * process_sections 的默认值是 true。 
+	 * 
 	 * @param string $filename 文件名
-	 * @param unknown_type $process 是否处理指令
 	 * @return array
 	 */
-	public function parse_properties_file($filename, $process = true) {
+	private function parse_properties_file($filename) {
 		if (!is_file($filename) || !in_array(substr($filename, strrpos($filename, '.') + 1), array('properties'))) {
 			return array();
 		}
-		$fp = fopen($filename, 'r');
-		$content = fread($fp, filesize($filename));
-		fclose($fp);
-		$content = explode("\n", $content);
+		$content = explode("\n", WindFile::read($filename));
 		$data = array();
 		$last_process = $current_process = '';
 		foreach ($content as $key => $value) {
@@ -67,11 +55,9 @@ class WindPropertiesParser {
 			}
 			$tmp = explode('=', $value, 2);
 			if (0 === strpos(trim($value), self::LPROCESS) && (strlen($value) - 1) === strrpos($value, self::RPROCESS)) {
-				if ($process) {
-					$current_process = $this->trimChar(trim($value), array(self::LPROCESS, self::RPROCESS));
-					$data[$current_process] = array();
-					$last_process = $current_process;
-				}
+				$current_process = $this->trimChar(trim($value), array(self::LPROCESS, self::RPROCESS));
+				$data[$current_process] = array();
+				$last_process = $current_process;
 				continue;
 			}
 			$tmp[0] = trim($tmp[0]);
@@ -84,16 +70,16 @@ class WindPropertiesParser {
 			}
 		}
 		return $data;
-	
 	}
-	
+
 	/**
-	 * 解析数据
-	 * @param array $data
+	 * 解析配置数据
+	 * 
+	 * @param array $data 源数据
 	 * @return array
 	 */
-	public function buildData(&$data) {
-		foreach ((array)$data as $key => $value) {
+	private function buildData(&$data) {
+		foreach ((array) $data as $key => $value) {
 			if (is_array($value)) {
 				$data[$key] = $this->formatDataArray($value);
 			} else {
@@ -102,19 +88,20 @@ class WindPropertiesParser {
 		}
 		return $data;
 	}
-	
+
 	/**
-	 * 将proterties文件每行转换成数组
-	 * @param string $key ini文件中的键
-	 * @param string $value ini文件中的值
-	 * @param array $data
+	 * 将每行properties文件转换成数组
+	 * 
+	 * @param string $key properties文件中的键
+	 * @param string $value properties文件中的值
+	 * @param array $data 操作数据,默认为array()
 	 * @return array
 	 */
-	public function toArray($key, $value, &$data = array()) {
+	private function toArray($key, $value, &$data = array()) {
 		if (empty($key) && empty($value)) return array();
-		if (strpos($key, $this->separator)) {
-			$start = substr($key, 0, strpos($key, $this->separator));
-			$end = substr($key, strpos($key, $this->separator) + 1);
+		if (strpos($key, self::ARRAY_SEP)) {
+			$start = substr($key, 0, strpos($key, self::ARRAY_SEP));
+			$end = substr($key, strpos($key, self::ARRAY_SEP) + 1);
 			$data[$start] = array();
 			$this->toArray($end, $value, $data[$start]);
 		} else {
@@ -122,15 +109,16 @@ class WindPropertiesParser {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * 将原始数组合并成新的数组
+	 * 
 	 * @param array $original 原始数组
 	 * @param array $data 合并后的数组
 	 * @return array
 	 */
-	public function formatDataArray(&$original, &$data = array()) {
-		foreach ((array)$original as $key => $value) {
+	private function formatDataArray(&$original, &$data = array()) {
+		foreach ((array) $original as $key => $value) {
 			$tmp = $this->toArray($key, $value);
 			foreach ($tmp as $tkey => $tValue) {
 				if (is_array($tValue)) {
@@ -145,63 +133,66 @@ class WindPropertiesParser {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * 从字符串中合并数组
-	 * @param string $key
-	 * @param  string $value
-	 * @param array $data
-	 * return array
+	 * 
+	 * @param string $key 待合并的键值
+	 * @param  string $value 待合并的数据
+	 * @param array $data 操作数组
+	 * @return array
 	 */
-	public function formatDataFromString($key, $value, &$data) {
+	private function formatDataFromString($key, $value, &$data) {
 		$tmp = $this->toArray($key, $value);
-		if(false == strpos($key, $this->separator)){
-			return $tmp;
-		}
-		$start = substr($key, 0, strpos($key, $this->separator));
+		if (false == strpos($key, self::ARRAY_SEP))  return $tmp;
+		$start = substr($key, 0, strpos($key, self::ARRAY_SEP));
 		if ((!isset($data[$start]) || !is_array($data[$start])) && isset($tmp[$start])) {
 			$data[$start] = $tmp[$start];
-		} else {
-			foreach ($data as $d_key => $d_value) {
-				if (!isset($tmp[$d_key]) || !is_array($tmp[$d_key])) {
-					continue;
-				}
-				foreach ($tmp[$d_key] as $a => $b) {
-					$this->merge($a, $b, $data[$start]);
-				}
+			unset($data[$key]);
+			return $data;
+		}
+		foreach ($data as $d_key => $d_value) {
+			if (!isset($tmp[$d_key]) || !is_array($tmp[$d_key])) {
+				continue;
+			}
+			foreach ($tmp[$d_key] as $a => $b) {
+				$this->merge($a, $b, $data[$start]);
 			}
 		}
 		unset($data[$key]);
 		return $data;
 	}
-	
+
 	/**
 	 * 合并格式化的数组
-	 * @param string $key
-	 * @param mixed $value
-	 * @param array $data
+	 * 
+	 * @param string $key 待合并的键值
+	 * @param mixed $value 待合并的数据
+	 * @param array $data 合并到的数据
 	 * @return array
 	 */
 	private function merge($key, $value, &$data = array()) {
-		if (is_array($value)) {
-			$v_key = array_keys($value);
-			$c_key = $v_key[0];
-			if (is_array($value[$c_key])) {
-				$this->merge($c_key, $value[$c_key], $data[$key]);
-			} else {
-				$data[$key][$c_key] = $value[$c_key];
-			}
-		} else {
+		if (!is_array($value)) {
 			$data[$key] = $value;
+			return $data;
+		}
+		
+		$v_key = array_keys($value);
+		$c_key = $v_key[0];
+		if (is_array($value[$c_key])) {
+			$this->merge($c_key, $value[$c_key], $data[$key]);
+		} else {
+			$data[$key][$c_key] = $value[$c_key];
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * 去除字符串头和尾中指定字符
-	 * @param string $str
-	 * @param mixed $char
-	 * @return string
+	 * 
+	 * @param string $str 待处理的数据
+	 * @param mixed $char 需要取出的字符
+	 * @return string 处理后的数据
 	 */
 	private function trimChar($str, $char = ' ') {
 		$char = is_array($char) ? $char : array($char);
@@ -210,5 +201,4 @@ class WindPropertiesParser {
 		}
 		return $str;
 	}
-
 }

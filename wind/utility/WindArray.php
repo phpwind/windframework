@@ -1,22 +1,18 @@
 <?php
 /**
- *@author Su Qian <weihu@alibaba-inc.com> 2010-11-7
- *@link http://www.phpwind.com
- *@copyright Copyright &copy; 2003-2110 phpwind.com
- *@license 
- */
-
-/**
  * 数组工具类
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Su Qian <weihu@alibaba-inc.com>
- * @version $Id$ 
- * @package 
+ *
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.utility
  */
 class WindArray {
 
 	/**
 	 * 按指定key合并两个数组
+	 * 
 	 * @param string key    合并数组的参照值
 	 * @param array $array1  要合并数组
 	 * @param array $array2  要合并数组
@@ -39,9 +35,10 @@ class WindArray {
 		}
 		return array_merge($tmp, (array) $array2);
 	}
-	
+
 	/**
 	 * 按指定key合并两个数组
+	 * 
 	 * @param string key    合并数组的参照值
 	 * @param array $array1  要合并数组
 	 * @param array $array2  要合并数组
@@ -64,6 +61,7 @@ class WindArray {
 
 	/**
 	 * 按指定KEY重新生成数组
+	 * 
 	 * @param string key 	重新生成数组的参照值
 	 * @param array  $array 要重新生成的数组
 	 * @return array 返回重新生成后的数组

@@ -1,10 +1,14 @@
 <?php
-
 /**
+ * 图片处理类库
  * 
- * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
- * @author xiaoxiao <xiaoxia.xuxx@aliyun-inc.com>
- * @version 2011-8-10  xiaoxiao
+ * 包括图片压缩和图片加水印
+ *
+ * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id: WindImage.php 1532 2011-9-22下午03:48:03 xiaoxiao $
+ * @package wind.utility
  */
 class WindImage {
 	
@@ -15,7 +19,7 @@ class WindImage {
 	 * @param string $dstFile     		略缩图保存位置
 	 * @param int $dstW           		略缩图宽度
 	 * @param string $dstH        		略缩图高度
-	 * @param string $isProportion      略缩图是否等比略缩
+	 * @param string $isProportion      略缩图是否等比略缩,默认为false
 	 * @return array|boolean
 	 */
 	public static function makeThumb($srcFile, $dstFile, $dstW, $dstH, $isProportion = FALSE) {
@@ -53,19 +57,23 @@ class WindImage {
 
 	/**
 	 * 给图片制作水印
-	 * 水印的位置可以为：
-	 * array(0 => '随机位置', 1 => '顶部居左', 2 => '顶部居中', 3 => '顶部居右', 4 => '底部居左', 5 => '底部居中', 6 => '底部居右', 7 => '中心位置')
 	 * 
-	 * @param string $source
-	 * @param int|array $waterPos  		水印的位置
-	 * @param string $waterImg     		图片水印：水印图片的位置
-	 * @param string $waterText    		水印的文字
+	 * 水印的位置可以为：
+	 * <code>
+	 * array(0 => '随机位置', 1 => '顶部居左', 2 => '顶部居中', 3 => '顶部居右', 4 => '底部居左', 5 => '底部居中', 6 => '底部居右', 7 => '中心位置')
+	 * </code>
+	 * 
+	 * @param string $source            图片的源文件
+	 * @param int|array $waterPos  		水印的位置,可以选择从0-7或是制定开始位置x,y,默认为0，随机位置
+	 * @param string $waterImg     		作为水印的图片,默认为空
+	 * @param string $waterText    		作为水印的文字,默认为空
 	 * @param array  $attribute       	文字水印的属性，只对文字水印有效
+	 * <code>
 	 *   array(0 => '字体文件'，1 => '系统编码', 2 => '字体颜色'， 3 => '字体大小')
-	 *   
-	 * @param string $waterPct     		水印透明度，从0到100，0完全透明，100完全不透明    
-	 * @param string $waterQuality   	图片质量--jpeg
-	 * @param string $dstsrc  			目标文件位置
+	 * </code>
+	 * @param string $waterPct     		水印透明度，从0到100，0完全透明，100完全不透明，默认为50
+	 * @param string $waterQuality   	图片质量--jpeg，默认为75
+	 * @param string $dstsrc  			目标文件位置，默认为null即不保存
 	 * @return boolean
 	 */
 	public static function makeWatermark($source, $waterPos = 0, $waterImg = '', $waterText = '', $attribute = '', $waterPct = 50, $waterQuality = 75, $dstsrc = null) {
@@ -108,9 +116,12 @@ class WindImage {
 	
 	/**
 	 * 文字水印的属性设置过滤
+	 * 
 	 * 返回为：
+	 * <code>
 	 *   array(0 => '字体文件'，1 => '系统编码', 2 => '字体颜色'， 3 => '字体大小')
-	 * @param array $attribute
+	 * </code>
+	 * @param array $attribute 设置的属性
 	 * @return array
 	 */
 	private static function checkAttribute($attribute) {
@@ -122,10 +133,11 @@ class WindImage {
 	}
 	
 	/**
-	 * 判断是否需要转编码，
+	 * 判断是否需要转编码
+	 * 
 	 * 判断依据为，编码格式为utf-8
 	 * 
-	 * @param string $charset
+	 * @param string $charset 编码方式
 	 * @return boolean
 	 */
 	private static function changeCharset($charset) {
@@ -135,11 +147,12 @@ class WindImage {
 	
 	/**
 	 * 获得打水印的位置
+	 * 
 	 * 如果传入的是数组，则两个元素分别为水印的宽度x和高度y
 	 * 
-	 * @param int|array $pos
-	 * @param array $sourcedb
-	 * @param array $waterdb
+	 * @param int|array $pos 获得水印的位置
+	 * @param array $sourcedb 原图片的信息
+	 * @param array $waterdb  水印图片的信息
 	 * @param int $markType  水印类型，1为图片水印，2为文字水印
 	 * @return array
 	 */
@@ -234,13 +247,15 @@ class WindImage {
 	
 	/**
 	 * 获得图片的类型及宽高
+	 * 
 	 * <pre>
 	 * 图片type：
 	 * 1 = GIF，2 = JPG，3 = PNG，4 = SWF，5 = PSD，6 = BMP，7 = TIFF(intel byte order)，8 = TIFF(motorola byte order)，9 = JPC，10 = JP2，
 	 * 11 = JPX，12 = JB2，13 = SWC，14 = IFF，15 = WBMP，16 = XBM
-	 * </pre>
+	 * </pre>、
+	 * 
 	 * @param string $srcFile	图像地址
-	 * @param string $srcExt	图像后缀
+	 * @param string $srcExt	图像后缀，默认为null则将会从图片地址中分析获取
 	 * @return array|boolean	返回图像的类型及高度和宽度
 	 */
 	private static function getImgSize($srcFile, $srcExt = null) {
@@ -276,7 +291,7 @@ class WindImage {
 	 * @param string $type		图像类型
 	 * @param resource $image	图像源
 	 * @param string $filename	图像保存名字
-	 * @param int $quality 		创建jpeg的时候用到
+	 * @param int $quality 		创建jpeg的时候用到，默认为75
 	 * @return boolean
 	 */
 	private static function makeImg($type, $image, $filename, $quality = '75') {
