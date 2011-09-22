@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- <component name='' path='' initMethod='' scope="application/singleton/prototype/" 
 	proxy='' destroy=''> -->
 <!-- <property property-name='' ref/value/path=''> -->
@@ -36,72 +35,15 @@ config： 组件的配置-该值对应的配置会通过setConfig接口传递给
 	resource: 指定一个外部地址，将会去包含该文件
  -->
 <components>
-	<component name='windApplication' path='WIND:web.WindWebApplication'
-		scope='singleton'>
-		<properties>
-			<property name='dispatcher' ref='dispatcher' />
-			<property name='handlerAdapter' ref='router' />
-		</properties>
-	</component>
-	<component name='windLogger' path='WIND:log.WindLogger'
-		scope='singleton' destroy='flush'>
+	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
+	<component name='windCache' path='WIND:cache.strategy.WindFileCache'
+		scope='singleton' proxy='true'>
+		<!-- <initMethod>init</initMethod>
+		<destroy>commint</destroy>
 		<constructor-args>
 			<constructor-arg name='0' value='DATA:log' />
 			<constructor-arg name='1' value='2' />
-		</constructor-args>
-	</component>
-	<component name='dispatcher' path='WIND:web.WindDispatcher'
-		scope='application'>
-	</component>
-	<component name='forward' path='WIND:web.WindForward' scope='prototype'>
-		<properties>
-			<property name='windView' ref='windView' />
-		</properties>
-	</component>
-	<component name='router' path='WIND:router.WindRouter' scope="application">
-	</component>
-	<component name='urlHelper' path='WIND:web.WindUrlHelper'
-		scope='application'>
-	</component>
-	<component name='windView' path='WIND:viewer.WindView' scope='prototype'>
-		<config>
-			<template-dir>template</template-dir>
-			<template-ext>htm</template-ext>
-			<is-compile>0</is-compile>
-			<compile-dir>compile.template</compile-dir>
-			<compile-ext>tpl</compile-ext>
-			<layout></layout>
-			<theme></theme>
-		</config>
-		<properties>
-			<property name='viewResolver' ref='viewResolver' />
-			<property name='viewCache' ref='viewCache' />
-		</properties>
-	</component>
-	<component name='viewResolver' path='WIND:viewer.WindViewerResolver'
-		scope='prototype'>
-		<properties>
-			<property name='windLayout' ref='layout' />
-		</properties>
-	</component>
-	<component name='layout' path='WIND:viewer.WindLayout' scope='prototype'>
-	</component>
-	<component name='template' path='WIND:viewer.compiler.WindViewTemplate'
-		scope='prototype'>
-	</component>
-	<component name='db' path='WIND:db.WindConnection' scope='singleton'>
-		<config resource='db_config.xml' />
-	</component>
-	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
-		scope='prototype'>
-	</component>
-	
-	<component name='configParser' path='WIND:parser.WindConfigParser'
-		scope='singleton'>
-	</component>
-	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
-	<component name='windCache' path='WIND:cache.strategy.WindFileCache'
-		scope='singleton'>
+		</constructor-args> -->
 		<!-- dbCache 需要配置properties属性 -->
 		<!--<properties> <property name='connection' ref='db' /> </properties> -->
 		<config>
@@ -109,11 +51,5 @@ config： 组件的配置-该值对应的配置会通过setConfig接口传递给
 			<suffix>php</suffix>
 			<expires>0</expires>
 		</config>
-	</component>
-	<component name='windSession' path='WIND:http.session.WindSession'
-		scope='singleton' destroy='commit'>
-		<constructor-args>
-			<constructor-arg name='0' ref='windCache' />
-		</constructor-args>
 	</component>
 </components>

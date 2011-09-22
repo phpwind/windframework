@@ -28,7 +28,7 @@
 	    
 	    <!-- 过滤链配置，可以配置通用的，同时也可以配置Module级别的，controller级别的，action级别的 ；
 	         class: 配置过滤链的实现 -->
-		<filters class='WIND:core.filter.WindFilterChain'>
+		<filters class='WIND:filter.WindFilterChain'>
 		    <!-- 过滤器配置
 		    	name: 过滤器的名字：唯一
 		    	class: 过滤器的实现：
@@ -36,8 +36,10 @@
 		    	         module*: 则所有module模块的请求都将会应用该过滤器
 		    	         module_index*: 则module模块下的indexController下的所有Action请求都将会应用该过滤器
 		    	         module_index_add*: 则module模块下的indexController下的addAction将会应用该过滤器
+		    	form: 使用框架提供的formFilter的时候配置给该filter指明需要使用的form
+		    	其他配置项：将会传递给配置的filter相同配置项的属性
 		    -->
-			<filter name='filter' class='WIND:core.web.filter.WindUrlFilter' pattern='*'/>
+			<filter name='filter' class='WIND:web.filter.WindFormFilter' pattern='*' form=""/>
 		</filters>
 		
 		<!-- 模块配置： 可以通过设定多个<module></module>来设置多组模块配置，每组模块以name来相互区分 -->
@@ -48,7 +50,7 @@
 				<!-- 指定该模块下的controller的后缀格式 -->
 				<controller-suffix>Controller</controller-suffix>
 				<!-- 配置该模块的error处理的action controller类 -->
-				<error-handler>WIND:core.web.WindErrorHandler</error-handler>
+				<error-handler>WIND:web.WindErrorHandler</error-handler>
 				<!-- 指定模板路径 -->
 				<template-dir>template</template-dir>
 				<!-- 模板编译文件存放路径 -->
