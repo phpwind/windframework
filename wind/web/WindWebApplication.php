@@ -268,10 +268,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		}
 		if (empty($_filters[$_token])) return;
 		$args = array($handler->getForward(), $handler->getErrorMessage());
-		foreach ($_filters[$_token] as $key => $value) {
-			$args[] = $value;
+		foreach ($_filters[$_token] as $value) {
 			$this->_proxy->registerEventListener('runProcess', 
-				$this->windFactory->createInstance(Wind::import($value['class']), $args));
+				$this->windFactory->createInstance(Wind::import($value['class']), array($args[0], $args[1], $value)));
 		}
 	}
 
