@@ -6,25 +6,15 @@
 	<web-app name='default' class='windWebApp'>
 		<!-- 组件个性配置，一下的组件配置将会替换掉compontents_config下的对应的组件的配置，同时这里也可以增加自己的组件 -->
 		<components>
-			<!-- 路由的相关配置 class: 指定路由解析类配置 -->
-			<component name="router">
-				<!-- 路由module/controller/action相关配置（使用url访问参数名称及缺省值） -->
-				<config>
-					<!-- module配置 -->
-					<module url-param='m' default-value='default' />
-					<!-- controller配置 -->
-					<controller url-param='c' default-value='index' />
-					<!-- action配置 -->
-					<action url-param='a' default-value='run' />
-				</config>
-				<routes></routes>
-			</component>
-			
+		    <!-- 比如配置一个db组件 -->
 			<!-- db相关配置，如果设置了resource则系统会默认找到resource指向的文件作为db配置信息.DB的配置config内容参照DOCS下的db_config配置 -->
 			<component name='db'>
 				<config resource="db_config.php" />
 			</component>
 		</components>
+		
+		<!-- iscache属性控制windCache组件是否可用，如果关闭则windCache组件将不可用,通过Wind::getApp()->getComponent('windCache'); -->
+		<iscache>1</iscache>
 	    
 	    <!-- 过滤链配置，可以配置通用的，同时也可以配置Module级别的，controller级别的，action级别的 ；
 	         class: 配置过滤链的实现 -->
