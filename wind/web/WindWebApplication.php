@@ -269,8 +269,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		if (empty($_filters[$_token])) return;
 		$args = array($handler->getForward(), $handler->getErrorMessage());
 		foreach ($_filters[$_token] as $key => $value) {
+			$args[] = $value;
 			$this->_proxy->registerEventListener('runProcess', 
-				$this->windFactory->createInstance(Wind::import($value['class']), $args + $value));
+				$this->windFactory->createInstance(Wind::import($value['class']), $args));
 		}
 	}
 
@@ -296,9 +297,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			if (empty($module)) $module = $this->getModules('default');
 			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
+			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
 				array(
-					'controller-path' => 'error/' . @$matchs[0] . '/run/', 
+					'controller-path' => $_errorAction, 
 					'controller-suffix' => '', 
 					'error-handler' => ''));
 		}
