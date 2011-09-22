@@ -6,20 +6,17 @@
  *  'windSession' => array(
  *		'path' => 'WIND:http.session.WindSession',
  *		'scope' => 'singleton',
+ *		'destroy' => 'commit',
  *		'constructor-args' => array(
  *			'0' => array(
  *				'ref' => 'windCache',
  *			),
  *		),
- *	)，
- * 'sessionCache' => array(
- *		'path' => 'WIND:cache.strategy.WindDbCache',
- *		'scope' => 'singleton',
  *	),
  * </pre>
  * 【使用】调用时使用：
  * <pre>
- * $session = $this->getSystemFactory()->getInstance('WindSession');
+ * $session = Wind::getApp()->getComponent('WindSession');
  * 
  * $session->set('name', 'test');    //等同：$_SESSION['name'] = 'test';
  * echo $session->get('name');       //等同：echo $_SESSION['name'];
@@ -30,25 +27,30 @@
  * $session->destroy();              //等同： session_unset();session_destroy();
  * </pre>
  * 【使用原生】：
- * 如果用户不需要配置自己其他存储方式的session，则不许要修改任何调用，只要在WindSession的配置中将properties配置项去掉即可。如下：
+ * 如果用户不需要配置自己其他存储方式的session，则不许要修改任何调用，只要在WindSession的配置中将constructor-args配置项去掉即可。如下：
  * <pre>
- *  'WindSession' => array(
- * 		'path' => 'WIND:http.session.WindSession',
- * 		'scope' => 'singleton',
- *  )
+ *  'windSession' => array(
+ *		'path' => 'WIND:http.session.WindSession',
+ *		'scope' => 'singleton',
+ *		'destroy' => 'commit',
+ *	),
  * </pre>
  * 
  *
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package
+ * @package wind.http.session
  */
 class WindSession extends WindModule {
 
 	/**
 	 * 构造函数
-	 * @param AbstractWindCache $dataStoreHandler
+	 * 
+	 * @param AbstractWindCache $dataStoreHandler 数据缓存对象,默认为null
+	 * @param object $sessionHandler  session操作设置类,默认为null
+	 * @return void
 	 */
 	public function __construct($dataStoreHandler = null, $sessionHandler = null) {
 		$this->setDataStoreHandler($dataStoreHandler, $sessionHandler);
@@ -56,7 +58,8 @@ class WindSession extends WindModule {
 
 	/**
 	 * 开启session
-	 * @param string $id
+	 * 
+	 * @return void
 	 */
 	public function start() {
 		'' === $this->getCurrentId() && session_start();
@@ -64,8 +67,10 @@ class WindSession extends WindModule {
 
 	/**
 	 * 设置数据
-	 * @param string $key
-	 * @param mixed $value
+	 * 
+	 * @param string $key 保存在session中的键名
+	 * @param mixed $value 保存在session中的值
+	 * @return void
 	 */
 	public function set($key, $value) {
 		$key && $_SESSION[$key] = $value;
@@ -73,8 +78,9 @@ class WindSession extends WindModule {
 
 	/**
 	 * 获得数据
-	 * @param string $key
-	 * @return mixed
+	 * 
+	 * @param string $key 保存在session中的键名
+	 * @return mixed 返回保存在session中该键名对应的键值
 	 */
 	public function get($key) {
 		return $this->isRegistered($key) ? $_SESSION[$key] : '';
@@ -82,6 +88,7 @@ class WindSession extends WindModule {
 
 	/**
 	 * 删除数据
+	 * 
 	 * @param string $key
 	 */
 	public function delete($key) {
@@ -90,6 +97,7 @@ class WindSession extends WindModule {
 
 	/**
 	 * 清除会话信息
+	 * 
 	 * @return boolean
 	 */
 	public function destroy() {
@@ -98,8 +106,9 @@ class WindSession extends WindModule {
 
 	/**
 	 * 检测变量是否已经被注册
-	 * @param string $key
-	 * @return boolean
+	 * 
+	 * @param string $key 需要进行判断的建名
+	 * @return boolean 如果已经被注册则返回true,否则返回false
 	 */
 	public function isRegistered($key) {
 		return session_is_registered($key);
@@ -107,6 +116,7 @@ class WindSession extends WindModule {
 
 	/**
 	 * 获得当前session的名字
+	 * 
 	 * @return string
 	 */
 	public function getCurrentName() {
@@ -115,7 +125,9 @@ class WindSession extends WindModule {
 
 	/**
 	 * 设置当前session的名字
-	 * @param string $name
+	 * 
+	 * @param string $name session的名字
+	 * @return boolean 设置成功将返回true
 	 */
 	public function setCurrentName($name) {
 		return session_name($name);
@@ -123,6 +135,7 @@ class WindSession extends WindModule {
 
 	/**
 	 * 获得sessionId
+	 * 
 	 * @return string
 	 */
 	public function getCurrentId() {
@@ -131,14 +144,20 @@ class WindSession extends WindModule {
 
 	/**
 	 * 设置当前session的Id
-	 * @param string $id
+	 * 
+	 * @param string $id 需要设置的id名
+	 * @return boolean 设置成功返回true
 	 */
 	public function setCurrentId($id) {
 		return session_id($id);
 	}
 
 	/**
-	 * write and close
+	 * 写入session之后关闭session
+	 * 
+	 * 同session_write_close
+	 * 
+	 * @return void
 	 */
 	public function commit() {
 		return session_commit();
@@ -146,8 +165,9 @@ class WindSession extends WindModule {
 
 	/**
 	 * 设置链接对象
-	 * @param AbstractWindCache $handler
-	 * @param WindSessionHandler $sessionHandler
+	 * 
+	 * @param AbstractWindCache $handler  session数据的缓存介质
+	 * @param object $sessionHandler session操作接口的定义类
 	 */
 	public function setDataStoreHandler($dataStoreHandler, $sessionHandler = null) {
 		if ($dataStoreHandler) {
