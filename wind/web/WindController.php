@@ -13,14 +13,21 @@
 abstract class WindController extends WindSimpleController {
 
 	/* (non-PHPdoc)
+	 * @see WindSimpleController::run()
+	 */
+	public function run() {}
+
+	/* (non-PHPdoc)
 	 * @see WindAction::resolvedActionMethod()
 	 */
 	protected function resolvedActionMethod($handlerAdapter) {
 		$action = $handlerAdapter->getAction();
 		if ($action !== 'run') $action = $this->resolvedActionName($action);
-		if ($action == 'doAction') throw new WindException('[web.WindController.resolvedActionMethod]', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		if ($action == 'doAction') throw new WindException(
+			'[web.WindController.resolvedActionMethod]', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		$method = new ReflectionMethod($this, $action);
-		if ($method->isAbstract() || !$method->isPublic()) throw new WindException('[web.WindController.resolvedActionMethod]', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		if ($method->isAbstract() || !$method->isPublic()) throw new WindException(
+			'[web.WindController.resolvedActionMethod]', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		return $action;
 	}
 
