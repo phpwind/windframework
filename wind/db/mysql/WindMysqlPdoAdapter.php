@@ -4,7 +4,10 @@ Wind::import('WIND:db.AbstractWindPdoAdapter');
  * mysql类型数据库连接类
  * 
  * mysql类型数据库连接类,用于连接mysql数据库.该类继承了{@see AbstractWindPdoAdapter},是基于pdo的数据连接方式.
- * 使用该数据库连接类型需要启动pdo支持.<code></code>
+ * 使用该数据库连接类型需要启动pdo支持.配置方式:<code>
+ * mysql:host=localhost;dbname=test
+ * //':'前面部分标明了链接类型为mysql.
+ * </code>
  * @author Qiong Wu <papa0924@gmail.com> 2011-9-22
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

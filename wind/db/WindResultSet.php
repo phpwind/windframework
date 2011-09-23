@@ -1,8 +1,12 @@
 <?php
 /**
- * @author Qiong Wu <papa0924@gmail.com>
+ * sql查询结果集处理
+ *
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-23
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.db
  */
 class WindResultSet {
 	/**
@@ -11,19 +15,19 @@ class WindResultSet {
 	private $_statement = null;
 	/**
 	 * PDO fetchMode, default fetchMode PDO::FETCH_ASSOC
+	 * 
 	 * @var number
 	 */
 	private $_fetchMode = PDO::FETCH_ASSOC;
 	/**
 	 * PDO fetchType, default fetchType PDO::FETCH_ORI_FIRST
+	 * 
 	 * @var number
 	 */
 	private $_fetchType = PDO::FETCH_ORI_FIRST;
 	private $_columns = array();
 
 	/**
-	 * 构造函数
-	 * 
 	 * @param WindSqlStatement $sqlStatement 预处理对象
 	 * @param int $fetchMode  获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
 	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
@@ -34,10 +38,8 @@ class WindResultSet {
 			$this->_columns = $sqlStatement->getColumns();
 		} else
 			$this->_statement = $sqlStatement;
-		if ($fetchMode != 0)
-			$this->_fetchMode = $fetchMode;
-		if ($fetchMode != 0)
-			$this->_fetchType = $fetchType;
+		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
+		if ($fetchMode != 0) $this->_fetchType = $fetchType;
 	}
 
 	/**
@@ -74,25 +76,23 @@ class WindResultSet {
 
 	/**
 	 * 获得结果集的下一行
+	 * 
 	 * @param int $fetchMode 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM
 	 * @param int $fetchType 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，设置Statement的属性设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL
 	 * @return array
 	 */
 	public function fetch($fetchMode = 0, $fetchType = 0) {
-		if ($fetchMode === 0)
-			$fetchMode = $this->_fetchMode;
-		if ($fetchType === 0)
-			$fetchMode = $this->_fetchType;
+		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
+		if ($fetchType === 0) $fetchMode = $this->_fetchType;
 		return $this->_fetch($fetchMode, $fetchType);
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see WindResult::fetch()
+	 * @param string $fetchMode
+	 * @param string $fetchType
 	 */
 	private function _fetch($fetchMode, $fetchType) {
-		if (!empty($this->_columns))
-			$fetchMode = PDO::FETCH_BOUND;
+		if (!empty($this->_columns)) $fetchMode = PDO::FETCH_BOUND;
 		$result = array();
 		if ($row = $this->_statement->fetch($fetchMode, $fetchType)) {
 			if (empty($this->_columns))
@@ -102,11 +102,8 @@ class WindResultSet {
 					$result[$key] = $value;
 				}
 		}
-		if (WIND_DEBUG & 2)
-			Wind::getApp()->getComponent('windLogger')->info(
-				"[component.db.WindResultSet._fetch] \r\n\tResult:" . WindString::varToString(
-					$result));
-		
+		if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
+			"[component.db.WindResultSet._fetch] \r\n\tResult:" . WindString::varToString($result));
 		return $result;
 	}
 
@@ -118,16 +115,14 @@ class WindResultSet {
 	 * @return array
 	 */
 	public function fetchAll($index = '', $fetchMode = 0) {
-		if ($fetchMode === 0)
-			$fetchMode = $this->_fetchMode;
+		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
 		$result = array();
 		if (!$index)
 			while ($row = $this->fetch($fetchMode))
 				$result[] = $row;
 		else
 			while ($row = $this->fetch($fetchMode)) {
-				if (!isset($row[$index]))
-					continue;
+				if (!isset($row[$index])) continue;
 				$result[$row[$index]] = $row;
 			}
 		return $result;
@@ -141,10 +136,9 @@ class WindResultSet {
 	 */
 	public function fetchColumn($index = 0) {
 		$result = $this->_statement->fetchColumn($index);
-		if (WIND_DEBUG & 2)
-			Wind::getApp()->getComponent('windLogger')->info(
-				"[component.db.WindResultSet.fetchColumn] \r\n\tResult:" . WindString::varToString(
-					$result));
+		if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
+			"[component.db.WindResultSet.fetchColumn] \r\n\tResult:" . WindString::varToString(
+				$result));
 		return $result;
 	}
 

@@ -2,10 +2,16 @@
 Wind::import("WIND:db.exception.WindDbException");
 Wind::import("WIND:db.WindResultSet");
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qiong Wu <papa0924@gmail.com>
+ * sql语句处理类,该类封装了基础的sql处理方法
+ * 
+ * 实现了基础的,数据绑定,参数绑定以及基础查询接口.
+ * 通过调用'WindConnection'的'createStatement()'方法,可以获得一个statement对象.
+ *
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-23
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.db
  */
 class WindSqlStatement {
 	/**
@@ -17,15 +23,18 @@ class WindSqlStatement {
 	 */
 	private $_statement = null;
 	/**
-	 * sql语句字符串
 	 * @var string
 	 */
 	private $_queryString;
 	/**
 	 * PDO类型映射
+	 * 
 	 * @var array
 	 */
-	private $_typeMap = array('boolean' => PDO::PARAM_BOOL, 'integer' => PDO::PARAM_INT, 'string' => PDO::PARAM_STR, 
+	private $_typeMap = array(
+		'boolean' => PDO::PARAM_BOOL, 
+		'integer' => PDO::PARAM_INT, 
+		'string' => PDO::PARAM_STR, 
 		'NULL' => PDO::PARAM_NULL);
 	/**
 	 * @var array
@@ -33,8 +42,6 @@ class WindSqlStatement {
 	private $_columns = array();
 
 	/**
-	 * 构造函数
-	 * 
 	 * @param WindConnection $connection   WindConnection对象
 	 * @param string $query  预定义语句
 	 */
@@ -51,8 +58,9 @@ class WindSqlStatement {
 	 * @param int $dataType    值的类型(PDO::PARAM_STR/PDO::PARAM_INT...)
 	 * @param int $length         绑定值的长度
 	 * @param mixed $driverOptions   
-	 * @throws WindDbException
 	 * @return WindSqlStatement
+	 * @see PDOStatement::bindParam()
+	 * @throws WindDbException
 	 */
 	public function bindParam($parameter, &$variable, $dataType = null, $length = null, $driverOptions = null) {
 		try {
@@ -63,7 +71,8 @@ class WindSqlStatement {
 			if ($length === null)
 				$this->getStatement()->bindParam($parameter, $variable, $dataType);
 			else
-				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
+				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, 
+					$driverOptions);
 			return $this;
 		} catch (PDOException $e) {
 			throw new WindDbException($e->getMessage());
@@ -77,13 +86,14 @@ class WindSqlStatement {
 	 * 如果是一个二维数组，则允许，key=>array(0=>value, 1=>data_type, 2=>length, 3=>driver_options)的方式来传递变量。
 	 * 
 	 * @param array $parameters 
-	 * @throws WindDbException
 	 * @return WindSqlStatement
+	 * @see PDOStatement::bindParam()
+	 * @throws WindDbException
 	 */
 	public function bindParams(&$parameters) {
-		if (!is_array($parameters))
-			throw new WindDbException(
-				'[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
+		if (!is_array($parameters)) throw new WindDbException(
+			'[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype(
+				$parameters));
 		
 		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
 		foreach ($parameters as $key => $value) {
@@ -105,14 +115,14 @@ class WindSqlStatement {
 	 * @param string $parameter  预定义语句的待绑定的位置
 	 * @param string $value      绑定的值
 	 * @param int $data_type     值的类型
-	 * @throws WindDbException
 	 * @return WindSqlStatement
+	 * @see PDOStatement::bindValue()
+	 * @throws WindDbException
 	 */
 	public function bindValue($parameter, $value, $data_type = null) {
 		try {
 			$this->init();
-			if ($data_type === null)
-				$data_type = $this->_getPdoDataType($value);
+			if ($data_type === null) $data_type = $this->_getPdoDataType($value);
 			$this->getStatement()->bindValue($parameter, $value, $data_type);
 			return $this;
 		} catch (PDOException $e) {
@@ -124,18 +134,18 @@ class WindSqlStatement {
 	 * 调用bindValue的批量绑定参数
 	 * 
 	 * @param array $values 待绑定的参数值
-	 * @throws WindDbException
 	 * @return WindSqlStatement
+	 * @see PDOStatement::bindValue()
+	 * @throws WindDbException
 	 */
 	public function bindValues($values) {
-		if (!is_array($values))
-			throw new WindDbException(
-				'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type \'' . gettype($values) . '\'');
+		if (!is_array($values)) throw new WindDbException(
+			'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type \'' . gettype(
+				$values) . '\'');
 		
 		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
 		foreach ($values as $key => $value) {
-			if (!$keied)
-				$key = $key + 1;
+			if (!$keied) $key = $key + 1;
 			$this->bindValue($key, $value, $this->_getPdoDataType($value));
 		}
 		return $this;
@@ -149,14 +159,14 @@ class WindSqlStatement {
 	 * @param int $type 参数的数据类型 PDO::PARAM_*
 	 * @param int $maxlen  A hint for pre-allocation.
 	 * @param mixed $driverdata  Optional parameter(s) for the driver. 
-	 * @throws WindDbException
 	 * @return WindSqlStatement
+	 * @see PDOStatement::bindColumn()
+	 * @throws WindDbException
 	 */
 	public function bindColumn($column, &$param = '', $type = null, $maxlen = null, $driverdata = null) {
 		try {
 			$this->init();
-			if ($type == null)
-				$type = $this->_getPdoDataType($param);
+			if ($type == null) $type = $this->_getPdoDataType($param);
 			if ($type == null)
 				$this->getStatement()->bindColumn($column, $param);
 			elseif ($maxlen == null)
@@ -175,6 +185,7 @@ class WindSqlStatement {
 	 * 
 	 * @param array $columns 待绑定的列
 	 * @param array &$param  需要绑定的php变量
+	 * @see PDOStatement::bindColumn()
 	 * @return WindSqlStatement
 	 */
 	public function bindColumns($columns, &$param = array()) {
@@ -187,10 +198,11 @@ class WindSqlStatement {
 
 	/**
 	 * 绑定参数，执行SQL语句，并返回更新影响行数
+	 * 
 	 * @param array $params 预定义语句中需要绑定的参数
 	 * @param boolean $rowCount 是否返回影响行数
-	 * @throws WindDbException
 	 * @return int|boolean
+	 * @throws WindDbException
 	 */
 	public function update($params = array(), $rowCount = false) {
 		return $this->execute($params, $rowCount);
@@ -267,16 +279,18 @@ class WindSqlStatement {
 	 */
 	public function execute($params = array(), $rowCount = true) {
 		try {
-			if (WIND_DEBUG & 2)
-				Wind::getApp()->getComponent('windLogger')->profileBegin('SQL:execute sql statement.', 'db');
+			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->profileBegin(
+				'SQL:execute sql statement.', 'db');
 			$this->init();
 			$this->bindValues($params);
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			if (WIND_DEBUG & 2) {
-				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'db');
+				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 
+					'db');
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 'db');
+					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 
+					'db');
 			}
 			return $_result;
 		} catch (PDOException $e) {
@@ -287,7 +301,7 @@ class WindSqlStatement {
 	/**
 	 * 获得查询的预定义语句
 	 * 
-	 * @return string $_queryString
+	 * @return string
 	 */
 	public function getQueryString() {
 		return $this->_queryString;
@@ -314,7 +328,7 @@ class WindSqlStatement {
 	/**
 	 * 获得需要绑定的结果输出的列值
 	 * 
-	 * @return array $_columns
+	 * @return array
 	 */
 	public function getColumns() {
 		return $this->_columns;
@@ -322,16 +336,20 @@ class WindSqlStatement {
 
 	/**
 	 * 初始化数据库链接信息
+	 * 
+	 * @return void
+	 * @throws WindDbException
 	 */
 	public function init() {
 		if ($this->_statement === null) {
 			try {
-				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
-				if (WIND_DEBUG & 2)
-					Wind::getApp()->getComponent('windLogger')->info(
-						"[component.db.WindSqlStatement.init] Initialize statement success.", 'db');
+				$this->_statement = $this->getConnection()->getDbHandle()->prepare(
+					$this->getQueryString());
+				if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
+					"[component.db.WindSqlStatement.init] Initialize statement success.", 'db');
 			} catch (PDOException $e) {
-				throw new WindDbException("Initialization WindSqlStatement failed." . $e->getMessage());
+				throw new WindDbException(
+					"Initialization WindSqlStatement failed." . $e->getMessage());
 			}
 		}
 	}
