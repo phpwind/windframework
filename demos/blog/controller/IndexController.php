@@ -6,7 +6,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindConfigParser.php 2788 2011-09-22 08:19:37Z xiaoxia.xuxx $
- * @package wind
+ * @package demos.blog
  */
 class IndexController extends WindController {
 	
