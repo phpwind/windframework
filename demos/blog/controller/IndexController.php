@@ -1,13 +1,15 @@
 <?php
 /**
- * 默认的controller
+ * 
+ * Enter description here ...
  *
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: IndexController.php 2797 2011-9-23 long.shi $
+ * @version $Id$
  * @package wind
  */
+
 class IndexController extends WindController {
 	
 	protected $viewer = array();
