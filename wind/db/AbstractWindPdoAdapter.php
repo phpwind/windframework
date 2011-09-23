@@ -8,7 +8,7 @@
  * @version $Id$
  * @package wind.db
  */
-abstract class AbstractWindPdoAdapter extends PDO {
+abstract class AbstractWindPdoAdapter extends PDO { 
 
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
