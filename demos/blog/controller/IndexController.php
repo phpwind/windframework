@@ -1,6 +1,5 @@
 <?php
 /**
- * 
  * Enter description here ...
  *
  * @author Shi Long <long.shi@alibaba-inc.com>
