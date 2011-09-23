@@ -1,6 +1,5 @@
 <?php
 /**
- * 
  * 默认的controller
  *
  * @author Shi Long <long.shi@alibaba-inc.com>
@@ -15,8 +14,6 @@ class IndexController extends WindController {
 	const LOGIN_SUCCESS = 1;
 
 	/**
-	 * controller的默认Action
-	 * (non-PHPdoc)
 	 * @see WindSimpleController::run()
 	 */
 	public function run() {
@@ -25,9 +22,7 @@ class IndexController extends WindController {
 	}
 
 	/**
-	 * 
 	 * postAction请求
-	 *
 	 */
 	public function postAction() {
 		if ($this->getSession()->isRegistered('status')) {
@@ -47,9 +42,7 @@ class IndexController extends WindController {
 	}
 
 	/**
-	 * 
 	 * logOutAction请求
-	 * 
 	 */
 	public function logOutAction() {
 		$this->getSession()->destroy();
@@ -79,21 +72,19 @@ class IndexController extends WindController {
 	}
 
 	/**
-	 * 
 	 * 获取windSession组件实例
-	 *
+	 * @return
 	 */
 	public function getSession() {
 		return $this->getSystemFactory()->getInstance('windSession');
 	}
 	
 	/**
-	 * 
 	 * 登录业务处理,获取db组件实例
 	 *
-	 * @param String $username
-	 * @param String $password
-	 * @return Array
+	 * @param string $username 用户名
+	 * @param string $password 密码
+	 * @return array
 	 */
 	public function login($username, $password) {
 		$db = $this->getSystemFactory()->getInstance('db');
