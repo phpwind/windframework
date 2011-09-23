@@ -1,6 +1,6 @@
 <?php
 /**
- * Enter description here ...
+ * controller
  *
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
