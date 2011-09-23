@@ -98,6 +98,13 @@ class WindFileCache extends AbstractWindCache {
 	protected function setValue($key, $value, $expire = 0) {
 		return WindFile::write($key, $value) == strlen($value);
 	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::addValue()
+	 */
+	protected function addValue($key, $value, $expire = 0) {
+		return WindFile::write($key, $value) == strlen($value);
+	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::get()

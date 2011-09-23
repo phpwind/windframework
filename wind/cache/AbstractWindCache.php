@@ -72,7 +72,7 @@ abstract class AbstractWindCache extends WindModule {
 	const EXPIRE = 'expires';
 
 	/**
-	 * 执行添加操作
+	 * 执行设置操作
 	 * 
 	 * @param string $key 缓存数据的唯一key
 	 * @param string $value 缓存数据值，该值是一个含有有效数据的序列化的字符串
@@ -81,6 +81,19 @@ abstract class AbstractWindCache extends WindModule {
 	 * @throws WindException 缓存失败的时候抛出异常
 	 */
 	protected abstract function setValue($key, $value, $expires = 0);
+	
+	/**
+	 * 执行添加操作 
+	 * 
+	 * 当数据key不存在的时候添加，如果key已经存在则添加失败
+	 * 
+	 * @param string $key 缓存数据的唯一key
+	 * @param string $value 缓存数据值，该值是一个含有有效数据的序列化的字符串
+	 * @param int $expires 缓存数据保存的有效时间，单位为秒，默认时间为0即永不过期
+	 * @return boolean
+	 * @throws WindException 缓存失败的时候抛出异常
+	 */
+	protected abstract function addValue($key, $value, $expires = 0);
 
 	/**
 	 * 执行获取操作
@@ -117,20 +130,34 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return boolean
 	 * @throws WindCacheException 缓存失败时抛出异常
 	 */
-	public function set($key, $value, $expires = 0, AbstractWindCacheDependency $dependency = null) {
+	public function set($key, $value, $expires = 0, IWindCacheDependency $dependency = null) {
 		try {
-			$data = array(
-				self::DATA => $value, 
-				self::EXPIRE => $expires ? $expires : $this->getExpire(), 
-				self::STORETIME => time(), 
-				self::DEPENDENCY => null, 
-				self::DEPENDENCYCLASS => '');
-			if (null != $dependency) {
-				$dependency->injectDependent($data);
-				$data[self::DEPENDENCY] = serialize($dependency);
-				$data[self::DEPENDENCYCLASS] = get_class($dependency);
-			}
+			$data = $this->buildData($value, $expires, $dependency);
 			return $this->setValue($this->buildSecurityKey($key), serialize($data), $data[self::EXPIRE]);
+		} catch (Exception $e) {
+			throw new WindCacheException('[cache.AbstractWindCache.set]Setting cache failed.' . $e->getMessage());
+		}
+	}
+		
+	/**
+	 * 增加一个条目到缓存服务器
+	 * 
+	 * 方法在缓存服务器之前不存在key时， 以key作为key存储一个变量var到缓存服务器。
+	 * <note><b>注意：</b>新的元素的值不会小于0。 并且在元素不存在时不能创建它</note> 
+	 *
+	 * @param string $key 保存缓存数据的键。
+	 * @param string $value 保存缓存数据。
+	 * @param int $expires 缓存数据的过期时间,0表示永不过期
+	 * @param IWindCacheDependency $denpendency 缓存依赖
+	 * @return boolean 成功时返回 TRUE， 或者在失败时返回 FALSE. 如果这个key已经存在返回FALSE。
+	 */
+	public function add($key, $value, $expires = 0, IWindCacheDependency $dependency = null) {
+		try {
+			$key = $this->buildSecurityKey($key);
+			$data = $this->getValue($key);
+			if ($data) return false;
+			$data = $this->buildData($value, $expires, $dependency);
+			return $this->addValue($key, serialize($data), $data[self::EXPIRE]);
 		} catch (Exception $e) {
 			throw new WindCacheException('[cache.AbstractWindCache.set]Setting cache failed.' . $e->getMessage());
 		}
@@ -192,6 +219,66 @@ abstract class AbstractWindCache extends WindModule {
 		return true;
 	}
 
+	/**
+	 * 将指定元素的值增加value
+	 * 
+	 * 如果指定的key 对应的元素不是数值类型并且不能被转换为数值， 会将此值修改为value.
+	 * <note><b>注意：</b>不会在key对应元素不存在时创建元素。</note> 
+	 *
+	 * @param string $key 将要增加值的元素的key。 
+	 * @param int $step 参数value表明要将指定元素值增加多少。 
+	 * @return int 成功时返回新的元素值失败时返回false。 
+	 */
+	public function increment($key, $step = 1) {
+		$data = $this->get($key);
+		if (false === $data || !is_numeric($data)) return false;
+		$data = (int)$data + (int)$step;
+		$this->set($key, $data);
+		return $data;
+	}
+	
+	/**
+	 * 将元素的值减小value
+	 * 
+	 * 如果指定的key 对应的元素不是数值类型并且不能被转换为数值， 会将此值修改为value.
+	 * <note><b>注意：</b>新的元素的值不会小于0。 并且在元素不存在时不能创建它</note> 
+	 *
+	 * @param string $key 将要增加值的元素的key。 
+	 * @param int $step value参数指要将指定元素的值减小多少。 
+	 * @return int 成功的时候返回元素的新值，失败的时候返回false。 
+	 */
+	public function decrement($key, $step = 1) {
+		$data = $this->get($key);
+		if (false === $data || !is_numeric($data)) return false;
+		$data = (int)$data - (int)$step;
+		($data < 0) && $data = 0;
+		$this->set($key, $data);
+		return $data;
+	}
+	
+	/**
+	 * 构造保存的数据
+	 *
+	 * @param string $value 保存缓存数据。
+	 * @param int $expires 缓存数据的过期时间,0表示永不过期
+	 * @param IWindCacheDependency $denpendency 缓存依赖
+	 * @return array
+	 */
+	protected function buildData($value, $expires = 0, IWindCacheDependency $dependency = null) {
+		$data = array(
+			self::DATA => $value, 
+			self::EXPIRE => $expires ? $expires : $this->getExpire(), 
+			self::STORETIME => time(), 
+			self::DEPENDENCY => null, 
+			self::DEPENDENCYCLASS => '');
+		if (null != $dependency) {
+			$dependency->injectDependent($data);
+			$data[self::DEPENDENCY] = serialize($dependency);
+			$data[self::DEPENDENCYCLASS] = get_class($dependency);
+		}
+		return $data;
+	}
+	
 	/**
 	 * 格式化输出
 	 * 

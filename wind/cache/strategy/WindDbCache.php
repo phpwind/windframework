@@ -124,6 +124,13 @@ class WindDbCache extends AbstractWindCache {
 	protected function setValue($key, $value, $expire = 0) {
 		return $this->store($key, $value, $expire);
 	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::addValue()
+	 */
+	protected function addValue($key, $value, $expire = 0) {
+		return $this->store($key, $value, $expire, 'add');
+	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::getValue()
@@ -225,12 +232,17 @@ class WindDbCache extends AbstractWindCache {
 	 * @param string $key 保存的缓存key，
 	 * @param string $value 保存的缓存数据
 	 * @param int $expires 缓存保存的时间，如果为0则永不过期，默认为0
+	 * @param string $type 缓存的保存方式，默认为set将使用replace方式保存
 	 * @return int 
 	 */
-	private function store($key, $value, $expires = 0) {
+	private function store($key, $value, $expires = 0, $type="set") {
 		($expires > 0) ? $expires += time() : $expire = 0;
 		$db = array($this->keyField => $key, $this->valueField => $value, $this->expireField => $expires);
-		$sql = 'REPLACE INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
+		if ($type == 'add') {
+			$sql = 'INSERT INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
+		} else {
+			$sql = 'REPLACE INTO ' . $this->getTableName() . ' SET ' . $this->getConnection()->sqlSingle($db);
+		}
 		return $this->getConnection()->createStatement($sql)->update();
 	}
 

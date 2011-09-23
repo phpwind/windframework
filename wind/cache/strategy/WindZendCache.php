@@ -79,6 +79,13 @@ class WindZendCache extends AbstractWindCache {
 	protected function setValue($key, $value, $expire = 0) {
 		return zend_shm_cache_store($key, $value, $expire);
 	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::addValue()
+	 */
+	protected function addValue($key, $value, $expire = 0) {
+		return zend_shm_cache_store($key, $value, $expire);
+	}
 
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::getValue()

@@ -100,4 +100,11 @@ class WindApcCache extends AbstractWindCache {
 	public function clear() {
 		return apc_clear_cache('user');
 	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindCache::addValue()
+	 */
+	public function addValue($key, $value, $expires = 0) {
+		return apc_add($key, $value, $expires);
+	}
 }
