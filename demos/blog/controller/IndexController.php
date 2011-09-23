@@ -1,12 +1,13 @@
 <?php
 /**
  * 默认的controller
+ * Enter description here ...
  *
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $$Id
- * @package blog.controller
+ * @version $Id: IndexController.php 2781 2011-9-23 long.shi $
+ * @package wind
  */
 class IndexController extends WindController {
 	
