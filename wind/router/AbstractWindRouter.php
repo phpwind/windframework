@@ -1,13 +1,13 @@
 <?php
 /**
  * 路由解析器接口
- * 职责: 路由解析, 返回路由对象
- * 实现路由解析器必须实现该接口的doParser()方法
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * 职责: 路由解析,Url构建.实现路由解析器必须实现该接口的{@see AbstractWindRouter::route()}方法.该抽象类支持多路由协议处理.
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-23
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.router
  */
 abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $moduleKey = 'm';
@@ -16,20 +16,24 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $module;
 	protected $controller = 'index';
 	protected $action = 'run';
-	
 	protected $defaultRoute = '';
 
 	/**
-	 * 解析请求参数，并返回路由结果
+	 * 路由解析
+	 * 
 	 * @return string
 	 */
 	abstract public function route();
 
 	/**
-	 * 创建Url，并返回
+	 * 创建Url,并返回构建好的Url值
+	 * 
+	 * @param string $action 操作信息
+	 * @param array $args 参数信息
+	 * @param string $route 路由协议别名
 	 * @return string
 	 */
-	abstract public function assemble($action, $args = array(), $route = null);
+	abstract public function assemble($action, $args = array(), $route = '');
 
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
@@ -47,14 +51,17 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				if (!isset($route['class'])) continue;
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
-				$this->addRoute($routeName, $instance, (isset($route['default']) && $route['default'] === 'true'));
+				$this->addRoute($routeName, $instance, 
+					(isset($route['default']) && $route['default'] === 'true'));
 			}
 		}
 	}
 
 	/**
-	 * 设置路由变量信息
+	 * 将路由解析到的url参数信息保存早系统变量中
+	 * 
 	 * @param string $params
+	 * @return void
 	 */
 	protected function setParams($params) {
 		foreach ($params as $key => $value) {
@@ -71,10 +78,12 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 
 	/**
 	 * 添加路由协议对象,如果添加的路由协议已经存在则抛出异常
+	 * 
 	 * @param string 
-	 * @param Object $routeInstance
+	 * @param AbstractWindRoute $route
+	 * @param boolean $default 是否为默认
+	 * @return void
 	 * @throws WindException
-	 * @return 
 	 */
 	public function addRoute($alias, $route, $default = false) {
 		$this->addInterceptors(array($alias => $route));
@@ -83,7 +92,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 
 	/**
 	 * 根据rule的规则名称，从路由链中获得该路由的对象
-	 * @param string $key
+	 * 
+	 * @param string $ruleName 路由协议别名
 	 * @return AbstractWindRoute
 	 */
 	public function getRoute($ruleName) {
@@ -91,7 +101,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	}
 
 	/**
-	 * 获得业务操作
+	 * 返回action
+	 * 
 	 * @return string
 	 */
 	public function getAction() {
@@ -99,7 +110,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	}
 
 	/**
-	 * 获得业务对象
+	 * 返回controller
+	 * 
 	 * @return string
 	 */
 	public function getController() {
@@ -107,74 +119,76 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	}
 
 	/**
-	 * 设置action信息
+	 * 设置action
+	 * 
 	 * @param string $action
-	 * @return
+	 * @return void
 	 */
 	public function setAction($action) {
 		$this->action = $action;
 	}
 
 	/**
-	 * 设置controller信息
+	 * 设置controller
+	 * 
 	 * @param string $controller
-	 * @return
+	 * @return void
 	 */
 	public function setController($controller) {
 		$this->controller = $controller;
 	}
 
 	/**
-	 * @return the $module
+	 * @return string
 	 */
 	public function getModule() {
 		return $this->module;
 	}
 
 	/**
-	 * @param string $module
+	 * @param string
 	 */
 	public function setModule($module) {
 		$this->module = $module;
 	}
 
 	/**
-	 * @return the $moduleKey
+	 * @return string
 	 */
 	public function getModuleKey() {
 		return $this->moduleKey;
 	}
 
 	/**
-	 * @return the $controllerKey
+	 * @return string
 	 */
 	public function getControllerKey() {
 		return $this->controllerKey;
 	}
 
 	/**
-	 * @return the $actionKey
+	 * @return string
 	 */
 	public function getActionKey() {
 		return $this->actionKey;
 	}
 
 	/**
-	 * @param field_type $moduleKey
+	 * @param string $moduleKey
 	 */
 	public function setModuleKey($moduleKey) {
 		$this->moduleKey = $moduleKey;
 	}
 
 	/**
-	 * @param field_type $controllerKey
+	 * @param string $controllerKey
 	 */
 	public function setControllerKey($controllerKey) {
 		$this->controllerKey = $controllerKey;
 	}
 
 	/**
-	 * @param field_type $actionKey
+	 * @param string $actionKey
 	 */
 	public function setActionKey($actionKey) {
 		$this->actionKey = $actionKey;
