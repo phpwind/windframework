@@ -8,7 +8,7 @@
  * <li>form表单必须继承WindEnableValidateModule;</li>
  * <li>form表单中的所有属性都必须设置setVar和getVar存取方法对;</li>
  * <li>form表单实现的验证配置validateRules，也将会在设置完属性之后执行验证;</li>
- * <li>该表单在验证完成之后,会将该表单实例以[表单类名]为名字保存在Request中,在获取的时候只要通过request->getAttribute('表单类名')获取即可;</li>
+ * <li>该表单在验证完成之后,会将该表单实例以[表单类名]为名字保存在Request中,在获取的时候只要通过request->getInput('表单类名')获取即可;</li>
  * </ul>
  * </note>
  * 
