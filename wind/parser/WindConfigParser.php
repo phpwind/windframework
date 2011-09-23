@@ -33,7 +33,6 @@ class WindConfigParser implements IWindConfigParser {
      * @see IWindConfigParser::parse()
      */
 	public function parse($configPath, $alias = '', $append = '', AbstractWindCache $cache = null) {
-		//TODO 解析false 'false' 为0  true 'true' 为1
 		if ($config = $this->getCache($alias, $append, $cache)) return $config;
 		$config = $this->doParser($configPath);
 		$this->setCache($alias, $append, $cache, $config);

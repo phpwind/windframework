@@ -1,6 +1,27 @@
 <?php
 /**
  * ini 格式文件解析
+ * 
+ * <note><b>注意：</b>有些保留字不能作为 ini 文件中的键名，<br/>
+ * 包括：null，yes，no，true 和 false。值为 null，no 和 false 等效于 ""，<br/>
+ * 值为 yes 和 true 等效于 "1"。<br/>
+ * 字符 {}|&~![()" 也不能用在键名的任何地方，而且这些字符在选项值中有着特殊的意义.
+ * </note>
+ * true,和false因为会被转义，所以如果希望在解析出的数组中false和true能转变成boolean类型的，则可以给该值加上引号
+ * <code>
+ * [filters]
+ * filter1.isopen='true'
+ * filter1.isadd=true
+ * </code>
+ * 则会解析成：
+ * <code>
+ * array(
+ * 	'filters' => array(
+ * 		'isopen' => true,//boolean类型
+ * 		'isadd' => '1', //string 类型
+ * 	)
+ * )
+ * </code>
  *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @copyright ©2003-2103 phpwind.com
@@ -56,14 +77,15 @@ class WindIniParser {
 	 * @return array
 	 */
 	private function toArray($key, $value, &$data = array()) {
-		if (empty($key) && empty($value)) return array();
+		if (empty($key)) return array();
 		if (strpos($key, self::ARRAY_SEP)) {
 			$start = substr($key, 0, strpos($key, self::ARRAY_SEP));
 			$end = substr($key, strpos($key, self::ARRAY_SEP) + 1);
 			$data[$start] = array();
 			$this->toArray($end, $value, $data[$start]);
 		} else {
-			$data[$key] = $value;
+			$__tmp = strtolower($value);
+			$data[$key] = 'false' === $__tmp ? false : ('true' === $__tmp ? true : $value);
 		}
 		return $data;
 	}
@@ -100,7 +122,7 @@ class WindIniParser {
 	 */
 	private function formatDataFromString($key, $value, &$data) {
 		$tmp = $this->toArray($key, $value);
-		if (false == strpos($key, self::ARRAY_SEP)) return $tmp;
+		if (false === strpos($key, self::ARRAY_SEP)) return $tmp;
 		$start = substr($key, 0, strpos($key, self::ARRAY_SEP));
 		if ((!isset($data[$start]) || !is_array($data[$start])) && isset($tmp[$start])) {
 			$data[$start] = $tmp[$start];

@@ -1,6 +1,27 @@
 <?php
 /**
  * properties格式文件解析
+ * 
+ * properties文件中的注释为单行注释以#标记
+ * 同时该文件也允许配置节名称，比如：
+ * <code>
+ * [test]
+ * path=index.php
+ * address.zipcode=10000
+ * address.show=true //true将会被解析为boolean类型的true，false也将被解析成boolean类型的false
+ * </code>
+ * 则上述的格式会解析成如下数组:
+ * <code>
+ * array(
+ * 'test' => array(
+ * 		'path' => 'index.php',
+ * 		'address' => array(
+ * 			'zipcode' => '10000',
+ * 			'show' => true
+ *  	)
+ *  )
+ *)
+ * </code>
  *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @copyright ©2003-2103 phpwind.com
@@ -61,13 +82,15 @@ class WindPropertiesParser {
 				continue;
 			}
 			$tmp[0] = trim($tmp[0]);
-			$tmp[1] = trim($tmp[1], '\'"');
-			
-			if ($last_process) {
-				count($tmp) > 1 ? $data[$last_process][$tmp[0]] = $tmp[1] : $data[$last_process][$tmp[0]] = '';
-			} else {
-				count($tmp) > 1 ? $data[$tmp[0]] = $tmp[1] : $data[$tmp[0]] = '';
+			if (count($tmp) == 1 ) {
+				$last_process ? $data[$last_process][$tmp[0]] = '' : $data[$tmp[0]] = '';
+				continue;
 			}
+			$tmp[1] = trim($tmp[1], '\'"');
+			$__tmpValue = strtolower($tmp[1]);
+			$tmp[1] = 'false' === $__tmpValue ? false : ('true' === $__tmpValue ? true : $tmp[1]);
+			
+			$last_process ? $data[$last_process][$tmp[0]] = $tmp[1] : $data[$tmp[0]] = $tmp[1];
 		}
 		return $data;
 	}

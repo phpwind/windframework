@@ -64,6 +64,9 @@ class WindXmlParser {
 			if (3 == $_node->nodeType) {
 				$value = trim($_node->nodeValue);
 				(is_numeric($value) || $value) && $childs['__value'] = $value; //值为0的情况
+				$__tmp = strtolower($value);
+				('false' === $__tmp) && $childs['__value'] = false;//为false的配置值
+				('true' === $__tmp) && $childs['__value'] = true;//为false的配置值
 			}
 			if (1 !== $_node->nodeType) continue;
 			
@@ -100,7 +103,9 @@ class WindXmlParser {
 		$attributes = array();
 		foreach ($node->attributes as $attribute) {
 			if (self::NAME != $attribute->nodeName) {
-				$attributes[$attribute->nodeName] = (string) $attribute->nodeValue;
+				$value = (string)$attribute->nodeValue;
+				$__tmp = strtolower($value);
+				$attributes[$attribute->nodeName] = 'false' === $__tmp ? false : ('true' === $__tmp ? true : $value);
 			}
 		}
 		return $attributes;
