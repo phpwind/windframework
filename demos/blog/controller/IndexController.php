@@ -9,12 +9,11 @@
  * @version $Id$
  * @package wind
  */
-
 class IndexController extends WindController {
 	
 	protected $viewer = array();
 	const LOGIN_SUCCESS = 1;
-
+  
 	/**
 	 * @see WindSimpleController::run()
 	 */
