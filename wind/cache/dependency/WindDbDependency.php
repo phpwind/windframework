@@ -6,8 +6,8 @@ Wind::import('WIND:cache.IWindCacheDependency');
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: WindDbDependence.php 1532 2011-9-23下午05:42:00 xiaoxiao $
- * @package wind.cache.dependence
+ * @version $Id$
+ * @package wind.cache.dependency
  */
 class WindDbDependency implements IWindCacheDependency {
 
