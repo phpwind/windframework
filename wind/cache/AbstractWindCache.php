@@ -266,13 +266,13 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	protected function buildData($value, $expires = 0, IWindCacheDependency $dependency = null) {
 		$data = array(
-			self::DATA => $value, 
+			self::DATA => $value,
 			self::EXPIRE => $expires ? $expires : $this->getExpire(), 
 			self::STORETIME => time(), 
 			self::DEPENDENCY => null, 
 			self::DEPENDENCYCLASS => '');
-		if (null != $dependency) {
-			$dependency->injectDependent($data);
+		if (null !== $dependency) {
+			$dependency->injectDependent(self::EXPIRE);
 			$data[self::DEPENDENCY] = serialize($dependency);
 			$data[self::DEPENDENCYCLASS] = get_class($dependency);
 		}
@@ -291,10 +291,10 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return mixed 返回保存的真实数据,如果没有数值则返回false  
 	 */
 	protected function formatData($key, $value) {
+		if (!$value) return false;
 		$data = unserialize($value);
 		if (!is_array($data)) return false;
-		if ($this->hasChanged($key, $data)) return false;
-		return isset($data[self::DATA]) ? $data[self::DATA] : false;
+		return $this->hasChanged($key, $data) ? false : $data[self::DATA];
 	}
 
 	/**
@@ -308,10 +308,10 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return boolean true表示缓存已变更,false表示缓存未变改
 	 */
 	protected function hasChanged($key, array $data) {
-		if (isset($data[self::DEPENDENCY]) && $data[self::DEPENDENCY]) {
+		if ($data[self::DEPENDENCY]) {
 			$dependency = unserialize($data[self::DEPENDENCY]);
-			if (!$dependency->hasChanged($data)) return false;
-		} elseif (isset($data[self::EXPIRE]) && $data[self::EXPIRE]) {
+			if (!$dependency->hasChanged($this, $key, $data[self::EXPIRE])) return false;
+		} elseif ($data[self::EXPIRE]) {
 			$_overTime = $data[self::EXPIRE] + $data[self::STORETIME];
 			if ($_overTime >= time()) return false;
 		} else
