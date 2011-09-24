@@ -300,7 +300,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
 				array(
-					'controller-path' => $_errorAction, 
+					'controller-path' => $_errorHandler, 
 					'controller-suffix' => '', 
 					'error-handler' => ''));
 		}
