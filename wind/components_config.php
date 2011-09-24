@@ -2,7 +2,7 @@
 	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
-		'proxy' => 'true',
+		'proxy' => true,
 		'properties' => array(
 			'dispatcher' => array(
 				'ref' => 'dispatcher',

@@ -139,7 +139,7 @@ class WindView extends WindModule implements IWindView {
 			$this->layout = $this->getConfig('layout', '', $this->layout);
 			$this->theme = $this->getConfig('theme', '', $this->theme);
 			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
-			$this->htmlspecialchars = $this->htmlspecialchars == false || $this->htmlspecialchars == 'false' || $this->htmlspecialchars == '0' ? false : true;
+			$this->htmlspecialchars = $this->htmlspecialchars == false || $this->htmlspecialchars == '0' ? false : true;
 		}
 	}
 

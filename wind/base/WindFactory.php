@@ -256,8 +256,8 @@ class WindFactory implements IWindFactory {
 	 * @return WindClassProxy
 	 */
 	protected function setProxyForClass($proxy, $instance) {
-		if ($proxy === 'false' || $proxy === false) return $instance;
-		if ($proxy === 'true' || $proxy === true) $proxy = $this->proxyType;
+		if (false === $proxy) return $instance;
+		if (true === $proxy) $proxy = $this->proxyType;
 		$this->addClassDefinitions($proxy, array('path' => $proxy, 'scope' => 'prototype'));
 		$proxy = $this->getInstance($proxy);
 		$proxy->registerTargetObject($instance);
@@ -278,7 +278,7 @@ class WindFactory implements IWindFactory {
 	 */
 	protected function buildProperties($properties, $instance) {
 		isset($properties['delay']) || $properties['delay'] = true;
-		if ($properties['delay'] === 'false' || $properties['delay'] === false) {
+		if (false === $properties['delay']) {
 			foreach ($properties as $key => $subDefinition) {
 				$_value = '';
 				if (isset($subDefinition['value']))
