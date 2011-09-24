@@ -33,11 +33,47 @@ return array(
 					'resource' => 'db_config.ini'
 				),
 			),
+			/** 比如路由的组件配置 **/
+			/*配置default应用的路由规则*/
+			'router' => array(
+                'config' => array(
+                    /*配置路径中module的规则*/
+                     'module' => array(
+                        'url-param' => 'm',
+                        'default-value' => 'default',
+                     ),
+                    /*配置路径中controller的规则*/
+                     'controller' => array(
+                        'url-param' => 'c',
+                        'default-value' => 'index',
+                     ),
+                    /*配置路径中action的规则*/
+                     'action' => array(
+                        'url-param' => 'a',
+                        'default-value' => 'run',
+                     ),
+                     /*正则匹配*/
+                     'routes' => array(
+						'WindRoute' => array(
+                     		'class' 	=> 'WIND:router.route.WindRoute',
+                     		'params' 	=> array(
+                     			'script' => array('map' => 1, 'default' => 'index.php'),
+                     			'a'	=> array('map'  => 2, 'default' => 'run'),
+                     			'c'	=> array('map'	=> 3),
+                     			'm'	=> array('map'  => 4),
+                     		),
+						),
+					),
+                ),
+			),
 			/*可以根据自己的需求重新配置组件的相关项*/
 		),
 		
 		/*iscache属性控制windCache组件是否可用，如果关闭则windCache组件将不可用,通过Wind::getApp()->getComponent('windCache');*/
 		'iscache' => 1,
+		
+		/*输出编码设置*/
+		'charset' => 'utf-8',
 		
 		/*模块配置： 可以通过设定多个module来设置多组模块配置，每组模块以name来相互区分*/
 		'modules' => array(

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
+<!-- 
+db的配置也支持两种格式
+##一种是单链接，只能配置一个链接
+##一种是有连接池能力的多链接配置，同时支持读写分离和主从配置的能力
+ -->
+ <!--  #第一种：单链接模式 -->
 <!-- WIND:db.WindConnection 配置格式，适合单链接应用，同时不支持连接池 -->
 <WIND>
 	<!-- 链接的DSN，方式：类型:name=value;   链接类型mysql  host为localhost，链接的数据库名字为test,  链接端口为3306 -->
@@ -14,9 +19,13 @@
 	<tableprefix>pw_</tableprefix>
 </WIND>
 
+
+ <!--  #第二种：多链接支持 -->
 <!-- WIND:db.WindConnectionManager 配置格式 ，支持链接池，允许配置多个链接-->
 <WIND>
-<!-- except: 配置多链接的分配规则 -->
+	<!-- except: 配置多链接的分配规则 -->
+	<!-- 每组规则将会以;号分割，*为通配符，：号则表示规则中的表名和链接分割 -->
+	<!-- 比如如下： 所有的表名都将走db1链接，user开头的表和tablename2表将会走主db1 从db2的策略 -->
 	<connections except='*:(db1);user*,tablename2:(db1|db2);'>
 	    <!-- 各个链接的配置，配置格式如单个链接的配置 -->
 		<connection name='db1'>
@@ -27,9 +36,9 @@
 			<tableprefix>pw_</tableprefix>
 		</connection>
 		<connection name='db2'>
-			<dsn>mysql:host=localhost;dbname=test</dsn>
-			<user>root</user>
-			<pwd>root</pwd>
+			<dsn>mysql:host=192.168.1.12;dbname=test;port=3305</dsn>
+			<user>test</user>
+			<pwd>test</pwd>
 			<charset>utf8</charset>
 			<tableprefix>pw_</tableprefix>
 		</connection>
