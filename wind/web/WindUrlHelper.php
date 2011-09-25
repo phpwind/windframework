@@ -23,9 +23,7 @@ class WindUrlHelper {
 		if ($absolute) {
 			$_baseUrl = $absolute === true ? Wind::getApp()->getRequest()->getBaseUrl(true) : $absolute;
 			if (strpos($url, '://') === false) {
-				$url = $_baseUrl . '/' . trim($url, '/');
-			} else {
-				$url = preg_replace('/http[s]{0,1}:\/\/[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,4}(:\d+)?/i', $_baseUrl, $url);
+				$url = trim($_baseUrl, '/') . '/' . trim($url, '/');
 			}
 		}
 		return $url;
