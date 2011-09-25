@@ -25,6 +25,13 @@ abstract class AbstractWindPdoAdapter extends PDO {
 		return isset($this->_typeMap[gettype($variable)]) ? $this->_typeMap[gettype($variable)] : PDO::PARAM_STR;
 	}
 
+	/* (non-PHPdoc)
+	 * @see PDO::quote()
+	 */
+	public function quote($value) {
+		return parent::quote($value, $this->_getPdoDataType(gettype($value)));
+	}
+
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
 	 *
