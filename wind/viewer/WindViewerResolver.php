@@ -91,25 +91,27 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 * 
 	 * @param string $template 模板名称 必填
 	 * @param string $suffix 模板后缀 默认为空 
-	 * @param boolean $output 是否直接输出模板内容,接受两个值true,false 默认值为false
+	 * @param boolean $readOnly 是否直接输出模板内容,接受两个值true,false 默认值为false
+	 * @param boolean $forceOutput 是否强制返回模板内容,默认为不强制
 	 * @return array(compileFile,content)<pre>
 	 * <i>compileFile</i>模板编译文件绝对地址,
 	 * <i>content</i>编译后模板输出内容,当<i>$output</i>
 	 * 为false时将content写入compileFile</pre>
 	 */
-	public function compile($template, $suffix = '', $output = false) {
+	public function compile($template, $suffix = '', $readOnly = false, $forceOutput = false) {
 		$templateFile = $this->windView->getViewTemplate($template, $suffix);
 		if (!is_file($templateFile)) {
-			throw new WindViewException('[component.viewer.WindViewerResolver.compile] ' . $templateFile, WindViewException::VIEW_NOT_EXIST);
+			throw new WindViewException('[component.viewer.WindViewerResolver.compile] ' . $templateFile, 
+				WindViewException::VIEW_NOT_EXIST);
 		}
 		$compileFile = $this->windView->getCompileFile($template);
-		if (!$this->checkReCompile($templateFile, $compileFile)) return array($compileFile, '');
+		if (!$this->checkReCompile($templateFile, $compileFile)) {
+			return array($compileFile, ($forceOutput ? WindFile::read($compileFile) : ''));
+		}
 		/* @var $_windTemplate WindViewTemplate */
 		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
 		$_output = $_windTemplate->compile($templateFile, $this);
-		if ($output === false) {
-			WindFile::write($compileFile, $_output);
-		}
+		$readOnly === false && WindFile::write($compileFile, $_output);
 		return array($compileFile, $_output);
 	}
 
@@ -177,9 +179,10 @@ class WindRender {
 	 */
 	public static function render($__tpl, $__vars, $__viewer) {
 		$__theme = $__viewer->getWindView()->theme;
-		$themeUrl = $__theme ? $__theme : Wind::getApp()->getRequest()->getBaseUrl(true);
+		$_theme = $__theme ? $__theme : Wind::getApp()->getRequest()->getBaseUrl(true);
 		unset($__theme);
 		@extract($__vars, EXTR_REFS);
-		if (!@include_once ($__tpl)) throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, WindViewException::VIEW_NOT_EXIST);
+		if (!@include_once ($__tpl)) throw new WindViewException(
+			'[component.viewer.WindRender.render] template name ' . $__tpl, WindViewException::VIEW_NOT_EXIST);
 	}
 }

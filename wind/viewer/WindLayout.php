@@ -64,24 +64,38 @@ class WindLayout extends WindModule {
 	 */
 	public function parser($viewer) {
 		$this->viewer = $viewer;
+		$__content = '';
 		ob_start();
 		if ($this->layout) {
 			$__theme = $this->viewer->getWindView()->theme;
-			$themeUrl = $__theme ? $__theme : $this->getRequest()->getBaseUrl(true);
+			$_theme = $__theme ? $__theme : $this->getRequest()->getBaseUrl(true);
 			unset($__theme);
-			list($tpl) = $this->viewer->compile($this->layout);
+			list($tpl, $_output) = $this->viewer->compile($this->layout, '', false, true);
 			if (!@include ($tpl)) {
-				throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, WindViewException::VIEW_NOT_EXIST);
+				throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
+					WindViewException::VIEW_NOT_EXIST);
 			}
-		} else
+			reset($this->segments);
+			$__content = preg_replace_callback(
+				'/<\?(php)?([\s\n])*((\$this\->content)|(\$this\->segment))+\(((\'\w+\')|(\w+)|(\"\w+\"))*\)[;\s\n]*\?>/i', 
+				array($this, '__matchs'), $_output);
+		} else {
 			$this->content();
-		$__content = ob_get_clean();
-		foreach ($this->segments as $__key => $__value) {
-			if ($__key) $__content = str_replace("<pw-wind key='" . $__key . "' />", $__value[1], $__content);
+			$__content = array_pop($this->segments);
 		}
+		ob_get_clean();
 		$this->script && $__content = preg_replace('/(<\/body>)/i', $this->script . '\\1', $__content);
 		$this->css && $__content = preg_replace('/<\/head>/i', $this->css . '</head>', $__content);
 		return $__content;
+	}
+
+	/**
+	 * @param array $matchs
+	 */
+	private function __matchs($matchs) {
+		$_tmp = current($this->segments);
+		next($this->segments);
+		return $_tmp[1];
 	}
 
 	/**
@@ -91,7 +105,7 @@ class WindLayout extends WindModule {
 	 * @return void
 	 */
 	private function segment($template) {
-		if ($this->viewer === null) return '';
+		if ($this->viewer === null || !$template) return '';
 		$this->segments[$template] = $this->viewer->compile($template, '', true);
 		echo "<pw-wind key='" . $template . "' />";
 	}
