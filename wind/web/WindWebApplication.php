@@ -68,7 +68,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->started = true;
 			set_error_handler('WindHelper::errorHandle');
 			set_exception_handler('WindHelper::exceptionHandle');
-			$this->setModules('default', $this->defaultModule);
+			if ($default = $this->getModules('default')) {
+				$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
+			}
+			$this->setModules('default', $this->defaultModule, true);
 			$this->_getHandlerAdapter()->route();
 			$__state = true;
 		}
@@ -84,8 +87,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			}
 			$module = WindUtility::mergeArray($this->getModules('default'), $module);
 			$this->setModules($this->handlerAdapter->getModule(), $module, true);
-			$handlerPath = $module['controller-path'] . '.' . ucfirst(
-				$this->handlerAdapter->getController()) . $module['controller-suffix'];
+			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
 					'[web.WindWebApplication.run] \r\n\taction handl:' . $handlerPath, 'wind.core');
@@ -105,8 +107,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			}
-			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig(
-				'filters')) {
+			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig('filters')) {
 				$this->resolveActionMapping($filters, $handler);
 				$this->_proxy->runProcess($handler);
 			} else
@@ -299,10 +300,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
-				array(
-					'controller-path' => $_errorHandler, 
-					'controller-suffix' => '', 
-					'error-handler' => ''));
+				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
 		}
 		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
