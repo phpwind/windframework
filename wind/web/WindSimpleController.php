@@ -223,11 +223,10 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * 
 	 * 暂未实现
 	 * @param string $theme
-	 * @deprecated
 	 * @return void
 	 */
 	protected function setTheme($theme) {
-		$this->getForward()->getWindView()->thems = $theme;
+		$this->getForward()->getWindView()->theme = $theme;
 	}
 
 	/**
