@@ -84,8 +84,8 @@
 	</component>
 	<component name='windSession' path='WIND:http.session.WindSession'
 		scope='singleton' destroy='commit'>
-		<constructor-args>
+		<!--<constructor-args>
 			<constructor-arg name='0' ref='windCache' />
 		</constructor-args>
-	</component>
+	--></component>
 </components>
