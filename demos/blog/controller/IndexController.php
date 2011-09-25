@@ -56,12 +56,15 @@ class IndexController extends WindController {
 		$this->forwardRedirect(WindUrlHelper::createUrl('run'));
 	}
 
+	/**
+	 * 访问用户注册页面
+	 */
 	public function regAction() {
 		$this->setTemplate('reg');
 	}
 
 	/**
-	 * 用户注册
+	 * 处理用户注册表单
 	 */
 	public function dregAction() {
 		$this->session->destroy();
