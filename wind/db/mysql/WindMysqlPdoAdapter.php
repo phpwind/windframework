@@ -79,7 +79,7 @@ class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 			if (is_array($value))
 				$tmp2[] = $this->quoteArray($value);
 			else {
-				$_tmp1[] = $this->quote($value);
+				$_tmp1[] = $this->quote($value, $this->_getPdoDataType(gettype($value)));
 			}
 		}
 		$_returns = '';

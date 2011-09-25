@@ -8,7 +8,22 @@
  * @version $Id$
  * @package wind.db
  */
-abstract class AbstractWindPdoAdapter extends PDO { 
+abstract class AbstractWindPdoAdapter extends PDO {
+	private $_typeMap = array(
+		'boolean' => PDO::PARAM_BOOL, 
+		'integer' => PDO::PARAM_INT, 
+		'string' => PDO::PARAM_STR, 
+		'NULL' => PDO::PARAM_NULL);
+
+	/**
+	 * 获得绑定参数的类型
+	 * 
+	 * @param string $variable
+	 * @return int
+	 */
+	protected function _getPdoDataType($variable) {
+		return isset($this->_typeMap[gettype($variable)]) ? $this->_typeMap[gettype($variable)] : PDO::PARAM_STR;
+	}
 
 	/**
 	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
