@@ -110,10 +110,5 @@
 		'path' => 'WIND:http.session.WindSession',
 		'scope' => 'singleton',
 		'destroy' => 'commit',
-		'constructor-args' => array(
-			'0' => array(
-				'ref' => 'windCache',
-			),
-		),
 	),
 );
