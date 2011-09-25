@@ -6,11 +6,11 @@ Wind::import('WIND:cache.exception.WindCacheException');
  * 该基类继承了框架的基类WindModule,用以提供实现组件的一些特性.同时该类作为缓存策略的基类定义了通用的对方访问接口,及子类需要实现的抽象接口.
  * 定义了缓存可以访问的接口如下:
  * <ul>
- *   <li>{@link set}: 保存缓存数据,需要子类实现{@link setValue()}方法实现对应具体的方法.</li>
- *   <li>{@link get}: 获得缓存数据,需要子类实现{@link getValue()}方法来实现对应具体的方法.</li>
- *   <li>{@link batchGet}: 批量获取缓存数据.</li>
- *   <li>{@link delete}: 删除缓存数据,需要子类实现{@link deleteValue()}方法来实现对应具体的方法.</li>
- *   <li>{@link batchDelete}: 批量删除缓存数据.</li>
+ * <li>{@link set}: 保存缓存数据,需要子类实现{@link setValue()}方法实现对应具体的方法.</li>
+ * <li>{@link get}: 获得缓存数据,需要子类实现{@link getValue()}方法来实现对应具体的方法.</li>
+ * <li>{@link batchGet}: 批量获取缓存数据.</li>
+ * <li>{@link delete}: 删除缓存数据,需要子类实现{@link deleteValue()}方法来实现对应具体的方法.</li>
+ * <li>{@link batchDelete}: 批量删除缓存数据.</li>
  * </ul>
  * 该基类支持三个配置项{@link setConfig()}，所有继承该类的子类都拥有对该三个配置项的配置。
  * 
@@ -81,7 +81,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * @throws WindException 缓存失败的时候抛出异常
 	 */
 	protected abstract function setValue($key, $value, $expires = 0);
-	
+
 	/**
 	 * 执行添加操作 
 	 * 
@@ -138,7 +138,7 @@ abstract class AbstractWindCache extends WindModule {
 			throw new WindCacheException('[cache.AbstractWindCache.set]Setting cache failed.' . $e->getMessage());
 		}
 	}
-		
+
 	/**
 	 * 增加一个条目到缓存服务器
 	 * 
@@ -231,12 +231,12 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	public function increment($key, $step = 1) {
 		$data = $this->get($key);
-		if (false === $data || !is_numeric($data)) return false;
-		$data = (int)$data + (int)$step;
+		if (!is_numeric($data)) return false;
+		$data += intval($step);
 		$this->set($key, $data);
 		return $data;
 	}
-	
+
 	/**
 	 * 将元素的值减小value
 	 * 
@@ -249,13 +249,13 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	public function decrement($key, $step = 1) {
 		$data = $this->get($key);
-		if (false === $data || !is_numeric($data)) return false;
-		$data = (int)$data - (int)$step;
-		($data < 0) && $data = 0;
+		if (!is_numeric($data)) return false;
+		$data -= intval($step);
+		$data < 0 && $data = 0;
 		$this->set($key, $data);
 		return $data;
 	}
-	
+
 	/**
 	 * 构造保存的数据
 	 *
@@ -266,7 +266,7 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	protected function buildData($value, $expires = 0, IWindCacheDependency $dependency = null) {
 		$data = array(
-			self::DATA => $value,
+			self::DATA => $value, 
 			self::EXPIRE => $expires ? $expires : $this->getExpire(), 
 			self::STORETIME => time(), 
 			self::DEPENDENCY => null, 
@@ -278,7 +278,7 @@ abstract class AbstractWindCache extends WindModule {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * 格式化输出
 	 * 
@@ -293,7 +293,6 @@ abstract class AbstractWindCache extends WindModule {
 	protected function formatData($key, $value) {
 		if (!$value) return false;
 		$data = unserialize($value);
-		if (!is_array($data)) return false;
 		return $this->hasChanged($key, $data) ? false : $data[self::DATA];
 	}
 
@@ -328,7 +327,7 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	protected function buildSecurityKey($key) {
 		return md5(
-		$this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode());
+			$this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode());
 	}
 
 	/**
