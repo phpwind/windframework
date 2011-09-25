@@ -231,7 +231,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$component = null;
 		switch ($componentName) {
 			case 'windCache':
-				if ($this->getConfig('iscache', '', true)) {
+				if ($this->getConfig('iscache', '', false)) {
 					$component = $this->windFactory->getInstance($componentName);
 				}
 				break;
