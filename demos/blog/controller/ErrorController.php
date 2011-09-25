@@ -9,17 +9,18 @@
  * @package wind
  */
 class ErrorController extends WindErrorHandler {
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see WindErrorHandler::run()
 	 */
-	public function run(){
+	public function run() {
+		$this->setLayout('layout');
+		$this->setTheme($this->getRequest()->getBaseUrl(true) . '/' . 'static');
 		$topic = "Blog Error";
 		$this->setOutput($topic, "errorHeader");
 		$this->setOutput($this->urlReferer, "baseUrl");
 		$this->setOutput($this->error, "errors");
-		$this->setTemplatePath($this->errorDir);
-		$this->setTemplate('erroraction');
+		$this->setTemplate('error');
 	}
 }

@@ -12,8 +12,7 @@ class UserForm extends WindEnableValidateModule {
 	
 	private $username;
 	private $password;
-	
-	
+
 	/**
 	 * @return 
 	 */
@@ -39,17 +38,16 @@ class UserForm extends WindEnableValidateModule {
 	 * @param field_type $password
 	 */
 	public function setPassword($password) {
-		$this->password = $password;
+		$this->password = $password ? md5($password) : $password;
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindEnableValidateModule::validateRules()
 	 */
-	public function validateRules(){
+	public function validateRules() {
 		return array(
-			WindUtility::buildValidateRule("username", "isRequired"),
-			WindUtility::buildValidateRule("password", "isRequired"),
-		);
+			WindUtility::buildValidateRule("username", "isRequired"), 
+			WindUtility::buildValidateRule("password", "isRequired"));
 	}
-	
+
 }
