@@ -3,14 +3,13 @@
 <!-- <component name='' path='' initMethod='' scope="application/singleton/prototype/" 
 	proxy='' destroy=''> -->
 <!-- <property property-name='' ref/value/path=''> -->
-<!-- <constructor-arg ref/value/path=''> -->
+<!-- <constructor-arg ref/value=''> -->
 <!-- <config resource=''> -->
 <!-- </component> -->
 
 <components>
 	<component name='windApplication' path='WIND:web.WindWebApplication'
-		scope='singleton'>
-		<proxy>true</proxy>
+		scope='singleton' proxy='true'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
 			<property name='handlerAdapter' ref='router' />
@@ -40,15 +39,15 @@
 		<config>
 			<template-dir>template</template-dir>
 			<template-ext>htm</template-ext>
-			<is-compile>0</is-compile>
+			<is-compile>1</is-compile>
 			<compile-dir>compile.template</compile-dir>
 			<compile-ext>tpl</compile-ext>
 			<layout></layout>
 			<theme></theme>
+			<htmlspecialchars>true</htmlspecialchars>
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
-			<property name='viewCache' ref='viewCache' />
 		</properties>
 	</component>
 	<component name='viewResolver' path='WIND:viewer.WindViewerResolver'
@@ -68,7 +67,7 @@
 	<component name='errorMessage' path='WIND:core.web.WindErrorMessage'
 		scope='prototype'>
 	</component>
-	
+
 	<component name='configParser' path='WIND:parser.WindConfigParser'
 		scope='singleton'>
 	</component>

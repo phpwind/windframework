@@ -52,12 +52,12 @@
 		'config' => array(
 			'template-dir' => 'template',
 			'template-ext' => 'htm',
-			'is-compile' => '0',
+			'is-compile' => '1',
 			'compile-dir' => 'compile.template',
 			'compile-ext' => 'tpl',
 			'layout' => '',
 			'theme' => '',
-			'htmlspecialchars' => 'true',
+			'htmlspecialchars' => true,
 		),
 		'properties' => array(
 			'viewResolver' => array(
