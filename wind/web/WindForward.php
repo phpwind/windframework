@@ -1,11 +1,14 @@
 <?php
 /**
- * 操作转发类，将操作句柄转发给下一个操作或者转发给一个视图处理
+ * 操作转发类,该类携带了操作转发信息以及后续处理信息给主应用控制器
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 所有的操作处理类中,都默认包含了一个WindForward对象,当操作处理结束后返回该对象给主应用控制器.
+ * 该类中包含了,变量信息,视图处理信息,跳转信息布局信息等.
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.web
  */
 class WindForward extends WindModule {
 	/**
@@ -43,12 +46,12 @@ class WindForward extends WindModule {
 
 	/**
 	 * 将请求重定向到另外一个Action操作
-	 * $action参数支持:
-	 * module/controller/action/?a=&b=&c=
 	 * 
-	 * @param string $action | $action 操作
-	 * @param array $args | 参数
-	 * @param boolean $isRedirect | 是否重定向
+	 * 参数支持格式:module/controller/action/?a=&b=&c=
+	 * @param string $action $action 操作
+	 * @param array $args 参数 默认为空数组
+	 * @param boolean $isRedirect 是否重定向  默认为false
+	 * @param boolean $immediately 是否理解重定向 默认为true
 	 * @return void
 	 * @throws WindForwardException
 	 */
@@ -61,10 +64,10 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * 请求重定向
-	 * 采用<b>head</b>方式，将当前的请求重定向到新的url地址，
+	 * url重定向
 	 * 
-	 * @param string $url
+	 * 采用<b>head</b>方式，将当前的请求重定向到新的url地址
+	 * @param string $url 重定向的url地址
 	 * @return void
 	 * @throws WindForwardException
 	 */
@@ -76,10 +79,11 @@ class WindForward extends WindModule {
 
 	/**
 	 * 设置当前forward对象中存储的变量
-	 * 设置当前forward对象中存储的变量，设置到forward中的所有变量都可以在模板页面中被直接访问到
 	 * 
+	 * 设置当前forward对象中存储的变量，设置到forward中的所有变量都可以在模板页面中被直接访问到
 	 * @param string|array|object $vars
-	 * @param string $key
+	 * @param string $key 默认为空字符串
+	 * @return void
 	 */
 	public function setVars($vars, $key = '') {
 		if (!$key) {
@@ -91,9 +95,9 @@ class WindForward extends WindModule {
 
 	/**
 	 * 返回当前forward对象中存储的变量信息
-	 * 返回当前forward对象中存储的变量信息，支持多个参数，当参数为空时返回全部的变量信息
 	 * 
-	 * @return string|array|obj
+	 * 返回当前forward对象中存储的变量信息，支持多个参数，当参数为空时返回全部的变量信息
+	 * @return mixed
 	 */
 	public function getVars() {
 		$_tmp = $this->vars;
@@ -127,7 +131,7 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * @return the $isRedirect
+	 * @return boolean
 	 */
 	public function getIsRedirect() {
 		return $this->isRedirect;
@@ -141,7 +145,7 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * @return the $isReAction
+	 * @return boolean
 	 */
 	public function getIsReAction() {
 		return $this->isReAction;
@@ -155,7 +159,7 @@ class WindForward extends WindModule {
 	}
 
 	/**
-	 * @return the $url
+	 * @return string
 	 */
 	public function getUrl() {
 		return $this->url;

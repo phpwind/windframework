@@ -2,6 +2,7 @@
 	'windApplication' => array(
 		'path' => 'WIND:web.WindWebApplication',
 		'scope' => 'singleton',
+		'proxy' => true,
 		'properties' => array(
 			'dispatcher' => array(
 				'ref' => 'dispatcher',
@@ -51,18 +52,16 @@
 		'config' => array(
 			'template-dir' => 'template',
 			'template-ext' => 'htm',
-			'is-compile' => '0',
+			'is-compile' => '1',
 			'compile-dir' => 'compile.template',
 			'compile-ext' => 'tpl',
 			'layout' => '',
 			'theme' => '',
+			'htmlspecialchars' => true,
 		),
 		'properties' => array(
 			'viewResolver' => array(
 				'ref' => 'viewResolver',
-			),
-			'viewCache' => array(
-				'ref' => 'viewCache',
 			),
 		),
 	),
@@ -111,10 +110,5 @@
 		'path' => 'WIND:http.session.WindSession',
 		'scope' => 'singleton',
 		'destroy' => 'commit',
-		'constructor-args' => array(
-			'0' => array(
-				'ref' => 'windCache',
-			),
-		),
 	),
 );

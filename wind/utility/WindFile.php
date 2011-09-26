@@ -2,52 +2,67 @@
 Wind::import("WIND:utility.WindString");
 /**
  * 文件工具类
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.utility
  */
 class WindFile {
 	
 	/**
-	 * @var string 以读的方式打开文件，具有较强的平台移植性
+	 * 以读的方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const READ = 'rb';
 	
 	/**
-	 * @var string 以读写的方式打开文件，具有较强的平台移植性
+	 * 以读写的方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const READWRITE = 'rb+';
 	
 	/**
-	 * @var string 以写的方式打开文件，具有较强的平台移植性
+	 * 以写的方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const WRITE = 'wb';
 	
 	/**
-	 * @var string 以读写的方式打开文件，具有较强的平台移植性
+	 * 以读写的方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const WRITEREAD = 'wb+';
 	
 	/**
-	 * @var string 以追加写入方式打开文件，具有较强的平台移植性
+	 * 以追加写入方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const APPEND_WRITE = 'ab';
 	
 	/**
-	 * @var string 以追加读写入方式打开文件，具有较强的平台移植性
+	 * 以追加读写入方式打开文件，具有较强的平台移植性
+	 * 
+	 * @var string 
 	 */
 	const APPEND_WRITEREAD = 'ab+';
 
 	/**
 	 * 保存文件
+	 * 
 	 * @param string $fileName          保存的文件名
 	 * @param mixed $data               保存的数据
-	 * @param boolean $isBuildReturn    是否组装保存的数据是return $params的格式，如果没有则以变量声明的方式保存
-	 * @param string $method            打开文件方式
-	 * @param boolean $ifLock           是否对文件加锁
+	 * @param boolean $isBuildReturn    是否组装保存的数据是return $params的格式，如果没有则以变量声明的方式保存,默认为true则以return的方式保存
+	 * @param string $method            打开文件方式，默认为rb+的形式
+	 * @param boolean $ifLock           是否对文件加锁，默认为true即加锁
 	 */
-	public static function savePhpData($fileName, $data, $isBuildReturn = true, $method = 'rb+', $ifLock = true) {
+	public static function savePhpData($fileName, $data, $isBuildReturn = true, $method = self::READWRITE, $ifLock = true) {
 		$temp = "<?php\r\n ";
 		if (!$isBuildReturn && is_array($data)) {
 			foreach ($data as $key => $value) {
@@ -67,10 +82,10 @@ class WindFile {
 	 *
 	 * @param string $fileName 文件绝对路径
 	 * @param string $data 数据
-	 * @param string $method 读写模式
-	 * @param bool $ifLock 是否锁文件
-	 * @param bool $ifCheckPath 是否检查文件名中的“..”
-	 * @param bool $ifChmod 是否将文件属性改为可读写
+	 * @param string $method 读写模式,默认模式为rb+
+	 * @param bool $ifLock 是否锁文件，默认为true即加锁
+	 * @param bool $ifCheckPath 是否检查文件名中的“..”，默认为true即检查
+	 * @param bool $ifChmod 是否将文件属性改为可读写,默认为true
 	 * @return int 返回写入的字节数
 	 */
 	public static function write($fileName, $data, $method = self::READWRITE, $ifLock = true, $ifCheckPath = true, $ifChmod = true) {
@@ -88,14 +103,15 @@ class WindFile {
 	 * 读取文件
 	 *
 	 * @param string $fileName 文件绝对路径
-	 * @param string $method 读取模式
-	 * @return string
+	 * @param string $method 读取模式默认模式为rb
+	 * @return string 从文件中读取的数据
 	 */
 	public static function read($fileName, $method = self::READ) {
 		$data = '';
-		if (false !== ($handle = fopen($fileName, $method))) {
+		$len = filesize($fileName);
+		if (false !== ($handle = fopen($fileName, $method)) && 0 < $len) {
 			flock($handle, LOCK_SH);
-			$data = fread($handle, filesize($fileName));
+			$data = fread($handle, $len);
 			fclose($handle);
 		}
 		return $data;
@@ -103,8 +119,9 @@ class WindFile {
 
 	/**
 	 * 按目录删除文件
+	 * 
 	 * @param string  $dir 目录
-	 * @param boolean $ifexpiled 是否过期
+	 * @param boolean $ifexpiled 是否过期 默认为false
 	 * @deprecated
 	 * @return boolean
 	 */
@@ -126,17 +143,16 @@ class WindFile {
 	}
 
 	/**
-	 * 批量删除文件
-	 * @param string $path
-	 * @param string $delDir
-	 * @param int $level
-	 * @return string
+	 * 批量删除指定目录下的文件
+	 * 
+	 * @param string $path 目录文件路径
+	 * @param boolean $delDir 是否同样删除目录,默认为false不删除
+	 * @param int $level 文件的级别，默认为0
+	 * @return boolean
 	 */
 	public static function delFiles($path, $delDir = false, $level = 0) {
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
-		if (!$handler = opendir($path)) {
-			return false;
-		}
+		if (!$handler = opendir($path)) return false;
 		while (false !== ($filename = readdir($handler))) {
 			if ("." != $filename && ".." != $filename) {
 				if (is_dir($path . DIRECTORY_SEPARATOR . $filename)) {
@@ -155,13 +171,16 @@ class WindFile {
 
 	/**
 	 * 取得文件的mime类型
+	 * 
 	 * @param string $fileName 文件名
-	 * @return string
+	 * @deprecated
+	 * @return string|boolean
+	 * @throws WindException
 	 */
 	public static function getMimeType($fileName) {
 		//TODO WindMimeTypes.php 被删掉了，有bug 
 		$suffix = self::getFileSuffix($fileName);
-		$mimes = require WIND_PATH . '/component/utility/WindMimeTypes.php';
+		$mimes = require WIND_PATH . '/utility/WindMimeTypes.php';
 		if (isset($mimes[$suffix])) {
 			return is_array($mimes[$suffix]) ? current($mimes[$suffix]) : $mimes[$suffix];
 		} else {
@@ -172,6 +191,7 @@ class WindFile {
 
 	/**
 	 * 取得目录的迭代
+	 * 
 	 * @param string $dir 目录名
 	 * @return DirectoryIterator
 	 */
@@ -181,8 +201,9 @@ class WindFile {
 
 	/**
 	 * 取得文件信息
-	 * @param unknown_type $fileName
-	 * @return string|number
+	 * 
+	 * @param string $fileName 文件名字
+	 * @return array 文件信息
 	 */
 	public static function getFileInfo($fileName) {
 		if (false === is_file($fileName)) {
@@ -206,8 +227,9 @@ class WindFile {
 
 	/**
 	 * 取得目录信息
-	 * @param unknown_type $dir
-	 * @return string|multitype:
+	 * 
+	 * @param string $dir 需要获取的目录
+	 * @return array
 	 */
 	public static function getDirectoryInfo($dir) {
 		if (false !== is_dir($dir)) {
@@ -218,7 +240,8 @@ class WindFile {
 
 	/**
 	 * 删除文件
-	 * @param string $filename
+	 * 
+	 * @param string $filename 文件名称
 	 * @return boolean
 	 */
 	public static function delFile($filename) {
@@ -227,21 +250,22 @@ class WindFile {
 
 	/**
 	 * 取得文件后缀
-	 * @param string $filename
+	 * 
+	 * @param string $filename 文件名称
 	 * @return string
 	 */
 	public static function getFileSuffix($filename) {
 		$filename = explode($filename, '.');
-		return $filename[count($filename) - 1];
+		return array_pop($filename);
 	}
 
 	/**
 	 * 取得真实的目录
+	 * 
 	 * @param string $path 路径名
 	 * @return string
 	 */
 	public static function appendSlashesToDir($path) {
 		return rtrim($path, '\\/') . DIRECTORY_SEPARATOR;
 	}
-
 }

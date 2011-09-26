@@ -1,18 +1,12 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-13
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * xml文件解析
- * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.parser
  */
 class WindXmlParser {
 	
@@ -27,8 +21,11 @@ class WindXmlParser {
 	private $dom = null;
 
 	/**
+	 * 初始化xml解析器
+	 * 
 	 * @param string $version xml版本
 	 * @param string $encode  xml编码
+	 * @return void
 	 */
 	public function __construct($version = '1.0', $encode = 'utf-8') {
 		if (!class_exists('DOMDocument')) throw new WindException('DOMDocument is not exist.');
@@ -36,11 +33,13 @@ class WindXmlParser {
 	}
 
 	/**
-	 * @param string $filename xml 文件名
-	 * @param int $option 解析选项
+	 * 解析
+	 * 
+	 * @param string $filename 待解析文件名
+	 * @param int $option 解析选项,默认为0
 	 * @return array
 	 */
-	public function parse($filename, $option = null) {
+	public function parse($filename, $option = 0) {
 		if (!is_file($filename)) return array();
 		$this->dom->load($filename, $option);
 		return $this->getChilds($this->dom->documentElement);
@@ -65,6 +64,9 @@ class WindXmlParser {
 			if (3 == $_node->nodeType) {
 				$value = trim($_node->nodeValue);
 				(is_numeric($value) || $value) && $childs['__value'] = $value; //值为0的情况
+				$__tmp = strtolower($value);
+				('false' === $__tmp) && $childs['__value'] = false;//为false的配置值
+				('true' === $__tmp) && $childs['__value'] = true;//为false的配置值
 			}
 			if (1 !== $_node->nodeType) continue;
 			
@@ -93,7 +95,7 @@ class WindXmlParser {
 	 * 
 	 * 该属性将不包含属性为name的值--规则（name的值将作为解析后数组的key值索引存在）
 	 * 
-	 * @param DOMElement $node
+	 * @param DOMElement $node 节点
 	 * @return array 返回属性数组
 	 */
 	public function getAttributes($node) {
@@ -101,10 +103,11 @@ class WindXmlParser {
 		$attributes = array();
 		foreach ($node->attributes as $attribute) {
 			if (self::NAME != $attribute->nodeName) {
-				$attributes[$attribute->nodeName] = (string) $attribute->nodeValue;
+				$value = (string)$attribute->nodeValue;
+				$__tmp = strtolower($value);
+				$attributes[$attribute->nodeName] = 'false' === $__tmp ? false : ('true' === $__tmp ? true : $value);
 			}
 		}
 		return $attributes;
 	}
 }
-?>

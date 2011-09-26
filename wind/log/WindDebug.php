@@ -1,62 +1,60 @@
 <?php
-/**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-11-3
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
 defined('RUNTIME_START') or define('RUNTIME_START', microtime(true));
 defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
 /**
  * 调试工具
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.log
  */
 class WindDebug {
-	
+
 	/**
 	 * @var array 调试点
 	 */
 	private static $breakpoint = array();
+
 	/**
 	 * @var int 保留的小数位数
 	 */
 	const DECIMAL_DIGITS = 4;
-	
+
 	/**
 	 * @var int 记录内存使用标记
 	 */
 	const MEMORY = 'mem';
+
 	/**
 	 * @var int 记录程序运行时时间使用标记
 	 */
 	const RUN_TIME = 'time';
+
 	/**
 	 * 设置调试点
 	 * @param string $point 调试点
 	 */
 	public static function setBreakPoint($point = '') {
-		if (isset(self::$breakpoint[$point]))
-			return false;
+		if (isset(self::$breakpoint[$point])) return false;
 		self::$breakpoint[$point][self::RUN_TIME] = microtime(true);
 		self::$breakpoint[$point][self::MEMORY] = memory_get_usage();
 		return true;
 	}
+
 	/**
 	 * 移除调试点
 	 * @param string $point 调试点
 	 */
 	public static function removeBreakPoint($point = '') {
 		if ($point) {
-			if (isset(self::$breakpoint[$point]))
-				unset(self::$breakpoint[$point]);
+			if (isset(self::$breakpoint[$point])) unset(self::$breakpoint[$point]);
 		} else {
 			self::$breakpoint = array();
 		}
 	}
-	
+
 	/**
 	 * 取得系统运行所耗内存
 	 */
@@ -64,7 +62,7 @@ class WindDebug {
 		$useMem = memory_get_usage() - USEMEM_START;
 		return $useMem ? round($useMem / 1024, self::DECIMAL_DIGITS) : 0;
 	}
-	
+
 	/**
 	 * 取得系统运行所耗时间
 	 */
@@ -72,18 +70,17 @@ class WindDebug {
 		$useTime = microtime(true) - RUNTIME_START;
 		return $useTime ? round($useTime, self::DECIMAL_DIGITS) : 0;
 	}
-	
+
 	/**
 	 * 获取调试点
 	 * @param $point
 	 * @param $label
 	 */
 	public static function getBreakPoint($point, $label = '') {
-		if (!isset(self::$breakpoint[$point]))
-			return array();
+		if (!isset(self::$breakpoint[$point])) return array();
 		return $label ? self::$breakpoint[$point][$label] : self::$breakpoint[$point];
 	}
-	
+
 	/**
 	 * 调试点之间系统运行所耗内存
 	 * @param string $beginPoint 开始调试点
@@ -91,13 +88,12 @@ class WindDebug {
 	 * @return float 
 	 */
 	public static function getMemUsageOfp2p($beginPoint, $endPoint = '') {
-		if (!isset(self::$breakpoint[$beginPoint]))
-			return 0;
+		if (!isset(self::$breakpoint[$beginPoint])) return 0;
 		$endMemUsage = isset(self::$breakpoint[$endPoint]) ? self::$breakpoint[$endPoint][self::MEMORY] : memory_get_usage();
 		$useMemUsage = $endMemUsage - self::$breakpoint[$beginPoint][self::MEMORY];
 		return round($useMemUsage / 1024, self::DECIMAL_DIGITS);
 	}
-	
+
 	/**
 	 * 调试点之间的系统运行所耗时间
 	 * @param string $beginPoint 开始调试点
@@ -105,13 +101,12 @@ class WindDebug {
 	 * @return float 
 	 */
 	public static function getExecTimeOfp2p($beginPoint, $endPoint = '') {
-		if (!isset(self::$breakpoint[$beginPoint]))
-			return 0;
+		if (!isset(self::$breakpoint[$beginPoint])) return 0;
 		$endTime = self::$breakpoint[$endPoint] ? self::$breakpoint[$endPoint][self::RUN_TIME] : microtime(true);
 		$useTime = $endTime - self::$breakpoint[$beginPoint][self::RUN_TIME];
 		return round($useTime, self::DECIMAL_DIGITS);
 	}
-	
+
 	/**
 	 * 堆栈情况
 	 * @param array $trace 堆栈引用，如异常
@@ -132,13 +127,14 @@ class WindDebug {
 		}
 		return $traceInfo;
 	}
+
 	/**
 	 * 获取系统所加载的文件
 	 */
 	public static function loadFiles() {
 		return get_included_files();
 	}
-	
+
 	public static function debug($message = '', $trace = array(), $begin = '', $end = '') {
 		$runtime = self::getExecTime();
 		$useMem = self::getMemUsage();
@@ -158,7 +154,7 @@ class WindDebug {
 		}
 		return $debug;
 	}
-	
+
 	private static function traceArgs($args = array()) {
 		foreach ($args as $key => $arg) {
 			if (is_array($arg))

@@ -1,13 +1,16 @@
 <?php
 /**
- * 默认路由规则：
- * ^(\w+\.\w+\?|\?|\w+\.\w+\?\/)*(\w+\/)(\w+\/)?(\w+\/)?(&[\w+\/]*)*$
- * 匹配格式：index.php?a/c/m/&id=aaaaa 或者 ?a/c/m/&id=aaaaa
+ * 路由协议
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qiong Wu <papa0924@gmail.com>
+ * 该类继承了抽象类{@see AbstractWindRoute},实现了{@see AbstractWindRoute::match()},
+ * {@see AbstractWindRoute::build()}.该类,可以通过配置更改Url匹配规则,实现多种url rewrite形式的支持.
+ * 默认路由规则：<code>^(\w+\.\w+\?|\?|\w+\.\w+\?\/)*(\w+\/)(\w+\/)?(\w+\/)?(&[\w+\/]*)*$
+ * 匹配格式：index.php?a/c/m/&id=aaaaa 或者 ?a/c/m/&id=aaaaa</code>
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-23
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.router.route
  */
 class WindRoute extends AbstractWindRoute {
 	protected $pattern = '^([\w-_\.]+\.\w+[\?\/]{1,2}|\?)*(\w+)(\/\w+)?(\/\w+)?(\/|\/?&.*)*$';
@@ -20,11 +23,14 @@ class WindRoute extends AbstractWindRoute {
 		'm' => array('map' => 4));
 
 	/* (non-PHPdoc)
-	 * @see IWindRoute::match()
+	 * @see AbstractWindRoute::match()
 	 */
 	public function match() {
-		$_pathInfo = trim(str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri()), '/');
-		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches)) return null;
+		$_pathInfo = trim(
+			str_replace($this->getRequest()->getBaseUrl(), '', $this->getRequest()->getRequestUri()), 
+			'/');
+		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), 
+			$matches)) return null;
 		foreach ($this->params as $_n => $_p) {
 			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
 				$_value = $matches[$_p['map']][0];
@@ -33,12 +39,13 @@ class WindRoute extends AbstractWindRoute {
 			$this->params[$_n]['value'] = $params[$_n] = trim($_value, '-/');
 		}
 		list(, $_args) = explode('&', $_pathInfo . '&', 2);
-		$_args && $params = array_merge($params, WindUrlHelper::urlToArgs($_args, true, $this->separator));
+		$_args && $params = array_merge($params, 
+			WindUrlHelper::urlToArgs($_args, true, $this->separator));
 		return $params;
 	}
 
 	/* (non-PHPdoc)
-	 * @see IWindRoute::build()
+	 * @see AbstractWindRoute::build()
 	 */
 	public function build($router, $action, $args = array()) {
 		list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);

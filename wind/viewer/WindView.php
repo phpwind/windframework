@@ -1,95 +1,128 @@
 <?php
 Wind::import('WIND:viewer.IWindView');
 /**
- * 处理视图请求的准备工作，并将视图请求提交给某一个具体的视图解析器
- * 如果视图请求是一个重定向请求，或者是请求另一个操作
- * 则返回一个forward对象
- * <config>
- * <template-dir value='template' />
- * <template-ext value='htm' />
- * <is-cache value='true' />
- * <cache-dir value='cache' />
- * <compile-dir value='compile.template' />
- * </config>
+ * 视图处理器
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * <i>WindView</i>是基础的视图处理器,职责：进行视图渲染.<br>
+ * 他实现自接口<i>IWindView</i>,该类依赖<i>WindViewerResolver</i>完成视图渲染工作<br/>
+ * <i>WindView</i>支持丰富的配置信息，可以通过修改相关配置来改变视图输出行为.<i>template-dir</i>
+ * :模板目录,支持命名空间格式:WIND:template,当命名空间为空时以当前app的rootpath为默认命名空间;<i>template-ext</i>
+ * :模板后缀,默认为htm,可以通过配置该值来改变模板的后缀名称;<i>is-compile</i>
+ * :是否开启模板自动编译,当开启自动编译时程序会根据编译文件是否存在或者是否已经过期来判断是否需要进行重新编译.支持'0'和'1'两种输入,默认值为'0'.<i>compile-dir</i>
+ * :模板编译目录,输入规则同'template-dir'.(注意:该目录需要可写权限).
+ * 默认配置支持如下：<code> array(
+ * 'template-dir' => 'template',
+ * 'template-ext' => 'htm',
+ * 'is-compile' => '0',
+ * 'compile-dir' => 'DATA:template',
+ * 'compile-ext' => 'tpl', //模板后缀
+ * 'layout' => '', //布局文件
+ * 'theme' => '', //主题包位置
+ * 'htmlspecialchars' => 'true', //是否开启对输出模板变量进行过滤
+ * )
+ * </code>
+ * 该类的组件配置格式：<code>
+ * 'windView' => array('path' => 'WIND:viewer.WindView',
+ * 'scope' => 'prototype',	//注意:命名空间为'prototype'
+ * 'config' => array(
+ * 'template-dir' => 'template',
+ * 'template-ext' => 'htm',
+ * 'is-compile' => '0',
+ * 'compile-dir' => 'compile.template',
+ * 'compile-ext' => 'tpl',
+ * 'layout' => '',
+ * 'theme' => ''),
+ * 'properties' => array(
+ * 'viewResolver' => array('ref' => 'viewResolver')
+ * ))</code>
+ * <note><b>注意:</b>框架默认视图组件,通过修改组件配置修改默认视图组件.(详细操作参考组件配置定义)</note>
+ * 
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license {@link http://www.windframework.com}
+ * @version $Id$
+ * @package wind.viewer
  */
 class WindView extends WindModule implements IWindView {
 	/**
-	 * 模板路径信息
-	 *
+	 * 模板目录
+	 * 
+	 * 支持命名空间格式:<i>WIND:template</i>,
+	 * 当命名空间为空时以当前<i>app</i>的<i>rootpath</i>为默认命名空间
 	 * @var string
 	 */
 	public $templateDir;
 	/**
 	 * 模板文件的扩展名
-	 *
+	 * 
 	 * @var string
 	 */
 	public $templateExt;
 	/**
 	 * 模板名称
-	 *
+	 * 
 	 * @var string
 	 */
 	public $templateName;
 	/**
 	 * 是否对模板变量进行html字符过滤
+	 * 
 	 * @var boolean
 	 */
 	public $htmlspecialchars = true;
 	/**
-	 * 是否开启模板编译
-	 * 00: 0   关闭,不进行模板编译
-	 * 01: 1  进行模板编译
-	 * @var boolean
+	 * 是否开启模板自动编译
+	 * 
+	 * 接受两种输入值0和1<ol>
+	 * <li>0   关闭,不进行模板编译</li>
+	 * <li>1  进行模板编译</li></ol>
+	 * @var int
 	 */
 	public $isCompile = 0;
 	/**
-	 * 编译目录
+	 * 模板编译文件生成目录,目录定义规则同<i>templateDir</i>
+	 * 
 	 * @var string
 	 */
 	public $compileDir;
 	/**
-	 * 编译脚本后缀
+	 * 模板编译文件生成后缀,默认值为'tpl'
+	 * 
 	 * @var string
 	 */
 	public $compileExt = 'tpl';
 	/**
-	 * 布局文件
+	 * 模板布局文件
+	 * 
 	 * @var string
 	 */
 	public $layout;
 	/**
 	 * 主题包目录
+	 * 
 	 * @var string
 	 */
 	public $theme;
-	
 	/**
-	 * 视图解析引擎
+	 * 视图解析引擎,通过组件配置改变该类型
+	 * 
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
 
-	/**
-	 * 视图渲染
-	 * @param boolean $display
+	/* (non-PHPdoc)
+	 * @see IWindView::render()
 	 */
 	public function render($display = false) {
-		if (!$this->templateName) {
-			return;
-		}
+		if (!$this->templateName) return;
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
 			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
-		} else
+		} else {
 			echo $viewResolver->windFetch();
+		}
 	}
 
 	/* (non-PHPdoc)
@@ -110,13 +143,16 @@ class WindView extends WindModule implements IWindView {
 	}
 
 	/**
-	 * 模板路径解析
-	 * 根据模板的逻辑名称，返回模板的绝对路径信息
-	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head
+	 * 返回模板绝对路径信息
 	 * 
-	 * @param string $templateName
-	 * @param string $templateExt
-	 * @return string | false
+	 * 根据模板的逻辑名称,返回模板的绝对路径信息,支持命名空间方式定义模板信息.<code>
+	 * $template='templateName'; //return $templateDir/templateName.$ext
+	 * $template='subTemplateDir.templateName'; //return $templateDir/subTemplateDir/templateName.$ext
+	 * $template='namespace:templateName'; //return namespace:templateName.$ext</code>
+	 * <note><b>注意:</b>$template为空则返回当前的模板的路径信息.模板文件后缀名可以通过修改配置进行修改.</note>
+	 * @param string $template 模板名称, 默认值为空 , 为空则返回当前模板的绝对地址
+	 * @param string $ext 模板后缀, 默认值为空, 为空则返回使用默认的后缀
+	 * @return string
 	 */
 	public function getViewTemplate($template = '', $ext = '') {
 		!$template && $template = $this->templateName;
@@ -126,20 +162,18 @@ class WindView extends WindModule implements IWindView {
 	}
 
 	/**
-	 * 模板编译路径解析
-	 * 根据模板的逻辑名称，返回模板的绝对路径信息
+	 * 返回模板的编译文件绝对路径地址
 	 * 
-	 * 【支持命名空间的方式】如果用户输入了命名空间的方式:APP:module.common.template.head
-	 * 如果含有命名空间的格式，则将该模板编译文件设置为"template_"前缀保存
-	 * 
-	 * @param string $templateName
-	 * @param string $templateExt
-	 * @return string | false
+	 * 根据模板的逻辑名称,返回模板的绝对路径信息,支持命名空间方式定义模板信息.<code>
+	 * $template='templateName'; //return $compileDir/templateName.$ext
+	 * $template='subTemplateDir.templateName'; //return $compileDir/subTemplateDir_templateName.$ext
+	 * $template='namespace:templateName'; //return $compileDir/__external_subDir_templateName.$ext</code>
+	 * <note><b>注意:</b>$template为空则返回当前的模板的路径信息.</note>
+	 * @param string $template 模板名称, 默认值为空, 为空则返回当前模板的编译文件
+	 * @return string
 	 */
 	public function getCompileFile($template = '') {
-		if (!$this->compileDir) {
-			return;
-		}
+		if (!$this->compileDir) return;
 		if ($this->compileDir == $this->templateDir) throw new WindViewException('[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
 		if (!$template)
 			$template = $this->templateName;

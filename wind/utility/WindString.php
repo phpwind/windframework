@@ -1,39 +1,38 @@
 <?php
 /**
- * @author Qian Su <aoxue.1988.su.qian@163.com> 2010-12-17
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license 
- */
-
-/**
  * 字符串格式化
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.utility
  */
 class WindString {
+
 	const UTF8 = 'utf8';
+
 	const GBK = 'gbk';
+
 	/**
 	 * 截取字符串
+	 * 
 	 * @param string $string 要截取的字符串编码
 	 * @param int $start     开始截取
 	 * @param int $length    截取的长度
-	 * @param string $charset 原妈编码 
-	 * @param boolean $dot    是否显示省略号
+	 * @param string $charset 原妈编码,默认为UTF8
+	 * @param boolean $dot    是否显示省略号,默认为false
 	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = self::UTF8, $dot = false) {
-		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr(
-			$string, $start, $length, $dot);
+		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr($string, $start, $length, $dot);
 	}
 
 	/**
 	 * 求取字符串长度
+	 * 
 	 * @param string $string  要计算的字符串编码
-	 * @param string $charset 原始编码
+	 * @param string $charset 原始编码,默认为UTF8
 	 * @return int
 	 */
 	public static function strlen($string, $charset = self::UTF8) {
@@ -49,8 +48,8 @@ class WindString {
 	/**
 	 * 将变量的值转换为字符串
 	 *
-	 * @param mixed $input 变量
-	 * @param string $indent 缩进
+	 * @param mixed $input   变量
+	 * @param string $indent 缩进,默认为''
 	 * @return string
 	 */
 	public static function varToString($input, $indent = '') {
@@ -60,8 +59,7 @@ class WindString {
 			case 'array':
 				$output = "array(\r\n";
 				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString(
-						$value, $indent . "\t");
+					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString($value, $indent . "\t");
 					$output .= ",\r\n";
 				}
 				$output .= $indent . ')';
@@ -78,6 +76,12 @@ class WindString {
 		return 'NULL';
 	}
 
+	/**
+	 * 将数据用json加密
+	 *
+	 * @param mixed $value 需要加密的数据
+	 * @return string 加密后的数据
+	 */
 	public static function jsonEncode($value) {
 		if (!function_exists('json_encode')) {
 			Wind::import('Wind:utility.json.WindEncoder');
@@ -86,6 +90,12 @@ class WindString {
 		return json_encode($value);
 	}
 
+	/**
+	 * 将json格式数据解密
+	 *
+	 * @param string $value 待解密的数据
+	 * @return mixed 解密后的数据
+	 */
 	public static function jsonDecode($value) {
 		if (!function_exists('json_decode')) {
 			Wind::import('Wind:utility.json.WindEncoder');
@@ -94,41 +104,13 @@ class WindString {
 		return json_decode($value);
 	}
 
-	public static function jsonSimpleEncode($var) {
-		switch (gettype($var)) {
-			case 'boolean':
-				return $var ? 'true' : 'false';
-			case 'NULL':
-				return 'null';
-			case 'integer':
-				return (int) $var;
-			case 'double':
-			case 'float':
-				return (float) $var;
-			case 'string':
-				return '"' . addslashes(
-					str_replace(array("\n", "\r", "\t"), '', addcslashes($var, '\\"'))) . '"';
-			case 'array':
-				if (count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
-					$properties = array();
-					foreach ($var as $name => $value) {
-						$properties[] = self::jsonSimpleEncode(strval($name)) . ':' . self::jsonSimpleEncode(
-							$value);
-					}
-					return '{' . join(',', $properties) . '}';
-				}
-				$elements = array_map(array('WindString', 'jsonSimpleEncode'), $var);
-				return '[' . join(',', $elements) . ']';
-		}
-		return false;
-	}
-
 	/**
 	 * 以utf8格式截取的字符串编码
+	 * 
 	 * @param string $string  要截取的字符串编码
 	 * @param int $start      开始截取
-	 * @param int $length     截取的长度
-	 * @param boolean $dot    是否显示省略号
+	 * @param int $length     截取的长度，默认为null，取字符串的全长
+	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
 	public static function utf8_substr($string, $start, $length = null, $dot = false) {
@@ -164,8 +146,9 @@ class WindString {
 
 	/**
 	 * 以utf8求取字符串长度
+	 * 
 	 * @param string $str     要计算的字符串编码
-	 * @return number
+	 * @return int
 	 */
 	public static function utf8_strlen($str) {
 		$i = $count = 0;
@@ -174,8 +157,7 @@ class WindString {
 			$chr = ord($str[$i]);
 			$count++;
 			$i++;
-			if ($i >= $len)
-				break;
+			if ($i >= $len) break;
 			if ($chr & 0x80) {
 				$chr <<= 1;
 				while ($chr & 0x80) {
@@ -187,11 +169,13 @@ class WindString {
 		return $count;
 	}
 
-	/* 以gbk格式截取的字符串编码
+	/**
+	 * 以gbk格式截取的字符串编码
+	 * 
 	 * @param string $string  要截取的字符串编码
 	 * @param int $start      开始截取
-	 * @param int $length     截取的长度
-	 * @param boolean $dot    是否显示省略号
+	 * @param int $length     截取的长度，默认为null，取字符串的全长
+	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
 	public static function gbk_substr($string, $start, $length = null, $dot = false) {
@@ -227,8 +211,9 @@ class WindString {
 
 	/**
 	 * 以gbk求取字符串长度
+	 * 
 	 * @param string $str     要计算的字符串编码
-	 * @return number
+	 * @return int
 	 */
 	public static function gbk_strlen($string) {
 		$len = strlen($string);

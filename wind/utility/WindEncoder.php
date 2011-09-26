@@ -56,7 +56,7 @@
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
  * @version $Id$
- * @package	system.web.helpers
+ * @package	wind.utility
  * @since 1.0
  */
 class WindEncoder {

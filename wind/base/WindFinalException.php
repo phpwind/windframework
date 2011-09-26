@@ -1,22 +1,22 @@
 <?php
 /**
- * 模板视图异常类
- *
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * 终极异常类型
+ * 
+ * 抛出该类型异常将不会被cache
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.base
  */
 class WindFinalException extends Exception {
 
 	/**
-	 * 异常构造函数
-	 * @param $message		     异常信息
-	 * @param $code			     异常代号
-	 * @param $innerException 内部异常
+	 * @param string $message 异常信息
 	 */
-	public function __construct($message = '', $code = 0) {
-		parent::__construct($message, $code);
+	public function __construct($message = '') {
+		$message || $message = 'system error~';
+		parent::__construct($message, 500);
 	}
 }
 

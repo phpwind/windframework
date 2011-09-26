@@ -1,18 +1,25 @@
 <?php
 Wind::import('WIND:upload.AbstractWindUpload');
 /**
- * @author xiaoxiao <xiaoxia.xuxx@aliyun.com>  2011-7-18
- * @link http://www.phpwind.com
- * @copyright Copyright &copy; 2003-2110 phpwind.com
- * @license
- * @package
+ * 表单文件上传
+ *
+ * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id: WindFormUpload.php 1532 2011-9-22下午03:13:32 xiaoxiao $
+ * @package wind.upload
  */
 class WindFormUpload extends AbstractWindUpload {
-	
+
+	/**
+	 * 初始化允许用户上传的类型
+	 *
+	 * @param array $allowType
+	 */
 	public function __construct($allowType = array()) {
 		$this->setAllowType($allowType);
 	}
-	
+
 	/*
 	 * (non-PHPdoc)
 	 * @see AbstractWindUpload::postUpload()
@@ -41,5 +48,4 @@ class WindFormUpload extends AbstractWindUpload {
 		}
 		return false;
 	}
-
 }

@@ -1,82 +1,119 @@
 <?php
+Wind::import('WIND:db.AbstractWindPdoAdapter');
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qiong Wu <papa0924@gmail.com>
+ * mysql类型数据库连接类
+ * 
+ * mysql类型数据库连接类,用于连接mysql数据库.该类继承了{@see AbstractWindPdoAdapter},是基于pdo的数据连接方式.
+ * 使用该数据库连接类型需要启动pdo支持.配置方式:<code>
+ * mysql:host=localhost;dbname=test
+ * //':'前面部分标明了链接类型为mysql.
+ * </code>
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-22
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.db.mysql
  */
-class WindMysqlPdoAdapter extends PDO {
+class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindPdoAdapter::setCharset()
+	 */
+	public function setCharset($charset) {
+		$charset && $this->query("set names " . $this->quote($charset) . ";");
+	}
 
 	/**
-	 * 创建表
-	 * @param $tableName
-	 * @param $values
+	 * 创建数据表
+	 * 
+	 * 添加数据表,支持三个参数'数据表明,字段定义,是否覆盖已存在表'.'$values'举例如下,当数据表名称未定义,或者当'fields'字段未定义,或者为空时抛出异常:
+	 * <code>
+	 * $values = array(
+	 * 'fields' => "`id` smallint(5) unsigned NOT NULL auto_increment,
+	 * `name` varchar(30) NOT NULL default '',PRIMARY KEY  (`id`)",
+	 * 'charset' => "utf-8",
+	 * 'autoIncrement' => 'id',
+	 * 'engine' => 'InnerDB');
+	 * </code>
+	 * <note><b>注意:</b>最后一个参数'$replace',有两个取值'true,false',当值为false时表示如果数据表存在不创建新表,
+	 * 值为true时则删除已经存在的数据表并创建新表</note>
+	 * 
+	 * @param string $tableName 数据表名称
+	 * @param string|array $values 数据表字段信息
+	 * @param boolean $replace 如果表已经存在是否覆盖,接收两个值true|false
+	 * @see AbstractWindPdoAdapter::createTable()
+	 * @return boolean
+	 * @throws WindDbException
 	 */
-	public function createTable($tableName, $values, $engine, $charset, $autoIncrement) {
-		$_sql = "CREATE TABLE IF NOT EXISTS $tableName ($values)ENGINE=";
-		$_sql .= $engine ? $engine : 'MyISAM';
-		$_sql .= $charset ? " DEFAULT CHARSET=$charset" : '';
-		$_sql .= $autoIncrement ? " AUTO_INCREMENT=$autoIncrement" : '';
+	public function createTable($tableName, $values, $replace = false) {
+		if (empty($values['fields']) || !$tableName) throw new WindDbException(
+			'[db.mysql.WindMysqlPdoAdapter.createTable] create table file. ');
+		
+		if ($replace) $_sql = 'DROP TABLE IF EXISTS ' . $tableName . ';';
+		$_sql .= 'CREATE TABLE IF NOT EXISTS ' . $tableName;
+		$_sql .= "(" . $values['fields'] . ")ENGINE=" . (isset($values['engine']) ? $values['engine'] : 'MyISAM');
+		$_sql .= isset($values['charset']) ? " DEFAULT CHARSET=" . $values['charset'] : '';
+		$_sql .= isset($values['autoIncrement']) ? " AUTO_INCREMENT=" . $values['autoIncrement'] : '';
 		return $this->query($_sql);
 	}
 
 	/**
-	 * 设置链接使用字符集
-	 * @param string $charset
+	 * 过滤数组并将数组变量转换为sql字符串
+	 * 
+	 * 对数组中的值进行安全过滤,并转化为mysql支持的values的格式,如下例子:<code>
+	 * $variable = array('a','b','c');
+	 * filterArray($variable);
+	 * //return string: ('a','b','c')
+	 * $variable = array(array('a1','b1','c1'),array('a2','b2','c2'));
+	 * filterArray($variable);
+	 * //return string: ('a1','b1','c1'),('a2','b2','c2')
+	 * </code>
+	 * @param array $variable 
+	 * @return string
+	 * @see AbstractWindPdoAdapter::filterArray()
 	 */
-	public function setCharset($charset) {
-		if (!$charset) $charset = 'gbk';
-		$this->query("set names " . $this->quote($charset) . ";");
-	}
-
-	/**
-	 * 过滤数组变量，将数组变量转换为字符串，并用逗号分隔每个数组元素支持多维数组
-	 * example：
-	 * array('a','b','c') => ('a','b','c')
-	 * array(array('a1','b1','c1'),array('a2','b2','c2')) 
-	 * => ('a1','b1','c1'),('a2','b2','c2')
-	 * @param array $variable
-	 * @param string $result
-	 */
-	public function filterArray($variable, $result = '') {
-		if (empty($variable) || !is_array($variable)) return;
-		$_result = '';
-		foreach ($variable as $key => $value) {
+	public function quoteArray($variable) {
+		if (empty($variable) || !is_array($variable)) return '';
+		$_tmp1 = $tmp2 = array();
+		foreach ($variable as $value) {
 			if (is_array($value))
-				$result = $this->filterArray($value, $result);
+				$tmp2[] = $this->quoteArray($value);
 			else {
-				$_result .= $this->quote($value) . ',';
+				$_tmp1[] = $this->quote($value);
 			}
 		}
-		if ($_result) {
-			$result .= $result ? ',(' . trim($_result, ',') . ')' : '(' . trim($_result, ',') . ')';
+		$_returns = '';
+		if ($_tmp1) $_returns = '(' . implode(',', $_tmp1) . ')';
+		if ($tmp2) {
+			$_returns && $tmp2[] = $_returns;
+			$_returns = implode(',', $tmp2);
 		}
-		return $result;
+		return $_returns;
 	}
 
 	/**
 	 * 组装单条 key=value 形式的SQL查询语句值 insert/update
-	 * @param $array
-	 * @param $strip
+	 * 
+	 * @param array $array
 	 * @return string
+	 * @see AbstractWindPdoAdapter
 	 */
 	public function sqlSingle($array) {
 		if (!is_array($array)) return '';
-		$str = '';
+		$str = array();
 		foreach ($array as $key => $val) {
-			$str .= ($str ? ', ' : ' ') . $this->fieldMeta($key) . '=' . $this->quote($val);
+			$str[] = $this->fieldMeta($key) . '=' . $this->quote($val);
 		}
-		return $str;
+		return $str ? implode(',', $str) : '';
 	}
 
-	/**
-	 * 过滤SQL元数据，数据库对象(如表名字，字段等)
-	 * @param $data 元数据
-	 * @return string 经过转义的元数据字符串
+	/* (non-PHPdoc)
+	 * @see AbstractWindPdoAdapter::fieldMeta()
 	 */
-	private function fieldMeta($data) {
+	public function fieldMeta($data) {
 		$data = str_replace(array('`', ' '), '', $data);
 		return ' `' . $data . '` ';
 	}
+
 }
 ?>

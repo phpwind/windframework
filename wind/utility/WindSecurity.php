@@ -1,16 +1,19 @@
 <?php
 /**
  * 字符、路径过滤等安全处理
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ *
+ * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.utility
  */
 class WindSecurity {
 
 	/**
-	 * Convert special characters to HTML entities
-	 * @param string $str
+	 * 转义输出字符串
+	 * 
+	 * @param string $str 被转义的字符串
 	 * @return string
 	 */
 	public static function escapeHTML($str) {
@@ -26,10 +29,10 @@ class WindSecurity {
 	}
 
 	/**
-	 * 路径转换
+	 * 路径检查转义
 	 * 
-	 * @param $fileName
-	 * @param $ifCheck
+	 * @param string $fileName 被检查的路径
+	 * @param boolean $ifCheck 是否需要检查文件名，默认为false
 	 * @return string
 	 */
 	public static function escapePath($filePath, $ifCheck = false) {
@@ -42,5 +45,4 @@ class WindSecurity {
 		}
 		throw new WindException('[utility.WindSecurity.escapePath] file path is illegal');
 	}
-
 }

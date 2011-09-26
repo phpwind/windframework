@@ -1,24 +1,30 @@
 <?php
 /**
  * 缓存依赖基类
- * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ *
+ * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.cache
  */
 interface IWindCacheDependency {
 
 	/**
-	 * 初始化设置，设置依赖
+	 * 初始化依赖设置
+	 * 
+	 * @param int $expires  缓存的过期时间
 	 */
-	public abstract function injectDependent($data);
+	public function injectDependent($expires);
 
 	/**
 	 * 检查是否有变更
 	 * 
-	 * @return boolean
+	 * @param AbstractWindCache $cache 缓存对象
+	 * @param string $key 
+	 * @param int $expires
+	 * @return boolean 如果有变化则返回true,如果没有变化返回false
 	 */
-	public abstract function hasChanged($data);
+	public function hasChanged($cache, $key, $expires);
 
 }

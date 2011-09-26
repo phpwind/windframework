@@ -3,31 +3,40 @@ Wind::import('WIND:dao.exception.WindDaoException');
 /**
  * Dao工厂
  * 
- * 职责：
- * 创建DAO实例
- * 数据缓存部署实现
- * 创建数据访问连接对象
+ * Dao工厂提供给使用者获取DAO实例，其职责：
+ * <ul>
+ * <li>创建DAO实例</li>
+ * <li>创建数据访问连接对象</li>
+ * </ul>
+ * <note><b>注意: </b>数据库链接会访问名为<i>db</i>的数据库组件配置</note>
  *
  * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.dao
  */
 class WindDaoFactory extends WindModule {
 	/**
 	 * dao路径信息
+	 * 
 	 * @var string
 	 */
 	protected $daoResource = '';
 
 	/**
 	 * 返回Dao类实例
-	 * $className接受两种形式呃参数如下
-	 * 'namespace:path'
-	 * 'className'
 	 * 
-	 * @param string $className
+	 * $className接受两种形式呃参数如下
+	 * <ul>
+	 * <li>'namespace:path'</li>
+	 * <li>'className'</li>
+	 * </ul>
+	 * 
+	 * @param string $className Dao名字
 	 * @return WindDao
+	 * @throws WindDaoException 如果获取实例错误抛出异常
 	 */
 	public function getDao($className) {
 		try {
@@ -46,7 +55,8 @@ class WindDaoFactory extends WindModule {
 
 	/**
 	 * 获得dao存放的目录
-	 * @return string $daoResource
+	 * 
+	 * @return string $daoResource Dao目录
 	 */
 	public function getDaoResource() {
 		return $this->daoResource;
@@ -54,7 +64,10 @@ class WindDaoFactory extends WindModule {
 
 	/**
 	 * 设置dao的获取目录
-	 * @param string $daoResource
+	 * 
+	 * 以框架的命名空间方式设置比如：WIND:dao来设置路径信息,WIND的位置为注册过的命名空间名字.
+	 * 
+	 * @param string $daoResource Dao目录
 	 */
 	public function setDaoResource($daoResource) {
 		$this->daoResource = $daoResource;

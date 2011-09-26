@@ -1,22 +1,54 @@
 <?php
 Wind::import("WIND:ftp.AbstractWindFtp");
-/**
- * 
- * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
- * author xiaoxiao <x_824sina.com>
- * version 2011-7-29  xiaoxiao
- */
 @set_time_limit(1000);
+/**
+ * 采用sockey方式实现ftp操作
+ * 
+ * 使用方法和普通类库一样:
+ * <code>
+ * Wind::import('WIND:ftp.WindSocketFtp');
+ * $ftp = new WindSocketFtp(array('server' => '192.168.1.10', 'port' => '21', ‘user' => 'test', 'pwd' => '123456'));
+ * print_r($ftp->fileList());
+ * </code>
+ *
+ * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id: WindSocketFtp.php 1532 2011-9-20下午03:21:10 xiaoxiao $
+ * @package wind.ftp
+ */
 class WindSocketFtp extends AbstractWindFtp {
+	/**
+	 * 临时链接对象保存
+	 *
+	 * @var object
+	 */
 	private $tmpConnection;
 	
+	/**
+	 * 构造函数
+	 * 
+	 * 通过传入config构造链接对象
+	 * 
+	 * @param array $config ftp配置文件
+	 */
 	public function __construct($config = array()) {
 		$this->getConnection($config);
 	}
 	
 	/**
 	 * 获得ftp链接
-	 * @param array $config
+	 * 
+	 * @param array $config ftp的配置信息：
+	 * <ul>
+	 * <li>server: ftp主机地址</li>
+	 * <li>port: ftp链接端口号，默认为21</li>
+	 * <li>user: ftp链接用户名</li>
+	 * <li>pwd: ftp链接用户密码</li>
+	 * <li>dir: ftp链接后切换的目录,默认为空</li>
+	 * <li>timeout: ftp链接超时时间,默认为10秒</li>
+	 * </ul>
+	 * @return boolean 
 	 */
 	private function getConnection($config) {
 		$this->initConfig($config);
@@ -39,8 +71,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return true;
 	}
 
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::pwd()
 	 */
 	protected function pwd() {
@@ -51,8 +82,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return $matchs[1] . ((substr($matchs[1], -1) == '/') ? '' : '/');
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::upload()
 	 */
 	public function upload($localfile, $remotefile, $mode) {
@@ -92,8 +122,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return $this->size($remotefile);
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::download()
 	 */
 	public function download($localfile, $remotefile = '', $mode = 'I') {
@@ -125,8 +154,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return true;
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::size()
 	 */
 	public function size($file) {
@@ -137,16 +165,14 @@ class WindSocketFtp extends AbstractWindFtp {
 		return preg_replace("/^[0-9]{3} ([0-9]+)\r\n/", "\\1", $size_port);
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::delete()
 	 */
 	public function delete($file) {
 		return $this->sendcmd('DELE', $this->rootPath . WindSecurity::escapeDir($file));
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::rename()
 	 */
 	public function rename($oldname, $newname) {
@@ -158,8 +184,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return $this->sendcmd('RNTO', $newname);
 	}
 
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::mkdir()
 	 */
 	public function mkdir($dir) {
@@ -168,8 +193,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return $this->sendcmd('SITE CHMOD', "$base777 $dir");
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::changeDir()
 	 */
 	public function changeDir($dir) {
@@ -183,8 +207,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return true;
 	}
 
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::fileList()
 	 */
 	public function fileList($dir = '') {
@@ -199,8 +222,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		return $list;
 	}
 	
-	/*
-	 * (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::close()
 	 */
 	public function close() {
@@ -210,11 +232,12 @@ class WindSocketFtp extends AbstractWindFtp {
 	}
 
 	/**
-	 * 发送命令
-	 * @param string $cmd
-	 * @param string $args
-	 * @param boolean $check
-	 * @return boolean
+	 * 发送ftp处理命令
+	 * 
+	 * @param string $cmd 待发送的命令
+	 * @param string $args 命令参数
+	 * @param boolean $check 是否需要检查返回状态,默认为true需要检查
+	 * @return boolean 如果检查命令发送失败则返回false,否则返回true
 	 */
 	private function sendcmd($cmd, $args = '', $check = true) {
 		!empty($args) && $cmd .= " $args";
@@ -225,8 +248,9 @@ class WindSocketFtp extends AbstractWindFtp {
 	
 	/**
 	 * 检查命令状态
-	 * @param boolean $return
-	 * @return boolean
+	 * 
+	 * @param boolean $return 是否需要返回命令状态信息,默认为false,不许要返回
+	 * @return boolean|string 检查命令已经发送成功，则返回true,失败则返回false,如果设置了参数$return=true并且命令状态正确的情况下将会返回状态信息
 	 */
 	private function checkcmd($return = false) {
 		$resp = $rcmd = '';
@@ -241,8 +265,9 @@ class WindSocketFtp extends AbstractWindFtp {
 	}
 
 	/**
-	 * 链接临时句柄
-	 * @return boolean
+	 * 打开临时链接句柄
+	 * 
+	 * @return boolean 如果打开成功返回true
 	 */
 	private function openTmpConnection() {
 		$this->sendcmd('PASV', '', false);
@@ -264,7 +289,8 @@ class WindSocketFtp extends AbstractWindFtp {
 	
 	/**
 	 * 关闭临时链接对象
-	 * @return boolean
+	 * 
+	 * @return boolean 关闭成功返回true,失败返回false
 	 */
 	private function closeTmpConnection() {
 		return fclose($this->tmpConnection);

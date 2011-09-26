@@ -7,8 +7,16 @@
 	<template-ext>htm</template-ext>
 	<!-- 模板编译文件存放路径 -->
 	<compile-dir>data.template</compile-dir>
-	<!-- 是否开启缓存 -->
-	<is-cache>false</is-cache>
+	<!-- 是否编译：如果为0则不编译模板，直接读取已经编译好的模板编译文件，如果为1则编译模板 -->
+	<is-compile>0</is-compile>
+	<!-- 编译模板的后缀配置 -->
+	<compile-ext>tpl</compile-ext>
+	<!-- 布局文件配置 -->
+	<layout></layout>
+	<!-- 主题包位置 -->
+	<theme></theme>
+	<!-- 是否开启对输出模板变量进行过滤 -->
+	<htmlspecialchars>true</htmlspecialchars>
 </WIND>
 
 

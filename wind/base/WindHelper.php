@@ -1,24 +1,32 @@
 <?php
 /**
- * wind core 基础帮助类
- * 不建议被外部调用
+ * 基础帮助类,提供框架错误处理基础操作
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
  * @author Qiong Wu <papa0924@gmail.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.base
  */
 class WindHelper {
 	const INTERNAL_LOCATION = "~Internal Location~";
+	/**
+	 * 默认错误视图位置
+	 * 
+	 * 默认错误视图位置,可以通过应用配置进行重定义<code>
+	 * <errorpage>WIND:web.view</errorpage></code>
+	 * @var string
+	 */
 	protected static $errorDir = 'WIND:web.view';
-	protected static $errorPage = 'error.htm';
 
 	/**
 	 * 错误处理句柄
+	 * 
 	 * @param string $errno
 	 * @param string $errstr
 	 * @param string $errfile
 	 * @param string $errline
+	 * @return void
 	 */
 	public static function errorHandle($errno, $errstr, $errfile, $errline) {
 		if ($errno & error_reporting()) {
@@ -32,7 +40,9 @@ class WindHelper {
 
 	/**
 	 * 异常处理句柄
+	 * 
 	 * @param Exception $exception
+	 * @return void
 	 */
 	public static function exceptionHandle($exception) {
 		restore_error_handler();
@@ -48,6 +58,8 @@ class WindHelper {
 	}
 
 	/**
+	 * 错误信息处理方法
+	 * 
 	 * @param string $message
 	 * @param string $file
 	 * @param string $line
@@ -66,7 +78,6 @@ class WindHelper {
 		$msg = '';
 		if (WIND_DEBUG) {
 			$_errorPage = 'error.htm';
-			/* format error trace */
 			$count = count($trace);
 			$padLen = strlen($count);
 			foreach ($trace as $key => $call) {
@@ -77,7 +88,6 @@ class WindHelper {
 				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine($call);
 				$trace[$key] = $traceLine;
 			}
-			/* format error code */
 			$fileLines = array();
 			if (is_file($file)) {
 				$currentLine = $line - 1;
@@ -93,21 +103,19 @@ class WindHelper {
 			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
 		} else
 			$_errorPage = '404.htm';
-		
 		if ($status >= 400 && $status <= 505) {
 			$_statusMsg = ucwords(Wind::getApp()->getResponse()->codeMap($status));
 			$topic = "$status - " . $_statusMsg . "\n";
 		} else
 			$topic = "Wind Framework - Error Caught";
-		
-		$msg = "$topic\n$errmessage\n" . $msg . "\n\n" . self::errorInfo();
+		$msg = "$topic\n$errmessage\n" . $msg;
 		if (WIND_DEBUG & 2) {
 			Wind::getApp()->getComponent('windLogger')->error($msg, 'wind.error', 'core.error', true);
 		}
 		if ($_errhtml) {
 			ob_start();
 			$errDir = Wind::getApp()->getConfig('errorpage');
-			!$errDir && $errDir = self::$errorDir;
+			$errDir || $errDir = self::$errorDir;
 			if (isset($_statusMsg)) {
 				header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
 				header('Status: ' . $status . ' ' . $_statusMsg);
@@ -153,7 +161,9 @@ class WindHelper {
 	}
 
 	/**
-	 * @param int $errorNumber
+	 * 错误代码和错误信息映射方法,接受一个错误代码返回相对应错误代码的错误名称
+	 * 
+	 * @param int $errorNumber 错误代码 必填
 	 * @return string
 	 */
 	protected static function getErrorName($errorNumber) {
@@ -174,12 +184,5 @@ class WindHelper {
 			E_ALL => "E_ALL");
 		return isset($errorMap[$errorNumber]) ? $errorMap[$errorNumber] : 'E_UNKNOWN';
 	}
-
-	public static function errorInfo() {
-		$info = "The server encountered an internal error and failed to process your request. Please try again later. If this error is temporary, reloading the page might resolve the problem.\nIf you are able to contact the administrator report this error message.";
-		$info .= "(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")";
-		return $info;
-	}
-
 }
 ?>

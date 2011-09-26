@@ -1,9 +1,14 @@
 <?php
 /**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qiong Wu <papa0924@gmail.com>
+ * 路由协议
+ * 
+ * 职责: 1. url匹配并解析url生成参数列表; 2. 根据解析规则反向构建url
+ * <note><b>注意:</b>路由协议类是继承了拦截过滤器的接口实现,实现多路由协议支持</note>
+ * @author Qiong Wu <papa0924@gmail.com> 2011-9-23
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
+ * @package wind.router.route
  */
 abstract class AbstractWindRoute extends WindHandlerInterceptor {
 	protected $pattern = '';
@@ -12,6 +17,7 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 
 	/**
 	 * 根据匹配的路由规则，构建Url
+	 * 
 	 * @param AbstractWindRouter $router
 	 * @param string $action
 	 * @param array $args
@@ -21,6 +27,7 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 
 	/**
 	 * 路由规则匹配方法，返回匹配到的参数列表
+	 * 
 	 * @return array
 	 */
 	abstract public function match();
@@ -42,10 +49,9 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->pattern = $this->getConfig('pattern', '', $this->pattern); //trim($this->getConfig('regex'), '/');
-		$this->reverse = $this->getConfig('reverse', '', $this->reverse); //trim($this->getConfig('reverse'), '/');
+		$this->pattern = $this->getConfig('pattern', '', $this->pattern);
+		$this->reverse = $this->getConfig('reverse', '', $this->reverse);
 		$this->params = $this->getConfig('params', '', $this->params);
 	}
 }
-
 ?>

@@ -1,27 +1,27 @@
 <?php
-/**
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
- * tags
- */
 Wind::import('WIND:mail.protocol.WindSocket');
 /**
  * pop3协议
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package 
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind.mail.protocol
  */
 class WindPop3 {
+
 	const CRLF = "\r\n";
+
 	/**
 	 * @var WindSocket pop3邮件服务器
 	 */
 	protected $pop3 = null;
+
 	protected $seperate = ' ';
+
 	protected $request = array();
+
 	protected $resonse = array();
 
 	public function __construct($host, $port) {
@@ -227,8 +227,7 @@ class WindPop3 {
 				$response = $ok;
 			}
 		}
-		if (empty($response))
-			throw new WindException('No response');
+		if (empty($response)) throw new WindException('No response');
 		return $response;
 	}
 
