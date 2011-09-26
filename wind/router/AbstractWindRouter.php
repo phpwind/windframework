@@ -64,16 +64,13 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @return void
 	 */
 	protected function setParams($params) {
-		foreach ($params as $key => $value) {
-			$this->getRequest()->setAttribute($value, $key);
-			if (!$value) continue;
-			if ($this->actionKey === $key)
-				$this->setAction($value);
-			elseif ($this->controllerKey === $key)
-				$this->setController($value);
-			elseif ($this->moduleKey === $key)
-				$this->setModule($value);
-		}
+		$this->getRequest()->setAttribute($params);
+		$action = isset($params[$this->actionKey]) ? $params[$this->actionKey] : $this->getRequest()->getRequest($this->actionKey);
+		$controller = isset($params[$this->controllerKey]) ? $params[$this->controllerKey] : $this->getRequest()->getRequest($this->controllerKey);
+		$module = isset($params[$this->moduleKey]) ? $params[$this->moduleKey] : $this->getRequest()->getRequest($this->moduleKey);
+		$action && $this->setAction($action);
+		$controller && $this->setController($controller);
+		$module && $this->setModule($module);
 	}
 
 	/**
