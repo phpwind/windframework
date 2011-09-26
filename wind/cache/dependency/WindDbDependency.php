@@ -38,8 +38,7 @@ class WindDbDependency implements IWindCacheDependency {
 		if ($this->timeOut <= time()) {
 			$lock = $key . '_lock_';
 	        if ($cache->add($lock, 3 * 60 * 1000) == true) {
-	        	//TODO 不要将数据组件的获取方式直接耦合进方法体,建议改成callback的方式
-	            $db = Wind::getApp()->getComponent('db');
+	            $db = call_user_func_array(array(Wind::getApp(), 'getComponent'), array('db'));
 	            $data = $db->query($this->sql)->fetchAll();
 	            $cache->set($key, $data, $expires, $this);
 	            $cache->delete($lock);
