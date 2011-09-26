@@ -76,14 +76,14 @@ class WindLayout extends WindModule {
 					WindViewException::VIEW_NOT_EXIST);
 			}
 			reset($this->segments);
-			$__content = preg_replace_callback(
-				'/<\?(php)?([\s\n])*((\$this\->content)|(\$this\->segment))+\(((\'\w+\')|(\w+)|(\"\w+\"))*\)[;\s\n]*\?>/i', 
+			$__content = preg_replace_callback('/(\$this\->((content)|(segment))(\([^()]*\)[\s]*;)){1}/i', 
 				array($this, '__matchs'), $_output);
 		} else {
 			$this->content();
 			$__content = array_pop($this->segments);
 		}
 		ob_get_clean();
+		$__content = preg_replace('/<\?php(\s|\n)*?\?>/i', "", $__content);
 		$this->script && $__content = preg_replace('/(<\/body>)/i', $this->script . '\\1', $__content);
 		$this->css && $__content = preg_replace('/<\/head>/i', $this->css . '</head>', $__content);
 		return $__content;
@@ -95,7 +95,7 @@ class WindLayout extends WindModule {
 	private function __matchs($matchs) {
 		$_tmp = current($this->segments);
 		next($this->segments);
-		return $_tmp[1];
+		return ' ?>' . $_tmp . '<?php ';
 	}
 
 	/**
@@ -106,7 +106,7 @@ class WindLayout extends WindModule {
 	 */
 	private function segment($template) {
 		if ($this->viewer === null || !$template) return '';
-		$this->segments[$template] = $this->viewer->compile($template, '', true);
+		list(, $this->segments[$template]) = $this->viewer->compile($template, '', true);
 		echo "<pw-wind key='" . $template . "' />";
 	}
 
