@@ -132,7 +132,10 @@ ul li:hover {
 <div class="main">
 <h2>404 Not Found</h2>
 <div><?php echo $errmessage; ?></div>
-<div class="tips"><?php echo self::errorInfo(); ?></div>
+<div class="tips"><?php echo "The server encountered an internal error and failed to process your request. 
+Please try again later. If this error is temporary, reloading the page might resolve the problem.
+\nIf you are able to contact the administrator report this error message.
+(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")" ; ?></div>
 </div>
 </div>
 </body>
