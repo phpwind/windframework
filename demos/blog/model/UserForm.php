@@ -14,28 +14,28 @@ class UserForm extends WindEnableValidateModule {
 	private $password;
 
 	/**
-	 * @return 
+	 * @return string 返回用户名
 	 */
 	public function getUsername() {
 		return $this->username;
 	}
 
 	/**
-	 * @return field_type
+	 * @return string 返回用户密码
 	 */
 	public function getPassword() {
 		return $this->password;
 	}
 
 	/**
-	 * @param field_type $username
+	 * @param string $username
 	 */
 	public function setUsername($username) {
 		$this->username = $username;
 	}
 
 	/**
-	 * @param field_type $password
+	 * @param string $password
 	 */
 	public function setPassword($password) {
 		$this->password = $password ? md5($password) : $password;
