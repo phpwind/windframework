@@ -92,7 +92,9 @@ class WindSession extends WindModule {
 	 * @param string $key
 	 */
 	public function delete($key) {
-		return session_unregister($key);
+		$_SESSION[$key] = null;
+		unset($_SESSION[$key]);
+		return true;
 	}
 
 	/**
@@ -111,7 +113,7 @@ class WindSession extends WindModule {
 	 * @return boolean 如果已经被注册则返回true,否则返回false
 	 */
 	public function isRegistered($key) {
-		return session_is_registered($key);
+		return isset($_SESSION[$key]);
 	}
 
 	/**
