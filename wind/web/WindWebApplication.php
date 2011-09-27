@@ -49,7 +49,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$this->request = new WindHttpRequest();
 		$this->response = $this->request->getResponse(@$config['charset']);
 		$this->windFactory = $factory;
-		$this->setConfig($config);
+		if ($config) {
+			$this->setConfig($config);
+			$this->checkConfig();
+		}
+		$this->setModules('default', $this->defaultModule, true);
 	}
 
 	/* (non-PHPdoc)
@@ -68,7 +72,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->started = true;
 			set_error_handler('WindHelper::errorHandle');
 			set_exception_handler('WindHelper::exceptionHandle');
-			$this->checkConfig();
 			$this->_getHandlerAdapter()->route();
 			$__state = true;
 		}
@@ -126,10 +129,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * 检查环境中配置信息的完整性
 	 */
 	private function checkConfig() {
-		if ($default = $this->getModules('default')) {
-			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
-		}
-		$this->setModules('default', $this->defaultModule, true);
+		if ($default = $this->getModules('default')) $this->defaultModule = WindUtility::mergeArray(
+			$this->defaultModule, $default);
 		$_modules = $this->getConfig('modules', '', array());
 		foreach ($_modules as $key => $value) {
 			if ($key == 'default') continue;
