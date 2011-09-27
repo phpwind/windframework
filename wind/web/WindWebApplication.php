@@ -107,7 +107,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			}
-			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig('filters')) {
+			if (isset($__state) && $__state === true && $filters = $this->getConfig('filters')) {
 				$this->resolveActionMapping($filters, $handler);
 				$this->_proxy->runProcess($handler);
 			} else
@@ -250,6 +250,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return void
 	 */
 	protected function resolveActionMapping($filters, $handler) {
+		$this->_proxy || $this->_proxy = new WindClassProxy($this);
 		/* @var $cache AbstractWindCache */
 		$_filters = array();
 		if ($cache = $this->getComponent('windCache')) {
