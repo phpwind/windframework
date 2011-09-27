@@ -11,6 +11,7 @@ Wind::import('WIND:http.response.WindHttpResponse');
  * @package wind.web
  */
 class WindWebApplication extends WindModule implements IWindApplication {
+	private static $checked = false;
 	/**
 	 * @var WindHttpRequest
 	 */
@@ -68,25 +69,18 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->started = true;
 			set_error_handler('WindHelper::errorHandle');
 			set_exception_handler('WindHelper::exceptionHandle');
-			if ($default = $this->getModules('default')) {
-				$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
-			}
-			$this->setModules('default', $this->defaultModule, true);
+			$this->checkConfig();
 			$this->_getHandlerAdapter()->route();
 			$__state = true;
 		}
 		try {
-			if (!$this->handlerAdapter->getModule()) {
-				$this->handlerAdapter->setModule('default');
-			}
+			if (!$this->handlerAdapter->getModule()) $this->handlerAdapter->setModule('default');
 			$this->checkProcess();
 			if (!($module = $this->getModules())) {
 				throw new WindActionException(
 					'[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			}
-			$module = WindUtility::mergeArray($this->getModules('default'), $module);
-			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
@@ -127,6 +121,23 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			Wind::resetApp();
 			$this->started = false;
 		}
+	}
+
+	/**
+	 * 检查环境中配置信息的完整性
+	 */
+	private function checkConfig() {
+		if (self::$checked) return;
+		if ($default = $this->getModules('default')) {
+			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
+		}
+		$this->setModules('default', $this->defaultModule, true);
+		$_modules = $this->getConfig('modules', '', array());
+		foreach ($_modules as $key => $value) {
+			$value = WindUtility::mergeArray($this->getModules('default'), $value);
+			$this->setModules($key, $value, true);
+		}
+		self::$checked = true;
 	}
 
 	/**
