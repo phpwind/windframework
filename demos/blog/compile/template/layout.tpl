@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="main">
-			<?php $this->content()?>
+			<?php $this->content();?>
 		</div>
 <div id="footer">
 			<div class="footer">
