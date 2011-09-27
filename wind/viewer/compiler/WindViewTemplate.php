@@ -121,7 +121,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		$_tags['expression'] = $this->createTag('expression', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/({@|{\$[\w$]{1})[^}{@=\n]*}/i');
 		$_tags['echo'] = $this->createTag('echo', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
 		/* 块编译标签，嵌套变量处理 */
-		$_tags['script'] = $this->createTag('script', 'WIND:viewer.compiler.WindTemplateCompilerScript', '/(<!--\[[\w\s]*\]>[\n\s]*)*<(script)[^<>\n]*(\/>|>(.|\n)*<\/\2>)([\n\s]*<!\[[\w\s]*\]-->)*/Ui');
+		$_tags['script1'] = $this->createTag('script1', 'WIND:viewer.compiler.WindTemplateCompilerScript', '/<!--\[[\w\s]*\]>(.|\n)*<!\[[\w\s]*\]-->/Ui');
+		$_tags['script'] = $this->createTag('script', 'WIND:viewer.compiler.WindTemplateCompilerScript', '/<(script)[^<>\n]*(\/>|>(.|\n)*<\/\1>)/Ui');
 		//$_tags['link'] = $this->createTag('link', 'WIND:viewer.compiler.WindTemplateCompilerCss');
 		//$_tags['style'] = $this->createTag('style', 'WIND:viewer.compiler.WindTemplateCompilerCss');
 		return $_tags;
