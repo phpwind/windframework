@@ -11,7 +11,6 @@ Wind::import('WIND:http.response.WindHttpResponse');
  * @package wind.web
  */
 class WindWebApplication extends WindModule implements IWindApplication {
-	private static $checked = false;
 	/**
 	 * @var WindHttpRequest
 	 */
@@ -127,17 +126,16 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * 检查环境中配置信息的完整性
 	 */
 	private function checkConfig() {
-		if (self::$checked) return;
 		if ($default = $this->getModules('default')) {
 			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
 		}
 		$this->setModules('default', $this->defaultModule, true);
 		$_modules = $this->getConfig('modules', '', array());
 		foreach ($_modules as $key => $value) {
-			$value = WindUtility::mergeArray($this->getModules('default'), $value);
+			if ($key == 'default') continue;
+			$value = WindUtility::mergeArray($this->defaultModule, $value);
 			$this->setModules($key, $value, true);
 		}
-		self::$checked = true;
 	}
 
 	/**
