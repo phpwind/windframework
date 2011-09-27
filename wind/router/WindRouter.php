@@ -40,12 +40,9 @@ class WindRouter extends AbstractWindRouter {
 	 * @see IWindRouter::route()
 	 */
 	public function route() {
-		if ($this->hasRoute) {
-			$this->setCallBack(array($this, 'defaultRoute'));
-			$params = $this->getHandler()->handle();
-		} else
-			$params = $this->defaultRoute();
-		$params && $this->setParams($params);
+		$this->setCallBack(array($this, 'defaultRoute'));
+		$params = $this->getHandler()->handle();
+		$this->setParams($params);
 	}
 
 	/* (non-PHPdoc)
@@ -73,15 +70,8 @@ class WindRouter extends AbstractWindRouter {
 	 * @return array
 	 */
 	public function defaultRoute() {
-		$action = $this->getRequest()->getRequest($this->actionKey);
-		$controller = $this->getRequest()->getRequest($this->controllerKey);
-		$module = $this->getRequest()->getRequest($this->moduleKey);
-		$action && $this->setAction($action);
-		$controller && $this->setController($controller);
-		$module && $this->setModule($module);
-		return;
-		/*$_pathInfo = $this->getRequest()->getPathInfo();
-		return $_pathInfo ? WindUrlHelper::urlToArgs($_pathInfo) : array();*/
+		$_pathInfo = $this->getRequest()->getPathInfo();
+		return $_pathInfo ? WindUrlHelper::urlToArgs($_pathInfo) : array();
 	}
 }
 
