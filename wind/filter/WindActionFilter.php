@@ -75,7 +75,7 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 		$this->errorMessage = $errorMessage;
 		$this->router = $router;
 		foreach ($args as $key => $value)
-			property_exists(get_class($this), $key) && $this->$key = $value;
+			property_exists($this, $key) && $this->$key = $value;
 	}
 
 	/**
