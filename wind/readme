@@ -1,8 +1,30 @@
-版本说明：
-wind_0.3.0.v1882_20110315_b  #默认配置为 php
-wind_0.3.0.v1882_20110315	#默认配置为xml
+当前 版本说明：
+wind_0.8.0
+release date: 2011.09.29
+last version: 
+description:
+8.0这个版本集中的优化了框架的核心机制,调整了框架的体系架构,使其性能效率上有了非常明显的改进,扩展能力上也更出色.
+
+历史版本:
+wind_0.3.0.v1882_20110315_b
+wind_0.3.0.v1882_20110315
 wind_0.1.0.v849_20101227
 
-Feature list： sfsfsdfs
+Feature list:
+1. 去掉默认模板的默认设置.
+2. 增加log立即flush支持.
+3. 增加windcache组件,基于框架cache组件机制.实现cache策略的无缝切换.
+4. 安全,基于模板体系的输出安全过滤.
+5. 多路由协议支持,UrlRewrite支持.
+6. 基于action监听过滤的表单处理机制.
+7. 支持action监听过滤链.
+8. 重定义默认应用配置.
+9. 组件对象,配置信息注册.
+10.支持多应用处理能力.
 
-Fixed bug list：sdfsdf
+Fixed bug list:
+BUG[2106] WindHttpRequest 中增加getRequest()方法
+BUG[2129] module/view配置文件获取错误
+BUG[2133] 关于Call to undefined method WindDbException::getError() 的异常错误
+BUG[2351] 异常处理;当没有处理action句柄被找到或者句柄错误时抛出错误
+BUG[2366] 输出变量安全过滤
