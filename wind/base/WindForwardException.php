@@ -9,7 +9,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package package_name
+ * @package wind.base
  */
 class WindForwardException extends WindException {
 	/**
