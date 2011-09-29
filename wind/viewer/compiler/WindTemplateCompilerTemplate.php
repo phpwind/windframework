@@ -34,7 +34,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 			if ($this->load === 'false') {
 				list($compileFile) = $this->windViewerResolver->compile($this->source, $this->suffix);
 				if (!empty($_tmp)) $compileFile = str_replace($this->source, '{$' . $_tmp[1] . '}', $compileFile);
-				$content = '<?php include_once("' . addslashes($compileFile) . '"); ?>';
+				$content = '<?php include("' . addslashes($compileFile) . '"); ?>';
 			} else {
 				list(, $content) = $this->windViewerResolver->compile($this->source, $this->suffix, true);
 			}

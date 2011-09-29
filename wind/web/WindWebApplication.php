@@ -49,7 +49,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$this->request = new WindHttpRequest();
 		$this->response = $this->request->getResponse(@$config['charset']);
 		$this->windFactory = $factory;
-		$this->setConfig($config);
+		if ($config) {
+			$this->setConfig($config);
+			$this->checkConfig();
+		}
+		$this->setModules('default', $this->defaultModule, true);
 	}
 
 	/* (non-PHPdoc)
@@ -68,25 +72,17 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->started = true;
 			set_error_handler('WindHelper::errorHandle');
 			set_exception_handler('WindHelper::exceptionHandle');
-			if ($default = $this->getModules('default')) {
-				$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
-			}
-			$this->setModules('default', $this->defaultModule, true);
 			$this->_getHandlerAdapter()->route();
 			$__state = true;
 		}
 		try {
-			if (!$this->handlerAdapter->getModule()) {
-				$this->handlerAdapter->setModule('default');
-			}
+			if (!$this->handlerAdapter->getModule()) $this->handlerAdapter->setModule('default');
 			$this->checkProcess();
 			if (!($module = $this->getModules())) {
 				throw new WindActionException(
 					'[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			}
-			$module = WindUtility::mergeArray($this->getModules('default'), $module);
-			$this->setModules($this->handlerAdapter->getModule(), $module, true);
 			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
@@ -107,7 +103,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			}
-			if (isset($__state) && $__state === true && $this->_proxy && $filters = $this->getConfig('filters')) {
+			if (isset($__state) && $__state === true && $filters = $this->getConfig('filters')) {
 				$this->resolveActionMapping($filters, $handler);
 				$this->_proxy->runProcess($handler);
 			} else
@@ -126,6 +122,20 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$this->windFactory->executeDestroyMethod();
 			Wind::resetApp();
 			$this->started = false;
+		}
+	}
+
+	/**
+	 * 检查环境中配置信息的完整性
+	 */
+	private function checkConfig() {
+		if ($default = $this->getModules('default')) $this->defaultModule = WindUtility::mergeArray(
+			$this->defaultModule, $default);
+		$_modules = $this->getConfig('modules', '', array());
+		foreach ($_modules as $key => $value) {
+			if ($key == 'default') continue;
+			$value = WindUtility::mergeArray($this->defaultModule, $value);
+			$this->setModules($key, $value, true);
 		}
 	}
 
@@ -250,6 +260,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return void
 	 */
 	protected function resolveActionMapping($filters, $handler) {
+		$this->_proxy || $this->_proxy = new WindClassProxy($this);
 		/* @var $cache AbstractWindCache */
 		$_filters = array();
 		if ($cache = $this->getComponent('windCache')) {

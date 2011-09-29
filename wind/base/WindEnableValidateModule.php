@@ -34,7 +34,7 @@ class WindEnableValidateModule {
 	 *
 	 * @var array
 	 */
-	private $_errors = array();
+	protected $_errors = array();
 	/**
 	 * 验证中产生错误信息时使用的默认错误信息
 	 *

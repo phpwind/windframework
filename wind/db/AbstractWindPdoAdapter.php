@@ -28,8 +28,8 @@ abstract class AbstractWindPdoAdapter extends PDO {
 	/* (non-PHPdoc)
 	 * @see PDO::quote()
 	 */
-	public function quote($value) {
-		return parent::quote($value, $this->_getPdoDataType(gettype($value)));
+	public function quote($value, $type = null) {
+		return parent::quote($value, $type ? $type : $this->_getPdoDataType(gettype($value)));
 	}
 
 	/**
