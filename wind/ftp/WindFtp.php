@@ -14,7 +14,7 @@ Wind::import('WIND:ftp.AbstractWindFtp');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindFtp.php 1532 2011-9-20下午03:38:18 xiaoxiao $
- * @package wind.ftp
+ * @package ftp
  */
 class WindFtp extends AbstractWindFtp {
 	
