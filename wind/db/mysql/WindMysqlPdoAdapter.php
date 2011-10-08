@@ -12,7 +12,8 @@ Wind::import('WIND:db.AbstractWindPdoAdapter');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.db.mysql
+ * @package db
+ * @subpackage mysql
  */
 class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 
