@@ -1,10 +1,11 @@
 <?php
 /**
  * 表示键/值对的集合，这些键值对按键排序并可按照键和索引访问。
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package wind.collections
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-8
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package collections
  */
 class WindSortedList implements IteratorAggregate, ArrayAccess, Countable {
 	/**

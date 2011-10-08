@@ -1,10 +1,10 @@
 <?php
 /**
- * WindList集合.
- * the last known user to change this file in the repository  <$LastChangedBy$>
- * @author Qian Su <aoxue.1988.su.qian@163.com>
- * @version $Id$ 
- * @package wind.collections
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-8
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package collections
  */
 class WindList implements IteratorAggregate, ArrayAccess, Countable {
 	
