@@ -78,24 +78,24 @@ Wind::import('WIND:cache.AbstractWindCache');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.cache.strategy
+ * @package strategy
  */
 class WindMemCache extends AbstractWindCache {
-
+	
 	/**
 	 * memcache缓存操作句柄
 	 * 
 	 * @var WindMemcache 
 	 */
 	protected $memcache = null;
-
+	
 	/**
 	 * 标志是否是memcached
 	 *
 	 * @var boolean
 	 */
 	private $isMemcached = false;
-
+	
 	/**
 	 * 是否对缓存采取压缩存储
 	 * 
@@ -127,14 +127,16 @@ class WindMemCache extends AbstractWindCache {
 	 * @see AbstractWindCache::setValue()
 	 */
 	protected function setValue($key, $value, $expire = 0) {
-		return $this->isMemcached ? $this->memcache->set($key, $value, (int) $expire) : $this->memcache->set($key, $value, $this->compress, (int) $expire);
+		return $this->isMemcached ? $this->memcache->set($key, $value, (int) $expire) : $this->memcache->set($key, 
+			$value, $this->compress, (int) $expire);
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::addValue()
 	 */
 	protected function addValue($key, $value, $expires = 0) {
-		return $this->isMemcached ? $this->memcache->add($key, $value, (int) $expires) : $this->memcache->add($key, $value, $this->compress, (int) $expires);
+		return $this->isMemcached ? $this->memcache->add($key, $value, (int) $expires) : $this->memcache->add($key, 
+			$value, $this->compress, (int) $expires);
 	}
 
 	/* (non-PHPdoc)
@@ -179,8 +181,15 @@ class WindMemCache extends AbstractWindCache {
 		parent::setConfig($config);
 		$this->compress = $this->getConfig('compress', '', '0');
 		$servers = $this->getConfig('servers', '', array());
-		$defaultServer = array('host' => '', 'port' => '', 'pconn' => true, 'weight' => 1, 'timeout' => 1, 
-			'retry' => 15, 'status' => true, 'fcallback' => null);
+		$defaultServer = array(
+			'host' => '', 
+			'port' => '', 
+			'pconn' => true, 
+			'weight' => 1, 
+			'timeout' => 1, 
+			'retry' => 15, 
+			'status' => true, 
+			'fcallback' => null);
 		foreach ((array) $servers as $server) {
 			if (!is_array($server)) throw new WindException('The memcache config is incorrect');
 			if (!isset($server['host'])) throw new WindException('The memcache server ip address is not exist');
