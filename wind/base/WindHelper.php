@@ -6,7 +6,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.base
+ * @package wind
+ * @subpackage base
  */
 class WindHelper {
 	const INTERNAL_LOCATION = "~Internal Location~";
