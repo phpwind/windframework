@@ -1,6 +1,5 @@
 <?php
 /**
-/**
  * 通用异常类型,大部分异常都是继承自该异常
  * 
  * @author Qiong Wu <papa0924@gmail.com> 2011-10-8
