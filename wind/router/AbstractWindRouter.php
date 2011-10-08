@@ -52,7 +52,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
 				$this->addRoute($routeName, $instance, 
-					(isset($route['default']) && $route['default'] === 'true'));
+					(isset($route['default']) && $route['default'] === true));
 			}
 		}
 	}
