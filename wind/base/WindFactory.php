@@ -14,8 +14,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
- * @subpackage base
+ * @package base
  */
 class WindFactory implements IWindFactory {
 	protected $proxyType = 'WIND:factory.WindClassProxy';
