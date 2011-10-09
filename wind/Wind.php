@@ -11,9 +11,11 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * */
 !defined('WIND_DEBUG') && define('WIND_DEBUG', 0);
 /**
- * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
- * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id: WindBase.php 2017 2011-06-22 03:51:39Z yishuo $
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-9
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind
  */
 class Wind {
 	private static $_imports = array();
