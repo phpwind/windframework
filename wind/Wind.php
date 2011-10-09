@@ -15,7 +15,6 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
  */
 class Wind {
 	private static $_imports = array();
