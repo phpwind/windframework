@@ -352,4 +352,6 @@ class Wind {
 			'WindValidator' => 'utility/WindValidator');
 	}
 }
+
+
 Wind::init();
