@@ -14,7 +14,6 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id: WindBase.php 2017 2011-06-22 03:51:39Z yishuo $
- * @package 
  */
 class Wind {
 	private static $_imports = array();
@@ -78,7 +77,7 @@ class Wind {
 	}
 
 	/**
-	 * @return
+	 * @return void
 	 */
 	public static function resetApp() {
 		array_pop(self::$_currentApp);
@@ -144,7 +143,8 @@ class Wind {
 	 * @param string $name	| 路径别名
 	 * @param boolean $includePath | 是否同时定义includePath
 	 * @param boolean $reset | 是否覆盖已经存在的定义，默认false
-	 * @return 
+	 * @return void
+	 * @throws Exception 
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
 		if (!$path) return;
@@ -257,7 +257,7 @@ class Wind {
 
 	/**
 	 * 清理Wind import变量信息
-	 * @return
+	 * @return void
 	 */
 	public static function clear() {
 		self::$_imports = array();
@@ -265,7 +265,8 @@ class Wind {
 	}
 
 	/**
-	 * @return
+	 * @return void
+	 * @throws WindException
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
 		if (in_array($appName, self::$_currentApp)) {
@@ -278,7 +279,7 @@ class Wind {
 	/**
 	 * @param string $className
 	 * @param string $classPath
-	 * @return 
+	 * @return void
 	 */
 	private static function _setImport($className, $classPath) {
 		self::$_imports[$classPath] = $className;
@@ -292,7 +293,8 @@ class Wind {
 
 	/**
 	 * 加载核心层库函数
-	 * @return 
+	 * 
+	 * @return void
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(

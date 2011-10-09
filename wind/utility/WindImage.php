@@ -8,7 +8,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindImage.php 1532 2011-9-22下午03:48:03 xiaoxiao $
- * @package wind.utility
+ * @package utility
  */
 class WindImage {
 	

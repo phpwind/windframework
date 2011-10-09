@@ -6,7 +6,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.session
+ * @package http
+ * @subpackage session.handler
  */
 class WindSessionHandler extends AbstractWindSessionHandler {
 
@@ -65,7 +66,8 @@ class WindSessionHandler extends AbstractWindSessionHandler {
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.session
+ * @package http
+ * @subpackage session.handler
  */
 abstract class AbstractWindSessionHandler {
 	/**

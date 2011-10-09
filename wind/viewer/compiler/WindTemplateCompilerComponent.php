@@ -11,7 +11,8 @@ Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer.compiler
+ * @package viewer
+ * @subpackage compiler
  */
 class WindTemplateCompilerComponent extends AbstractWindTemplateCompiler {
 	protected $name = ''; //组件名字

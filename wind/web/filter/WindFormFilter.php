@@ -34,7 +34,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindFormFilter.php 1532 2011-9-21下午12:53:17 xiaoxiao $
- * @package wind.web.filter
+ * @package web
+ * @subpackage filter
  */
 class WindFormFilter extends WindActionFilter {
 

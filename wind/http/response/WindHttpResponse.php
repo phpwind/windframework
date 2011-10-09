@@ -14,7 +14,8 @@ Wind::import('WIND:http.response.IWindResponse');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.response
+ * @package http
+ * @subpackage response
  */
 class WindHttpResponse implements IWindResponse {
 

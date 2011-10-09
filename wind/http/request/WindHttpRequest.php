@@ -7,7 +7,8 @@ Wind::import('WIND:http.request.IWindRequest');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.request
+ * @package http
+ * @subpackage request
  */
 class WindHttpRequest implements IWindRequest {
 
@@ -393,9 +394,10 @@ class WindHttpRequest implements IWindRequest {
 	 * 初始化请求的资源标识符
 	 * 
 	 * 这里的uri是去除协议名、主机名的
-	 * @Example:
-	 * 请求： http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求： http://www.phpwind.net/example/index.php?a=test
 	 * 则返回: /example/index.php?a=test
+	 * </pre>
 	 * 
 	 * @return string 
 	 * @throws WindException 当获取失败的时候抛出异常
@@ -408,9 +410,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回当前执行脚本的绝对路径
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: /example/index.php
+	 * </pre>
 	 * 
 	 * @return string
 	 * @throws WindException 当获取失败的时候抛出异常
@@ -423,9 +426,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回执行脚本名称
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: index.php
+	 * </pre>
 	 * 
 	 * @return string
 	 * @throws WindException 当获取失败的时候抛出异常
@@ -456,9 +460,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: a=test
+	 * </pre>
 	 * 
 	 * @return string
 	 * @throws WindException
@@ -473,12 +478,13 @@ class WindHttpRequest implements IWindRequest {
 	 * 
 	 * 这里是去除了脚本文件以及访问参数信息的URL地址信息:
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test <br/>
-	 * $absolute = false：<br/>
-	 * 返回： example    <br/>
-	 * $absolute = true:<br/>
-	 * 返回： http://www.phpwind.net/example
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test 
+	 * 1]如果: $absolute = false：
+	 *       返回： example    
+	 * 2]如果: $absolute = true:
+	 *       返回： http://www.phpwind.net/example
+	 * </pre>
 	 * 
 	 * @param boolean $absolute 是否返回主机信息
 	 * @return string
@@ -492,9 +498,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 获得主机信息，包含协议信息，主机名，访问端口信息
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回： http://www.phpwind.net/
+	 * </pre>
 	 * 
 	 * @return string
 	 * @throws WindException 获取主机信息失败的时候抛出异常
@@ -641,8 +648,9 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回访问的IP地址
 	 * 
-	 * @Example:
+	 * <pre>Example:
 	 * 返回：127.0.0.1
+	 * </pre>
 	 * 
 	 * @return string 
 	 */
@@ -670,10 +678,11 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 初始化请求的资源标识符
 	 * 
-	 * 这里的uri是去除协议名、主机名的
-	 * @Example:
-	 * 请求： http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>这里的uri是去除协议名、主机名的
+	 * Example:
+	 * 请求： http://www.phpwind.net/example/index.php?a=test
 	 * 则返回: /example/index.php?a=test
+	 * </pre>
 	 * 
 	 * @throws WindException 处理错误抛出异常
 	 */
@@ -693,9 +702,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回当前执行脚本的绝对路径
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: /example/index.php
+	 * </pre>
 	 * 
 	 * @throws WindException 当获取失败的时候抛出异常
 	 */
@@ -721,9 +731,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 获得主机信息，包含协议信息，主机名，访问端口信息
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回： http://www.phpwind.net/
+	 * </pre>
 	 * 
 	 * @throws WindException 获取主机信息失败的时候抛出异常
 	 */
@@ -741,9 +752,10 @@ class WindHttpRequest implements IWindRequest {
 	/**
 	 * 返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
 	 * 
-	 * @Example:
-	 * 请求: http://www.phpwind.net/example/index.php?a=test<br/>
+	 * <pre>Example:
+	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: a=test
+	 * </pre>
 	 * 
 	 * @throws WindException
 	 */

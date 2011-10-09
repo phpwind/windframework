@@ -7,7 +7,7 @@ Wind::import('WIND:upload.AbstractWindUpload');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindFormUpload.php 1532 2011-9-22下午03:13:32 xiaoxiao $
- * @package wind.upload
+ * @package upload
  */
 class WindFormUpload extends AbstractWindUpload {
 

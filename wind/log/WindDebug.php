@@ -8,7 +8,7 @@ defined('USEMEM_START') or define('USEMEM_START', memory_get_usage());
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.log
+ * @package log
  */
 class WindDebug {
 

@@ -7,7 +7,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.web
+ * @package web
  */
 abstract class WindSimpleController extends WindModule implements IWindController {
 	/**
@@ -322,7 +322,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.web
+ * @package web
  */
 interface IWindController {
 

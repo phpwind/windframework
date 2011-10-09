@@ -6,7 +6,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer.exception
+ * @package viewer
+ * @subpackage exception
  */
 class WindViewException extends WindException {
 	const VIEW_NOT_EXIST = '300';

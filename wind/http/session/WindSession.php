@@ -41,7 +41,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.session
+ * @package http
+ * @subpackage session
  */
 class WindSession extends WindModule {
 

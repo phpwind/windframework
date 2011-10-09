@@ -130,8 +130,8 @@ class WindConnection extends WindModule {
 	 * 
 	 * @param string $attribute
 	 * @param string $value 默认值为null
-	 * @return 
-	 * */
+	 * @return void
+	 */
 	public function setAttribute($attribute, $value = null) {
 		if (!$attribute) return;
 		if ($this->_dbHandle !== null) {

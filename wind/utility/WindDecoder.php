@@ -56,7 +56,7 @@
  * @author	 Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author	 Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
  * @version $Id$
- * @package	wind.utility
+ * @package utility
  * @since 1.0
  */
 class WindDecoder {
