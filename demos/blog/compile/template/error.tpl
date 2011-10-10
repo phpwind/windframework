@@ -37,28 +37,7 @@
 			</div>
 		</div>
 		<div class="main">
-			<div class="grid cc mb10">
-	<div class="bA">
-		<div class="content">
-<ul>
-	<?php foreach ($errors as $key => $error):
-		$key = $key + 1;
-		if(!WIND_DEBUG)
-			$error = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $error);?>
-	<li><?php echo WindSecurity::escapeHTML($key);?>. <?php echo WindSecurity::escapeHTML($error);?></li>
-	<?php endforeach;?>
-</ul>
-<br>
-<div class="mb10 f14"><a href='<?php echo WindSecurity::escapeHTML($baseUrl);?>'>&rsaquo;&rsaquo;返回首页</a></div>
-<h2 class="f14 b">You Can Get Help In:</h2>
-<p><?php echo "The server encountered an internal error and failed to process your request. 
-Please try again later. If this error is temporary, reloading the page might resolve the problem.
-\nIf you are able to contact the administrator report this error message.
-(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")" ; ?></p>
-
-		</div>
-	</div>
-</div>
+			<?php $this->content()?>
 		</div>
 <div id="footer">
 			<div class="footer">
