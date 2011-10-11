@@ -329,7 +329,7 @@ interface IWindController {
 	/**
 	 * 处理请求并返回Forward对象
 	 * 
-	 * @param WindUrlBasedRouter $handlerAdapter
+	 * @param WindRouter $handlerAdapter
 	 * @return WindForward|null
 	 */
 	public function doAction($handlerAdapter);
