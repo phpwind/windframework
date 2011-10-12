@@ -172,7 +172,7 @@ class WindSession extends WindModule {
 	 * @param AbstractWindCache $handler  session数据的缓存介质
 	 * @param object $sessionHandler session操作接口的定义类
 	 */
-	public function setDataStoreHandler($dataStoreHandler, $sessionHandler = null) {
+	public function setDataStoreHandler($dataStoreHandler = null, $sessionHandler = null) {
 		if ($dataStoreHandler) {
 			if ($sessionHandler === null) {
 				Wind::import('WIND:http.session.handler.WindSessionHandler');
