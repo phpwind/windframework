@@ -46,7 +46,8 @@ class Wind {
 				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
 			}
 			$application = $factory->getInstance('windApplication', array($config, $factory));
-			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath($config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
+			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath(
+				$config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
 			self::$_app[$appName] = $application;
 		}
@@ -74,7 +75,8 @@ class Wind {
 		if (isset(self::$_app[$_appName]))
 			return self::$_app[$_appName];
 		else
-			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
+				WindException::ERROR_CLASS_NOT_EXIST);
 	}
 
 	/**
@@ -182,8 +184,10 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		$path || $path = isset(self::$_classes[$className]) ? self::$_classes[$className] : $className;
-		include $path . '.' . self::$_extensions;
+		if ($path)
+			include $path . '.' . self::$_extensions;
+		elseif (isset(self::$_classes[$className]))
+			include self::$_classes[$className] . '.' . self::$_extensions;
 	}
 
 	/**
@@ -351,6 +355,5 @@ class Wind {
 			'WindValidator' => 'utility/WindValidator');
 	}
 }
-
 
 Wind::init();
