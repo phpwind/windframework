@@ -7,7 +7,7 @@
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: AbstractWindFtp.php 1532 2011-9-20下午02:16:54 xiaoxiao $
+ * @version $Id$
  * @package wind.ftp
  */
 abstract class AbstractWindFtp {

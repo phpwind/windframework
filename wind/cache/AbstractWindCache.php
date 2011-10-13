@@ -14,7 +14,7 @@ Wind::import('WIND:cache.exception.WindCacheException');
  * </ul>
  * 该基类支持三个配置项{@link setConfig()}，所有继承该类的子类都拥有对该三个配置项的配置。
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Su Qian <aoxue.1988.su.qian@163.com> 
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

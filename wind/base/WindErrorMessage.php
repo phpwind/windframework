@@ -95,7 +95,7 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 /**
  * 错误消息类接口定义
  * 
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
  * @version $Id$
  * @package 

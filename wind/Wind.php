@@ -13,7 +13,7 @@ define('WIND_PATH', dirname(__FILE__) . '/');
 /**
  * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
- * @version $Id: WindBase.php 2017 2011-06-22 03:51:39Z yishuo $
+ * @version $Id$
  * @package 
  */
 class Wind {

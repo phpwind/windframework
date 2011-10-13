@@ -10,7 +10,7 @@ Wind::import('WIND:dao.exception.WindDaoException');
  * </ul>
  * <note><b>注意: </b>数据库链接会访问名为<i>db</i>的数据库组件配置</note>
  *
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qiong Wu <papa0924@gmail.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

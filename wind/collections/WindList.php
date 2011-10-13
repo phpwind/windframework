@@ -1,7 +1,7 @@
 <?php
 /**
  * WindList集合.
- * the last known user to change this file in the repository  <$LastChangedBy$>
+ * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @version $Id$ 
  * @package wind.collections

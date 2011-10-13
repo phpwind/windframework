@@ -11,7 +11,7 @@ Wind::import('WIND:cache.IWindCacheDependency');
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: WindResolvedCrashDependency.php 2849 2011-09-26 02:18:30Z xiaoxia.xuxx $
+ * @version $Id$
  * @package wind.cache.dependency
  */
 class WindResolvedCrashDependency implements IWindCacheDependency {

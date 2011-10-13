@@ -33,7 +33,7 @@
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: WindFormFilter.php 1532 2011-9-21下午12:53:17 xiaoxiao $
+ * @version $Id$
  * @package wind.web.filter
  */
 class WindFormFilter extends WindActionFilter {
