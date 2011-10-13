@@ -16,8 +16,8 @@ class WindFactoryTest extends BaseTestCase {
 		parent::setUp();
 		require_once 'base\WindFactory.php';
 		require_once 'data\ForWindFactoryTest.php';
-		$this->WindFactory = new WindFactory(@include Wind::getRealPath("TEST:data.components_config"));
 		Wind::application("FactoryTest");
+		$this->WindFactory = Wind::getApp()->getWindFactory();
 	}
 
 	/**
@@ -107,8 +107,8 @@ class WindFactoryTest extends BaseTestCase {
 	 * @dataProvider dataForBulidProperties
 	 */
 	public function testBuildProperties($config){
-		$this->WindFactory->addClassDefinitions("shilong", $config);
-		$object = $this->WindFactory->getInstance("shilong");
+		$this->WindFactory->addClassDefinitions("xxx", $config);
+		$object = $this->WindFactory->getInstance("xxx");
 		$this->assertEquals("WindConnection", get_class($object->param));
 		$this->assertTrue("WindLogger" == get_class($object->session));
 	}
