@@ -22,8 +22,8 @@
  * echo $session->get('name');       //等同：echo $_SESSION['name'];
  * 
  * $session->delete('name');         //等同： unset($_SESSION['name');
- * echo $session->sessionName();     //等同： echo session_name();
- * echo $session->sessionId();       //等同： echo session_id();
+ * echo $session->getCurrentName();     //等同： echo session_name();
+ * echo $session->getCurrentId();       //等同： echo session_id();
  * $session->destroy();              //等同： session_unset();session_destroy();
  * </pre>
  * 【使用原生】：
