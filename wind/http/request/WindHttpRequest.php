@@ -11,77 +11,77 @@ Wind::import('WIND:http.request.IWindRequest');
  * @subpackage request
  */
 class WindHttpRequest implements IWindRequest {
-
+	
 	/**
 	 * 访问的端口号
 	 * 
 	 * @var int
 	 */
 	private $_port = null;
-
+	
 	/**
 	 * 客户端IP
 	 * 
 	 * @var string
 	 */
 	private $_clientIp = null;
-
+	
 	/**
 	 * 语言
 	 * 
 	 * @var string
 	 */
 	private $_language = null;
-
+	
 	/**
 	 * 路径信息
 	 * 
 	 * @var string
 	 */
 	private $_pathInfo = null;
-
+	
 	/**
 	 * 请求脚本url
 	 * 
 	 * @var string
 	 */
 	private $_scriptUrl = null;
-
+	
 	/**
 	 * 请求参数uri
 	 * 
 	 * @var string
 	 */
 	private $_requestUri = null;
-
+	
 	/**
 	 * 基础路径信息
 	 * 
 	 * @var string
 	 */
 	private $_baseUrl = null;
-
+	
 	/**
 	 * 请求路径信息
 	 *
 	 * @var string
 	 */
 	private $_hostInfo = null;
-
+	
 	/**
 	 * 请求参数信息
 	 * 
 	 * @var array
 	 */
 	private $_attribute = array();
-
+	
 	/**
 	 * 应答对象
 	 * 
 	 * @var WindHttpResponse
 	 */
 	private $_response = null;
-
+	
 	/**
 	 * 初始化Request对象
 	 *
@@ -481,9 +481,9 @@ class WindHttpRequest implements IWindRequest {
 	 * <pre>Example:
 	 * 请求: http://www.phpwind.net/example/index.php?a=test 
 	 * 1]如果: $absolute = false：
-	 *       返回： example    
+	 * 返回： example    
 	 * 2]如果: $absolute = true:
-	 *       返回： http://www.phpwind.net/example
+	 * 返回： http://www.phpwind.net/example
 	 * </pre>
 	 * 
 	 * @param boolean $absolute 是否返回主机信息
@@ -691,7 +691,8 @@ class WindHttpRequest implements IWindRequest {
 			$this->_requestUri = $requestUri;
 		} elseif (($requestUri = $this->getServer('REQUEST_URI')) != null) {
 			$this->_requestUri = $requestUri;
-			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace('/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
+			if (strpos($this->_requestUri, $this->getServer('HTTP_HOST')) !== false) $this->_requestUri = preg_replace(
+				'/^\w+:\/\/[^\/]+/', '', $this->_requestUri);
 		} elseif (($requestUri = $this->getServer('ORIG_PATH_INFO')) != null) {
 			$this->_requestUri = $requestUri;
 			if (($query = $this->getServer('QUERY_STRING')) != null) $this->_requestUri .= '?' . $query;
@@ -722,7 +723,8 @@ class WindHttpRequest implements IWindRequest {
 			$this->_scriptUrl = $_scriptName;
 		} elseif (($pos = strpos($this->getServer('PHP_SELF'), '/' . $scriptName)) !== false) {
 			$this->_scriptUrl = substr($this->getServer('SCRIPT_NAME'), 0, $pos) . '/' . $scriptName;
-		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer('SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
+		} elseif (($_documentRoot = $this->getServer('DOCUMENT_ROOT')) != null && ($_scriptName = $this->getServer(
+			'SCRIPT_FILENAME')) != null && strpos($_scriptName, $_documentRoot) === 0) {
 			$this->_scriptUrl = str_replace('\\', '/', str_replace($_documentRoot, '', $_scriptName));
 		} else
 			throw new WindException(__CLASS__ . ' determine the entry script URL failed!!');
@@ -774,4 +776,5 @@ class WindHttpRequest implements IWindRequest {
 		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, $pos + 1);
 		$this->_pathInfo = trim($pathInfo, '/');
 	}
+
 }

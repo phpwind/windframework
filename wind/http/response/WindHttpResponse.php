@@ -18,72 +18,79 @@ Wind::import('WIND:http.response.IWindResponse');
  * @subpackage response
  */
 class WindHttpResponse implements IWindResponse {
-
+	
 	/**
 	 * 用以保存响应内容
 	 *
 	 * @var array
 	 */
 	private $_body = array();
-
+	
 	/**
 	 * 保存模板名字的顺序索引
 	 *
 	 * @var array
 	 */
 	private $_bodyIndex = array();
-
+	
 	/**
 	 * 输出的编码
 	 *
 	 * @var string
 	 */
 	private $_charset = 'utf-8';
-
+	
 	/**
 	 * 设置输出的头部信息
 	 *
 	 * @var array
 	 */
 	private $_headers = array();
-
+	
 	/**
 	 * 是否直接跳转
 	 *
 	 * @var boolean
 	 */
 	private $_isRedirect = false;
-
+	
 	/**
 	 * 设置相应状态码
 	 *
 	 * @var string
 	 */
 	private $_status = '';
-
+	
 	/**
 	 * 输出数据的保存
 	 *
 	 * @var array
 	 */
 	private $_data = array();
-
+	
+	/**
+	 * 返回类型
+	 *
+	 * @var string
+	 */
+	private $_type = '';
+	
 	/**
 	 * Status code (100)
 	 * 
-     * Server status codes; see RFC 2068.
-     * Status code (100) indicating the client can continue.
-     * 
-     * @var int
-     */
+	 * Server status codes; see RFC 2068.
+	 * Status code (100) indicating the client can continue.
+	 * 
+	 * @var int
+	 */
 	const W_CONTINUE = 100;
-
+	
 	/**
 	 * Status code (101) indicating the server is switching protocols
 	 * according to Upgrade header.
 	 */
 	const W_SWITCHING_PROTOCOLS = 101;
-
+	
 	/**
 	 * Status code (200) 
 	 * 
@@ -92,7 +99,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_OK = 200;
-
+	
 	/**
 	 * Status code (201) 
 	 * 
@@ -102,7 +109,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_CREATED = 201;
-
+	
 	/**
 	 * Status code (202) 
 	 * 
@@ -112,7 +119,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_ACCEPTED = 202;
-
+	
 	/**
 	 * Status code (203) 
 	 * 
@@ -122,7 +129,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NON_AUTHORITATIVE_INFORMATION = 203;
-
+	
 	/**
 	 * Status code (204) 
 	 * 
@@ -132,7 +139,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NO_CONTENT = 204;
-
+	
 	/**
 	 * Status code (205)
 	 * 
@@ -142,7 +149,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_RESET_CONTENT = 205;
-
+	
 	/**
 	 * Status code (206)
 	 * 
@@ -152,7 +159,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_PARTIAL_CONTENT = 206;
-
+	
 	/**
 	 * Status code (300) 
 	 * 
@@ -163,7 +170,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int 
 	 */
 	const W_MULTIPLE_CHOICES = 300;
-
+	
 	/**
 	 * Status code (301) 
 	 * 
@@ -174,7 +181,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_MOVED_PERMANENTLY = 301;
-
+	
 	/**
 	 * Status code (302) 
 	 * 
@@ -188,7 +195,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_MOVED_TEMPORARILY = 302;
-
+	
 	/**
 	 * Status code (302) 
 	 * 
@@ -201,7 +208,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_FOUND = 302;
-
+	
 	/**
 	 * Status code (303) 
 	 * 
@@ -211,7 +218,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_SEE_OTHER = 303;
-
+	
 	/**
 	 * Status code (304) 
 	 * 
@@ -221,7 +228,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NOT_MODIFIED = 304;
-
+	
 	/**
 	 * Status code (305) 
 	 * 
@@ -232,7 +239,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_USE_PROXY = 305;
-
+	
 	/**
 	 * Status code (307) 
 	 * 
@@ -244,7 +251,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_TEMPORARY_REDIRECT = 307;
-
+	
 	/**
 	 * Status code (400) 
 	 * 
@@ -254,7 +261,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_BAD_REQUEST = 400;
-
+	
 	/**
 	 * Status code (401) 
 	 * 
@@ -264,7 +271,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_UNAUTHORIZED = 401;
-
+	
 	/**
 	 * Status code (402)
 	 * 
@@ -273,7 +280,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_PAYMENT_REQUIRED = 402;
-
+	
 	/**
 	 * Status code (403) 
 	 * 
@@ -283,7 +290,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_FORBIDDEN = 403;
-
+	
 	/**
 	 * Status code (404) 
 	 * 
@@ -293,7 +300,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NOT_FOUND = 404;
-
+	
 	/**
 	 * Status code (405) 
 	 * 
@@ -304,7 +311,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_METHOD_NOT_ALLOWED = 405;
-
+	
 	/**
 	 * Status code (406) 
 	 * 
@@ -316,7 +323,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NOT_ACCEPTABLE = 406;
-
+	
 	/**
 	 * Status code (407) 
 	 * 
@@ -326,7 +333,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_PROXY_AUTHENTICATION_REQUIRED = 407;
-
+	
 	/**
 	 * Status code (408) 
 	 * 
@@ -336,7 +343,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_REQUEST_TIMEOUT = 408;
-
+	
 	/**
 	 * Status code (409) 
 	 * 
@@ -347,7 +354,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_CONFLICT = 409;
-
+	
 	/**
 	 * Status code (410) 
 	 * 
@@ -358,7 +365,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_GONE = 410;
-
+	
 	/**
 	 * Status code (411) 
 	 * 
@@ -368,7 +375,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_LENGTH_REQUIRED = 411;
-
+	
 	/**
 	 * Status code (412) 
 	 * 
@@ -379,7 +386,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_PRECONDITION_FAILED = 412;
-
+	
 	/**
 	 * Status code (413) 
 	 * 
@@ -390,7 +397,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_REQUEST_ENTITY_TOO_LARGE = 413;
-
+	
 	/**
 	 * Status code (414) 
 	 * 
@@ -401,7 +408,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_REQUEST_URI_TOO_LONG = 414;
-
+	
 	/**
 	 * Status code (415) 
 	 * 
@@ -412,7 +419,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_UNSUPPORTED_MEDIA_TYPE = 415;
-
+	
 	/**
 	 * Status code (416) 
 	 * 
@@ -422,7 +429,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
-
+	
 	/**
 	 * Status code (417) 
 	 * 
@@ -432,7 +439,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_EXPECTATION_FAILED = 417;
-
+	
 	/**
 	 * Status code (500) 
 	 * 
@@ -442,7 +449,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_INTERNAL_SERVER_ERROR = 500;
-
+	
 	/**
 	 * Status code (501) 
 	 * 
@@ -452,7 +459,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_NOT_IMPLEMENTED = 501;
-
+	
 	/**
 	 * Status code (502) 
 	 * 
@@ -463,7 +470,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_BAD_GATEWAY = 502;
-
+	
 	/**
 	 * Status code (503) 
 	 * 
@@ -473,7 +480,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_SERVICE_UNAVAILABLE = 503;
-
+	
 	/**
 	 * Status code (504) 
 	 * 
@@ -484,7 +491,7 @@ class WindHttpResponse implements IWindResponse {
 	 * @var int
 	 */
 	const W_GATEWAY_TIMEOUT = 504;
-
+	
 	/**
 	 * Status code (505) 
 	 * 
@@ -503,19 +510,66 @@ class WindHttpResponse implements IWindResponse {
 	 * @return string 
 	 */
 	public function codeMap($code) {
-		$map = array(505 => 'http version not supported', 504 => 'gateway timeout', 503 => 'service unavailable', 
-			503 => 'bad gateway', 502 => 'bad gateway', 501 => 'not implemented', 500 => 'internal server error', 
-			417 => 'expectation failed', 416 => 'requested range not satisfiable', 415 => 'unsupported media type', 
-			414 => 'request uri too long', 413 => 'request entity too large', 412 => 'precondition failed', 
-			411 => 'length required', 410 => 'gone', 409 => 'conflict', 408 => 'request timeout', 
-			407 => 'proxy authentication required', 406 => 'not acceptable', 405 => 'method not allowed', 
-			404 => 'not found', 403 => 'forbidden', 402 => 'payment required', 401 => 'unauthorized', 
-			400 => 'bad request', 300 => 'multiple choices', 301 => 'moved permanently', 302 => 'moved temporarily', 
-			302 => 'found', 303 => 'see other', 304 => 'not modified', 305 => 'use proxy', 307 => 'temporary redirect', 
-			100 => 'continue', 101 => 'witching protocols', 200 => 'ok', 201 => 'created', 202 => 'accepted', 
-			203 => 'non authoritative information', 204 => 'no content', 205 => 'reset content', 
+		$map = array(
+			505 => 'http version not supported', 
+			504 => 'gateway timeout', 
+			503 => 'service unavailable', 
+			503 => 'bad gateway', 
+			502 => 'bad gateway', 
+			501 => 'not implemented', 
+			500 => 'internal server error', 
+			417 => 'expectation failed', 
+			416 => 'requested range not satisfiable', 
+			415 => 'unsupported media type', 
+			414 => 'request uri too long', 
+			413 => 'request entity too large', 
+			412 => 'precondition failed', 
+			411 => 'length required', 
+			410 => 'gone', 
+			409 => 'conflict', 
+			408 => 'request timeout', 
+			407 => 'proxy authentication required', 
+			406 => 'not acceptable', 
+			405 => 'method not allowed', 
+			404 => 'not found', 
+			403 => 'forbidden', 
+			402 => 'payment required', 
+			401 => 'unauthorized', 
+			400 => 'bad request', 
+			300 => 'multiple choices', 
+			301 => 'moved permanently', 
+			302 => 'moved temporarily', 
+			302 => 'found', 
+			303 => 'see other', 
+			304 => 'not modified', 
+			305 => 'use proxy', 
+			307 => 'temporary redirect', 
+			100 => 'continue', 
+			101 => 'witching protocols', 
+			200 => 'ok', 
+			201 => 'created', 
+			202 => 'accepted', 
+			203 => 'non authoritative information', 
+			204 => 'no content', 
+			205 => 'reset content', 
 			206 => 'partial content');
 		return isset($map[$code]) ? $map[$code] : '';
+	}
+
+	/**
+	 * @return string 返回当前请求的返回类型
+	 */
+	public function getResponseType() {
+		return $this->_type;
+	}
+
+	/**
+	 * 设置当前请求的返回类型
+	 * 
+	 * @param string $responseType
+	 */
+	public function setResponseType($responseType) {
+		$this->_type = $responseType;
 	}
 
 	/**
@@ -717,7 +771,8 @@ class WindHttpResponse implements IWindResponse {
 	 */
 	public function isSendedHeader($throw = false) {
 		$sended = headers_sent($file, $line);
-		if ($throw && $sended) throw new WindException(__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
+		if ($throw && $sended) throw new WindException(
+			__CLASS__ . ' the headers are sent in file ' . $file . ' on line ' . $line);
 		
 		return $sended;
 	}
