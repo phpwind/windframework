@@ -1,8 +1,12 @@
 <?php
-/**
- * WindUrlHelper test case.
- */
 require_once 'web\WindUrlHelper.php';
+/**
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-14
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind
+ */
 class WindUrlHelperTest extends BaseTestCase {
 	
 	/**
