@@ -2,11 +2,11 @@
 /**
  * 通用异常类型,大部分异常都是继承自该异常
  * 
- * @author Qiong Wu <papa0924@gmail.com>
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-8
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.base
+ * @package base
  */
 class WindException extends Exception {
 	/* 系统错误 */

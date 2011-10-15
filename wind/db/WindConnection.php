@@ -28,7 +28,7 @@ Wind::import("WIND:db.WindResultSet");
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.db
+ * @package db
  */
 class WindConnection extends WindModule {
 	/**
@@ -130,8 +130,8 @@ class WindConnection extends WindModule {
 	 * 
 	 * @param string $attribute
 	 * @param string $value 默认值为null
-	 * @return 
-	 * */
+	 * @return void
+	 */
 	public function setAttribute($attribute, $value = null) {
 		if (!$attribute) return;
 		if ($this->_dbHandle !== null) {

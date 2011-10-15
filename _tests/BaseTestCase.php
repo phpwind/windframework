@@ -1,22 +1,20 @@
 <?php
 (!class_exists('PHPUnit_Framework_TestCase')) && include 'PHPUnit/Framework/TestCase.php';
 define('T_P', dirname(__FILE__));
-define('IS_DEBUG', true);
-/* 缓存文件路径 */
-define('COMPILE_PATH', T_P . '/data/compile/');
-include 'WindBase.php';
+define('WIND_DEBUG', true);
+include 'Wind.php';
 Wind::register(T_P, 'TEST');
 
 abstract class BaseTestCase extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		WindBase::initWindFramework();
+		Wind::init();
 	}
 
 	protected function tearDown() {
 		parent::tearDown();
-		spl_autoload_unregister('L::autoLoad');
+		spl_autoload_unregister('Wind::autoLoad');
 	}
 
 	protected function assertArrayEquals($array1, $array2) {

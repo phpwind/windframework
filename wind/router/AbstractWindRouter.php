@@ -7,7 +7,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.router
+ * @package router
  */
 abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $moduleKey = 'm';
@@ -52,7 +52,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				$instance = $this->getSystemFactory()->createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
 				$this->addRoute($routeName, $instance, 
-					(isset($route['default']) && $route['default'] === 'true'));
+					(isset($route['default']) && $route['default'] === true));
 			}
 		}
 	}

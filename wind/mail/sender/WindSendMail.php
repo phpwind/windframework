@@ -7,7 +7,8 @@ Wind::import('WIND:mail.sender.IWindSendMail');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$ 
- * @package wind.mail.sender
+ * @package mail
+ * @subpackage sender
  */
 class WindSendMail implements IWindSendMail {
 

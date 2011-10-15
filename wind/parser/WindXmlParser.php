@@ -6,7 +6,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.parser
+ * @package parser
  */
 class WindXmlParser {
 	

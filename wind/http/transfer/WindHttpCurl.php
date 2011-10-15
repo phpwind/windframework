@@ -7,7 +7,8 @@ Wind::import('WIND:http.transfer.AbstractWindHttp');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.http.transfer
+ * @package http
+ * @subpackage transfer
  */
 final class WindHttpCurl extends AbstractWindHttp {
 	

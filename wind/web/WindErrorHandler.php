@@ -13,7 +13,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.web
+ * @package web
  */
 class WindErrorHandler extends WindController {
 	protected $error = array();

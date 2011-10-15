@@ -7,7 +7,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.cache.exception
+ * @package cache
+ * @subpackage exception
  */
 class WindCacheException extends WindException {
 	

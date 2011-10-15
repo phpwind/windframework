@@ -9,7 +9,7 @@ Wind::import('WIND:utility.WindFile');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer
+ * @package viewer
  */
 abstract class AbstractWindViewTemplate extends WindModule {
 	/**

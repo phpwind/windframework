@@ -14,7 +14,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.base
+ * @package base
  */
 class WindFactory implements IWindFactory {
 	protected $proxyType = 'WIND:factory.WindClassProxy';
@@ -44,15 +44,18 @@ class WindFactory implements IWindFactory {
 		} elseif (isset($this->instances[$alias])) {
 			$instance = $this->instances[$alias];
 		} else {
-			if (!$definition) throw new WindException('[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
-			if (isset($definition['constructor-args']) && !$args) $this->buildArgs($definition['constructor-args'], $args);
+			if (!$definition) throw new WindException(
+				'[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
+			if (isset($definition['constructor-args']) && !$args) $this->buildArgs($definition['constructor-args'], 
+				$args);
 			if (!isset($definition['className'])) $definition['className'] = Wind::import(@$definition['path']);
 			$instance = $this->createInstance($definition['className'], $args);
 			if (isset($definition['config'])) $this->resolveConfig($definition['config'], $alias, $instance);
 			if (isset($definition['properties'])) $this->buildProperties($definition['properties'], $instance);
 			if (isset($definition['initMethod'])) $this->executeInitMethod($definition['initMethod'], $instance);
 			!isset($definition['scope']) && $definition['scope'] = 'application';
-			$this->setScope($alias, $definition['scope'], $instance, $definition);
+			$this->setScope($alias, $definition['scope'], $instance);
+			if (isset($definition['destroy'])) $this->destories[$alias] = array($instance, $definition['destroy']);
 		}
 		if (isset($definition['proxy'])) $instance = $this->setProxyForClass($definition['proxy'], $instance);
 		return $instance;
@@ -71,7 +74,8 @@ class WindFactory implements IWindFactory {
 				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 			}
 		} catch (Exception $e) {
-			throw new WindException('[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException('[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
+				WindException::ERROR_CLASS_NOT_EXIST);
 		}
 	}
 
@@ -100,7 +104,8 @@ class WindFactory implements IWindFactory {
 		if (is_string($alias) && !empty($alias)) {
 			if (!isset($this->classDefinitions[$alias])) $this->classDefinitions[$alias] = $classDefinition;
 		} else
-			throw new WindException('[base.WindFactory.addClassDefinitions] class alias is empty.', WindException::ERROR_PARAMETER_TYPE_ERROR);
+			throw new WindException('[base.WindFactory.addClassDefinitions] class alias is empty.', 
+				WindException::ERROR_PARAMETER_TYPE_ERROR);
 	}
 
 	/**
@@ -189,20 +194,20 @@ class WindFactory implements IWindFactory {
 	 * @param string $alias
 	 * @param string $scope
 	 * @param WindModule $instance
-	 * @param array $definition
 	 * @return boolean
 	 */
-	protected function setScope($alias, $scope, $instance, $definition) {
+	protected function setScope($alias, $scope, $instance) {
 		switch ($scope) {
 			case 'prototype':
 				$this->prototype[$alias] = clone $instance;
 				break;
 			case 'application':
 				$this->instances[$alias] = $instance;
+				break;
 			case 'singleton':
 				$this->instances[$alias] = $instance;
+				break;
 			default:
-				if (isset($definition['destroy'])) $this->destories[$alias] = array($instance, $definition['destroy']);
 				break;
 		}
 		return true;
@@ -241,7 +246,9 @@ class WindFactory implements IWindFactory {
 		try {
 			return call_user_func_array(array($instance, $initMethod), array());
 		} catch (Exception $e) {
-			throw new WindException('[base.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+			throw new WindException(
+				'[base.WindFactory.executeInitMethod] (' . $initMethod . ', ' . $e->getMessage() . ')', 
+				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		}
 	}
 

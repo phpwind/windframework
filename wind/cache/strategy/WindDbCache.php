@@ -66,7 +66,7 @@ Wind::import('WIND:cache.AbstractWindCache');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.cache.strategy
+ * @package strategy
  */
 class WindDbCache extends AbstractWindCache {
 	

@@ -8,7 +8,7 @@ Wind::import('WIND:http.response.WindHttpResponse');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.web
+ * @package web
  */
 class WindWebApplication extends WindModule implements IWindApplication {
 	/**
@@ -49,9 +49,21 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$this->request = new WindHttpRequest();
 		$this->response = $this->request->getResponse(@$config['charset']);
 		$this->windFactory = $factory;
-		if ($config) {
-			$this->setConfig($config);
-			$this->checkConfig();
+		if ($config) $this->setConfig($config);
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		if ($default = $this->getModules('default')) {
+			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
+		}
+		$_modules = $this->getConfig('modules', '', array());
+		foreach ($_modules as $key => $value) {
+			if ($key == 'default') continue;
+			$this->setModules($key, $value, true);
 		}
 		$this->setModules('default', $this->defaultModule, true);
 	}
@@ -126,20 +138,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
-	 * 检查环境中配置信息的完整性
-	 */
-	private function checkConfig() {
-		if ($default = $this->getModules('default')) $this->defaultModule = WindUtility::mergeArray(
-			$this->defaultModule, $default);
-		$_modules = $this->getConfig('modules', '', array());
-		foreach ($_modules as $key => $value) {
-			if ($key == 'default') continue;
-			$value = WindUtility::mergeArray($this->defaultModule, $value);
-			$this->setModules($key, $value, true);
-		}
-	}
-
-	/**
 	 * 执行请求的进程
 	 * 
 	 * @param IWindController $handler
@@ -203,7 +201,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setModules($name, $config, $replace = false) {
 		if ($replace || !isset($this->_config['modules'][$name])) {
-			$this->_config['modules'][$name] = (array) $config;
+			$this->_config['modules'][$name] = $name == 'default' ? (array) $config : WindUtility::mergeArray(
+				$this->defaultModule, (array) $config);
 		}
 	}
 

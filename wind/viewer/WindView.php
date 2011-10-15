@@ -41,7 +41,7 @@ Wind::import('WIND:viewer.IWindView');
  * @copyright ©2003-2103 phpwind.com
  * @license {@link http://www.windframework.com}
  * @version $Id$
- * @package wind.viewer
+ * @package viewer
  */
 class WindView extends WindModule implements IWindView {
 	/**
@@ -115,6 +115,26 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function render($display = false) {
 		if (!$this->templateName) return;
+		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
+		switch (strtolower($_type)) {
+			case 'json':
+				$this->renderWithJson();
+				break;
+			case 'ajax':
+				$this->renderWithJson();
+				break;
+			default:
+				$this->_render($display);
+		}
+	}
+
+	/**
+	 * html格式视图渲染方法
+	 *
+	 * @param boolean $display
+	 * @return void
+	 */
+	protected function _render($display) {
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
@@ -123,6 +143,15 @@ class WindView extends WindModule implements IWindView {
 		} else {
 			echo $viewResolver->windFetch();
 		}
+	}
+
+	/**
+	 * json格式视图输出数据渲染
+	 */
+	protected function renderWithJson() {
+		$_vars = $this->getResponse()->getData($this->templateName);
+		$_vars['G'] = $this->getResponse()->getData('G');
+		echo WindEncoder::encode($_vars);
 	}
 
 	/* (non-PHPdoc)
@@ -174,13 +203,15 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function getCompileFile($template = '') {
 		if (!$this->compileDir) return;
-		if ($this->compileDir == $this->templateDir) throw new WindViewException('[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
+		if ($this->compileDir == $this->templateDir) throw new WindViewException(
+			'[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
 		if (!$template)
 			$template = $this->templateName;
 		elseif (false !== ($pos = strpos($template, ':')))
 			$template = '__external.' . substr($template, $pos + 1);
 		$dir = realpath(Wind::getRealPath($this->compileDir, false, true));
-		if (!is_dir($dir)) throw new WindViewException('[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
+		if (!is_dir($dir)) throw new WindViewException(
+			'[viewer.WindView.getCompileFile] Template compile dir ' . $this->compileDir . ' is not exist.');
 		$dir .= '/' . str_replace('.', '_', $template);
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}

@@ -7,7 +7,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.base
+ * @package base
  */
 class WindFinalException extends Exception {
 

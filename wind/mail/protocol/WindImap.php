@@ -7,7 +7,8 @@ Wind::import('WIND:mail.protocol.WindSocket');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.mail.protocol
+ * @package mail
+ * @subpackage protocol
  */
 class WindImap {
 
@@ -514,7 +515,7 @@ class WindImap {
 	 * @param INT|string $mail
 	 * @param string $flags imap中的邮件标记,值为SLIENT和FLAGS两种类型
 	 * @param STRING|ARRAY $attribute 标记属性(DELETED\ANSWERED\RECENT\DRAFT\FLAGGED)
-	 * @reutrn string
+	 * @return string
 	 */
 	public function store($mail, $flags = self::FLAGS, $attribute = self::ANSWERED) {
 		$attribute = is_array($attribute) ? implode(' ', $attribute) : $attribute;
@@ -526,7 +527,7 @@ class WindImap {
 	 * @param INT|string $mail
 	 * @param string $flags imap中的邮件标记,值为SLIENT和FLAGS两种类型
 	 * @param STRING|ARRAY $attribute 标记属性(DELETED\ANSWERED\RECENT\DRAFT\FLAGGED)
-	 * @reutrn string
+	 * @return string
 	 */
 	public function stripStore($mail, $flags = self::FLAGS, $attribute = self::DELETED) {
 		$attribute = is_array($attribute) ? implode(' ', $attribute) : $attribute;

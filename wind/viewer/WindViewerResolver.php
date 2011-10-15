@@ -24,7 +24,7 @@ Wind::import('WIND:viewer.exception.WindViewException');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer
+ * @package viewer
  */
 class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	/**
@@ -87,13 +87,13 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 * <pre>
 	 * <i>$output==true</i>返回编译文件绝对路径地址和内容,不生成编译文件;
 	 * <i>$output==false</i>返回编译文件绝对路径地址和内容,生成编译文件
-	 * <pre>
+	 * </pre>
 	 * 
 	 * @param string $template 模板名称 必填
 	 * @param string $suffix 模板后缀 默认为空 
 	 * @param boolean $readOnly 是否直接输出模板内容,接受两个值true,false 默认值为false
 	 * @param boolean $forceOutput 是否强制返回模板内容,默认为不强制
-	 * @return array(compileFile,content)<pre>
+	 * @return array(compileFile,content) <pre>
 	 * <i>compileFile</i>模板编译文件绝对地址,
 	 * <i>content</i>编译后模板输出内容,当<i>$output</i>
 	 * 为false时将content写入compileFile</pre>
@@ -164,7 +164,7 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer
+ * @package viewer
  */
 class WindRender {
 

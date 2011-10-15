@@ -13,7 +13,8 @@ Wind::import('WIND:utility.WindSecurity');
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.viewer.compiler
+ * @package viewer
+ * @subpackage compiler
  */
 class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 

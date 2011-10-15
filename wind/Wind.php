@@ -11,10 +11,10 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * */
 !defined('WIND_DEBUG') && define('WIND_DEBUG', 0);
 /**
- * the last known user to change this file in the repository  <$LastChangedBy: yishuo $>
- * @author Qiong Wu <papa0924@gmail.com>
+ * @author Qiong Wu <papa0924@gmail.com> 2011-10-9
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
  * @version $Id$
- * @package 
  */
 class Wind {
 	private static $_imports = array();
@@ -46,7 +46,8 @@ class Wind {
 				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
 			}
 			$application = $factory->getInstance('windApplication', array($config, $factory));
-			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath($config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
+			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath(
+				$config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
 			Wind::register($rootPath, $appName, true);
 			self::$_app[$appName] = $application;
 		}
@@ -74,11 +75,12 @@ class Wind {
 		if (isset(self::$_app[$_appName]))
 			return self::$_app[$_appName];
 		else
-			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', WindException::ERROR_CLASS_NOT_EXIST);
+			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
+				WindException::ERROR_CLASS_NOT_EXIST);
 	}
 
 	/**
-	 * @return
+	 * @return void
 	 */
 	public static function resetApp() {
 		array_pop(self::$_currentApp);
@@ -144,7 +146,8 @@ class Wind {
 	 * @param string $name	| 路径别名
 	 * @param boolean $includePath | 是否同时定义includePath
 	 * @param boolean $reset | 是否覆盖已经存在的定义，默认false
-	 * @return 
+	 * @return void
+	 * @throws Exception 
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
 		if (!$path) return;
@@ -181,8 +184,10 @@ class Wind {
 	 * @return null
 	 */
 	public static function autoLoad($className, $path = '') {
-		$path || $path = isset(self::$_classes[$className]) ? self::$_classes[$className] : $className;
-		include $path . '.' . self::$_extensions;
+		if ($path)
+			include $path . '.' . self::$_extensions;
+		elseif (isset(self::$_classes[$className]))
+			include self::$_classes[$className] . '.' . self::$_extensions;
 	}
 
 	/**
@@ -257,7 +262,7 @@ class Wind {
 
 	/**
 	 * 清理Wind import变量信息
-	 * @return
+	 * @return void
 	 */
 	public static function clear() {
 		self::$_imports = array();
@@ -265,7 +270,8 @@ class Wind {
 	}
 
 	/**
-	 * @return
+	 * @return void
+	 * @throws WindException
 	 */
 	protected static function beforRun($appName, $config, $rootPath) {
 		if (in_array($appName, self::$_currentApp)) {
@@ -278,7 +284,7 @@ class Wind {
 	/**
 	 * @param string $className
 	 * @param string $classPath
-	 * @return 
+	 * @return void
 	 */
 	private static function _setImport($className, $classPath) {
 		self::$_imports[$classPath] = $className;
@@ -292,7 +298,8 @@ class Wind {
 
 	/**
 	 * 加载核心层库函数
-	 * @return 
+	 * 
+	 * @return void
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
@@ -336,8 +343,8 @@ class Wind {
 			'WindHttpResponse' => 'http/response/WindHttpResponse', 
 			'WindDate' => 'utility/date/WindDate', 
 			'WindGeneralDate' => 'utility/date/WindGeneralDate', 
-			'WindDecoder' => 'utility/json/WindDecoder', 
-			'WindEncoder' => 'utility/json/WindEncoder', 
+			'WindDecoder' => 'utility/WindDecoder', 
+			'WindEncoder' => 'utility/WindEncoder', 
 			'WindArray' => 'utility/WindArray', 
 			'WindFile' => 'utility/WindFile', 
 			'WindImage' => 'utility/WindImage', 
@@ -348,4 +355,5 @@ class Wind {
 			'WindValidator' => 'utility/WindValidator');
 	}
 }
+
 Wind::init();

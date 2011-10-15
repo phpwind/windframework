@@ -9,7 +9,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.base
+ * @package base
  */
 class WindModule {
 	/**
@@ -161,7 +161,8 @@ class WindModule {
 	public function setConfig($config) {
 		if ($config) {
 			if (is_string($config)) {
-				$config = Wind::getApp()->getComponent('configParser')->parse($config, get_class($this), false, Wind::getApp()->getComponent('windCache'));
+				$config = Wind::getApp()->getComponent('configParser')->parse($config, get_class($this), false, 
+					Wind::getApp()->getComponent('windCache'));
 			}
 			if (!empty($this->_config)) {
 				$this->_config = array_merge($this->_config, (array) $config);

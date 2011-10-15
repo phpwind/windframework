@@ -1,95 +1,44 @@
 <?php
-  return array(
-	'wind' => array(
-		'imports' => array(
-			'components' => array(
-				'resource' => 'TEST:data.component_config',
-				'suffix' => 'xml',
-				'init-delay' => 'false',
-				'is-append' => 'true',
-			),
-			'classes' => array(
-				'resource' => 'TEST:data.classes_config',
-				'suffix' => 'xml',
-				'init-delay' => 'false',
-				'is-append' => 'true',
-			),
-		),
-		'web-apps' => array(
-			'testApp' => array(
-				'class' => 'windWebApp',
-				'root-path' => '',
-				'factory' => array(
-					'class-definition' => 'components',
-					'class' => 'WIND:core.factory.WindComponentFactory',
-				),
-				'filters' => array(
-					'class' => 'WIND:core.filter.WindFilterChain',
-					'filter1' => array(
-						'class' => 'WIND:core.web.filter.WindLoggerFilter',
-					),
-				),
-				'router' => array(
-					'class' => 'urlBasedRouter',
-				),
-				'modules' => array(
-					'default' => array(
-						'path' => 'actionControllers',
-						'default' => array(
-							'path' => 'template',
-							'ext' => 'htm',
-							'view-resolver' => array(
-								'class' => 'WIND:core.viewer.WindViewer',
-								'is-cache' => 'false',
-								'cache-dir' => 'cache',
-								'compile-dir' => 'compile',
-							),
-						),
-					),
+return array(
+	'test' => array(
+		'modules' => array(
+			'default' => array(
+				'controller-path' => 'controller', 
+				'controller-suffix' => 'Controller',
+			)
+		), 
+		'components' => array(
+			'db' => array(
+				'config' => array(
+					'resource' => 'data.db_config.php'
 				),
 			),
 		),
 	),
-	'components' => array(
-		'windWebApp' => array(
-			'path' => 'WIND:core.web.WindWebApplication',
-			'scope' => 'request',
-			'proxy' => 'true',
+	'shilong' => array(
+		'modules' => array(
+			'shilong' => array(
+				'controller-path' => 'controller', 
+				'controller-suffix' => 'Controller',
+			)
 		),
-		'windLogger' => array(
-			'path' => 'WIND:component.log.WindLogger',
-			'scope' => 'request',
-			'config' => array(
-				'path' => '',
-			),
-		),
-		'urlBasedRouter' => array(
-			'path' => 'WIND:core.router.WindUrlBasedRouter',
-			'scope' => 'application',
-			'proxy' => 'true',
-			'config' => array(
-				'module' => array(
-					'url-param' => 'm',
-					'default-value' => 'default',
-				),
-				'controller' => array(
-					'url-param' => 'c',
-					'default-value' => 'index',
-				),
-				'action' => array(
-					'url-param' => 'a',
-					'default-value' => 'run',
-				),
-			),
-		),
-		'viewResolver' => array(
-			'path' => 'WIND:core.viewer.WindViewer',
-			'scope' => 'request',
-		),
-		'db' => array(
-			'path' => 'WIND:component.db.WindConnectionManager',
+		'filters' => array(
+			'filter' => array(
+				'class' => 'TEST:data.ForWindClassProxyTest', 
+				'pattern' => 'default_Index_run',
+			)
+		), 
+		'components' => array(
+			'windCache' => array(
+			'path' => 'WIND:cache.strategy.WindFileCache',
 			'scope' => 'singleton',
+			'config' => array(
+				'dir' => 'TEST:data.caches',
+				'suffix' => 'php',
+				'expires' => '0',
+				),
+			),
 		),
-	),
+		'iscache' => true,
+	)
 );
-?>

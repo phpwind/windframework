@@ -8,7 +8,8 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind.router.route
+ * @package router
+ * @subpackage route
  */
 abstract class AbstractWindRoute extends WindHandlerInterceptor {
 	protected $pattern = '';
