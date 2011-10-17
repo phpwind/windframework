@@ -9,90 +9,30 @@
  * @package http
  * @subpackage cookie
  */
-class WindCookieObject {
-
-	/**
-	 * cookie前缀
-	 * 
-	 * @var string cookie前缀
-	 */
-	public $prefix;
-
-	/**
-	 * Cookie 名称
-	 *
-	 * @var string
-	 */
-	protected $name;
-
-	/**
-	 * Cookie 值
-	 *
-	 * @var string
-	 */
-	protected $value;
-
-	/**
-	 * Cookie 过期时间
-	 *
-	 * @var int
-	 */
-	protected $expires;
-
-	/**
-	 * Cookie 域
-	 *
-	 * @var string
-	 */
-	protected $domain;
-
-	/**
-	 * Cookie 路径
-	 *
-	 * @var string
-	 */
-	protected $path;
-
-	/**
-	 * 是否安全套接字
-	 *
-	 * @var boolean
-	 */
-	protected $secure;
-
-	/**
-	 * 是否启用编码
-	 *
-	 * @var boolean
-	 */
-	protected $encode;
-
-	/**
-	 * 是否可通过客户端脚本访问。
-	 * 
-	 * @var string httponly
-	 */
-	protected $httponly;
+class WindCookieObject extends WindModule {
+	protected $prefix = null;
+	protected $encode = false;
+	protected $expires = null;
+	protected $path = null;
+	protected $domain = null;
+	protected $secure = false;
+	protected $httponly = false;
 
 	/**
 	 * 构造函数
 	 * 
 	 * 根据传入的cookie数据初始化cookie数据
 	 * 
-	 * @param string $name cookie名称
-	 * @param string $value cookie值,默认为null
 	 * @param string|int $expires 过期时间,默认为null即会话cookie,随着会话结束将会销毁
+	 * @param boolean $encode 是否使用 MIME base64 对数据进行编码,默认是false即不进行编码
+	 * @param string $prefix cookie前缀,默认为null即没有前缀
 	 * @param string $path cookie保存的路径,默认为null即采用默认
 	 * @param string $domain cookie所属域,默认为null即不设置
 	 * @param boolean $secure 是否安全连接,默认为false即不采用安全链接
 	 * @param boolean $httponly 是否可通过客户端脚本访问,默认为false即客户端脚本可以访问cookie
-	 * @param string $prefix cookie前缀,默认为null即没有前缀
-	 * @param boolean $encode 是否使用 MIME base64 对数据进行编码,默认是false即不进行编码
 	 * @return void
 	 */
-	public function __construct($name, $value = null, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false, $prefix = null, $encode = false) {
-		$this->name = (string) $name;
-		$this->value = (string) $value;
+	public function __construct($prefix = null, $encode = false, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false) {
 		$this->domain = (string) $domain;
 		$this->expires = (null === $expires ? null : (int) $expires);
 		$this->path = ($path ? $path : '/');
@@ -100,6 +40,10 @@ class WindCookieObject {
 		$this->httponly = $httponly;
 		$this->prefix = (string) $prefix;
 		$this->encode = $encode;
+	}
+
+	public function setConfig($config) {
+	
 	}
 
 	/**
