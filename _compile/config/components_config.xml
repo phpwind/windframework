@@ -69,7 +69,7 @@
 	</component>
 
 	<component name='configParser' path='WIND:parser.WindConfigParser'
-		scope='singleton'>
+		scope='prototype'>
 	</component>
 	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
 	<component name='windCache' path='WIND:cache.strategy.WindFileCache'

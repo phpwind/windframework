@@ -94,7 +94,7 @@
 	),
 	'configParser' => array(
 		'path' => 'WIND:parser.WindConfigParser',
-		'scope' => 'singleton',
+		'scope' => 'prototype',
 	),
 	'windCache' => array(
 		'path' => 'WIND:cache.strategy.WindFileCache',

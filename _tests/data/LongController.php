@@ -8,6 +8,10 @@ class LongController extends WindController {
 		parent::run();
 	}
 	
+	public function testAction(){
+		
+	}
+	
 	private function privateMethodAction(){
 		
 	}
@@ -17,7 +21,7 @@ class LongController extends WindController {
 	}
 	
 	public function shiAction(){
-		throw new WindException(1,404);
+		throw new WindException('exceptionThrowByLongController',404);
 	}
 	
 	public function getRequest(){
