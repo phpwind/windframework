@@ -2,11 +2,11 @@
 /**
  * WindDispatcher test case.
  *
- * @author Qiong Wu <papa0924@gmail.com> 2011-10-14
+ * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package web
+ * @package wind
  */
 class WindDispatcherTest extends BaseTestCase {
 	

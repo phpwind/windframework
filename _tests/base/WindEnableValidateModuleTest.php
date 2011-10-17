@@ -1,6 +1,12 @@
 <?php
 /**
  * WindEnableValidateModule test case.
+ *
+ * @author Shi Long <long.shi@alibaba-inc.com>
+ * @copyright ©2003-2103 phpwind.com
+ * @license http://www.windframework.com
+ * @version $Id$
+ * @package wind
  */
 class WindEnableValidateModuleTest extends BaseTestCase {
 	
