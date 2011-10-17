@@ -32,15 +32,13 @@ class WindCookie {
 	 * @param boolean $httponly 是否可通过客户端脚本访问,默认为false即客户端脚本可以访问cookie
 	 * @return boolean 设置成功返回true,失败返回false
 	 */
-	public static function set($name, $value = null, $expires = null, $encode = false, $serialize = false, $prefix = null, $path = null, $domain = null, $secure = false, $httponly = false) {
-		if (empty($name)) {
-			return false;
-		}
-		$name = $prefix ? $prefix . $name : $name;
-		$value = $serialize ? serialize($value) : $value;
-		$value = $encode ? base64_encode($value) : $value;
+	public static function set($name, $value = null, $prefix = null, $encode = false, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false) {
+		if (empty($name)) return false;
+		$value && $value = serialize($value);
+		$encode && $value = base64_decode($value);
+		$prefix && $name = $prefix . $name;
+		$expires && $expires = time() + intval($expires);
 		$path = $path ? $path : '/';
-		$expires = is_int($expires) ? time() + $expires : strtotime($expires);
 		setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
 		return true;
 	}
@@ -53,7 +51,7 @@ class WindCookie {
 	 * @return boolean 删除成功返回true
 	 */
 	public static function remove($name, $prefix = null) {
-		$name = $prefix ? $prefix . $name : $name;
+		$prefix && $name = $prefix . $name;
 		if (self::exist($name)) {
 			self::set($name, '', time() - 3600);
 			unset($_COOKIE[$name]);
@@ -70,12 +68,12 @@ class WindCookie {
 	 * @param string $prefix cookie前缀,默认为null即没有前缀
 	 * @return mixed 获取成功将返回保存的cookie值,获取失败将返回false
 	 */
-	public static function get($name, $dencode = false, $unserialize = false, $prefix = null) {
-		$name = $prefix ? $prefix . $name : $name;
+	public static function get($name, $prefix = null, $dencode = false) {
+		$prefix && $name = $prefix . $name;
 		if (self::exist($name)) {
-			$value = get_magic_quotes_gpc() ? stripslashes($_COOKIE[$name]) : $_COOKIE[$name];
-			$value = $dencode ? base64_decode($value) : $value;
-			return $unserialize ? unserialize($value) : $value;
+			$value = $_COOKIE[$name];
+			$value && $dencode && $value = base64_decode($value);
+			return $value ? unserialize($value) : $value;
 		}
 		return false;
 	}
