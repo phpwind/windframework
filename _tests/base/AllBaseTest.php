@@ -7,12 +7,13 @@ require_once 'base/WindExceptionTest.php';
 require_once 'base/WindFactoryTest.php';
 require_once 'base/WindClassProxyTest.php';
 require_once 'base/WindHelperTest.php';
+require_once 'base/WindEnableValidateModuleTest.php';
 /**
- * @author Qiong Wu <papa0924@gmail.com> 2011-10-14
+ * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package base
+ * @package wind
  */
 class AllBaseTest extends PHPUnit_Framework_TestSuite {
 
@@ -30,6 +31,7 @@ class AllBaseTest extends PHPUnit_Framework_TestSuite {
 		$suite->addTestSuite('WindFactoryTest');
 		$suite->addTestSuite('WindClassProxyTest');
 		$suite->addTestSuite('WindHelperTest');
+		$suite->addTestSuite('WindEnableValidateModuleTest');
 		return $suite;
 	}
 }
