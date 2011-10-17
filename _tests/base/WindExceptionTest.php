@@ -7,7 +7,7 @@ require_once 'base\WindException.php';
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
+ * @package base
  */
 class WindExceptionTest extends BaseTestCase {
 

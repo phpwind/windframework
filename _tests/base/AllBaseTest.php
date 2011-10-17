@@ -13,7 +13,7 @@ require_once 'base/WindEnableValidateModuleTest.php';
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
+ * @package base
  */
 class AllBaseTest extends PHPUnit_Framework_TestSuite {
 

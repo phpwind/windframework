@@ -12,7 +12,7 @@ require_once 'web/WindControllerTest.php';
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
+ * @package web
  */
 class AllWebTest extends PHPUnit_Framework_TestSuite {
 
