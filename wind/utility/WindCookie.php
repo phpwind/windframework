@@ -70,7 +70,7 @@ class WindCookie {
 	 */
 	public static function get($name, $prefix = null, $dencode = false) {
 		$prefix && $name = $prefix . $name;
-		if (self::exist($name)) {
+		if (self::exist($name, $prefix)) {
 			$value = $_COOKIE[$name];
 			$value && $dencode && $value = base64_decode($value);
 			return $value ? unserialize($value) : $value;
