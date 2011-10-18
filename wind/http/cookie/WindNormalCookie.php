@@ -9,6 +9,7 @@
  * @package http
  * @subpackage cookie
  */
+Wind::import('WIND:utility.WindCookie');
 class WindNormalCookie extends WindModule {
 	protected $prefix = null;
 	protected $encode = false;
