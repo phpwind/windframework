@@ -53,7 +53,7 @@ class WindCookie {
 	public static function remove($name, $prefix = null) {
 		$prefix && $name = $prefix . $name;
 		if (self::exist($name)) {
-			self::set($name, '', time() - 3600);
+			self::set($name, '');
 			unset($_COOKIE[$name]);
 		}
 		return true;
@@ -70,7 +70,7 @@ class WindCookie {
 	 */
 	public static function get($name, $prefix = null, $dencode = false) {
 		$prefix && $name = $prefix . $name;
-		if (self::exist($name, $prefix)) {
+		if (self::exist($name)) {
 			$value = $_COOKIE[$name];
 			$value && $dencode && $value = base64_decode($value);
 			return $value ? unserialize($value) : $value;
