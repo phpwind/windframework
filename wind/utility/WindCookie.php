@@ -35,7 +35,7 @@ class WindCookie {
 	public static function set($name, $value = null, $prefix = null, $encode = false, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false) {
 		if (empty($name)) return false;
 		$value && $value = serialize($value);
-		$encode && $value = base64_decode($value);
+		$encode && $value = base64_encode($value);
 		$prefix && $name = $prefix . $name;
 		$expires && $expires = time() + intval($expires);
 		$path = $path ? $path : '/';
