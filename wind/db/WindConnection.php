@@ -187,7 +187,7 @@ class WindConnection extends WindModule {
 			$sql = $this->parseQueryString($sql);
 			return new WindResultSet($this->getDbHandle()->query($sql));
 		} catch (PDOException $e) {
-			throw new WindDbException();
+			throw new WindDbException($e->getMessage(), WindDbException::DB_QUERY_ERROR);
 		}
 	}
 
@@ -282,8 +282,7 @@ class WindConnection extends WindModule {
 			$driverName = $this->getDriverName();
 			$dbHandleClass = "WIND:db." . $driverName . ".Wind" . ucfirst($driverName) . "PdoAdapter";
 			$dbHandleClass = Wind::import($dbHandleClass);
-			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, 
-				(array) $this->_attributes);
+			$this->_dbHandle = new $dbHandleClass($this->_dsn, $this->_user, $this->_pwd, (array) $this->_attributes);
 			$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->_dbHandle->setCharset($this->_charset);
 			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
