@@ -96,7 +96,7 @@ class WindSecurity {
 	 * @return string GUID串,16个字节
 	 */
 	public static function generateGUID() {
-		return substr(md5(session_id() . microtime()), -16);
+		return substr(md5(WindUtility::generateRandStr(8) . microtime()), -16);
 	}
 
 	/**
