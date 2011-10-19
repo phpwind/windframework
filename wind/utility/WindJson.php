@@ -12,7 +12,7 @@
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
- * @package wind
+ * @package utility
  */
 class WindJson {
 	
@@ -316,6 +316,7 @@ class WindJson {
 	 *
 	 * @param mixed $name
 	 * @param mixed $value
+	 * @param string $charset
 	 * @return string
 	 */
 	protected static function nameValue($name, $value, $charset) {
