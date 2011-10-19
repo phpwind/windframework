@@ -17,15 +17,24 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function escapeHTML($str) {
-		if (is_array($str)) {
-			$_tmp = array();
-			foreach ($str as $key => $value) {
-				is_string($key) && $key = self::escapeHTML($str);
-				$_tmp[$key] = self::escapeHTML($value);
-			}
-			return $_tmp;
+		if (!is_string($str)) return $str;
+		return htmlspecialchars($str, ENT_QUOTES);
+	}
+
+	/**
+	 * 转义字符串
+	 * 
+	 * @param array $array 被转移的数组
+	 * @return array
+	 */
+	public static function escapeArrayHTML($array) {
+		if (!is_array($array) || count($array) > 100) return $array;
+		$_tmp = array();
+		foreach ($array as $key => $value) {
+			is_string($key) && $key = self::escapeHTML($key);
+			$_tmp[$key] = self::escapeHTML($value);
 		}
-		return htmlspecialchars($str, ENT_QUOTES, Wind::getApp()->getResponse()->getCharset());
+		return $_tmp;
 	}
 
 	/**
@@ -41,7 +50,8 @@ class WindSecurity {
 		$ifCheck && $_tmp['..'] = '';
 		if (strtr($filePath, $_tmp) == $filePath) return preg_replace('/[\/\\\]{1,}/i', '/', $filePath);
 		if (WIND_DEBUG & 2) {
-			Wind::getApp()->getComponent('windLogger')->info("[utility.WindSecurity.escapePath] file path is illegal.\r\n\tFilePath:" . $filePath);
+			Wind::getApp()->getComponent('windLogger')->info(
+				"[utility.WindSecurity.escapePath] file path is illegal.\r\n\tFilePath:" . $filePath);
 		}
 		throw new WindException('[utility.WindSecurity.escapePath] file path is illegal');
 	}
