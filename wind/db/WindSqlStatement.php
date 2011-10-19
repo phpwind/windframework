@@ -71,8 +71,7 @@ class WindSqlStatement {
 			if ($length === null)
 				$this->getStatement()->bindParam($parameter, $variable, $dataType);
 			else
-				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, 
-					$driverOptions);
+				$this->getStatement()->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
 			return $this;
 		} catch (PDOException $e) {
 			throw new WindDbException($e->getMessage());
@@ -92,8 +91,7 @@ class WindSqlStatement {
 	 */
 	public function bindParams(&$parameters) {
 		if (!is_array($parameters)) throw new WindDbException(
-			'[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype(
-				$parameters));
+			'[component.db.WindSqlStatement.bindParams] Error unexpected paraments type ' . gettype($parameters));
 		
 		$keied = (array_keys($parameters) !== range(0, sizeof($parameters) - 1));
 		foreach ($parameters as $key => $value) {
@@ -140,8 +138,7 @@ class WindSqlStatement {
 	 */
 	public function bindValues($values) {
 		if (!is_array($values)) throw new WindDbException(
-			'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type \'' . gettype(
-				$values) . '\'');
+			'[component.db.WindSqlStatement.bindValues] Error unexpected paraments type \'' . gettype($values) . '\'');
 		
 		$keied = (array_keys($values) !== range(0, sizeof($values) - 1));
 		foreach ($values as $key => $value) {
@@ -279,18 +276,19 @@ class WindSqlStatement {
 	 */
 	public function execute($params = array(), $rowCount = true) {
 		try {
-			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->profileBegin(
-				'SQL:execute sql statement.', 'db');
+			if (WIND_DEBUG & 2) {
+				Wind::getApp()->getComponent('windLogger')->profileBegin('SQL:execute sql statement.', 'db');
+				Wind::getApp()->getComponent('windLogger')->info(
+					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 'db');
+			}
 			$this->init();
 			$this->bindValues($params);
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			if (WIND_DEBUG & 2) {
-				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 
-					'db');
+				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'db');
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 
-					'db');
+					"[component.db.WindSqlStatement.execute] execute sql statement success.", 'db');
 			}
 			return $_result;
 		} catch (PDOException $e) {
@@ -343,13 +341,11 @@ class WindSqlStatement {
 	public function init() {
 		if ($this->_statement === null) {
 			try {
-				$this->_statement = $this->getConnection()->getDbHandle()->prepare(
-					$this->getQueryString());
+				$this->_statement = $this->getConnection()->getDbHandle()->prepare($this->getQueryString());
 				if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
 					"[component.db.WindSqlStatement.init] Initialize statement success.", 'db');
 			} catch (PDOException $e) {
-				throw new WindDbException(
-					"Initialization WindSqlStatement failed." . $e->getMessage());
+				throw new WindDbException("Initialization WindSqlStatement failed." . $e->getMessage());
 			}
 		}
 	}
