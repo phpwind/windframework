@@ -25,7 +25,7 @@ class WindString {
 	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = self::UTF8, $dot = false) {
-		return self::UTF8 == $charset ? self::utf8_substr($string, $start, $length, $dot) : self::gbk_substr($string, $start, $length, $dot);
+		return self::UTF8 == $charset ? self::substrWithUtf8($string, $start, $length, $dot) : self::substrWithGBK($string, $start, $length, $dot);
 	}
 
 	/**
@@ -82,12 +82,9 @@ class WindString {
 	 * @param mixed $value 需要加密的数据
 	 * @return string 加密后的数据
 	 */
-	public static function jsonEncode($value) {
-		if (!function_exists('json_encode')) {
-			Wind::import('Wind:utility.WindJson');
-			return WindJson::encode($value);
-		}
-		return json_encode($value);
+	public static function jsonEncode($value, $charset = 'utf-8') {
+		Wind::import('Wind:utility.WindJson');
+		return WindJson::encode($value, $charset);
 	}
 
 	/**
@@ -96,12 +93,9 @@ class WindString {
 	 * @param string $value 待解密的数据
 	 * @return mixed 解密后的数据
 	 */
-	public static function jsonDecode($value) {
-		if (!function_exists('json_decode')) {
-			Wind::import('Wind:utility.WindJson');
-			return WindJson::decode($value);
-		}
-		return json_decode($value);
+	public static function jsonDecode($value, $useArray = true, $charset = 'utf-8') {
+		Wind::import('Wind:utility.WindJson');
+		return WindJson::decode($value, $useArray, $charset);
 	}
 
 	/**
@@ -113,7 +107,7 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
-	public static function utf8_substr($string, $start, $length = null, $dot = false) {
+	public static function substrWithUtf8($string, $start, $length = null, $dot = false) {
 		if (empty($string) || !is_int($start) || ($length && !is_int($length))) {
 			return '';
 		}
@@ -150,7 +144,7 @@ class WindString {
 	 * @param string $str     要计算的字符串编码
 	 * @return int
 	 */
-	public static function utf8_strlen($str) {
+	public static function strlenWithUtf8($str) {
 		$i = $count = 0;
 		$len = strlen($str);
 		while ($i < $len) {
@@ -178,7 +172,7 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
-	public static function gbk_substr($string, $start, $length = null, $dot = false) {
+	public static function substrWithGBK($string, $start, $length = null, $dot = false) {
 		if (empty($string) || !is_int($start) || ($length && !is_int($length))) {
 			return '';
 		}
@@ -215,7 +209,7 @@ class WindString {
 	 * @param string $str     要计算的字符串编码
 	 * @return int
 	 */
-	public static function gbk_strlen($string) {
+	public static function strlenWithGBK($string) {
 		$len = strlen($string);
 		$i = $count = 0;
 		while ($i < $len) {
