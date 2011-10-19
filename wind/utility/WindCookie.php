@@ -50,7 +50,7 @@ class WindCookie {
 	 * @param string $prefix cookie前缀,默认为null,即没有前缀
 	 * @return boolean 删除成功返回true
 	 */
-	public static function remove($name, $prefix = null) {
+	public static function delete($name, $prefix = null) {
 		$prefix && $name = $prefix . $name;
 		if (self::exist($name)) {
 			self::set($name, '');
@@ -83,7 +83,7 @@ class WindCookie {
 	 * 
 	 * @return boolean 移除成功将返回true
 	 */
-	public static function removeAll() {
+	public static function deleteAll() {
 		$_COOKIE = array();
 		return true;
 	}

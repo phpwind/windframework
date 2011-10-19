@@ -43,6 +43,28 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	}
 
 	/**
+	 * 保存token令牌
+	 * 
+	 * @return　void
+	 */
+	protected function saveToken($tokenName = '') {
+		/* @var $token WindSecurityToken */
+		$token = Wind::getApp()->getComponent('windToken');
+		return $token->saveToken($tokenName);
+	}
+
+	/**
+	 * 验证令牌
+	 * 
+	 * @return void
+	 */
+	protected function validateToken($tokenName = '') {
+		/* @var $token WindSecurityToken */
+		$token = Wind::getApp()->getComponent('windToken');
+		return $token->validateToken($tokenName);
+	}
+
+	/**
 	 * action过滤链策略部署
 	 *
 	 * @param array $filters

@@ -11,6 +11,15 @@
 			),
 		),
 	),
+	'windToken' => array(
+		'path' => 'WIND:token.WindSecurityToken',
+		'scope' => 'singleton',
+		'properties' => array(
+			'tokenContainer' => array(
+				'ref' => 'windSession',
+			),
+		),
+	),
 	'windLogger' => array(
 		'path' => 'WIND:log.WindLogger',
 		'scope' => 'singleton',
@@ -109,5 +118,9 @@
 		'path' => 'WIND:http.session.WindSession',
 		'scope' => 'singleton',
 		'destroy' => 'commit',
+	),
+	'windCookie' => array(
+		'path' => 'WIND:http.cookie.WindNormalCookie',
+		'scope' => 'singleton',
 	),
 );
