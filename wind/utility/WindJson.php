@@ -73,15 +73,15 @@ class WindJson {
 			return false;
 		} elseif ('null' == $_str) {
 			return null;
-		} elseif (is_numeric($str)) {
-			return (float) $str == (integer) $str ? (integer) $str : (float) $str;
+		} elseif (is_numeric($_str)) {
+			return (float) $_str == (integer) $_str ? (integer) $_str : (float) $_str;
 		} elseif (preg_match('/^("|\').+(\1)$/s', $_str, $matche) && $matche[1] == $matche[2]) {
-			$str = self::jsonToString($str);
+			$_str = self::jsonToString($_str);
 		} elseif (preg_match('/^\[.*\]$/s', $_str) || preg_match('/^\{.*\}$/s', $_str)) {
-			$str = self::complexConvert($str, $toArray);
+			$_str = self::complexConvert($_str, $toArray);
 		}
-		WindConvert::convert($str, $charset, 'utf8');
-		return $str;
+		WindConvert::convert($_str, $charset, 'utf8');
+		return $_str;
 	}
 
 	/**
