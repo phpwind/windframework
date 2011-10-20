@@ -66,22 +66,23 @@ class WindJson {
 	 * @return mixed
 	 */
 	public static function decode($str, $toArray = true, $charset = 'utf8') {
-		$_str = strtolower(self::_reduceString($str));
+		$str = self::_reduceString($str);
+		$_str = strtolower($str);
 		if ('true' == $_str) {
 			return true;
 		} elseif ('false' == $_str) {
 			return false;
 		} elseif ('null' == $_str) {
 			return null;
-		} elseif (is_numeric($_str)) {
-			return (float) $_str == (integer) $_str ? (integer) $_str : (float) $_str;
+		} elseif (is_numeric($str)) {
+			return (float) $str == (integer) $str ? (integer) $str : (float) $str;
 		} elseif (preg_match('/^("|\').+(\1)$/s', $_str, $matche) && $matche[1] == $matche[2]) {
-			$_str = self::jsonToString($_str);
+			$str = self::jsonToString($str);
 		} elseif (preg_match('/^\[.*\]$/s', $_str) || preg_match('/^\{.*\}$/s', $_str)) {
-			$_str = self::complexConvert($_str, $toArray);
+			$str = self::complexConvert($str, $toArray);
 		}
-		WindConvert::convert($_str, $charset, 'utf8');
-		return $_str;
+		WindConvert::convert($str, $charset, 'utf8');
+		return $str;
 	}
 
 	/**
