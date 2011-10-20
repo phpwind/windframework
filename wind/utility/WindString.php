@@ -9,13 +9,13 @@
  * @package utility
  */
 class WindString {
-
+	
 	const UTF8 = 'utf8';
-
+	
 	const GBK = 'gbk';
 
 	/**
-	 * 截取字符串
+	 * 截取字符串,支持字符编码,默认为utf-8
 	 * 
 	 * @param string $string 要截取的字符串编码
 	 * @param int $start     开始截取
@@ -25,7 +25,15 @@ class WindString {
 	 * @return string 截取后的字串
 	 */
 	public static function substr($string, $start, $length, $charset = self::UTF8, $dot = false) {
-		return self::UTF8 == $charset ? self::substrWithUtf8($string, $start, $length, $dot) : self::substrWithGBK($string, $start, $length, $dot);
+		switch (strtolower($charset)) {
+			case self::GBK:
+				$string = self::substrForGbk($string, $start, $length, $dot);
+				break;
+			default:
+				$string = self::substrForUtf8($string, $start, $length, $dot);
+				break;
+		}
+		return $string;
 	}
 
 	/**
@@ -39,7 +47,17 @@ class WindString {
 		$len = strlen($string);
 		$i = $count = 0;
 		while ($i < $len) {
-			ord($string[$i]) > 129 ? self::UTF8 == $charset ? $i += 3 : $i += 2 : $i++;
+			if (ord($string[$i]) <= 129)
+				$i++;
+			else
+				switch (strtolower($charset)) {
+					case self::UTF8:
+						$i += 3;
+						break;
+					default:
+						$i += 2;
+						break;
+				}
 			$count++;
 		}
 		return $count;
@@ -59,7 +77,8 @@ class WindString {
 			case 'array':
 				$output = "array(\r\n";
 				foreach ($input as $key => $value) {
-					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString($value, $indent . "\t");
+					$output .= $indent . "\t" . self::varToString($key, $indent . "\t") . ' => ' . self::varToString(
+						$value, $indent . "\t");
 					$output .= ",\r\n";
 				}
 				$output .= $indent . ')';
@@ -80,9 +99,10 @@ class WindString {
 	 * 将数据用json加密
 	 *
 	 * @param mixed $value 需要加密的数据
+	 * @param string $charset 字符编码
 	 * @return string 加密后的数据
 	 */
-	public static function jsonEncode($value, $charset = 'utf-8') {
+	public static function jsonEncode($value, $charset = self::UTF8) {
 		Wind::import('Wind:utility.WindJson');
 		return WindJson::encode($value, $charset);
 	}
@@ -91,11 +111,12 @@ class WindString {
 	 * 将json格式数据解密
 	 *
 	 * @param string $value 待解密的数据
+	 * @param string $charset 解密后字符串编码
 	 * @return mixed 解密后的数据
 	 */
-	public static function jsonDecode($value, $useArray = true, $charset = 'utf-8') {
+	public static function jsonDecode($value, $charset = self::UTF8) {
 		Wind::import('Wind:utility.WindJson');
-		return WindJson::decode($value, $useArray, $charset);
+		return WindJson::decode($value, $charset);
 	}
 
 	/**
@@ -107,15 +128,13 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
-	public static function substrWithUtf8($string, $start, $length = null, $dot = false) {
-		if (empty($string) || !is_int($start) || ($length && !is_int($length))) {
-			return '';
-		}
+	public static function substrForUtf8($string, $start, $length = null, $dot = false) {
+		if (empty($string)) return '';
 		$strlen = strlen($string);
-		$length = $length ? $length : $strlen;
+		$length = $length ? (int) $length : $strlen;
 		$substr = '';
 		$chinese = $word = 0;
-		for ($i = 0, $j = 0; $i < $start; $i++) {
+		for ($i = 0, $j = 0; $i < (int) $start; $i++) {
 			if (0xa0 < ord(substr($string, $j, 1))) {
 				$chinese++;
 				$j += 2;
@@ -139,31 +158,6 @@ class WindString {
 	}
 
 	/**
-	 * 以utf8求取字符串长度
-	 * 
-	 * @param string $str     要计算的字符串编码
-	 * @return int
-	 */
-	public static function strlenWithUtf8($str) {
-		$i = $count = 0;
-		$len = strlen($str);
-		while ($i < $len) {
-			$chr = ord($str[$i]);
-			$count++;
-			$i++;
-			if ($i >= $len) break;
-			if ($chr & 0x80) {
-				$chr <<= 1;
-				while ($chr & 0x80) {
-					$i++;
-					$chr <<= 1;
-				}
-			}
-		}
-		return $count;
-	}
-
-	/**
 	 * 以gbk格式截取的字符串编码
 	 * 
 	 * @param string $string  要截取的字符串编码
@@ -172,7 +166,7 @@ class WindString {
 	 * @param boolean $dot    是否显示省略号，默认为false
 	 * @return string
 	 */
-	public static function substrWithGBK($string, $start, $length = null, $dot = false) {
+	public static function substrForGbk($string, $start, $length = null, $dot = false) {
 		if (empty($string) || !is_int($start) || ($length && !is_int($length))) {
 			return '';
 		}
@@ -204,12 +198,37 @@ class WindString {
 	}
 
 	/**
+	 * 以utf8求取字符串长度
+	 * 
+	 * @param string $str     要计算的字符串编码
+	 * @return int
+	 */
+	public static function strlenForUtf8($str) {
+		$i = $count = 0;
+		$len = strlen($str);
+		while ($i < $len) {
+			$chr = ord($str[$i]);
+			$count++;
+			$i++;
+			if ($i >= $len) break;
+			if ($chr & 0x80) {
+				$chr <<= 1;
+				while ($chr & 0x80) {
+					$i++;
+					$chr <<= 1;
+				}
+			}
+		}
+		return $count;
+	}
+
+	/**
 	 * 以gbk求取字符串长度
 	 * 
 	 * @param string $str     要计算的字符串编码
 	 * @return int
 	 */
-	public static function strlenWithGBK($string) {
+	public static function strlenForGbk($string) {
 		$len = strlen($string);
 		$i = $count = 0;
 		while ($i < $len) {
