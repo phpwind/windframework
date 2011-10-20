@@ -47,6 +47,17 @@ class WindConvert {
 					$str[$key] = self::convert($value, $toEncoding, $fromEncoding, $ifMb);
 				}
 				break;
+			case 'object':
+				if ($str instanceof Traversable){
+					foreach ($str as $key => $value){
+						is_object($value) && $value = get_object_vars($value);
+						$str[$key] = self::convert($value, $toEncoding, $fromEncoding, $ifMb);
+					}
+				}else {
+					$str = self::convert(get_object_vars($str), $toEncoding, $fromEncoding, $ifMb);
+				}
+				$str = new ArrayObject($str);
+				break;
 			default:
 				break;
 		}
