@@ -14,12 +14,22 @@ Wind::import('WIND:utility.WindSecurity');
  * @package token
  */
 interface IWindSecurityToken {
+
 	/**
 	 * 保存token
 	 * 
 	 * @param string $tokenName token名称,默认名称为<i>_tokenAppName</i>
+	 * @return string 返回token值
 	 */
 	public function saveToken($tokenName = '');
+
+	/**
+	 * 创建并保存 url token值
+	 * 
+	 * @param string $tokenName token名称,默认名称为<i>_tokenAppName</i>
+	 * @return string 返回token值
+	 */
+	public function saveUrlToken($tokenName = '');
 
 	/**
 	 * 验证token的有效性
@@ -28,9 +38,22 @@ interface IWindSecurityToken {
 	 * 当token有效时则返回true,同时删除token.
 	 * 当coken无效时则返回false.
 	 * <code>
+	 * @param string $token
 	 * @param string $tokenName token名称,默认名称为<i>_tokenAppName</i>
 	 */
-	public function validateToken($tokenName = '');
+	public function validateToken($token, $tokenName = '');
+
+	/**
+	 * 验证token的有效性
+	 * 
+	 * 验证token的有效性.<code>
+	 * 当token有效时则返回true,同时删除token.
+	 * 当coken无效时则返回false.
+	 * <code>
+	 * @param string $value
+	 * @param string $tokenName token名称,默认名称为<i>_tokenAppName</i>
+	 */
+	public function validateUrlToken($token, $tokenName = '');
 
 }
 
