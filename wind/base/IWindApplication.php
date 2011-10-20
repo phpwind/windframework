@@ -10,7 +10,7 @@
  * @version $Id$
  * @package base
  */
-interface IWindApplication {
+interface IWindApplication { 
 
 	/**
 	 * 调用该方法启动应用
