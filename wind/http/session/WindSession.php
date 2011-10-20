@@ -1,18 +1,19 @@
 <?php
+Wind::import('WIND:http.IWindHttpContainer');
 /**
  * 会话机制，依赖Cache机制实现，应用可以根据自己的需求配置需要的存储方式实现会话存储
  * 【配置】支持组件配置格式:
  * <pre>
- *  'windSession' => array(
- *		'path' => 'WIND:http.session.WindSession',
- *		'scope' => 'singleton',
- *		'destroy' => 'commit',
- *		'constructor-args' => array(
- *			'0' => array(
- *				'ref' => 'windCache',
- *			),
- *		),
- *	),
+ * 'windSession' => array(
+ * 'path' => 'WIND:http.session.WindSession',
+ * 'scope' => 'singleton',
+ * 'destroy' => 'commit',
+ * 'constructor-args' => array(
+ * '0' => array(
+ * 'ref' => 'windCache',
+ * ),
+ * ),
+ * ),
  * </pre>
  * 【使用】调用时使用：
  * <pre>
@@ -29,11 +30,11 @@
  * 【使用原生】：
  * 如果用户不需要配置自己其他存储方式的session，则不许要修改任何调用，只要在WindSession的配置中将constructor-args配置项去掉即可。如下：
  * <pre>
- *  'windSession' => array(
- *		'path' => 'WIND:http.session.WindSession',
- *		'scope' => 'singleton',
- *		'destroy' => 'commit',
- *	),
+ * 'windSession' => array(
+ * 'path' => 'WIND:http.session.WindSession',
+ * 'scope' => 'singleton',
+ * 'destroy' => 'commit',
+ * ),
  * </pre>
  * 
  *
@@ -44,7 +45,7 @@
  * @package http
  * @subpackage session
  */
-class WindSession extends WindModule {
+class WindSession extends WindModule implements IWindHttpContainer {
 
 	/**
 	 * 构造函数

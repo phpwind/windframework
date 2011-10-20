@@ -1,4 +1,5 @@
 <?php
+Wind::import('WIND:http.IWindHttpContainer');
 /**
  * 将cookie作为对象操作
  *
@@ -9,7 +10,8 @@
  * @package http
  * @subpackage cookie
  */
-class WindNormalCookie extends WindModule {
+Wind::import('WIND:utility.WindCookie');
+class WindNormalCookie extends WindModule implements IWindHttpContainer{
 	protected $prefix = null;
 	protected $encode = false;
 	protected $expires = null;
@@ -88,8 +90,8 @@ class WindNormalCookie extends WindModule {
 	 * @param string $name
 	 * @return boolean
 	 */
-	public function remove($name) {
-		return WindCookie::remove($name, $this->prefix);
+	public function delete($name) {
+		return WindCookie::delete($name, $this->prefix);
 	}
 
 	/**
@@ -97,8 +99,8 @@ class WindNormalCookie extends WindModule {
 	 * 
 	 * @return boolean
 	 */
-	public function removeAll() {
-		return WindCookie::removeAll();
+	public function deleteAll() {
+		return WindCookie::deleteAll();
 	}
 
 	/**

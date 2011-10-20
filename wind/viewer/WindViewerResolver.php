@@ -182,7 +182,9 @@ class WindRender {
 		$_theme = $__theme ? $__theme : Wind::getApp()->getRequest()->getBaseUrl(true);
 		unset($__theme);
 		@extract($__vars, EXTR_REFS);
-		if (!@include_once ($__tpl)) throw new WindViewException(
-			'[component.viewer.WindRender.render] template name ' . $__tpl, WindViewException::VIEW_NOT_EXIST);
+		if (!include_once ($__tpl)) {
+			throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, 
+				WindViewException::VIEW_NOT_EXIST);
+		}
 	}
 }

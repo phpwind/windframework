@@ -15,6 +15,11 @@
 			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
+	<component name='windToken' path='WIND:token.WindSecurityToken' scope='singleton'>
+		<properties>
+			<property name='tokenContainer' ref='windSession'/>
+		</properties>
+	</component>
 	<component name='windLogger' path='WIND:log.WindLogger'
 		scope='singleton' destroy='flush'>
 		<constructor-args>
@@ -85,5 +90,8 @@
 	<component name='windSession' path='WIND:http.session.WindSession'
 		scope='singleton' destroy='commit'>
 		<!--<constructor-args> <constructor-arg name='0' ref='windCache' /> </constructor-args> -->
+	</component>
+	<component name='windCookie' path='WIND:http.cookie.WindNormalCookie'
+		scope='singleton'>
 	</component>
 </components>

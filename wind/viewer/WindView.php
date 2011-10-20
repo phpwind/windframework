@@ -151,7 +151,7 @@ class WindView extends WindModule implements IWindView {
 	protected function renderWithJson() {
 		$_vars = $this->getResponse()->getData($this->templateName);
 		$_vars['G'] = $this->getResponse()->getData('G');
-		echo WindEncoder::encode($_vars);
+		echo WindJson::encode($_vars);
 	}
 
 	/* (non-PHPdoc)

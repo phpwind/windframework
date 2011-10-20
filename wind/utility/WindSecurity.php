@@ -17,15 +17,86 @@ class WindSecurity {
 	 * @return string
 	 */
 	public static function escapeHTML($str) {
-		if (is_array($str)) {
-			$_tmp = array();
-			foreach ($str as $key => $value) {
-				is_string($key) && $key = self::escapeHTML($str);
-				$_tmp[$key] = self::escapeHTML($value);
-			}
-			return $_tmp;
+		if (!is_string($str)) return $str;
+		return htmlspecialchars($str, ENT_QUOTES);
+	}
+
+	/**
+	 * 转义字符串
+	 * 
+	 * @param array $array 被转移的数组
+	 * @return array
+	 */
+	public static function escapeArrayHTML($array) {
+		if (!is_array($array) || count($array) > 100) return $array;
+		$_tmp = array();
+		foreach ($array as $key => $value) {
+			is_string($key) && $key = self::escapeHTML($key);
+			$_tmp[$key] = self::escapeHTML($value);
 		}
-		return htmlspecialchars($str, ENT_QUOTES, Wind::getApp()->getResponse()->getCharset());
+		return $_tmp;
+	}
+
+	/**
+	 * 字符串加密
+	 * 
+	 * @param string $str 需要加密的字符串
+	 * @param string $key 密钥
+	 * @return string 加密后的结果
+	 */
+	public static function encrypt($str, $key) {
+		if (!$key || !is_string($key)) throw new WindException(
+			'[utility.WindSecurity.encrypt] security key is required. ', WindException::ERROR_PARAMETER_TYPE_ERROR);
+		if (!$str || !is_string($str)) throw new WindException(
+			'[utility.WindSecurity.encrypt] security string is required.', WindException::ERROR_PARAMETER_TYPE_ERROR);
+		
+		$size = mcrypt_get_block_size(MCRYPT_DES, MCRYPT_MODE_CBC);
+		$pad = $size - (strlen($str) % $size);
+		$str .= str_repeat(chr($pad), $pad);
+		@$data = mcrypt_cbc(MCRYPT_DES, $key, $str, MCRYPT_ENCRYPT);
+		return base64_encode($data);
+	}
+
+	/**
+	 * 解密字符串 
+	 *
+	 * @param string $str 解密的字符串
+	 * @param string $key 密钥
+	 * @return string 解密后的结果
+	 */
+	public static function decrypt($str, $key) {
+		if (!$str || !is_string($str)) throw new WindException(
+			'[utility.WindSecurity.dncrypt] security string is required.', WindException::ERROR_PARAMETER_TYPE_ERROR);
+		if (!$key || !is_string($key)) throw new WindException('[utlity.WindSecurity.decrypt] security key is required.', 
+			WindException::ERROR_PARAMETER_TYPE_ERROR);
+		
+		$str = base64_decode($str);
+		@$str = mcrypt_cbc(MCRYPT_DES, $key, $str, MCRYPT_DECRYPT);
+		$pad = ord($str{strlen($str) - 1});
+		if ($pad > strlen($str)) return false;
+		if (strspn($str, chr($pad), strlen($str) - $pad) != $pad) return false;
+		return substr($str, 0, -1 * $pad);
+	}
+
+	/**
+	 * 创建token令牌串
+	 * 
+	 * 创建token令牌串,用于避免表单重复提交等.
+	 * 使用当前的sessionID以及当前时间戳,生成唯一一串令牌串,并返回.
+	 * @return string
+	 */
+	public static function createToken() {
+		return self::generateGUID();
+	}
+
+	/**
+	 * 获取唯一标识符串,标识符串的长度为16个字节,128位.
+	 * 
+	 * 根据当前时间与sessionID,混合生成一个唯一的串.
+	 * @return string GUID串,16个字节
+	 */
+	public static function generateGUID() {
+		return substr(md5(WindUtility::generateRandStr(8) . microtime()), -16);
 	}
 
 	/**
@@ -41,7 +112,8 @@ class WindSecurity {
 		$ifCheck && $_tmp['..'] = '';
 		if (strtr($filePath, $_tmp) == $filePath) return preg_replace('/[\/\\\]{1,}/i', '/', $filePath);
 		if (WIND_DEBUG & 2) {
-			Wind::getApp()->getComponent('windLogger')->info("[utility.WindSecurity.escapePath] file path is illegal.\r\n\tFilePath:" . $filePath);
+			Wind::getApp()->getComponent('windLogger')->info(
+				"[utility.WindSecurity.escapePath] file path is illegal.\r\n\tFilePath:" . $filePath);
 		}
 		throw new WindException('[utility.WindSecurity.escapePath] file path is illegal');
 	}
