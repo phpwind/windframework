@@ -75,11 +75,14 @@ class WindUtility {
 	 */
 	public static function mergeArray($array1, $array2) {
 		foreach ($array2 as $key => $value) {
-			if (!isset($array1[$key]) || !is_array($array1[$key])) {
+			if (!isset($array1[$key])) {
 				$array1[$key] = $value;
-				continue;
-			}
-			$array1[$key] = self::mergeArray($array1[$key], $array2[$key]);
+			} elseif (is_array($array1[$key]) && is_array($value)) {
+				$array1[$key] = self::mergeArray($array1[$key], $array2[$key]);
+			} elseif (is_numeric($key) && $array1[$key] !== $array2[$key]) {
+				$array1[] = $value;
+			} else
+				$array1[$key] = $value;
 		}
 		return $array1;
 	}
