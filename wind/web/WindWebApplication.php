@@ -266,14 +266,22 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$key = md5(serialize($filters));
 			$_filters = $cache->get($key);
 		}
-		$_token = $this->handlerAdapter->getModule() . '_' . $this->handlerAdapter->getController() . '_' . $this->handlerAdapter->getAction();
+		$_token = $this->handlerAdapter->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (!isset($_filters[$_token])) {
 			foreach ($filters as $_filter) {
-				if (isset($_filter['class'])) if (!$_filter['pattern'] || preg_match(
-					'/^' . str_replace('*', '\w*', $_filter['pattern']) . '$/i', $_token)) {
-					unset($_filter['pattern']);
-					$_filters[$_token][] = $_filter;
+				if (!isset($_filter['class'])) continue;
+				$_pattern = empty($_filter['pattern']) ? '' : $_filter['pattern'];
+				unset($_filter['pattern']);
+				if ($_pattern) {
+					$_pattern = str_replace(array('*', '/'), array('\w*', '\/'), $_pattern);
+					if (in_array($_pattern[0], array('~', '!'))) {
+						$_pattern = substr($_pattern, 1);
+						if (preg_match('/^' . $_pattern . '$/i', $_token)) continue;
+					} else {
+						if (!preg_match('/^' . $_pattern . '$/i', $_token)) continue;
+					}
 				}
+				$_filters[$_token][] = $_filter;
 			}
 			$cache && $cache->set($key, $_filters);
 		}
