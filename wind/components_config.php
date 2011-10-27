@@ -96,6 +96,11 @@
 		'config' => array(
 			'resource' => 'db_config.xml',
 		),
+		'properties' => array(
+			'queryCache' => array(
+				'ref' => 'windCache'
+			)
+		)
 	),
 	'errorMessage' => array(
 		'path' => 'WIND:core.web.WindErrorMessage',

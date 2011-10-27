@@ -214,6 +214,7 @@ class WindSqlStatement {
 	 * @return WindResultSet
 	 */
 	public function query($params = array(), $fetchMode = 0, $fetchType = 0) {
+		return $this->simpleQuery($params, '', $fetchMode, $fetchType);
 		$this->execute($params, false);
 		return new WindResultSet($this, $fetchMode, $fetchType);
 	}
@@ -228,6 +229,7 @@ class WindSqlStatement {
 	 * @return array 返回处理后的结果
 	 */
 	public function queryAll($params = array(), $index = '', $fetchMode = 0, $fetchType = 0) {
+		return $this->simpleQuery($params, 'fetchAll', $fetchMode, $fetchType, array($index));
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, $fetchMode, $fetchType);
 		return $rs->fetchAll($index);
@@ -241,9 +243,54 @@ class WindSqlStatement {
 	 * @return string  
 	 */
 	public function getValue($params = array(), $column = 0) {
+		return $this->simpleQuery($params, 'fetchColumn', PDO::FETCH_NUM, 0 ,array($column));
 		$this->execute($params, false);
 		$rs = new WindResultSet($this, PDO::FETCH_NUM, 0);
 		return $rs->fetchColumn($column);
+	}
+	
+	private function simpleQuery($params = array(), $method = '', $fetchMode = 0, $fetchType = 0, $args = array()){
+		try {
+			if (WIND_DEBUG & 2) {
+				Wind::getApp()->getComponent('windLogger')->profileBegin('SQL:execute sql statement.', 'db');
+				Wind::getApp()->getComponent('windLogger')->info(
+					"[component.db.WindSqlStatement.execute] \r\n\tSQL:" . $this->getQueryString(), 'db');
+			}
+			$this->init();
+			$this->bindValues($params);
+			
+			if ($this->_connection->_queryCacheCount > 0 && 
+				$this->_connection->_queryCacheExpires > 0 && 
+				($cache = $this->_connection->queryCache) !== null){
+					$this->_connection->_queryCacheCount--;
+					$key = 'WindSqlStatement execute:' . $this->_statement->queryString . ':' . serialize($params);
+					if (($result = $cache->get($key)) !== false){
+						Wind::getApp()->getComponent('windLogger')->info(
+							"[wind.db.WindSqlStatement.simpleQuery] \r\n\tResult Found In Query Cache");
+						return $result;
+					}
+				}
+				
+			$this->getStatement()->execute();
+			if ($method == ''){
+				return new WindResultSet($this, $fetchMode, $fetchType);
+			}else{
+				$result = call_user_func_array(array(new WindResultSet($this, $fetchMode, $fetchType), $method), (array)$args);
+			}
+			
+			if (isset($cache, $key)){
+				$cache->set($key, $result, $this->_connection->_queryCacheExpires, $this->_connection->_queryCacheDenpendency);
+			}
+			
+			if (WIND_DEBUG & 2) {
+				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'db');
+				Wind::getApp()->getComponent('windLogger')->info(
+					"[component.db.WindSqlStatement.execute] execute sql statement success.", 'db');
+			}
+			return $result;
+		} catch (PDOException $e) {
+			throw new WindDbException('[component.db.WindSqlStatement.execute]' . $e->getMessage());
+		}
 	}
 
 	/**
@@ -283,6 +330,15 @@ class WindSqlStatement {
 			}
 			$this->init();
 			$this->bindValues($params);
+			
+			if ($this->_connection->_queryCacheCount > 0 && 
+				$this->_connection->_queryCacheExpires > 0 && 
+				$this->_connection->_queryCache !== null){
+					$this->_connection->_queryCacheCount--;
+					$cacheKey = 'WindSqlStatement execute:' . $this->_statement->queryString . ':' . serialize($params);
+					
+				}
+			
 			$this->getStatement()->execute();
 			$_result = $rowCount ? $this->getStatement()->rowCount() : true;
 			if (WIND_DEBUG & 2) {
