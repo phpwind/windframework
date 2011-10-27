@@ -50,7 +50,7 @@ interface IWindSecurityToken {
 	 * 当token有效时则返回true,同时删除token.
 	 * 当coken无效时则返回false.
 	 * <code>
-	 * @param string $value
+	 * @param string $token
 	 * @param string $tokenName token名称,默认名称为<i>_tokenAppName</i>
 	 */
 	public function validateUrlToken($token, $tokenName = '');

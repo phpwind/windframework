@@ -56,19 +56,19 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	/**
 	 * 验证令牌
 	 * 
-	 * @param string $token 当前获得的token值
+	 * @param string $tokenValue 当前获得的token值
 	 * @param string $tokenName token名称
 	 * @param string $type csrf token类型: csrf,url
 	 * @return void
 	 */
-	protected function validateToken($token, $tokenName = '', $type = 'csrf') {
+	protected function validateToken($tokenValue, $tokenName = '', $type = 'csrf') {
 		/* @var $token WindSecurityToken */
 		$token = Wind::getApp()->getComponent('windToken');
 		switch ($type) {
 			case 'csrf':
-				return $token->validateToken($token, $tokenName);
+				return $token->validateToken($tokenValue, $tokenName);
 			case 'url':
-				return $token->validateUrlToken($token, $tokenName);
+				return $token->validateUrlToken($tokenValue, $tokenName);
 			default:
 				return false;
 		}
