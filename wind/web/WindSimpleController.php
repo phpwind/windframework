@@ -93,7 +93,8 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 				if (!empty($filter['class'])) {
 					if (!empty($filter['expression'])) {
 						$v1 = '';
-						list($n, $p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
+						list($n, $p, $o, $v2) = WindUtility::resolveExpression(
+							$filter['expression']);
 						switch (strtolower($n)) {
 							case 'forward':
 								$call = array($this->getForward(), 'getVars');
@@ -197,7 +198,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		if (is_array($name)) {
 			$result = array();
 			foreach ($name as $key => $value) {
-				$result[(is_array($value) ? $key : $value)] = $this->getInput($value, $type);
+				$result[$key] = $this->getInput($value, $type, $callback);
 			}
 			return $result;
 		} else {

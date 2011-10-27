@@ -3,6 +3,7 @@ Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 /**
  * 输出安全令牌隐藏域
  * 
+ * <token name='' />
  * @author Qiong Wu <papa0924@gmail.com> 2011-10-19
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com

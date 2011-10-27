@@ -37,8 +37,11 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	/* (non-PHPdoc)
 	 * @see IWindErrorMessage::sendError()
 	 */
-	public function sendError() {
-		if (empty($this->error)) return;
+	public function sendError($message = '') {
+		if ($message)
+			$this->addError($message);
+		elseif (empty($this->error))
+			return;
 		throw new WindActionException($this);
 	}
 
