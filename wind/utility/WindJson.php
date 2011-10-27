@@ -66,7 +66,8 @@ class WindJson {
 	 * @return mixed
 	 */
 	public static function decode($str, $toArray = true, $charset = 'utf8') {
-		$_str = strtolower(self::_reduceString($str));
+		$str = self::_reduceString($str);
+		$_str = strtolower($str);
 		if ('true' == $_str) {
 			return true;
 		} elseif ('false' == $_str) {

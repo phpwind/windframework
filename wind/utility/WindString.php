@@ -116,7 +116,7 @@ class WindString {
 	 */
 	public static function jsonDecode($value, $charset = self::UTF8) {
 		Wind::import('Wind:utility.WindJson');
-		return WindJson::decode($value, $charset);
+		return WindJson::decode($value, true, $charset);
 	}
 
 	/**
