@@ -80,34 +80,6 @@ class WindConnection extends WindModule {
 	 * @var PDO
 	 */
 	protected $_dbHandle = null;
-	
-	/**
-	 * 数据缓存策略
-	 *
-	 * @var AbstractWindCache
-	 */
-	public $queryCache = null;
-	
-	/**
-	 * 数据缓存过期时间，0为不开启缓存
-	 *
-	 * @var int
-	 */
-	public $_queryCacheExpires = 0;
-	
-	/**
-	 * 数据缓存查询数
-	 *
-	 * @var int
-	 */
-	public $_queryCacheCount = 0;
-	
-	/**
-	 * 数据缓存依赖
-	 *
-	 * @var WindQueryCacheDependency
-	 */
-	public $_queryCacheDenpendency = null;
 
 	/**
 	 * @param string $dsn
@@ -128,14 +100,6 @@ class WindConnection extends WindModule {
 	 */
 	public function createStatement($sql = null) {
 		return new WindSqlStatement($this, $this->parseQueryString($sql));
-	}
-	
-	public function queryCache($queryCacheExpires, $queryCacheCount, WindQueryCacheDependency $dependency = null){
-		$this->_queryCacheExpires = $queryCacheExpires;
-		$this->_queryCacheCount = $queryCacheCount;
-		$this->_queryCacheDenpendency = $dependency;
-		$this->_queryCache = $this->_getQueryCache();
-		return $this;
 	}
 
 	/**
@@ -219,7 +183,6 @@ class WindConnection extends WindModule {
 	 * @return WindResultSet
 	 */
 	public function query($sql) {
-		return $this->createStatement($sql)->query();
 		try {
 			$sql = $this->parseQueryString($sql);
 			return new WindResultSet($this->getDbHandle()->query($sql));
