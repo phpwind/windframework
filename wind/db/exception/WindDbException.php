@@ -107,7 +107,7 @@ class WindDbException extends WindException {
 			self::DB_QUERY_COMPARESS_EXIST => 'Comparison does not exist query. \'$message\'', 
 			self::DB_QUERY_WHERE_ERROR => 'Query where is Error. \'$message\'', 
 			self::DB_QUERY_JOIN_TYPE_ERROR => 'The database is wrong type of join query. \'$message\'', 
-			self::DB_QUERY_ERROR =>　'Query error. \'$message\'',
+			self::DB_QUERY_ERROR => 'Query error. \'$message\'',
 			self::DB_TABLE_EMPTY => 'Table is empty. \'$message\'', 
 			self::DB_EMPTY => 'Database is empty. \'$message\'', 
 			self::DB_DRIVER_NOT_EXIST => 'The database driver does not exist. \'$message\'', 
