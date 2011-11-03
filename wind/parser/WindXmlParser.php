@@ -1,4 +1,5 @@
 <?php
+Wind::import("WIND:utility.WindConvert");
 /**
  * xml文件解析
  *
@@ -31,6 +32,64 @@ class WindXmlParser {
 		if (!class_exists('DOMDocument')) throw new WindException('DOMDocument is not exist.');
 		$this->dom = new DOMDocument($version, $encode);
 	}
+	
+	public function toXml($source, $charset = 'utf8'){
+		switch (gettype($source)){
+			case 'object' :
+				return $this->objectToXml($source);
+			case 'array' : 
+				$source = WindConvert::convert($source, 'utf8', $charset);
+				return $this->arrayToXml($source);
+			case 'string' :
+				$source = WindConvert::convert($source, 'utf8', $charset);
+			default: 
+				$item = $this->dom->createElement("item");
+				$text = $this->dom->createTextNode($source);
+				$item->appendChild($text);
+				$this->dom->appendChild($item);
+				return $this->dom->saveXML();
+				break;
+		}
+	}
+	
+	protected function objectToXml($object){
+		if ($object instanceof Traversable) {
+			$vars = array();
+			foreach ($object as $k => $v) {
+				$vars[$k] = $v;
+			}
+		} else {
+			$vars = get_object_vars($object);
+		}
+		return $this->arrayToXml($vars);
+	}
+	
+	protected function arrayToXml($arr, $dom=0, $item=0){
+		$dom || $dom = $this->dom;
+	    $item || $item = $dom;
+	    
+	    foreach ($arr as $key=>$val){
+	    	if (is_numeric($key)){
+	    		$itemx = $dom->createElement("item");
+	    		$id = $dom->createAttribute("id");
+	    		$_id = $dom->createTextNode($key);
+	    		$id->appendChild($_id);
+	    		$itemx->appendChild($id);
+	    	}else {
+	    		$itemx = $dom->createElement($key);
+	    	}
+	       
+	        $item->appendChild($itemx);
+	        if (!is_array($val)){
+	            $text = $dom->createTextNode($val);
+	            $itemx->appendChild($text);
+	            
+	        }else {
+	            $this->arrayToXml($val,$dom,$itemx);
+	        }
+	    }
+	    return $dom->saveXML();
+	} 
 
 	/**
 	 * 解析

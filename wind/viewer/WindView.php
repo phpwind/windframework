@@ -155,8 +155,9 @@ class WindView extends WindModule implements IWindView {
 		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
 		$_vars['G'] = $this->getResponse()->getData('G');
-		//TODO xml格式输出
-		echo WindJson::encode($_vars);
+		Wind::import("WIND:parser.WindXmlParser");
+		$parser = new WindXmlParser();
+		echo $parser->toXml($_vars);
 	}
 
 	/**
