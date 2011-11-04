@@ -73,13 +73,13 @@ class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 	 * @return string
 	 * @see AbstractWindPdoAdapter::filterArray()
 	 */
-	public function quoteArray($variable) {
+	public function quoteArray($variable, $isMutil = false) {
 		if (empty($variable) || !is_array($variable)) return '';
 		$_tmp1 = $tmp2 = array();
 		foreach ($variable as $value) {
-			if (is_array($value))
-				$tmp2[] = $this->quoteArray($value);
-			else {
+			if (is_array($value)) {
+				$tmp2[] = $isMutil ? $this->quoteArray($value) : '';
+			} else {
 				$_tmp1[] = $this->quote($value);
 			}
 		}

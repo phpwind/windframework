@@ -51,10 +51,11 @@ abstract class AbstractWindPdoAdapter extends PDO {
 	/**
 	 * 过滤数组并将数组变量转换为sql字符串
 	 *
-	 * @param array $variable
+	 * @param array $variable  需要组装的数据
+	 * @param boolean $isMutil 是否是多组数据
 	 * @return string
 	 */
-	abstract public function quoteArray($variable);
+	abstract public function quoteArray($variable, $isMutil = false);
 
 	/**
 	 * 添加数据表
