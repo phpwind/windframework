@@ -47,7 +47,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * 
 	 * @return　void
 	 */
-	protected function saveToken($tokenName = '') {
+	protected function saveToken($tokenName = 'token') {
 		/* @var $token WindSecurityToken */
 		$token = Wind::getApp()->getComponent('windToken');
 		return $token->saveToken($tokenName);
@@ -58,20 +58,12 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * 
 	 * @param string $tokenValue 当前获得的token值
 	 * @param string $tokenName token名称
-	 * @param string $type csrf token类型: csrf,url
 	 * @return void
 	 */
-	protected function validateToken($tokenValue, $tokenName = '', $type = 'csrf') {
+	protected function validateToken($tokenValue, $tokenName = 'token') {
 		/* @var $token WindSecurityToken */
 		$token = Wind::getApp()->getComponent('windToken');
-		switch ($type) {
-			case 'csrf':
-				return $token->validateToken($tokenValue, $tokenName);
-			case 'url':
-				return $token->validateUrlToken($tokenValue, $tokenName);
-			default:
-				return false;
-		}
+		return $token->validateToken($tokenValue, $tokenName);
 	}
 
 	/**
@@ -93,8 +85,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 				if (!empty($filter['class'])) {
 					if (!empty($filter['expression'])) {
 						$v1 = '';
-						list($n, $p, $o, $v2) = WindUtility::resolveExpression(
-							$filter['expression']);
+						list($n, $p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
 						switch (strtolower($n)) {
 							case 'forward':
 								$call = array($this->getForward(), 'getVars');
