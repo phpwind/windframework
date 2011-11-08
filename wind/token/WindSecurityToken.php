@@ -31,7 +31,7 @@ class WindSecurityToken extends WindModule implements IWindSecurityToken {
 		/* @var $tokenContainer WindSession */
 		$tokenContainer = $this->_getTokenContainer();
 		$tokenName = $this->getTokenName($tokenName);
-		$_token = WindSecurity::createToken();
+		$_token = WindSecurity::generateGUID();
 		$tokenContainer->set($tokenName, $_token);
 		return $_token;
 	}

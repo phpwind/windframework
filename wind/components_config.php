@@ -16,7 +16,7 @@
 		'scope' => 'singleton',
 		'properties' => array(
 			'tokenContainer' => array(
-				'ref' => 'windSession',
+				'ref' => 'windCookie',
 			),
 		),
 	),
@@ -122,5 +122,6 @@
 	'windCookie' => array(
 		'path' => 'WIND:http.cookie.WindNormalCookie',
 		'scope' => 'singleton',
+		'config' => array('expires' => 3600*24),
 	),
 );

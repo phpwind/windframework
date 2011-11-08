@@ -39,6 +39,14 @@ interface IWindHttpContainer {
 	 */
 	public function delete($key);
 
+	/**
+	 * 检测变量是否已经被注册
+	 * 
+	 * @param string $key 需要进行判断的建名
+	 * @return boolean 如果已经被注册则返回true,否则返回false
+	 */
+	public function isRegistered($key);
+
 }
 
 ?>
