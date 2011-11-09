@@ -61,35 +61,44 @@ class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 	/**
 	 * 过滤数组并将数组变量转换为sql字符串
 	 * 
-	 * 对数组中的值进行安全过滤,并转化为mysql支持的values的格式,如下例子:<code>
+	 * 对数组中的值进行安全过滤,并转化为mysql支持的values的格式,如下例子:
+	 * <code>
 	 * $variable = array('a','b','c');
-	 * filterArray($variable);
+	 * quoteArray($variable);
 	 * //return string: ('a','b','c')
-	 * $variable = array(array('a1','b1','c1'),array('a2','b2','c2'));
-	 * filterArray($variable);
+	 * </code>
+	 * 
+	 * @see AbstractWindPdoAdapter::quoteArray()
+	 */
+	public function quoteArray($variable) {
+		if (empty($variable) || !is_array($variable)) return '';
+		$_returns = array();
+		foreach ($variable as $value) {
+			$_returns[] = is_array($value) ? '' : $this->quote($value);
+		}
+		return '(' . implode(', ', $_returns) . ')';
+	}
+	
+	/**
+	 * 过滤二维数组将数组变量转换为多组的sql字符串
+	 * 
+	 * <code>
+	 * $var = array(array('a1','b1','c1'),array('a2','b2','c2'));
+	 * quoteMultiArrray($var);
 	 * //return string: ('a1','b1','c1'),('a2','b2','c2')
 	 * </code>
-	 * @param array $variable 
-	 * @return string
-	 * @see AbstractWindPdoAdapter::filterArray()
+	 * 
+	 * @see AbstractWindPdoAdapter::quoteMultiArray()
 	 */
-	public function quoteArray($variable, $isMutil = false) {
-		if (empty($variable) || !is_array($variable)) return '';
-		$_tmp1 = $tmp2 = array();
-		foreach ($variable as $value) {
-			if (is_array($value)) {
-				$tmp2[] = $isMutil ? $this->quoteArray($value) : '';
-			} else {
-				$_tmp1[] = $this->quote($value);
+	public function quoteMultiArray($var) {
+		if (empty($var) || !is_array($var)) return '';
+		$_returns = array();
+		foreach ($var as $val) {
+			if (!empty($val) && is_array($val)) {
+				$_returns[] = $this->quoteArray($val);
 			}
 		}
-		$_returns = '';
-		if ($_tmp1) $_returns = '(' . implode(',', $_tmp1) . ')';
-		if ($tmp2) {
-			$_returns && $tmp2[] = $_returns;
-			$_returns = implode(',', $tmp2);
-		}
-		return $_returns;
+		return implode(', ', $_returns);
 	}
 
 	/**
@@ -115,6 +124,5 @@ class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 		$data = str_replace(array('`', ' '), '', $data);
 		return ' `' . $data . '` ';
 	}
-
 }
 ?>
