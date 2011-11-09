@@ -32,64 +32,6 @@ class WindXmlParser {
 		if (!class_exists('DOMDocument')) throw new WindException('DOMDocument is not exist.');
 		$this->dom = new DOMDocument($version, $encode);
 	}
-	
-	public function toXml($source, $charset = 'utf8'){
-		switch (gettype($source)){
-			case 'object' :
-				return $this->objectToXml($source);
-			case 'array' : 
-				$source = WindConvert::convert($source, 'utf8', $charset);
-				return $this->arrayToXml($source);
-			case 'string' :
-				$source = WindConvert::convert($source, 'utf8', $charset);
-			default: 
-				$item = $this->dom->createElement("item");
-				$text = $this->dom->createTextNode($source);
-				$item->appendChild($text);
-				$this->dom->appendChild($item);
-				return $this->dom->saveXML();
-				break;
-		}
-	}
-	
-	protected function objectToXml($object){
-		if ($object instanceof Traversable) {
-			$vars = array();
-			foreach ($object as $k => $v) {
-				$vars[$k] = $v;
-			}
-		} else {
-			$vars = get_object_vars($object);
-		}
-		return $this->arrayToXml($vars);
-	}
-	
-	protected function arrayToXml($arr, $dom=0, $item=0){
-		$dom || $dom = $this->dom;
-	    $item || $item = $dom;
-	    
-	    foreach ($arr as $key=>$val){
-	    	if (is_numeric($key)){
-	    		$itemx = $dom->createElement("item");
-	    		$id = $dom->createAttribute("id");
-	    		$_id = $dom->createTextNode($key);
-	    		$id->appendChild($_id);
-	    		$itemx->appendChild($id);
-	    	}else {
-	    		$itemx = $dom->createElement($key);
-	    	}
-	       
-	        $item->appendChild($itemx);
-	        if (!is_array($val)){
-	            $text = $dom->createTextNode($val);
-	            $itemx->appendChild($text);
-	            
-	        }else {
-	            $this->arrayToXml($val,$dom,$itemx);
-	        }
-	    }
-	    return $dom->saveXML();
-	} 
 
 	/**
 	 * 解析
@@ -102,6 +44,38 @@ class WindXmlParser {
 		if (!is_file($filename)) return array();
 		$this->dom->load($filename, $option);
 		return $this->getChilds($this->dom->documentElement);
+	}
+
+	/**
+	 * 将数据转换成xml格式
+	 * 
+	 * <code>
+	 * 数组中key为数值型时，则转为<item id=key>value</item>
+	 * 普通string或其他基本类型，则转为<item>string</item>
+	 * </code>
+	 *
+	 * @param mixed $source 待转换的数据
+	 * @param string $charset 待转换数据的编码
+	 * @return string
+	 */
+	public function parseToXml($source, $charset = 'utf8') {
+		switch (gettype($source)) {
+			case 'object':
+				$source = get_object_vars($source);
+				$this->dom = $this->arrayToXml($source, $charset);
+				break;
+			case 'array':
+				$this->dom = $this->arrayToXml($source, $charset);
+				break;
+			default:
+				$source = WindConvert::convert($source, 'utf8', $charset);
+				$item = $this->dom->createElement("item");
+				$text = $this->dom->createTextNode($source);
+				$item->appendChild($text);
+				$this->dom->appendChild($item);
+				break;
+		}
+		return $this->dom->saveXML();
 	}
 
 	/**
@@ -124,8 +98,8 @@ class WindXmlParser {
 				$value = trim($_node->nodeValue);
 				(is_numeric($value) || $value) && $childs['__value'] = $value; //值为0的情况
 				$__tmp = strtolower($value);
-				('false' === $__tmp) && $childs['__value'] = false;//为false的配置值
-				('true' === $__tmp) && $childs['__value'] = true;//为false的配置值
+				('false' === $__tmp) && $childs['__value'] = false; //为false的配置值
+				('true' === $__tmp) && $childs['__value'] = true; //为false的配置值
 			}
 			if (1 !== $_node->nodeType) continue;
 			
@@ -142,8 +116,9 @@ class WindXmlParser {
 				$childs[$nodeName] = $tempChilds;
 			else {
 				$element = $childs[$nodeName];
-				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? array_merge(
-					array($element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
+				$childs[$nodeName] = (is_array($element) && !is_numeric(
+					implode('', array_keys($element)))) ? array_merge(array($element), 
+					array($tempChilds)) : array_merge((array) $element, array($tempChilds));
 			}
 		}
 		return $childs;
@@ -162,11 +137,47 @@ class WindXmlParser {
 		$attributes = array();
 		foreach ($node->attributes as $attribute) {
 			if (self::NAME != $attribute->nodeName) {
-				$value = (string)$attribute->nodeValue;
+				$value = (string) $attribute->nodeValue;
 				$__tmp = strtolower($value);
 				$attributes[$attribute->nodeName] = 'false' === $__tmp ? false : ('true' === $__tmp ? true : $value);
 			}
 		}
 		return $attributes;
 	}
+
+	/**
+	 * 将一个数组转换为xml
+	 *
+	 * @param array $arr 待转换的数组
+	 * @param string $charset 编码
+	 * @param DOMDocument $dom 根节点
+	 * @param (DOMDocument|DOMElement) $item 子结点
+	 * @return DOMDocument
+	 */
+	protected function arrayToXml($arr, $charset, $dom = 0, $item = 0) {
+		$dom || $dom = $this->dom;
+		$item || $item = $dom;
+		
+		foreach ($arr as $key => $val) {
+			if (is_numeric($key)) {
+				$itemx = $dom->createElement("item");
+				$id = $dom->createAttribute("id");
+				$_id = $dom->createTextNode($key);
+				$id->appendChild($_id);
+				$itemx->appendChild($id);
+			} else {
+				$itemx = $dom->createElement($key);
+			}
+			$item->appendChild($itemx);
+			if (!is_array($val)) {
+				$val = WindConvert::convert($val, 'utf8', $charset);
+				$text = $dom->createTextNode($val);
+				$itemx->appendChild($text);
+			} else {
+				$this->arrayToXml($val, $charset, $dom, $itemx);
+			}
+		}
+		return $dom;
+	}
+
 }

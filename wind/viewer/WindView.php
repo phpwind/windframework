@@ -157,7 +157,7 @@ class WindView extends WindModule implements IWindView {
 		$_vars['G'] = $this->getResponse()->getData('G');
 		Wind::import("WIND:parser.WindXmlParser");
 		$parser = new WindXmlParser();
-		echo $parser->toXml($_vars);
+		echo $parser->parseToXml($_vars);
 	}
 
 	/**
