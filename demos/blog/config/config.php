@@ -11,7 +11,7 @@ return array(
 		'filters' => array(
 			'user' => array(
 				'class' => 'WIND:web.filter.WindFormFilter', 
-				'pattern' => 'default_Index_login|default_Index_dreg', 
+				'pattern' => 'default/Index/(login|dreg)', 
 				'form' => 'BLOG:model.UserForm'
 			)
 		), 
