@@ -40,7 +40,7 @@ class WindSecurityToken extends WindModule implements IWindSecurityToken {
 			}
 			$this->token = $_token;
 		}
-		return $_token;
+		return $this->token;
 	}
 
 	/* (non-PHPdoc)
