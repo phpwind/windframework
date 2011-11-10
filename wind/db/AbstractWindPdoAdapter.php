@@ -29,6 +29,7 @@ abstract class AbstractWindPdoAdapter extends PDO {
 	 * @see PDO::quote()
 	 */
 	public function quote($value, $type = null) {
+		if (is_array($value) || is_object($value)) return "''";
 		return parent::quote($value, $type ? $type : $this->_getPdoDataType(gettype($value)));
 	}
 

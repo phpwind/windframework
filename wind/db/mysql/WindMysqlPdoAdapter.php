@@ -74,7 +74,7 @@ class WindMysqlPdoAdapter extends AbstractWindPdoAdapter {
 		if (empty($variable) || !is_array($variable)) return '';
 		$_returns = array();
 		foreach ($variable as $value) {
-			$_returns[] = is_array($value) ? '' : $this->quote($value);
+			$_returns[] = $this->quote($value);
 		}
 		return '(' . implode(', ', $_returns) . ')';
 	}
