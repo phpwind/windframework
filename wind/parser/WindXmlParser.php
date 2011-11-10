@@ -62,19 +62,14 @@ class WindXmlParser {
 		switch (gettype($source)) {
 			case 'object':
 				$source = get_object_vars($source);
-				$this->dom = $this->arrayToXml($source, $charset);
 				break;
 			case 'array':
-				$this->dom = $this->arrayToXml($source, $charset);
 				break;
 			default:
-				$source = WindConvert::convert($source, 'utf8', $charset);
-				$item = $this->dom->createElement("item");
-				$text = $this->dom->createTextNode($source);
-				$item->appendChild($text);
-				$this->dom->appendChild($item);
+				$source = array('item' => $source);
 				break;
 		}
+		$this->dom = $this->arrayToXml($source, $charset);
 		return $this->dom->saveXML();
 	}
 
