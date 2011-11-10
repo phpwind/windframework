@@ -109,6 +109,11 @@ class WindView extends WindModule implements IWindView {
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
+	
+	/**
+	 * @var WindXmlParser
+	 */
+	protected $xmlParser = null;
 
 	/* (non-PHPdoc)
 	 * @see IWindView::render()
@@ -155,8 +160,11 @@ class WindView extends WindModule implements IWindView {
 		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
 		$_vars['G'] = $this->getResponse()->getData('G');
-		Wind::import("WIND:parser.WindXmlParser");
-		$parser = new WindXmlParser();
+		$parser = $this->_getXmlParser();
+		if ($parser === null) {
+			Wind::import("WIND:parser.WindXmlParser");
+			$parser = new WindXmlParser();
+		}
 		echo $parser->parseToXml($_vars);
 	}
 

@@ -62,14 +62,18 @@ class WindXmlParser {
 		switch (gettype($source)) {
 			case 'object':
 				$source = get_object_vars($source);
-				break;
 			case 'array':
+				$this->arrayToXml($source, $charset, $this->dom);
 				break;
+			case 'string':
+				$source = WindConvert::convert($source, 'utf8', $charset);
 			default:
-				$source = array('item' => $source);
+				$item = $this->dom->createElement("item");
+				$text = $this->dom->createTextNode($source);
+				$item->appendChild($text);
+				$this->dom->appendChild($item);
 				break;
 		}
-		$this->dom = $this->arrayToXml($source, $charset);
 		return $this->dom->saveXML();
 	}
 
@@ -111,9 +115,8 @@ class WindXmlParser {
 				$childs[$nodeName] = $tempChilds;
 			else {
 				$element = $childs[$nodeName];
-				$childs[$nodeName] = (is_array($element) && !is_numeric(
-					implode('', array_keys($element)))) ? array_merge(array($element), 
-					array($tempChilds)) : array_merge((array) $element, array($tempChilds));
+				$childs[$nodeName] = (is_array($element) && !is_numeric(implode('', array_keys($element)))) ? array_merge(
+					array($element), array($tempChilds)) : array_merge((array) $element, array($tempChilds));
 			}
 		}
 		return $childs;
@@ -146,33 +149,28 @@ class WindXmlParser {
 	 * @param array $arr 待转换的数组
 	 * @param string $charset 编码
 	 * @param DOMDocument $dom 根节点
-	 * @param (DOMDocument|DOMElement) $item 子结点
 	 * @return DOMDocument
 	 */
-	protected function arrayToXml($arr, $charset, $dom = 0, $item = 0) {
-		$dom || $dom = $this->dom;
-		$item || $item = $dom;
-		
+	protected function arrayToXml($arr, $charset, $dom = null) {
 		foreach ($arr as $key => $val) {
 			if (is_numeric($key)) {
 				$itemx = $dom->createElement("item");
 				$id = $dom->createAttribute("id");
-				$_id = $dom->createTextNode($key);
-				$id->appendChild($_id);
+				$id->appendChild($dom->createTextNode($key));
 				$itemx->appendChild($id);
 			} else {
 				$itemx = $dom->createElement($key);
 			}
-			$item->appendChild($itemx);
-			if (!is_array($val)) {
+			$dom->appendChild($itemx);
+			if (is_string($val)) {
 				$val = WindConvert::convert($val, 'utf8', $charset);
-				$text = $dom->createTextNode($val);
-				$itemx->appendChild($text);
+				$itemx->appendChild($dom->createTextNode($val));
+			} elseif (is_object($val)) {
+				$this->arrayToXml(get_object_vars($val), $charset, $itemx);
 			} else {
-				$this->arrayToXml($val, $charset, $dom, $itemx);
+				$this->arrayToXml($val, $charset, $itemx);
 			}
 		}
-		return $dom;
 	}
 
 }
