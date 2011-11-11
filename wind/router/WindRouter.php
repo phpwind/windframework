@@ -44,6 +44,10 @@ class WindRouter extends AbstractWindRouter {
 	 * @see IWindRouter::route()
 	 */
 	public function route($request, $response) {
+		$this->_action = $this->action;
+		$this->_controller = $this->controller;
+		$this->_module = $this->module;
+		$this->_app = $this->app;
 		$this->request = $request;
 		$this->setCallBack(array($this, 'defaultRoute'));
 		$params = $this->getHandler()->handle($request, $response);
