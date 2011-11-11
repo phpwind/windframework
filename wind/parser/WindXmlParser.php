@@ -154,17 +154,17 @@ class WindXmlParser {
 	protected function arrayToXml($arr, $charset, $dom = null) {
 		foreach ($arr as $key => $val) {
 			if (is_numeric($key)) {
-				$itemx = $dom->createElement("item");
-				$id = $dom->createAttribute("id");
-				$id->appendChild($dom->createTextNode($key));
+				$itemx = $this->dom->createElement("item");
+				$id = $this->dom->createAttribute("id");
+				$id->appendChild($this->dom->createTextNode($key));
 				$itemx->appendChild($id);
 			} else {
-				$itemx = $dom->createElement($key);
+				$itemx = $this->dom->createElement($key);
 			}
 			$dom->appendChild($itemx);
 			if (is_string($val)) {
 				$val = WindConvert::convert($val, 'utf8', $charset);
-				$itemx->appendChild($dom->createTextNode($val));
+				$itemx->appendChild($this->dom->createTextNode($val));
 			} elseif (is_object($val)) {
 				$this->arrayToXml(get_object_vars($val), $charset, $itemx);
 			} else {

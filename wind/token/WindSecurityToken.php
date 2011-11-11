@@ -78,12 +78,11 @@ class WindSecurityToken extends WindModule implements IWindSecurityToken {
 	 * token名称处理
 	 * 
 	 * @param string $tokenName
-	 * @param string $suffix 默认值'csrf'
 	 * @return string
 	 */
-	protected function getTokenName($tokenName, $suffix = 'csrf') {
+	protected function getTokenName($tokenName) {
 		$tokenName || $tokenName = Wind::getAppName();
-		return substr(md5('_token' . $tokenName . '_' . $suffix), -16);
+		return substr(md5('_token' . $tokenName . '_csrf'), -16);
 	}
 }
 

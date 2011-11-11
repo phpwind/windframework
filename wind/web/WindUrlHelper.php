@@ -43,7 +43,8 @@ class WindUrlHelper {
 		false !== ($pos = strpos($url, '?')) && $url = substr($url, $pos + 1);
 		$_sep1 = substr($separator, 0, 1);
 		if ($_sep2 = substr($separator, 1, 1)) {
-			$url = preg_replace('/' . preg_quote($_sep1, '/') . '[\w+]' . preg_quote($_sep1, '/') . '/i', $_sep1, $url);
+			$__sep1 = preg_quote($_sep1, '/');
+			$url = preg_replace('/' . $__sep1 . '[\w+]' . $__sep1 . '/i', $_sep1, $url);
 			$url = str_replace($_sep2, $_sep1, $url);
 		}
 		$url = explode($_sep1, trim($url, $_sep1) . $_sep1);
