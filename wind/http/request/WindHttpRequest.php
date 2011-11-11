@@ -637,9 +637,8 @@ class WindHttpRequest implements IWindRequest {
 	 * @param string $charset 请求相应头部的编码方式
 	 * @return WindHttpResponse
 	 */
-	public function getResponse($charset) {
+	public function getResponse($charset = 'utf-8') {
 		$response = new WindHttpResponse();
-		!$charset && $charset = 'utf-8';
 		$response->setHeader('Content-type', 'text/html;charset=' . $charset);
 		$response->setCharset($charset);
 		return $response;

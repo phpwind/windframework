@@ -51,11 +51,12 @@ class WindHandlerInterceptorChain extends WindModule {
 	 */
 	public function handle() {
 		reset($this->_interceptors);
-		if ($this->_callBack === null)
-			return null;
-		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {throw new WindException(
-				'[filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
-				WindException::ERROR_FUNCTION_NOT_EXIST);}
+		if ($this->_callBack === null) return null;
+		if (is_string($this->_callBack) && !function_exists($this->_callBack)) {
+			throw new WindException('[filter.WindHandlerInterceptorChain.execute]' . $this->_callBack, 
+				WindException::ERROR_FUNCTION_NOT_EXIST);
+		}
+		$this->_args || $this->_args = func_get_args();
 		return call_user_func_array($this->_callBack, (array) $this->_args);
 	}
 
@@ -65,9 +66,13 @@ class WindHandlerInterceptorChain extends WindModule {
 	 * @return WindHandlerInterceptor
 	 */
 	public function getHandler() {
-		if (count($this->_interceptors) <= 1) {return $this;}
+		if (count($this->_interceptors) <= 1) {
+			return $this;
+		}
 		$handler = next($this->_interceptors);
-		if ($handler === false) {return null;}
+		if ($handler === false) {
+			return null;
+		}
 		if (method_exists($handler, 'handle')) {
 			$handler->setHandlerInterceptorChain($this);
 			return $handler;

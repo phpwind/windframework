@@ -15,12 +15,12 @@ class WindSecurityToken extends WindModule implements IWindSecurityToken {
 	 *
 	 * @var string
 	 */
-	protected $urlToken = array();
+	protected $token = null;
 	/**
 	 * 令牌容器
 	 * 
 	 * 可以通过组件配置方式配置不同的容器类型
-	 * @var WindSession
+	 * @var IWindHttpContainer
 	 */
 	protected $tokenContainer = null;
 
@@ -28,65 +28,62 @@ class WindSecurityToken extends WindModule implements IWindSecurityToken {
 	 * @see IWindSecurityToken::saveToken($tokenName)
 	 */
 	public function saveToken($tokenName = '') {
-		/* @var $tokenContainer WindSession */
-		$tokenContainer = $this->_getTokenContainer();
-		$tokenName = $this->getTokenName($tokenName);
-		$_token = WindSecurity::createToken();
-		$tokenContainer->set($tokenName, $_token);
-		return $_token;
+		if ($this->token === null) {
+			/* @var $tokenContainer IWindHttpContainer */
+			$tokenContainer = $this->_getTokenContainer();
+			$tokenName = $this->getTokenName($tokenName);
+			if ($tokenContainer->isRegistered($tokenName)) {
+				$_token = $tokenContainer->get($tokenName);
+			} else {
+				$_token = WindSecurity::generateGUID();
+				$tokenContainer->set($tokenName, $_token);
+			}
+			$this->token = $_token;
+		}
+		return $this->token;
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindSecurityToken::validateToken()
 	 */
 	public function validateToken($token, $tokenName = '') {
-		/* @var $tokenContainer WindSession */
+		/* @var $tokenContainer IWindHttpContainer */
 		$tokenContainer = $this->_getTokenContainer();
 		$tokenName = $this->getTokenName($tokenName);
 		$_token = $tokenContainer->get($tokenName);
-		if ($_token && $_token === $token) {
-			$tokenContainer->delete($tokenName);
-			return true;
-		}
-		return false;
+		return $_token && $_token === $token;
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindSecurityToken::deleteToken()
+	 */
+	public function deleteToken($tokenName) {
+		/* @var $tokenContainer IWindHttpContainer */
+		$tokenContainer = $this->_getTokenContainer();
+		$tokenName = $this->getTokenName($tokenName);
+		return $tokenContainer->delete($tokenName);
+	}
+
+	/* (non-PHPdoc)
+	 * @see IWindSecurityToken::getToken()
+	 */
+	public function getToken($tokenName) {
+		/* @var $tokenContainer IWindHttpContainer */
+		$tokenContainer = $this->_getTokenContainer();
+		$tokenName = $this->getTokenName($tokenName);
+		return $tokenContainer->get($tokenName);
 	}
 
 	/**
 	 * token名称处理
 	 * 
 	 * @param string $tokenName
+	 * @return string
 	 */
-	protected function getTokenName($tokenName, $suffix = 'csrf') {
+	protected function getTokenName($tokenName) {
 		$tokenName || $tokenName = Wind::getAppName();
-		return substr(md5('_token' . $tokenName . '_' . $suffix), -16);
+		return substr(md5('_token' . $tokenName . '_csrf'), -16);
 	}
-
-	/* (non-PHPdoc)
-	 * @see IWindSecurityToken::validateUrlToken()
-	 */
-	public function validateUrlToken($token, $tokenName = '') {
-		$tokenName = $this->getTokenName($tokenName, 'url');
-		/* @var $tokenContainer WindSession */
-		$tokenContainer = $this->_getTokenContainer();
-		$_token = $tokenContainer->get($tokenName);
-		return ($_token && $_token === $token);
-	}
-
-	/* (non-PHPdoc)
-	 * @see IWindSecurityToken::saveUrlToken()
-	 */
-	public function saveUrlToken($tokenName = '') {
-		$tokenName = $this->getTokenName($tokenName, 'url');
-		if (isset($this->urlToken[$tokenName])) {
-			/* @var $tokenContainer WindSession */
-			$tokenContainer = $this->_getTokenContainer();
-			$_token = WindSecurity::createToken();
-			$tokenContainer->set($tokenName, $_token);
-			$this->urlToken[$tokenName] = $_token;
-		}
-		return $this->urlToken[$tokenName];
-	}
-
 }
 
 ?>

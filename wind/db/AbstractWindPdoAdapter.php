@@ -29,6 +29,7 @@ abstract class AbstractWindPdoAdapter extends PDO {
 	 * @see PDO::quote()
 	 */
 	public function quote($value, $type = null) {
+		if (is_array($value) || is_object($value)) return "''";
 		return parent::quote($value, $type ? $type : $this->_getPdoDataType(gettype($value)));
 	}
 
@@ -47,14 +48,22 @@ abstract class AbstractWindPdoAdapter extends PDO {
 	 * @return string
 	 */
 	abstract public function sqlSingle($array);
-
+	
 	/**
 	 * 过滤数组并将数组变量转换为sql字符串
 	 *
-	 * @param array $variable
+	 * @param array $variable  需要组装的数据
 	 * @return string
 	 */
 	abstract public function quoteArray($variable);
+	
+	/** 
+	 * 过滤二维数组将数组变量转换为多组的sql字符串
+	 *
+	 * @param array $var
+	 * @return string
+	 */
+	abstract public function quoteMultiArray($var);
 
 	/**
 	 * 添加数据表

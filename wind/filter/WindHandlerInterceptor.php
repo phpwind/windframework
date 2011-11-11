@@ -63,7 +63,7 @@ abstract class WindHandlerInterceptor extends WindModule {
 		if (null !== ($handler = $this->interceptorChain->getHandler())) {
 			$this->result = call_user_func_array(array($handler, 'handle'), $args);
 		} else {
-			$this->result = $this->interceptorChain->handle();
+			$this->result = call_user_func_array(array($this->interceptorChain, 'handle'), $args);
 		}
 		call_user_func_array(array($this, 'postHandle'), $args);
 		return $this->result;

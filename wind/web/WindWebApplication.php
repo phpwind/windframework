@@ -27,7 +27,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @var WindDispatcher
 	 */
 	protected $dispatcher = null;
-	protected $started = false;
 	protected $token = '';
 	/**
 	 * @var WindRouter
@@ -41,31 +40,14 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	/**
 	 * 应用初始化操作
 	 * 
-	 * @param array|string $config
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @param WindFactory $factory
-	 * @param string $runCallBack
 	 */
-	public function __construct($config, $factory) {
-		$this->request = new WindHttpRequest();
-		$this->response = $this->request->getResponse(@$config['charset']);
+	public function __construct($request, $response, $factory) {
+		$this->request = $request;
+		$this->response = $response;
 		$this->windFactory = $factory;
-		if ($config) $this->setConfig($config);
-	}
-
-	/* (non-PHPdoc)
-	 * @see WindModule::setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		if ($default = $this->getModules('default')) {
-			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
-		}
-		$_modules = $this->getConfig('modules', '', array());
-		foreach ($_modules as $key => $value) {
-			if ($key == 'default') continue;
-			$this->setModules($key, $value, true);
-		}
-		$this->setModules('default', $this->defaultModule, true);
 	}
 
 	/* (non-PHPdoc)
@@ -79,22 +61,15 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	/* (non-PHPdoc)
 	 * @see IWindApplication::run()
 	 */
-	public function run() {
-		if ($this->started !== true) {
-			$this->started = true;
-			set_error_handler('WindHelper::errorHandle');
-			set_exception_handler('WindHelper::exceptionHandle');
-			$this->_getHandlerAdapter()->route();
-			$__state = true;
-		}
+	public function run($__state = false) {
 		try {
-			if (!$this->handlerAdapter->getModule()) $this->handlerAdapter->setModule('default');
 			$this->checkProcess();
 			if (!($module = $this->getModules())) {
 				throw new WindActionException(
 					'[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
 			}
+			
 			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
@@ -115,7 +90,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			}
-			if (isset($__state) && $__state === true && $filters = $this->getConfig('filters')) {
+			if ($__state === true && $filters = $this->getConfig('filters')) {
 				$this->resolveActionMapping($filters, $handler);
 				$this->_proxy->runProcess($handler);
 			} else
@@ -127,13 +102,25 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindException $e) {
 			$this->sendErrorMessage($e);
 		}
-		if (isset($__state) && $__state === true) {
-			restore_error_handler();
-			restore_exception_handler();
-			$this->response->sendResponse();
-			$this->windFactory->executeDestroyMethod();
-			Wind::resetApp();
-			$this->started = false;
+	}
+
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
+	 */
+	public function setConfig($config) {
+		parent::setConfig($config);
+		if ($default = $this->getModules('default')) {
+			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
+		}
+		$_modules = $this->getConfig('modules', '', array());
+		foreach ($_modules as $key => $value) {
+			if ($key == 'default') continue;
+			$this->setModules($key, $value, true);
+		}
+		$this->setModules('default', $this->defaultModule, true);
+		if (isset($config['charset'])) {
+			$this->getResponse()->setHeader('Content-type', 'text/html;charset=' . $config['charset']);
+			$this->getResponse()->setCharset($config['charset']);
 		}
 	}
 
@@ -217,17 +204,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	public function getModules($name = '') {
 		if ($name === '') return $this->getConfig('modules', $this->handlerAdapter->getModule());
 		return $this->getConfig('modules', $name, array());
-	}
-
-	/**
-	 * 注册组件对象
-	 * 
-	 * @param object $componentInstance
-	 * @param string $componentName
-	 * @param string $scope 默认值为 'application'
-	 */
-	public function registeComponent($componentName, $componentInstance, $scope = 'application') {
-		return $this->windFactory->registInstance($componentInstance, $componentName, $scope);
 	}
 
 	/**
@@ -336,8 +312,11 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @throws WindFinalException
 	 */
 	protected function checkProcess() {
-		$token = $this->handlerAdapter->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
-		if (strcasecmp($token, $this->token) === 0) throw new WindFinalException();
+		$token = $this->_getHandlerAdapter()->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
+		if (strcasecmp($token, $this->token) === 0) {
+			throw new WindFinalException('[WindWebApplication.checkProcess] dulplicat request \'' . $token . '\'', 
+				WindException::ERROR_SYSTEM_ERROR);
+		}
 		$this->token = $token;
 	}
 

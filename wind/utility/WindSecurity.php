@@ -83,6 +83,7 @@ class WindSecurity {
 	 * 
 	 * 创建token令牌串,用于避免表单重复提交等.
 	 * 使用当前的sessionID以及当前时间戳,生成唯一一串令牌串,并返回.
+	 * @deprecated
 	 * @return string
 	 */
 	public static function createToken() {

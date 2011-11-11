@@ -20,6 +20,7 @@ class WindTemplateCompilerToken extends AbstractWindTemplateCompiler {
 	public function compile($key, $content) {
 		/* @var $token WindSecurityToken */
 		$token = Wind::getApp()->getComponent('windToken');
+		$this->name || $this->name = 'token';
 		$value = $token->saveToken($this->name);
 		$_content = '<?php $__tpl_token = Wind::getApp()->getComponent(\'windToken\');';
 		$_content .= '$__tpl_token_value = $__tpl_token->saveToken(\'' . $this->name . '\'); ?>';

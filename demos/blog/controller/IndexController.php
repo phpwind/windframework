@@ -46,6 +46,8 @@ class IndexController extends WindController {
 		if ($this->userInfo) $this->showMessage('已登录，请先注销.');
 		/* @var $userForm UserForm */
 		$userForm = $this->getInput("userForm");
+		if (!$userForm) $this->showMessage('获取用户登录数据失败');
+		
 		/* @var $db WindConnection */
 		$db = $this->getSystemFactory()->getInstance('db');
 		$stmt = $db->createStatement('SELECT userid FROM user WHERE username=:username AND password =:password');

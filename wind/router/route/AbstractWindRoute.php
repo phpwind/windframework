@@ -29,15 +29,17 @@ abstract class AbstractWindRoute extends WindHandlerInterceptor {
 	/**
 	 * 路由规则匹配方法，返回匹配到的参数列表
 	 * 
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @return array
 	 */
-	abstract public function match();
+	abstract public function match($request, $response);
 
 	/* (non-PHPdoc)
 	 * @see WindHandlerInterceptor::preHandle()
 	 */
-	public function preHandle() {
-		return $this->match();
+	public function preHandle($request = null, $response = null) {
+		return $this->match($request, $response);
 	}
 
 	/* (non-PHPdoc)

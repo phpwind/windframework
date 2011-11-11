@@ -1,4 +1,5 @@
 <?php
+Wind::import("WIND:utility.WindConvert");
 /**
  * xml文件解析
  *
@@ -46,6 +47,37 @@ class WindXmlParser {
 	}
 
 	/**
+	 * 将数据转换成xml格式
+	 * 
+	 * <code>
+	 * 数组中key为数值型时，则转为<item id=key>value</item>
+	 * 普通string或其他基本类型，则转为<item>string</item>
+	 * </code>
+	 *
+	 * @param mixed $source 待转换的数据
+	 * @param string $charset 待转换数据的编码
+	 * @return string
+	 */
+	public function parseToXml($source, $charset = 'utf8') {
+		switch (gettype($source)) {
+			case 'object':
+				$source = get_object_vars($source);
+			case 'array':
+				$this->arrayToXml($source, $charset, $this->dom);
+				break;
+			case 'string':
+				$source = WindConvert::convert($source, 'utf8', $charset);
+			default:
+				$item = $this->dom->createElement("item");
+				$text = $this->dom->createTextNode($source);
+				$item->appendChild($text);
+				$this->dom->appendChild($item);
+				break;
+		}
+		return $this->dom->saveXML();
+	}
+
+	/**
 	 * 获得节点的所有子节点
 	 * 
 	 * 子节点包括属性和子节点（及文本节点),
@@ -65,8 +97,8 @@ class WindXmlParser {
 				$value = trim($_node->nodeValue);
 				(is_numeric($value) || $value) && $childs['__value'] = $value; //值为0的情况
 				$__tmp = strtolower($value);
-				('false' === $__tmp) && $childs['__value'] = false;//为false的配置值
-				('true' === $__tmp) && $childs['__value'] = true;//为false的配置值
+				('false' === $__tmp) && $childs['__value'] = false; //为false的配置值
+				('true' === $__tmp) && $childs['__value'] = true; //为false的配置值
 			}
 			if (1 !== $_node->nodeType) continue;
 			
@@ -103,11 +135,42 @@ class WindXmlParser {
 		$attributes = array();
 		foreach ($node->attributes as $attribute) {
 			if (self::NAME != $attribute->nodeName) {
-				$value = (string)$attribute->nodeValue;
+				$value = (string) $attribute->nodeValue;
 				$__tmp = strtolower($value);
 				$attributes[$attribute->nodeName] = 'false' === $__tmp ? false : ('true' === $__tmp ? true : $value);
 			}
 		}
 		return $attributes;
 	}
+
+	/**
+	 * 将一个数组转换为xml
+	 *
+	 * @param array $arr 待转换的数组
+	 * @param string $charset 编码
+	 * @param DOMDocument $dom 根节点
+	 * @return DOMDocument
+	 */
+	protected function arrayToXml($arr, $charset, $dom = null) {
+		foreach ($arr as $key => $val) {
+			if (is_numeric($key)) {
+				$itemx = $this->dom->createElement("item");
+				$id = $this->dom->createAttribute("id");
+				$id->appendChild($this->dom->createTextNode($key));
+				$itemx->appendChild($id);
+			} else {
+				$itemx = $this->dom->createElement($key);
+			}
+			$dom->appendChild($itemx);
+			if (is_string($val)) {
+				$val = WindConvert::convert($val, 'utf8', $charset);
+				$itemx->appendChild($this->dom->createTextNode($val));
+			} elseif (is_object($val)) {
+				$this->arrayToXml(get_object_vars($val), $charset, $itemx);
+			} else {
+				$this->arrayToXml($val, $charset, $itemx);
+			}
+		}
+	}
+
 }

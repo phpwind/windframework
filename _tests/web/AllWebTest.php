@@ -5,6 +5,7 @@ require_once 'web/WindForwardTest.php';
 require_once 'web/WindErrorHandlerTest.php';
 require_once 'web/WindDispatcherTest.php';
 require_once 'web/WindControllerTest.php';
+require_once 'web/WindFrontControllerTest.php';
 /**
  * Static test suite.
  *
@@ -28,6 +29,7 @@ class AllWebTest extends PHPUnit_Framework_TestSuite {
 		$suite->addTestSuite("WindErrorHandlerTest");
 		$suite->addTestSuite("WindDispatcherTest");
 		$suite->addTestSuite("WindControllerTest");
+		$suite->addTestSuite("WindFrontControllerTest");
 		return $suite;
 	}
 }

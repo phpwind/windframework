@@ -5,7 +5,8 @@ class LongController extends WindController {
 	public $long;
 	
 	public function run(){
-		parent::run();
+//		parent::run();
+		//echo 'LongController-run';
 	}
 	
 	public function testAction(){

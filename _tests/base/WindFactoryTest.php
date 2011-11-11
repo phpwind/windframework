@@ -10,11 +10,8 @@
  */
 class WindFactoryTest extends BaseTestCase {
 	
-	/**
-	 * @var WindFactory
-	 */
-	private $WindFactory;
-
+	private $front;
+	
 	/**
 	 * Prepares the environment before running a test.
 	 */
@@ -22,16 +19,19 @@ class WindFactoryTest extends BaseTestCase {
 		parent::setUp();
 		require_once 'base\WindFactory.php';
 		require_once 'data\ForWindFactoryTest.php';
-		Wind::application("FactoryTest");
-		$this->WindFactory = Wind::getApp()->getWindFactory();
+		$_SERVER['REQUEST_URI'] = '?test/long/default/WindFactory';
+		$this->front = Wind::application("WindFactory", array('web-apps' => array('WindFactory' => array('modules' => array('default' => array('controller-path' => 'data', 
+					'controller-suffix' => 'Controller', 
+					'error-handler' => 'TEST:data.ErrorControllerTest')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
+	            'class'   => 'WIND:router.route.WindRoute',
+			    'default' => true,
+		   ))))));
 	}
 
 	/**
 	 * Cleans up the environment after running a test.
 	 */
 	protected function tearDown() {
-		$this->WindFactory = null;
-		Wind::resetApp();
 		parent::tearDown();
 		
 	}
@@ -40,16 +40,18 @@ class WindFactoryTest extends BaseTestCase {
 	 * Tests WindFactory->__construct()
 	 */
 	public function test__construct() {
-		$this->assertEquals("WindFactory", get_class($this->WindFactory));
+		$this->front->run();
+		$windFactory = Wind::getApp('WindFactory')->getWindFactory();
+		$this->assertEquals("WindFactory", get_class($windFactory));
 	}
 
 	/**
 	 * Tests WindFactory->getInstance()
 	 */
 	public function testGetInstance() {
-		$this->assertTrue($this->WindFactory->getInstance("forward") instanceof WindForward);
+		$this->assertTrue(Wind::getApp('WindFactory')->getComponent("forward") instanceof WindForward);
 		try {
-			$this->WindFactory->getInstance("notExistCom");
+			Wind::getApp('WindFactory')->getComponent("notExistCom");
 		} catch (WindException $e) {
 			return;
 		}
@@ -61,7 +63,7 @@ class WindFactoryTest extends BaseTestCase {
 	 */
 	public function testCreateInstance() {
 		try {
-			$this->WindFactory->createInstance("notExistCom");
+			Wind::getApp('WindFactory')->getWindFactory()->createInstance("notExistCom");
 		} catch (WindException $e) {
 			return;
 		}
@@ -73,21 +75,21 @@ class WindFactoryTest extends BaseTestCase {
 	 */
 	public function testRegistInstance() {
 		$testObject = new ForWindFactoryTest();
-		$this->assertFalse($this->WindFactory->checkAlias("test"));
-		$this->WindFactory->registInstance($testObject, "test","singleton");
-		$this->assertTrue($this->WindFactory->getInstance("test") instanceof ForWindFactoryTest);
-		$this->assertTrue($this->WindFactory->checkAlias("test"));
+		$this->assertFalse(Wind::getApp('WindFactory')->getWindFactory()->checkAlias("test"));
+		Wind::getApp('WindFactory')->getWindFactory()->registInstance($testObject, "test","singleton");
+		$this->assertTrue(Wind::getApp('WindFactory')->getWindFactory()->getInstance("test") instanceof ForWindFactoryTest);
+		$this->assertTrue(Wind::getApp('WindFactory')->getWindFactory()->checkAlias("test"));
 	}
 
 	/**
 	 * Tests WindFactory->addClassDefinitions()
 	 */
 	public function testAddClassDefinitions() {
-		$this->WindFactory->addClassDefinitions("aaa", $this->getTestData());
-		$aaa = $this->WindFactory->getInstance("aaa");
+		Wind::getApp('WindFactory')->getWindFactory()->addClassDefinitions("aaa", $this->getTestData());
+		$aaa = Wind::getApp('WindFactory')->getWindFactory()->getInstance("aaa");
 		$this->assertEquals("ForWindFactoryTest", get_class($aaa));
 		try {
-			$this->WindFactory->executeDestroyMethod();
+			Wind::getApp('WindFactory')->getWindFactory()->executeDestroyMethod();
 		} catch (Exception $e) {
 			return;
 		}
@@ -98,23 +100,23 @@ class WindFactoryTest extends BaseTestCase {
 	 * Tests WindFactory->loadClassDefinitions()
 	 */
 	public function testLoadClassDefinitions() {
-		$this->WindFactory->loadClassDefinitions(array("bbb" => $this->getTestData(), "windSession" => $this->getTestData()));
-		$this->assertEquals("ForWindFactoryTest", get_class($this->WindFactory->getInstance("bbb")));
-		$this->assertEquals("ForWindFactoryTest", get_class($this->WindFactory->getInstance("windSession")));
+		Wind::getApp('WindFactory')->getWindFactory()->loadClassDefinitions(array("bbb" => $this->getTestData(), "windSession" => $this->getTestData()));
+		$this->assertEquals("ForWindFactoryTest", get_class(Wind::getApp('WindFactory')->getWindFactory()->getInstance("bbb")));
+		$this->assertEquals("ForWindFactoryTest", get_class(Wind::getApp('WindFactory')->getWindFactory()->getInstance("windSession")));
 	}
 
 	public function testSetProxyForClass(){
-		$this->assertTrue($this->WindFactory->getInstance("forward") instanceof WindForward);
-		$this->WindFactory->loadClassDefinitions(array("forward" => array('path' => 'WIND:web.WindForward','proxy' => true)),false);
-		$this->assertTrue($this->WindFactory->getInstance("forward") instanceof WindClassProxy);
+		$this->assertTrue(Wind::getApp('WindFactory')->getWindFactory()->getInstance("forward") instanceof WindForward);
+		Wind::getApp('WindFactory')->getWindFactory()->loadClassDefinitions(array("forward" => array('path' => 'WIND:web.WindForward','proxy' => true)),false);
+		$this->assertTrue(Wind::getApp('WindFactory')->getWindFactory()->getInstance("forward") instanceof WindClassProxy);
 	}
 	
 	/**
 	 * @dataProvider dataForBulidProperties
 	 */
 	public function testBuildProperties($config){
-		$this->WindFactory->addClassDefinitions("xxx", $config);
-		$object = $this->WindFactory->getInstance("xxx");
+		Wind::getApp('WindFactory')->getWindFactory()->addClassDefinitions("xxx", $config);
+		$object = Wind::getApp('WindFactory')->getWindFactory()->getInstance("xxx");
 		$this->assertEquals("WindConnection", get_class($object->param));
 		$this->assertTrue("WindLogger" == get_class($object->session));
 	}
@@ -131,8 +133,8 @@ class WindFactoryTest extends BaseTestCase {
 	}
 	
 	public function testResolveConfig(){
-		$this->WindFactory->addClassDefinitions("shilong", array('config' => array('resource' => 'TEST:data.testComponentConfig.php'), 'path' => 'WIND:log.WindLogger'));
-		$logger = $this->WindFactory->getInstance("shilong");
+		Wind::getApp('WindFactory')->getWindFactory()->addClassDefinitions("shilong", array('config' => array('resource' => 'TEST:data.testComponentConfig.php'), 'path' => 'WIND:log.WindLogger'));
+		$logger = Wind::getApp('WindFactory')->getWindFactory()->getInstance("shilong");
 		$this->assertEquals("logByShiLong", $logger->getConfig("logName"));
 	}
 	
@@ -148,6 +150,7 @@ class WindFactoryTest extends BaseTestCase {
 			'initMethod' => 'init',
 		);
 	}
+	
 
 }
 

@@ -12,12 +12,11 @@
 		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
-			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
 	<component name='windToken' path='WIND:token.WindSecurityToken' scope='singleton'>
 		<properties>
-			<property name='tokenContainer' ref='windSession'/>
+			<property name='tokenContainer' ref='windCookie'/>
 		</properties>
 	</component>
 	<component name='windLogger' path='WIND:log.WindLogger'
@@ -93,5 +92,8 @@
 	</component>
 	<component name='windCookie' path='WIND:http.cookie.WindNormalCookie'
 		scope='singleton'>
+		<config>
+			<expires>86400</expires>
+		</config>
 	</component>
 </components>

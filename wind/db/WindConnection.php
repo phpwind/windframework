@@ -210,6 +210,16 @@ class WindConnection extends WindModule {
 	public function quoteArray($array) {
 		return $this->getDbHandle()->quoteArray($array);
 	}
+	
+	/**
+	 * 过滤二维数组将数组变量转换为多组的sql字符串
+	 *
+	 * @param array $array
+	 * @return string
+	 */
+	public function quoteMultiArray($array) {
+		return $this->getDbHandle()->quoteMultiArray($array);
+	}
 
 	/**
 	 * sql元数据安全过滤,并返回过滤后值

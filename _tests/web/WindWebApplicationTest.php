@@ -10,11 +10,8 @@
  */
 class WindWebApplicationTest extends BaseTestCase {
 	
-	/**
-	 * @var WindWebApplication
-	 */
-	private $WindWebApplication;
-
+	private $front;
+	
 	/**
 	 * Prepares the environment before running a test.
 	 */
@@ -23,15 +20,19 @@ class WindWebApplicationTest extends BaseTestCase {
 		require_once 'web\WindWebApplication.php';
 		require_once 'base\WindFactory.php';
 		require_once 'data\ForWindFactoryTest.php';
-		$this->WindWebApplication = Wind::application("webApplication");
+		$_SERVER['REQUEST_URI'] = '?test/long/default/long';
+		$this->front = Wind::application("long", array('web-apps' => array('long' => array('modules' => array('default' => array('controller-path' => 'data', 
+					'controller-suffix' => 'Controller', 
+					'error-handler' => 'TEST:data.ErrorControllerTest')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
+	            'class'   => 'WIND:router.route.WindRoute',
+			    'default' => true,
+		   ))))));
 	}
 
 	/**
 	 * Cleans up the environment after running a test.
 	 */
 	protected function tearDown() {
-		$this->WindWebApplication = null;
-		Wind::resetApp();
 		parent::tearDown();
 	}
 
@@ -40,27 +41,12 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * Tests WindWebApplication->run()
 	 */
 	public function testRun() {
-		$this->WindWebApplication->setModules("shilong", $this->getTestConfig(),true);
-		
-		$this->dataProviderMCA('shilong','long','aaa');
-		
-		try {
-			$this->WindWebApplication->run();
-		} catch (Exception $e) {
-			$this->assertEquals("Long-aaa is running", $e->getMessage());
-			$forward = new WindForward();
-			$forward->forwardAction("/shilong/long/run",array(),false,false);
-			$this->WindWebApplication->doDispatch($forward);
-			return;
-		}
-		$this->fail("Run Test Error!");
+		$this->front->run();
 		
 	}
 	
 	public function testFilter(){
-		$app = Wind::application("shilong", Wind::getRealPath("TEST:data.config", "php", true));
-		$this->dataProviderMCA('shilong');
-		$app->run();
+		$this->markTestIncomplete();
 	}
 
 	/**
@@ -68,12 +54,7 @@ class WindWebApplicationTest extends BaseTestCase {
 	 */
 	public function testRunProcess() {
 		
-		try {
-			$this->WindWebApplication->runProcess("aaa");
-		} catch (WindFinalException $e) {
-			return;
-		}
-		$this->fail("RunProcess Test Error!");
+		$this->markTestIncomplete();
 	}
 
 	/**
@@ -81,8 +62,8 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * @dataProvider dataForGetGlobal
 	 */
 	public function testGetGlobal($data, $key = '') {
-		$this->WindWebApplication->setGlobal($data, $key);
-		$this->assertEquals("shilong", $this->WindWebApplication->getGlobal("name"));
+		Wind::getApp('long')->setGlobal($data, $key);
+		$this->assertEquals("shilong", Wind::getApp('long')->getGlobal("name"));
 	}
 	
 	public function dataForGetGlobal(){
@@ -100,9 +81,9 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * @dataProvider dataForSetModules
 	 */
 	public function testSetModules($name, $config, $replace = false) {
-		$this->assertNotEquals($this->WindWebApplication->getModules($name), $config);
-		$this->WindWebApplication->setModules($name, $config,$replace);
-		$this->assertEquals($this->WindWebApplication->getModules($name), $config);
+		$this->assertNotEquals(Wind::getApp('long')->getModules($name), $config);
+		Wind::getApp('long')->setModules($name, $config,$replace);
+		$this->assertEquals(Wind::getApp('long')->getModules($name), $config);
 	}
 	
 	public function dataForSetModules(){
@@ -115,45 +96,25 @@ class WindWebApplicationTest extends BaseTestCase {
 	}
 
 	/**
-	 * Tests WindWebApplication->registeComponent()
-	 * registInstance在WindFactory已测试
-	 */
-	public function testRegisteComponent() {
-		$this->WindWebApplication->registeComponent("shilong", new ForWindFactoryTest());
-		$this->assertEquals("ForWindFactoryTest", get_class($this->WindWebApplication->getComponent("shilong")));
-	}
-
-	/**
 	 * Tests WindWebApplication->getComponent()
 	 * getInstance在WindFactory已测试
 	 */
 	public function testGetComponent() {
-		$this->WindWebApplication->getWindFactory()->loadClassDefinitions(array(
-				'windCache' => array(
-					'path' => 'WIND:cache.strategy.WindFileCache',
-					'scope' => 'singleton',
-					'config' => array(
-						'dir' => 'TEST:data.caches',
-						'suffix' => 'php',
-						'expires' => '0'))), false);
-		$this->WindWebApplication->setConfig(array('iscache' => true));
-		
-		$this->assertTrue($this->WindWebApplication->getComponent("windCache") instanceof WindFileCache);
-		$this->assertTrue($this->WindWebApplication->getComponent("forward") instanceof WindForward);
+		$this->assertTrue(Wind::getApp('long')->getComponent("forward") instanceof WindForward);
 	}
 
 	/**
 	 * Tests WindWebApplication->getRequest()
 	 */
 	public function testGetRequest() {
-		$this->assertTrue($this->WindWebApplication->getRequest() instanceof WindHttpRequest);
+		$this->assertTrue(Wind::getApp('long')->getRequest() instanceof WindHttpRequest);
 	}
 
 	/**
 	 * Tests WindWebApplication->getResponse()
 	 */
 	public function testGetResponse() {
-		$this->assertTrue($this->WindWebApplication->getResponse() instanceof WindHttpResponse);
+		$this->assertTrue(Wind::getApp('long')->getResponse() instanceof WindHttpResponse);
 	}
 	
 	private function getTestConfig(){
@@ -162,13 +123,6 @@ class WindWebApplicationTest extends BaseTestCase {
 					 'error-handler' => 'shilong',
 					);
 	}
-	
-	private function dataProviderMCA($m = 'default', $c = 'long', $a = 'run'){
-		$_GET['m'] = $m;
-		$_GET['c'] = $c;
-		$_GET['a'] = $a;
-	}
-
 	
 }
 

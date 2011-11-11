@@ -109,6 +109,11 @@ class WindView extends WindModule implements IWindView {
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
+	
+	/**
+	 * @var WindXmlParser
+	 */
+	protected $xmlParser = null;
 
 	/* (non-PHPdoc)
 	 * @see IWindView::render()
@@ -122,6 +127,9 @@ class WindView extends WindModule implements IWindView {
 				break;
 			case 'ajax':
 				$this->renderWithJson();
+				break;
+			case 'xml':
+				$this->renderWithXml();
 				break;
 			default:
 				$this->_render($display);
@@ -146,9 +154,25 @@ class WindView extends WindModule implements IWindView {
 	}
 
 	/**
+	 * xml格式数据输出渲染
+	 */
+	protected function renderWithXml() {
+		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
+		$_vars = $this->getResponse()->getData($this->templateName);
+		$_vars['G'] = $this->getResponse()->getData('G');
+		$parser = $this->_getXmlParser();
+		if ($parser === null) {
+			Wind::import("WIND:parser.WindXmlParser");
+			$parser = new WindXmlParser();
+		}
+		echo $parser->parseToXml($_vars);
+	}
+
+	/**
 	 * json格式视图输出数据渲染
 	 */
 	protected function renderWithJson() {
+		$this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
 		$_vars['G'] = $this->getResponse()->getData('G');
 		echo WindJson::encode($_vars);
