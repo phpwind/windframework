@@ -28,7 +28,7 @@ class WindFrontController {
 	protected $_config = array();
 	protected $_app = array();
 	protected $_currentApp = array();
-	protected $_currentAppName = '';
+	protected $_currentAppName = 'default';
 
 	/**
 	 * @param WindHttpRequest $request
@@ -43,6 +43,7 @@ class WindFrontController {
 	 * 创建并执行当前应用,单应用访问入口
 	 */
 	public function run() {
+		empty($this->_config['defaultApp']) || $this->_currentAppName = $this->_config['defaultApp'];
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
 		$router->route($this->request, $this->response);
@@ -62,7 +63,10 @@ class WindFrontController {
 	public function multiRun() {
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
-		empty($this->_config['defaultApp']) || $router->setDefaultApp($this->_config['defaultApp']);
+		if (!empty($this->_config['defaultApp'])) {
+			$router->setDefaultApp($this->_config['defaultApp']);
+			$router->setApp($this->_config['defaultApp']);
+		}
 		$router->route($this->request, $this->response);
 		$router->getApp() && $this->_currentAppName = $router->getApp();
 		if (in_array($this->_currentAppName, $this->_currentApp)) {
@@ -177,7 +181,6 @@ class WindFrontController {
 	 * @return void
 	 */
 	private function initApplication($appName, $config) {
-		$this->_currentAppName = $appName;
 		$this->request = new WindHttpRequest();
 		$this->response = $this->request->getResponse();
 		$this->factory || $this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
