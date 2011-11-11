@@ -119,6 +119,8 @@
 	'windCookie' => array(
 		'path' => 'WIND:http.cookie.WindNormalCookie',
 		'scope' => 'singleton',
-		'config' => array('expires' => 3600*24),
+		'config' => array(
+			'expires' => '86400',
+		),
 	),
 );
