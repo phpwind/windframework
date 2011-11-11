@@ -66,10 +66,6 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				$this->addRoute($routeName, $instance, (isset($route['default']) && $route['default'] === true));
 			}
 		}
-		$this->_action = $this->action;
-		$this->_controller = $this->controller;
-		$this->_module = $this->module;
-		$this->_app = $this->app;
 	}
 
 	/**
