@@ -55,7 +55,7 @@ echo 'compile successful!';
 function addImports() {
 	$_content = WindString::varToString($GLOBALS['imports']);
 	$_content = str_replace(array("\r\n", "\t", " "), '', $_content);
-	return 'Wind::setImports(' . $_content . ')';
+	return 'Wind::setImports(' . $_content . ');';
 }
 
 /* 清理所有缓存 */

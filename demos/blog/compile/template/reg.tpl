@@ -40,7 +40,7 @@
 			<div class="grid cc mb10">
 	<div class="bA">
 		<div class="content">
-<?php if($userInfo):?>
+<?php if(isset($userInfo)):?>
 			<div class="mb10 f16 b">恭喜您,注册成功!</div>
 			<div class="mb10 f14">&rsaquo;&rsaquo;<a href="<?php echo WindSecurity::escapeHTML(WindUrlHelper::createUrl('run'));?>">返回登录</a></div>
 <?php else:?>

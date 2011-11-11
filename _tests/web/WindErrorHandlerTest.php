@@ -11,19 +11,16 @@
 class WindErrorHandlerTest extends BaseTestCase {
 
 	public function testErrorHandler() {
-		$app = Wind::application("long", 
-			array(
-				'long' => array(
-					'modules' => array(
-						'long' => array(
-							'error-handler' => 'TEST:data.ErrorControllerTest', 
-							'controller-path' => 'data', 
-							'compile-dir' => 'data')))));
-		$_GET['m'] = 'long';
-		$_GET['c'] = 'long';
-		$_GET['a'] = 'shi';
+		$front = Wind::application("WindError", array('web-apps' => array('WindError' => array('modules' => array('default' => array('controller-path' => 'data', 
+					'controller-suffix' => 'Controller', 
+					'error-handler' => 'TEST:data.ErrorControllerTest',
+					'compile-dir' => 'data')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
+	            'class'   => 'WIND:router.route.WindRoute',
+			    'default' => true,
+		   ))))));
+		$_SERVER['REQUEST_URI'] = '?shi/long/default/WindError';
 		try {
-			$app->run();
+			$front->run();
 		} catch (Exception $e) {
 			$this->assertEquals("error handled", $e->getMessage());
 			return;
@@ -32,7 +29,6 @@ class WindErrorHandlerTest extends BaseTestCase {
 	}
 
 	protected function tearDown() {
-		Wind::resetApp();
 		parent::tearDown();
 	}
 }

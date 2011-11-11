@@ -35,14 +35,19 @@ Wind::import('WIND:router.AbstractWindRouter');
  * @package router
  */
 class WindRouter extends AbstractWindRouter {
+	/**
+	 * @var WindHttpRequest
+	 */
+	private $request = null;
 
 	/* (non-PHPdoc)
 	 * @see IWindRouter::route()
 	 */
-	public function route() {
+	public function route($request, $response) {
+		$this->request = $request;
 		$this->setCallBack(array($this, 'defaultRoute'));
-		$params = $this->getHandler()->handle();
-		$params && $this->setParams($params);
+		$params = $this->getHandler()->handle($request, $response);
+		$params && $this->setParams($params, $request);
 	}
 
 	/* (non-PHPdoc)
@@ -53,12 +58,12 @@ class WindRouter extends AbstractWindRouter {
 		if ($route && (null !== $route = $this->getRoute($route))) {
 			$_url = $route->build($this, $action, $args);
 		} else {
-			list($_a, $_c, $_m, $args) = WindUrlHelper::resolveAction($action, $args);
-			$args[$this->moduleKey] = $_m ? $_m : $this->module;
-			$args[$this->controllerKey] = $_c ? $_c : $this->controller;
-			$args[$this->actionKey] = $_a ? $_a : $this->action;
-			$_baseUrl = $this->getRequest()->getScript();
-			$_url = $_baseUrl . '?' . WindUrlHelper::argsToUrl($args);
+			list($_a, $_c, $_m, $_p, $args) = WindUrlHelper::resolveAction($action, $args);
+			if ($_p && $_p !== $this->getDefaultApp()) $args[$this->appKey] = $_p;
+			if ($_m && $_m !== $this->getDefaultModule()) $args[$this->moduleKey] = $_m;
+			if ($_c && $_c !== $this->getDefaultController()) $args[$this->controllerKey] = $_c;
+			if ($_a && $_a !== $this->getDefaultAction()) $args[$this->actionKey] = $_a;
+			$_url = $this->request->getScript() . '?' . WindUrlHelper::argsToUrl($args);
 		}
 		return $_url;
 	}
@@ -67,18 +72,20 @@ class WindRouter extends AbstractWindRouter {
 	 * 默认路由规则
 	 * 
 	 * 默认情况下仅仅解析路由相关参数值
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @return array
 	 */
-	public function defaultRoute() {
-		$action = $this->getRequest()->getRequest($this->actionKey);
-		$controller = $this->getRequest()->getRequest($this->controllerKey);
-		$module = $this->getRequest()->getRequest($this->moduleKey);
+	public function defaultRoute($request, $response) {
+		$action = $request->getRequest($this->actionKey);
+		$controller = $request->getRequest($this->controllerKey);
+		$module = $request->getRequest($this->moduleKey);
+		$app = $request->getRequest($this->appKey);
 		$action && $this->setAction($action);
 		$controller && $this->setController($controller);
 		$module && $this->setModule($module);
+		$app && $this->setApp($app);
 		return;
-		/*$_pathInfo = $this->getRequest()->getPathInfo();
-		return $_pathInfo ? WindUrlHelper::urlToArgs($_pathInfo) : array();*/
 	}
 }
 

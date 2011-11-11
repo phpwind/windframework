@@ -14,11 +14,9 @@ class WindHelperTest extends BaseTestCase {
 		parent::setUp();
 		require_once 'base\WindHelper.php';
 		require_once 'base\WindException.php';
-		Wind::application("WindHelperTest");
 	}
 	
 	protected function tearDown(){
-		Wind::resetApp();
 		parent::tearDown();
 	}
 	

@@ -43,7 +43,7 @@ class WindUrlHelper {
 		false !== ($pos = strpos($url, '?')) && $url = substr($url, $pos + 1);
 		$_sep1 = substr($separator, 0, 1);
 		if ($_sep2 = substr($separator, 1, 1)) {
-			$url = preg_replace('/' . preg_quote($_sep1) . '[\w+]' . preg_quote($_sep1) . '/i', $_sep1, $url);
+			$url = preg_replace('/' . preg_quote($_sep1, '/') . '[\w+]' . preg_quote($_sep1, '/') . '/i', $_sep1, $url);
 			$url = str_replace($_sep2, $_sep1, $url);
 		}
 		$url = explode($_sep1, trim($url, $_sep1) . $_sep1);
@@ -86,7 +86,7 @@ class WindUrlHelper {
 				$_tmp .= "$key" . $_sep2 . urlencode($value);
 			$_tmp .= $_sep1;
 		}
-		return $_tmp;
+		return trim($_tmp, $_sep1 . $_sep2);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class WindUrlHelper {
 		$args = array_merge($args, ($_args ? self::urlToArgs($_args, false) : array()));
 		$action = explode('/', trim($action, '/') . '/');
 		end($action);
-		return array(prev($action), prev($action), prev($action), $args);
+		return array(prev($action), prev($action), prev($action), prev($action), $args);
 	}
 
 	/**

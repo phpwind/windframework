@@ -17,74 +17,49 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * @version $Id$
  */
 class Wind {
+	private static $_extensions = 'php';
 	private static $_imports = array();
 	private static $_classes = array();
-	private static $_components = 'WIND:components_config';
-	private static $_extensions = 'php';
 	private static $_isAutoLoad = true;
 	private static $_namespace = array();
 	private static $_includePaths = array();
-	private static $_app = array();
-	private static $_currentApp = array();
-	private static $_currentAppName;
+	/**
+	 * @var WindFrontController
+	 */
+	private static $_frontController = null;
 
 	/**
-	 * @param string $appName
-	 * @param string|array|WindSystemConfig $config
-	 * @param string $rootPath
-	 * @return IWindApplication
+	 * @param IWindRequest $request
+	 * @param IWindResponse $response
+	 * @param WindFactory $factory
+	 * @return WindFrontController
 	 */
-	public static function application($appName = 'default', $config = array(), $rootPath = '') {
-		self::beforRun($appName, $config, $rootPath);
-		if (!isset(self::$_app[$appName])) {
-			$factory = new WindFactory(@include (Wind::getRealPath(self::$_components)));
-			if ($config) {
-				is_string($config) && $config = $factory->getInstance('configParser')->parse($config);
-				$_default = isset($config['default']) ? $config['default'] : array();
-				$config = isset($config[$appName]) ? $config[$appName] : $config;
-				$_default && $config = WindUtility::mergeArray($_default, $config);
-				isset($config['components']) && $factory->loadClassDefinitions($config['components']);
-			}
-			$application = $factory->getInstance('windApplication', array($config, $factory));
-			$rootPath = $rootPath ? self::getRealPath($rootPath, false, true) : (!empty($config['root-path']) ? self::getRealPath(
-				$config['root-path'], false, true) : dirname($_SERVER['SCRIPT_FILENAME']));
-			Wind::register($rootPath, $appName, true);
-			self::$_app[$appName] = $application;
+	public static function application($appName = '', $config = array()) {
+		if (self::$_frontController === null) {
+			self::$_frontController = new WindFrontController($appName, $config);
 		}
-		return self::$_app[$appName];
+		return self::$_frontController;
 	}
 
 	/**
-	 * 返回当前appName
+	 * @see WindFrontController::getAppName()
 	 * @return string
 	 */
 	public static function getAppName() {
-		if (!self::$_currentAppName) {
-			throw new WindException('[Wind.getAppName] get appName failed', WindException::ERROR_SYSTEM_ERROR);
-		}
-		return self::$_currentAppName;
+		if (self::$_frontController === null) return '';
+		return self::$_frontController->getAppName();
 	}
 
 	/**
 	 * 返回当前的app应用
+	 * 
 	 * @param string $appName
+	 * @see WindFrontController::getApp()
 	 * @return WindWebApplication
 	 */
-	public static function getApp() {
-		$_appName = self::$_currentAppName; //self::getAppName();
-		if (isset(self::$_app[$_appName]))
-			return self::$_app[$_appName];
-		else
-			throw new WindException('[wind.getApp] get application ' . $_appName . ' fail.', 
-				WindException::ERROR_CLASS_NOT_EXIST);
-	}
-
-	/**
-	 * @return void
-	 */
-	public static function resetApp() {
-		array_pop(self::$_currentApp);
-		self::$_currentAppName = end(self::$_currentApp);
+	public static function getApp($appName = '') {
+		if (self::$_frontController === null) return null;
+		return self::$_frontController->getApp($appName);
 	}
 
 	/**
@@ -270,18 +245,6 @@ class Wind {
 	}
 
 	/**
-	 * @return void
-	 * @throws WindException
-	 */
-	protected static function beforRun($appName, $config, $rootPath) {
-		if (in_array($appName, self::$_currentApp)) {
-			throw new WindException('[wind.beforRun] Nested request', WindException::ERROR_SYSTEM_ERROR);
-		}
-		array_push(self::$_currentApp, $appName);
-		self::$_currentAppName = $appName;
-	}
-
-	/**
 	 * @param string $className
 	 * @param string $classPath
 	 * @return void
@@ -303,50 +266,47 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
+			
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
 			'WindActionException' => 'base/WindActionException', 
 			'WindClassProxy' => 'base/WindClassProxy', 
 			'WindEnableValidateModule' => 'base/WindEnableValidateModule', 
 			'WindErrorMessage' => 'base/WindErrorMessage', 
-			'WindForwardException' => 'base/WindForwardException', 
 			'WindException' => 'base/WindException', 
 			'WindFactory' => 'base/WindFactory', 
 			'WindFinalException' => 'base/WindFinalException', 
+			'WindForwardException' => 'base/WindForwardException', 
 			'WindHelper' => 'base/WindHelper', 
 			'WindModule' => 'base/WindModule', 
 			'WindActionFilter' => 'filter/WindActionFilter', 
-			'WindFilter' => 'filter/WindFilter', 
-			'WindFilterChain' => 'filter/WindFilterChain', 
 			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
 			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
-			'WindUrlFilter' => 'web/filter/WindUrlFilter', 
-			'WindFormListener' => 'web/listener/WindFormListener', 
-			'WindValidateListener' => 'web/listener/WindValidateListener', 
+			'WindFormFilter' => 'web/filter/WindFormFilter', 
 			'WindController' => 'web/WindController', 
 			'WindDispatcher' => 'web/WindDispatcher', 
 			'WindErrorHandler' => 'web/WindErrorHandler', 
 			'WindForward' => 'web/WindForward', 
+			'WindFrontController' => 'web/WindFrontController', 
 			'WindSimpleController' => 'web/WindSimpleController', 
-			'WindSystemConfig' => 'web/WindSystemConfig', 
 			'WindUrlHelper' => 'web/WindUrlHelper', 
 			'WindWebApplication' => 'web/WindWebApplication', 
 			'AbstractWindRouter' => 'router/AbstractWindRouter', 
 			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
 			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 
-			'WindRoute' => 'router/route/WindRoute', 
 			'WindRouter' => 'router/WindRouter', 
-			'WindUrlRewriteRouter' => 'router/WindUrlRewriteRouter', 
 			'IWindRequest' => 'http/request/IWindRequest', 
 			'WindHttpRequest' => 'http/request/WindHttpRequest', 
 			'IWindResponse' => 'http/response/IWindResponse', 
 			'WindHttpResponse' => 'http/response/WindHttpResponse', 
-			'WindDate' => 'utility/date/WindDate', 
-			'WindGeneralDate' => 'utility/date/WindGeneralDate', 
-			'WindJson' => 'utility/WindJson', 
 			'WindArray' => 'utility/WindArray', 
+			'WindConvert' => 'utility/WindConvert', 
+			'WindCookie' => 'utility/WindCookie', 
+			'WindDate' => 'utility/WindDate', 
 			'WindFile' => 'utility/WindFile', 
+			'WindGeneralDate' => 'utility/WindGeneralDate', 
 			'WindImage' => 'utility/WindImage', 
+			'WindJson' => 'utility/WindJson', 
 			'WindPack' => 'utility/WindPack', 
 			'WindSecurity' => 'utility/WindSecurity', 
 			'WindString' => 'utility/WindString', 
