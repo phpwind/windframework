@@ -59,10 +59,6 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 			$this->moduleKey = $this->getConfig('module', 'url-param', $this->moduleKey);
 			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
 			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
-			$this->_action = $this->action;
-			$this->_controller = $this->_controller;
-			$this->_module = $this->_module;
-			$this->_app = $this->app;
 			foreach ($this->getConfig('routes', '', array()) as $routeName => $route) {
 				if (!isset($route['class'])) continue;
 				$instance = WindFactory::createInstance(Wind::import($route['class']));
@@ -70,6 +66,10 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				$this->addRoute($routeName, $instance, (isset($route['default']) && $route['default'] === true));
 			}
 		}
+		$this->_action = $this->action;
+		$this->_controller = $this->controller;
+		$this->_module = $this->module;
+		$this->_app = $this->app;
 	}
 
 	/**
