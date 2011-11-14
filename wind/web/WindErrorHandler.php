@@ -25,8 +25,8 @@ class WindErrorHandler extends WindController {
 	 * @see WindAction::beforeAction()
 	 */
 	public function beforeAction($handlerAdapter) {
-		$this->error = $this->getForward()->getVars('error');
-		$this->errorCode = (int) $this->getForward()->getVars('errorCode');
+		$this->error = $this->getForward()->getVars('__error');
+		$this->errorCode = (int) $this->getForward()->getVars('__errorCode');
 		if ($this->request->getUrlReferer())
 			$this->urlReferer = $this->getRequest()->getUrlReferer();
 		else
