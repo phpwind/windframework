@@ -67,11 +67,13 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		$_return[] = '$__tplPagePer=(int)' . $this->per . ';';
 		$_return[] = '$__tplPageTotal=(int)' . $this->total . ';';
 		$_return[] = '$__tplPageCurrent=(int)' . $this->page . ';';
-		$_return[] = '$__tplPageUrl="' . $this->url . '";';
+		$_return[] = '$__tplPageUrl=WindUrlHelper::createURl("' . $this->url . '");';
 		$_return[] = 'if($__tplPageCount > 0 && $__tplPagePer > 0){';
 		$_return[] = '$__tplPageTotal = ceil($__tplPageCount / $__tplPagePer);}';
 		$_return[] = '$__tplPageCurrent > $__tplPageTotal && $__tplPageCurrent = $__tplPageTotal;';
-		$_return[] = 'if ($__tplPageTotal > 1) {?>';
+		$_return[] = 'if ($__tplPageTotal > 1) {';
+		$_return[] = '$__tplPrePage=$__tplPageCurrent <= 1 ? 1 : $__tplPageCurrent - 1;';
+		$_return[] = '$__tplPostPage=$__tplPageCurrent >= $__tplPageTotal ? $__tplPageTotal : $__tplPageCurrent + 1;?>';
 		$_return[] = $this->getTplContent();
 		$_return[] = '<?php } ?>';
 		return implode("\r\n", $_return);
@@ -85,12 +87,14 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	private function getTplContent() {
 		if (!$this->tpl) return '';
 		list(, $content) = $this->windViewerResolver->compile($this->tpl, '', true);
-		$arrPageTags = array('$total', '$page', '$url', '$count');
+		$arrPageTags = array('$total', '$page', '$url', '$count' , '$prePage' , '$postPage');
 		$arrPageVars = array(
 			'$__tplPageTotal', 
 			'$__tplPageCurrent', 
 			'$__tplPageUrl', 
-			'$__tplPageCount');
+			'$__tplPageCount',
+			'$__tplPrePage',
+			'$__tplPostPage');
 		return str_ireplace($arrPageTags, $arrPageVars, $content);
 	}
 
