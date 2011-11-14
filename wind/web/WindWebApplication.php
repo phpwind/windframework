@@ -299,8 +299,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
 		$forward->forwardAction($_errorAction, array(), false, false);
-		$forward->setVars($errorMessage->getError(), 'error');
-		$forward->setVars($exception->getCode(), 'errorCode');
+		$forward->setVars($errorMessage->getError(), '__error');
+		$forward->setVars($exception->getCode(), '__errorCode');
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
 	}
 
