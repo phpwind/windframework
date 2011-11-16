@@ -8,7 +8,8 @@
  * @version $Id$
  * @package i18n
  */
-interface IWindTranslater {
+interface IWindLangResource {
+
 	/**
 	 * 翻译接口
 	 *
