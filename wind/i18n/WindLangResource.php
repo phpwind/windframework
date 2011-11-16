@@ -76,8 +76,8 @@ class WindLangResource extends WindModule implements IWindLangResource {
 		
 		if (!isset($this->_messages[$path])) {
 			$cache = Wind::getApp()->getComponent('windCache');
-			$messages = Wind::getApp()->getComponent('configParser')->parse($path, $this->_cachePrefix . $file, '', 
-				$cache);
+			$_cache = $this->_cachePrefix . $package . $file;
+			$messages = Wind::getApp()->getComponent('configParser')->parse($path, $_cache, '', $cache);
 			$this->_messages[$path] = $messages;
 		}
 		$message = $this->getMessage($this->_messages[$path], $keys);
@@ -120,6 +120,8 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
+		$this->suffix = $this->getConfig('suffix', '', '');
+		$this->default = $this->getConfig('default', '', 'message');
 		$this->path = $this->getConfig('path', '', '');
 		$this->language = $this->getConfig('language', '', 'zh_cn');
 	}
