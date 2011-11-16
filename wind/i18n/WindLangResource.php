@@ -1,18 +1,21 @@
 <?php
+Wind::import('WIND:i18n.IWindLangResource');
 /**
- * php数组的方式，来保存要翻译的信息
- *
- * <code>
- * Wind::getApp()->getComponent('i18n')->translate('helloworld{you}', array('{you}' => $you), 'blog');
+ * 语言资源基础实现
+ * 
+ * 语言资源基础实现,支持xml,property,ini,php格式语言资源类型的解析,该语言资源组件基于wind组件模式进行开发.
+ * 实现了语言包路径,默认语言文件,语言内容缓存等功能.
+ * @example <code>
+ * LANG 为包名,如果不填写则默认没有分包处理,资源类将自动在language包下面寻找
+ * 支持解析格式: LANG:login.fail.expty = 'xxx'
  * </code>
- *
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id$
  * @package i18n
  */
-class WindTranslater extends WindModule implements IWindLangResource {
+class WindLangResource extends WindModule implements IWindLangResource {
 	/**
 	 * 缓存key前缀
 	 *
@@ -51,10 +54,13 @@ class WindTranslater extends WindModule implements IWindLangResource {
 	protected $language;
 
 	/* (non-PHPdoc)
-	 * @see IWindTranslater::translate()
+	 * @see IWindLangResource::lang()
 	 */
-	public function translate($message, $params = array()) {
-		list($package, $message) = explode(':', $message . ':', 2);
+	public function lang($message, $params = array()) {
+		$package = '';
+		if (strpos($message, ':') != false) {
+			list($package, $message) = explode(':', $message, 2);
+		}
 		$keys = explode('.', $message);
 		$file = $keys[0];
 		$path = $this->resolvedPath($package);
@@ -103,7 +109,7 @@ class WindTranslater extends WindModule implements IWindLangResource {
 		$this->path || $this->path = Wind::getRootPath(Wind::getAppName());
 		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
 		$path = $this->path . '/' . $this->language . '/' . $package;
-		$path = Wind::getRealDir($path, true);
+		$path = Wind::getRealDir(trim($path, '/'), true);
 		if (!is_dir($path)) throw new WindI18nException(
 			'[Wind.WindTranslater.resolvedPath] resolve resource path fail, path ' . $path . ' is not exit.');
 		return $path;
