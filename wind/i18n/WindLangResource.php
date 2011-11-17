@@ -1,9 +1,10 @@
 <?php
+Wind::import('WIND:i18n.WindI18nException');
 Wind::import('WIND:i18n.IWindLangResource');
 /**
  * 语言资源基础实现
  * 
- * 语言资源基础实现,支持xml,property,ini,php格式语言资源类型的解析,该语言资源组件基于wind组件模式进行开发.
+ * 语言资源基础实现,支持ini格式语言资源类型的解析,该语言资源组件基于wind组件模式进行开发.
  * 实现了语言包路径,默认语言文件,语言内容缓存等功能.
  * @example <code>
  * LANG 为包名,如果不填写则默认没有分包处理,资源类将自动在language包下面寻找
@@ -33,13 +34,13 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 *
 	 * @var string
 	 */
-	protected $default = 'message';
+	protected $default;
 	/**
 	 * 资源文件后缀名定义
 	 *
 	 * @var string
 	 */
-	protected $suffix = '';
+	protected $suffix;
 	/**
 	 * 语言包目录
 	 *
@@ -58,29 +59,32 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 */
 	public function getMessage($message, $params = array()) {
 		$package = '';
-		if (strpos($message, ':') != false) {
-			list($package, $message) = explode(':', $message, 2);
-		}
-		$keys = explode('.', $message);
-		$file = $keys[0];
+		if (strpos($message, ':') != false) list($package, $message) = explode(':', $message, 2);
+		list($file, $key) = explode('.', $message, 2);
 		$path = $this->resolvedPath($package);
-		if (is_file($path . '/' . $file . '.' . $this->suffix)) {
-			$path = $path . '/' . $file . '.' . $this->suffix;
-			unset($keys[0]);
-		} elseif (is_file($path . '/' . $this->default . '.' . $this->suffix)) {
-			$path = $path . '/' . $this->default . '.' . $this->suffix;
+		
+		if (is_file($path . '/' . $file . $this->suffix)) {
+			$path = $path . '/' . $file . $this->suffix;
+		} elseif (is_file($path . '/' . $this->default . $this->suffix)) {
+			$path = $path . '/' . $this->default . $this->suffix;
+			$key = $message;
 			$file = $this->default;
 		} else
-			throw new WindI18nException(
-				'[wind.WindTranslater.translate] lang resource file  ' . $this->path . 'is not exit.');
+			return $message;
 		
 		if (!isset($this->_messages[$path])) {
+			/* @var $cache AbstractWindCache */
 			$cache = Wind::getApp()->getComponent('windCache');
-			$_cache = $this->_cachePrefix . $package . $file;
-			$messages = Wind::getApp()->getComponent('configParser')->parse($path, $_cache, '', $cache);
+			$cacheKey = $this->_cachePrefix . $package . $file;
+			$messages = null;
+			if ($cache) $messages = $cache->get($cacheKey);
+			if (!$messages) {
+				$messages = parse_ini_file($path);
+				if ($cache) $cache->set($cacheKey, $messages);
+			}
 			$this->_messages[$path] = $messages;
 		}
-		$message = $this->_getMessage($this->_messages[$path], $keys);
+		$message = $this->_getMessage($this->_messages[$path], $key);
 		$params && $message = call_user_func_array('sprintf', array($message) + $params);
 		return $message;
 	}
@@ -91,13 +95,8 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 * @param array $messages
 	 * @param string $key
 	 */
-	protected function _getMessage($messages, $keys) {
-		if (is_string($keys)) return '';
-		foreach ($keys as $value) {
-			if (!isset($messages[$value])) continue;
-			$messages = $messages[$value];
-		}
-		return is_array($messages) ? '' : $messages;
+	protected function _getMessage($messages, $key) {
+		return isset($messages[$key]) ? $messages[$key] : $key;
 	}
 
 	/**
@@ -109,7 +108,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	protected function resolvedPath($package) {
 		$this->path || $this->path = Wind::getRootPath(Wind::getAppName());
 		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
-		$path = $this->path . '/' . $this->language . '/' . $package;
+		$path = $this->path . '/' . $this->language . '/' . strtolower($package);
 		$path = Wind::getRealDir(trim($path, '/'), true);
 		if (!is_dir($path)) throw new WindI18nException(
 			'[Wind.WindTranslater.resolvedPath] resolve resource path fail, path ' . $path . ' is not exit.');
