@@ -116,6 +116,10 @@
 		'scope' => 'singleton',
 		'destroy' => 'commit',
 	),
+	'i18n' => array(
+		'path' => 'WIND:i18n.WindLangResource',
+		'scope' => 'singleton',
+	),
 	'windCookie' => array(
 		'path' => 'WIND:http.cookie.WindNormalCookie',
 		'scope' => 'singleton',
