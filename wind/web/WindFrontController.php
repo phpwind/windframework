@@ -185,7 +185,9 @@ class WindFrontController {
 		$this->response = new WindHttpResponse();
 		$this->factory || $this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
 		$config && $this->initConfig($config, $this->factory);
-		isset($this->_config['charset']) && $this->response->setCharset($this->_config['charset']);
+		$_charset = isset($this->_config['charset']) ? $this->_config['charset'] : 'utf-8';
+		$this->response->setHeader('Content-type', 'text/html;charset=' . $_charset);
+		$this->response->setCharset($_charset);
 		$this->_config['defaultApp'] = $appName;
 		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
 			array('router' => $this->_config['router']));
