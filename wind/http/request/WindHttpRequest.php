@@ -320,7 +320,6 @@ class WindHttpRequest implements IWindRequest {
 	 * @return string  
 	 */
 	public function getRequestType() {
-		//TODO 处理请求类型
 		return 'web';
 	}
 
@@ -629,19 +628,6 @@ class WindHttpRequest implements IWindRequest {
 			$this->_language = $_language[0] ? $_language[0] : 'zh-cn';
 		}
 		return $this->_language;
-	}
-
-	/**
-	 * 获得请求相应对象
-	 * 
-	 * @param string $charset 请求相应头部的编码方式
-	 * @return WindHttpResponse
-	 */
-	public function getResponse($charset = 'utf-8') {
-		$response = new WindHttpResponse();
-		$response->setHeader('Content-type', 'text/html;charset=' . $charset);
-		$response->setCharset($charset);
-		return $response;
 	}
 
 	/**
