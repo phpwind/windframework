@@ -14,9 +14,10 @@
 			<property name='dispatcher' ref='dispatcher' />
 		</properties>
 	</component>
-	<component name='windToken' path='WIND:token.WindSecurityToken' scope='singleton'>
+	<component name='windToken' path='WIND:token.WindSecurityToken'
+		scope='singleton'>
 		<properties>
-			<property name='tokenContainer' ref='windCookie'/>
+			<property name='tokenContainer' ref='windCookie' />
 		</properties>
 	</component>
 	<component name='windLogger' path='WIND:log.WindLogger'
@@ -89,6 +90,9 @@
 	<component name='windSession' path='WIND:http.session.WindSession'
 		scope='singleton' destroy='commit'>
 		<!--<constructor-args> <constructor-arg name='0' ref='windCache' /> </constructor-args> -->
+	</component>
+	<component name='i18n' path='WIND:i18n.WindLangResource'
+		scope='singleton'>
 	</component>
 	<component name='windCookie' path='WIND:http.cookie.WindNormalCookie'
 		scope='singleton'>
