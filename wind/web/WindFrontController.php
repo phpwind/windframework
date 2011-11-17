@@ -182,9 +182,10 @@ class WindFrontController {
 	 */
 	private function initApplication($appName, $config) {
 		$this->request = new WindHttpRequest();
-		$this->response = $this->request->getResponse();
+		$this->response = new WindHttpResponse();
 		$this->factory || $this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
 		$config && $this->initConfig($config, $this->factory);
+		isset($this->_config['charset']) && $this->response->setCharset($this->_config['charset']);
 		$this->_config['defaultApp'] = $appName;
 		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
 			array('router' => $this->_config['router']));
