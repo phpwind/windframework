@@ -160,6 +160,7 @@ class WindIniParser {
 		if (is_array($value[$c_key])) {
 			$this->merge($c_key, $value[$c_key], $data[$key]);
 		} else {
+			if (!is_array($data[$key])) $data[$key] = array($data[$key]);
 			$data[$key][$c_key] = $value[$c_key];
 		}
 		return $data;
