@@ -18,7 +18,6 @@
 class WindErrorHandler extends WindController {
 	protected $error = array();
 	protected $errorCode = 0;
-	protected $urlReferer = '';
 	protected $errorDir = 'WIND:web.view';
 
 	/* (non-PHPdoc)
@@ -27,24 +26,13 @@ class WindErrorHandler extends WindController {
 	public function beforeAction($handlerAdapter) {
 		$this->error = $this->getForward()->getVars('__error');
 		$this->errorCode = (int) $this->getForward()->getVars('__errorCode');
-		if ($this->request->getUrlReferer())
-			$this->urlReferer = $this->getRequest()->getUrlReferer();
-		else
-			$this->urlReferer = $this->getRequest()->getBaseUrl();
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindAction::run()
 	 */
 	public function run() {
-		if ($this->errorCode >= 400 && $this->errorCode <= 505) {
-			$_statusMsg = ucwords($this->getResponse()->codeMap($this->errorCode));
-			$topic = "$this->errorCode - " . $_statusMsg;
-			$this->getResponse()->setStatus($this->errorCode);
-		} else
-			$topic = "Error message";
-		$this->setOutput($topic, "errorHeader");
-		$this->setOutput($this->urlReferer, "baseUrl");
+		$this->setOutput("Error message", "errorHeader");
 		$this->setOutput($this->error, "errors");
 		$errDir = Wind::getApp()->getConfig('errorpage');
 		!$errDir && $errDir = $this->errorDir;
