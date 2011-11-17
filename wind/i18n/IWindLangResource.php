@@ -16,5 +16,5 @@ interface IWindLangResource {
 	 * @param string $message
 	 * @param array $params
 	 */
-	public function lang($message, $params = array());
+	public function getMessage($message, $params = array());
 }

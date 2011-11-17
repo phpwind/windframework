@@ -56,7 +56,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	/* (non-PHPdoc)
 	 * @see IWindLangResource::lang()
 	 */
-	public function lang($message, $params = array()) {
+	public function getMessage($message, $params = array()) {
 		$package = '';
 		if (strpos($message, ':') != false) {
 			list($package, $message) = explode(':', $message, 2);
@@ -80,7 +80,8 @@ class WindLangResource extends WindModule implements IWindLangResource {
 			$messages = Wind::getApp()->getComponent('configParser')->parse($path, $_cache, '', $cache);
 			$this->_messages[$path] = $messages;
 		}
-		$message = $this->getMessage($this->_messages[$path], $keys);
+		$message = $this->_getMessage($this->_messages[$path], $keys);
+		$params && $message = call_user_func_array('sprintf', array($message) + $params);
 		return $message;
 	}
 
@@ -90,7 +91,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 * @param array $messages
 	 * @param string $key
 	 */
-	protected function getMessage($messages, $keys) {
+	protected function _getMessage($messages, $keys) {
 		if (is_string($keys)) return '';
 		foreach ($keys as $value) {
 			if (!isset($messages[$value])) continue;
