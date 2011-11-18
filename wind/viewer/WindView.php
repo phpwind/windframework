@@ -120,7 +120,11 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function render($display = false) {
 		if (!$this->templateName) return;
-		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
+		$_type = $this->getResponse()->getResponseType();
+		if (!$_type) {
+			list($acceptTypes) = explode(',', $this->getRequest()->getAcceptTypes(), 2);
+			$_type = WindMimeType::getType($acceptTypes);
+		}
 		switch (strtolower($_type)) {
 			case 'json':
 				$this->renderWithJson();
