@@ -110,8 +110,8 @@ class WindLangResource extends WindModule implements IWindLangResource {
 		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
 		$path = $this->path . '/' . $this->language . '/' . strtolower($package);
 		$path = Wind::getRealDir(trim($path, '/'), true);
-		if (!is_dir($path)) throw new WindI18nException(
-			'[Wind.WindTranslater.resolvedPath] resolve resource path fail, path ' . $path . ' is not exit.');
+		/*if (!is_dir($path)) throw new WindI18nException(
+			'[Wind.WindTranslater.resolvedPath] resolve resource path fail, path ' . $path . ' is not exit.');*/
 		return $path;
 	}
 
