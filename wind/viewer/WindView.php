@@ -248,7 +248,7 @@ class WindView extends WindModule implements IWindView {
 		foreach ($_dirs as $_sub) {
 			if (!$_sub) continue;
 			$dir .= '/' . $_sub;
-			if (!is_dir($dir)) mkdir($dir, '777');
+			if (!is_dir($dir)) mkdir($dir, 0777);
 		}
 		$dir .= '/' . str_replace('.', '_', $template);
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
