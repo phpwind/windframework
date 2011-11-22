@@ -93,8 +93,11 @@ class WindFrontController {
 		if (!isset($this->_app[$appName])) {
 			$config = $this->getConfig($appName);
 			if (!empty($config['components'])) {
-				$this->resolveComponentsConfig($config['components']);
+				$config['components'] = $this->resolveComponentsConfig($config['components']);
+				unset($config['components']['router']);
+				$this->factory->loadClassDefinitions($config['components']);
 			}
+			
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, $this->response, $this->factory));
 			$application->setConfig($config);
@@ -118,8 +121,7 @@ class WindFrontController {
 			$parser = $this->factory->getInstance('configParser');
 			$components = $parser->parse($path);
 		}
-		unset($components['router']);
-		$this->factory->loadClassDefinitions($components);
+		return $components;
 	}
 
 	/**
