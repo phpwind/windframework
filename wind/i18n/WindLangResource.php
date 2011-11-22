@@ -58,12 +58,10 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 * @see IWindLangResource::lang()
 	 */
 	public function getMessage($message, $params = array()) {
-		$package = '';
-		$file = '';
+		$package = $file = '';
 		if (strpos($message, ':') != false) list($package, $message) = explode(':', $message, 2);
 		if (strpos($message, '.') != false) list($file, $key) = explode('.', $message, 2);
 		$path = $this->resolvedPath($package);
-		
 		if (is_file($path . '/' . $file . $this->suffix)) {
 			$path = $path . '/' . $file . $this->suffix;
 		} elseif (is_file($path . '/' . $this->default . $this->suffix)) {
