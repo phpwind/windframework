@@ -123,4 +123,8 @@
 		'path' => 'WIND:http.cookie.WindNormalCookie',
 		'scope' => 'singleton',
 	),
+	'i18n' => array(
+		'path' => 'WIND:i18n.WindLangResource',
+		'scope' => 'singleton',
+	),
 );
