@@ -111,7 +111,7 @@ class WindFrontController {
 	 * @param array $components
 	 * @return void
 	 */
-	private function resolveComponentsConfig($components){
+	private function resolveComponentsConfig($components) {
 		if (isset($components['resource'])) {
 			$path = Wind::getRealPath($components['resource'], true, true);
 			/* @var $parser WindConfigParser */
