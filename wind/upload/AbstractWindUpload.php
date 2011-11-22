@@ -238,24 +238,6 @@ abstract class AbstractWindUpload {
 		return in_array($ext, array('gif', 'jpg', 'jpeg', 'png', 'bmp', 'swf'));
 	}
 	
-
-	/**
-	 * 创建文件夹
-	 * 
-	 * @param string $path 上传的文件的名字
-	 * @return boolean
-	 */
-	protected function createFolder($path) {
-		if (!is_dir($path)) {
-			$this->createFolder(dirname($path));
-			@mkdir($path);
-			@chmod($path, 0777);
-			@fclose(@fopen($path . '/index.html', 'w'));
-			@chmod($path . '/index.html', 0777);
-		}
-		return true;
-	}
-	
 	/**
 	 * 执行上传操作
 	 * 

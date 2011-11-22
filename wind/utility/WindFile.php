@@ -248,4 +248,22 @@ class WindFile {
 	public static function appendSlashesToDir($path) {
 		return rtrim($path, '\\/') . DIRECTORY_SEPARATOR;
 	}
+
+	/**
+	 * 创建目录
+	 *
+	 * @param string $path 目录路径
+	 * @param int $permissions 权限
+	 * @return boolean
+	 */
+	public static function mkdir($path, $permissions = 0777) {
+		if (!is_dir($path)) {
+			self::mkdir(dirname($path), $permissions);
+			@mkdir($path);
+			@chmod($path, $permissions);
+			@fclose(@fopen($path . '/index.html', 'w'));
+			@chmod($path . '/index.html', $permissions);
+		}
+		return true;
+	}
 }
