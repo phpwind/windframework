@@ -93,8 +93,7 @@ class WindFrontController {
 		if (!isset($this->_app[$appName])) {
 			$config = $this->getConfig($appName);
 			if (!empty($config['components'])) {
-				unset($config['components']['router']);
-				$this->factory->loadClassDefinitions($config['components']);
+				$this->resolveComponentsConfig($config['components']);
 			}
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, $this->response, $this->factory));
@@ -104,6 +103,23 @@ class WindFrontController {
 			$this->_app[$appName] = $application;
 		}
 		return $this->_app[$appName];
+	}
+	
+	/**
+	 * 解析组件配置
+	 *
+	 * @param array $components
+	 * @return void
+	 */
+	private function resolveComponentsConfig($components){
+		if (isset($components['resource'])) {
+			$path = Wind::getRealPath($components['resource'], true, true);
+			/* @var $parser WindConfigParser */
+			$parser = $this->factory->getInstance('configParser');
+			$components = $parser->parse($path);
+		}
+		unset($components['router']);
+		$this->factory->loadClassDefinitions($components);
 	}
 
 	/**
