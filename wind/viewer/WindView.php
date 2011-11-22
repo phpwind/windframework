@@ -120,9 +120,11 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function render($display = false) {
 		if (!$this->templateName) return;
+		//$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
 		$_type = $this->getResponse()->getResponseType();
 		if (!$_type) {
 			list($acceptTypes) = explode(',', $this->getRequest()->getAcceptTypes(), 2);
+			Wind::import('WIND:http.mime.WindMimeType');
 			$_type = WindMimeType::getType($acceptTypes);
 		}
 		switch (strtolower($_type)) {
@@ -246,7 +248,7 @@ class WindView extends WindModule implements IWindView {
 		foreach ($_dirs as $_sub) {
 			if (!$_sub) continue;
 			$dir .= '/' . $_sub;
-			if (!is_dir($dir)) mkdir($dir, '777');
+			if (!is_dir($dir)) mkdir($dir, 0777);
 		}
 		$dir .= '/' . str_replace('.', '_', $template);
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
