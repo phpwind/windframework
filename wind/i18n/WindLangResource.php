@@ -59,8 +59,9 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 */
 	public function getMessage($message, $params = array()) {
 		$package = '';
+		$file = '';
 		if (strpos($message, ':') != false) list($package, $message) = explode(':', $message, 2);
-		list($file, $key) = explode('.', $message, 2);
+		if (strpos($message, '.') != false) list($file, $key) = explode('.', $message, 2);
 		$path = $this->resolvedPath($package);
 		
 		if (is_file($path . '/' . $file . $this->suffix)) {
@@ -75,7 +76,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 		if (!isset($this->_messages[$path])) {
 			/* @var $cache AbstractWindCache */
 			$cache = Wind::getApp()->getComponent('windCache');
-			$cacheKey = $this->_cachePrefix . $package . $file;
+			$cacheKey = $this->_cachePrefix . $package . $file . filemtime($path);
 			$messages = null;
 			if ($cache) $messages = $cache->get($cacheKey);
 			if (!$messages) {
