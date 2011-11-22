@@ -170,26 +170,6 @@ class WindFile {
 	}
 
 	/**
-	 * 取得文件的mime类型
-	 * 
-	 * @param string $fileName 文件名
-	 * @deprecated
-	 * @return string|boolean
-	 * @throws WindException
-	 */
-	public static function getMimeType($fileName) {
-		//TODO WindMimeTypes.php 被删掉了，有bug 
-		$suffix = self::getFileSuffix($fileName);
-		$mimes = require WIND_PATH . '/utility/WindMimeTypes.php';
-		if (isset($mimes[$suffix])) {
-			return is_array($mimes[$suffix]) ? current($mimes[$suffix]) : $mimes[$suffix];
-		} else {
-			throw new WindException('Sorry, can not find the corresponding mime type of the file');
-		}
-		return false;
-	}
-
-	/**
 	 * 取得目录的迭代
 	 * 
 	 * @param string $dir 目录名
@@ -255,7 +235,7 @@ class WindFile {
 	 * @return string
 	 */
 	public static function getFileSuffix($filename) {
-		$filename = explode($filename, '.');
+		$filename = explode('.', $filename);
 		return array_pop($filename);
 	}
 
