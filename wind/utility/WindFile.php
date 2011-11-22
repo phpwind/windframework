@@ -259,10 +259,7 @@ class WindFile {
 	public static function mkdir($path, $permissions = 0777) {
 		if (!is_dir($path)) {
 			self::mkdir(dirname($path), $permissions);
-			@mkdir($path);
-			@chmod($path, $permissions);
-			@fclose(@fopen($path . '/index.html', 'w'));
-			@chmod($path . '/index.html', $permissions);
+			@mkdir($path, $permissions);
 		}
 		return true;
 	}
