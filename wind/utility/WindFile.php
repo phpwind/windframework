@@ -250,17 +250,16 @@ class WindFile {
 	}
 
 	/**
-	 * 创建目录
+	 * 递归的创建目录
 	 *
 	 * @param string $path 目录路径
 	 * @param int $permissions 权限
 	 * @return boolean
 	 */
 	public static function mkdir($path, $permissions = 0777) {
-		if (!is_dir($path) && dirname($path) !== $path) {
-			self::mkdir(dirname($path), $permissions);
-			@mkdir($path, $permissions);
-		}
-		return true;
+		if (is_dir($path)) return true;
+		$_path = dirname($path);
+		if ($_path !== $path) self::mkdir($_path, $permissions);
+		return @mkdir($path, $permissions);
 	}
 }
