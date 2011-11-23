@@ -25,8 +25,7 @@ class WindTemplateCompilerLang extends AbstractWindTemplateCompiler {
 		if (!$this->message) return $content;
 		$resource = Wind::getApp()->getComponent('i18n');
 		$resource !== null && $this->message = $resource->getMessage($this->message);
-		$_content = '<?php echo "' . $this->message . '" ?>';
-		return $_content;
+		return $this->message;
 	}
 
 	/* (non-PHPdoc)
