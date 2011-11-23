@@ -257,7 +257,7 @@ class WindFile {
 	 * @return boolean
 	 */
 	public static function mkdir($path, $permissions = 0777) {
-		if (!is_dir($path)) {
+		if (!is_dir($path) && dirname($path) !== $path) {
 			self::mkdir(dirname($path), $permissions);
 			@mkdir($path, $permissions);
 		}
