@@ -23,9 +23,9 @@ class WindTemplateCompilerLang extends AbstractWindTemplateCompiler {
 	 */
 	public function compile($key, $content) {
 		if (!$this->message) return $content;
-		$_content = '<?php $message = "' . $this->message . '";';
-		$_content .= '$resource = Wind::getApp()->getComponent(\'i18n\');';
-		$_content .= '$resource !== null && $message = $resource->getMessage($message);echo $message;?>';
+		$resource = Wind::getApp()->getComponent('i18n');
+		$resource !== null && $this->message = $resource->getMessage($this->message);
+		$_content = '<?php echo "' . $this->message . '" ?>';
 		return $_content;
 	}
 
@@ -36,5 +36,3 @@ class WindTemplateCompilerLang extends AbstractWindTemplateCompiler {
 		return array('message');
 	}
 }
-
-?>
