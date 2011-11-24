@@ -1,7 +1,6 @@
 <?php
 Wind::import('WIND:i18n.WindI18nException');
 Wind::import('WIND:i18n.IWindLangResource');
-Wind::import('WIND:i18n.WindLocale');
 /**
  * 语言资源基础实现
  * 
@@ -93,56 +92,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 		$params && $message = call_user_func_array('sprintf', array($message) + $params);
 		return $message;
 	}
-	
-	/**
-	 * 格式化数值
-	 *
-	 * @param int $number
-	 * @return string
-	 */
-	public function formatNumber($number){
-		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
-		if ($this->locale === null) $this->locale = new WindLocale($this->language);
-		return $this->locale->formatNumber($number);
-	}
-	
-	/**
-	 * 格式化日期
-	 *
-	 * @param int $timestamp
-	 * @return string
-	 */
-	public function formatDate($timestamp){
-		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
-		if ($this->locale === null) $this->locale = new WindLocale($this->language);
-		return $this->locale->formatDate($timestamp);
-	}
-	
-	/**
-	 * 格式化为带百分比的数据
-	 *
-	 * @param int $number
-	 * @return string
-	 */
-	public function formatPercent($number){
-		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
-		if ($this->locale === null) $this->locale = new WindLocale($this->language);
-		return $this->locale->formatPercentage($number);
-	}
-	
-	/**
-	 * 格式化为金额
-	 *
-	 * @param int $number
-	 * @param string $currency 例如美元=>USD,人民币=>CNY
-	 * @return mixed
-	 */
-	public function formatCurrency($number, $currency){
-		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
-		if ($this->locale === null) $this->locale = new WindLocale($this->language);
-		return $this->locale->formatCurrency($number, $currency);
-	}
-	
+
 	/**
 	 * 获取一条message信息
 	 * 
