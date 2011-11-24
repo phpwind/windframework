@@ -82,16 +82,8 @@ class WindRouter extends AbstractWindRouter {
 	 * @return array
 	 */
 	public function defaultRoute($request, $response) {
-		$action = $request->getRequest($this->actionKey);
-		$controller = $request->getRequest($this->controllerKey);
-		$module = $request->getRequest($this->moduleKey);
-		$app = $request->getRequest($this->appKey);
-		$action && $this->setAction($action);
-		$controller && $this->setController($controller);
-		$module && $this->setModule($module);
-		$app && $this->setApp($app);
-		return;
+		$pathinfo = $request->getPathInfo();
+		return $pathinfo ? WindUrlHelper::urlToArgs($pathinfo) : array();
 	}
 }
-
 ?>
