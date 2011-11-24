@@ -68,7 +68,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		empty($this->count) && $this->count = '0';
 		empty($this->per) && $this->per = '0';
 		empty($this->url) && $this->url = '';
-		empty($this->args) && $this->args = array();
+		empty($this->args) && $this->args = 'array()';
 		$_return = array();
 		$_return[] = '<?php $__tplPageCount=(int)' . $this->count . ';';
 		$_return[] = '$__tplPagePer=(int)' . $this->per . ';';
