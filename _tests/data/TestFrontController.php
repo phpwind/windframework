@@ -24,7 +24,7 @@ class TestFrontController extends WindFrontController {
 	
 	public function createApplication($appName) {
 		if (!isset($this->_app[$appName])) {
-			$config = $this->getConfig($appName);
+			$config = $this->getAppConfig($appName);
 			if (!empty($config['components'])) {
 				unset($config['components']['router']);
 				$this->factory->loadClassDefinitions($config['components']);

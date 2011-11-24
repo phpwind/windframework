@@ -159,8 +159,7 @@ class WindFileCache extends AbstractWindCache {
 		if (0 < ($level = $this->getCacheDirectoryLevel())) {
 			$_subdir = substr(md5($key), 0, $level);
 			$_dir .= '/' . $_subdir;
-			if (!is_dir($_dir))
-				mkdir($_dir, 0777, true);
+			WindFile::mkdir($_dir);
 		}
 		$filename = $key . '.' . $this->getCacheFileSuffix();
 		$this->cacheFileList[$key] = ($_dir ? $_dir . '/' . $filename : $filename);
@@ -189,8 +188,7 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setCacheDir($dir) {
 		$_dir = Wind::getRealPath($dir, false, true);
-		if (!is_dir($_dir))
-			mkdir($_dir, 0777, true);
+		WindFile::mkdir($_dir);
 		$this->cacheDir = realpath($_dir);
 	}
 

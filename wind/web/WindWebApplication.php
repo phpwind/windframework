@@ -64,7 +64,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	public function run($__state = false) {
 		try {
 			$this->checkProcess();
-			if (!($module = $this->getModules())) {
+			$module = $this->getModules();
+			$module = $this->setModules($this->handlerAdapter->getModule(), $module, true);
+			if (!$module) {
 				throw new WindActionException(
 					'[web.WindWebApplication.run] Your requested \'' . $this->handlerAdapter->getModule() . '\' was not found on this server.', 
 					404);
@@ -109,19 +111,21 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
+		if ($components = $this->getConfig('components')) {
+			if (isset($components['resource'])) {
+				$components = $this->windFactory->getInstance('configParser')->parse(
+					Wind::getRealPath($components['resource'], true, true));
+			}
+			unset($components['router']);
+			$this->windFactory->loadClassDefinitions($components);
+		}
+		
 		if ($default = $this->getModules('default')) {
 			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
 		}
-		$_modules = $this->getConfig('modules', '', array());
-		foreach ($_modules as $key => $value) {
-			if ($key == 'default') continue;
-			$this->setModules($key, $value, true);
-		}
-		$this->setModules('default', $this->defaultModule, true);
-		if (isset($config['charset'])) {
-			$this->getResponse()->setHeader('Content-type', 'text/html;charset=' . $config['charset']);
-			$this->getResponse()->setCharset($config['charset']);
-		}
+		$charset = $this->getConfig('charset', '', 'utf-8');
+		$this->getResponse()->setHeader('Content-type', 'text/html;charset=' . $charset);
+		$this->getResponse()->setCharset($charset);
 	}
 
 	/**
@@ -188,9 +192,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setModules($name, $config, $replace = false) {
 		if ($replace || !isset($this->_config['modules'][$name])) {
-			$this->_config['modules'][$name] = $name == 'default' ? (array) $config : WindUtility::mergeArray(
-				$this->defaultModule, (array) $config);
+			$this->_config['modules'][$name] = WindUtility::mergeArray($this->defaultModule, (array) $config);
 		}
+		return $this->_config['modules'][$name];
 	}
 
 	/**

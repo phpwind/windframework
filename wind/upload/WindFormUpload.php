@@ -28,7 +28,7 @@ class WindFormUpload extends AbstractWindUpload {
 		if (strpos($filename, '..') !== false || strpos($filename, '.php.') !== false || preg_match('/\.php$/', $filename)) {
 			exit('illegal file type!');
 		}
-		$this->createFolder(dirname($filename));
+		WindFile::mkdir(dirname($filename));
 		if (function_exists("move_uploaded_file") && @move_uploaded_file($tmp_name, $filename)) {
 			@unlink($tmp_name);
 			@chmod($filename, 0777);
