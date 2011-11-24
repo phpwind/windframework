@@ -41,12 +41,18 @@ class WindRewriteRoute extends AbstractWindRoute {
 		$_pathInfo = trim(str_replace($request->getBaseUrl(), '', $fullUrl), '/');
 		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), 
 			$matches)) return null;
+		
+		list(, $_args) = explode('?', $_pathInfo . '?', 2);
+		$_args = trim($_args, '?');
+		$_args = WindUrlHelper::urlToArgs($_args, true, $this->separator);
+		
 		foreach ($this->params as $_n => $_p) {
 			if (isset($_p['map']) && isset($matches[$_p['map']][0]))
 				$_value = $matches[$_p['map']][0];
 			else
 				$_value = isset($_p['default']) ? $_p['default'] : '';
 			$this->params[$_n]['value'] = $params[$_n] = trim($_value, '-/');
+			unset($_args[$_n]); //去掉参数中的m,c,a
 		}
 		$host = $request->getHostInfo();
 		if ($host != '' && ($pos1 = strpos($host, '://')) !== false && ($pos2 = strpos($host, '.')) !== false)
@@ -54,10 +60,8 @@ class WindRewriteRoute extends AbstractWindRoute {
 		else
 			return null;
 		$params['p'] = $host == 'www' ? '' : $host;
-		list(, $_args) = explode('?', $_pathInfo . '?', 2);
-		$_args = trim($_args, '?');
-		$_args && $params = array_merge($params, 
-			WindUrlHelper::urlToArgs($_args, true, $this->separator));
+		unset($_args['p']); //去掉参数中的p
+		$_args && $params = array_merge($params, $_args);
 		return $params;
 	}
 
