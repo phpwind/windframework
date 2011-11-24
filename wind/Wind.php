@@ -1,6 +1,6 @@
 <?php
 /* 框架版本信息 */
-define('WIND_VERSION', '0.8.0');
+define('WIND_VERSION', '0.8.8');
 /* 路径相关配置信息  */
 define('WIND_PATH', dirname(__FILE__) . '/');
 /* 二进制:十进制  模式描述
