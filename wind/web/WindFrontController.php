@@ -43,7 +43,9 @@ class WindFrontController {
 	 * 创建并执行当前应用,单应用访问入口
 	 */
 	public function run() {
-		empty($this->_config['defaultApp']) || $this->_currentAppName = $this->_config['defaultApp'];
+		if (!empty($this->_config['defaultApp'])) {
+			$this->_currentAppName = $this->_config['defaultApp'];
+		}
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
 		$router->route($this->request, $this->response);
@@ -91,37 +93,14 @@ class WindFrontController {
 	public function createApplication() {
 		$appName = $this->_currentAppName;
 		if (!isset($this->_app[$appName])) {
-			$config = $this->getConfig($appName);
-			if (!empty($config['components'])) {
-				$config['components'] = $this->resolveComponentsConfig($config['components']);
-				unset($config['components']['router']);
-				$this->factory->loadClassDefinitions($config['components']);
-			}
-			
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, $this->response, $this->factory));
-			$application->setConfig($config);
+			$application->setConfig($this->getAppConfig($appName));
 			$application->setDelayAttributes(array('handlerAdapter' => array('ref' => 'router')));
 			$this->request = $this->response = $this->factory = null;
 			$this->_app[$appName] = $application;
 		}
 		return $this->_app[$appName];
-	}
-	
-	/**
-	 * 解析组件配置
-	 *
-	 * @param array $components
-	 * @return void
-	 */
-	private function resolveComponentsConfig($components) {
-		if (isset($components['resource'])) {
-			$path = Wind::getRealPath($components['resource'], true, true);
-			/* @var $parser WindConfigParser */
-			$parser = $this->factory->getInstance('configParser');
-			$components = $parser->parse($path);
-		}
-		return $components;
 	}
 
 	/**
@@ -146,25 +125,22 @@ class WindFrontController {
 	}
 
 	/**
-	 * 设置应用配置
-	 *
-	 * @param string $appName
-	 * @param array $config
-	 */
-	public function setConfig($appName, $config) {
-		if (!isset($this->_config['web-apps'][$appName])) {
-			$this->_config['web-apps'][$appName] = $config;
-		}
-	}
-
-	/**
 	 * 获取appName对应的配置信息,当appName为空时,则返回当前app配置
 	 * 
 	 * @param string $appName
 	 */
-	public function getConfig($appName = '') {
+	public function getAppConfig($appName = '') {
 		$appName || $appName = $this->_currentAppName;
-		return isset($this->_config['web-apps'][$appName]) ? $this->_config['web-apps'][$appName] : array();
+		$_config = array();
+		if (isset($this->_config['web-apps'][$appName])) {
+			if ($appName === 'default' || !isset($this->_config['web-apps']['default']))
+				$_config = $this->_config['web-apps'][$appName];
+			else {
+				$_config = WindUtility::mergeArray($this->_config['web-apps']['default'], 
+					$this->_config['web-apps'][$appName]);
+			}
+		}
+		return $_config;
 	}
 
 	/**
@@ -203,9 +179,6 @@ class WindFrontController {
 		$this->response = new WindHttpResponse();
 		$this->factory || $this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
 		$config && $this->initConfig($config, $this->factory);
-		$_charset = isset($this->_config['charset']) ? $this->_config['charset'] : 'utf-8';
-		$this->response->setHeader('Content-type', 'text/html;charset=' . $_charset);
-		$this->response->setCharset($_charset);
 		$this->_config['defaultApp'] = $appName;
 		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
 			array('router' => $this->_config['router']));
@@ -245,12 +218,8 @@ class WindFrontController {
 			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
 				$value['root-path'], false);
 			Wind::register($rootPath, $key, true);
-			if ('default' !== $key && !empty($config['web-apps']['default'])) {
-				$value = WindUtility::mergeArray($config['web-apps']['default'], $value);
-			}
-			$this->setConfig($key, $value);
 		}
-		$this->_config['router'] = isset($config['router']) ? $config['router'] : array();
+		$this->_config = $config;
 	}
 }
 
