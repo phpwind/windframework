@@ -27,7 +27,7 @@ class IndexController extends WindController {
 		$this->session = $this->getSystemFactory()->getInstance('windSession');
 		$this->userInfo = $this->session->get('user');
 		$this->setLayout('layout');
-		$this->setTheme('BLOG:static', $this->getRequest()->getBaseUrl(true) . '/' . 'static');
+		$this->setTheme('default', 'BLOG:static', $this->getRequest()->getBaseUrl(true) . '/' . 'static');
 		$this->setOutput('utf8', 'charset');
 	}
 
