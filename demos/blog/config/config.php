@@ -25,5 +25,5 @@ return array(
 			)
 		)
 	),
-	'router' => array('config' => array('resource' => 'BLOG:config.route_config.php')),
+	//'router' => array('config' => array('resource' => 'BLOG:config.route_config.php')),
 );

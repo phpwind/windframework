@@ -67,9 +67,6 @@ class WindLayout extends WindModule {
 		$__content = '';
 		ob_start();
 		if ($this->layout) {
-			$__theme = $this->viewer->getWindView()->theme;
-			$_theme = $__theme ? $__theme : $this->getRequest()->getBaseUrl(true);
-			unset($__theme);
 			list($tpl, $_output) = $this->viewer->compile($this->layout, '', false, true);
 			if (!@include ($tpl)) {
 				throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
