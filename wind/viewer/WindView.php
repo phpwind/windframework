@@ -238,17 +238,14 @@ class WindView extends WindModule implements IWindView {
 		if ($this->compileDir == $this->templateDir) throw new WindViewException(
 			'[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
 		$compileDir = $this->compileDir;
-		if (!$template)
-			$template = $this->templateName;
-		elseif (false !== ($pos = strpos($template, ':'))) {
-			$template = '__external.' . substr($template, $pos + 1);
+		if (!$template) $template = $this->templateName;
+		if (false !== ($pos = strpos($template, ':'))) {
+			$template = str_replace('.', '_', '__external.' . substr($template, $pos + 1));
 		} elseif (isset($this->theme['theme'])) {
 			$compileDir .= '.' . $this->theme['theme'];
 		}
-		
-		$dir = realpath(Wind::getRealPath($this->compileDir, false, true));
-		WindFile::mkdir($dir);
-		$dir .= '/' . str_replace('.', '_', $template);
+		$dir = Wind::getRealPath($compileDir . '.' . $template, false, true);
+		WindFile::mkdir(dirname($dir));
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
 
