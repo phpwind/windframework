@@ -102,7 +102,7 @@ class WindView extends WindModule implements IWindView {
 	 * 
 	 * @var string
 	 */
-	public $theme;
+	protected $theme = array('package' => '', 'url' => '');
 	/**
 	 * 视图解析引擎,通过组件配置改变该类型
 	 * 
@@ -121,12 +121,6 @@ class WindView extends WindModule implements IWindView {
 	public function render($display = false) {
 		if (!$this->templateName) return;
 		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
-		/*$_type = $this->getResponse()->getResponseType();
-		if (!$_type) {
-			list($acceptTypes) = explode(',', $this->getRequest()->getAcceptTypes(), 2);
-			Wind::import('WIND:http.mime.WindMimeType');
-			$_type = WindMimeType::getType($acceptTypes);
-		}*/
 		switch (strtolower($_type)) {
 			case 'json':
 				$this->renderWithJson();
@@ -151,6 +145,7 @@ class WindView extends WindModule implements IWindView {
 	protected function _render($display) {
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
+		Wind::getApp()->getResponse()->setData(array('theme' => $this->theme), 'T');
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
 			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
@@ -196,8 +191,9 @@ class WindView extends WindModule implements IWindView {
 			$this->compileExt = $this->getConfig('compile-ext', '', $this->compileExt);
 			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
 			$this->layout = $this->getConfig('layout', '', $this->layout);
-			$this->theme = $this->getConfig('theme', '', $this->theme);
 			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
+			$theme = $this->getConfig('theme');
+			if (is_array($theme) && !empty($theme)) $this->theme = array_merge($this->theme, $theme);
 		}
 	}
 
@@ -216,7 +212,13 @@ class WindView extends WindModule implements IWindView {
 	public function getViewTemplate($template = '', $ext = '') {
 		!$template && $template = $this->templateName;
 		!$ext && $ext = $this->templateExt;
-		if (false === strpos($template, ':')) $template = $this->templateDir . '.' . $template;
+		if (false === strpos($template, ':')) {
+			if (!empty($this->theme['package'])) {
+				$realPath = Wind::getRealPath($this->theme['package'] . '.' . $template, ($ext ? $ext : false), true);
+				if (is_file($realPath)) return $realPath;
+			}
+			$template = $this->templateDir . '.' . $template;
+		}
 		return Wind::getRealPath($template, ($ext ? $ext : false), true);
 	}
 
@@ -244,4 +246,19 @@ class WindView extends WindModule implements IWindView {
 		$dir .= '/' . str_replace('.', '_', $template);
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getTheme() {
+		return $this->theme;
+	}
+
+	/**
+	 * @param string $theme
+	 */
+	public function setTheme($theme, $themeUrl = '') {
+		$this->theme = array('package' => $theme, 'url' => $themeUrl);
+	}
+
 }
