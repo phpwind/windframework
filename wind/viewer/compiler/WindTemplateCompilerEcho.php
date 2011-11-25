@@ -34,12 +34,18 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 			$_output .= ')';
 		}
 		
-		if (!strcasecmp($type, 'json'))
-			return '<?php echo WindJson::encode(' . $_output . ');?>';
-		elseif (!strcasecmp($type, 'html'))
-			return '<?php echo ' . $_output . ';?>';
-		else
-			return '<?php echo WindSecurity::escapeHTML(' . $_output . ');?>';
+		switch (strtolower($type)) {
+			case 'json':
+				$content = '<?php echo WindJson::encode(' . $_output . ');?>';
+				break;
+			case 'url':
+			case 'html':
+				$content = '<?php echo ' . $_output . ';?>';
+				break;
+			default:
+				$content = '<?php echo WindSecurity::escapeHTML(' . $_output . ');?>';
+		}
+		return $content;
 	}
 }
 ?>
