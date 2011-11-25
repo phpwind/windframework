@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf8" />
 <title>首页</title>
-<link href="<?php echo WindSecurity::escapeHTML($_theme);?>/images/core.css" rel="stylesheet" />
-<link href="<?php echo WindSecurity::escapeHTML($_theme);?>/images/css.css" rel="stylesheet" />
+<link href="<?php echo WindSecurity::escapeHTML(Wind::getApp()->getResponse()->getData('T','theme','url'));?>/images/core.css" rel="stylesheet" />
+<link href="<?php echo WindSecurity::escapeHTML(Wind::getApp()->getResponse()->getData('T','theme','url'));?>/images/css.css" rel="stylesheet" />
 </head>
 <body>
 	<div class="wrap">
 		<div id="header" class="mb10">
 			<div class="header">
 				<table width="100%"><tr>
-					<td><h2 class="fl logo"><a href="<?php echo WindSecurity::escapeHTML(WindUrlHelper::createUrl('default/index/run'));?>"><img src="<?php echo WindSecurity::escapeHTML($_theme);?>/images/logo.png" width="198" height="80" class="fl" /></a></h2></td>
+					<td><h2 class="fl logo"><a href="<?php echo WindSecurity::escapeHTML(WindUrlHelper::createUrl('default/index/run'));?>"><img src="<?php echo WindSecurity::escapeHTML(Wind::getApp()->getResponse()->getData('T','theme','url'));?>/images/logo.png" width="198" height="80" class="fl" /></a></h2></td>
 					<td align="right">
 						<div class="login_header fr">
 							<dl class="cc login_dlA">
