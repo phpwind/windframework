@@ -102,7 +102,7 @@ class WindView extends WindModule implements IWindView {
 	 * 
 	 * @var string
 	 */
-	protected $theme = array('package' => '', 'url' => '');
+	protected $theme = array('theme' => '', 'package' => '', 'url' => '');
 	/**
 	 * 视图解析引擎,通过组件配置改变该类型
 	 * 
@@ -237,10 +237,15 @@ class WindView extends WindModule implements IWindView {
 		if (!$this->compileDir) return;
 		if ($this->compileDir == $this->templateDir) throw new WindViewException(
 			'[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
+		$compileDir = $this->compileDir;
 		if (!$template)
 			$template = $this->templateName;
-		elseif (false !== ($pos = strpos($template, ':')))
+		elseif (false !== ($pos = strpos($template, ':'))) {
 			$template = '__external.' . substr($template, $pos + 1);
+		} elseif (isset($this->theme['theme'])) {
+			$compileDir .= '.' . $this->theme['theme'];
+		}
+		
 		$dir = realpath(Wind::getRealPath($this->compileDir, false, true));
 		WindFile::mkdir($dir);
 		$dir .= '/' . str_replace('.', '_', $template);
@@ -256,9 +261,11 @@ class WindView extends WindModule implements IWindView {
 
 	/**
 	 * @param string $theme
+	 * @param string $package
+	 * @param string $url
 	 */
-	public function setTheme($theme, $themeUrl = '') {
-		$this->theme = array('package' => $theme, 'url' => $themeUrl);
+	public function setTheme($theme, $package, $url) {
+		$this->theme = array('theme' => $theme, 'package' => $package, 'url' => $url);
 	}
 
 }
