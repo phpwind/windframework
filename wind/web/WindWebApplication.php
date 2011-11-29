@@ -317,10 +317,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	protected function checkProcess() {
 		if ($url = $this->getConfig('isclosed', 'url', '')) {
-			$forward = new WindForward();
-			$forward->setIsRedirect(true);
-			$forward->setUrl($url);
-			throw new WindForwardException($forward);
+			$forward = $this->getSystemFactory()->getInstance('forward');
+			$forward->forwardRedirect($url);
 		}
 		$token = $this->_getHandlerAdapter()->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (strcasecmp($token, $this->token) === 0) {
