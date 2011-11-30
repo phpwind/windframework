@@ -243,16 +243,25 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	}
 
 	/**
-	 * 设置主题包
+	 * 设置当前主题信息
 	 * 
-	 * 暂未实现
 	 * @param string $theme
-	 * @param string $package
 	 * @param string $url
 	 * @return void
 	 */
-	protected function setTheme($theme, $package, $url) {
-		$this->getForward()->getWindView()->setTheme($theme, $package, $url);
+	protected function setTheme($theme, $url) {
+		$this->getForward()->getWindView()->setTheme($theme);
+		$this->getForward()->getWindView()->setThemeUrl($url);
+	}
+
+	/**
+	 * 设置主题包
+	 *
+	 * @param string $package
+	 * @return void
+	 */
+	protected function setThemePackage($package) {
+		$this->getForward()->getWindView()->setThemePackage($package);
 	}
 
 	/**
