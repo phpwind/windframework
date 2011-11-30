@@ -40,7 +40,11 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 				break;
 			case 'url':
 			case 'html':
+			case 'js':
 				$content = '<?php echo ' . $_output . ';?>';
+				break;
+			case 'text':
+				$content = '<?php strip_tags(' . $_output . ');?>';
 				break;
 			default:
 				$content = '<?php echo WindSecurity::escapeHTML(' . $_output . ');?>';

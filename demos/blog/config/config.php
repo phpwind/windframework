@@ -6,7 +6,7 @@ return array(
 				'default' => array(
 					'controller-path' => 'controller', 
 					'controller-suffix' => 'Controller', 
-					'error-handler' => 'BLOG:controller.ErrorController'
+					'error-handler' => 'BLOG:controller.ErrorController',
 				)
 			), 
 			'filters' => array(

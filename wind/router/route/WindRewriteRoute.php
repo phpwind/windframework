@@ -40,7 +40,7 @@ class WindRewriteRoute extends AbstractWindRoute {
 		$fullUrl = $request->getHostInfo() . $request->getRequestUri();
 		$_pathInfo = trim(str_replace($request->getBaseUrl(), '', $fullUrl), '/');
 		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), 
-			$matches)) return null;
+			$matches) || strpos($_pathInfo, '.php') !== false) return null;
 		
 		list(, $_args) = explode('?', $_pathInfo . '?', 2);
 		$_args = trim($_args, '?');
@@ -82,7 +82,7 @@ class WindRewriteRoute extends AbstractWindRoute {
 			if ($key === $router->getModuleKey()) {
 				$m = $_m ? $_m : $router->getModule();
 				if ($m === $router->getDefaultModule() && $flag & 2)
-					$flag = 6;
+					$flag = 7;
 				else
 					$_args[$val['map']] = $m;
 			} elseif ($key === $router->getControllerKey()) {

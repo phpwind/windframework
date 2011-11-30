@@ -123,8 +123,6 @@ class WindView extends WindModule implements IWindView {
 		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
 		switch (strtolower($_type)) {
 			case 'json':
-				$this->renderWithJson();
-				break;
 			case 'ajax':
 				$this->renderWithJson();
 				break;
@@ -160,7 +158,6 @@ class WindView extends WindModule implements IWindView {
 	protected function renderWithXml() {
 		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
-		$_vars['G'] = $this->getResponse()->getData('G');
 		$parser = $this->_getXmlParser();
 		if ($parser === null) {
 			Wind::import("WIND:parser.WindXmlParser");
@@ -175,7 +172,6 @@ class WindView extends WindModule implements IWindView {
 	protected function renderWithJson() {
 		$this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
-		$_vars['G'] = $this->getResponse()->getData('G');
 		echo WindJson::encode($_vars);
 	}
 
@@ -192,8 +188,7 @@ class WindView extends WindModule implements IWindView {
 			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
 			$this->layout = $this->getConfig('layout', '', $this->layout);
 			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
-			$theme = $this->getConfig('theme');
-			if (is_array($theme) && !empty($theme)) $this->theme = array_merge($this->theme, $theme);
+			$this->setThemePackage($this->getConfig('theme-package'));
 		}
 	}
 
@@ -212,12 +207,12 @@ class WindView extends WindModule implements IWindView {
 	public function getViewTemplate($template = '', $ext = '') {
 		!$template && $template = $this->templateName;
 		!$ext && $ext = $this->templateExt;
-		if (false === strpos($template, ':')) {
-			if (!empty($this->theme['package'])) {
-				$realPath = Wind::getRealPath($this->theme['package'] . '.' . $template, ($ext ? $ext : false), true);
-				if (is_file($realPath)) return $realPath;
-			}
-			$template = $this->templateDir . '.' . $template;
+		if (false === strpos($template, ':')) $template = $this->templateDir . '.' . $template;
+		if (!empty($this->theme['package']) && !empty($this->theme['theme'])) {
+			list(, $_template) = explode(':', $template, 2);
+			$_template = $this->theme['package'] . '.' . $this->theme['theme'] . '.' . $_template;
+			$realPath = Wind::getRealPath($_template, ($ext ? $ext : false), true);
+			if (is_file($realPath)) return $realPath;
 		}
 		return Wind::getRealPath($template, ($ext ? $ext : false), true);
 	}
@@ -237,32 +232,43 @@ class WindView extends WindModule implements IWindView {
 		if (!$this->compileDir) return;
 		if ($this->compileDir == $this->templateDir) throw new WindViewException(
 			'[wind.viewer.WindView.getCompileFile] the same directory compile and template.');
-		$compileDir = $this->compileDir;
 		if (!$template) $template = $this->templateName;
 		if (false !== ($pos = strpos($template, ':'))) {
 			$template = str_replace('.', '_', '__external.' . substr($template, $pos + 1));
-		} elseif (isset($this->theme['theme'])) {
-			$compileDir .= '.' . $this->theme['theme'];
 		}
-		$dir = Wind::getRealPath($compileDir . '.' . $template, false, true);
+		if (!empty($this->theme['theme']) && !empty($this->theme['package'])) {
+			$template = $this->compileDir . '.' . $this->theme['theme'] . '.' . $template;
+		} else {
+			$template = $this->compileDir . '.' . $template;
+		}
+		$dir = Wind::getRealPath($template, false, true);
 		WindFile::mkdir(dirname($dir));
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
 
 	/**
-	 * @return string
+	 * 设置当前主题包的位置
+	 *
+	 * @param string $package
 	 */
-	public function getTheme() {
-		return $this->theme;
+	public function setThemePackage($package) {
+		$this->theme['package'] = $package;
+	}
+
+	/**
+	 * 设置当前主题Url
+	 *
+	 * @param string $url
+	 */
+	public function setThemeUrl($url) {
+		$this->theme['url'] = $url;
 	}
 
 	/**
 	 * @param string $theme
-	 * @param string $package
-	 * @param string $url
 	 */
-	public function setTheme($theme, $package, $url) {
-		$this->theme = array('theme' => $theme, 'package' => $package, 'url' => $url);
+	public function setTheme($theme) {
+		$this->theme['theme'] = $theme;
 	}
 
 }
