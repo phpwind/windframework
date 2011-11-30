@@ -179,7 +179,7 @@ class WindRender {
 	 */
 	public static function render($__tpl, $__vars, $__viewer) {
 		@extract($__vars, EXTR_REFS);
-		if (!include_once ($__tpl)) {
+		if (!include ($__tpl)) {
 			throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
