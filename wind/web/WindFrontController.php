@@ -182,6 +182,8 @@ class WindFrontController {
 		$this->_config['defaultApp'] = $appName;
 		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
 			array('router' => $this->_config['router']));
+		if (isset($this->_config['isclosed']['url']))
+			WindHelper::triggerError('', $this->_config['isclosed']['url'], $this->response);
 	}
 
 	/**

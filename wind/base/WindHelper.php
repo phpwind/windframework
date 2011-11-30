@@ -37,6 +37,49 @@ class WindHelper {
 			self::crash(self::getErrorName($errno) . ':' . $errstr, $errfile, $errline, $trace);
 		}
 	}
+	
+	/**
+	 * 以静态错误页面终结请求
+	 *
+	 * @param string $message
+	 * @param string $template
+	 * @param WindHttpResponse $response
+	 * @param int $status
+	 */
+	public static function triggerError($message, $template, $response, $status = 0) {
+		$errmessage = substr($message, 0, 8000);
+		$_headers = $response->getHeaders();
+		$_errhtml = false;
+		foreach ($_headers as $_header) {
+			if (strtolower($_header['name']) == strtolower('Content-type')) {
+				$_errhtml = strpos(strtolower($_header['value']), strtolower('text/html')) !== false;
+				break;
+			}
+		}
+		
+		if ($status >= 400 && $status <= 505) {
+			$_statusMsg = ucwords($response->codeMap($status));
+			$topic = "$status - " . $_statusMsg . "\n";
+		} else
+			$topic = "Wind Framework - Error Caught";
+		$msg = "$topic\n$errmessage\n" . $msg;
+		
+		if ($_errhtml || $template) {
+			ob_start();
+			if (!is_file($file = Wind::getRealPath($template, true))) {
+				$_errorPage = '404.htm';
+				if (isset($_statusMsg)) {
+					header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
+					header('Status: ' . $status . ' ' . $_statusMsg);
+					is_file(Wind::getRealPath(self::$errorDir) . '.' . $status . '.htm') && $_errorPage = $status . '.htm';
+				}
+				$file = Wind::getRealPath(self::$errorDir . '.' . $_errorPage, true);
+			}
+			require $file;
+			$msg = ob_get_clean();
+		}
+		die($msg);
+	}
 
 	/**
 	 * 异常处理句柄
