@@ -316,10 +316,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @throws WindFinalException
 	 */
 	protected function checkProcess() {
-		if ($url = $this->getConfig('isclosed', 'url', '')) {
-			$forward = $this->getSystemFactory()->getInstance('forward');
-			$forward->forwardRedirect($url);
-		}
 		$token = $this->_getHandlerAdapter()->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (strcasecmp($token, $this->token) === 0) {
 			throw new WindFinalException('[WindWebApplication.checkProcess] dulplicat request \'' . $token . '\'', 
