@@ -29,7 +29,9 @@ class WindDispatcher extends WindModule {
 			$this->dispatchWithRedirect($forward, $router);
 		elseif ($forward->getIsReAction()) {
 			if (count($this->maxForwrd) > 10) {
-				throw new WindFinalException('[web.WindDispatcher.dispatchWithAction] more than 10 times forward request. (' . implode(', ', $this->maxForwrd) . ')');
+				throw new WindFinalException(
+					'[web.WindDispatcher.dispatchWithAction] more than 10 times forward request. (' . implode(', ', 
+						$this->maxForwrd) . ')');
 			}
 			$token = $router->getModule() . '/' . $router->getController() . '/' . $router->getAction();
 			array_push($this->maxForwrd, $token);
@@ -38,7 +40,7 @@ class WindDispatcher extends WindModule {
 			$view = $forward->getWindView();
 			if ($view->templateName) {
 				Wind::getApp()->getResponse()->setData($forward->getVars(), $view->templateName);
-				$view->render($this->display);
+				$view->render($this->display || $display);
 			}
 			$this->display = false;
 		}
@@ -73,7 +75,8 @@ class WindDispatcher extends WindModule {
 	 */
 	protected function dispatchWithAction($forward, $router, $display) {
 		if (!$action = $forward->getAction()) {
-			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', WindException::ERROR_PARAMETER_TYPE_ERROR);
+			throw new WindException('[web.WindDispatcher.dispatchWithAction] forward fail.', 
+				WindException::ERROR_PARAMETER_TYPE_ERROR);
 		}
 		$this->display = $display;
 		list($_a, $_c, $_m) = WindUrlHelper::resolveAction($action);
