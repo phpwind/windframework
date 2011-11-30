@@ -123,8 +123,6 @@ class WindView extends WindModule implements IWindView {
 		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
 		switch (strtolower($_type)) {
 			case 'json':
-				$this->renderWithJson();
-				break;
 			case 'ajax':
 				$this->renderWithJson();
 				break;
@@ -160,7 +158,6 @@ class WindView extends WindModule implements IWindView {
 	protected function renderWithXml() {
 		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
-		$_vars['G'] = $this->getResponse()->getData('G');
 		$parser = $this->_getXmlParser();
 		if ($parser === null) {
 			Wind::import("WIND:parser.WindXmlParser");
@@ -175,7 +172,6 @@ class WindView extends WindModule implements IWindView {
 	protected function renderWithJson() {
 		$this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
 		$_vars = $this->getResponse()->getData($this->templateName);
-		$_vars['G'] = $this->getResponse()->getData('G');
 		echo WindJson::encode($_vars);
 	}
 
