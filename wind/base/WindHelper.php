@@ -39,6 +39,25 @@ class WindHelper {
 	}
 
 	/**
+	 * 以静态错误页面终结请求
+	 *
+	 * @param string $message
+	 * @param string $template
+	 * @param WindHttpResponse $response
+	 * @param int $status
+	 */
+	public static function triggerError($message, $template) {
+		$message = substr($message, 0, 8000);
+		if ($template) {
+			$file = Wind::getRealPath($template, true);
+			ob_start();
+			include $file;
+			$message = ob_get_clean();
+		}
+		die($message);
+	}
+
+	/**
 	 * 异常处理句柄
 	 * 
 	 * @param Exception $exception
@@ -85,7 +104,8 @@ class WindHelper {
 					$call['file'] = self::INTERNAL_LOCATION;
 					$call['line'] = 'N/A';
 				}
-				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine($call);
+				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
+					$call);
 				$trace[$key] = $traceLine;
 			}
 			$fileLines = array();
@@ -97,7 +117,9 @@ class WindHelper {
 				if (($count = count($fileLines)) > 0) {
 					$padLen = strlen($count);
 					foreach ($fileLines as $line => &$fileLine)
-						$fileLine = " " . htmlspecialchars(str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", rtrim($fileLine)), null, "UTF-8");
+						$fileLine = " " . htmlspecialchars(
+							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", 
+								rtrim($fileLine)), null, "UTF-8");
 				}
 			}
 			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
