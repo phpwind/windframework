@@ -37,7 +37,7 @@ class WindHelper {
 			self::crash(self::getErrorName($errno) . ':' . $errstr, $errfile, $errline, $trace);
 		}
 	}
-	
+
 	/**
 	 * 以静态错误页面终结请求
 	 *
@@ -46,39 +46,15 @@ class WindHelper {
 	 * @param WindHttpResponse $response
 	 * @param int $status
 	 */
-	public static function triggerError($message, $template, $response, $status = 0) {
-		$errmessage = substr($message, 0, 8000);
-		$_headers = $response->getHeaders();
-		$_errhtml = false;
-		foreach ($_headers as $_header) {
-			if (strtolower($_header['name']) == strtolower('Content-type')) {
-				$_errhtml = strpos(strtolower($_header['value']), strtolower('text/html')) !== false;
-				break;
-			}
-		}
-		
-		if ($status >= 400 && $status <= 505) {
-			$_statusMsg = ucwords($response->codeMap($status));
-			$topic = "$status - " . $_statusMsg . "\n";
-		} else
-			$topic = "Wind Framework - Error Caught";
-		$msg = "$topic\n$errmessage\n" . $msg;
-		
-		if ($_errhtml || $template) {
+	public static function triggerError($message, $template) {
+		$message = substr($message, 0, 8000);
+		if ($template) {
+			$file = Wind::getRealPath($template, true);
 			ob_start();
-			if (!is_file($file = Wind::getRealPath($template, true))) {
-				$_errorPage = '404.htm';
-				if (isset($_statusMsg)) {
-					header('HTTP/1.x ' . $status . ' ' . $_statusMsg);
-					header('Status: ' . $status . ' ' . $_statusMsg);
-					is_file(Wind::getRealPath(self::$errorDir) . '.' . $status . '.htm') && $_errorPage = $status . '.htm';
-				}
-				$file = Wind::getRealPath(self::$errorDir . '.' . $_errorPage, true);
-			}
-			require $file;
-			$msg = ob_get_clean();
+			include $file;
+			$message = ob_get_clean();
 		}
-		die($msg);
+		die($message);
 	}
 
 	/**
@@ -128,7 +104,8 @@ class WindHelper {
 					$call['file'] = self::INTERNAL_LOCATION;
 					$call['line'] = 'N/A';
 				}
-				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine($call);
+				$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
+					$call);
 				$trace[$key] = $traceLine;
 			}
 			$fileLines = array();
@@ -140,7 +117,9 @@ class WindHelper {
 				if (($count = count($fileLines)) > 0) {
 					$padLen = strlen($count);
 					foreach ($fileLines as $line => &$fileLine)
-						$fileLine = " " . htmlspecialchars(str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", rtrim($fileLine)), null, "UTF-8");
+						$fileLine = " " . htmlspecialchars(
+							str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", "    ", 
+								rtrim($fileLine)), null, "UTF-8");
 				}
 			}
 			$msg .= "$file\n" . implode("\n", $fileLines) . "\n" . implode("\n", $trace);
