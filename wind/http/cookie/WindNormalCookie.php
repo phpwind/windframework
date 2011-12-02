@@ -70,8 +70,9 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * @return boolean
 	 */
 	public function set($name, $value) {
-		return WindCookie::set($name, $value, $this->prefix, $this->encode, $this->expires, $this->path, $this->domain, 
-			$this->secure, $this->httponly);
+		$this->prefix && $name = $this->prefix . $name;
+		return WindCookie::set($name, $value, $this->encode, $this->expires, $this->path, $this->domain, $this->secure, 
+			$this->httponly);
 	}
 
 	/**
@@ -81,7 +82,8 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * @return void
 	 */
 	public function get($name) {
-		return WindCookie::get($name, $this->prefix, $this->encode);
+		$this->prefix && $name = $this->prefix . $name;
+		return WindCookie::get($name, $this->encode);
 	}
 
 	/**
@@ -92,14 +94,16 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * @see IWindHttpContainer::delete()
 	 */
 	public function delete($name) {
-		return WindCookie::delete($name, $this->prefix);
+		$this->prefix && $name = $this->prefix . $name;
+		return WindCookie::delete($name);
 	}
 
 	/* (non-PHPdoc)
 	 * @see IWindHttpContainer::isRegistered()
 	 */
-	public function isRegistered($key) {
-		return WindCookie::exist($key, $this->prefix);
+	public function isRegistered($name) {
+		$this->prefix && $name = $this->prefix . $name;
+		return WindCookie::exist($name);
 	}
 
 	/**
@@ -117,25 +121,8 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * @param string $name
 	 */
 	public function exist($name) {
-		return WindCookie::exist($name, $this->prefix);
-	}
-
-	/**
-	 * 获取cookie的名称
-	 * 
-	 * @return string 获得cookie的名字
-	 */
-	public function getName() {
-		return $this->prefix ? $this->prefix . $this->name : $this->prefix;
-	}
-
-	/**
-	 * 获取cookie值
-	 * 
-	 * @return string 获得cookie值
-	 */
-	public function getValue() {
-		return $this->value;
+		$this->prefix && $name = $this->prefix . $name;
+		return WindCookie::exist($name);
 	}
 
 	/**
