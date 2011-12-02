@@ -25,10 +25,11 @@ class WindFormUpload extends AbstractWindUpload {
 	 * @see AbstractWindUpload::postUpload()
 	 */
 	protected function postUpload($tmp_name, $filename) {
-		if (strpos($filename, '..') !== false || strpos($filename, '.php.') !== false || preg_match('/\.php$/', $filename)) {
+		if (strpos($filename, '..') !== false || strpos($filename, '.php.') !== false || preg_match('/\.php$/', 
+			$filename)) {
 			exit('illegal file type!');
 		}
-		WindFile::mkdir(dirname($filename));
+		WindFolder::mkRecur(dirname($filename));
 		if (function_exists("move_uploaded_file") && @move_uploaded_file($tmp_name, $filename)) {
 			@unlink($tmp_name);
 			@chmod($filename, 0777);

@@ -242,7 +242,7 @@ class WindView extends WindModule implements IWindView {
 			$template = $this->compileDir . '.' . $template;
 		}
 		$dir = Wind::getRealPath($template, false, true);
-		WindFile::mkdir(dirname($dir));
+		WindFolder::mkRecur(dirname($dir));
 		return $this->compileExt ? $dir . '.' . $this->compileExt : $dir;
 	}
 

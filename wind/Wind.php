@@ -266,7 +266,6 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
-			
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
 			'WindActionException' => 'base/WindActionException', 
@@ -304,6 +303,7 @@ class Wind {
 			'WindCookie' => 'utility/WindCookie', 
 			'WindDate' => 'utility/WindDate', 
 			'WindFile' => 'utility/WindFile', 
+			'WindFolder' => 'utility/WindFolder', 
 			'WindGeneralDate' => 'utility/WindGeneralDate', 
 			'WindImage' => 'utility/WindImage', 
 			'WindJson' => 'utility/WindJson', 
