@@ -6,23 +6,23 @@ Wind::import('WIND:utility.WindFile');
  * 
  * 提供对方访问接口如下:
  * <ul>
- *   <li>set($key, $value, $expire): 继承自{@link AbstractWindCache::set()}.</li>
- *   <li>get($key): 继承自{@link AbstractWindCache::get()}.</li>
- *   <li>delete($key): 继承自{@link AbstractWindCache::delete()}.</li>
- *   <li>batchGet($keys): 继承自{@link AbstractWindCache::batchGet()}.</li>
- *   <li>batchDelete($keys): 继承自{@link AbstractWindCache::batchDelete()}.</li>
- *   <li>{@link setConfig($config)}: 重写了父类的{@link AbstractWindCache::setConfig()}.</li>
+ * <li>set($key, $value, $expire): 继承自{@link AbstractWindCache::set()}.</li>
+ * <li>get($key): 继承自{@link AbstractWindCache::get()}.</li>
+ * <li>delete($key): 继承自{@link AbstractWindCache::delete()}.</li>
+ * <li>batchGet($keys): 继承自{@link AbstractWindCache::batchGet()}.</li>
+ * <li>batchDelete($keys): 继承自{@link AbstractWindCache::batchDelete()}.</li>
+ * <li>{@link setConfig($config)}: 重写了父类的{@link AbstractWindCache::setConfig()}.</li>
  * </ul>
  * 它接收如下配置:
  * <code>
- * 	array(
- * 		'dir' => 'data',	//缓存文件存放的目录,注意可读可写
- *		'suffix' => 'txt',	//缓存文件的后缀,默认为txt后缀
- *		'dir-level' => '0',	//缓存文件存放目录的子目录长度,默认为0不分子目录
- *		'security-code' => '',	//继承自AbstractWindCache,安全码配置
- *		'key-prefix' => '',	 //继承自AbstractWindCache,缓存key前缀
- *		'expires' => '0',	//继承自AbstractWindCache,缓存过期时间配置
- *	)
+ * array(
+ * 'dir' => 'data',	//缓存文件存放的目录,注意可读可写
+ * 'suffix' => 'txt',	//缓存文件的后缀,默认为txt后缀
+ * 'dir-level' => '0',	//缓存文件存放目录的子目录长度,默认为0不分子目录
+ * 'security-code' => '',	//继承自AbstractWindCache,安全码配置
+ * 'key-prefix' => '',	 //继承自AbstractWindCache,缓存key前缀
+ * 'expires' => '0',	//继承自AbstractWindCache,缓存过期时间配置
+ * )
  * </code>
  * <i>使用方法:</i><br/>
  * 1、您可以像使用普通类库一样使用该组件:
@@ -35,22 +35,22 @@ Wind::import('WIND:utility.WindFile');
  * 2、采用组件配置的方式，通过组件机制调用
  * 在应用配置的components组件配置块中,配置fileCache(<i>该名字将决定调用的时候使用的组件名字</i>):
  * <pre>
- *  'fileCache' => array(
- *  	'path' => 'WIND:cache.strategy.WindFileCache',
- *		'scope' => 'singleton',
- *		'config' => array(
- *			'dir' => 'data',
- *			'suffix' => 'txt',
- *			'dir-level' => '0',
- *			'security-code' => '', 
- * 	    	'key-prefix' => '',
- *      	'expires' => '0',
- *		),
- *  ),
+ * 'fileCache' => array(
+ * 'path' => 'WIND:cache.strategy.WindFileCache',
+ * 'scope' => 'singleton',
+ * 'config' => array(
+ * 'dir' => 'data',
+ * 'suffix' => 'txt',
+ * 'dir-level' => '0',
+ * 'security-code' => '', 
+ * 'key-prefix' => '',
+ * 'expires' => '0',
+ * ),
+ * ),
  * </pre>
  * 在应用中可以通过如下方式获得dbCache对象:
  * <code>
- * 	$fileCache = Wind::getApp()->getComponent('fileCache');    //dbCache的名字来自于组件配置中的名字
+ * $fileCache = Wind::getApp()->getComponent('fileCache');    //dbCache的名字来自于组件配置中的名字
  * </code>
  * 
  * the last known user to change this file in the repository  <LastChangedBy: xiaoxiao >
@@ -98,7 +98,7 @@ class WindFileCache extends AbstractWindCache {
 	protected function setValue($key, $value, $expire = 0) {
 		return WindFile::write($key, $value) == strlen($value);
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::addValue()
 	 */
@@ -110,8 +110,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::get()
 	 */
 	protected function getValue($key) {
-		if (!is_file($key))
-			return null;
+		if (!is_file($key)) return null;
 		return WindFile::read($key);
 	}
 
@@ -126,7 +125,7 @@ class WindFileCache extends AbstractWindCache {
 	 * @see AbstractWindCache::clear()
 	 */
 	public function clear() {
-		return WindFile::clearDir($this->getCacheDir());
+		return WindFolder::clearRecur($this->getCacheDir());
 	}
 
 	/**
@@ -136,15 +135,15 @@ class WindFileCache extends AbstractWindCache {
 	 * <ul>
 	 * <li>如果被访问过,则直接返回该真实缓存文件</li>
 	 * <li>没有访问过,则将会进入计算流程.
-	 *   <ol>
-	 *     <li>如果用该组件配置了缓存子目录的长度n：
-	 *     	<ul>
-	 *     		<li>获得缓存key的md5值的0~n的子字串作为子缓存目录;</li>
-	 *     		<li>将缓存文件存放在该缓存子目录下.同时将该缓存文件的新路径保存到已访问的缓存路径列表中,供下次直接调用.</li>
-	 *     	</ul>
-	 *     </li>
-	 *     <li>如果没有配置缓存子目录长度,则直接将该文件缓存在缓存根目录下,同时也将该缓存文件路径保存在已访问的缓存路径列表中.</li>
-	 *   </ol>
+	 * <ol>
+	 * <li>如果用该组件配置了缓存子目录的长度n：
+	 * <ul>
+	 * <li>获得缓存key的md5值的0~n的子字串作为子缓存目录;</li>
+	 * <li>将缓存文件存放在该缓存子目录下.同时将该缓存文件的新路径保存到已访问的缓存路径列表中,供下次直接调用.</li>
+	 * </ul>
+	 * </li>
+	 * <li>如果没有配置缓存子目录长度,则直接将该文件缓存在缓存根目录下,同时也将该缓存文件路径保存在已访问的缓存路径列表中.</li>
+	 * </ol>
 	 * </li>
 	 * </ul>
 	 * 
@@ -153,13 +152,12 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	protected function buildSecurityKey($key) {
 		$key = parent::buildSecurityKey($key);
-		if (false !== ($dir = $this->checkCacheDir($key)))
-			return $dir;
+		if (false !== ($dir = $this->checkCacheDir($key))) return $dir;
 		$_dir = $this->getCacheDir();
 		if (0 < ($level = $this->getCacheDirectoryLevel())) {
 			$_subdir = substr(md5($key), 0, $level);
 			$_dir .= '/' . $_subdir;
-			WindFile::mkdir($_dir);
+			WindFolder::mk($_dir);
 		}
 		$filename = $key . '.' . $this->getCacheFileSuffix();
 		$this->cacheFileList[$key] = ($_dir ? $_dir . '/' . $filename : $filename);
@@ -188,7 +186,7 @@ class WindFileCache extends AbstractWindCache {
 	 */
 	public function setCacheDir($dir) {
 		$_dir = Wind::getRealPath($dir, false, true);
-		WindFile::mkdir($_dir);
+		WindFolder::mkRecur($_dir);
 		$this->cacheDir = realpath($_dir);
 	}
 

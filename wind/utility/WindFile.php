@@ -54,6 +54,16 @@ class WindFile {
 	const APPEND_WRITEREAD = 'ab+';
 
 	/**
+	 * 删除文件
+	 * 
+	 * @param string $filename 文件名称
+	 * @return boolean
+	 */
+	public static function del($filename) {
+		return @unlink($filename);
+	}
+
+	/**
 	 * 保存文件
 	 * 
 	 * @param string $fileName          保存的文件名
@@ -118,65 +128,11 @@ class WindFile {
 	}
 
 	/**
-	 * 按目录删除文件
-	 * 
-	 * @param string  $dir 目录
-	 * @param boolean $ifexpiled 是否过期 默认为false
-	 * @deprecated
+	 * @param string $fileName
 	 * @return boolean
 	 */
-	public static function clearDir($dir, $ifexpiled = false) {
-		//TODO 删除掉是否过期相关处理，不要将外部业务需求，耦合进工具库方法
-		if (!$handle = @opendir($dir)) return false;
-		while (false !== ($file = readdir($handle))) {
-			if ('.' === $file[0] || '..' === $file[0]) continue;
-			$fullPath = $dir . DIRECTORY_SEPARATOR . $file;
-			if (is_dir($fullPath)) {
-				self::clearDir($fullPath, $ifexpiled);
-			} else if (($ifexpiled && ($mtime = filemtime($fullPath)) && $mtime < time()) || !$ifexpiled) {
-				self::delFile($fullPath);
-			}
-		}
-		closedir($handle);
-		false === $ifexpiled && rmdir($dir);
-		return true;
-	}
-
-	/**
-	 * 批量删除指定目录下的文件
-	 * 
-	 * @param string $path 目录文件路径
-	 * @param boolean $delDir 是否同样删除目录,默认为false不删除
-	 * @param int $level 文件的级别，默认为0
-	 * @return boolean
-	 */
-	public static function delFiles($path, $delDir = false, $level = 0) {
-		$path = rtrim($path, DIRECTORY_SEPARATOR);
-		if (!$handler = opendir($path)) return false;
-		while (false !== ($filename = readdir($handler))) {
-			if ("." != $filename && ".." != $filename) {
-				if (is_dir($path . DIRECTORY_SEPARATOR . $filename)) {
-					if (substr($filename, 0, 1) != '.') {
-						self::delFiles($path . DIRECTORY_SEPARATOR . $filename, $delDir, $level + 1);
-					}
-				} else {
-					self::delFile($path . DIRECTORY_SEPARATOR . $filename);
-				}
-			}
-		}
-		closedir($handler);
-		true == $delDir && $level > 0 && rmdir($path);
-		return true;
-	}
-
-	/**
-	 * 取得目录的迭代
-	 * 
-	 * @param string $dir 目录名
-	 * @return DirectoryIterator
-	 */
-	public static function getDirectoryIterator($dir) {
-		return new DirectoryIterator($dir);
+	public static function isFile($fileName) {
+		return $fileName ? is_file($fileName) : false;
 	}
 
 	/**
@@ -185,47 +141,8 @@ class WindFile {
 	 * @param string $fileName 文件名字
 	 * @return array 文件信息
 	 */
-	public static function getFileInfo($fileName) {
-		if (false === is_file($fileName)) {
-			return array();
-		}
-		$fileInfo['name'] = substr(strrchr($fileName, DIRECTORY_SEPARATOR), 1);
-		$fileInfo['path'] = $fileName;
-		$fileInfo['size'] = filesize($fileName);
-		$fileInfo['ctime'] = filectime($fileName);
-		$fileInfo['atime'] = fileatime($fileName);
-		$fileInfo['mtime'] = filemtime($fileName);
-		$fileInfo['readable'] = is_readable($fileName);
-		$fileInfo['writable'] = is_writable($fileName);
-		$fileInfo['executable'] = is_executable($fileName);
-		$fileInfo['right'] = fileperms($fileName);
-		$fileInfo['group'] = filegroup($fileName);
-		$fileInfo['owner'] = fileowner($fileName);
-		$fileInfo['mime'] = self::getMimeType($fileName);
-		return $fileInfo;
-	}
-
-	/**
-	 * 取得目录信息
-	 * 
-	 * @param string $dir 需要获取的目录
-	 * @return array
-	 */
-	public static function getDirectoryInfo($dir) {
-		if (false !== is_dir($dir)) {
-			return array();
-		}
-		return stat($dir);
-	}
-
-	/**
-	 * 删除文件
-	 * 
-	 * @param string $filename 文件名称
-	 * @return boolean
-	 */
-	public static function delFile($filename) {
-		return @unlink($filename);
+	public static function getInfo($fileName) {
+		return self::isFile($fileName) ? stat($fileName) : array();
 	}
 
 	/**
@@ -234,32 +151,8 @@ class WindFile {
 	 * @param string $filename 文件名称
 	 * @return string
 	 */
-	public static function getFileSuffix($filename) {
-		$filename = explode('.', $filename);
-		return array_pop($filename);
-	}
-
-	/**
-	 * 取得真实的目录
-	 * 
-	 * @param string $path 路径名
-	 * @return string
-	 */
-	public static function appendSlashesToDir($path) {
-		return rtrim($path, '\\/') . DIRECTORY_SEPARATOR;
-	}
-
-	/**
-	 * 递归的创建目录
-	 *
-	 * @param string $path 目录路径
-	 * @param int $permissions 权限
-	 * @return boolean
-	 */
-	public static function mkdir($path, $permissions = 0777) {
-		if (is_dir($path)) return true;
-		$_path = dirname($path);
-		if ($_path !== $path) self::mkdir($_path, $permissions);
-		return @mkdir($path, $permissions);
+	public static function getSuffix($filename) {
+		if (false === ($rpos = strrpos($filename, '.'))) return '';
+		return substr($filename, $rpos + 1);
 	}
 }
