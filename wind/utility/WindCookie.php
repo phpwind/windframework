@@ -22,10 +22,9 @@ class WindCookie {
 	 * 
 	 * @param string $name cookie名称
 	 * @param string $value cookie值,默认为null
-	 * @param string|int $expires 过期时间,默认为null即会话cookie,随着会话结束将会销毁
-	 * @param boolean $encode 是否使用 MIME base64 对数据进行编码,默认是false即不进行编码
-	 * @param boolean $serialize 是否序列化,默认为false即不进行序列化操作
 	 * @param string $prefix cookie前缀,默认为null即没有前缀
+	 * @param boolean $encode 是否使用 MIME base64 对数据进行编码,默认是false即不进行编码
+	 * @param string|int $expires 过期时间,默认为null即会话cookie,随着会话结束将会销毁
 	 * @param string $path cookie保存的路径,默认为null即采用默认
 	 * @param string $domain cookie所属域,默认为null即不设置
 	 * @param boolean $secure 是否安全连接,默认为false即不采用安全链接
@@ -63,9 +62,8 @@ class WindCookie {
 	 * 取得指定名称的cookie值
 	 * 
 	 * @param string $name cookie名称
-	 * @param boolean $dencode 是否对cookie值进行过解码,默认为false即不用解码
-	 * @param boolean $unserialize 是否对cookie值进行过反序列化,默认为false即不用反序列化
 	 * @param string $prefix cookie前缀,默认为null即没有前缀
+	 * @param boolean $dencode 是否对cookie值进行过解码,默认为false即不用解码
 	 * @return mixed 获取成功将返回保存的cookie值,获取失败将返回false
 	 */
 	public static function get($name, $prefix = null, $dencode = false) {
