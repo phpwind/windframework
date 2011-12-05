@@ -102,7 +102,7 @@ class WindView extends WindModule implements IWindView {
 	 * 
 	 * @var string
 	 */
-	protected $theme = array('theme' => '', 'package' => '', 'url' => '');
+	protected $theme = array('theme' => '', 'package' => '');
 	/**
 	 * 视图解析引擎,通过组件配置改变该类型
 	 * 
@@ -143,7 +143,6 @@ class WindView extends WindModule implements IWindView {
 	protected function _render($display) {
 		$viewResolver = $this->_getViewResolver();
 		$viewResolver->setWindView($this);
-		Wind::getApp()->getResponse()->setData(array('theme' => $this->theme), 'T');
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
 			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
@@ -253,15 +252,6 @@ class WindView extends WindModule implements IWindView {
 	 */
 	public function setThemePackage($package) {
 		$this->theme['package'] = $package;
-	}
-
-	/**
-	 * 设置当前主题Url
-	 *
-	 * @param string $url
-	 */
-	public function setThemeUrl($url) {
-		$this->theme['url'] = $url;
 	}
 
 	/**
