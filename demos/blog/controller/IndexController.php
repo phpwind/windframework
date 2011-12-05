@@ -27,7 +27,8 @@ class IndexController extends WindController {
 		$this->session = $this->getSystemFactory()->getInstance('windSession');
 		$this->userInfo = $this->session->get('user');
 		$this->setLayout('layout');
-		$this->setTheme('', $this->getRequest()->getBaseUrl(true) . '/' . 'static');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'images');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'css');
 		$this->setOutput('utf8', 'charset');
 	}
 
