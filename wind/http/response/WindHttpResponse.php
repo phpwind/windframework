@@ -840,12 +840,15 @@ class WindHttpResponse implements IWindResponse {
 	 * @param mixed $data 待保存的输出数据
 	 * @param string $key 输出数据的key名称,默认为空
 	 */
-	public function setData($data, $key = '') {
-		if ($key)
-			$this->_data[$key] = $data;
-		else {
+	public function setData($data, $key = '', $merge = false) {
+		if ($key) {
+			if ($merge && !empty($this->_data[$key])) {
+				$this->_data[$key] = WindUtility::mergeArray($this->_data[$key], $data);
+			} else
+				$this->_data[$key] = $data;
+		} else {
 			if (is_object($data)) $data = get_object_vars($data);
-			if (is_array($data)) $this->_data = WindUtility::mergeArray($this->_data, $data);
+			if (is_array($data)) $this->_data = array_merge($this->_data, $data);
 		}
 	}
 
