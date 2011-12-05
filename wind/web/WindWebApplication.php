@@ -148,15 +148,13 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @return void
 	 */
 	public function setGlobal($data, $key = '') {
-		$_G = $this->getGlobal();
-		$_G = is_array($_G) ? $_G : array();
 		if ($key)
-			$_G[$key] = $data;
+			$_G['G'][$key] = $data;
 		else {
 			if (is_object($data)) $data = get_object_vars($data);
-			if (is_array($data)) $_G = array_merge($_G, $data);
+			$_G['G'] = $data;
 		}
-		$this->response->setData($_G, 'G');
+		$this->response->setData($_G);
 	}
 
 	/**
