@@ -66,7 +66,6 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 			if ($this->checkReCompile($templateFilePath, $compileFilePath)) {
 				$layout = $this->getWindLayout();
 				$layout->setLayout($this->windView->layout);
-				$layout->setTheme($this->windView->theme);
 				WindFile::write($compileFilePath, $layout->parser($this));
 			}
 		} else
