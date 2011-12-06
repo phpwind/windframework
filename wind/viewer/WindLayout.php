@@ -52,8 +52,9 @@ class WindLayout extends WindModule {
 	/**
 	 * @param string $layoutFile 布局文件
 	 */
-	public function __construct($layoutFile = '') {
+	public function __construct($layoutFile = '', $viewer = null) {
 		$this->setLayout($layoutFile);
+		$this->viewer = $viewer;
 	}
 
 	/**
