@@ -5,11 +5,14 @@ class LongController extends WindController {
 	public $long;
 	
 	public function run(){
-//		parent::run();
-		//echo 'LongController-run';
+		echo 'LongController-run';
 	}
 	
 	public function testAction(){
+		echo 'LongController-test';
+	}
+	
+	public function noPrintAction() {
 		
 	}
 	
@@ -38,47 +41,51 @@ class LongController extends WindController {
 	}
 	
 	public function forwardAction($action, $args, $isRedirect, $immediately){
-		parent::forwardAction($action, $args, $isRedirect, $immediately);
+		return parent::forwardAction($action, $args, $isRedirect, $immediately);
 	}
 	
 	public function forwardRedirect($url){
-		parent::forwardRedirect($url);
+		return parent::forwardRedirect($url);
 	}
 	
 	public function setOutput($data, $key = ''){
-		parent::setOutput($data, $key);
+		return parent::setOutput($data, $key);
 	}
 	
 	public function setGlobal($data, $key = ''){
-		parent::setGlobal($data, $key);
+		return parent::setGlobal($data, $key);
 	}
 	
 	public function showMessage($message = '', $key = '', $errorAction = ''){
-		parent::showMessage($message, $key, $errorAction);
+		return parent::showMessage($message, $key, $errorAction);
 	}
 	
 	public function setTemplate($template) {
-		parent::setTemplate($template);
+		return parent::setTemplate($template);
 	}
 	
 	public function setTemplatePath($templatePath) {
-		parent::setTemplatePath($templatePath);
+		return parent::setTemplatePath($templatePath);
 	}
 	
 	public function setTemplateExt($templateExt) {
-		parent::setTemplateExt($templateExt);
+		return parent::setTemplateExt($templateExt);
 	}
 	
 	public function setTheme($theme) {
-		parent::setTheme($theme);
+		return parent::setTheme($theme);
+	}
+	
+	public function setThemePackage($package) {
+		return parent::setThemePackage($package);
 	}
 	
 	public function setLayout($layout) {
-		parent::setLayout($layout);
+		return parent::setLayout($layout);
 	}
 	
 	public function resolveActionFilter($filters){
-		parent::resolveActionFilter($filters);
+		return parent::resolveActionFilter($filters);
 	}
 	
 }
