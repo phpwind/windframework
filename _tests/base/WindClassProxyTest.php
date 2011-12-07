@@ -69,7 +69,4 @@ class WindClassProxyTest extends BaseTestCase {
 		$this->assertEquals("TEST:data.ForWindClassProxyTest", $this->WindClassProxy->_getClassPath());
 		$this->assertEquals("ForWindClassProxyTest", $this->WindClassProxy->_getClassName());
 	}
-	
-
 }
-

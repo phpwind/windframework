@@ -14,7 +14,6 @@ class WindModuleTest extends BaseTestCase {
 	 * @var WindModule
 	 */
 	private $WindModule;
-	private $front;
 	/**
 	 * Prepares the environment before running a test.
 	 */
@@ -24,13 +23,7 @@ class WindModuleTest extends BaseTestCase {
 		require_once 'data\TestFrontController.php';
 		require_once 'data\ForWindFactoryTest.php';
 		require_once 'data\LongController.php';
-		$_SERVER['REQUEST_URI'] = '?test/long/default/WindModule';
-		$this->front = Wind::application("WindModule", array('web-apps' => array('WindModule' => array('modules' => array('default' => array('controller-path' => 'data', 
-					'controller-suffix' => 'Controller', 
-					'error-handler' => 'TEST:data.ErrorControllerTest')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
-	            'class'   => 'WIND:router.route.WindRoute',
-			    'default' => true,
-		   ))))));
+		Wind::application()->createApplication();
 		$this->WindModule = new LongController();
 	}
 
@@ -51,18 +44,24 @@ class WindModuleTest extends BaseTestCase {
 		$this->assertArrayEquals(array(1), $this->WindModule->config);
 	}
 
-
 	/**
-	 * Tests WindModule->__call()
+	 * @param unknown_type $attributes
+	 * @dataProvider dataFor__call
 	 */
-	public function test__call() {
-		$this->front->run();
-		$this->assertTrue(Wind::getApp('WindModule')->_getHandlerAdapter() instanceof WindRouter);
-		/*$this->WindModule->setDelayAttributes($attributes);
+	public function test__call($attributes) {
+		$this->WindModule->setDelayAttributes($attributes);
 		$this->assertTrue($this->WindModule->_getShi() instanceof ForWindFactoryTest);
 		$this->WindModule->_setShi(new stdClass());
 		//call_user_func_array(array($this->WindModule,"_setShi"), array(new stdClass()));
-		$this->assertTrue($this->WindModule->_getShi() instanceof stdClass);*/
+		$this->assertTrue($this->WindModule->_getShi() instanceof stdClass);
+	}
+	
+	public function dataFor__call(){
+		require_once 'data\ForWindFactoryTest.php';
+		$args = array();
+		$args[] = array(array('shi' => array('path' => 'TEST:data.ForWindFactoryTest')));
+		$args[] = array(array('shi' => array('value' => new ForWindFactoryTest())));
+		return $args;
 	}
 
 	/**
