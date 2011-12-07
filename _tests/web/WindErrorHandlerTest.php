@@ -11,14 +11,20 @@
 class WindErrorHandlerTest extends BaseTestCase {
 
 	public function testErrorHandler() {
-		$front = Wind::application("WindError", array('web-apps' => array('WindError' => array('modules' => array('default' => array('controller-path' => 'data', 
-					'controller-suffix' => 'Controller', 
-					'error-handler' => 'TEST:data.ErrorControllerTest',
-					'compile-dir' => 'data')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
-	            'class'   => 'WIND:router.route.WindRoute',
-			    'default' => true,
-		   ))))));
-		$_SERVER['REQUEST_URI'] = '?shi/long/default/WindError';
+		$front = Wind::application("WindError", 
+			array(
+				'web-apps' => array(
+					'WindError' => array(
+						'modules' => array(
+							'default' => array(
+								'controller-path' => 'data', 
+								'controller-suffix' => 'Controller', 
+								'error-handler' => 'TEST:data.ErrorControllerTest', 
+								'compile-dir' => 'data'))))));
+		$_SERVER['SCRIPT_FILENAME'] = "index.php";
+		$_SERVER['SCRIPT_NAME'] = 'index.php';
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_FILENAME'] . '?a=shi&c=long';
 		try {
 			$front->run();
 		} catch (Exception $e) {

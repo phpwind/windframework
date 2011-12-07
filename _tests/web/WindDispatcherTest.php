@@ -9,36 +9,39 @@
  * @package web
  */
 class WindDispatcherTest extends BaseTestCase {
-	
-	/**
-	 * @var WindDispatcher
-	 */
-	private $WindDispatcher;
 
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
 		parent::setUp();
-		require_once 'web\WindDispatcher.php';
 		require_once 'web\WindForward.php';
-		$this->WindDispatcher = new WindDispatcher();
-	}
-
-	/**
-	 * Cleans up the environment after running a test.
-	 */
-	protected function tearDown() {
-		$this->WindDispatcher = null;
-		parent::tearDown();
 	}
 
 	/**
 	 * Tests WindDispatcher->dispatch()
 	 */
 	public function testDispatch() {
-		$this->markTestIncomplete();
+		$_SERVER['SCRIPT_FILENAME'] = "index.php";
+		$_SERVER['SCRIPT_NAME'] = 'index.php';
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_FILENAME'] . '?c=long&a=noPrint';
+		$front = Wind::application('long', 
+			array(
+				'web-apps' => array(
+					'long' => array(
+						'modules' => array(
+							'default' => array(
+								'controller-path' => 'data', 
+								'controller-suffix' => 'Controller', 
+								'error-handler' => 'TEST:data.ErrorControllerTest'))))))->run();
 		
+		$forward = new WindForward();
+		$forward->setIsReAction(true);
+		$forward->setAction('/long/test');
+		ob_start();
+		Wind::getApp()->doDispatch($forward);
+		$this->assertEquals(ob_get_clean(), 'LongController-test');
 	}
 
 }
