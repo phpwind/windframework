@@ -152,7 +152,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$_G[$key] = $data;
 		else {
 			if (is_object($data)) $data = get_object_vars($data);
-			$_G['G'] = $data;
+			$_G = $data;
 		}
 		$this->response->setData($_G, 'G', true);
 	}
