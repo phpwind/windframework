@@ -335,7 +335,7 @@ class WindConnection extends WindModule {
 	protected function parseQueryString($sql) {
 		if ($_prefix = $this->getTablePrefix()) {
 			list($new, $old) = explode('|', $_prefix . '|');
-			$sql = preg_replace('/{(' . $old . ')?(.*?)}/', $new . '\2', $sql);
+			$sql = preg_replace('/{{(' . $old . ')?(.*?)}}/', $new . '\2', $sql);
 		}
 		return $sql;
 	}
