@@ -85,10 +85,12 @@ class WindForward extends WindModule {
 	 * @param string $key 默认为空字符串
 	 * @return void
 	 */
-	public function setVars($vars, $key = '') {
+	public function setVars($vars, $key = '', $merge = false) {
 		if (!$key) {
 			if (is_object($vars)) $vars = get_object_vars($vars);
 			if (is_array($vars)) $this->vars = array_merge($this->vars, $vars);
+		} elseif ($merge && !empty($this->vars[$key])) {
+			$this->vars[$key] = WindUtility::mergeArray((array) $this->vars[$key], (array) $vars);
 		} else
 			$this->vars[$key] = $vars;
 	}

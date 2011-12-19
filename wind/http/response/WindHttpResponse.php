@@ -843,7 +843,7 @@ class WindHttpResponse implements IWindResponse {
 	public function setData($data, $key = '', $merge = false) {
 		if ($key) {
 			if ($merge && !empty($this->_data[$key])) {
-				$this->_data[$key] = WindUtility::mergeArray($this->_data[$key], $data);
+				$this->_data[$key] = WindUtility::mergeArray((array) $this->_data[$key], (array) $data);
 			} else
 				$this->_data[$key] = $data;
 		} else {
