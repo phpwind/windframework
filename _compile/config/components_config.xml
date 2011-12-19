@@ -53,13 +53,11 @@
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
+			<property name='windLayout' ref='layout' />
 		</properties>
 	</component>
 	<component name='viewResolver' path='WIND:viewer.resolver.WindViewerResolver'
 		scope='prototype'>
-		<properties>
-			<property name='windLayout' ref='layout' />
-		</properties>
 	</component>
 	<component name='layout' path='WIND:viewer.WindLayout' scope='prototype'>
 	</component>

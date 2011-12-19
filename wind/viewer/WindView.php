@@ -109,69 +109,32 @@ class WindView extends WindModule implements IWindView {
 	 * @var WindViewerResolver
 	 */
 	protected $viewResolver = null;
-	
 	/**
-	 * @var WindXmlParser
+	 * 视图布局管理器
+	 *
+	 * @var WindLayout
 	 */
-	protected $xmlParser = null;
+	protected $windLayout = null;
 
 	/* (non-PHPdoc)
 	 * @see IWindView::render()
 	 */
 	public function render($display = false) {
-		if (!$this->templateName) return;
-		$_type = $this->getRequest()->getIsAjaxRequest() ? 'json' : $this->getResponse()->getResponseType();
-		switch (strtolower($_type)) {
-			case 'json':
-			case 'ajax':
-				$this->renderWithJson();
-				break;
-			case 'xml':
-				$this->renderWithXml();
-				break;
-			default:
-				$this->_render($display);
-		}
-	}
-
-	/**
-	 * html格式视图渲染方法
-	 *
-	 * @param boolean $display
-	 * @return void
-	 */
-	protected function _render($display) {
-		$viewResolver = $this->_getViewResolver();
-		$viewResolver->setWindView($this);
+		$viewResolver = $this->_getViewResolver($this);
+		if ($viewResolver === null) throw new WindException(
+			'[view.WindView.render] View renderer initialization failure.');
 		$viewResolver->windAssign(Wind::getApp()->getResponse()->getData($this->templateName));
 		if ($display === false) {
-			$this->getResponse()->setBody($viewResolver->windFetch(), $this->templateName);
+			if ($this->layout) {
+				/* @var $layout WindLayout */
+				$layout = $this->_getWindLayout($this->layout, $this, $viewResolver);
+				$content = $layout->parser();
+			} else
+				$content = $viewResolver->windFetch();
+			$this->getResponse()->setBody($content, $this->templateName);
 		} else {
 			echo $viewResolver->windFetch();
 		}
-	}
-
-	/**
-	 * xml格式数据输出渲染
-	 */
-	protected function renderWithXml() {
-		$this->getResponse()->setHeader('Content-type', 'text/xml; charset=utf-8');
-		$_vars = $this->getResponse()->getData($this->templateName);
-		$parser = $this->_getXmlParser();
-		if ($parser === null) {
-			Wind::import("WIND:parser.WindXmlParser");
-			$parser = new WindXmlParser();
-		}
-		echo $parser->parseToXml($_vars);
-	}
-
-	/**
-	 * json格式视图输出数据渲染
-	 */
-	protected function renderWithJson() {
-		$this->getResponse()->setHeader('Content-type', 'application/json; charset=utf-8');
-		$_vars = $this->getResponse()->getData($this->templateName);
-		echo WindJson::encode($_vars);
 	}
 
 	/* (non-PHPdoc)
