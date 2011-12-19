@@ -68,50 +68,49 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 
 	/**
 	 * action过滤链策略部署
-	 *
+	 * @example 
+	 * <pre>
+	 * $filters = array(array('expression'=>'', 'class'=>'', args=array()));
+	 * </pre>
+	 * 
 	 * @param array $filters
 	 * @return void
 	 */
 	protected function resolveActionFilter($filters) {
 		if (!$filters) return;
 		$_fitlers = array();
-		if ($cache = Wind::getApp()->getComponent('windCache')) {
-			$_key = md5(serialize($filters));
-			$_fitlers = $cache->get($_key);
-		}
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
-		if (!$_fitlers) {
-			foreach ((array) $filters as $filter) {
-				if (!empty($filter['class'])) {
-					if (!empty($filter['expression'])) {
-						$v1 = '';
-						list($n, $p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
-						switch (strtolower($n)) {
-							case 'forward':
-								$call = array($this->getForward(), 'getVars');
-								break;
-							case 'g':
-								$call = array(Wind::getApp(), 'getGlobal');
-								break;
-							case 'request':
-								$call = array($this->getRequest(), 'getRequest');
-								break;
-							default:
-								$call = array($this, 'getInput');
-								break;
-						}
-						$v1 = call_user_func_array($call, explode('.', $p));
-						if (!WindUtility::evalExpression($v1, $v2, $o)) continue;
+		foreach ((array) $filters as $filter) {
+			if (!empty($filter['class'])) {
+				if (!empty($filter['expression'])) {
+					$v1 = '';
+					list($n, $p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
+					switch (strtolower($n)) {
+						case 'forward':
+							$call = array($this->getForward(), 'getVars');
+							break;
+						case 'g':
+							$call = array(Wind::getApp(), 'getGlobal');
+							break;
+						case 'request':
+							$call = array($this->getRequest(), 'getRequest');
+							break;
+						default:
+							$call = array($this, 'getInput');
+							break;
 					}
-					$_fitlers[] = $filter['class'];
+					$v1 = call_user_func_array($call, explode('.', $p));
+					if (!WindUtility::evalExpression($v1, $v2, $o)) continue;
 				}
+				$_fitlers[] = $filter;
 			}
 		}
+		
 		if (!$_fitlers) return;
-		isset($cache) && $cache->set($_key, $_fitlers);
-		$args = array($this->getForward(), $this->getErrorMessage());
+		$args = array($this->getForward(), $this->getErrorMessage(), null);
 		foreach ((array) $_fitlers as $value) {
-			$chain->addInterceptors(WindFactory::createInstance(Wind::import($value), $args));
+			empty($value['args']) || array_push($args, $value['args']);
+			$chain->addInterceptors(WindFactory::createInstance(Wind::import($value['class']), $args));
 		}
 		$chain->getHandler()->handle();
 	}
