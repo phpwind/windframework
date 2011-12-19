@@ -228,9 +228,7 @@ class WindFactory implements IWindFactory {
 		if (isset($config['resource'])) {
 			$_configPath = Wind::getRealPath($config['resource'], true, true);
 			$configParser = $this->getInstance('configParser');
-			$_cache = null;
-			if ($_app = Wind::getApp()) $_cache = $_app->getComponent('windCache');
-			$config = $configParser->parse($_configPath, $alias, false, $_cache);
+			$config = $configParser->parse($_configPath, $alias, false);
 		}
 		if ($config && method_exists($instance, 'setConfig')) $instance->setConfig($config);
 	}
