@@ -245,12 +245,10 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * 设置当前主题信息
 	 * 
 	 * @param string $theme
-	 * @param string $url
 	 * @return void
 	 */
-	protected function setTheme($theme, $url) {
+	protected function setTheme($theme) {
 		$this->getForward()->getWindView()->setTheme($theme);
-		$this->getForward()->getWindView()->setThemeUrl($url);
 	}
 
 	/**

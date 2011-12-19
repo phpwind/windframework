@@ -18,13 +18,6 @@ class WindControllerTest extends BaseTestCase {
 		require_once 'viewer\WindView.php';
 		require_once 'data\LongController.php';
 		$this->testController = new LongController();
-		$_SERVER['REQUEST_URI'] = '?test/long/default/long';
-		$this->front = Wind::application("long", array('web-apps' => array('long' => array('modules' => array('default' => array('controller-path' => 'data', 
-					'controller-suffix' => 'Controller', 
-					'error-handler' => 'TEST:data.ErrorControllerTest')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
-	            'class'   => 'WIND:router.route.WindRoute',
-			    'default' => true,
-		   ))))));
 	}
 
 	protected function tearDown() {
@@ -49,12 +42,19 @@ class WindControllerTest extends BaseTestCase {
 	}
 
 	public function testGetRequest() {
-		$this->markTestIncomplete();
+		Wind::application()->createApplication();
+		$this->assertTrue($this->testController->getRequest() instanceof WindHttpRequest);
 	}
 
 	public function testGetInput() {
-		$this->markTestIncomplete();
-	
+		$_GET['long'] = $_POST['xxx'] = $_COOKIE['wq'] = 1;
+		$data = array('long', 'xxx', 'wq');
+		Wind::application()->createApplication();
+		$this->assertEquals($this->testController->getInput('long', 'get'), 1);
+		$this->assertEquals($this->testController->getInput('xxx', 'post'), 1);
+		$this->assertEquals($this->testController->getInput('wq', 'cookie'), 1);
+		$this->assertArrayEquals($this->testController->getInput($data), array_fill(0, 3, 1));
+		$this->assertArrayEquals($this->testController->getInput($data, '', array($this, 'fun')), array_fill(0, 3, array(1,'shilong1')));
 	}
 
 
@@ -112,20 +112,22 @@ class WindControllerTest extends BaseTestCase {
 	}
 
 	/**
+	 * @dataProvider dataForSetGlobal
 	 */
-	public function testSetGlobal() {
-		$this->markTestIncomplete();
+	public function testSetGlobal($data, $key ='') {
+		Wind::application()->createApplication();
+		$this->testController->setGlobal($data, $key);
+		$this->assertEquals('shilong', Wind::getApp()->getResponse()->getData('G', 'G', 'name'));
 	}
-/*
+
 	public function dataForSetGlobal() {
 		$args = array();
 		$object = new stdClass();
 		$object->name = 'shilong';
 		$args[] = array($object);
 		$args[] = array(array('name' => 'shilong'));
-		$args[] = array('shilong', 'name');
 		return $args;
-	}*/
+	}
 
 	public function testShowMessage() {
 		$errorMessage = new WindErrorMessage();
@@ -150,25 +152,69 @@ class WindControllerTest extends BaseTestCase {
 		$this->testController->setTemplateExt("php");
 		$this->testController->setTemplatePath("/data");
 		$this->testController->setTheme("style");
+		$this->testController->setThemePackage('package');
 		$this->testController->setLayout("layout1");
 		
-		$this->assertEquals(array("LongController", "php", "/data", "style", "layout1"), 
+		$this->assertEquals(array("LongController", "php", "/data", "layout1"), 
 			array(
 				$windView->templateName, 
 				$windView->templateExt, 
 				$windView->templateDir, 
-				$windView->theme, 
 				$windView->layout));
 	
 	}
 
 	public function testResolveActionFilter() {
-		$this->markTestIncomplete();
+		require_once 'data/Listener.php';
+		Wind::application()->createApplication();
+		$errorMessage = new WindErrorMessage("shi");
+		$this->testController->setErrorMessage($errorMessage);
+		$forward = new WindForward();
+		$forward->setAction("long");
+		$this->testController->setForward($forward);
+		
+		$_GET['name'] = 'shilong';
+		$this->testController->setGlobal('shilong', 'name');
+		$forward->setVars('name', 'xxxxx');
+		$_GET['wuq'] = 'wuq';
+		
+		$this->testController->resolveActionFilter($this->dataForResolveActionFilter());
+		$this->assertEquals("post_post_post_pre_pre_pre_shi", $errorMessage->getError(0));
+		$this->assertEquals("post_post_post_pre_pre_pre_long", $forward->getAction());
 	}
 
-	public function testResolvedActionMethod() {
-		$this->markTestIncomplete();
+	public function dataForResolveActionFilter() {
+		$_GET['name'] = 'shilong';
+		
+		return array(
+			array('class' => 'TEST:data.Listener', 'expression' => 'input:name==shilong'), 
+			array('class' => 'TEST:data.Listener', 'expression' => 'g:name==shilong'), 
+			array('class' => 'TEST:data.Listener', 'expression' => 'forward:name==xxx'), 
+			array('class' => 'TEST:data.Listener', 'expression' => 'request:wuq==wuq'));
 	}
+
+	/**
+	 * @dataProvider dataForResolvedActionMethod
+	 */
+	public function testResolvedActionMethod($action) {
+		$router = new WindRouter();
+		$router->setAction($action);
+		try {
+			$this->testController->doAction($router);
+		} catch (WindException $e) {
+			$this->assertEquals(WindException::ERROR_CLASS_METHOD_NOT_EXIST, $e->getCode());
+			return;
+		}
+		$this->fail("ResolvedActionMethod Test Error");
+	}
+
+	public function dataForResolvedActionMethod() {
+		$args = array();
+		$args[] = array('do');
+		$args[] = array('privateMethod');
+		return $args;
+	}
+	
 
 
 }

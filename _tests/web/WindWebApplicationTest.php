@@ -11,22 +11,25 @@
 class WindWebApplicationTest extends BaseTestCase {
 	
 	private $front;
-	
+
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	protected function setUp() {
 		parent::setUp();
 		require_once 'web\WindWebApplication.php';
+		require_once 'web\WindForward.php';
 		require_once 'base\WindFactory.php';
 		require_once 'data\ForWindFactoryTest.php';
-		$_SERVER['REQUEST_URI'] = '?test/long/default/long';
-		$this->front = Wind::application("long", array('web-apps' => array('long' => array('modules' => array('default' => array('controller-path' => 'data', 
-					'controller-suffix' => 'Controller', 
-					'error-handler' => 'TEST:data.ErrorControllerTest')))),'router' => array('config' => array('routes' => array('WindRoute' => array(
-	            'class'   => 'WIND:router.route.WindRoute',
-			    'default' => true,
-		   ))))));
+		$this->front = Wind::application("long", 
+			array(
+				'web-apps' => array(
+					'long' => array(
+						'modules' => array(
+							'default' => array(
+								'controller-path' => 'data', 
+								'controller-suffix' => 'Controller', 
+								'error-handler' => 'TEST:data.ErrorControllerTest'))))));
 	}
 
 	/**
@@ -36,25 +39,33 @@ class WindWebApplicationTest extends BaseTestCase {
 		parent::tearDown();
 	}
 
-
 	/**
 	 * Tests WindWebApplication->run()
 	 */
 	public function testRun() {
+		$_SERVER['SCRIPT_FILENAME'] = "index.php";
+		$_SERVER['SCRIPT_NAME'] = 'index.php';
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_FILENAME'] . '?c=long';
+		ob_start();
 		$this->front->run();
-		
+		$this->assertEquals(ob_get_clean(), 'LongController-run');
 	}
 	
-	public function testFilter(){
-		$this->markTestIncomplete();
+	public function testDoDispatch() {
+		$forward = new WindForward();
+		$forward->setIsReAction(true);
+		$forward->setAction('/long/test');
+		ob_start();
+		$this->front->createApplication()->doDispatch($forward);
+		$this->assertEquals(ob_get_clean(), 'LongController-test');
 	}
-
-	/**
-	 * Tests WindWebApplication->runProcess()
-	 */
-	public function testRunProcess() {
-		
-		$this->markTestIncomplete();
+	
+	public function testSetConfig() {
+		$this->front->createApplication()->setConfig(array('components' => array(
+				'long' => array('path' => 'TEST:data.ForWindFactoryTest'))));
+		$this->assertEquals('ForWindFactoryTest', get_class(Wind::getApp()->getComponent('long')));
+		$this->assertEquals(Wind::getApp()->getResponse()->getCharset(), 'utf-8');
 	}
 
 	/**
@@ -62,11 +73,11 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * @dataProvider dataForGetGlobal
 	 */
 	public function testGetGlobal($data, $key = '') {
-		Wind::getApp('long')->setGlobal($data, $key);
-		$this->assertEquals("shilong", Wind::getApp('long')->getGlobal("name"));
+		$this->front->createApplication()->setGlobal($data, $key);
+		$this->assertEquals("shilong", Wind::getApp()->getGlobal("name"));
 	}
-	
-	public function dataForGetGlobal(){
+
+	public function dataForGetGlobal() {
 		$args = array();
 		$args[] = array('shilong', 'name');
 		$object = new stdClass();
@@ -81,17 +92,17 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * @dataProvider dataForSetModules
 	 */
 	public function testSetModules($name, $config, $replace = false) {
-		$this->assertNotEquals(Wind::getApp('long')->getModules($name), $config);
-		Wind::getApp('long')->setModules($name, $config,$replace);
-		$this->assertEquals(Wind::getApp('long')->getModules($name), $config);
+		$this->assertNotEquals($this->front->createApplication()->getModules($name), $config);
+		Wind::getApp()->setModules($name, $config, $replace);
+		$this->assertEquals(Wind::getApp()->getModules($name), $config);
 	}
-	
-	public function dataForSetModules(){
+
+	public function dataForSetModules() {
 		$args = array();
 		$config = $this->getTestConfig();
-		$args[] = array("xxx", array('name' => 'xxx')+$config, true);
-		$args[] = array("shilong", array('name' => 'shilong')+$config, true);
-		$args[] = array("wuq", array('name' => 'wuq')+$config, true);
+		$args[] = array("xxx", array('name' => 'xxx') + $config, true);
+		$args[] = array("shilong", array('name' => 'shilong') + $config, true);
+		$args[] = array("wuq", array('name' => 'wuq') + $config, true);
 		return $args;
 	}
 
@@ -100,29 +111,29 @@ class WindWebApplicationTest extends BaseTestCase {
 	 * getInstance在WindFactory已测试
 	 */
 	public function testGetComponent() {
-		$this->assertTrue(Wind::getApp('long')->getComponent("forward") instanceof WindForward);
+		$this->assertTrue($this->front->createApplication()->getComponent("forward") instanceof WindForward);
 	}
 
 	/**
 	 * Tests WindWebApplication->getRequest()
 	 */
 	public function testGetRequest() {
-		$this->assertTrue(Wind::getApp('long')->getRequest() instanceof WindHttpRequest);
+		$this->assertTrue($this->front->createApplication()->getRequest() instanceof WindHttpRequest);
 	}
 
 	/**
 	 * Tests WindWebApplication->getResponse()
 	 */
 	public function testGetResponse() {
-		$this->assertTrue(Wind::getApp('long')->getResponse() instanceof WindHttpResponse);
+		$this->assertTrue($this->front->createApplication()->getResponse() instanceof WindHttpResponse);
 	}
-	
-	private function getTestConfig(){
-		return array('controller-path' => 'data', 
-					 'controller-suffix' => 'Controller',
-					 'error-handler' => 'shilong',
-					);
+
+	private function getTestConfig() {
+		return array(
+			'controller-path' => 'data', 
+			'controller-suffix' => 'Controller', 
+			'error-handler' => 'shilong');
 	}
-	
+
 }
 

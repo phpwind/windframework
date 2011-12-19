@@ -36,7 +36,7 @@ class WindHelperTest extends BaseTestCase {
 	public function testExceptionHandle() {
 		//Unable to Test
 	}
-	
+		
 	/**
 	 * @dataProvider dataForGetErrorName
 	 */

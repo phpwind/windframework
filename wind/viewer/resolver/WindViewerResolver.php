@@ -1,5 +1,5 @@
 <?php
-Wind::import('WIND:viewer.IWindViewerResolver');
+Wind::import('WIND:viewer.resolver.WindNormalViewerResolver');
 Wind::import('WIND:viewer.exception.WindViewException');
 /**
  * 视图渲染器引擎
@@ -26,58 +26,19 @@ Wind::import('WIND:viewer.exception.WindViewException');
  * @version $Id$
  * @package viewer
  */
-class WindViewerResolver extends WindModule implements IWindViewerResolver {
-	/**
-	 * 存储视图输出变量
-	 * 
-	 * @var array
-	 */
-	protected $vars = array();
-	/**
-	 * 视图对象
-	 * 
-	 * 通过该对象获得相关视图配置信息
-	 * @var WindView
-	 */
-	protected $windView = null;
-	/**
-	 * 视图布局对象
-	 * 
-	 * @var WindLayout
-	 */
-	protected $windLayout = null;
-
-	/**
-	 * @param WindView $windView 视图对象 默认值为null
-	 */
-	public function __construct($windView = null) {
-		$this->windView = $windView;
-	}
+class WindViewerResolver extends WindNormalViewerResolver implements IWindViewerResolver {
 
 	/* (non-PHPdoc)
 	 * @see IWindViewerResolver::windFetch()
 	 */
 	public function windFetch($template = '') {
+		$template || $template = $this->windView->templateName;
+		if (!$template) return '';
 		ob_start();
-		if (!$template) {
-			$template = $this->windView->templateName;
-			$templateFilePath = $this->windView->getViewTemplate($template);
-			$compileFilePath = $this->windView->getCompileFile($template);
-			if ($this->checkReCompile($templateFilePath, $compileFilePath)) {
-				$layout = $this->getWindLayout();
-				$layout->setLayout($this->windView->layout);
-				WindFile::write($compileFilePath, $layout->parser($this));
-			}
-		} else
-			list($compileFilePath) = $this->compile($template);
-		WindRender::render($compileFilePath, Wind::getApp()->getResponse()->getData($template), $this);
+		list($compileFilePath) = $this->compile($template);
+		WindRender::render($compileFilePath, $this->vars, $this);
 		return ob_get_clean();
 	}
-
-	/* (non-PHPdoc)
-	 * @see IWindViewerResolver::windAssign()
-	 */
-	public function windAssign($vars, $key = '') {}
 
 	/**
 	 * 编译模板并返回编译后模板地址及内容
@@ -152,34 +113,5 @@ class WindViewerResolver extends WindModule implements IWindViewerResolver {
 	 */
 	public function getWindLayout() {
 		return $this->_getWindLayout('', $this);
-	}
-}
-
-/**
- * 辅助WindViewerResolver完成视图渲染工作
- * 
- * @author Qiong Wu <papa0924@gmail.com>
- * @copyright ©2003-2103 phpwind.com
- * @license http://www.windframework.com
- * @version $Id$
- * @package viewer
- */
-class WindRender {
-
-	/**
-	 * 视图渲染
-	 * 
-	 * @param string $__tpl
-	 * @param array $__vars
-	 * @param WindViewerResolver $__viewer
-	 * @return void
-	 * @throws WindViewException
-	 */
-	public static function render($__tpl, $__vars, $__viewer) {
-		@extract($__vars, EXTR_REFS);
-		if (!include ($__tpl)) {
-			throw new WindViewException('[component.viewer.WindRender.render] template name ' . $__tpl, 
-				WindViewException::VIEW_NOT_EXIST);
-		}
 	}
 }

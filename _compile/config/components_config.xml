@@ -52,13 +52,11 @@
 		</config>
 		<properties>
 			<property name='viewResolver' ref='viewResolver' />
-		</properties>
-	</component>
-	<component name='viewResolver' path='WIND:viewer.WindViewerResolver'
-		scope='prototype'>
-		<properties>
 			<property name='windLayout' ref='layout' />
 		</properties>
+	</component>
+	<component name='viewResolver' path='WIND:viewer.resolver.WindViewerResolver'
+		scope='prototype'>
 	</component>
 	<component name='layout' path='WIND:viewer.WindLayout' scope='prototype'>
 	</component>
@@ -89,6 +87,12 @@
 	<component name='windSession' path='WIND:http.session.WindSession'
 		scope='singleton' destroy='commit'>
 		<!--<constructor-args> <constructor-arg name='0' ref='windCache' /> </constructor-args> -->
+	</component>
+	<component name='i18n' path='WIND:i18n.WindLangResource'
+		scope='singleton'>
+		<config>
+			<path>i18n</path>
+		</config>
 	</component>
 	<component name='windCookie' path='WIND:http.cookie.WindNormalCookie'
 		scope='singleton'>

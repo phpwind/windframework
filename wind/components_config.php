@@ -71,16 +71,14 @@
 			'viewResolver' => array(
 				'ref' => 'viewResolver',
 			),
-		),
-	),
-	'viewResolver' => array(
-		'path' => 'WIND:viewer.WindViewerResolver',
-		'scope' => 'prototype',
-		'properties' => array(
 			'windLayout' => array(
 				'ref' => 'layout',
 			),
 		),
+	),
+	'viewResolver' => array(
+		'path' => 'WIND:viewer.resolver.WindViewerResolver',
+		'scope' => 'prototype',
 	),
 	'layout' => array(
 		'path' => 'WIND:viewer.WindLayout',
@@ -126,5 +124,8 @@
 	'i18n' => array(
 		'path' => 'WIND:i18n.WindLangResource',
 		'scope' => 'singleton',
+		'config' => array(
+			'path' => 'i18n',
+		),
 	),
 );

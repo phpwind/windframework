@@ -45,15 +45,23 @@ class WindLayout extends WindModule {
 	 * @var WindViewerResolver
 	 */
 	private $viewer = null;
-	private $script;
-	private $css;
+	/**
+	 * 视图管理器
+	 *
+	 * @var WindView
+	 */
+	private $view = null;
 	private $segments = array();
 
 	/**
 	 * @param string $layoutFile 布局文件
+	 * @param WindView $view 视图模板
+	 * @param WindViewerResolver $viewer
 	 */
-	public function __construct($layoutFile = '') {
-		$this->setLayoutFile($layoutFile);
+	public function __construct($layoutFile, $view, $viewer) {
+		$this->layout = $layoutFile;
+		$this->view = $view;
+		$this->viewer = $viewer;
 	}
 
 	/**
@@ -62,37 +70,18 @@ class WindLayout extends WindModule {
 	 * @param WindViewerResolver $viewer
 	 * @return void
 	 */
-	public function parser($viewer) {
-		$this->viewer = $viewer;
-		$__content = '';
+	public function parser() {
 		ob_start();
-		if ($this->layout) {
-			list($tpl, $_output) = $this->viewer->compile($this->layout, '', false, true);
-			if (!@include ($tpl)) {
-				throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
-					WindViewException::VIEW_NOT_EXIST);
-			}
-			reset($this->segments);
-			$__content = preg_replace_callback('/(\$this\->((content)|(segment))(\([^()]*\)[\s]*;)){1}/i', 
-				array($this, '__matchs'), $_output);
-		} else {
-			$this->content();
-			$__content = array_pop($this->segments);
+		if (method_exists($this->viewer, 'compile')) {
+			list($tpl) = $this->viewer->compile($this->layout);
+		} else
+			$tpl = $this->view->getViewTemplate($this->layout);
+		
+		if (!@include ($tpl)) {
+			throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
+				WindViewException::VIEW_NOT_EXIST);
 		}
-		ob_get_clean();
-		$__content = preg_replace('/<\?php(\s|\n)*?\?>/i', "", $__content);
-		$this->script && $__content = preg_replace('/(<\/body>)/i', $this->script . '\\1', $__content);
-		$this->css && $__content = preg_replace('/<\/head>/i', $this->css . '</head>', $__content);
-		return $__content;
-	}
-
-	/**
-	 * @param array $matchs
-	 */
-	private function __matchs($matchs) {
-		$_tmp = current($this->segments);
-		next($this->segments);
-		return ' ?>' . $_tmp . '<?php ';
+		return ob_get_clean();
 	}
 
 	/**
@@ -103,8 +92,7 @@ class WindLayout extends WindModule {
 	 */
 	private function segment($template) {
 		if ($this->viewer === null || !$template) return '';
-		list(, $this->segments[$template]) = $this->viewer->compile($template, '', true);
-		echo "<pw-wind key='" . $template . "' />";
+		echo $this->viewer->windFetch($template);
 	}
 
 	/**
@@ -114,39 +102,6 @@ class WindLayout extends WindModule {
 	 */
 	private function content() {
 		if ($this->viewer === null) return '';
-		$template = $this->viewer->getWindView()->templateName;
-		$this->segment($template);
-	}
-
-	/**
-	 * 设置模板布局文件
-	 * 
-	 * @param string $layout 布局文件
-	 * @return void
-	 */
-	public function setLayout($layout) {
-		$this->layout = $layout;
-	}
-
-	/**
-	 * 设置将JavaScript脚本输出到页脚
-	 * 
-	 * 将内容中的javascript脚本，按照顺序移动到<b><body>...js定义</body></b>
-	 * @param string $script
-	 * @return void
-	 */
-	public function setScript($script) {
-		$this->script .= $script;
-	}
-
-	/**
-	 * 设置Css定义输出到页头
-	 * 
-	 * 将内容中的css定义，按照顺序移动到<b><head>...css定义</head></b>
-	 * @param string $css
-	 * @return void
-	 */
-	public function setCss($css) {
-		$this->css .= $css;
+		$this->segment($this->view->templateName);
 	}
 }
