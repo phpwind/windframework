@@ -119,6 +119,7 @@
 	'i18n' => array(
 		'path' => 'WIND:i18n.WindLangResource',
 		'scope' => 'singleton',
+		'config' => array('path' => 'i18n'),
 	),
 	'windCookie' => array(
 		'path' => 'WIND:http.cookie.WindNormalCookie',

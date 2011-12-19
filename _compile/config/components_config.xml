@@ -93,6 +93,9 @@
 	</component>
 	<component name='i18n' path='WIND:i18n.WindLangResource'
 		scope='singleton'>
+		<config>
+			<path>i18n</path>
+		</config>
 	</component>
 	<component name='windCookie' path='WIND:http.cookie.WindNormalCookie'
 		scope='singleton'>

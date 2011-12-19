@@ -63,6 +63,24 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 * @see IWindLangResource::lang()
 	 */
 	public function getMessage($message, $params = array()) {
+		$message = $this->translate($message);
+		if (isset($params[0])) {
+			foreach ($params as $key => $value) {
+				if (!is_numeric($key)) continue;
+				$params['#' . $key] = $value;
+				unset($params[$key]);
+			}
+		}
+		return !empty($params) ? strtr($message, $params) : $message;
+	}
+
+	/**
+	 * 获取一条message信息
+	 * 
+	 * @param array $messages
+	 * @return string
+	 */
+	protected function translate($message) {
 		$package = $file = '';
 		if (strpos($message, ':') != false) list($package, $message) = explode(':', $message, 2);
 		if (strpos($message, '.') != false) list($file, $key) = explode('.', $message, 2);
@@ -88,19 +106,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 			}
 			$this->_messages[$path] = $messages;
 		}
-		$message = $this->_getMessage($this->_messages[$path], $key);
-		$params && $message = call_user_func_array('sprintf', array($message) + $params);
-		return $message;
-	}
-
-	/**
-	 * 获取一条message信息
-	 * 
-	 * @param array $messages
-	 * @param string $key
-	 */
-	protected function _getMessage($messages, $key) {
-		return isset($messages[$key]) ? $messages[$key] : $key;
+		return isset($this->_messages[$path][$key]) ? $this->_messages[$path][$key] : $key;
 	}
 
 	/**
@@ -114,8 +120,6 @@ class WindLangResource extends WindModule implements IWindLangResource {
 		$this->language || $this->language = Wind::getApp()->getRequest()->getAcceptLanguage();
 		$path = $this->path . '/' . $this->language . '/' . strtolower($package);
 		$path = Wind::getRealDir(trim($path, '/'), true);
-		/*if (!is_dir($path)) throw new WindI18nException(
-			'[Wind.WindTranslater.resolvedPath] resolve resource path fail, path ' . $path . ' is not exit.');*/
 		return $path;
 	}
 
