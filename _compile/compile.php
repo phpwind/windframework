@@ -5,6 +5,7 @@
  **/
 error_reporting(E_ALL);
 define('WIND_DEBUG', 1);
+$message = array();
 include '../wind/Wind.php';
 define('_COMPILE_PATH', dirname(__FILE__) . '/');
 Wind::clear();
@@ -34,7 +35,10 @@ foreach ($imports as $key => $value) {
 }
 $pack->setContentInjectionCallBack('addImports');
 $pack->packFromFileList($fileList, _COMPILE_PATH . 'wind_basic.php', WindPack::STRIP_PHP, true);
+$message[] = "COMPILE: pack core file successful~";
+
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
+$message[] = "COMPILE: wind_imports.php successful~";
 
 /* 编译配置文件信息 */
 $windConfigParser = new WindConfigParser();
@@ -47,9 +51,10 @@ while (($file = readdir($dh)) !== false) {
 		//WindFile::write(WIND_PATH . $file . '.php', '<?php return ' . WindString::varToString($result) . ';');
 	}
 }
+$message[] = 'COMPILE: configs successful~';
+$message[] = 'compile successful!';
 
-echo 'compile successful!';
-
+echo implode("<br>", $message);
 /*********************************************************************/
 /* 向wind包中注入imports文件目录信息 */
 function addImports() {

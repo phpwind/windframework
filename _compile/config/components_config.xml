@@ -55,7 +55,7 @@
 			<property name='viewResolver' ref='viewResolver' />
 		</properties>
 	</component>
-	<component name='viewResolver' path='WIND:viewer.WindViewerResolver'
+	<component name='viewResolver' path='WIND:viewer.resolver.WindViewerResolver'
 		scope='prototype'>
 		<properties>
 			<property name='windLayout' ref='layout' />
