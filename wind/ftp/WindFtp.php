@@ -13,7 +13,7 @@ Wind::import('WIND:ftp.AbstractWindFtp');
  * @author xiaoxia.xu <xiaoxia.xuxx@aliyun-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $Id: WindFtp.php 1532 2011-9-20下午03:38:18 xiaoxiao $
+ * @version $Id: WindFtp.php 2973 2011-10-15 19:22:48Z yishuo $
  * @package ftp
  */
 class WindFtp extends AbstractWindFtp {
@@ -94,12 +94,12 @@ class WindFtp extends AbstractWindFtp {
 	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::upload()
 	 */
-	public function upload($sourceFile, $desFile, $mode) {
+	public function upload($sourceFile, $desFile, $mode = 'A') {
 		$mode = $this->getMode($sourceFile, $mode);
 		if (!in_array(($savedir = dirname($desFile)), array('.', '/'))) {
 			$this->mkdirs($savedir);
 		}
-		$desFile = $this->rootPath . WindSecurity::escapeDir($desFile);
+		$desFile = $this->rootPath . WindSecurity::escapePath($desFile);
 		$result = ftp_put($this->getFtp(), $desFile, $sourceFile, $mode);
 		if (false === $result) return false;
 		$this->chmod($desFile, 0644);
