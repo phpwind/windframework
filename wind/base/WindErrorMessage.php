@@ -64,13 +64,9 @@ class WindErrorMessage extends WindModule implements IWindErrorMessage {
 	 * @see IWindErrorMessage::addError()
 	 */
 	public function addError($error, $key = '') {
-		if ($key === '') {
-			if (is_string($error))
-				$this->error[] = $error;
-			elseif (is_object($error))
-				$error = get_object_vars($error);
-			if (is_array($error)) $this->error = array_merge($this->error, $error);
-		} else
+		if ($key === '')
+			$this->error[] = $error;
+		else
 			$this->error[$key] = $error;
 	}
 
