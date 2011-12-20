@@ -120,6 +120,8 @@ class WindView extends WindModule implements IWindView {
 	 * @see IWindView::render()
 	 */
 	public function render($display = false) {
+		if (!$this->templateName) return;
+		
 		$viewResolver = $this->_getViewResolver($this);
 		if ($viewResolver === null) throw new WindException(
 			'[view.WindView.render] View renderer initialization failure.');

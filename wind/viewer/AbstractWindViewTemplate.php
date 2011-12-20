@@ -33,6 +33,18 @@ abstract class AbstractWindViewTemplate extends WindModule {
 		$_output = $this->doCompile($_output, $windViewerResolver);
 		return $_output;
 	}
+	
+	/**
+	 * 渲染流
+	 *
+	 * @param string $stream
+	 * @param WindViewerResolver $windViewerResolver
+	 */
+	public function compileStream($stream, $windViewerResolver) {
+		$_output = $this->compileDelimiter($stream);
+		$_output = $this->doCompile($_output, $windViewerResolver);
+		return $_output;
+	}
 
 	/**
 	 * @param string content
