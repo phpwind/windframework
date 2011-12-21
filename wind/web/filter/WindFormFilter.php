@@ -15,13 +15,13 @@
  * 该formFilter接受一个配置form，该配置项指向需要过滤的表单类文件.
  * 例如：
  * <code>
- * 	'filters' => array(
- * 		'class' => 'WIND:filter.WindFilterChain',	
- * 		'filter1' => array(
- * 			'class' => 'WIND:web.filter.WindFormFilter',	//将filter指定为该formFilter
- * 			'pattern' => '*',	
- * 			'form' => 'MY:form.MyForm',
- * 		)
+ * 'filters' => array(
+ * 'class' => 'WIND:filter.WindFilterChain',	
+ * 'filter1' => array(
+ * 'class' => 'WIND:web.filter.WindFormFilter',	//将filter指定为该formFilter
+ * 'pattern' => '*',	
+ * 'form' => 'MY:form.MyForm',
+ * )
  * )
  * </code>
  * 在action中获取的时候使用:
@@ -38,7 +38,7 @@
  * @subpackage filter
  */
 class WindFormFilter extends WindActionFilter {
-
+	
 	/**
 	 * 验证的表单类
 	 *
@@ -74,7 +74,8 @@ class WindFormFilter extends WindActionFilter {
 	private function sendError($errorAction, $errors) {
 		if (empty($errors)) return;
 		$this->errorMessage->setErrorAction($errorAction);
-		$this->errorMessage->addError($errors);
+		foreach ($errors as $key => $value)
+			$this->errorMessage->addError($value, $key);
 		$this->errorMessage->sendError();
 	}
 

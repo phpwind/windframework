@@ -17,13 +17,6 @@ class WindNormalViewerResolver extends WindModule implements IWindViewerResolver
 	 */
 	protected $windView = null;
 
-	/**
-	 * @param windView $view
-	 */
-	public function __construct($view = null) {
-		$this->windView = $view;
-	}
-
 	/* (non-PHPdoc)
 	 * @see IWindViewerResolver::windAssign()
 	 */
@@ -44,6 +37,21 @@ class WindNormalViewerResolver extends WindModule implements IWindViewerResolver
 		$template = $this->windView->getViewTemplate($template);
 		WindRender::render($template, $this->vars, $this);
 		return ob_get_clean();
+	}
+
+	/**
+	 * @return WindView
+	 */
+	public function getWindView() {
+		return $this->windView;
+	}
+
+	/**
+	 * @param WindView $windView
+	 * @return void
+	 */
+	public function setWindView($windView) {
+		$this->windView = $windView;
 	}
 }
 

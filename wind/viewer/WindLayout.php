@@ -34,49 +34,29 @@
  */
 class WindLayout extends WindModule {
 	/**
-	 * 布局文件
-	 * 
-	 * @var string
-	 */
-	private $layout;
-	/**
 	 * 视图渲染器对象
 	 * 
 	 * @var WindViewerResolver
 	 */
 	private $viewer = null;
-	/**
-	 * 视图管理器
-	 *
-	 * @var WindView
-	 */
-	private $view = null;
+	
 	private $segments = array();
-
-	/**
-	 * @param string $layoutFile 布局文件
-	 * @param WindView $view 视图模板
-	 * @param WindViewerResolver $viewer
-	 */
-	public function __construct($layoutFile, $view, $viewer) {
-		$this->layout = $layoutFile;
-		$this->view = $view;
-		$this->viewer = $viewer;
-	}
 
 	/**
 	 * 解析布局文件
 	 * 
+	 * @param string $layout
 	 * @param WindViewerResolver $viewer
 	 * @return void
 	 */
-	public function parser() {
-		ob_start();
+	public function parser($layout, $viewer) {
+		$this->viewer = $viewer;
 		if (method_exists($this->viewer, 'compile')) {
-			list($tpl) = $this->viewer->compile($this->layout);
+			list($tpl) = $this->viewer->compile($layout);
 		} else
-			$tpl = $this->view->getViewTemplate($this->layout);
+			$tpl = $this->viewer->getWindView()->getViewTemplate($layout);
 		
+		ob_start();
 		if (!@include ($tpl)) {
 			throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
 				WindViewException::VIEW_NOT_EXIST);
@@ -91,7 +71,6 @@ class WindLayout extends WindModule {
 	 * @return void
 	 */
 	private function segment($template) {
-		if ($this->viewer === null || !$template) return '';
 		echo $this->viewer->windFetch($template);
 	}
 
@@ -101,7 +80,7 @@ class WindLayout extends WindModule {
 	 * @return void
 	 */
 	private function content() {
-		if ($this->viewer === null) return '';
-		$this->segment($this->view->templateName);
+		$this->segment($this->viewer->getWindView()->templateName);
 	}
 }
+

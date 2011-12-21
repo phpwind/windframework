@@ -85,7 +85,7 @@ class WindSocketFtp extends AbstractWindFtp {
 	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::upload()
 	 */
-	public function upload($localfile, $remotefile, $mode) {
+	public function upload($localfile, $remotefile, $mode = 'A') {
 		if ($this->checkFile($localfile)) {
 			$this->showError("Error：illegal file type！（{$localfile}）");
 		}
@@ -95,7 +95,7 @@ class WindSocketFtp extends AbstractWindFtp {
 		if (!in_array(($savedir = dirname($remotefile)), array('.', '/'))) {
 			$this->mkdirs($savedir);
 		}
-		$remotefile = $this->rootPath . WindSecurity::escapeDir($remotefile);
+		$remotefile = $this->rootPath . WindSecurity::escapePath($remotefile);
 		if (!($fp = fopen($localfile, 'rb'))) {
 			$this->showError("Error：Cannot read file \"$localfile\"");
 		}
@@ -169,7 +169,7 @@ class WindSocketFtp extends AbstractWindFtp {
 	 * @see AbstractWindFtp::delete()
 	 */
 	public function delete($file) {
-		return $this->sendcmd('DELE', $this->rootPath . WindSecurity::escapeDir($file));
+		return $this->sendcmd('DELE', $this->rootPath . WindSecurity::escapePath($file));
 	}
 	
 	/* (non-PHPdoc)

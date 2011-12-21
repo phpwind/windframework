@@ -94,12 +94,12 @@ class WindFtp extends AbstractWindFtp {
 	/* (non-PHPdoc)
 	 * @see AbstractWindFtp::upload()
 	 */
-	public function upload($sourceFile, $desFile, $mode) {
+	public function upload($sourceFile, $desFile, $mode = 'A') {
 		$mode = $this->getMode($sourceFile, $mode);
 		if (!in_array(($savedir = dirname($desFile)), array('.', '/'))) {
 			$this->mkdirs($savedir);
 		}
-		$desFile = $this->rootPath . WindSecurity::escapeDir($desFile);
+		$desFile = $this->rootPath . WindSecurity::escapePath($desFile);
 		$result = ftp_put($this->getFtp(), $desFile, $sourceFile, $mode);
 		if (false === $result) return false;
 		$this->chmod($desFile, 0644);
