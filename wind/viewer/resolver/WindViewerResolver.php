@@ -107,11 +107,4 @@ class WindViewerResolver extends WindNormalViewerResolver implements IWindViewer
 	public function setWindView($windView) {
 		$this->windView = $windView;
 	}
-
-	/**
-	 * @return WindLayout
-	 */
-	public function getWindLayout() {
-		return $this->_getWindLayout('', $this);
-	}
 }
