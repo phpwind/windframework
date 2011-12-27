@@ -169,6 +169,26 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	}
 
 	/**
+	 * 获取urlArg值
+	 * 
+	 * @return array
+	 */
+	public function getUrlArgs() {
+		return $this->getGlobal('__url__');
+	}
+
+	/**
+	 * 设置urlargs值
+	 *
+	 * @param string $data
+	 * @param string $key
+	 */
+	public function setUrlArgs($data, $key) {
+		if (!$key || !$data) return;
+		$this->setGlobal(array($key => $data), '__url__');
+	}
+
+	/**
 	 * 添加module配置
 	 * <code>
 	 * <controller-path>controller</controller-path>

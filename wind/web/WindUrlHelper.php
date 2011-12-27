@@ -122,23 +122,16 @@ class WindUrlHelper {
 		/* @var $router AbstractWindRouter */
 		$router = Wind::getApp()->getComponent('router');
 		if ($_token = Wind::getApp()->getConfig('url-token')) {
-			$args[$_token] = self::getUrlToken($_token);
+			/* @var $token WindSecurityToken */
+			$token = Wind::getApp()->getComponent('windToken');
+			$args[$_token] = $token->saveToken($_token);
+		}
+		if ($urlArgs = Wind::getApp()->getUrlArgs()) {
+			$args = array_merge($args, $urlArgs);
 		}
 		$url = $router->assemble($action, $args, $route);
 		$url .= $anchor ? '#' . $anchor : '';
 		return self::checkUrl($url, $absolute);
-	}
-
-	/**
-	 * 获得url token
-	 * 
-	 * @param string $tokenName
-	 * @return string
-	 */
-	public static function getUrlToken($tokenName = '') {
-		/* @var $token WindSecurityToken */
-		$token = Wind::getApp()->getComponent('windToken');
-		return $token->saveUrlToken($tokenName);
 	}
 }
 ?>
