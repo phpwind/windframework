@@ -76,7 +76,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @param array $filters
 	 * @return void
 	 */
-	protected function resolveActionFilter($filters) {
+	protected function resolveActionFilter($filters, $service = null) {
 		if (!$filters) return;
 		$_fitlers = array();
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
@@ -94,6 +94,12 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 							break;
 						case 'request':
 							$call = array($this->getRequest(), 'getRequest');
+							break;
+						case 'service':
+							if ($service === null) throw new WindException(
+								'[web.WindSimpleController.resolveActionFilter] service is null', 
+								WindException::ERROR_PARAMETER_TYPE_ERROR);
+							$call = array($service, 'getProperty');
 							break;
 						default:
 							$call = array($this, 'getInput');
