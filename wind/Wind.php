@@ -266,6 +266,7 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
+			'AbstractWindFrontController' => 'base/AbstractWindFrontController', 
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
 			'WindActionException' => 'base/WindActionException', 
