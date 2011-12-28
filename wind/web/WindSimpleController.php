@@ -76,45 +76,11 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @param array $filters
 	 * @return void
 	 */
-	protected function resolveActionFilter($filters, $service = null) {
+	protected function resolveActionFilter($filters) {
 		if (!$filters) return;
-		$_fitlers = array();
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
-		foreach ((array) $filters as $filter) {
-			if (!empty($filter['class'])) {
-				if (!empty($filter['expression'])) {
-					$v1 = '';
-					list($n, $p, $o, $v2) = WindUtility::resolveExpression($filter['expression']);
-					switch (strtolower($n)) {
-						case 'forward':
-							$call = array($this->getForward(), 'getVars');
-							break;
-						case 'g':
-							$call = array(Wind::getApp(), 'getGlobal');
-							break;
-						case 'request':
-							$call = array($this->getRequest(), 'getRequest');
-							break;
-						case 'service':
-							if ($service === null) throw new WindException(
-								'[web.WindSimpleController.resolveActionFilter] service is null', 
-								WindException::ERROR_PARAMETER_TYPE_ERROR);
-							$call = array($service, 'getProperty');
-							break;
-						default:
-							$call = array($this, 'getInput');
-							break;
-					}
-					$v1 = call_user_func_array($call, explode('.', $p));
-					if (!WindUtility::evalExpression($v1, $v2, $o)) continue;
-				}
-				$_fitlers[] = $filter;
-			}
-		}
-		
-		if (!$_fitlers) return;
 		$args = array($this->getForward(), $this->getErrorMessage(), null);
-		foreach ((array) $_fitlers as $value) {
+		foreach ((array) $filters as $value) {
 			empty($value['args']) || array_push($args, $value['args']);
 			$chain->addInterceptors(WindFactory::createInstance(Wind::import($value['class']), $args));
 		}
