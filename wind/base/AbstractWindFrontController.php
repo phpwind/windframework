@@ -58,7 +58,7 @@ abstract class AbstractWindFrontController {
 		$this->initApplication($appName, $config);
 		if (isset($this->_config['isclosed']) && $this->_config['isclosed']) {
 			WindHelper::triggerError('Sorry, Site has been closed!', 
-				(!empty($this->_config['isclosed-tpl']) ? $this->_config['isclosed-tpl'] : ''), $this->response);
+				(!empty($this->_config['isclosed-tpl']) ? $this->_config['isclosed-tpl'] : ''));
 		}
 	}
 
