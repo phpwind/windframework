@@ -20,7 +20,7 @@ class WindFrontController extends AbstractWindFrontController {
 	protected function initApplication($appName, $config) {
 		$this->request = new WindHttpRequest();
 		$this->response = new WindHttpResponse();
-		$this->factory || $this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
+		$this->factory = new WindFactory(@include (Wind::getRealPath(self::DF_COMPONENT_CONFIG, true)));
 		$config && $this->initConfig($config, $this->factory);
 		$this->_config['defaultApp'] = $appName;
 		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
