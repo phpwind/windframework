@@ -28,12 +28,12 @@ class WindMail {
 	/**
 	 * @var string  邮件内容有附件
 	 */
-	const ATTACH = 4;
+	const ATTACH = 4; 
 
 	/**
 	 * @var string  无邮件内容
 	 */
-	const NONE = 5;
+	const NONE = 0;
 
 	/**
 	 * @var array 邮件收件人
@@ -465,6 +465,15 @@ class WindMail {
 	 */
 	public function getBoundary() {
 		return $this->boundary;
+	}
+	
+	/**
+	 * 取得邮件编码方式
+	 *
+	 * @return string
+	 */
+	public function getContentEncode() {
+		return $this->encode;
 	}
 
 	/**
