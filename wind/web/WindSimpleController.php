@@ -81,8 +81,9 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		$chain = WindFactory::createInstance('WindHandlerInterceptorChain');
 		$args = array($this->getForward(), $this->getErrorMessage(), null);
 		foreach ((array) $filters as $value) {
-			empty($value['args']) || array_push($args, $value['args']);
-			$chain->addInterceptors(WindFactory::createInstance(Wind::import($value['class']), $args));
+			$chain->addInterceptors(
+				WindFactory::createInstance(Wind::import($value['class']), 
+					(empty($value['args']) ? $args : array_merge($args, array($value['args'])))));
 		}
 		$chain->getHandler()->handle();
 	}
