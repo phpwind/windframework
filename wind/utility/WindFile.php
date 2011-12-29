@@ -118,12 +118,10 @@ class WindFile {
 	 */
 	public static function read($fileName, $method = self::READ) {
 		$data = '';
-		$len = filesize($fileName);
-		if (false !== ($handle = fopen($fileName, $method)) && 0 < $len) {
-			flock($handle, LOCK_SH);
-			$data = fread($handle, $len);
-			fclose($handle);
-		}
+		if (!$handle = fopen($fileName, $method)) return false;
+		while (!feof($handle))
+			$data .= fgets($handle, 4096);
+		fclose($handle);
 		return $data;
 	}
 
