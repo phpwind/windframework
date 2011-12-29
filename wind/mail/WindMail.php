@@ -58,7 +58,7 @@ class WindMail {
 	/**
 	 * @var string 邮件字符集
 	 */
-	private $charSet = 'gbk';
+	private $charSet = 'utf-8';
 
 	/**
 	 * @var string 邮件mime类型
@@ -100,7 +100,7 @@ class WindMail {
 
 	const MESSAGEID = 'Message-Id';
 
-	const CONTENTTYPE = 'Content-Type';
+	const CONTENT_TYPE = 'Content-Type';
 
 	const CONTENTENCODE = 'Content-Transfer-Encoding';
 
@@ -159,8 +159,7 @@ class WindMail {
 		$class = Wind::import('Wind:mail.sender.Wind' . ucfirst($type) . 'Mail');
 		/* @var $sender IWindSendMail */
 		$sender = new $class($config);
-		$sender->send($this);
-		return true;
+		return $sender->send($this);
 	}
 
 	/**
@@ -169,7 +168,7 @@ class WindMail {
 	 */
 	public function createHeader() {
 		$header = '';
-		if (!isset($this->mailHeader[self::CONTENTTYPE])) {
+		if (!isset($this->mailHeader[self::CONTENT_TYPE])) {
 			$this->setContentType(null);
 		}
 		foreach ($this->mailHeader as $key => $value) {
@@ -349,7 +348,7 @@ class WindMail {
 			$contentType = sprintf("%s;%s boundary=\"%s\"", $type, self::CRLF, $this->getBoundary());
 		}
 		$this->contentType = $type;
-		$this->setMailHeader(self::CONTENTTYPE, $contentType, false);
+		$this->setMailHeader(self::CONTENT_TYPE, $contentType, false);
 	}
 
 	/**
@@ -484,7 +483,6 @@ class WindMail {
 		} else {
 			return self::NONE;
 		}
-		return 0;
 	}
 
 	/**
@@ -519,7 +517,7 @@ class WindMail {
 	 * @return string
 	 */
 	public function getTextHeader() {
-		$textHeader = self::CONTENTTYPE . ': text/plain; charset=' . $this->charSet . self::CRLF;
+		$textHeader = self::CONTENT_TYPE . ': text/plain; charset=' . $this->charSet . self::CRLF;
 		return $textHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF;
 	}
 
@@ -528,7 +526,7 @@ class WindMail {
 	 * @return string
 	 */
 	public function getHtmlHeader() {
-		$htmlHeader = self::CONTENTTYPE . ': text/html; charset=' . $this->charSet . self::CRLF;
+		$htmlHeader = self::CONTENT_TYPE . ': text/html; charset=' . $this->charSet . self::CRLF;
 		return $htmlHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF . self::CRLF;
 	}
 
@@ -542,7 +540,7 @@ class WindMail {
 	 * @return string
 	 */
 	public function getAttachHeader($mime, $name, $encode = self::ENCODE_BASE64, $disposition = 'attachment', $cid = 0) {
-		$attachHeader = sprintf(self::CONTENTTYPE . ": %s; name=\"%s\"%s", $mime, $name, self::CRLF);
+		$attachHeader = sprintf(self::CONTENT_TYPE . ": %s; name=\"%s\"%s", $mime, $name, self::CRLF);
 		$attachHeader .= sprintf(self::CONTENTENCODE . ": %s%s", $encode, self::CRLF);
 		if ($disposition == 'inline') {
 			$attachHeader .= sprintf(self::CONTENTID . ": <%s>%s", $cid, self::CRLF);
