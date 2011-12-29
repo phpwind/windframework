@@ -12,6 +12,7 @@ Wind::import('WIND:utility.WindFile');
  * @package viewer
  */
 abstract class AbstractWindViewTemplate extends WindModule {
+
 	/**
 	 * 模板内容编译实现,返回编译后模板内容内容
 	 * 
@@ -33,7 +34,7 @@ abstract class AbstractWindViewTemplate extends WindModule {
 		$_output = $this->doCompile($_output, $windViewerResolver);
 		return $_output;
 	}
-	
+
 	/**
 	 * 渲染流
 	 *
@@ -60,17 +61,13 @@ abstract class AbstractWindViewTemplate extends WindModule {
 	 * 获得模板文件内容，目前只支持本地文件获取
 	 * 
 	 * @param string $templateFile
+	 * @return string
 	 */
 	private function getTemplateFileContent($templateFile) {
-		$_output = '';
-		if ($fp = @fopen($templateFile, 'r')) {
-			while (!feof($fp)) {
-				$_output .= fgets($fp, 4096);
-			}
-			fclose($fp);
-		} else
+		if (false === ($content = WindFile::read($templateFile))) {
 			throw new WindViewException('Unable to open the template file \'' . $templateFile . '\'.');
-		return $_output;
+		}
+		return $content;
 	}
 }
 ?>

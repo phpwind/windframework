@@ -21,7 +21,7 @@ class WindPhpMail implements IWindSendMail {
 	public function getToAsString($recipients = array()) {
 		$to = '';
 		foreach ($recipients as $key => $value) {
-			$_value = is_string($key) ? $key . ' ' . $_value : $_value;
+			$_value = is_string($key) ? $key . ' ' . $value : $value;
 			$to .= $to ? ', ' . $_value : $_value;
 		}
 		return $to;
