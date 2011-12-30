@@ -466,15 +466,6 @@ class WindMail {
 	public function getBoundary() {
 		return $this->boundary;
 	}
-	
-	/**
-	 * 取得邮件编码方式
-	 *
-	 * @return string
-	 */
-	public function getContentEncode() {
-		return $this->encode;
-	}
 
 	/**
 	 * 取得mime类型
