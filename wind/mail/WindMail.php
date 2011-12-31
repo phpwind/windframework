@@ -240,7 +240,7 @@ class WindMail {
 	 * @param string $name  发件人姓名
 	 */
 	public function setFrom($email, $name = null) {
-		$value = $name ? array($name => $email) : array($email);
+		$value = $name ? array(self::encodeHeader($name, $this->encode) => $email) : array($email);
 		$this->setMailHeader(self::FROM, $value, false);
 	}
 
@@ -250,7 +250,7 @@ class WindMail {
 	 * @param string $name  收件人姓名
 	 */
 	public function setTo($email, $name = null) {
-		$value = $name ? array($name => $email) : array($email);
+		$value = $name ? array(self::encodeHeader($name, $this->encode) => $email) : array($email);
 		$this->setMailHeader(self::TO, $value);
 	}
 
@@ -260,7 +260,7 @@ class WindMail {
 	 * @param string $name  抄送人姓名
 	 */
 	public function setCc($email, $name = null) {
-		$value = $name ? array($name => $email) : array($email);
+		$value = $name ? array(self::encodeHeader($name, $this->encode) => $email) : array($email);
 		$this->setMailHeader(self::CC, $value);
 	}
 
@@ -270,7 +270,7 @@ class WindMail {
 	 * @param string $name  暗送人姓名
 	 */
 	public function setBcc($email, $name = null) {
-		$value = $name ? array($name => $email) : array($email);
+		$value = $name ? array(self::encodeHeader($name, $this->encode) => $email) : array($email);
 		$this->setMailHeader(self::BCC, $value);
 	}
 
@@ -279,7 +279,7 @@ class WindMail {
 	 * @param string $subject 主题
 	 */
 	public function setSubject($subject) {
-		$this->setMailHeader(self::SUBJECT, $subject, false);
+		$this->setMailHeader(self::SUBJECT, self::encodeHeader($subject, $this->encode), false);
 	}
 
 	/**
@@ -880,11 +880,7 @@ class WindMail {
 			return array();
 		}
 		foreach ($data as $key => $value) {
-			if (is_string($key)) {
-				$this->recipients[] = $value . ' ' . $key;
-			} else {
-				$this->recipients[] = $value;
-			}
+			$this->recipients[] = $value;
 		}
 		return $this->recipients;
 	}
@@ -899,7 +895,7 @@ class WindMail {
 		if (is_array($value)) {
 			$tmp = '';
 			foreach ($value as $key => $_value) {
-				$_value = is_string($key) ? $key . ' ' . $_value : $_value;
+				$_value = is_string($key) ? $key . ' <' . $_value . '>' : $_value;
 				$tmp .= $tmp ? ',' . $_value : $_value;
 			}
 			return $name . ': ' . $tmp . self::CRLF;
