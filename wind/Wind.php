@@ -91,27 +91,18 @@ class Wind {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos);
 			$dirPath = self::getRealPath($filePath, false);
-			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
-			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dirPath . '/' . $file)) {
-					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
-						$_filePath = $filePath . '.' . $file . '.' . '*';
-						self::import($_filePath, $recursivePackage);
-					}
-				} else {
-					if (($pos = strrpos($file, '.')) === false) {
-						$fileName = $file;
-					} elseif (substr($file, $pos + 1) === self::$_extensions) {
-						$fileName = substr($file, 0, $pos);
-					} else
-						continue;
+			if (false === ($files = scandir($dirPath, 0))) throw new Exception(
+				'[Wind.import] the file ' . $dirPath . ' open failed!');
+			foreach ($files as $file) {
+				if ($file === '.' || $file === '..' || ($pos = strrpos($file, '.')) === 0) continue;
+				if ($pos !== false && substr($file, $pos + 1) === self::$_extensions) {
+					$fileName = substr($file, 0, $pos);
 					self::_setImport($fileName, $filePath . '.' . $fileName);
-				}
+				} elseif ($recursivePackage && is_dir($dirPath . '/' . $file))
+					self::import($filePath . '.' . $file . '.' . '*', $recursivePackage);
 			}
-			closedir($dh);
-		} else {
+		} else
 			self::_setImport($fileName, $filePath);
-		}
 		return $fileName;
 	}
 

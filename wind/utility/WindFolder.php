@@ -15,15 +15,15 @@ class WindFolder {
 	 * 获取文件列表
 	 * 
 	 * @param string $dir
+	 * @param boolean $justFile 只读取文件列表,不包含文件夹
 	 * @return array
 	 */
-	public static function read($dir) {
-		if (!self::isDir($dir)) return array();
+	public static function read($dir, $justFile = false) {
 		if (!$handle = @opendir($dir)) return array();
 		$files = array();
 		while (false !== ($file = @readdir($handle))) {
 			if ('.' === $file || '..' === $file) continue;
-			if (!WindFile::isFile($dir . '/' . $file)) continue;
+			if ($justFile && !WindFile::isFile($dir . '/' . $file)) continue;
 			$files[] = $file;
 		}
 		@closedir($handle);
