@@ -74,7 +74,6 @@ class Wind {
 	 * 加载一个包的参数方式：'WIND:base.*'
 	 * 
 	 * @param string $filePath | 文件路径信息 或者className
-	 * @param boolean $autoIncludes | 是否采用自动加载方式
 	 * @param boolean $recursivePackage | 当需要加载的路径为文件夹时是否递归它
 	 * @return string|null
 	 */
