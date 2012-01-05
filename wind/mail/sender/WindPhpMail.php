@@ -12,7 +12,7 @@ Wind::import('WIND:mail.sender.IWindSendMail');
  */
 class WindPhpMail implements IWindSendMail {
 
-	public function send(WindMail $mail) {
+	public function send(WindMail $mail, $config = array()) {
 		$recipients = $mail->getRecipients();
 		$to = $this->getToAsString($recipients);
 		return mail($to, $mail->getSubject(), $mail->createBody(), $mail->createHeader());
