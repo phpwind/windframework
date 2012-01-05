@@ -31,6 +31,10 @@ class WindMail {
 	 */
 	private $recipients = null;
 	/**
+	 * @var string 邮件发件人
+	 */
+	private $from = '';
+	/**
 	 * @var string 邮件消息体html展现方式
 	 */
 	private $bodyHtml = '';
@@ -99,12 +103,9 @@ class WindMail {
 	public function send($type = self::SEND_SMTP, $config = array()) {
 		try {
 			$class = Wind::import('Wind:mail.sender.Wind' . ucfirst($type) . 'Mail');
-			if (!class_exists($class)) throw new WindMailException(
-				'[mail.WindMail.send] There is no way that you want to send e-mail \'' . $type . '\'');
 			/* @var $sender IWindSendMail */
-			$sender = new $class();
-			$sender->send($this, $config);
-			return true;
+			$sender = WindFactory::createInstance($class);
+			return $sender->send($this, $config);
 		} catch (Exception $e) {
 			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
 				'[mail.WindMail.send] send mail fail. ' . $e->getMessage(), 'windmail');
@@ -150,12 +151,16 @@ class WindMail {
 	 */
 	public function createBody() {
 		$body = $end = '';
-		if ($this->bodyText) $body .= $this->_encode($this->bodyText);
-		if ($this->bodyHtml) {
-			if ($body !== '') {
+		if ($this->bodyText) {
+			if ($this->bodyHtml || $this->attachment) {
 				$textHeader = self::CONTENTTYPE . ': text/plain; charset=' . $this->charset . self::CRLF;
-				$textHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF;
-				$body = $this->_boundaryStart() . $textHeader . $body . self::CRLF;
+				$textHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF . self::CRLF;
+				$body .= $this->_boundaryStart() . $textHeader;
+			}
+			$body .= $this->_encode($this->bodyText) . self::CRLF;
+		}
+		if ($this->bodyHtml) {
+			if ($this->bodyText || $this->attachment) {
 				$htmlHeader = self::CONTENTTYPE . ': text/html; charset=' . $this->charset . self::CRLF;
 				$htmlHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF . self::CRLF;
 				$body .= $this->_boundaryStart() . $htmlHeader;
@@ -171,22 +176,6 @@ class WindMail {
 	}
 
 	/**
-	 * 取得真实的收件人
-	 * 
-	 * @return array
-	 */
-	public function getRecipients() {
-		if ($this->recipients === null) {
-			$tmp = array_merge($this->getTo(), $this->getCc(), $this->getBcc());
-			if ($tmp) {
-				foreach ($tmp as $key => $value)
-					$this->recipients[] = $value;
-			}
-		}
-		return $this->recipients;
-	}
-
-	/**
 	 * 设置发件人
 	 * 
 	 * @param string $email 发件人邮箱
@@ -195,7 +184,8 @@ class WindMail {
 	 */
 	public function setFrom($email, $name = null) {
 		if (!$email || !is_string($email)) return;
-		$email = $name ? array($name => $email) : array($email);
+		$this->from = $email;
+		$name && $email = $this->_encodeHeader($name) . ' ' . $email;
 		$this->setMailHeader(self::FROM, $email, false);
 	}
 
@@ -205,8 +195,7 @@ class WindMail {
 	 * @return string
 	 */
 	public function getFrom() {
-		$from = $this->getMailHeader(self::FROM);
-		return is_array($from) ? array_pop($from) : $from;
+		return $this->from;
 	}
 
 	/**
@@ -217,7 +206,7 @@ class WindMail {
 	 */
 	public function setTo($email, $name = null) {
 		if (!$email) return;
-		if (!is_array($email)) $email = $name ? array($name => $email) : array($email);
+		$email = $this->_setRecipientMail($email, $name);
 		$this->setMailHeader(self::TO, $email);
 	}
 
@@ -238,7 +227,7 @@ class WindMail {
 	 */
 	public function setCc($email, $name = null) {
 		if (!$email) return;
-		if (!is_array($email)) $email = $name ? array($name => $email) : array($email);
+		$email = $this->_setRecipientMail($email, $name);
 		$this->setMailHeader(self::CC, $email);
 	}
 
@@ -259,7 +248,7 @@ class WindMail {
 	 */
 	public function setBcc($email, $name = null) {
 		if (!$email) return;
-		if (!is_array($email)) $email = $name ? array($name => $email) : array($email);
+		$email = $this->_setRecipientMail($email, $name);
 		$this->setMailHeader(self::BCC, $email);
 	}
 
@@ -466,6 +455,33 @@ class WindMail {
 		$mailEncoder = new $mailEncoder();
 		$message = strtr(trim($message), array("\r" => '', "\n" => '', "\r\n" => ''));
 		return $mailEncoder->encodeHeader($message, $this->charset, self::LINELENGTH, self::CRLF);
+	}
+
+	/**
+	 * @param string $email
+	 * @param string $name
+	 */
+	private function _setRecipientMail($email, $name) {
+		$_email = '';
+		if (is_array($email)) {
+			foreach ($email as $_e => $_n) {
+				$_email .= $_n ? $this->_encodeHeader($_n) . ' ' . $_e : $_e;
+				$this->recipients[] = $_e;
+			}
+		} else {
+			$_email = $name ? $this->_encodeHeader($name) . ' ' . $email : $email;
+			$this->recipients[] = $email;
+		}
+		return $_email;
+	}
+
+	/**
+	 * 取得真实的收件人
+	 * 
+	 * @return array
+	 */
+	public function getRecipients() {
+		return $this->recipients;
 	}
 
 	/**

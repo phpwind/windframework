@@ -82,6 +82,7 @@ class WindSmtpMail extends WindModule implements IWindSendMail {
 			$this->smtp->rcptTo($rcpt);
 		$this->smtp->data($mail->createHeader() . $mail->createBody());
 		$this->smtp->quit();
+		return true;
 	}
 
 	/**

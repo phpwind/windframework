@@ -12,19 +12,13 @@ Wind::import('WIND:mail.sender.IWindSendMail');
  */
 class WindPhpMail implements IWindSendMail {
 
+	/* (non-PHPdoc)
+	 * @see IWindSendMail::send()
+	 */
 	public function send(WindMail $mail, $config = array()) {
-		$recipients = $mail->getRecipients();
-		$to = $this->getToAsString($recipients);
-		return mail($to, $mail->getSubject(), $mail->createBody(), $mail->createHeader());
-	}
-
-	public function getToAsString($recipients = array()) {
 		$to = '';
-		foreach ($recipients as $key => $value) {
-			$_value = is_string($key) ? $key . ' ' . $value : $value;
-			$to .= $to ? ', ' . $_value : $_value;
-		}
-		return $to;
-	
+		foreach ($mail->getRecipients() as $key => $value)
+			$to .= $to ? ', ' . $value : $value;
+		return mail($to, $mail->getSubject(), $mail->createBody(), $mail->createHeader());
 	}
 }
