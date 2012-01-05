@@ -10,49 +10,43 @@ Wind::import("WIND:utility.WindString");
  * @package utility
  */
 class WindFile {
-	
 	/**
 	 * 以读的方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const READ = 'rb';
-	
 	/**
 	 * 以读写的方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const READWRITE = 'rb+';
-	
 	/**
 	 * 以写的方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const WRITE = 'wb';
-	
 	/**
 	 * 以读写的方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const WRITEREAD = 'wb+';
-	
 	/**
 	 * 以追加写入方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const APPEND_WRITE = 'ab';
-	
 	/**
 	 * 以追加读写入方式打开文件，具有较强的平台移植性
 	 * 
 	 * @var string 
 	 */
 	const APPEND_WRITEREAD = 'ab+';
-
+	
 	/**
 	 * 删除文件
 	 * 
