@@ -194,7 +194,7 @@ class WindMail {
 	public function setFrom($email, $name = null) {
 		if (!$email || !is_string($email)) return;
 		$this->from = $email;
-		$name && $email = $this->_encodeHeader($name) . ' ' . $email;
+		$name && $email = $this->_encodeHeader($name) . ' <' . $email . '>';
 		$this->setMailHeader(self::FROM, $email, false);
 	}
 
@@ -498,11 +498,11 @@ class WindMail {
 		$_email = '';
 		if (is_array($email)) {
 			foreach ($email as $_e => $_n) {
-				$_email .= $_n ? $this->_encodeHeader($_n) . ' ' . $_e : $_e;
+				$_email .= $_n ? $this->_encodeHeader($_n) . ' <' . $_e . '>' : $_e;
 				$this->recipients[] = $_e;
 			}
 		} else {
-			$_email = $name ? $this->_encodeHeader($name) . ' ' . $email : $email;
+			$_email = $name ? $this->_encodeHeader($name) . ' <' . $email . '>' : $email;
 			$this->recipients[] = $email;
 		}
 		return $_email;
@@ -532,11 +532,12 @@ class WindMail {
 	}
 
 	/**
-	 * 设置邮件html展示内容
-	 * @param string $bodyHtml
+	 * 设置邮件展示内容
+	 * 
+	 * @param string $body
 	 */
-	public function setBodyHtml($bodyHtml) {
-		$this->bodyHtml = $bodyHtml;
+	public function setBody($body) {
+		$this->bodyHtml = $body;
 	}
 
 	/**
