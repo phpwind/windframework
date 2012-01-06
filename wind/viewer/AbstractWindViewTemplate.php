@@ -52,8 +52,10 @@ abstract class AbstractWindViewTemplate extends WindModule {
 	 * @return string
 	 */
 	protected function compileDelimiter($content) {
-		$content = str_replace(array('<!--{', '<!--#'), '<?php ', $content);
-		$content = str_replace(array('}-->', '#-->'), '?>', $content);
+		$content = preg_replace('/\s*<!--[{#]/i', "\n<?php ", $content);
+		$content = preg_replace('/[#}]-->/i', "?>", $content);
+		/*$content = str_replace(array('<!--{', '<!--#'), '<?php ', $content);
+		$content = str_replace(array('}-->', '#-->'), '?>', $content);*/
 		return $content;
 	}
 

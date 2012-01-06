@@ -102,8 +102,6 @@ class WindResultSet {
 					$result[$key] = $value;
 				}
 		}
-		if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
-			"[component.db.WindResultSet._fetch] \r\n\tResult:" . WindString::varToString($result));
 		return $result;
 	}
 

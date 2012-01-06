@@ -10,21 +10,28 @@ Wind::import('WIND:utlity.WindFile');
  * @package utility
  */
 class WindFolder {
+	const READ_ALL = '0';
+	const READ_FILE = '1';
+	const READ_DIR = '2';
 
 	/**
 	 * 获取文件列表
 	 * 
 	 * @param string $dir
+	 * @param boolean $mode 只读取文件列表,不包含文件夹
 	 * @return array
 	 */
-	public static function read($dir) {
-		if (!self::isDir($dir)) return array();
+	public static function read($dir, $mode = self::READ_ALL) {
 		if (!$handle = @opendir($dir)) return array();
 		$files = array();
 		while (false !== ($file = @readdir($handle))) {
 			if ('.' === $file || '..' === $file) continue;
-			if (!WindFile::isFile($dir . '/' . $file)) continue;
-			$files[] = $file;
+			if ($mode === self::READ_DIR) {
+				if (self::isDir($dir . '/' . $file)) $files[] = $file;
+			} elseif ($mode === self::READ_FILE) {
+				if (WindFile::isFile($dir . '/' . $file)) $files[] = $file;
+			} else
+				$files[] = $file;
 		}
 		@closedir($handle);
 		return $files;

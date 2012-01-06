@@ -74,7 +74,6 @@ class Wind {
 	 * 加载一个包的参数方式：'WIND:base.*'
 	 * 
 	 * @param string $filePath | 文件路径信息 或者className
-	 * @param boolean $autoIncludes | 是否采用自动加载方式
 	 * @param boolean $recursivePackage | 当需要加载的路径为文件夹时是否递归它
 	 * @return string|null
 	 */
@@ -83,35 +82,26 @@ class Wind {
 		if (isset(self::$_imports[$filePath])) return self::$_imports[$filePath];
 		if (($pos = strrpos($filePath, '.')) !== false)
 			$fileName = substr($filePath, $pos + 1);
-		elseif (($pos1 = strrpos($filePath, ':')) !== false)
-			$fileName = substr($filePath, $pos1 + 1);
+		elseif (($pos = strrpos($filePath, ':')) !== false)
+			$fileName = substr($filePath, $pos + 1);
 		else
 			$fileName = $filePath;
 		$isPackage = $fileName === '*';
 		if ($isPackage) {
-			$filePath = substr($filePath, 0, $pos);
-			$dirPath = self::getRealPath($filePath, false);
-			if (!$dh = opendir($dirPath)) throw new Exception('the file ' . $dirPath . ' open failed!');
-			while (($file = readdir($dh)) !== false) {
-				if (is_dir($dirPath . '/' . $file)) {
-					if ($recursivePackage && $file !== '.' && $file !== '..' && (strpos($file, '.') !== 0)) {
-						$_filePath = $filePath . '.' . $file . '.' . '*';
-						self::import($_filePath, $recursivePackage);
-					}
-				} else {
-					if (($pos = strrpos($file, '.')) === false) {
-						$fileName = $file;
-					} elseif (substr($file, $pos + 1) === self::$_extensions) {
-						$fileName = substr($file, 0, $pos);
-					} else
-						continue;
-					self::_setImport($fileName, $filePath . '.' . $fileName);
-				}
+			$filePath = substr($filePath, 0, $pos + 1);
+			$dirPath = self::getRealPath(trim($filePath, '.'), false);
+			if (false === ($files = scandir($dirPath, 0))) throw new Exception(
+				'[Wind.import] the file ' . $dirPath . ' open failed!');
+			foreach ($files as $file) {
+				if ($file === '.' || $file === '..' || ($pos = strrpos($file, '.')) === 0) continue;
+				if ($pos !== false && substr($file, $pos + 1) === self::$_extensions) {
+					$fileName = substr($file, 0, $pos);
+					self::_setImport($fileName, $filePath . $fileName);
+				} elseif ($recursivePackage && is_dir($dirPath . '/' . $file))
+					self::import($filePath . $file . '.' . '*', $recursivePackage);
 			}
-			closedir($dh);
-		} else {
+		} else
 			self::_setImport($fileName, $filePath);
-		}
 		return $fileName;
 	}
 
