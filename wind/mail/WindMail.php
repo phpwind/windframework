@@ -50,6 +50,10 @@ class WindMail {
 	 * @var string 邮件编码方式
 	 */
 	private $encode = self::ENCODE_BASE64;
+	/**
+	 * @var 内容类型
+	 */
+	private $contentType;
 	
 	//常用邮件MIME
 	const CRLF = "\n";
@@ -150,29 +154,34 @@ class WindMail {
 	 * @return string
 	 */
 	public function createBody() {
-		$body = $end = '';
-		if ($this->bodyText) {
-			if ($this->bodyHtml || $this->attachment) {
-				$textHeader = self::CONTENTTYPE . ': text/plain; charset=' . $this->charset . self::CRLF;
-				$textHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF . self::CRLF;
-				$body .= $this->_boundaryStart() . $textHeader;
-			}
-			$body .= $this->_encode($this->bodyText) . self::CRLF;
+		$body = '';
+		switch ($this->contentType) {
+			case self::MIME_TEXT:
+				$body = $this->_encode($this->bodyText) . self::CRLF;
+				break;
+			case self::MIME_HTML:
+				$body = $this->_encode($this->bodyHtml) . self::CRLF;
+				break;
+			case self::MIME_ALTERNATIVE:
+				$body = $this->_createBoundary($this->_boundary(), 'text/plain');
+				$body .= $this->_encode($this->bodyText) . self::CRLF;
+				$body .= $this->_createBoundary($this->_boundary(), 'text/html');
+				$body .= $this->_encode($this->bodyHtml) . self::CRLF;
+				$body .= $this->_boundaryEnd($this->_boundary());
+				break;
+			default:
+				$body .= $this->_boundaryStart($this->_boundary());
+				$body .= sprintf("Content-Type: %s;%s" . "\tboundary=\"%s\"%s", 'multipart/alternative', self::CRLF, 
+					$this->_boundary(1), self::CRLF . self::CRLF);
+				$body .= $this->_createBoundary($this->_boundary(1), 'text/plain') . self::CRLF;
+				$body .= $this->_encode($this->bodyText) . self::CRLF . self::CRLF;
+				$body .= $this->_createBoundary($this->_boundary(1), 'text/html') . self::CRLF;
+				$body .= $this->_encode($this->bodyHtml) . self::CRLF . self::CRLF;
+				$body .= $this->_boundaryEnd($this->_boundary(1));
+				$body .= $this->_attach();
+				break;
 		}
-		if ($this->bodyHtml) {
-			if ($this->bodyText || $this->attachment) {
-				$htmlHeader = self::CONTENTTYPE . ': text/html; charset=' . $this->charset . self::CRLF;
-				$htmlHeader .= self::CONTENTENCODE . ': ' . $this->encode . self::CRLF . self::CRLF;
-				$body .= $this->_boundaryStart() . $htmlHeader;
-				$end = $this->_boundaryEnd();
-			}
-			$body .= $this->_encode($this->bodyHtml) . self::CRLF;
-		}
-		if ($this->attachment) {
-			$body .= $this->_attach() . self::CRLF;
-			$end = $this->_boundaryEnd();
-		}
-		return $body . $end;
+		return $body;
 	}
 
 	/**
@@ -360,6 +369,7 @@ class WindMail {
 				self::CRLF, $this->_boundary());
 		else
 			$contentType = sprintf("%s;%s boundary=\"%s\"", $type, self::CRLF, $this->_boundary());
+		$this->contentType = $type;
 		$this->setMailHeader(self::CONTENTTYPE, $contentType, false);
 	}
 
@@ -373,13 +383,17 @@ class WindMail {
 		foreach ($this->attachment as $key => $value) {
 			list($stream, $mime, $disposition, $encode, $filename, $cid) = $value;
 			$filename || $filename = 'attachment_' . $key;
-			$attachHeader = sprintf(self::CONTENTTYPE . ": %s; name=\"%s\"%s", $mime, $filename, self::CRLF);
-			$attachHeader .= sprintf(self::CONTENTENCODE . ": %s%s", $encode, self::CRLF);
-			if ($disposition == 'inline') $attachHeader .= sprintf(self::CONTENTID . ": <%s>%s", $cid, self::CRLF);
-			$attachHeader .= sprintf(self::CONTENTPOSITION . ": %s; filename=\"%s\"%s%s", $disposition, $filename, 
-				self::CRLF, self::CRLF);
-			$attach .= $this->_boundaryStart() . $attachHeader . $this->_encode($stream, $encode) . self::CRLF;
+			$attach .= $this->_boundaryStart($this->_boundary());
+			$attach .= sprintf(self::CONTENTTYPE . ": %s; name=\"%s\"%s", $mime, $filename, self::CRLF);
+			$attach .= sprintf(self::CONTENTENCODE . ": %s%s", $encode, self::CRLF);
+			if ($disposition == 'inline') {
+				$attach .= sprintf(self::CONTENTID . ": <%s>%s", $cid, self::CRLF);
+			}
+			$attach .= sprintf(self::CONTENTPOSITION . ": %s; filename=\"%s\"%s%s", $disposition, $filename, self::CRLF, 
+				self::CRLF);
+			$attach .= $this->_encode($stream, $encode) . self::CRLF;
 		}
+		$attach .= $this->_boundaryEnd($this->_boundary());
 		return $attach;
 	}
 
@@ -397,8 +411,24 @@ class WindMail {
 	 * 
 	 * @return string
 	 */
-	private function _boundaryStart() {
-		return self::CRLF . '--' . $this->_boundary() . self::CRLF;
+	private function _createBoundary($boundary, $contentType, $charset = '', $encode = '') {
+		$result = '';
+		$charset || $charset = $this->charset;
+		$encode || $encode = $this->encode;
+		$result .= $this->_boundaryStart($boundary);
+		$result .= sprintf(self::CONTENTTYPE . ": %s; charset=\"%s\"", $contentType, $charset);
+		$result .= self::CRLF;
+		$result .= sprintf(self::CONTENTENCODE . ": %s%s", $encode, self::CRLF);
+		$result .= self::CRLF;
+		return $result;
+	}
+
+	/**
+	 * @param boundary
+	 * @return string
+	 */
+	private function _boundaryStart($boundary) {
+		return '--' . $boundary . self::CRLF;
 	}
 
 	/**
@@ -406,20 +436,23 @@ class WindMail {
 	 * 
 	 * @return string
 	 */
-	private function _boundaryEnd() {
-		return self::CRLF . '--' . $this->_boundary() . '--' . self::CRLF;
+	private function _boundaryEnd($boundary) {
+		return self::CRLF . '--' . $boundary . '--' . self::CRLF;
 	}
 
 	/**
 	 * 设置并返回边界线
 	 * 
+	 * @param int $i 默认值为0
 	 * @return string
 	 */
-	private function _boundary() {
+	private function _boundary($i = 0) {
 		if (!$this->boundary) {
-			$this->boundary = '==_' . md5(microtime(true) . uniqid());
+			$uniq_id = md5(uniqid(time()));
+			$this->boundary[0] = 'b1_' . $uniq_id;
+			$this->boundary[1] = 'b2_' . $uniq_id;
 		}
-		return $this->boundary;
+		return $i == 1 ? $this->boundary[1] : $this->boundary[0];
 	}
 
 	/**
