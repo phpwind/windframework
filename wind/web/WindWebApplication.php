@@ -94,9 +94,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			}
 			if ($__state === true && $filters = $this->getConfig('filters')) {
 				$this->resolveActionMapping($filters, $handler);
-				$this->_proxy->runProcess($handler);
+				$forward = $this->_proxy->runProcess($handler);
 			} else
-				$this->runProcess($handler);
+				$forward = $this->runProcess($handler);
+			$this->doDispatch($forward);
 		} catch (WindForwardException $e) {
 			$this->doDispatch($e->getForward());
 		} catch (WindActionException $e) {
@@ -137,7 +138,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function runProcess($handler) {
 		if (!$handler instanceof IWindController) throw new WindFinalException();
-		$this->doDispatch($handler->doAction($this->handlerAdapter));
+		return $handler->doAction($this->handlerAdapter);
 	}
 
 	/**
