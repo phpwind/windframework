@@ -239,10 +239,10 @@ abstract class AbstractWindFrontController {
 		$application = $this->createApplication();
 		$this->beforRun();
 		if ($this->_chain !== null) {
-			$this->_chain->setCallBack(array($application, 'run'), array(true));
-			$this->_chain->getHandler()->handle(); 
+			$this->_chain->setCallBack(array($application, 'run'), array());
+			$this->_chain->getHandler()->handle();
 		} else
-			$application->run(true);
+			$application->run();
 		$this->afterRun();
 	}
 }
