@@ -8,7 +8,7 @@
  * @version $Id$
  * @package base
  */
-abstract class AbstractWindFrontController {
+class WindFrontController {
 	/**
 	 * @var string
 	 */
