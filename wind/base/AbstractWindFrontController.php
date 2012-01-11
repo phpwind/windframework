@@ -10,6 +10,10 @@
  */
 abstract class AbstractWindFrontController {
 	/**
+	 * @var string
+	 */
+	protected $componentConfig = 'WIND:components_config.php';
+	/**
 	 * @var WindHttpRequest
 	 */
 	protected $request = null;
@@ -28,23 +32,23 @@ abstract class AbstractWindFrontController {
 	 */
 	protected $_config = array();
 	/**
-	 * 应用对象数组
-	 *
-	 * @var array
-	 */
-	private $_app = array();
-	/**
-	 * 当前应用app名称数组
-	 *
-	 * @var array
-	 */
-	private $_currentApp = array();
-	/**
 	 * 当前app名称
 	 *
 	 * @var string
 	 */
-	private $_currentAppName = 'default';
+	protected $_appName = 'default';
+	/**
+	 * 应用对象数组
+	 *
+	 * @var array
+	 */
+	protected $_app = array();
+	/**
+	 * 当前应用app名称数组
+	 * 
+	 * @var array
+	 */
+	private $_appActiveQueue = array();
 	/**
 	 * @var WindHandlerInterceptorChain
 	 */
@@ -55,56 +59,52 @@ abstract class AbstractWindFrontController {
 	 * @param Array|string $config 应用配置信息,支持为空或多应用配置
 	 */
 	public function __construct($appName, $config) {
-		$this->initApplication($appName, $config);
+		$this->factory = new WindFactory(@include (Wind::getRealPath($this->componentConfig, true)));
+		if ($config && is_string($config)) {
+			$this->_config = $this->factory->getInstance('configParser')->parse($config);
+		}
 		if (isset($this->_config['isclosed']) && $this->_config['isclosed']) {
 			WindHelper::triggerError('Sorry, Site has been closed!', 
 				(!empty($this->_config['isclosed-tpl']) ? $this->_config['isclosed-tpl'] : ''));
 		}
+		$appName && $this->_appName = $appName;
+		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
+			array('router' => $this->_config['router']));
 	}
-
-	/**
-	 * @param string $appName 默认appName
-	 * @param array|string $config 默认配置
-	 * @return void
-	 */
-	abstract protected function initApplication($appName, $config);
 
 	/**
 	 * 创建并执行当前应用,单应用访问入口
 	 */
 	public function run() {
-		if (!empty($this->_config['defaultApp'])) {
-			$this->_currentAppName = $this->_config['defaultApp'];
-		}
+		$this->request || $this->request = new WindHttpRequest();
+		$this->response || $this->response = new WindHttpResponse();
+		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
 		$router->route($this->request, $this->response);
-		$this->_run();
+		$this->_run($this->createApplication());
 	}
 
-	/** 
-	 * 创建并执行当前应用
-	 * 
-	 * @param string $appName
-	 * @param string|array $config
-	 * @return void
+	/**
+	 * 创建并返回应用
+	 * @return WindWebApplication
 	 */
-	public function multiRun() {
-		/* @var $router WindRouter */
-		$router = $this->factory->getInstance('router');
-		if (!empty($this->_config['defaultApp'])) {
-			$router->setDefaultApp($this->_config['defaultApp']);
-			$router->setApp($this->_config['defaultApp']);
+	public function createApplication() {
+		if ($this->_app[$this->_appName] === null) {
+			$application = $this->factory->getInstance('windApplication', 
+				array($this->request, $this->response, $this->factory));
+			if (!empty($this->_config['web-apps'][$this->_appName])) {
+				$application->setConfig($this->_config['web-apps'][$this->_appName]);
+				$rootPath = empty($this->_config['web-apps'][$this->_appName]['root-path']) ? dirname(
+					$_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
+					$this->_config['web-apps'][$this->_appName]['root-path'], false);
+			} else
+				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+			Wind::register($rootPath, $this->_appName, true);
+			$application->setDelayAttributes(array('handlerAdapter' => array('ref' => 'router')));
+			$this->_app[$this->_appName] = $application;
 		}
-		$router->route($this->request, $this->response);
-		$router->getApp() && $this->_currentAppName = $router->getApp();
-		if (in_array($this->_currentAppName, $this->_currentApp)) {
-			throw new WindException('[wind.beforRun] Nested request', WindException::ERROR_SYSTEM_ERROR);
-		}
-		array_push($this->_currentApp, $this->_currentAppName);
-		$this->_run();
-		array_pop($this->_currentApp);
-		$this->_currentAppName = end($this->_currentApp);
+		return $this->_app[$this->_appName];
 	}
 
 	/**
@@ -119,26 +119,6 @@ abstract class AbstractWindFrontController {
 			$this->_chain = new WindHandlerInterceptorChain();
 		}
 		$this->_chain->addInterceptors($filter);
-	}
-
-	/**
-	 * 创建应用,根据应用名称创建应用
-	 *
-	 * @param appName
-	 * @param config
-	 * @return WindWebApplication
-	 */
-	public function createApplication() {
-		$appName = $this->_currentAppName;
-		if (!isset($this->_app[$appName])) {
-			$application = $this->factory->getInstance('windApplication', 
-				array($this->request, $this->response, $this->factory));
-			$application->setConfig($this->getAppConfig($appName));
-			$application->setDelayAttributes(array('handlerAdapter' => array('ref' => 'router')));
-			$this->request = $this->response = $this->factory = null;
-			$this->_app[$appName] = $application;
-		}
-		return $this->_app[$appName];
 	}
 
 	/**
@@ -163,22 +143,12 @@ abstract class AbstractWindFrontController {
 	}
 
 	/**
-	 * 获取appName对应的配置信息,当appName为空时,则返回当前app配置
+	 * 返回当前app应用名称
 	 * 
-	 * @param string $appName
+	 * @return string
 	 */
-	public function getAppConfig($appName = '') {
-		$appName || $appName = $this->_currentAppName;
-		$_config = array();
-		if (isset($this->_config['web-apps'][$appName])) {
-			if ($appName === 'default' || !isset($this->_config['web-apps']['default']))
-				$_config = $this->_config['web-apps'][$appName];
-			else {
-				$_config = WindUtility::mergeArray($this->_config['web-apps']['default'], 
-					$this->_config['web-apps'][$appName]);
-			}
-		}
-		return $_config;
+	public function getAppName() {
+		return $this->_appName;
 	}
 
 	/**
@@ -188,29 +158,15 @@ abstract class AbstractWindFrontController {
 	 * @return WindWebApplication
 	 */
 	public function getApp($appName = '') {
-		$appName || $appName = $this->_currentAppName;
+		$appName || $appName = $this->_appName;
 		if (isset($this->_app[$appName])) return $this->_app[$appName];
 		return null;
 	}
 
 	/**
-	 * 获得当前App名称
-	 *
-	 * @return string
-	 * @throws WindException
-	 */
-	public function getAppName() {
-		if (!$this->_currentAppName) {
-			throw new WindException('[WindFrontController.getAppName] get appName failed', 
-				WindException::ERROR_SYSTEM_ERROR);
-		}
-		return $this->_currentAppName;
-	}
-
-	/**
 	 * @return void
 	 */
-	private function afterRun() {
+	protected function afterRun() {
 		restore_error_handler();
 		restore_exception_handler();
 		$this->getApp()->getResponse()->sendResponse();
@@ -223,7 +179,7 @@ abstract class AbstractWindFrontController {
 	 * @param appName
 	 * @return void
 	 */
-	private function beforRun() {
+	protected function beforRun() {
 		set_error_handler('WindHelper::errorHandle');
 		set_exception_handler('WindHelper::exceptionHandle');
 	}
@@ -233,10 +189,11 @@ abstract class AbstractWindFrontController {
 	 * 
 	 * 配合过滤链策略部署,可以通过{@see AbstractWindFrontController::registeFilter}
 	 * 方法注册过滤器,当应用被执行时会判断当前时候有初始化过滤链对象,并选择是否是通过过滤链方式执行应用
+	 * @param WindWebApplication $application
 	 * @return void
 	 */
-	private function _run() {
-		$application = $this->createApplication();
+	protected function _run($application) {
+		array_push($this->_appActiveQueue, $this->_appName);
 		$this->beforRun();
 		if ($this->_chain !== null) {
 			$this->_chain->setCallBack(array($application, 'run'), array());
@@ -244,6 +201,8 @@ abstract class AbstractWindFrontController {
 		} else
 			$application->run();
 		$this->afterRun();
+		array_pop($this->_appActiveQueue);
+		$this->_appName = end($this->_appActiveQueue);
 	}
 }
 ?>
