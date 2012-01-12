@@ -20,7 +20,10 @@ class WindMutilAppRouter extends WindRouter {
 		$this->_app = $this->app;
 		parent::route($request, $response);
 	}
-	
+
+	/* (non-PHPdoc)
+	 * @see WindRouter::assemble()
+	 */
 	public function assemble($action, $args = array(), $route = null) {
 		$route || $route = $this->defaultRoute;
 		if ($route && (null !== $route = $this->getRoute($route))) {
@@ -38,22 +41,22 @@ class WindMutilAppRouter extends WindRouter {
 	}
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindRouter::setParams()
-	 */
-	protected function setParams($params, $request) {
-		parent::setParams($params, $request);
-		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest(
-			$this->appKey);
-		$app && $this->setApp($app);
-	}
-
-	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
 		$this->app = $this->getConfig('app', 'default-value', $this->app);
 		$this->appKey = $this->getConfig('app', 'url-param', $this->appKey);
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindRouter::setParams()
+	*/
+	protected function setParams($params, $request) {
+		parent::setParams($params, $request);
+		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest(
+			$this->appKey);
+		$app && $this->setApp($app);
 	}
 
 	/**
