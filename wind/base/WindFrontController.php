@@ -18,10 +18,6 @@ class WindFrontController {
 	 */
 	protected $request = null;
 	/**
-	 * @var WindHttpResponse
-	 */
-	protected $response = null;
-	/**
 	 * @var WindFactory
 	 */
 	protected $factory = null;
@@ -92,11 +88,10 @@ class WindFrontController {
 	 */
 	public function run() {
 		$this->request || $this->request = new WindHttpRequest();
-		$this->response || $this->response = new WindHttpResponse();
 		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
-		$router->route($this->request, $this->response);
+		$router->route($this->request);
 		$this->_run($this->createApplication());
 	}
 
@@ -108,7 +103,7 @@ class WindFrontController {
 	public function createApplication() {
 		if ($this->_app[$this->_appName] === null) {
 			$application = $this->factory->getInstance('windApplication', 
-				array($this->request, $this->response, $this->factory));
+				array($this->request, new WindHttpResponse(), $this->factory));
 			if (!empty($this->_config[$this->_appName])) {
 				$application->setConfig($this->_config[$this->_appName]);
 			}
@@ -143,9 +138,6 @@ class WindFrontController {
 		switch ($componentName) {
 			case 'request':
 				$this->request = $componentInstance;
-				break;
-			case 'response':
-				$this->response = $componentInstance;
 				break;
 			default:
 				$this->factory->registInstance($componentInstance, $componentName, $scope);
