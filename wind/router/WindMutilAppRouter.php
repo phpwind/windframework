@@ -10,8 +10,9 @@
  */
 class WindMutilAppRouter extends WindRouter {
 	protected $appKey = 'p';
-	protected $_app;
 	protected $app = 'default';
+	
+	protected $_app;
 
 	/* (non-PHPdoc)
 	 * @see WindRouter::route()
@@ -31,10 +32,10 @@ class WindMutilAppRouter extends WindRouter {
 		} else {
 			list($_a, $_c, $_m, $_p, $args) = WindUrlHelper::resolveAction($action, $args);
 			$_p || $_p = $this->getApp();
-			if ($_p && $_p !== $this->getDefaultApp()) $args[$this->appKey] = $_p;
-			if ($_m && $_m !== $this->getDefaultModule()) $args[$this->moduleKey] = $_m;
-			if ($_c && $_c !== $this->getDefaultController()) $args[$this->controllerKey] = $_c;
-			if ($_a && $_a !== $this->getDefaultAction()) $args[$this->actionKey] = $_a;
+			if ($_p && $_p !== $this->_app) $args[$this->appKey] = $_p;
+			if ($_m && $_m !== $this->_module) $args[$this->moduleKey] = $_m;
+			if ($_c && $_c !== $this->_controller) $args[$this->controllerKey] = $_c;
+			if ($_a && $_a !== $this->_action) $args[$this->actionKey] = $_a;
 			$_url = $this->request->getScript() . '?' . WindUrlHelper::argsToUrl($args);
 		}
 		return $_url;
@@ -45,8 +46,10 @@ class WindMutilAppRouter extends WindRouter {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->app = $this->getConfig('app', 'default-value', $this->app);
-		$this->appKey = $this->getConfig('app', 'url-param', $this->appKey);
+		if ($this->_config) {
+			$this->app = $this->getConfig('app', 'default-value', $this->app);
+			$this->appKey = $this->getConfig('app', 'url-param', $this->appKey);
+		}
 	}
 
 	/* (non-PHPdoc)
@@ -54,8 +57,7 @@ class WindMutilAppRouter extends WindRouter {
 	*/
 	protected function setParams($params, $request) {
 		parent::setParams($params, $request);
-		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest(
-			$this->appKey);
+		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest($this->appKey);
 		$app && $this->setApp($app);
 	}
 
@@ -88,21 +90,6 @@ class WindMutilAppRouter extends WindRouter {
 	public function setAppKey($appKey) {
 		$this->appKey = $appKey;
 	}
-
-	/**
-	 * @param string $app
-	 */
-	public function setDefaultApp($app) {
-		$this->_app = $app;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultApp() {
-		return $this->_app;
-	}
-
 }
 
 ?>
