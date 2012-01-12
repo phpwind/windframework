@@ -27,7 +27,6 @@ class WindWebFrontController extends WindFrontController {
 		if (!$this->_appName && !$this->getApp()) {
 			$this->_appName = 'default';
 		}
-		$router->setApp($this->_appName);
 		$this->_appName && $router->setApp($this->_appName);
 		$router->route($this->request, $this->response);
 		$this->_appName = $router->getApp();
