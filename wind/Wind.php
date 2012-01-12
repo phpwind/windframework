@@ -1,6 +1,6 @@
 <?php
 /* 框架版本信息 */
-define('WIND_VERSION', '0.8.8');
+define('WIND_VERSION', '1.0.0');
 /* 路径相关配置信息  */
 define('WIND_PATH', dirname(__FILE__) . '/');
 /* 二进制:十进制  模式描述
@@ -256,7 +256,7 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
-			'AbstractWindFrontController' => 'base/AbstractWindFrontController', 
+			'WindFrontController' => 'base/WindFrontController', 
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
 			'WindActionException' => 'base/WindActionException', 
@@ -277,7 +277,7 @@ class Wind {
 			'WindDispatcher' => 'web/WindDispatcher', 
 			'WindErrorHandler' => 'web/WindErrorHandler', 
 			'WindForward' => 'web/WindForward', 
-			'WindFrontController' => 'web/WindFrontController', 
+			'WindWebFrontController' => 'web/WindWebFrontController', 
 			'WindSimpleController' => 'web/WindSimpleController', 
 			'WindUrlHelper' => 'web/WindUrlHelper', 
 			'WindWebApplication' => 'web/WindWebApplication', 
