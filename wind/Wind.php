@@ -36,7 +36,7 @@ class Wind {
 	 */
 	public static function application($appName = '', $config = array()) {
 		if (self::$_frontController === null) {
-			self::$_frontController = new WindFrontController($appName, $config);
+			self::$_frontController = new WindWebFrontController($appName, $config);
 		}
 		return self::$_frontController;
 	}
