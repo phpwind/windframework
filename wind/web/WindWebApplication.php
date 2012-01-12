@@ -113,14 +113,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		if ($components = $this->getConfig('components')) {
-			if (isset($components['resource'])) {
-				$components = $this->windFactory->getInstance('configParser')->parse(
-					Wind::getRealPath($components['resource'], true, true));
-			}
-			$this->windFactory->loadClassDefinitions($components);
-		}
-		
 		if ($default = $this->getModules('default')) {
 			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
 		}

@@ -21,6 +21,7 @@ class WindFrontController {
 	 * @var WindFactory
 	 */
 	protected $factory = null;
+	
 	/**
 	 * 应用配置
 	 * 
@@ -63,6 +64,13 @@ class WindFrontController {
 				WindHelper::triggerError('Sorry, Site has been closed!', 
 					(!empty($config['isclosed-tpl']) ? $config['isclosed-tpl'] : ''));
 			}
+			if (!empty($config['components'])) {
+				if (!empty($config['components']['resource'])) {
+					$components = $this->windFactory->getInstance('configParser')->parse(
+						Wind::getRealPath($config['components']['resource'], true, true));
+				}
+				$this->factory->loadClassDefinitions($config['components']);
+			}
 			$this->_config || $this->initConfig($config);
 		}
 	}
@@ -102,6 +110,7 @@ class WindFrontController {
 	 */
 	public function createApplication() {
 		if ($this->_app[$this->_appName] === null) {
+			/* @var $application WindWebApplication */
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, new WindHttpResponse(), $this->factory));
 			if (!empty($this->_config[$this->_appName])) {
