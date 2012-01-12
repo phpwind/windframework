@@ -27,10 +27,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * 路由解析
 	 * 
 	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 * @return string
 	 */
-	abstract public function route($request, $response);
+	abstract public function route($request);
 
 	/**
 	 * 创建Url,并返回构建好的Url值

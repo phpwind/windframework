@@ -17,9 +17,9 @@ class WindMutilAppRouter extends WindRouter {
 	/* (non-PHPdoc)
 	 * @see WindRouter::route()
 	 */
-	public function route($request, $response) {
+	public function route($request) {
 		$this->_app = $this->app;
-		parent::route($request, $response);
+		parent::route($request);
 	}
 
 	/* (non-PHPdoc)
