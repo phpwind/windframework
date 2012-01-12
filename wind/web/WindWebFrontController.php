@@ -24,10 +24,12 @@ class WindWebFrontController extends WindFrontController {
 		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
-		if (!$this->_appName && !$this->getApp()) {
+		if ($this->_appName) {
+			$router->setApp($this->_appName);
+		} elseif (!$this->getApp()) {
 			$this->_appName = 'default';
+			$router->setApp('default');
 		}
-		$this->_appName && $router->setApp($this->_appName);
 		$router->route($this->request, $this->response);
 		$this->_appName = $router->getApp();
 		$this->_run($this->createApplication());
