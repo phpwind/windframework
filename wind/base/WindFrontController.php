@@ -36,7 +36,7 @@ class WindFrontController {
 	 *
 	 * @var string
 	 */
-	protected $_appName = 'default';
+	protected $_appName;
 	/**
 	 * 应用对象数组
 	 *
@@ -59,17 +59,32 @@ class WindFrontController {
 	 * @param Array|string $config 应用配置信息,支持为空或多应用配置
 	 */
 	public function __construct($appName, $config) {
-		$this->factory = new WindFactory(@include (Wind::getRealPath($this->componentConfig, true)));
-		if ($config && is_string($config)) {
-			$this->_config = $this->factory->getInstance('configParser')->parse($config);
-		}
-		if (isset($this->_config['isclosed']) && $this->_config['isclosed']) {
-			WindHelper::triggerError('Sorry, Site has been closed!', 
-				(!empty($this->_config['isclosed-tpl']) ? $this->_config['isclosed-tpl'] : ''));
-		}
 		$appName && $this->_appName = $appName;
-		empty($this->_config['router']) || $this->factory->loadClassDefinitions(
-			array('router' => $this->_config['router']));
+		$this->factory = new WindFactory(@include (Wind::getRealPath($this->componentConfig, true)));
+		if ($config) {
+			is_string($config) && $config = $this->factory->getInstance('configParser')->parse($config);
+			if (isset($config['isclosed']) && $config['isclosed']) {
+				WindHelper::triggerError('Sorry, Site has been closed!', 
+					(!empty($config['isclosed-tpl']) ? $config['isclosed-tpl'] : ''));
+			}
+			$this->_config || $this->initConfig($config);
+		}
+	}
+
+	/**
+	 * 初始化配置信息
+	 * 
+	 * @param array $config
+	 */
+	protected function initConfig($config) {
+		$this->_appName || $this->_appName = 'default';
+		if (!empty($config['web-apps'][$this->_appName])) {
+			$this->_config[$this->_appName] = $config['web-apps'][$this->_appName];
+			$rootPath = empty($this->_config[$this->_appName]['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
+				$this->_config[$this->_appName]['root-path'], false);
+		} else
+			$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
+		Wind::register($rootPath, $this->_appName, true);
 	}
 
 	/**
@@ -87,20 +102,16 @@ class WindFrontController {
 
 	/**
 	 * 创建并返回应用
+	 * 
 	 * @return WindWebApplication
 	 */
 	public function createApplication() {
 		if ($this->_app[$this->_appName] === null) {
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, $this->response, $this->factory));
-			if (!empty($this->_config['web-apps'][$this->_appName])) {
-				$application->setConfig($this->_config['web-apps'][$this->_appName]);
-				$rootPath = empty($this->_config['web-apps'][$this->_appName]['root-path']) ? dirname(
-					$_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
-					$this->_config['web-apps'][$this->_appName]['root-path'], false);
-			} else
-				$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
-			Wind::register($rootPath, $this->_appName, true);
+			if (!empty($this->_config[$this->_appName])) {
+				$application->setConfig($this->_config[$this->_appName]);
+			}
 			$application->setDelayAttributes(array('handlerAdapter' => array('ref' => 'router')));
 			$this->_app[$this->_appName] = $application;
 		}
