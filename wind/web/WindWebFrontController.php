@@ -10,6 +10,7 @@
  * @package wind
  */
 class WindWebFrontController extends WindFrontController {
+	private $_configStateQueue = array();
 
 	/** 
 	 * 创建并执行当前应用
@@ -32,6 +33,12 @@ class WindWebFrontController extends WindFrontController {
 		}
 		$router->route($this->request, $this->response);
 		$this->_appName = $router->getApp();
+		if (!in_array($this->_appName, $this->_configStateQueue) && $this->_appName !== 'default' && isset(
+			$this->_config['default']) && isset($this->_config[$this->_appName])) {
+			$this->_config[$this->_appName] = WindUtility::mergeArray($this->_config['default'], 
+				$this->_config[$this->_appName]);
+			$this->_configStateQueue[] = $this->_appName;
+		}
 		$this->_run($this->createApplication());
 	}
 
