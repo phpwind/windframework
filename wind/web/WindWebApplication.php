@@ -118,7 +118,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				$components = $this->windFactory->getInstance('configParser')->parse(
 					Wind::getRealPath($components['resource'], true, true));
 			}
-			unset($components['router']);
 			$this->windFactory->loadClassDefinitions($components);
 		}
 		
