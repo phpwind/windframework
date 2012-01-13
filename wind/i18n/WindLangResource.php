@@ -64,14 +64,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 */
 	public function getMessage($message, $params = array()) {
 		$message = $this->translate($message);
-		if (isset($params[0])) {
-			foreach ($params as $key => $value) {
-				if (!is_numeric($key)) continue;
-				$params['#' . $key] = $value;
-				unset($params[$key]);
-			}
-		}
-		return !empty($params) ? strtr($message, $params) : $message;
+		return empty($params) ? $message : WindUtility::strtr($message, $params);
 	}
 
 	/**

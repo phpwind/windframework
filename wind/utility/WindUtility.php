@@ -146,4 +146,24 @@ class WindUtility {
 			'default' => $default, 
 			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
+	
+	/**
+	 * 对字符串中的参数进行替换
+	 * 
+	 * 参数中的key为数值型的时候，比如array('a', 'b'),将对字符串中的#0和#1进行替换。不为数值型的时候，则直接调用strtr函数替换。
+	 *
+	 * @param string $str
+	 * @param array $params
+	 * @return string
+	 */
+	public static function strtr($str, $params = array()) {
+		if (isset($params[0])) {
+			foreach ($params as $key => $value) {
+				if (!is_numeric($key)) continue;
+				$params['#' . $key] = $value;
+				unset($params[$key]);
+			}
+		}
+		return !empty($params) ? strtr($str, $params) : $str;
+	}
 }
