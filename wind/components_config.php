@@ -6,6 +6,9 @@
 			'dispatcher' => array(
 				'ref' => 'dispatcher',
 			),
+			'handlerAdapter' => array(
+				'ref' => 'router',
+			),
 		),
 	),
 	'windToken' => array(

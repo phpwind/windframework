@@ -12,6 +12,7 @@
 		scope='singleton'>
 		<properties>
 			<property name='dispatcher' ref='dispatcher' />
+			<property name='handlerAdapter' ref='router' />
 		</properties>
 	</component>
 	<component name='windToken' path='WIND:token.WindSecurityToken'
@@ -72,7 +73,7 @@
 	</component>
 
 	<component name='configParser' path='WIND:parser.WindConfigParser'
-		scope='prototype'>
+		scope='singleton'>
 	</component>
 	<!--windCache组件：框架默认缓存机制；当wind_config中‘iscache’属性标签值为‘0’时该功能关闭。 默认windCache组件定义如下定义 -->
 	<component name='windCache' path='WIND:cache.strategy.WindFileCache'

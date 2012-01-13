@@ -66,7 +66,7 @@ class WindFrontController {
 			}
 			if (!empty($config['components'])) {
 				if (!empty($config['components']['resource'])) {
-					$components = $this->windFactory->getInstance('configParser')->parse(
+					$config['components'] = $this->windFactory->getInstance('configParser')->parse(
 						Wind::getRealPath($config['components']['resource'], true, true));
 				}
 				$this->factory->loadClassDefinitions($config['components']);
@@ -116,7 +116,6 @@ class WindFrontController {
 			if (!empty($this->_config[$this->_appName])) {
 				$application->setConfig($this->_config[$this->_appName]);
 			}
-			$application->setDelayAttributes(array('handlerAdapter' => array('ref' => 'router')));
 			$this->_app[$this->_appName] = $application;
 		}
 		return $this->_app[$this->_appName];

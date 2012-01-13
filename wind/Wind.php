@@ -184,14 +184,14 @@ class Wind {
 			$filePath = substr($filePath, $pos + 1);
 		} else
 			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
-		if ($suffix === '') {
-			$suffix = self::$_extensions;
-		} elseif ($suffix === true && false !== ($pos = strrpos($filePath, '.'))) {
-			$suffix = substr($filePath, $pos + 1);
-			$filePath = substr($filePath, 0, $pos);
-		}
+		
 		$filePath = str_replace('.', '/', $filePath);
 		$namespace && $filePath = $namespace . $filePath;
+		if ($suffix === '') return $filePath . '.' . self::$_extensions;
+		if ($suffix === true && false !== ($pos = strrpos($filePath, '/'))) {
+			$filePath[$pos] = '.';
+			return $filePath;
+		}
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 

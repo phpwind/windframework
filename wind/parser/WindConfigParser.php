@@ -14,20 +14,14 @@ Wind::import('WIND:parser.IWindConfigParser');
  * @package parser
  */
 class WindConfigParser implements IWindConfigParser {
-
+	
 	const CONFIG_XML = '.XML';
-
+	
 	const CONFIG_PHP = '.PHP';
-
+	
 	const CONFIG_INI = '.INI';
-
+	
 	const CONFIG_PROPERTIES = '.PROPERTIES';
-
-	/**
-	 * 配置解析对象队列
-	 * @var array object $configParser
-	 */
-	private $configParsers = array();
 
 	/* (non-PHPdoc)
      * @see IWindConfigParser::parse()
@@ -118,10 +112,10 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array 返回解析结果
 	 */
 	private function doParser($configFile) {
-		if (!is_file($configFile)) throw new WindException('[component.parser.WindConfigParser.doParser] The file \'' . $configFile . '\' is not exists');
+		if (!is_file($configFile)) throw new WindException(
+			'[component.parser.WindConfigParser.doParser] The file \'' . $configFile . '\' is not exists');
 		$ext = strtoupper(strrchr($configFile, '.'));
 		if ($ext == self::CONFIG_PHP) return @include ($configFile);
-		if (!isset($this->configParsers[$ext])) $this->configParsers[$ext] = $this->createParser($ext);
-		return $this->configParsers[$ext]->parse($configFile);
+		return $this->createParser($ext)->parse($configFile);
 	}
 }
