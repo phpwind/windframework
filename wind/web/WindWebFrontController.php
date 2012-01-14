@@ -21,7 +21,6 @@ class WindWebFrontController extends WindFrontController {
 	 */
 	public function multiRun() {
 		$this->request || $this->request = new WindHttpRequest();
-		$this->response || $this->response = new WindHttpResponse();
 		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
@@ -31,7 +30,7 @@ class WindWebFrontController extends WindFrontController {
 			$this->_appName = 'default';
 			$router->setApp('default');
 		}
-		$router->route($this->request, $this->response);
+		$router->route($this->request);
 		$this->_appName = $router->getApp();
 		if (!in_array($this->_appName, $this->_configStateQueue) && $this->_appName !== 'default' && isset(
 			$this->_config['default']) && isset($this->_config[$this->_appName])) {
@@ -63,18 +62,6 @@ class WindWebFrontController extends WindFrontController {
 		if (isset($this->_config[$appName])) return;
 		if (!$config || !is_array($config)) return;
 		$this->_config[$appName] = $config;
-	}
-
-	/* (non-PHPdoc)
-	 * @see WindFrontController::initConfig()
-	 */
-	protected function initConfig($config) {
-		foreach ($config['web-apps'] as $key => $value) {
-			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
-				$value['root-path'], false);
-			Wind::register($rootPath, $key, true);
-			$this->_config[$key] = $value;
-		}
 	}
 
 }

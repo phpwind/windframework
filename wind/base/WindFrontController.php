@@ -71,7 +71,7 @@ class WindFrontController {
 				}
 				$this->factory->loadClassDefinitions($config['components']);
 			}
-			$this->_config || $this->initConfig($config);
+			$this->initConfig($config);
 		}
 	}
 
@@ -81,22 +81,20 @@ class WindFrontController {
 	 * @param array $config
 	 */
 	protected function initConfig($config) {
-		$this->_appName || $this->_appName = 'default';
-		if (!empty($config['web-apps'][$this->_appName])) {
-			$this->_config[$this->_appName] = $config['web-apps'][$this->_appName];
-			$rootPath = empty($this->_config[$this->_appName]['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
-				$this->_config[$this->_appName]['root-path'], false);
-		} else
-			$rootPath = dirname($_SERVER['SCRIPT_FILENAME']);
-		Wind::register($rootPath, $this->_appName, true);
+		foreach ($config['web-apps'] as $key => $value) {
+			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
+				$value['root-path'], false);
+			Wind::register($rootPath, $key, true);
+			$this->_config[$key] = $value;
+		}
 	}
 
 	/**
 	 * 创建并执行当前应用,单应用访问入口
 	 */
 	public function run() {
+		$this->_appName || $this->_appName = 'default';
 		$this->request || $this->request = new WindHttpRequest();
-		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
 		$router->route($this->request);
@@ -109,7 +107,7 @@ class WindFrontController {
 	 * @return WindWebApplication
 	 */
 	public function createApplication() {
-		if ($this->_app[$this->_appName] === null) {
+		if (!isset($this->_app[$this->_appName])) {
 			/* @var $application WindWebApplication */
 			$application = $this->factory->getInstance('windApplication', 
 				array($this->request, new WindHttpResponse(), $this->factory));

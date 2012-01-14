@@ -197,18 +197,4 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function setActionKey($actionKey) {
 		$this->actionKey = $actionKey;
 	}
-
-	/**
-	 * @return string
-	 */
-	public function getAppKey() {
-		return $this->appKey;
-	}
-
-	/**
-	 * @param string $appKey
-	 */
-	public function setAppKey($appKey) {
-		$this->appKey = $appKey;
-	}
 }

@@ -75,10 +75,9 @@ class WindRouter extends AbstractWindRouter {
 	 * 
 	 * 默认情况下仅仅解析路由相关参数值
 	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 * @return array
 	 */
-	public function defaultRoute($request, $response) {
+	public function defaultRoute($request) {
 		$pathinfo = $request->getPathInfo();
 		return $pathinfo ? WindUrlHelper::urlToArgs($pathinfo) : array();
 	}
