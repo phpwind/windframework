@@ -146,24 +146,31 @@ class WindUtility {
 			'default' => $default, 
 			'message' => ($message ? $message : '提示：\'' . $field . '\'验证失败'));
 	}
-	
+
 	/**
 	 * 对字符串中的参数进行替换
 	 * 
-	 * 参数中的key为数值型的时候，比如array('a', 'b'),将对字符串中的#0和#1进行替换。不为数值型的时候，则直接调用strtr函数替换。
-	 *
+	 * 该函优化了php strtr()实现, 在进行数组方式的字符替换时支持了两种模式的字符替换:
+	 * @example<pre>
+	 * 1. echo WindUtility::strtr("I Love {you}",array('{you}' => 'lili')); 
+	 * 结果: I Love lili
+	 * 2. echo WindUtility::strtr("I Love #0,#1",array('lili','qiong')); 
+	 * 结果: I Love lili,qiong
+	 * <pre>
+	 * @see WindLangResource::getMessage()
 	 * @param string $str
-	 * @param array $params
+	 * @param string $from
+	 * @param string $to
 	 * @return string
 	 */
-	public static function strtr($str, $params = array()) {
-		if (isset($params[0])) {
-			foreach ($params as $key => $value) {
-				if (!is_numeric($key)) continue;
-				$params['#' . $key] = $value;
-				unset($params[$key]);
+	public static function strtr($str, $from = '', $to = '') {
+		if (is_string($from)) return strtr($str, $from, $to);
+		if (isset($from[0])) {
+			foreach ($from as $key => $value) {
+				$from['#' . $key] = $value;
+				unset($from[$key]);
 			}
 		}
-		return !empty($params) ? strtr($str, $params) : $str;
+		return !empty($from) ? strtr($str, $from) : $str;
 	}
 }
