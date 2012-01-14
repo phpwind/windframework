@@ -160,10 +160,10 @@ class WindUtility {
 	 * @see WindLangResource::getMessage()
 	 * @param string $str
 	 * @param string $from
-	 * @param string $to
+	 * @param string $to 可选参数,默认值为''
 	 * @return string
 	 */
-	public static function strtr($str, $from = '', $to = '') {
+	public static function strtr($str, $from, $to = '') {
 		if (is_string($from)) return strtr($str, $from, $to);
 		if (isset($from[0])) {
 			foreach ($from as $key => $value) {
