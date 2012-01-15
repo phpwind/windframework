@@ -80,7 +80,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$regex = isset($value['pattern']) ? $value['pattern'] : '';
 			$tag = isset($value['tag']) ? $value['tag'] : '';
 			if (!$compiler || !$tag) continue;
-			if ($regex === '') $regex = '/<(' . preg_quote($tag) . ')[^<>\n]*(\/>|>[^<>]*<\/\1>)/Ui';
+			if ($regex === '') $regex = '/<(' . preg_quote($tag) . ')(.*?)(\/>|>(.*?)<\/\1>)/i';
 			$content = $this->creatTagCompiler($content, $compiler, $regex, $windViewerResolver);
 		}
 		return $content;
