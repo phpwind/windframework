@@ -61,7 +61,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	/* (non-PHPdoc)
 	 * @see IWindApplication::run()
 	 */
-	public function run($__state = false) {
+	public function run() {
 		try {
 			$this->checkProcess();
 			$module = $this->getModules();
@@ -92,7 +92,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					'[web.WindWebApplication.run] Your requested \'' . $handlerPath . '\' was not found on this server.', 
 					404);
 			}
-			if ($__state === true && $filters = $this->getConfig('filters')) {
+			if ($filters = $this->getConfig('filters')) {
+				unset($this->_config['filters']);
 				$this->resolveActionMapping($filters, $handler);
 				$forward = $this->_proxy->runProcess($handler);
 			} else
@@ -112,15 +113,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		if ($components = $this->getConfig('components')) {
-			if (isset($components['resource'])) {
-				$components = $this->windFactory->getInstance('configParser')->parse(
-					Wind::getRealPath($components['resource'], true, true));
-			}
-			unset($components['router']);
-			$this->windFactory->loadClassDefinitions($components);
-		}
-		
 		if ($default = $this->getModules('default')) {
 			$this->defaultModule = WindUtility::mergeArray($this->defaultModule, $default);
 		}

@@ -119,12 +119,11 @@ class WindFactory implements IWindFactory {
 	public function loadClassDefinitions($classDefinitions, $merge = true) {
 		foreach ((array) $classDefinitions as $alias => $definition) {
 			if (!is_array($definition)) continue;
-			if (!isset($this->classDefinitions[$alias]) || $merge === false) {
+			if (isset($this->instances[$alias]) || isset($this->prototype[$alias])) continue;
+			if (!isset($this->classDefinitions[$alias]) || $merge === false)
 				$this->classDefinitions[$alias] = $definition;
-				continue;
-			}
-			$this->classDefinitions[$alias] = WindUtility::mergeArray($this->classDefinitions[$alias], $definition);
-			unset($this->instances[$alias], $this->prototype[$alias]);
+			else
+				$this->classDefinitions[$alias] = WindUtility::mergeArray($this->classDefinitions[$alias], $definition);
 		}
 	}
 

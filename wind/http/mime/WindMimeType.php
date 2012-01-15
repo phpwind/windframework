@@ -21,7 +21,7 @@ class WindMimeType {
 	 */
 	public static function getMime($type) {
 		if (self::$mimes === null) {
-			self::$mimes = @include (Wind::getRealPath('WIND:http.mime.mime.php', true));
+			self::$mimes = @include (Wind::getRealPath('WIND:http.mime.mime', false));
 		}
 		return isset(self::$mimes[$type]) ? self::$mimes[$type] : '';
 	}

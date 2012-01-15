@@ -1,6 +1,6 @@
 <?php
 /* 框架版本信息 */
-define('WIND_VERSION', '0.8.8');
+define('WIND_VERSION', '1.0.0');
 /* 路径相关配置信息  */
 define('WIND_PATH', dirname(__FILE__) . '/');
 /* 二进制:十进制  模式描述
@@ -36,7 +36,7 @@ class Wind {
 	 */
 	public static function application($appName = '', $config = array()) {
 		if (self::$_frontController === null) {
-			self::$_frontController = new WindFrontController($appName, $config);
+			self::$_frontController = new WindWebFrontController($appName, $config);
 		}
 		return self::$_frontController;
 	}
@@ -184,14 +184,14 @@ class Wind {
 			$filePath = substr($filePath, $pos + 1);
 		} else
 			$namespace = $absolut ? self::getRootPath(self::getAppName()) : '';
-		if ($suffix === '') {
-			$suffix = self::$_extensions;
-		} elseif ($suffix === true && false !== ($pos = strrpos($filePath, '.'))) {
-			$suffix = substr($filePath, $pos + 1);
-			$filePath = substr($filePath, 0, $pos);
-		}
+		
 		$filePath = str_replace('.', '/', $filePath);
 		$namespace && $filePath = $namespace . $filePath;
+		if ($suffix === '') return $filePath . '.' . self::$_extensions;
+		if ($suffix === true && false !== ($pos = strrpos($filePath, '/'))) {
+			$filePath[$pos] = '.';
+			return $filePath;
+		}
 		return $suffix ? $filePath . '.' . $suffix : $filePath;
 	}
 
@@ -256,7 +256,7 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
-			'AbstractWindFrontController' => 'base/AbstractWindFrontController', 
+			'WindFrontController' => 'base/WindFrontController', 
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
 			'WindActionException' => 'base/WindActionException', 
@@ -277,7 +277,7 @@ class Wind {
 			'WindDispatcher' => 'web/WindDispatcher', 
 			'WindErrorHandler' => 'web/WindErrorHandler', 
 			'WindForward' => 'web/WindForward', 
-			'WindFrontController' => 'web/WindFrontController', 
+			'WindWebFrontController' => 'web/WindWebFrontController', 
 			'WindSimpleController' => 'web/WindSimpleController', 
 			'WindUrlHelper' => 'web/WindUrlHelper', 
 			'WindWebApplication' => 'web/WindWebApplication', 

@@ -14,28 +14,25 @@ Wind::import('WIND:parser.IWindConfigParser');
  * @package parser
  */
 class WindConfigParser implements IWindConfigParser {
-
+	
 	const CONFIG_XML = '.XML';
-
+	
 	const CONFIG_PHP = '.PHP';
-
+	
 	const CONFIG_INI = '.INI';
-
+	
 	const CONFIG_PROPERTIES = '.PROPERTIES';
-
-	/**
-	 * 配置解析对象队列
-	 * @var array object $configParser
-	 */
-	private $configParsers = array();
 
 	/* (non-PHPdoc)
      * @see IWindConfigParser::parse()
      */
 	public function parse($configPath, $alias = '', $append = '', AbstractWindCache $cache = null) {
-		if ($config = $this->getCache($alias, $append, $cache)) return $config;
-		$config = $this->doParser($configPath);
-		$this->setCache($alias, $append, $cache, $config);
+		if ($alias && $cache && ($config = $this->getCache($alias, $append, $cache))) return $config;
+		if (!is_file($configPath)) throw new WindException(
+			'[component.parser.WindConfigParser.parse] The file \'' . $configPath . '\' is not exists');
+		$ext = strtoupper(strrchr($configPath, '.'));
+		$config = ($ext == self::CONFIG_PHP) ? @include ($configPath) : $this->createParser($ext)->parse($configPath);
+		if ($alias && $cache) $this->setCache($alias, $append, $cache, $config);
 		return $config;
 	}
 
@@ -56,7 +53,6 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return void
 	 */
 	private function setCache($alias, $append, $cache, $data) {
-		if (!$alias || !$cache) return;
 		if ($append) {
 			$_config = (array) $cache->get($append);
 			$_config[$alias] = $data;
@@ -75,7 +71,6 @@ class WindConfigParser implements IWindConfigParser {
 	 * @return array
 	 */
 	private function getCache($alias, $append, $cache) {
-		if (!$alias || !$cache) return array();
 		if (!$append) return $cache->get($alias);
 		
 		$config = $cache->get($append);
@@ -93,35 +88,14 @@ class WindConfigParser implements IWindConfigParser {
 			case self::CONFIG_XML:
 				Wind::import("WIND:parser.WindXmlParser");
 				return new WindXmlParser();
-				break;
 			case self::CONFIG_INI:
 				Wind::import("WIND:parser.WindIniParser");
 				return new WindIniParser();
-				break;
 			case self::CONFIG_PROPERTIES:
 				Wind::import("WIND:parser.WindPropertiesParser");
 				return new WindPropertiesParser();
-				break;
 			default:
 				throw new WindException('\'ConfigParser\' failed to initialize.');
-				break;
 		}
-	}
-
-	/**
-	 * 执行解析并返回解析结果
-	 * 
-	 * 接收一个配置文件路径，根据路径信息初始化配置解析器，并解析该配置
-	 * 以数组格式返回配置解析结果
-	 * 
-	 * @param string $configFile  配置文件路径
-	 * @return array 返回解析结果
-	 */
-	private function doParser($configFile) {
-		if (!is_file($configFile)) throw new WindException('[component.parser.WindConfigParser.doParser] The file \'' . $configFile . '\' is not exists');
-		$ext = strtoupper(strrchr($configFile, '.'));
-		if ($ext == self::CONFIG_PHP) return @include ($configFile);
-		if (!isset($this->configParsers[$ext])) $this->configParsers[$ext] = $this->createParser($ext);
-		return $this->configParsers[$ext]->parse($configFile);
 	}
 }

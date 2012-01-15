@@ -43,14 +43,13 @@ class WindRouter extends AbstractWindRouter {
 	/* (non-PHPdoc)
 	 * @see IWindRouter::route()
 	 */
-	public function route($request, $response) {
+	public function route($request) {
 		$this->_action = $this->action;
 		$this->_controller = $this->controller;
 		$this->_module = $this->module;
-		$this->_app = $this->app;
 		$this->request = $request;
 		$this->setCallBack(array($this, 'defaultRoute'));
-		$params = $this->getHandler()->handle($request, $response);
+		$params = $this->getHandler()->handle($request);
 		$params && $this->setParams($params, $request);
 	}
 
@@ -63,14 +62,9 @@ class WindRouter extends AbstractWindRouter {
 			$_url = $route->build($this, $action, $args);
 		} else {
 			list($_a, $_c, $_m, $_p, $args) = WindUrlHelper::resolveAction($action, $args);
-			$_p || $_p = $this->getApp();
-			if ($_p && $_p !== $this->getDefaultApp()) $args[$this->appKey] = $_p;
-			$_m || $_m = $this->getModule();
-			if ($_m && $_m !== $this->getDefaultModule()) $args[$this->moduleKey] = $_m;
-			$_c || $_c = $this->getController();
-			if ($_c && $_c !== $this->getDefaultController()) $args[$this->controllerKey] = $_c;
-			$_a || $_a = $this->getAction();
-			if ($_a && $_a !== $this->getDefaultAction()) $args[$this->actionKey] = $_a;
+			if ($_m && $_m !== $this->_module) $args[$this->moduleKey] = $_m;
+			if ($_c && $_c !== $this->_controller) $args[$this->controllerKey] = $_c;
+			if ($_a && $_a !== $this->_action) $args[$this->actionKey] = $_a;
 			$_url = $this->request->getScript() . '?' . WindUrlHelper::argsToUrl($args);
 		}
 		return $_url;
@@ -81,10 +75,9 @@ class WindRouter extends AbstractWindRouter {
 	 * 
 	 * 默认情况下仅仅解析路由相关参数值
 	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 * @return array
 	 */
-	public function defaultRoute($request, $response) {
+	public function defaultRoute($request) {
 		$pathinfo = $request->getPathInfo();
 		return $pathinfo ? WindUrlHelper::urlToArgs($pathinfo) : array();
 	}

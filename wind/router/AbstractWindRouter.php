@@ -10,11 +10,9 @@
  * @package router
  */
 abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
-	protected $appKey = 'p';
 	protected $moduleKey = 'm';
 	protected $controllerKey = 'c';
 	protected $actionKey = 'a';
-	protected $app = 'default';
 	protected $module = 'default';
 	protected $controller = 'index';
 	protected $action = 'run';
@@ -24,16 +22,14 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	protected $_action;
 	protected $_controller;
 	protected $_module;
-	protected $_app;
 
 	/**
 	 * 路由解析
 	 * 
 	 * @param WindHttpRequest $request
-	 * @param WindHttpResponse $response
 	 * @return string
 	 */
-	abstract public function route($request, $response);
+	abstract public function route($request);
 
 	/**
 	 * 创建Url,并返回构建好的Url值
@@ -51,11 +47,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function setConfig($config) {
 		parent::setConfig($config);
 		if ($this->_config) {
-			$this->app = $this->getConfig('app', 'default-value', $this->app);
 			$this->module = $this->getConfig('module', 'default-value', $this->module);
 			$this->controller = $this->getConfig('controller', 'default-value', $this->controller);
 			$this->action = $this->getConfig('action', 'default-value', $this->action);
-			$this->appKey = $this->getConfig('app', 'url-param', $this->appKey);
 			$this->moduleKey = $this->getConfig('module', 'url-param', $this->moduleKey);
 			$this->controllerKey = $this->getConfig('controller', 'url-param', $this->controllerKey);
 			$this->actionKey = $this->getConfig('action', 'url-param', $this->actionKey);
@@ -81,11 +75,9 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 		$controller = isset($params[$this->controllerKey]) ? $params[$this->controllerKey] : $request->getRequest(
 			$this->controllerKey);
 		$module = isset($params[$this->moduleKey]) ? $params[$this->moduleKey] : $request->getRequest($this->moduleKey);
-		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest($this->appKey);
 		$action && $this->setAction($action);
 		$controller && $this->setController($controller);
 		$module && $this->setModule($module);
-		$app && $this->setApp($app);
 	}
 
 	/**
@@ -153,24 +145,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	/**
 	 * @return string
 	 */
-	public function getApp() {
-		return $this->app;
-	}
-
-	/**
-	 * @return string
-	 */
 	public function getModule() {
 		return $this->module;
-	}
-
-	/**
-	 * 设置当前要访问的appname
-	 * 
-	 * @param string $appName
-	 */
-	public function setApp($appName) {
-		$this->app = $appName;
 	}
 
 	/**
@@ -221,75 +197,4 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function setActionKey($actionKey) {
 		$this->actionKey = $actionKey;
 	}
-
-	/**
-	 * @return string
-	 */
-	public function getAppKey() {
-		return $this->appKey;
-	}
-
-	/**
-	 * @param string $appKey
-	 */
-	public function setAppKey($appKey) {
-		$this->appKey = $appKey;
-	}
-
-	/**
-	 * @param string $action
-	 */
-	public function setDefaultAction($action) {
-		$this->_action = $action;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultAction() {
-		return $this->_action;
-	}
-
-	/**
-	 * @param string $controller
-	 */
-	public function setDefaultController($controller) {
-		$this->_controller = $controller;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultController() {
-		return $this->_controller;
-	}
-
-	/**
-	 * @param string $module
-	 */
-	public function setDefaultModule($module) {
-		$this->_module = $module;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultModule() {
-		return $this->_module;
-	}
-
-	/**
-	 * @param string $app
-	 */
-	public function setDefaultApp($app) {
-		$this->_app = $app;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultApp() {
-		return $this->_app;
-	}
-
 }

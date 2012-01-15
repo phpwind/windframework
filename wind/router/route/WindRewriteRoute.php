@@ -25,10 +25,7 @@ class WindRewriteRoute extends AbstractWindRoute {
 	protected $pattern = '^http[s]?:\/\/[^\/]+(\/\w+)?(\/\w+)?(\/\w+)?.*$';
 	protected $reverse = '/%s';
 	protected $separator = '&=';
-	protected $params = array(
-		'a' => array('map' => 3), 
-		'c' => array('map' => 2), 
-		'm' => array('map' => 1));
+	protected $params = array('a' => array('map' => 3), 'c' => array('map' => 2), 'm' => array('map' => 1));
 
 	/**
 	 * 路由解析
@@ -36,11 +33,11 @@ class WindRewriteRoute extends AbstractWindRoute {
 	 * 匹配这个patten时，将试图去解析module、controller和action值，并解析二级域名。
 	 * @see AbstractWindRoute::match()
 	 */
-	public function match($request, $response) {
+	public function match($request) {
 		$fullUrl = $request->getHostInfo() . $request->getRequestUri();
 		$_pathInfo = trim(str_replace($request->getBaseUrl(), '', $fullUrl), '/');
-		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), 
-			$matches) || strpos($_pathInfo, '.php') !== false) return null;
+		if (!$_pathInfo || !preg_match_all('/' . $this->pattern . '/i', trim($_pathInfo, '/'), $matches) || strpos(
+			$_pathInfo, '.php') !== false) return null;
 		
 		list(, $_args) = explode('?', $_pathInfo . '?', 2);
 		$_args = trim($_args, '?');
