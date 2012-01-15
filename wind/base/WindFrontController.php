@@ -66,7 +66,7 @@ class WindFrontController {
 			}
 			if (!empty($config['components'])) {
 				if (!empty($config['components']['resource'])) {
-					$config['components'] = $this->windFactory->getInstance('configParser')->parse(
+					$config['components'] = $this->factory->getInstance('configParser')->parse(
 						Wind::getRealPath($config['components']['resource'], true, true));
 				}
 				$this->factory->loadClassDefinitions($config['components']);
