@@ -10,14 +10,18 @@ include '../wind/Wind.php';
 define('_COMPILE_PATH', dirname(__FILE__) . '/');
 Wind::clear();
 Wind::import('WIND:base.*', true);
-Wind::import('WIND:filter.*', true);
 Wind::import('WIND:web.*', true);
+
+$packInfo = Wind::getImports();
+
+Wind::import('WIND:filter.*', true);
 Wind::import('WIND:router.*', true);
 Wind::import('WIND:http.request.*', true);
 Wind::import('WIND:http.response.*', true);
 Wind::import('WIND:utility.*', true);
 
 $imports = Wind::getImports();
+
 /* 载入需要的文件信息 */
 Wind::import('WIND:utility.WindPack');
 Wind::import('WIND:utility.WindFile');
@@ -30,11 +34,13 @@ $fileList = array();
 $content = array();
 foreach ($imports as $key => $value) {
 	$_key = Wind::getRealPath($key);
-	$fileList[$_key] = array($key, $value);
+	if (key_exists($key, $packInfo)) {
+		$fileList[$_key] = array($key, $value);
+	}
 	$content[$value] = parseFilePath($key);
 }
-$pack->setContentInjectionCallBack('addImports');
-$pack->packFromFileList($fileList, _COMPILE_PATH . 'wind_basic.php', WindPack::STRIP_PHP, true);
+//$pack->setContentInjectionCallBack('addImports');
+$pack->packFromFileList($fileList, WIND_PATH . 'wind_basic.php', WindPack::STRIP_PHP, true);
 $message[] = "COMPILE: pack core file successful~";
 
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', '<?php return ' . WindString::varToString($content) . ';');
@@ -55,6 +61,7 @@ $message[] = 'COMPILE: configs successful~';
 $message[] = 'compile successful!';
 
 echo implode("<br>", $message);
+
 /*********************************************************************/
 /* 向wind包中注入imports文件目录信息 */
 function addImports() {
