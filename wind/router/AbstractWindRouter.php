@@ -197,4 +197,31 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function setActionKey($actionKey) {
 		$this->actionKey = $actionKey;
 	}
+	
+	/**
+	 * 返回默认的module值
+	 * 
+	 * @return string
+	 */
+	public function getDefaultModule() {
+		return $this->_module;
+	}
+	
+	/**
+	 * 返回默认的controller值
+	 * 
+	 * @return string
+	 */
+	public function getDefaultController() {
+		return $this->_controller;
+	}
+	
+	/**
+	 * 返回默认的action值
+	 * 
+	 * @return string
+	 */
+	public function getDefaultAction() {
+		return $this->_action;
+	}
 }
