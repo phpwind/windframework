@@ -131,7 +131,7 @@ class WindFolder {
 	public static function mkRecur($path, $permissions = 0777) {
 		if (is_dir($path)) return true;
 		$_path = dirname($path);
-		if ($_path !== $path) self::mk($_path, $permissions);
+		if ($_path !== $path) self::mkRecur($_path, $permissions);
 		return self::mk($path, $permissions);
 	}
 }

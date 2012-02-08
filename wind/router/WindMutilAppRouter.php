@@ -57,7 +57,8 @@ class WindMutilAppRouter extends WindRouter {
 	*/
 	protected function setParams($params, $request) {
 		parent::setParams($params, $request);
-		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest($this->appKey);
+		$app = isset($params[$this->appKey]) ? $params[$this->appKey] : $request->getRequest(
+			$this->appKey);
 		$app && $this->setApp($app);
 	}
 
@@ -89,6 +90,15 @@ class WindMutilAppRouter extends WindRouter {
 	 */
 	public function setAppKey($appKey) {
 		$this->appKey = $appKey;
+	}
+
+	/**
+	 * 返回默认的app值
+	 * 
+	 * @return string
+	 */
+	public function getDefaultApp() {
+		return $this->_app;
 	}
 }
 
