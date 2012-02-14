@@ -260,7 +260,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$_token = $this->handlerAdapter->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (!isset($_filters[$_token])) {
 			foreach ($filters as $_filter) {
-				if (!isset($_filter['class'])) continue;
+				if (empty($_filter['class'])) continue;
 				$_pattern = empty($_filter['pattern']) ? '' : $_filter['pattern'];
 				unset($_filter['pattern']);
 				if ($_pattern) {
