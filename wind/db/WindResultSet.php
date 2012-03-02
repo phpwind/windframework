@@ -39,7 +39,7 @@ class WindResultSet {
 		} else
 			$this->_statement = $sqlStatement;
 		if ($fetchMode != 0) $this->_fetchMode = $fetchMode;
-		if ($fetchMode != 0) $this->_fetchType = $fetchType;
+		if ($fetchType != 0) $this->_fetchType = $fetchType;
 	}
 
 	/**
