@@ -49,13 +49,13 @@ class WindXmlParser {
     /**
      * 将数据内容解析成数组格式
      *
-     * @param string $source 数据内容
+     * @param string $stream 数据内容
 	 * @param int $option 解析选项,默认为0
 	 * @return array
      */
-    public function parseXmlSource($source, $option = 0) {
-    	if (!$source) return array();
-		$this->dom->loadXML($source, $option);
+    public function parseXmlStream($stream, $option = 0) {
+    	if (!$stream) return array();
+		$this->dom->loadXML($stream, $option);
 		return $this->getChilds($this->dom->documentElement);
     }
 	
