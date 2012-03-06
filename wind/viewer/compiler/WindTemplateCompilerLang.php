@@ -31,13 +31,6 @@ class WindTemplateCompilerLang extends AbstractWindTemplateCompiler {
 	}
 
 	/* (non-PHPdoc)
-	 * @see AbstractWindTemplateCompiler::preCompile()
-	 */
-	protected function preCompile() {
-		$this->message = $this->params = '';
-	}
-
-	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */
 	protected function getProperties() {
