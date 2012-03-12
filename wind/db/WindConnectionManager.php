@@ -117,7 +117,7 @@ class WindConnectionManager extends WindConnection {
 	 */
 	protected function parseQueryString($sql) {
 		$sql = preg_replace_callback(
-			'/^([a-zA-Z]*)\s[\w\*\s]+(\{([\w]+\:)?([\w]+\.)?([\w]+)\})?[\w\s\<\=\:]*/i', 
+			'/^([a-zA-Z]*)\s[\w\*\s]+(\{\{([\w]+\:)?([\w]+\.)?([\w]+)\}\})?[\w\s\<\=\:]*/i', 
 			array($this, '_pregQueryString'), $sql);
 		if (!$this->except['_current']) {
 			if (!isset($this->except['_db'][$this->tableName])) {
@@ -129,6 +129,7 @@ class WindConnectionManager extends WindConnection {
 						break;
 					}
 				}
+				$_c || $_c = $this->except['_default'];
 			} else
 				$_c = $this->except['_db'][$this->tableName];
 			$this->_resolveCurrentDb($_c);
