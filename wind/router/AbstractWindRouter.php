@@ -70,7 +70,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @return void
 	 */
 	protected function setParams($params, $request) {
-		$request->setAttribute($params);
+		$_GET = array_merge($_GET, $params);
 		$action = isset($params[$this->actionKey]) ? $params[$this->actionKey] : $request->getRequest($this->actionKey);
 		$controller = isset($params[$this->controllerKey]) ? $params[$this->controllerKey] : $request->getRequest(
 			$this->controllerKey);

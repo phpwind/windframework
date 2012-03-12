@@ -88,10 +88,12 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 */
 	protected function compileProperty($content) {
 		foreach ($this->getProperties() as $value) {
-			if ($value) {
-				preg_match('/(?<=' . preg_quote($value) . '=([\'\"]))(.*?)(?=\1)/ie', $content, $result);
-				if ($result) $this->$value = $result[0];
+			if (!$value || !property_exists($this, $value)) continue;
+			if (!isset($this->_propertiesCache[$value])) {
+				$this->_propertiesCache[$value] = $this->$value;
 			}
+			preg_match('/(?<=' . preg_quote($value) . '=([\'\"]))(.*?)(?=\1)/ie', $content, $result);
+			$this->$value = $result ? $result[0] : $this->_propertiesCache[$value];
 		}
 	}
 

@@ -1,5 +1,12 @@
 <?php
 return array(
+	'components' => array(
+		'db' => array(
+			'config' => array(
+				'resource' => 'config.db_config.php'
+			)
+		)
+	),
 	'web-apps' => array(
 		'blog' => array(
 			'modules' => array(
@@ -14,13 +21,6 @@ return array(
 					'class' => 'WIND:web.filter.WindFormFilter', 
 					'pattern' => 'default/Index/(login|dreg)', 
 					'form' => 'BLOG:model.UserForm'
-				)
-			),
-			'components' => array(
-				'db' => array(
-					'config' => array(
-						'resource' => 'config.db_config.php'
-					)
 				)
 			)
 		)

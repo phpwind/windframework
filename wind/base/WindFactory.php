@@ -111,7 +111,7 @@ class WindFactory implements IWindFactory {
 	/**
 	 * 加载类定义
 	 * 
-	 * 调用该方法加载租价你定义,如果merge为true,则覆盖原有配置信息.
+	 * 调用该方法加载组件定义,如果merge为true,则覆盖原有配置信息.
 	 * @param array $classDefinitions
 	 * @param boolean $merge 是否进行merge操作,默认为true
 	 * @return void

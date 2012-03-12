@@ -77,7 +77,7 @@ class WindUtility {
 		foreach ($array2 as $key => $value) {
 			if (empty($value)) {
 				$array1[$key] = $value;
-			} elseif (!isset($array1[$key])) {
+			} else if (!isset($array1[$key])) {
 				$array1[$key] = $value;
 			} elseif (is_array($array1[$key]) && is_array($value)) {
 				$array1[$key] = self::mergeArray($array1[$key], $array2[$key]);

@@ -34,7 +34,7 @@ class WindXmlParser {
 	}
 
 	/**
-	 * 解析
+	 * 解析xml文件
 	 * 
 	 * @param string $filename 待解析文件名
 	 * @param int $option 解析选项,默认为0
@@ -46,6 +46,19 @@ class WindXmlParser {
 		return $this->getChilds($this->dom->documentElement);
 	}
 
+    /**
+     * 将数据内容解析成数组格式
+     *
+     * @param string $stream 数据内容
+	 * @param int $option 解析选项,默认为0
+	 * @return array
+     */
+    public function parseXmlStream($stream, $option = 0) {
+    	if (!$stream) return array();
+		$this->dom->loadXML($stream, $option);
+		return $this->getChilds($this->dom->documentElement);
+    }
+	
 	/**
 	 * 将数据转换成xml格式
 	 * 

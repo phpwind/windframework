@@ -30,7 +30,7 @@ class WindTemplateCompilerTemplate extends AbstractWindTemplateCompiler {
 		if (preg_match('/^{?\$(\w+)}?$/Ui', $this->source, $_tmp)) {
 			$content = '<?php if (!isset($' . $this->source . '))';
 			$content .= 'list($' . $this->source . ') = $__viewer->compile(' . $this->source . ', ' . $this->suffix . ');';
-			$content .= 'include_once($' . $this->source . ');?>';
+			$content .= 'include($' . $this->source . ');?>';
 		} else {
 			if ($this->load === 'false') {
 				list($compileFile) = $this->windViewerResolver->compile($this->source, $this->suffix);

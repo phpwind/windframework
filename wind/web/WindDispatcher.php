@@ -80,7 +80,7 @@ class WindDispatcher extends WindModule {
 		}
 		$this->display = $display;
 		list($_a, $_c, $_m) = WindUrlHelper::resolveAction($action);
-		if ($_var = $forward->getVars()) $this->getResponse()->setData($_var, 'F');
+		if ($_var = $forward->getArgs()) $this->getResponse()->setData($_var, 'F');
 		$_a && $router->setAction($_a);
 		$_c && $router->setController($_c);
 		$_m && $router->setModule($_m);
