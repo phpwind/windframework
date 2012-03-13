@@ -72,7 +72,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					404);
 			}
 			
-			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
+			$handlerPath = $module['controller-path'] . '.' . ucfirst(
+				$this->handlerAdapter->getController()) . $module['controller-suffix'];
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->info(
 					'[web.WindWebApplication.run] \r\n\taction handl:' . $handlerPath, 'wind.core');
@@ -203,7 +204,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 */
 	public function setModules($name, $config, $replace = false) {
 		if ($replace || !isset($this->_config['modules'][$name])) {
-			$this->_config['modules'][$name] = WindUtility::mergeArray($this->defaultModule, (array) $config);
+			$this->_config['modules'][$name] = WindUtility::mergeArray($this->defaultModule, 
+				(array) $config);
 		}
 		return $this->_config['modules'][$name];
 	}
@@ -309,13 +311,18 @@ class WindWebApplication extends WindModule implements IWindApplication {
 			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
 			$_errorAction = 'error/' . @$matchs[0] . '/run/';
 			$this->setModules('error', 
-				array('controller-path' => $_errorHandler, 'controller-suffix' => '', 'error-handler' => ''));
+				array(
+					'controller-path' => $_errorHandler, 
+					'controller-suffix' => '', 
+					'error-handler' => ''));
 		}
 		/* @var $forward WindForward */
 		$forward = $this->getSystemFactory()->getInstance('forward');
-		$forward->forwardAction($_errorAction, array(), false, false);
-		$forward->setVars($errorMessage->getError(), '__error');
-		$forward->setVars($exception->getCode(), '__errorCode');
+		$forward->forwardAction($_errorAction, 
+			array('__error' => $errorMessage->getError(), '__errorCode' => $exception->getCode()), 
+			false, false);
+		//$forward->setVars($errorMessage->getError(), '__error');
+		//$forward->setVars($exception->getCode(), '__errorCode');
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
 	}
 
@@ -329,7 +336,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	protected function checkProcess() {
 		$token = $this->_getHandlerAdapter()->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (strcasecmp($token, $this->token) === 0) {
-			throw new WindFinalException('[WindWebApplication.checkProcess] dulplicat request \'' . $token . '\'', 
+			throw new WindFinalException(
+				'[WindWebApplication.checkProcess] dulplicat request \'' . $token . '\'', 
 				WindException::ERROR_SYSTEM_ERROR);
 		}
 		$this->token = $token;
