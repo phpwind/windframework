@@ -106,7 +106,8 @@ class WindConnectionManager extends WindConnection {
 			}
 			$this->_dbHandle = $this->pool[$this->except['_current']];
 			if (WIND_DEBUG & 2) Wind::getApp()->getComponent('windLogger')->info(
-				"db.WindConnection.init() Initialize db connection success.", 'db');
+				"db.WindConnectionManager.init() Initialize db connection successful. use '" . $this->except['_current'] . "'", 
+				'db');
 		} catch (PDOException $e) {
 			$this->close();
 			throw new WindDbException($e->getMessage());

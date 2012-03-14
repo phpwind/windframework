@@ -288,7 +288,7 @@ class WindSqlStatement {
 			if (WIND_DEBUG & 2) {
 				Wind::getApp()->getComponent('windLogger')->profileEnd('SQL:execute sql statement.', 'db');
 				Wind::getApp()->getComponent('windLogger')->info(
-					"[component.db.WindSqlStatement.execute] execute sql statement success.", 'db');
+					"[component.db.WindSqlStatement.execute] execute sql statement success.\r\n", 'db');
 			}
 			return $_result;
 		} catch (PDOException $e) {
