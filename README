@@ -61,7 +61,7 @@ class IndexController extends WindController {
 }
 ?>
 
-*在windframework中文件名和类名是相同的，这一点有点类似于java。windframework提供了两个应用*控制器的类型‘WindSimpleController’，‘WindController’。在这里我们继承自*‘WindController’，这两个应用控制器的区别，在后面会具体介绍。
+*在windframework中文件名和类名是相同的，这一点有点类似于java。windframework提供了两个应用控制器的类型‘WindSimpleController’，‘WindController’。在这里我们继承自‘WindController’，这两个应用控制器的区别，在后面会具体介绍。
 
 至此，我们的helloworld 应用已经完成。快通过浏览器访问下我们的helloworld 吧:
 http://localhost/helloworld/index.php 
