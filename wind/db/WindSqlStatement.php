@@ -264,7 +264,7 @@ class WindSqlStatement {
 	 * @see WindConnection::lastInsterId()
 	 */
 	public function lastInsertId($name = '') {
-		return $this->getConnection($name);
+		return $this->getConnection()->lastInsertId($name);
 	}
 
 	/**
