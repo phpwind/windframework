@@ -1,88 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset='utf-8'>
-
-  <title>phpwind/windframework @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #a47ad5;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #5b852a; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #5b852a; }
-    h3 { text-align: center; color: #5b852a; }
-    a { color: #5b852a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+<meta charset="utf-8" />
+<title>首页</title>
+<link href="images/style.css" rel="stylesheet" />
 </head>
-
 <body>
-  <a href="https://github.com/phpwind/windframework"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="https://github.com/phpwind/windframework/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/phpwind/windframework/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="https://github.com/phpwind/windframework">windframework</a>
-      <span class="small">by <a href="https://github.com/phpwind">phpwind</a></span></h1>
-
-    <div class="description">
-      Open-source PHP framework
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-      <h2>Authors</h2>
-      <p>windframework (yishuo@aliyun-inc.com)<br/>      </p>
-    
-
-    
-      <h2>Contact</h2>
-      <p>windframework (yishuo@aliyun-inc.com)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/phpwind/windframework/zipball/master">zip</a> or
-      <a href="https://github.com/phpwind/windframework/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/phpwind/windframework</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/phpwind/windframework">phpwind/windframework</a>
-    </div>
-
-  </div>
-
+	<div class="head_wrap">
+		<div class="head">
+			<div class="logo"><img src="images/logo.png"></div>
+			<div class="nav">
+				<ul class="cc">
+					<li class="current"><a href="index.html">首页</a><em></em></li>
+					<li><a href="framework.html">关于框架</a><em></em></li>
+					<li><a href="">FAQ</a><em></em></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="main_wrap">
+		<div class="main">
+			<h2 class="h"><strong>简单了解下</strong></h2>
+			<div class="home_info">
+				<ul>
+					<li>windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。</li>
+					<li>此外windframework采取了一种组件化的开发模式。</li>
+					<li>虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。</li>
+					<li>windframework拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。</li>
+					<li>是开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。</li>
+				</ul>
+			</div>
+			<h2 class="h"><strong>下载</strong></h2>
+			<div class="home_down">
+				<div class="downlink"><a href="" class="zip_down">ZIP Download</a><a href="" class="tar_down">TAR Download</a></div>
+				<div class="other">其他地址下载：<a href="">phpwind官方</a><a href="">chinaz</a><a href="">admin5</a></div>
+				<div class="request">
+					<h4>环境要求：</h4>
+					<p>php5.1.2及以上版本。可发布的web环境，apache或aginx。</p>
+				</div>
+			</div>
+			<h2 class="h"><strong>优点</strong></h2>
+			<div class="home_actor">
+				<ul class="cc">
+					<li><em class="num_1">1.</em><span>Module-View-Controller（MVC）</span></li>
+					<li><em class="num_2">2.</em><span>组件扩展支持</span></li>
+					<li><em class="num_3">3.</em><span>视图管理，多模板引擎支持</span></li>
+					<li><em class="num_4">4.</em><span>主题与皮肤（themes）</span></li>
+					<li><em class="num_5">5.</em><span>模板视图的布局管理（layout）</span></li>
+					<li><em class="num_6">6.</em><span>模板标签支持</span></li>
+					<li><em class="num_7">7.</em><span>基于模板标签体系，对页面数据输出进行安全及数据格式化支持</span></li>
+					<li><em class="num_8">8.</em><span>Cache支持，多种cache方案</span></li>
+					<li><em class="num_9">9.</em><span>数据持久化db链接，基于PDO实现，支持分布式主从读写分离策略</span></li>
+					<li><em class="num_10">10.</em><span>请求的预处理与后处理，拦截过滤器部署</span></li>
+					<li><em class="num_11">11.</em><span>路由协议链，多路由协议支持</span></li>
+					<li><em class="num_12">12.</em><span>form表单对象与表单验证</span></li>
+					<li><em class="num_13">13.</em><span>ErrorHandler自定义错误处理句柄</span></li>
+					<li><em class="num_14">14.</em><span>异常体系与Logger日志</span></li>
+					<li><em class="num_15">15.</em><span>多种开发模式支持WIND_DEBUG</span></li>
+					<li><em class="num_16">16.</em><span>国际化（i18n）</span></li>
+					<li><em class="num_17">17.</em><span>安全（security）</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="footer_wrap">
+		<div class="footer">
+			&copy; 2012 windframework
+		</div>
+	</div>
 </body>
 </html>

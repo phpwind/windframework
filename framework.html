@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>项目背景</title>
+<link href="images/style.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="head_wrap">
+		<div class="head">
+			<div class="logo"><img src="images/logo.png"></div>
+			<div class="nav">
+				<ul class="cc">
+					<li><a href="index.html">首页</a><em></em></li>
+					<li class="current"><a href="framework.html">关于框架</a><em></em></li>
+					<li><a href="">FAQ</a><em></em></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="main_wrap">
+		<div class="main">
+			<h2 class="h"><strong>项目背景</strong></h2>
+			<div class="project_bg">
+				<p>Windframework是phpwind社区开发的一款php框架。2010年10月份开始投入开发，目前为止已经内部发行了四个版本（0.5，0.8，0.9，1.0）。它源自phpwind社区产品的一次名为‘鹊桥’的重构计划。意在重新定义phpwind的架构层次开发模式，使其看起来更清晰，更易于扩展和二次开发。后来在一次讨论中重构计划被分为了两个部分进行。一部分为底层核心框架。另一部分为phpwind社区数据服务中心，插件组件机制。</p>
+				<p>一开始对windframework的定位和设想是：提炼phpwind社区产品的底层实现并对其进行统一化部署；对phpwind产品中多年积累沉淀下来的技术和解决方案进行整理重构，使其成为通用的标准化的工具/组件库。后来windframework逐渐的发展成为了一个通用型的php框架，一个独立的框架产品。它的定位和职责也越来越清晰：承载整个phpwind社区应用的运行，为它定义了统一规范的MVC流程，并提供强大的路由和视图渲染能力，灵活的应用部署方案等。windframework服务于phpwind社区产品，但也独立于phpwind社区产品。</p>
+				<p>作为一个通用的php框架，windframework在公司内部发行并推广使用。目前已经有很多新的项目基于这个框架进行开发。在这个过程中我们得到了很多的项目的支持，并从中吸取了宝贵的经验。我们感谢那些从windframework萌芽期就开始支持信任我们的团队和项目组，你们的支持为框架后续的成长注入了力量。</p>
+			</div>
+			<h2 class="h"><strong>框架介绍</strong></h2>
+			<div class="project_bg">
+				<p>windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。此外windframework采取了一种组件化的开发模式。虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。windframework拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。是开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。当然它的美妙之处还不仅于此。</p>
+			</div>
+			<div class="framework_info">
+				<h3>体系结构</h3>
+				<div class="thumb"><img src="images/layout.jpg"><p>windframework结构图</p></div>
+				<p>core是wind框架体系中的核心基础。它为整个框架提供控制反转和依赖注入的特性，这里面的基础概念是component factory即组件工厂模式。除此之外还提供了类的代理监听支持和拦截过滤器链的模式支持，统一的错误异常处理机制和配置解析装载机制等。这些核心机制的提供，使整个框架的上层开发变得简单、行为一致、和便于管理。基于wind core之上我们提供了基本的MVC架构模式的实现，以及各种组件库和工具库。在wind框架中一切皆为组件，MVC也被视为组件。只是这类组件很特别，它是架构类的组件，这个组件更为庞大，协作更为者众多。</p>
+				<h3>WindFactory（组件工厂）</h3>
+				<p>组件工厂是wind core中的基础。它基于Ioc控制反转和依赖注入的技术实现，为整个框架提供了松耦合的组件管理机制，从程序逻辑中分离出类的依赖关系和配置。组件工厂为框架提供了丰富的特性：</p>
+				<ol>
+					<li>管理组件对象的创建、注销、获取。</li>
+					<li>为组件提供了多种生命周期（singleton,application,prototype），并提供了统一的管理。</li>
+					<li>基于配置的类属性注入，支持（类型，对象，简单类型值）</li>
+					<li>统一配置解析与管理</li>
+					<li>proxy类代理</li>
+					<li>Lazy-init延迟加载类属性</li>
+				</ol>
+				<h4>控制反转（Ioc）与依赖注入（DI）</h4>
+				<p>依赖是指对象之间的依赖关系。当我们去设计一个实现的时候，大多数情况下都会抽象出几个类，它们之间相互协作，这就产生了依赖。通常以来会通过几种方式来实现：构造器的参数、工厂方法的参数、setter/getter。在创建这些类对象时，我们需要为它注入这些依赖关系。但是相对于由类自己来控制实例化并注入这些依赖关系，使用DI原则，使代码更为清晰。而且对象本身也不需要再担心对象之间的依赖关系，以及如何指定这些依赖关系的实际类型，从而实现更高层次的松耦合。</p>
+				<p>在wind框架中我们通过配置的方式向类对象注入依赖关系。多数情况下，一个对象对另外一个对象的依赖最简单的做法就是将其设置为自己的属性。在wind框架的组件配置中我们只需要简单的使用<properties />标签，就是为一个组件指定一个依赖。该标签支持（ref,path,value）三个值。ref的值指向另外的组件名称，只要给出它所依赖的组件名称，那么windFactory就可以通过编程的方式容易的从工厂容器中取出它所依赖的对象。</p>
+				<h4>xml格式组件配置</h4>
+				<div class="code">
+					代码
+				</div>
+				<h3>MVC</h3>
+				<p>wind框架中的web包提供了基础的Model-View-Controller（MVC）实现。基于wind core的核心技术的支撑，wind MVC提供了一种清晰的，松耦合的实现。我们可以灵活方便的替换MVC中的各种职责者，以选择更适合应用部署规模的解决方案，也可以自定义解决方案。例如我们可以选择轻量级的路由方案，我们可以对接第三方的视图引擎（例如smarty 等）。在wind框架中我们使用了一个前端控制器，用于最初的集中访问点，处理所有的相关请求。前端控制器集中了控制逻辑，避免了逻辑的重复并完成了主要的请求处理操作。</p>
+				<h4>FrontController（前端控制器）</h4>
+				<p>wind框架定义了前端控制器职责者，它是系统请求的入口点。主要负责协议处理，系统初始化，以及委派一个应用控制器来完成操作和视图管理。</p>
+				<h4>ApplicationController（应用控制器）</h4>
+				<p>applicationController负责操作和视图管理。将请求定位到负责处理的特定ActionController，并跟据操作处理情况将请求进一步的转发。应用控制器的主要职责包括：路由、请求重定向、视图处理、错误处理等。</p>
+				<h4>ActionController（操作控制器）</h4>
+				<p>用于具体处理请求的操作。提供了‘WindSimpleController’‘WindController’两种模式。经过了一系列的集中控制管理后，系统将请求委派了actionController，开始了真中的请求的业务相关处理。在操作控制器中，我们可以获取系统输入、处理请求、定位视图模板等。</p>
+				<h4>View（视图）</h4>
+				<p>视图渲染，指返回给客户端的显示界面。在ActionController中我们定位了返回给客户端的视图模板，在View层我们将获取该视图模板，并对它进行编译渲染。将渲染的结果输出到响应对象中。在视图层，我们实现了：视图管理、布局管理、主题皮肤。</p>
+				<h4>Dispatcher（请求分派）</h4>
+				<p>处理请求的进一步转发。当我们通过ActionController的操作处理后，将会返回一个Forward对象，该对象携带了一系列的进一步请求处理的信息（模板，变量，跳转，错误）等信息。Dispatcher接收一个forward对象的输入，并进一步转发请求。</p>
+				<h4>Router（导航路由）</h4>
+				<p>路由，即为一个请求确定它的ActionController的过程。</p>
+				<div class="thumb"><img src="images/mvcleitu.jpg"><p>MVC类图</p></div>
+				<div class="thumb"><img src="images/mvcshixu.jpg"><p>MVC时序图</p></div>
+				<h3>拦截过滤器模式</h3>
+				<p>拦截过滤器模式，是wind框架的一个核心设计模式。使用拦截过滤器，作为一个可插拔式的过滤器模式，实现请求、响应的预处理和后处理，拦截过滤器链负责把处于松耦合关系的过滤器结合成一个执行调用链，并把控制一次委派给适合的过滤器。这样一来，不必改动现有的代码就能够以各种方式加入、删除、合并这些处理过程。拦截过滤器模式在框架的很多地方被使用到。例如请求的预处理和后处理、代理监听机制、模板编译器模式等。利用过滤器模式，我们可以将不相关的多种服务联系起来，并允许他们之间实现更松的耦合。通过过滤器模式，我们将系统作出了更清晰的划分，因此我们可以更合理的组织我们的系统，使其最大程度的重用。你还可以透明的加入、删除处理程序，实现可插拔式的管理。</p>
+				<h4>FilterChain（过滤器链）</h4>
+				<p>是由多个独立的过滤器构成的有序集合。它负责创建、调用和协调过滤器的执行过程。当过滤器链中的所有过滤器的pro都被执行完毕后，它负责调用目标处理程序。</p>
+				<h4>Filter（过滤）</h4>
+				<p>在wind框架中一个过滤器的实现包括一个预处理方法、一个后处理方法、和一个核心处理器。过滤器被映射到了某个目标资源。当执行目标资源的时候，被映射到目标资源的过滤器集合先被依次触发执行预处理方法，再处理目标资源，然后再一次触发执行过滤器的后处理方法。</p>
+				<div class="thumb"><img src="images/filtershixu.jpg"><p>Filter chain 时序图</p></div>
+				<h3>代理与事件监听</h3>
+				<p>事件模型应该是一个很普遍的概念，应用于很多地方（例如有名的Java GUI）。在wind框架中我们通过代理模式来实现对某个事件的注册、监听管理。一个事件（event）代表了一个类对象的某个方法，它描述了发生了什么事情。在wind框架中创建一个可以被监听的事件是非常容易的事情，只需要在组件配置中将‘proxy’属性值置为‘true’。可以通过调用registerEventListener方法注册事件的监听器。在事件监听处理中我们采用了上面提到的拦截过滤器模式。</p>
+				<h4>WindClassProxy（类代理对象）</h4>
+				<p>wind框架中采用了代理模式来实现事件的注册监听机制。当组件开启了代理模式，组件工厂会返回一个WindClassProxy类型的代理对象，代理对象会先去依次调用注册给该事件的监听器，然后再将控制权转交给目标事件。</p>
+				<div class="thumb"><img src="images/proxy.jpg"><p>proxy</p></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer_wrap">
+		<div class="footer">
+			&copy; 2012 windframework
+		</div>
+	</div>
+</body>
+</html>
