@@ -13,52 +13,54 @@
 				<ul class="cc">
 					<li class="current"><a href="index.html">首页</a><em></em></li>
 					<li><a href="framework.html">关于框架</a><em></em></li>
-					<li><a href="">FAQ</a><em></em></li>
+					<li><a href="https://github.com/phpwind/windframework/wiki/FAQ">FAQ</a><em></em></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 	<div class="main_wrap">
-		<div class="main">
-			<h2 class="h"><strong>简单了解下</strong></h2>
+		<div class="main">			
 			<div class="home_info">
 				<ul>
-					<li>windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。</li>
-					<li>此外windframework采取了一种组件化的开发模式。</li>
-					<li>虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。</li>
-					<li>windframework拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。</li>
-					<li>是开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。</li>
+					<li>windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。
+						此外windframework采取了一种组件化的开发模式。虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。
+						windframework拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。</li>
 				</ul>
 			</div>
-			<h2 class="h"><strong>下载</strong></h2>
+			<h2 class="h"><strong>Download</strong></h2>
 			<div class="home_down">
-				<div class="downlink"><a href="" class="zip_down">ZIP Download</a><a href="" class="tar_down">TAR Download</a></div>
-				<div class="other">其他地址下载：<a href="">phpwind官方</a><a href="">chinaz</a><a href="">admin5</a></div>
+				<div class="downlink"><a href="https://github.com/phpwind/windframework/zipball/master" class="zip_down">ZIP Download</a><a href="https://github.com/phpwind/windframework/tarball/master" class="tar_down">TAR Download</a></div>
+				<div class="other">phpwind官方：<a href="http://www.phpwind.com">http://www.phpwind.com</a></div>
+				<div class="other">phpwind官方社区：<a href="http://www.phpwind.net">http://www.phpwind.net</a></div>
 				<div class="request">
 					<h4>环境要求：</h4>
-					<p>php5.1.2及以上版本。可发布的web环境，apache或aginx。</p>
+					<ul>
+						<li>php5.1.2及以上版本。</li>
+						<li>web发布环境，apache或aginx。</li>
+					</ul>						
 				</div>
 			</div>
-			<h2 class="h"><strong>优点</strong></h2>
+			<h2 class="h"><strong>Features</strong></h2>
 			<div class="home_actor">
 				<ul class="cc">
-					<li><em class="num_1">1.</em><span>Module-View-Controller（MVC）</span></li>
-					<li><em class="num_2">2.</em><span>组件扩展支持</span></li>
-					<li><em class="num_3">3.</em><span>视图管理，多模板引擎支持</span></li>
-					<li><em class="num_4">4.</em><span>主题与皮肤（themes）</span></li>
-					<li><em class="num_5">5.</em><span>模板视图的布局管理（layout）</span></li>
-					<li><em class="num_6">6.</em><span>模板标签支持</span></li>
-					<li><em class="num_7">7.</em><span>基于模板标签体系，对页面数据输出进行安全及数据格式化支持</span></li>
-					<li><em class="num_8">8.</em><span>Cache支持，多种cache方案</span></li>
-					<li><em class="num_9">9.</em><span>数据持久化db链接，基于PDO实现，支持分布式主从读写分离策略</span></li>
-					<li><em class="num_10">10.</em><span>请求的预处理与后处理，拦截过滤器部署</span></li>
-					<li><em class="num_11">11.</em><span>路由协议链，多路由协议支持</span></li>
-					<li><em class="num_12">12.</em><span>form表单对象与表单验证</span></li>
-					<li><em class="num_13">13.</em><span>ErrorHandler自定义错误处理句柄</span></li>
-					<li><em class="num_14">14.</em><span>异常体系与Logger日志</span></li>
-					<li><em class="num_15">15.</em><span>多种开发模式支持WIND_DEBUG</span></li>
-					<li><em class="num_16">16.</em><span>国际化（i18n）</span></li>
-					<li><em class="num_17">17.</em><span>安全（security）</span></li>
+					<li><span>Module-View-Controller（MVC）</span><p>我wind框架在web包中提供了基础的web mvc的实现。wind mvc 基于wind core的核心技术，提供了一种清晰的、松耦合的实现。它采用了前端控制器模式，并支持强大的拦截过滤器链式部署。使以完全松耦合的方式集中化控制逻辑变的简单。除此意外，wind mvc 还提供了像‘模板驱动’、‘请求重定向’等特性。</p></li>
+					<li><span>目录路径别名与import类加载</span><p>在wind框架中定义了路径别名。我们可以将目录路径注册到系统中，并为其定义使用别名。wind通过import方法加载类(只是类)，并提供autoload支持。通过路径别名与import加载，简化了路径使用，方便了工程部署，以及autoload用到时才加载的模式大大提高了类加载的效率。</p></li>
+					<li><span>组建工厂机制</span><p>组建工厂机制是wind框架核心的基础。它基于Ioc控制反转和依赖注入的技术实现，为整个框架提供了松耦合的组建管理机制，从程序逻辑中分离出类的依赖关系和配置。组建工厂机制提供了丰富的特性支持：组建(创建、注销、获取)管理、多生命周期、配置解析管理、代理模式、lazy-init延迟加载等。通过组建工厂机制统一并简化了组建的开发与使用。</p></li>
+					<li><span>视图管理，多模板引擎支持</span><p>在基于wind框架强大的组建机制的基础上，视图管理提供了多模板引擎的支持。wind viewer组建包提供了'WindNormalViewerResolver'、'WindViewerResolver'两个视图渲染引擎。当然我们也支持对接第三方渲染引擎例如‘smarty’等。框架默认采用'WindViewerResolver'，支持模板编译、标签扩展。</p></li>
+					<li><span>主题与皮肤（themes）</span><p>wind框架中支持简单的主题与皮肤管理，通过为视图设置主题，可以轻松的实现风格模板的切换。</p></li>
+					<li><span>模板视图的布局管理（layout）</span><p>wind框架中实现了页面的布局管理，可以为整个应用定义一种布局模板，也可义为每个操作定义不同的布局模板。默认情况下是不开启布局管理的，可以通过设置布局文件开启布局管理。</p></li>
+					<li><span>模板标签支持</span><p>wind框架默认请用了‘WindViewerResolver’视图渲染器，这个视图渲染器支持模板编译以及基于配置的自定义标签扩展。开发这可以根据需求，自定义模板标签。wind框架默认实现了几种常用标签：action、echo、lang、template、token等。</p></li>
+					<li><span>数据输出安全过滤及数据格式化支持</span><p>基于上面模板标签体系，wind框架实现了强大的数据支持：安全输出过滤、数据格式化等。基于这个特性，开发者可以方便的在页面以想要的格式进行变量输出，而无需担心安全问题以及数据格式化问题。</p></li>
+					<li><span>Cache</span><p>wind框架默认提供了cache组建，以及cache支持。cache组建采用了面向接口的组建设计思路，为cache使用者提供标准的cache接口定义，以及多种cache方案的实现。</p></li>
+					<li><span>DB</span><p>wind框架提供了简单高效的数据持久层方案‘WindConnection’，这是一个基于PDO的数据持久化解决方案。它支持‘WindConnection’简单链接、‘WindConnectionManager’分布式链接管理两种链接模式。两种方案可以实现无缝的切换。</p></li>
+					<li><span>请求的预处理与后处理（filter chain）</span><p>wind框架采用了拦截过滤器模式，对请求的预处理和后处理进行了拦截和策略部署支持。开发这可以很方便的使用该特性，在请求的预处理或后处理位置添加、删除、修改控制逻辑代码。</p></li>
+					<li><span>路由协议链，多路由协议支持</span><p>路由是mvc中的重要组建，wind框架提供了路由支持，它采用过滤链的模式实现来实现路由，一个路由器可以挂载多种路由协议。程序会根据挂载的顺序，依次去加载路由协议，直到找到可以处理当前请求的路由协议。</p></li>
+					<li><span>Form表单对象&验证</span><p>web mvc 默认提供了对表单处理的支持。开发者可以为一次请求创建一个表单对象，系统将会在处理具体的操作前初始化这个表单对象以及完成表单验证等工作。开发者无需在代码逻辑里面操作大量的表单数据的赋值验证，简化了开发。</p></li>
+					<li><span>ErrorHandler自定义错误处理句柄</span><p>自定义错误句柄，是web mvc提供的又一个特性支持。wind框架默认为mvc提供了错误处理句柄‘WindErrorHandler’，默认的错误页面指向‘web/view’。开发者可以通过应用配置来指向自定义的错误处理句柄，可以为一个module定义一个‘ErrorHandler’，也可义为每一各action自定义‘ErrorHandler’。wind框架在自定义配置上提供了强大且灵活的支持。</p></li>
+					<li><span>异常体系与Logger日志</span><p>wind框架提供了两种基本的异常类型：‘WindFinalException’、‘WindException’。前者是终极异常，抛出该类异常不希望异常被系统处理而直接抛出；后者是通用异常类型，大部分自定义异常都需要继承该异常类型，该异常会被系统的错误体系处理。wind框架提供了logger组建，开发者可以很方便的获取并输出log。这个组建目前只支持本地化的文件log记录。windLogger支持按照分组、分类的方式输出log到不同的文件中。</p></li>
+					<li><span>多种开发模式支持WIND_DEBUG</span><p>wind框架支持多种开发模式：window、log、window&log。开发者可以通过设置‘WIND_DEBUT’这个常量的值定义wind的工作模式。</p></li>
+					<li><span>国际化（i18n）</span><p>wind框架提供了简单的国际化支持。支持变量、语言模板等。</p></li>
+					<li><span>安全（security）</span><p>wind框架提供了对输入输出的安全过滤，通过内置在相应的组建管理中，透明化了对数据安全的处理。wind框架还提供了security安全工具包例如：加密、解密、token等。</p></li>
 				</ul>
 			</div>
 		</div>
