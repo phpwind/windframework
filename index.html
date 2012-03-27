@@ -57,7 +57,7 @@
 					<li><span>Form表单对象&验证</span><p>web mvc 默认提供了对表单处理的支持。开发者可以为一次请求创建一个表单对象，系统将会在处理具体的操作前初始化这个表单对象以及完成表单验证等工作。开发者无需在代码逻辑里面操作大量的表单数据的赋值验证，简化了开发。</p></li>
 					<li><span>ErrorHandler自定义错误处理句柄</span><p>自自定义错误句柄，是web mvc提供的又一个特性支持。wind框架默认为mvc提供了错误处理句柄‘WindErrorHandler’，默认的错误页面指向‘web/view’。开发者可以通过应用配置来指向自定义的错误处理句柄，可以为每一个module定义‘ErrorHandler’，也可义为每一个action自定义‘ErrorHandler’。wind框架在自定义配置上提供了强大且灵活的支持。</p></li>
 					<li><span>异常体系与Logger日志</span><p>两种基本的异常类型：‘WindFinalException’、‘WindException’。前者是终极异常，抛出该类异常表示不希望异常被系统处理而直接抛出；后者是通用异常类型，大部分自定义异常都需要继承该异常类型，该异常会被系统的错误体系处理。Logger组件，通过调用Logger组件开发者可以很方便的输出log信息，支持分类、分组输出。目前只支持本地化的文件log记录。</p></li>
-					<li><span>多种开发模式支持WIND_DEBUG</span><p>WIND_DEBUG多种工作模式支持：window、log、window&log。开发者可以通过设置‘WIND_DEBUT’这个常量的值定义wind的工作模式。</p></li>
+					<li><span>多种开发模式支持WIND_DEBUG</span><p>WIND_DEBUG多种工作模式支持：window、log、window&log。开发者可以通过设置‘WIND_DEBUG’这个常量的值定义wind的工作模式。</p></li>
 					<li><span>国际化（i18n）</span><p>简单的国际化支持：变量、语言模板等。</p></li>
 					<li><span>安全（security）</span><p>输入输出安全过滤，通过内置在相应的组件管理中，透明化了对数据安全的处理。wind框架还提供了security安全工具包例如：加密、解密、token等。</p></li>
 				</ul>
