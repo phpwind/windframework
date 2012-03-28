@@ -1,5 +1,5 @@
 ##关于框架
----
+
 windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。此外`windframework`采取了一种组件化的开发模式。虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。`windframework`拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。当然它的美妙之处还不仅于此。
 
 经典的`hello world`应用实例，用一个非常熟悉的应用来开启一个新框架的学习应用吧！这个应用实例会一如既往的在浏览器窗口打印`Hello World`字样。完成这个应用我们将了解到：
@@ -16,20 +16,14 @@ windframework是一个轻量级的php开源框架。它以组件工厂为核心�
 
 ##获取源码
 
----
-
 通过[https://github.com/phpwind/windframework/]([https://github.com/phpwind/windframework, "windframework")获取源码。
 
 ##环境要求：
-
----
 
 * php5.1.2及以上版本。
 * 可发布的web环境，apache或aginx
 
 ##开始我们的helloworld之旅
-
----
 
 ###创建应用目录文件
 
