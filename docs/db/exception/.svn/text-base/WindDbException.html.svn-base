@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindDbException</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">db<br /><div class="header-top-right-subpackage">exception</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="../../classtrees_db.html" class="menu">class tree: db</a> ]
+		[ <a href="../../elementindex_db.html" class="menu">index: db</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">db</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>    	 <br />
+	    		<a href="../../db/WindConnection.html">WindConnection</a>    	 <br />
+	    		<a href="../../db/WindConnectionManager.html">WindConnectionManager</a>    	 <br />
+	    		<a href="../../db/WindResultSet.html">WindResultSet</a>    	 <br />
+	    		<a href="../../db/WindSqlStatement.html">WindSqlStatement</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../../db/exception/WindDbException.html">WindDbException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mysql<br />	    <span style="padding-left: 1em;">		<a href="../../db/mysql/WindMysqlPdoAdapter.html">WindMysqlPdoAdapter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindDbException</h1>
+Source Location: /db/exception/WindDbException.php<br /><br />
+
+<h2 class="class-name">Class WindDbException</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>db异常类
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_db---exception---WindDbException.php.html">/db/exception/WindDbException.php</a> [<span class="field">line 12</span>]
+		</p>
+
+		
+		<pre>Exception
+   |
+   --<a href="../../base/WindException.html">WindException</a>
+      |
+      --WindDbException</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-22</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindDbException.php 3113 2011-11-11 07:28:09Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../db/exception/WindDbException.html#methodmessageMapper">messageMapper</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../../base/WindException.html">WindException</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#method__construct">WindException::__construct()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">异常构造函数</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#methodbuildMessage">WindException::buildMessage()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据exception code返回构建的异常信息描述</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#methodmessageMapper">WindException::messageMapper()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">自定义异常号的对应异常信息</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../../base/WindException.html">WindException</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_METHOD_NOT_EXIST">WindException::ERROR_CLASS_METHOD_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_NOT_EXIST">WindException::ERROR_CLASS_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_TYPE_ERROR">WindException::ERROR_CLASS_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CONFIG_ERROR">WindException::ERROR_CONFIG_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_OBJECT_NOT_EXIST">WindException::ERROR_OBJECT_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_PARAMETER_TYPE_ERROR">WindException::ERROR_PARAMETER_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_RETURN_TYPE_ERROR">WindException::ERROR_RETURN_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_SYSTEM_ERROR">WindException::ERROR_SYSTEM_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+						| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_ADAPTER_EXIST" title="details" class="const-name-summary">DB_ADAPTER_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_ADAPTER_NOT_EXIST" title="details" class="const-name-summary">DB_ADAPTER_NOT_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_BUILDER_EXIST" title="details" class="const-name-summary">DB_BUILDER_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_BUILDER_NOT_EXIST" title="details" class="const-name-summary">DB_BUILDER_NOT_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_CONNECT_NOT_EXIST" title="details" class="const-name-summary">DB_CONNECT_NOT_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_CONN_EMPTY" title="details" class="const-name-summary">DB_CONN_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">连接相关的异常</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_CONN_EXIST" title="details" class="const-name-summary">DB_CONN_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_CONN_FORMAT" title="details" class="const-name-summary">DB_CONN_FORMAT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_CONN_NOT_EXIST" title="details" class="const-name-summary">DB_CONN_NOT_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_DRIVER_BUILDER_NOT_MATCH" title="details" class="const-name-summary">DB_DRIVER_BUILDER_NOT_MATCH</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_DRIVER_EXIST" title="details" class="const-name-summary">DB_DRIVER_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_DRIVER_NOT_EXIST" title="details" class="const-name-summary">DB_DRIVER_NOT_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_EMPTY" title="details" class="const-name-summary">DB_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_COMPARESS_ERROR" title="details" class="const-name-summary">DB_QUERY_COMPARESS_ERROR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_COMPARESS_EXIST" title="details" class="const-name-summary">DB_QUERY_COMPARESS_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_CONDTTION_FORMAT" title="details" class="const-name-summary">DB_QUERY_CONDTTION_FORMAT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_EMPTY" title="details" class="const-name-summary">DB_QUERY_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">查讯 相关的异常</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_ERROR" title="details" class="const-name-summary">DB_QUERY_ERROR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_FETCH_ERROR" title="details" class="const-name-summary">DB_QUERY_FETCH_ERROR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_FIELD_EMPTY" title="details" class="const-name-summary">DB_QUERY_FIELD_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_FIELD_EXIST" title="details" class="const-name-summary">DB_QUERY_FIELD_EXIST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_FIELD_FORMAT" title="details" class="const-name-summary">DB_QUERY_FIELD_FORMAT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_GROUP_MATCH" title="details" class="const-name-summary">DB_QUERY_GROUP_MATCH</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_INSERT_DATA" title="details" class="const-name-summary">DB_QUERY_INSERT_DATA</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_JOIN_TYPE_ERROR" title="details" class="const-name-summary">DB_QUERY_JOIN_TYPE_ERROR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_LINK_EMPTY" title="details" class="const-name-summary">DB_QUERY_LINK_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_LOGIC_MATCH" title="details" class="const-name-summary">DB_QUERY_LOGIC_MATCH</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_TRAN_BEGIN" title="details" class="const-name-summary">DB_QUERY_TRAN_BEGIN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_UPDATE_DATA" title="details" class="const-name-summary">DB_QUERY_UPDATE_DATA</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_QUERY_WHERE_ERROR" title="details" class="const-name-summary">DB_QUERY_WHERE_ERROR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDB_TABLE_EMPTY" title="details" class="const-name-summary">DB_TABLE_EMPTY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">字段异常</td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#messageMapper" title="details" class="method-name">messageMapper</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+																		| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodmessageMapper" id="messageMapper"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">messageMapper</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 87]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void messageMapper(
+
+$code&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$code:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../base/WindException.html#methodmessageMapper">WindException::messageMapper()</a></dt>
+						<dd>自定义异常号的对应异常信息</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+										| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constDB_ADAPTER_EXIST" id="DB_ADAPTER_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_ADAPTER_EXIST</span>
+			 = <span class="var-default"> 261</span>
+			<span class="smalllinenumber">[line 82]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_ADAPTER_NOT_EXIST" id="DB_ADAPTER_NOT_EXIST"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_ADAPTER_NOT_EXIST</span>
+			 = <span class="var-default"> 260</span>
+			<span class="smalllinenumber">[line 80]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_BUILDER_EXIST" id="DB_BUILDER_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_BUILDER_EXIST</span>
+			 = <span class="var-default"> 251</span>
+			<span class="smalllinenumber">[line 76]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_BUILDER_NOT_EXIST" id="DB_BUILDER_NOT_EXIST"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_BUILDER_NOT_EXIST</span>
+			 = <span class="var-default"> 250</span>
+			<span class="smalllinenumber">[line 74]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_CONNECT_NOT_EXIST" id="DB_CONNECT_NOT_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_CONNECT_NOT_EXIST</span>
+			 = <span class="var-default"> 204</span>
+			<span class="smalllinenumber">[line 24]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_CONN_EMPTY" id="DB_CONN_EMPTY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_CONN_EMPTY</span>
+			 = <span class="var-default"> 200</span>
+			<span class="smalllinenumber">[line 16]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>连接相关的异常
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_CONN_EXIST" id="DB_CONN_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_CONN_EXIST</span>
+			 = <span class="var-default"> 203</span>
+			<span class="smalllinenumber">[line 22]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_CONN_FORMAT" id="DB_CONN_FORMAT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_CONN_FORMAT</span>
+			 = <span class="var-default"> 201</span>
+			<span class="smalllinenumber">[line 18]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_CONN_NOT_EXIST" id="DB_CONN_NOT_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_CONN_NOT_EXIST</span>
+			 = <span class="var-default"> 202</span>
+			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_DRIVER_BUILDER_NOT_MATCH" id="DB_DRIVER_BUILDER_NOT_MATCH"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_DRIVER_BUILDER_NOT_MATCH</span>
+			 = <span class="var-default"> 252</span>
+			<span class="smalllinenumber">[line 78]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_DRIVER_EXIST" id="DB_DRIVER_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_DRIVER_EXIST</span>
+			 = <span class="var-default"> 243</span>
+			<span class="smalllinenumber">[line 72]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_DRIVER_NOT_EXIST" id="DB_DRIVER_NOT_EXIST"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_DRIVER_NOT_EXIST</span>
+			 = <span class="var-default"> 242</span>
+			<span class="smalllinenumber">[line 70]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_EMPTY" id="DB_EMPTY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_EMPTY</span>
+			 = <span class="var-default"> 241</span>
+			<span class="smalllinenumber">[line 68]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_COMPARESS_ERROR" id="DB_QUERY_COMPARESS_ERROR"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_COMPARESS_ERROR</span>
+			 = <span class="var-default"> 222</span>
+			<span class="smalllinenumber">[line 53]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_COMPARESS_EXIST" id="DB_QUERY_COMPARESS_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_COMPARESS_EXIST</span>
+			 = <span class="var-default"> 223</span>
+			<span class="smalllinenumber">[line 55]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_CONDTTION_FORMAT" id="DB_QUERY_CONDTTION_FORMAT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_CONDTTION_FORMAT</span>
+			 = <span class="var-default"> 217</span>
+			<span class="smalllinenumber">[line 43]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_EMPTY" id="DB_QUERY_EMPTY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_EMPTY</span>
+			 = <span class="var-default"> 210</span>
+			<span class="smalllinenumber">[line 29]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>查讯 相关的异常
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_ERROR" id="DB_QUERY_ERROR"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_ERROR</span>
+			 = <span class="var-default"> 226</span>
+			<span class="smalllinenumber">[line 61]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_FETCH_ERROR" id="DB_QUERY_FETCH_ERROR"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_FETCH_ERROR</span>
+			 = <span class="var-default"> 220</span>
+			<span class="smalllinenumber">[line 49]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_FIELD_EMPTY" id="DB_QUERY_FIELD_EMPTY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_FIELD_EMPTY</span>
+			 = <span class="var-default"> 212</span>
+			<span class="smalllinenumber">[line 33]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_FIELD_EXIST" id="DB_QUERY_FIELD_EXIST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_FIELD_EXIST</span>
+			 = <span class="var-default"> 213</span>
+			<span class="smalllinenumber">[line 35]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_FIELD_FORMAT" id="DB_QUERY_FIELD_FORMAT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_FIELD_FORMAT</span>
+			 = <span class="var-default"> 214</span>
+			<span class="smalllinenumber">[line 37]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_GROUP_MATCH" id="DB_QUERY_GROUP_MATCH"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_GROUP_MATCH</span>
+			 = <span class="var-default"> 218</span>
+			<span class="smalllinenumber">[line 45]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_INSERT_DATA" id="DB_QUERY_INSERT_DATA"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_INSERT_DATA</span>
+			 = <span class="var-default"> 215</span>
+			<span class="smalllinenumber">[line 39]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_JOIN_TYPE_ERROR" id="DB_QUERY_JOIN_TYPE_ERROR"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_JOIN_TYPE_ERROR</span>
+			 = <span class="var-default"> 225</span>
+			<span class="smalllinenumber">[line 59]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_LINK_EMPTY" id="DB_QUERY_LINK_EMPTY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_LINK_EMPTY</span>
+			 = <span class="var-default"> 211</span>
+			<span class="smalllinenumber">[line 31]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_LOGIC_MATCH" id="DB_QUERY_LOGIC_MATCH"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_LOGIC_MATCH</span>
+			 = <span class="var-default"> 219</span>
+			<span class="smalllinenumber">[line 47]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_TRAN_BEGIN" id="DB_QUERY_TRAN_BEGIN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_TRAN_BEGIN</span>
+			 = <span class="var-default"> 221</span>
+			<span class="smalllinenumber">[line 51]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_UPDATE_DATA" id="DB_QUERY_UPDATE_DATA"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_UPDATE_DATA</span>
+			 = <span class="var-default"> 216</span>
+			<span class="smalllinenumber">[line 41]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_QUERY_WHERE_ERROR" id="DB_QUERY_WHERE_ERROR"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_QUERY_WHERE_ERROR</span>
+			 = <span class="var-default"> 224</span>
+			<span class="smalllinenumber">[line 57]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDB_TABLE_EMPTY" id="DB_TABLE_EMPTY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DB_TABLE_EMPTY</span>
+			 = <span class="var-default"> 240</span>
+			<span class="smalllinenumber">[line 66]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>字段异常
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:31 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

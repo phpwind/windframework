@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindGeneralConverter</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">convert<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                              
+                                                                                                                                                                                                                                                                                  		[ <a href="../classtrees_convert.html" class="menu">class tree: convert</a> ]
+		[ <a href="../elementindex_convert.html" class="menu">index: convert</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">convert</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../convert/IWindConverter.html">IWindConverter</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../convert/WindGeneralConverter.html">WindGeneralConverter</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindGeneralConverter</h1>
+Source Location: /convert/WindGeneralConverter.php<br /><br />
+
+<h2 class="class-name">Class WindGeneralConverter</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../convert/IWindConverter.html">IWindConverter</a></li>            </ul>
+        </p>
+        		<p align="center" class="short-description"><strong>通用编码转化类
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_convert---WindGeneralConverter.php.html">/convert/WindGeneralConverter.php</a> [<span class="field">line 12</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --WindGeneralConverter</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-10-19</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindGeneralConverter.php 3016 2011-10-20 02:23:08Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$encodeLang">$encodeLang</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$iconvEnabled">$iconvEnabled</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$IndexPoint">$IndexPoint</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$tableEncode">$tableEncode</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$tableHandle">$tableHandle</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$tableIndex">$tableIndex</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#var$tableName">$tableName</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodWindGeneralConverter">WindGeneralConverter</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodchsConvert">chsConvert</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodchstoUNICODE">chstoUNICODE</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodchstoUTF8">chstoUTF8</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodchsUTF8toU">chsUTF8toU</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodconvert">convert</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodinitConvert">initConvert</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodunicodeToUTF8">unicodeToUTF8</a></li>
+		  		  <li><a href="../convert/WindGeneralConverter.html#methodutf8toCHS">utf8toCHS</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																																							<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$encodeLang" title="details" class="var-name-summary">$encodeLang</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$iconvEnabled" title="details" class="var-name-summary">$iconvEnabled</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$IndexPoint" title="details" class="var-name-summary">$IndexPoint</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$tableEncode" title="details" class="var-name-summary">$tableEncode</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$tableHandle" title="details" class="var-name-summary">$tableHandle</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$tableIndex" title="details" class="var-name-summary">$tableIndex</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$tableName" title="details" class="var-name-summary">$tableName</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindGeneralConverter</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#WindGeneralConverter" title="details" class="method-name">WindGeneralConverter</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#chsConvert" title="details" class="method-name">chsConvert</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">BIG5toGBK</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">Ambigous</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#chstoUNICODE" title="details" class="method-name">chstoUNICODE</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">GBK,BIG5 to UNICODE</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">Ambigous</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#chstoUTF8" title="details" class="method-name">chstoUTF8</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">BIG5,GBK to UTF8</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#chsUTF8toU" title="details" class="method-name">chsUTF8toU</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">BIG5,GBK to Unicode</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">Ambigous</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#convert" title="details" class="method-name">convert</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">编码转化</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#initConvert" title="details" class="method-name">initConvert</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化类</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#unicodeToUTF8" title="details" class="method-name">unicodeToUTF8</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">unicode to utf8</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#utf8toCHS" title="details" class="method-name">utf8toCHS</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">UTF8 to GBK,BIG5</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$encodeLang" id="$encodeLang"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$encodeLang</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 15]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$iconvEnabled" id="$iconvEnabled"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$iconvEnabled</span>
+			 = <span class="var-default"> false</span>			<span class="smalllinenumber">[line 16]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$IndexPoint" id="$IndexPoint"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$IndexPoint</span>
+			 = <span class="var-default">array(<br />		'GBKtoUTF8' =&gt; 0, <br />		'GBKtoUNICODE' =&gt; 0, <br />		'BIG5toUTF8' =&gt; 1024, <br />		'BIG5toUNICODE' =&gt; 1024, <br />		'UTF8toGBK' =&gt; 512, <br />		'UTF8toBIG5' =&gt; 1536)</span>			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$tableEncode" id="$tableEncode"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$tableEncode</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 18]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$tableHandle" id="$tableHandle"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$tableHandle</span>
+			 = <span class="var-default"> 0</span>			<span class="smalllinenumber">[line 14]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$tableIndex" id="$tableIndex"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$tableIndex</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 17]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$tableName" id="$tableName"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$tableName</span>
+			 = <span class="var-default"> './encode/encode.table'</span>			<span class="smalllinenumber">[line 13]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodWindGeneralConverter" id="WindGeneralConverter"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor WindGeneralConverter</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 33]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindGeneralConverter WindGeneralConverter(
+[
+$sourceLang = ''], [
+$targetLang = ''], [
+$forceTable = false], string
+$SourceLang, string
+$TargetLang, boolean
+$ForceTable&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$SourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$TargetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ForceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodchsConvert" id="chsConvert"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">chsConvert</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 263]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed chsConvert(
+string
+$srcText, [string
+$SourceLang = 'GBK']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>BIG5toGBK
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$srcText:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$SourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodchstoUNICODE" id="chstoUNICODE"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">chstoUNICODE</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 226]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>Ambigous chstoUNICODE(
+string
+$srcText, [string
+$SourceLang = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>GBK,BIG5 to UNICODE
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$srcText:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$SourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>&lt;string, unknown&gt;</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodchstoUTF8" id="chstoUTF8"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">chstoUTF8</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 145]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>Ambigous chstoUTF8(
+string
+$srcText&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>BIG5,GBK to UTF8
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$srcText:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>&lt;string, unknown&gt;</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodchsUTF8toU" id="chsUTF8toU"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">chsUTF8toU</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 125]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string chsUTF8toU(
+string
+$c&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>BIG5,GBK to Unicode
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$c:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodconvert" id="convert"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">convert</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 47]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>Ambigous convert(
+string
+$srcText, [
+$sourceLang = ''], [
+$targetLang = ''], [
+$forceTable = false], string
+$SourceLang, string
+$TargetLang, boolean
+$ForceTable&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>编码转化
+</strong></p>
+<span class="description"><p>对输入的字符串进行从原编码到目标编码的转化,请确定原编码与目标编码</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$srcText:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$SourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$TargetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ForceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>&lt;string, unknown&gt;|string|unknown</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../convert/IWindConverter.html#methodconvert">IWindConverter::convert()</a></dt>
+						<dd>编码转化</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodinitConvert" id="initConvert"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">initConvert</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 86]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void initConvert(
+string
+$SourceLang, 
+$targetLang, 
+$forceTable, string
+$TargetLang, boolean
+$ForceTable&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化类
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$SourceLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$TargetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ForceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetLang:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forceTable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodunicodeToUTF8" id="unicodeToUTF8"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">unicodeToUTF8</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 100]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string unicodeToUTF8(
+string
+$c&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>unicode to utf8
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$c:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodutf8toCHS" id="utf8toCHS"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">utf8toCHS</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 172]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string utf8toCHS(
+string
+$srcText&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>UTF8 to GBK,BIG5
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$srcText:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:34 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

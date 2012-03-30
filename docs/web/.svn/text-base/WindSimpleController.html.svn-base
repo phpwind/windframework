@@ -1,0 +1,1853 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindSimpleController</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">web<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                                            
+                                    		[ <a href="../classtrees_web.html" class="menu">class tree: web</a> ]
+		[ <a href="../elementindex_web.html" class="menu">index: web</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">web</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../web/IWindController.html">IWindController</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../web/WindController.html">WindController</a>    	 <br />
+	    		<a href="../web/WindDispatcher.html">WindDispatcher</a>    	 <br />
+	    		<a href="../web/WindErrorHandler.html">WindErrorHandler</a>    	 <br />
+	    		<a href="../web/WindForward.html">WindForward</a>    	 <br />
+	    		<a href="../web/WindSimpleController.html">WindSimpleController</a>    	 <br />
+	    		<a href="../web/WindUrlHelper.html">WindUrlHelper</a>    	 <br />
+	    		<a href="../web/WindWebApplication.html">WindWebApplication</a>    	 <br />
+	  </div>
+  <div class="package">
+	filter<br />	    <span style="padding-left: 1em;">		<a href="../web/filter/WindFormFilter.html">WindFormFilter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindSimpleController</h1>
+Source Location: /web/WindSimpleController.php<br /><br />
+
+<h2 class="class-name">Class WindSimpleController</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../web/IWindController.html">IWindController</a></li>            </ul>
+        </p>
+        		<p align="center" class="short-description"><strong>操作控制器,管理用户的请求处理操作.
+</strong></p>
+<span class="description"><p>该类有一个抽象方法作为默认处理用户请求的操作实现'run',用户可以通过实现该方法处理请求</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_web---WindSimpleController.php.html">/web/WindSimpleController.php</a> [<span class="field">line 12</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --WindSimpleController</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindSimpleController.php 3279 2011-12-29 03:43:19Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../web/WindSimpleController.html#var$errorMessage">$errorMessage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#var$forward">$forward</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../web/WindSimpleController.html#methodaddMessage">addMessage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodafterAction">afterAction</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodbeforeAction">beforeAction</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methoddoAction">doAction</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodforwardAction">forwardAction</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodforwardRedirect">forwardRedirect</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodgetErrorMessage">getErrorMessage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodgetForward">getForward</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodgetInput">getInput</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodresolveActionFilter">resolveActionFilter</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodresolvedActionMethod">resolvedActionMethod</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodrun">run</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsaveToken">saveToken</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetDefaultTemplateName">setDefaultTemplateName</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetErrorMessage">setErrorMessage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetForward">setForward</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetGlobal">setGlobal</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetLayout">setLayout</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetOutput">setOutput</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetTemplate">setTemplate</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetTemplateExt">setTemplateExt</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetTemplatePath">setTemplatePath</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetTheme">setTheme</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodsetThemePackage">setThemePackage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodshowMessage">showMessage</a></li>
+		  		  <li><a href="../web/WindSimpleController.html#methodvalidateToken">validateToken</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/WindController.html">WindController</a></td>
+					<td>
+											操作控制器,管理一组用于处理用户的请求的处理操作.
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																									<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$errorMessage" title="details" class="var-name-summary">$errorMessage</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$forward" title="details" class="var-name-summary">$forward</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#addMessage" title="details" class="method-name">addMessage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">添加错误信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#afterAction" title="details" class="method-name">afterAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">action操作结束后调用</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#beforeAction" title="details" class="method-name">beforeAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">action操作开始前调用</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#doAction" title="details" class="method-name">doAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#forwardAction" title="details" class="method-name">forwardAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重定向一个请求到另外的action</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#forwardRedirect" title="details" class="method-name">forwardRedirect</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重定向一个请求到另外的URL</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getErrorMessage" title="details" class="method-name">getErrorMessage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getForward" title="details" class="method-name">getForward</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array|string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getInput" title="details" class="method-name">getInput</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得输入数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#resolveActionFilter" title="details" class="method-name">resolveActionFilter</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">action过滤链策略部署</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#resolvedActionMethod" title="details" class="method-name">resolvedActionMethod</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">解析action操作方法名称</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#run" title="details" class="method-name">run</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">默认的操作处理方法</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#saveToken" title="details" class="method-name">saveToken</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">保存token令牌</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setDefaultTemplateName" title="details" class="method-name">setDefaultTemplateName</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置默认的模板名称</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setErrorMessage" title="details" class="method-name">setErrorMessage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setForward" title="details" class="method-name">setForward</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setGlobal" title="details" class="method-name">setGlobal</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置模板数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setLayout" title="details" class="method-name">setLayout</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置布局页面</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setOutput" title="details" class="method-name">setOutput</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置模板数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTemplate" title="details" class="method-name">setTemplate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置页面模板</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTemplateExt" title="details" class="method-name">setTemplateExt</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置模板文件的扩展名</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTemplatePath" title="details" class="method-name">setTemplatePath</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置模板路径,模板目录地址,支持命名空间方式</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTheme" title="details" class="method-name">setTheme</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置当前主题信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setThemePackage" title="details" class="method-name">setThemePackage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置主题包</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#showMessage" title="details" class="method-name">showMessage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">发送一个错误请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#validateToken" title="details" class="method-name">validateToken</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">验证令牌</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$errorMessage" id="$errorMessage"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;
+			<span class="var-name">$errorMessage</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$forward" id="$forward"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;
+			<span class="var-name">$forward</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 16]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodaddMessage" id="addMessage"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">addMessage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 255]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void addMessage(
+string
+$message, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>添加错误信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$message:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认为空字符串</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodafterAction" id="afterAction"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">afterAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 103]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void afterAction(
+<a href="../router/AbstractWindRouter.html">AbstractWindRouter</a>
+$handlerAdapter&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>action操作结束后调用
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$handlerAdapter:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbeforeAction" id="beforeAction"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">beforeAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 96]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void beforeAction(
+<a href="../router/AbstractWindRouter.html">AbstractWindRouter</a>
+$handlerAdapter&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>action操作开始前调用
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$handlerAdapter:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../web/WindErrorHandler.html#methodbeforeAction">WindErrorHandler::beforeAction()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddoAction" id="doAction"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">doAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 32]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void doAction(
+
+$handlerAdapter&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$handlerAdapter:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../web/IWindController.html#methoddoAction">IWindController::doAction()</a></dt>
+						<dd>处理请求并返回Forward对象</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodforwardAction" id="forwardAction"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">forwardAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 114]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void forwardAction(
+string
+$action, [array
+$args = array()], [boolean
+$isRedirect = false], [boolean
+$immediately = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重定向一个请求到另外的action
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$action:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 支持格式:module/controller/action/?args</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 参数信息 默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$isRedirect:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否是重定向请求 以url重定向方式跳转</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$immediately:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否立即forward</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodforwardRedirect" id="forwardRedirect"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">forwardRedirect</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 124]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void forwardRedirect(
+string
+$url&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重定向一个请求到另外的URL
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$url:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetErrorMessage" id="getErrorMessage"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getErrorMessage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 302]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../base/WindErrorMessage.html">WindErrorMessage</a> getErrorMessage(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetForward" id="getForward"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getForward</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 295]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../web/WindForward.html">WindForward</a> getForward(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetInput" id="getInput"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getInput</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 160]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array|string getInput(
+string
+$name, [string
+$type = ''], [string
+$callback = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得输入数据
+</strong></p>
+<span class="description"><p>如果输入了回调方法则返回数组:第一个值：value;第二个值：验证结果</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> input name</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> input type (GET POST COOKIE)</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$callback:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> validation for input</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresolveActionFilter" id="resolveActionFilter"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">resolveActionFilter</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 79]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void resolveActionFilter(
+array
+$filters&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>action过滤链策略部署
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$filters:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Example:</strong>&nbsp;&nbsp;</td><td>example not found</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresolvedActionMethod" id="resolvedActionMethod"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">resolvedActionMethod</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 288]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string resolvedActionMethod(
+WindUrlBasedRouter
+$handlerAdapter&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>解析action操作方法名称
+</strong></p>
+<span class="description"><p>可以通过覆盖该方法,改变action解析规则</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">WindUrlBasedRouter</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$handlerAdapter:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回解析到的action操作处理方法,默认只返回run</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../web/WindController.html#methodresolvedActionMethod">WindController::resolvedActionMethod()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrun" id="run"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">run</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 27]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void run(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>默认的操作处理方法
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../web/WindController.html#methodrun">WindController::run()</a>
+							</li>
+					<li>
+				<a href="../web/WindErrorHandler.html#methodrun">WindErrorHandler::run()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsaveToken" id="saveToken"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">saveToken</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 50]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void saveToken(
+[
+$tokenName = 'token']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>保存token令牌
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$tokenName:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetDefaultTemplateName" id="setDefaultTemplateName"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setDefaultTemplateName</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 279]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setDefaultTemplateName(
+WindUrlBasedRouter
+$handlerAdapter&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置默认的模板名称
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">WindUrlBasedRouter</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$handlerAdapter:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetErrorMessage" id="setErrorMessage"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setErrorMessage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 316]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setErrorMessage(
+<a href="../base/WindErrorMessage.html">WindErrorMessage</a>
+$errorMessage&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$errorMessage:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetForward" id="setForward"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setForward</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 309]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setForward(
+<a href="../web/WindForward.html">WindForward</a>
+$forward&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forward:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetGlobal" id="setGlobal"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setGlobal</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 147]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setGlobal(
+string|array|object 
+$data, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置模板数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array|object </span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetLayout" id="setLayout"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setLayout</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 243]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setLayout(
+string
+$layout&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置布局页面
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$layout:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetOutput" id="setOutput"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setOutput</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 136]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setOutput(
+string|array|object 
+$data, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置模板数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array|object </span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTemplate" id="setTemplate"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setTemplate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 193]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTemplate(
+string
+$template&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置页面模板
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$template:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTemplateExt" id="setTemplateExt"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setTemplateExt</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 213]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTemplateExt(
+string
+$templateExt&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置模板文件的扩展名
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$templateExt:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTemplatePath" id="setTemplatePath"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setTemplatePath</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 203]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTemplatePath(
+string
+$templatePath&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置模板路径,模板目录地址,支持命名空间方式
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$templatePath:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTheme" id="setTheme"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setTheme</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 223]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTheme(
+string
+$theme&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置当前主题信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$theme:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetThemePackage" id="setThemePackage"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setThemePackage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 233]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setThemePackage(
+string
+$package&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置主题包
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$package:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodshowMessage" id="showMessage"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">showMessage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 267]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void showMessage(
+[string
+$message = ''], [string
+$key = ''], [string
+$errorAction = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>发送一个错误请求
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$message:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认为空字符串</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认为空字符串</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$errorAction:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认为空字符串</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodvalidateToken" id="validateToken"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">validateToken</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 63]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void validateToken(
+string
+$tokenValue, [string
+$tokenName = 'token']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>验证令牌
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$tokenValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当前获得的token值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$tokenName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> token名称</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:40 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

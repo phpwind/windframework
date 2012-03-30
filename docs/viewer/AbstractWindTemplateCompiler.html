@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class AbstractWindTemplateCompiler</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">viewer<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                              
+                                                  		[ <a href="../classtrees_viewer.html" class="menu">class tree: viewer</a> ]
+		[ <a href="../elementindex_viewer.html" class="menu">index: viewer</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">viewer</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../viewer/IWindView.html">IWindView</a>    	 <br />
+	    		<a href="../viewer/IWindViewerResolver.html">IWindViewerResolver</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../viewer/AbstractWindTemplateCompiler.html">AbstractWindTemplateCompiler</a>    	 <br />
+	    		<a href="../viewer/AbstractWindViewTemplate.html">AbstractWindViewTemplate</a>    	 <br />
+	    		<a href="../viewer/WindLayout.html">WindLayout</a>    	 <br />
+	    		<a href="../viewer/WindRender.html">WindRender</a>    	 <br />
+	    		<a href="../viewer/WindView.html">WindView</a>    	 <br />
+	  </div>
+  <div class="package">
+	resolver<br />	    <span style="padding-left: 1em;">		<a href="../viewer/resolver/WindNormalViewerResolver.html">WindNormalViewerResolver</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	compiler<br />	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerAction.html">WindTemplateCompilerAction</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerComponent.html">WindTemplateCompilerComponent</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerCss.html">WindTemplateCompilerCss</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerEcho.html">WindTemplateCompilerEcho</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerInternal.html">WindTemplateCompilerInternal</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerLang.html">WindTemplateCompilerLang</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerPage.html">WindTemplateCompilerPage</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerScript.html">WindTemplateCompilerScript</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerTemplate.html">WindTemplateCompilerTemplate</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerToken.html">WindTemplateCompilerToken</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../viewer/exception/WindViewException.html">WindViewException</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: AbstractWindTemplateCompiler</h1>
+Source Location: /viewer/AbstractWindTemplateCompiler.php<br /><br />
+
+<h2 class="class-name">Class AbstractWindTemplateCompiler</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>模板标签解析器
+</strong></p>
+<span class="description"><p>可以通过继承该抽象类,扩展模板的标签解析.在扩展模板的标签解析时实现'compile'方法即可.  该方法接收一段match到的标签内容进行解析操作并返回解析后的结果.</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_viewer---AbstractWindTemplateCompiler.php.html">/viewer/AbstractWindTemplateCompiler.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --<a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a>
+      |
+      --AbstractWindTemplateCompiler</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: AbstractWindTemplateCompiler.php 3389 2012-03-12 15:44:22Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#var$request">$request</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#var$response">$response</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#var$tags">$tags</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#var$windViewerResolver">$windViewerResolver</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#var$windViewTemplate">$windViewTemplate</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#method__construct">__construct</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodcompile">compile</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodcompileProperty">compileProperty</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodgetProperties">getProperties</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodgetWindViewTemplate">getWindViewTemplate</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodhandle">handle</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodpostCompile">postCompile</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodpostHandle">postHandle</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodpreCompile">preCompile</a></li>
+		  		  <li><a href="../viewer/AbstractWindTemplateCompiler.html#methodpreHandle">preHandle</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerPage.html">WindTemplateCompilerPage</a></td>
+					<td>
+											page标签解析
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerToken.html">WindTemplateCompilerToken</a></td>
+					<td>
+											输出安全令牌隐藏域
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerScript.html">WindTemplateCompilerScript</a></td>
+					<td>
+											编译javascript标签
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerTemplate.html">WindTemplateCompilerTemplate</a></td>
+					<td>
+											编译模板标签
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerLang.html">WindTemplateCompilerLang</a></td>
+					<td>
+											输出翻译后的语言信息
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerInternal.html">WindTemplateCompilerInternal</a></td>
+					<td>
+											
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerCss.html">WindTemplateCompilerCss</a></td>
+					<td>
+											css标签编译器
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerComponent.html">WindTemplateCompilerComponent</a></td>
+					<td>
+											组件标签编译器
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerEcho.html">WindTemplateCompilerEcho</a></td>
+					<td>
+											变量输出编译类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/compiler/WindTemplateCompilerAction.html">WindTemplateCompilerAction</a></td>
+					<td>
+											&lt;doAction /&gt; 标签解析脚本
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#var$interceptorChain">WindHandlerInterceptor::$interceptorChain</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#var$result">WindHandlerInterceptor::$result</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodhandle">WindHandlerInterceptor::handle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的执行入口</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodpostHandle">WindHandlerInterceptor::postHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的后置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodpreHandle">WindHandlerInterceptor::preHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的前置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodsetHandlerInterceptorChain">WindHandlerInterceptor::setHandlerInterceptorChain()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置拦截链对象</span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																											<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../http/request/WindHttpRequest.html">WindHttpRequest</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$request" title="details" class="var-name-summary">$request</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../http/response/WindHttpResponse.html">WindHttpResponse</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$response" title="details" class="var-name-summary">$response</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">array</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$tags" title="details" class="var-name-summary">$tags</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$windViewerResolver" title="details" class="var-name-summary">$windViewerResolver</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$windViewTemplate" title="details" class="var-name-summary">$windViewTemplate</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">AbstractWindTemplateCompiler</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化标签解析器</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#compile" title="details" class="method-name">compile</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">内容编译,接受一段落内容进行编译处理并返回编译内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#compileProperty" title="details" class="method-name">compileProperty</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">解析标签属性值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getProperties" title="details" class="method-name">getProperties</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回该标签支持的属性列表,需要覆盖该方法实现对标签的解析支持</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getWindViewTemplate" title="details" class="method-name">getWindViewTemplate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#handle" title="details" class="method-name">handle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#postCompile" title="details" class="method-name">postCompile</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">编译后处理结果</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#postHandle" title="details" class="method-name">postHandle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#preCompile" title="details" class="method-name">preCompile</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">编译前预处理</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#preHandle" title="details" class="method-name">preHandle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$request" id="$request"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../http/request/WindHttpRequest.html">WindHttpRequest</a></span>&nbsp;&nbsp;
+			<span class="var-name">$request</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 29]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$response" id="$response"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../http/response/WindHttpResponse.html">WindHttpResponse</a></span>&nbsp;&nbsp;
+			<span class="var-name">$response</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 33]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$tags" id="$tags"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>&nbsp;&nbsp;
+			<span class="var-name">$tags</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 17]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$windViewerResolver" id="$windViewerResolver"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a></span>&nbsp;&nbsp;
+			<span class="var-name">$windViewerResolver</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 25]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$windViewTemplate" id="$windViewTemplate"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a></span>&nbsp;&nbsp;
+			<span class="var-name">$windViewTemplate</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 21]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 44]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>AbstractWindTemplateCompiler __construct(
+string
+$tags, <a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a>
+$windViewTemplate, <a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a>
+$windViewerResolver, <a href="../http/request/WindHttpRequest.html">WindHttpRequest</a>
+$request, <a href="../http/response/WindHttpResponse.html">WindHttpResponse</a>
+$response&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化标签解析器
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$tags:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$windViewTemplate:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$windViewerResolver:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../http/request/WindHttpRequest.html">WindHttpRequest</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../http/response/WindHttpResponse.html">WindHttpResponse</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$response:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcompile" id="compile"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">compile</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 59]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string compile(
+string
+$key, string
+$content&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>内容编译,接受一段落内容进行编译处理并返回编译内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 模板内容</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>输出编译后结果</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerPage.html#methodcompile">WindTemplateCompilerPage::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerToken.html#methodcompile">WindTemplateCompilerToken::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerScript.html#methodcompile">WindTemplateCompilerScript::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerTemplate.html#methodcompile">WindTemplateCompilerTemplate::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerLang.html#methodcompile">WindTemplateCompilerLang::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerInternal.html#methodcompile">WindTemplateCompilerInternal::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerCss.html#methodcompile">WindTemplateCompilerCss::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerComponent.html#methodcompile">WindTemplateCompilerComponent::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerEcho.html#methodcompile">WindTemplateCompilerEcho::compile()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerAction.html#methodcompile">WindTemplateCompilerAction::compile()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcompileProperty" id="compileProperty"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">compileProperty</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 89]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void compileProperty(
+string
+$content&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>解析标签属性值
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetProperties" id="getProperties"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getProperties</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 80]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array getProperties(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回该标签支持的属性列表,需要覆盖该方法实现对标签的解析支持
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerPage.html#methodgetProperties">WindTemplateCompilerPage::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerToken.html#methodgetProperties">WindTemplateCompilerToken::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerScript.html#methodgetProperties">WindTemplateCompilerScript::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerTemplate.html#methodgetProperties">WindTemplateCompilerTemplate::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerLang.html#methodgetProperties">WindTemplateCompilerLang::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerComponent.html#methodgetProperties">WindTemplateCompilerComponent::getProperties()</a>
+							</li>
+					<li>
+				<a href="../viewer/compiler/WindTemplateCompilerAction.html#methodgetProperties">WindTemplateCompilerAction::getProperties()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetWindViewTemplate" id="getWindViewTemplate"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getWindViewTemplate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 135]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a> getWindViewTemplate(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodhandle" id="handle"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">handle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 123]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void handle(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../filter/WindHandlerInterceptor.html#methodhandle">WindHandlerInterceptor::handle()</a></dt>
+						<dd>拦截器的执行入口</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpostCompile" id="postCompile"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">postCompile</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 73]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void postCompile(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>编译后处理结果
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpostHandle" id="postHandle"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">postHandle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 118]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void postHandle(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../filter/WindHandlerInterceptor.html#methodpostHandle">WindHandlerInterceptor::postHandle()</a></dt>
+						<dd>拦截器的后置操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpreCompile" id="preCompile"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">preCompile</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 66]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void preCompile(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>编译前预处理
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpreHandle" id="preHandle"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">preHandle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 103]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void preHandle(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../filter/WindHandlerInterceptor.html#methodpreHandle">WindHandlerInterceptor::preHandle()</a></dt>
+						<dd>拦截器的前置操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:26 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,2069 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindHttpRequest</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">http<br /><div class="header-top-right-subpackage">request</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                    
+                                                                                                                                                                                                            		[ <a href="../../classtrees_http.html" class="menu">class tree: http</a> ]
+		[ <a href="../../elementindex_http.html" class="menu">index: http</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">http</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../../http/IWindHttpContainer.html">IWindHttpContainer</a>    	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="../../http/request/IWindRequest.html">IWindRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="../../http/response/IWindResponse.html">IWindResponse</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	transfer<br />	    <span style="padding-left: 1em;">		<a href="../../http/transfer/AbstractWindHttp.html">AbstractWindHttp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpCurl.html">WindHttpCurl</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpSocket.html">WindHttpSocket</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpStream.html">WindHttpStream</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="../../http/request/WindHttpRequest.html">WindHttpRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="../../http/response/WindHttpResponse.html">WindHttpResponse</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	cookie<br />	    <span style="padding-left: 1em;">		<a href="../../http/cookie/WindCookie.html">WindCookie</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/cookie/WindNormalCookie.html">WindNormalCookie</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mime<br />	    <span style="padding-left: 1em;">		<a href="../../http/mime/WindMimeType.html">WindMimeType</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session<br />	    <span style="padding-left: 1em;">		<a href="../../http/session/WindSession.html">WindSession</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session-handler<br />	    <span style="padding-left: 1em;">		<a href="../../http/session-handler/AbstractWindSessionHandler.html">AbstractWindSessionHandler</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/session-handler/WindSessionHandler.html">WindSessionHandler</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindHttpRequest</h1>
+Source Location: /http/request/WindHttpRequest.php<br /><br />
+
+<h2 class="class-name">Class WindHttpRequest</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../../http/request/IWindRequest.html">IWindRequest</a></li>            </ul>
+        </p>
+        		<p align="center" class="short-description"><strong>Request对象
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_http---request---WindHttpRequest.php.html">/http/request/WindHttpRequest.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindHttpRequest.php 3134 2011-11-17 03:18:36Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#method__construct">__construct</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetAcceptCharset">getAcceptCharset</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetAcceptLanguage">getAcceptLanguage</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetAcceptTypes">getAcceptTypes</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetAttribute">getAttribute</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetBaseUrl">getBaseUrl</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetClientIp">getClientIp</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetCookie">getCookie</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetEnv">getEnv</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetGet">getGet</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetHeader">getHeader</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetHostInfo">getHostInfo</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetIsAjaxRequest">getIsAjaxRequest</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetPathInfo">getPathInfo</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetPost">getPost</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetProtocol">getProtocol</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetQuery">getQuery</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRemoteHost">getRemoteHost</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRemotePort">getRemotePort</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRequest">getRequest</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRequestMethod">getRequestMethod</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRequestType">getRequestType</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetRequestUri">getRequestUri</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetScheme">getScheme</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetScript">getScript</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetScriptUrl">getScriptUrl</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetServer">getServer</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetServerName">getServerName</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetServerPort">getServerPort</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetSession">getSession</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetUrlReferer">getUrlReferer</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodgetUserAgent">getUserAgent</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodisDelete">isDelete</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodisGet">isGet</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodisPost">isPost</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodisPut">isPut</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodisSecure">isSecure</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodnormalizeRequest">normalizeRequest</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodsetAttribute">setAttribute</a></li>
+		  		  <li><a href="../../http/request/WindHttpRequest.html#methodsetServerPort">setServerPort</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																																																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindHttpRequest</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化Request对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string|''</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getAcceptCharset" title="details" class="method-name">getAcceptCharset</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回客户端程序可以能够进行解码的数据编码方式</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getAcceptLanguage" title="details" class="method-name">getAcceptLanguage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回客户端程序期望服务器返回哪个国家的语言文档</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getAcceptTypes" title="details" class="method-name">getAcceptTypes</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前请求头中 Accept: 项的内容，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string|object|array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getAttribute" title="details" class="method-name">getAttribute</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据名称获得服务器和执行环境信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getBaseUrl" title="details" class="method-name">getBaseUrl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取基础URL</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getClientIp" title="details" class="method-name">getClientIp</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回访问IP</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getCookie" title="details" class="method-name">getCookie</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回cookie的值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getEnv" title="details" class="method-name">getEnv</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回ENV的值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getGet" title="details" class="method-name">getGet</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得$_GET值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getHeader" title="details" class="method-name">getHeader</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取Http头信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getHostInfo" title="details" class="method-name">getHostInfo</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得主机信息，包含协议信息，主机名，访问端口信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getIsAjaxRequest" title="details" class="method-name">getIsAjaxRequest</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回该请求是否为ajax请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getPathInfo" title="details" class="method-name">getPathInfo</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getPost" title="details" class="method-name">getPost</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取请求的表单数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getProtocol" title="details" class="method-name">getProtocol</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回请求页面时通信协议的名称和版本</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getQuery" title="details" class="method-name">getQuery</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取请求数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRemoteHost" title="details" class="method-name">getRemoteHost</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回浏览当前页面的用户的主机名</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">number</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRemotePort" title="details" class="method-name">getRemotePort</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得用户机器上连接到 Web 服务器所使用的端口号</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRequest" title="details" class="method-name">getRequest</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得用户请求的数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRequestMethod" title="details" class="method-name">getRequestMethod</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得请求的方法</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRequestType" title="details" class="method-name">getRequestType</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得请求类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRequestUri" title="details" class="method-name">getRequestUri</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化请求的资源标识符</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getScheme" title="details" class="method-name">getScheme</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取请求链接协议</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getScript" title="details" class="method-name">getScript</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回执行脚本名称</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getScriptUrl" title="details" class="method-name">getScriptUrl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前执行脚本的绝对路径</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getServer" title="details" class="method-name">getServer</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回Server的值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getServerName" title="details" class="method-name">getServerName</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前运行脚本所在的服务器的主机名。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getServerPort" title="details" class="method-name">getServerPort</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回服务端口号</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getSession" title="details" class="method-name">getSession</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回session的值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getUrlReferer" title="details" class="method-name">getUrlReferer</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回浏览器发送Referer请求头</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getUserAgent" title="details" class="method-name">getUserAgent</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回User-Agent头字段用于指定浏览器或者其他客户端程序的类型和名字</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#isDelete" title="details" class="method-name">isDelete</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回请求是否为DELETE请求类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#isGet" title="details" class="method-name">isGet</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回请求是否为GET请求类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#isPost" title="details" class="method-name">isPost</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回请求是否为POST请求类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#isPut" title="details" class="method-name">isPut</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回请求是否为PUT请求类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#isSecure" title="details" class="method-name">isSecure</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">请求是否使用的是HTTPS安全链接</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#normalizeRequest" title="details" class="method-name">normalizeRequest</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化request对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setAttribute" title="details" class="method-name">setAttribute</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置属性数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setServerPort" title="details" class="method-name">setServerPort</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置服务端口号</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 89]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindHttpRequest __construct(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化Request对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetAcceptCharset" id="getAcceptCharset"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getAcceptCharset</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 614]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string|'' getAcceptCharset(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回客户端程序可以能够进行解码的数据编码方式
+</strong></p>
+<span class="description"><p>这里的编码方式通常指某种压缩方式</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetAcceptLanguage" id="getAcceptLanguage"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getAcceptLanguage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 625]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getAcceptLanguage(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回客户端程序期望服务器返回哪个国家的语言文档
+</strong></p>
+<span class="description"><p>Accept-Language: en-us,zh-cn</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetAcceptTypes" id="getAcceptTypes"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getAcceptTypes</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 603]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getAcceptTypes(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前请求头中 Accept: 项的内容，
+</strong></p>
+<span class="description"><p>Accept头字段用于指出客户端程序能够处理的MIME类型，例如 text/html,image/*</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetAttribute" id="getAttribute"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getAttribute</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 142]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string|object|array getAttribute(
+
+$key, [string
+$defaultValue = ''], string
+$name&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据名称获得服务器和执行环境信息
+</strong></p>
+<span class="description"><p>主要获取的依次顺序为：_attribute、$_GET、$_POST、$_COOKIE、$_REQUEST、$_ENV、$_SERVER</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取数据的key值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置缺省值,当获取值失败的时候返回缺省值,默认该值为空字串</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回获得值</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetBaseUrl" id="getBaseUrl"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getBaseUrl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 492]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getBaseUrl(
+[boolean
+$absolute = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取基础URL
+</strong></p>
+<span class="description"><p>这里是去除了脚本文件以及访问参数信息的URL地址信息:</p><p><pre>Example:
+ 请求: http://www.phpwind.net/example/index.php?a=test
+ 1]如果: $absolute = false：
+ 返回： example
+ 2]如果: $absolute = true:
+ 返回： http://www.phpwind.net/example</pre></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolute:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否返回主机信息</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 当返回信息失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetClientIp" id="getClientIp"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getClientIp</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 299]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getClientIp(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回访问IP
+</strong></p>
+<span class="description"><p>如果获取请求IP失败,则返回0.0.0.0</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetCookie" id="getCookie"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getCookie</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 225]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getCookie(
+[string
+$name = null], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回cookie的值
+</strong></p>
+<span class="description"><p>如果$name=null则返回所有Cookie值</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的变量名,如果该值为null则返回$_COOKIE数组,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取变量失败的时候返回该值,默认该值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetEnv" id="getEnv"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getEnv</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 267]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getEnv(
+[string
+$name = null], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回ENV的值
+</strong></p>
+<span class="description"><p>如果$name为null则返回所有$_ENV的值</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的变量名,如果该值为null则返回$_ENV数组,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取变量失败的时候返回该值,默认该值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetGet" id="getGet"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getGet</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 211]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getGet(
+[string
+$name = ''], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得$_GET值
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待获取的变量名,默认为空字串,当该值为null的时候将返回$_GET数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取的变量不存在的时候返回该缺省值,默认值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetHeader" id="getHeader"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getHeader</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 448]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getHeader(
+string
+$header, [string
+$default = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取Http头信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$header:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 头部名称</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$default:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取失败将返回该值,默认为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetHostInfo" id="getHostInfo"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getHostInfo</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 508]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getHostInfo(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得主机信息，包含协议信息，主机名，访问端口信息
+</strong></p>
+<span class="description"><p><pre>Example:
+ 请求: http://www.phpwind.net/example/index.php?a=test
+ 返回： http://www.phpwind.net/</pre></p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 获取主机信息失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetIsAjaxRequest" id="getIsAjaxRequest"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getIsAjaxRequest</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 333]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean getIsAjaxRequest(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回该请求是否为ajax请求
+</strong></p>
+<span class="description"><p>如果是ajax请求将返回true,否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetPathInfo" id="getPathInfo"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getPathInfo</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 470]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getPathInfo(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息
+</strong></p>
+<span class="description"><p><pre>Example:
+ 请求: http://www.phpwind.net/example/index.php?a=test
+ 返回: a=test</pre></p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetPost" id="getPost"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getPost</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 199]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getPost(
+[string
+$name = null], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取请求的表单数据
+</strong></p>
+<span class="description"><p>从$_POST获得值</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的变量名,默认为null,当为null的时候返回$_POST数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取变量失败的时候返回该值,默认为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetProtocol" id="getProtocol"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getProtocol</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 288]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getProtocol(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回请求页面时通信协议的名称和版本
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetQuery" id="getQuery"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getQuery</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 186]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getQuery(
+[string
+$name = null], [
+$defaultValue = null], string
+$default&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取请求数据
+</strong></p>
+<span class="description"><p>将从$_GET中获取数据</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待获取的变量名,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$default:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 如果获取变量失败则返回该值,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRemoteHost" id="getRemoteHost"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getRemoteHost</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 560]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getRemoteHost(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回浏览当前页面的用户的主机名
+</strong></p>
+<span class="description"><p>DNS 反向解析不依赖于用户的 REMOTE_ADDR</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRemotePort" id="getRemotePort"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getRemotePort</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 580]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>number getRemotePort(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得用户机器上连接到 Web 服务器所使用的端口号
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRequest" id="getRequest"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getRequest</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 170]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getRequest(
+[string
+$key = null], [mixed
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得用户请求的数据
+</strong></p>
+<span class="description"><p>返回$_GET,$_POST的值,未设置则返回$defaultValue</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的参数name,默认为null将获得$_GET和$_POST两个数组的所有值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取值失败的时候返回缺省值,默认值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRequestMethod" id="getRequestMethod"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getRequestMethod</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 311]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getRequestMethod(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得请求的方法
+</strong></p>
+<span class="description"><p>将返回POST\GET\DELETE等HTTP请求方式</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRequestType" id="getRequestType"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getRequestType</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 322]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getRequestType(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得请求类型
+</strong></p>
+<span class="description"><p>如果是web请求将返回web</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRequestUri" id="getRequestUri"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getRequestUri</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 404]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getRequestUri(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化请求的资源标识符
+</strong></p>
+<span class="description"><p>这里的uri是去除协议名、主机名的  <pre>Example:
+ 请求： http://www.phpwind.net/example/index.php?a=test
+ 则返回: /example/index.php?a=test</pre></p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 当获取失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetScheme" id="getScheme"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getScheme</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 279]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getScheme(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取请求链接协议
+</strong></p>
+<span class="description"><p>如果是安全链接请求则返回https否则返回http</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetScript" id="getScript"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getScript</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 436]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getScript(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回执行脚本名称
+</strong></p>
+<span class="description"><p><pre>Example:
+ 请求: http://www.phpwind.net/example/index.php?a=test
+ 返回: index.php</pre></p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 当获取失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetScriptUrl" id="getScriptUrl"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getScriptUrl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 420]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getScriptUrl(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前执行脚本的绝对路径
+</strong></p>
+<span class="description"><p><pre>Example:
+ 请求: http://www.phpwind.net/example/index.php?a=test
+ 返回: /example/index.php</pre></p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 当获取失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetServer" id="getServer"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getServer</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 253]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getServer(
+[string
+$name = null], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回Server的值
+</strong></p>
+<span class="description"><p>如果$name为空则返回所有Server的值</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的变量名,如果该值为null则返回$_SERVER数组,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取变量失败的时候返回该值,默认该值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetServerName" id="getServerName"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getServerName</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 521]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getServerName(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前运行脚本所在的服务器的主机名。
+</strong></p>
+<span class="description"><p>如果脚本运行于虚拟主机中  该名称是由那个虚拟主机所设置的值决定</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetServerPort" id="getServerPort"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getServerPort</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 533]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int getServerPort(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回服务端口号
+</strong></p>
+<span class="description"><p>https链接的默认端口号为443  http链接的默认端口号为80</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetSession" id="getSession"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getSession</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 239]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getSession(
+[string
+$name = null], [string
+$defaultValue = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回session的值
+</strong></p>
+<span class="description"><p>如果$name=null则返回所有SESSION值</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取的变量名,如果该值为null则返回$_SESSION数组,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$defaultValue:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当获取变量失败的时候返回该值,默认该值为null</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetUrlReferer" id="getUrlReferer"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getUrlReferer</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 571]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getUrlReferer(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回浏览器发送Referer请求头
+</strong></p>
+<span class="description"><p>可以让服务器了解和追踪发出本次请求的起源URL地址</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetUserAgent" id="getUserAgent"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getUserAgent</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 592]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getUserAgent(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回User-Agent头字段用于指定浏览器或者其他客户端程序的类型和名字
+</strong></p>
+<span class="description"><p>如果客户机是一种无线手持终端，就返回一个WML文件；如果发现客户端是一种普通浏览器，  则返回通常的HTML文件</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodisDelete" id="isDelete"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">isDelete</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 388]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean isDelete(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回请求是否为DELETE请求类型
+</strong></p>
+<span class="description"><p>如果请求是DELETE方式请求则返回true,否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodisGet" id="isGet"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">isGet</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 355]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean isGet(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回请求是否为GET请求类型
+</strong></p>
+<span class="description"><p>如果请求是GET方式请求则返回true，否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodisPost" id="isPost"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">isPost</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 366]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean isPost(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回请求是否为POST请求类型
+</strong></p>
+<span class="description"><p>如果请求是POST方式请求则返回true,否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodisPut" id="isPut"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">isPut</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 377]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean isPut(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回请求是否为PUT请求类型
+</strong></p>
+<span class="description"><p>如果请求是PUT方式请求则返回true,否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodisSecure" id="isSecure"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">isSecure</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 344]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean isSecure(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>请求是否使用的是HTTPS安全链接
+</strong></p>
+<span class="description"><p>如果是安全请求则返回true否则返回false</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodnormalizeRequest" id="normalizeRequest"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">normalizeRequest</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 98]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void normalizeRequest(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化request对象
+</strong></p>
+<span class="description"><p>对输入参数做转义处理</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetAttribute" id="setAttribute"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setAttribute</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 124]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setAttribute(
+string|array|object 
+$data, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置属性数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array|object </span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要设置的数据</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置的数据保存用的key,默认为空,当数组和object类型的时候将会执行array_merge操作</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetServerPort" id="setServerPort"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setServerPort</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 549]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setServerPort(
+int
+$port&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置服务端口号
+</strong></p>
+<span class="description"><p>https链接的默认端口号为443  http链接的默认端口号为80</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$port:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置的端口号</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:34 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package mail Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">mail<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="classtrees_mail.html" class="menu">class tree: mail</a> ]
+		[ <a href="elementindex_mail.html" class="menu">index: mail</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">mail</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="mail/sender/IWindSendMail.html">IWindSendMail</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="mail/sender/WindPhpMail.html">WindPhpMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/sender/WindSendMail.html">WindSendMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/sender/WindSmtpMail.html">WindSmtpMail</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	protocol<br />	    <span style="padding-left: 1em;">		<a href="mail/protocol/WindImap.html">WindImap</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/protocol/WindPop3.html">WindPop3</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/protocol/WindSmtp.html">WindSmtp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/protocol/WindSocket.html">WindSocket</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+		    		<a href="mail/WindMail.html">WindMail</a>    	 <br />
+	  </div>
+  <div class="package">
+	encode<br />	    <span style="padding-left: 1em;">		<a href="mail/encode/WindMailBase64.html">WindMailBase64</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="mail/encode/WindMailQp.html">WindMailQp</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="mail/exception/WindMailException.html">WindMailException</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package mail</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+							<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_mail.html#a">a</a> ]
+	[ <a href="elementindex_mail.html#b">b</a> ]
+	[ <a href="elementindex_mail.html#c">c</a> ]
+	[ <a href="elementindex_mail.html#d">d</a> ]
+	[ <a href="elementindex_mail.html#e">e</a> ]
+	[ <a href="elementindex_mail.html#f">f</a> ]
+	[ <a href="elementindex_mail.html#g">g</a> ]
+	[ <a href="elementindex_mail.html#h">h</a> ]
+	[ <a href="elementindex_mail.html#i">i</a> ]
+	[ <a href="elementindex_mail.html#l">l</a> ]
+	[ <a href="elementindex_mail.html#m">m</a> ]
+	[ <a href="elementindex_mail.html#n">n</a> ]
+	[ <a href="elementindex_mail.html#o">o</a> ]
+	[ <a href="elementindex_mail.html#p">p</a> ]
+	[ <a href="elementindex_mail.html#q">q</a> ]
+	[ <a href="elementindex_mail.html#r">r</a> ]
+	[ <a href="elementindex_mail.html#s">s</a> ]
+	[ <a href="elementindex_mail.html#t">t</a> ]
+	[ <a href="elementindex_mail.html#u">u</a> ]
+	[ <a href="elementindex_mail.html#v">v</a> ]
+	[ <a href="elementindex_mail.html#w">w</a> ]
+	[ <a href="elementindex_mail.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#method__construct">WindSmtp::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#method__construct">WindImap::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#method__construct">WindPop3::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#method__construct">WindSocket::__construct()</a></dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#method__destruct">WindSmtp::__destruct()</a></dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#method__destruct">WindPop3::__destruct()</a></dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#method__destruct">WindImap::__destruct()</a></dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>ALL</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constALL">WindImap::ALL</a></dd>
+							<dt><b>ANSWERED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constANSWERED">WindImap::ANSWERED</a></dd>
+							<dt><b>authLogin</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodauthLogin">WindSmtp::authLogin()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;进行用户身份认证</dd>
+							<dt><b>$auth</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$auth">WindSmtpMail::$auth</a><br>&nbsp;&nbsp;&nbsp;&nbsp;是否启用验证</dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>BCC</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constBCC">WindMail::BCC</a></dd>
+							<dt><b>BCC</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constBCC">WindImap::BCC</a></dd>
+							<dt><b>BODY</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constBODY">WindImap::BODY</a></dd>
+							<dt><b>BODYSTRUCTUR</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constBODYSTRUCTUR">WindImap::BODYSTRUCTUR</a></dd>
+							<dt><b>buildResponse</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodbuildResponse">WindPop3::buildResponse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;外理响应内容</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>CC</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCC">WindMail::CC</a></dd>
+							<dt><b>CONTENTDESCRIPT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTDESCRIPT">WindMail::CONTENTDESCRIPT</a></dd>
+							<dt><b>CONTENTENCODE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTENCODE">WindMail::CONTENTENCODE</a></dd>
+							<dt><b>CONTENTID</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTID">WindMail::CONTENTID</a></dd>
+							<dt><b>CONTENTLANGUAGE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTLANGUAGE">WindMail::CONTENTLANGUAGE</a></dd>
+							<dt><b>CONTENTLOCATION</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTLOCATION">WindMail::CONTENTLOCATION</a></dd>
+							<dt><b>CONTENTPOSITION</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTPOSITION">WindMail::CONTENTPOSITION</a></dd>
+							<dt><b>CONTENTTYPE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCONTENTTYPE">WindMail::CONTENTTYPE</a></dd>
+							<dt><b>createBody</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodcreateBody">WindMail::createBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;创建邮件消息体</dd>
+							<dt><b>createHeader</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodcreateHeader">WindMail::createHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;创建邮件头信息</dd>
+							<dt><b>CRLF</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constCRLF">WindMail::CRLF</a></dd>
+							<dt><b>capability</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodcapability">WindImap::capability()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回IMAP服务器支持的功能列表，</dd>
+							<dt><b>CC</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constCC">WindImap::CC</a></dd>
+							<dt><b>check</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodcheck">WindImap::check()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;在邮箱设置一个检查点,确保内存中的磁盘缓冲数据都被写到了磁盘上。</dd>
+							<dt><b>checkResponse</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodcheckResponse">WindSmtp::checkResponse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证请求</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodclose">WindSocket::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;关闭连接</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodclose">WindImap::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;结束对当前Folder（文件夹/邮箱）的访问，</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodclose">WindSmtp::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;关闭smtp服务器</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodclose">WindPop3::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;结否会话,关闭pop3服务器</dd>
+							<dt><b>communicate</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodcommunicate">WindImap::communicate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;一次imap会号</dd>
+							<dt><b>communicate</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodcommunicate">WindPop3::communicate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;进行一次网络传输通信</dd>
+							<dt><b>CONTENTENCODE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constCONTENTENCODE">WindImap::CONTENTENCODE</a></dd>
+							<dt><b>CONTENTTYPE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constCONTENTTYPE">WindImap::CONTENTTYPE</a></dd>
+							<dt><b>copy</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodcopy">WindImap::copy()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;把邮件从一个邮箱复制到另一个邮箱</dd>
+							<dt><b>create</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodcreate">WindImap::create()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;创建指定名字的新邮箱。邮箱名称通常是带路径的文件夹全名。</dd>
+							<dt><b>CRLF</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constCRLF">WindImap::CRLF</a></dd>
+							<dt><b>CRLF</b></dt>
+				<dd>in file WindSmtp.php, class constant <a href="mail/protocol/WindSmtp.html#constCRLF">WindSmtp::CRLF</a></dd>
+							<dt><b>CRLF</b></dt>
+				<dd>in file WindPop3.php, class constant <a href="mail/protocol/WindPop3.html#constCRLF">WindPop3::CRLF</a></dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>DATE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constDATE">WindMail::DATE</a></dd>
+							<dt><b>DIS_ATTACHMENT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constDIS_ATTACHMENT">WindMail::DIS_ATTACHMENT</a></dd>
+							<dt><b>DIS_INLINE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constDIS_INLINE">WindMail::DIS_INLINE</a></dd>
+							<dt><b>decode</b></dt>
+				<dd>in file WindMailQp.php, method <a href="mail/encode/WindMailQp.html#methoddecode">WindMailQp::decode()</a></dd>
+							<dt><b>decode</b></dt>
+				<dd>in file WindMailBase64.php, method <a href="mail/encode/WindMailBase64.html#methoddecode">WindMailBase64::decode()</a></dd>
+							<dt><b>decodeHeader</b></dt>
+				<dd>in file WindMailQp.php, method <a href="mail/encode/WindMailQp.html#methoddecodeHeader">WindMailQp::decodeHeader()</a></dd>
+							<dt><b>decodeHeader</b></dt>
+				<dd>in file WindMailBase64.php, method <a href="mail/encode/WindMailBase64.html#methoddecodeHeader">WindMailBase64::decodeHeader()</a></dd>
+							<dt><b>data</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methoddata">WindSmtp::data()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;在单个或多个 RCPT 命令后，表示所有的邮件接收人已标识，并初始化数据传输，以 CRLF.CRLF 结束</dd>
+							<dt><b>DATE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constDATE">WindImap::DATE</a></dd>
+							<dt><b>dele</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methoddele">WindPop3::dele()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理 server 标记删除，QUIT 命令执行时才真正删除</dd>
+							<dt><b>delete</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methoddelete">WindImap::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;除指定名字的文件夹。文件夹名字通常是带路径的文件夹全名，</dd>
+							<dt><b>DELETED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constDELETED">WindImap::DELETED</a></dd>
+							<dt><b>DELIVERED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constDELIVERED">WindImap::DELIVERED</a></dd>
+							<dt><b>DRAFT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constDRAFT">WindImap::DRAFT</a></dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>ENCODE_7BIT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constENCODE_7BIT">WindMail::ENCODE_7BIT</a></dd>
+							<dt><b>ENCODE_8BIT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constENCODE_8BIT">WindMail::ENCODE_8BIT</a></dd>
+							<dt><b>ENCODE_BASE64</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constENCODE_BASE64">WindMail::ENCODE_BASE64</a></dd>
+							<dt><b>ENCODE_BINARY</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constENCODE_BINARY">WindMail::ENCODE_BINARY</a></dd>
+							<dt><b>ENCODE_QP</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constENCODE_QP">WindMail::ENCODE_QP</a></dd>
+							<dt><b>encode</b></dt>
+				<dd>in file WindMailQp.php, method <a href="mail/encode/WindMailQp.html#methodencode">WindMailQp::encode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;用Base64方式编码邮件内容</dd>
+							<dt><b>encode</b></dt>
+				<dd>in file WindMailBase64.php, method <a href="mail/encode/WindMailBase64.html#methodencode">WindMailBase64::encode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;用Base64方式编码邮件内容</dd>
+							<dt><b>encodeHeader</b></dt>
+				<dd>in file WindMailQp.php, method <a href="mail/encode/WindMailQp.html#methodencodeHeader">WindMailQp::encodeHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码邮件头</dd>
+							<dt><b>encodeHeader</b></dt>
+				<dd>in file WindMailBase64.php, method <a href="mail/encode/WindMailBase64.html#methodencodeHeader">WindMailBase64::encodeHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;用Base64方式编码邮件头</dd>
+							<dt><b>$errno</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$errno">WindSocket::$errno</a></dd>
+							<dt><b>$errstr</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$errstr">WindSocket::$errstr</a></dd>
+							<dt><b>ehlo</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodehlo">WindSmtp::ehlo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;向服务器标识用户身份</dd>
+							<dt><b>examine</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodexamine">WindImap::examine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以只读方式打开邮箱</dd>
+							<dt><b>expn</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodexpn">WindSmtp::expn()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证给定的邮箱列表是否存在，扩充邮箱列表，也常被禁用</dd>
+							<dt><b>expunge</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodexpunge">WindImap::expunge()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;不关闭邮箱的情况下删除所有的标志为、DELETED的邮件。</dd>
+					</dl>
+	</div>
+	<a name="f"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">f</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>f</h2>
+		<dl>
+							<dt><b>FROM</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constFROM">WindMail::FROM</a></dd>
+							<dt><b>FAST</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFAST">WindImap::FAST</a></dd>
+							<dt><b>fetch</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetch">WindImap::fetch()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的文本信息，且仅用于显示的目的。</dd>
+							<dt><b>fetchBySection</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchBySection">WindImap::fetchBySection()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回邮件的中的某一指定部分，返回的部分用section来表示，</dd>
+							<dt><b>fetchHeader</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchHeader">WindImap::fetchHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的头信息</dd>
+							<dt><b>fetchHeaderFields</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchHeaderFields">WindImap::fetchHeaderFields()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的头的字段信息,可能造成不安全，慎用</dd>
+							<dt><b>fetchHeaderNotFields</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchHeaderNotFields">WindImap::fetchHeaderNotFields()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的头已排除字段信息</dd>
+							<dt><b>fetchMime</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchMime">WindImap::fetchMime()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的MIME</dd>
+							<dt><b>fetchPartialOfSection</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchPartialOfSection">WindImap::fetchPartialOfSection()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回邮件的中的某一指定部分，返回的部分用section来表示，</dd>
+							<dt><b>fetchText</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfetchText">WindImap::fetchText()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取邮件的Text</dd>
+							<dt><b>FLAG</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFLAG">WindImap::FLAG</a></dd>
+							<dt><b>FLAGGED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFLAGGED">WindImap::FLAGGED</a></dd>
+							<dt><b>FLAGS</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFLAGS">WindImap::FLAGS</a></dd>
+							<dt><b>folderOfmail</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodfolderOfmail">WindImap::folderOfmail()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;LIST命令用于列出邮箱中已有的文件夹，有点像操作系统的列目录命令</dd>
+							<dt><b>FROM</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFROM">WindImap::FROM</a></dd>
+							<dt><b>FULL</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constFULL">WindImap::FULL</a></dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>getBcc</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetBcc">WindMail::getBcc()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得暗送对象</dd>
+							<dt><b>getCc</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetCc">WindMail::getCc()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得抄送的对象</dd>
+							<dt><b>getFrom</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetFrom">WindMail::getFrom()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得发件人</dd>
+							<dt><b>getMailHeader</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetMailHeader">WindMail::getMailHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回邮件头信息值</dd>
+							<dt><b>getRecipients</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetRecipients">WindMail::getRecipients()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得真实的收件人</dd>
+							<dt><b>getSubject</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetSubject">WindMail::getSubject()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得邮件主题</dd>
+							<dt><b>getTo</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodgetTo">WindMail::getTo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得收件人</dd>
+							<dt><b>getError</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodgetError">WindSocket::getError()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取请求中的错误</dd>
+							<dt><b>getList</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodgetList">WindPop3::getList()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理 server 返回指定邮件的大小等</dd>
+							<dt><b>getMailContent</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodgetMailContent">WindPop3::getMailContent()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取解析后的内容</dd>
+							<dt><b>getSocket</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodgetSocket">WindSocket::getSocket()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得socket操作对象</dd>
+							<dt><b>getTag</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodgetTag">WindImap::getTag()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得imap会号中的标签</dd>
+					</dl>
+	</div>
+	<a name="h"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">h</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>h</h2>
+		<dl>
+							<dt><b>$host</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$host">WindSocket::$host</a></dd>
+							<dt><b>HEADER</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constHEADER">WindImap::HEADER</a></dd>
+							<dt><b>$host</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$host">WindSmtpMail::$host</a><br>&nbsp;&nbsp;&nbsp;&nbsp;邮件发送服务器</dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>$imap</b></dt>
+				<dd>in file WindImap.php, variable <a href="mail/protocol/WindImap.html#var$imap">WindImap::$imap</a></dd>
+							<dt><b>INTERNALDATE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constINTERNALDATE">WindImap::INTERNALDATE</a></dd>
+							<dt><b>IWindSendMail</b></dt>
+				<dd>in file IWindSendMail.php, class <a href="mail/sender/IWindSendMail.html">IWindSendMail</a></dd>
+							<dt><b>IWindSendMail.php</b></dt>
+				<dd>procedural page <a href="mail/sender/_mail---sender---IWindSendMail.php.html">IWindSendMail.php</a></dd>
+					</dl>
+	</div>
+	<a name="l"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">l</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>l</h2>
+		<dl>
+							<dt><b>LINELENGTH</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constLINELENGTH">WindMail::LINELENGTH</a></dd>
+							<dt><b>login</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodlogin">WindImap::login()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;登陆</dd>
+							<dt><b>login</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodlogin">WindPop3::login()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;登陆pop3</dd>
+							<dt><b>logout</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodlogout">WindImap::logout()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;结束本次IMAP会话。</dd>
+							<dt><b>lsub</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodlsub">WindImap::lsub()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;修正了LIST命令，LIST返回用户$HOME目录下所有的文件，</dd>
+					</dl>
+	</div>
+	<a name="m"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">m</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>m</h2>
+		<dl>
+							<dt><b>MESSAGEID</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMESSAGEID">WindMail::MESSAGEID</a></dd>
+							<dt><b>MIME_ALTERNATIVE</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_ALTERNATIVE">WindMail::MIME_ALTERNATIVE</a></dd>
+							<dt><b>MIME_HTML</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_HTML">WindMail::MIME_HTML</a></dd>
+							<dt><b>MIME_MIXED</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_MIXED">WindMail::MIME_MIXED</a></dd>
+							<dt><b>MIME_OCTETSTREAM</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_OCTETSTREAM">WindMail::MIME_OCTETSTREAM</a></dd>
+							<dt><b>MIME_RELATED</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_RELATED">WindMail::MIME_RELATED</a></dd>
+							<dt><b>MIME_TEXT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constMIME_TEXT">WindMail::MIME_TEXT</a></dd>
+							<dt><b>mailFrom</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodmailFrom">WindSmtp::mailFrom()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;指定的地址是发件人地址</dd>
+							<dt><b>MESSAGEID</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constMESSAGEID">WindImap::MESSAGEID</a></dd>
+							<dt><b>MIMEVERSION</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constMIMEVERSION">WindImap::MIMEVERSION</a></dd>
+					</dl>
+	</div>
+	<a name="n"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">n</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>n</h2>
+		<dl>
+							<dt><b>noop</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodnoop">WindSmtp::noop()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;无操作，服务器应响应 OK</dd>
+							<dt><b>noop</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodnoop">WindPop3::noop()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理 server 返回一个肯定的响应</dd>
+							<dt><b>$name</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$name">WindSmtpMail::$name</a></dd>
+					</dl>
+	</div>
+	<a name="o"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">o</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>o</h2>
+		<dl>
+							<dt><b>open</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodopen">WindSocket::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;打开一个连接</dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodopen">WindSmtp::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;打开smtp服务器,建立连接</dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodopen">WindPop3::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;打开pop3服务器,建立连接</dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodopen">WindImap::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;打开一个imap连接</dd>
+					</dl>
+	</div>
+	<a name="p"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">p</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>p</h2>
+		<dl>
+							<dt><b>$pop3</b></dt>
+				<dd>in file WindPop3.php, variable <a href="mail/protocol/WindPop3.html#var$pop3">WindPop3::$pop3</a></dd>
+							<dt><b>$port</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$port">WindSocket::$port</a></dd>
+							<dt><b>$password</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$password">WindSmtpMail::$password</a></dd>
+							<dt><b>$port</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$port">WindSmtpMail::$port</a><br>&nbsp;&nbsp;&nbsp;&nbsp;邮件发送端口</dd>
+					</dl>
+	</div>
+	<a name="q"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">q</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>q</h2>
+		<dl>
+							<dt><b>quit</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodquit">WindSmtp::quit()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;结束会话</dd>
+							<dt><b>quit</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodquit">WindPop3::quit()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;希望结束会话。如果 server 处于&quot;处理&quot; 状态，</dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>$request</b></dt>
+				<dd>in file WindSmtp.php, variable <a href="mail/protocol/WindSmtp.html#var$request">WindSmtp::$request</a></dd>
+							<dt><b>$request</b></dt>
+				<dd>in file WindImap.php, variable <a href="mail/protocol/WindImap.html#var$request">WindImap::$request</a></dd>
+							<dt><b>$request</b></dt>
+				<dd>in file WindPop3.php, variable <a href="mail/protocol/WindPop3.html#var$request">WindPop3::$request</a></dd>
+							<dt><b>$resonse</b></dt>
+				<dd>in file WindImap.php, variable <a href="mail/protocol/WindImap.html#var$resonse">WindImap::$resonse</a></dd>
+							<dt><b>$resonse</b></dt>
+				<dd>in file WindSmtp.php, variable <a href="mail/protocol/WindSmtp.html#var$resonse">WindSmtp::$resonse</a></dd>
+							<dt><b>$resonse</b></dt>
+				<dd>in file WindPop3.php, variable <a href="mail/protocol/WindPop3.html#var$resonse">WindPop3::$resonse</a></dd>
+							<dt><b>rcptTo</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodrcptTo">WindSmtp::rcptTo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;指定的地址是收件人地址</dd>
+							<dt><b>RECEIVED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRECEIVED">WindImap::RECEIVED</a></dd>
+							<dt><b>RECENT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRECENT">WindImap::RECENT</a></dd>
+							<dt><b>rename</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodrename">WindImap::rename()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;RENAME命令可以修改文件夹的名称，它使用两个参数：当前邮箱名和新邮箱名，</dd>
+							<dt><b>REPLY</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constREPLY">WindImap::REPLY</a></dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodrequest">WindSmtp::request()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送smtp命令</dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodrequest">WindSocket::request()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送请求</dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodrequest">WindPop3::request()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送pop3命令</dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodrequest">WindImap::request()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送imap会话请求命令</dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodresponse">WindImap::response()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证请求</dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodresponse">WindPop3::response()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证请求</dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodresponse">WindSocket::response()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;响应请求</dd>
+							<dt><b>responseLine</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodresponseLine">WindSmtp::responseLine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;smtp响应请求</dd>
+							<dt><b>responseLine</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodresponseLine">WindImap::responseLine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;imap会话响应请求</dd>
+							<dt><b>responseLine</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodresponseLine">WindPop3::responseLine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;pop3响应请求</dd>
+							<dt><b>responseLine</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodresponseLine">WindSocket::responseLine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;响应请求,只返回一行</dd>
+							<dt><b>retr</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodretr">WindPop3::retr()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处处理 server 返回邮件的全部文本</dd>
+							<dt><b>RETURNPATH</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRETURNPATH">WindImap::RETURNPATH</a></dd>
+							<dt><b>RFC822</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRFC822">WindImap::RFC822</a></dd>
+							<dt><b>RFC822HEADER</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRFC822HEADER">WindImap::RFC822HEADER</a></dd>
+							<dt><b>RFC822SIZE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRFC822SIZE">WindImap::RFC822SIZE</a></dd>
+							<dt><b>RFC822TEXT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constRFC822TEXT">WindImap::RFC822TEXT</a></dd>
+							<dt><b>rset</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodrset">WindPop3::rset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理撤消所有的 DELE 命令</dd>
+							<dt><b>rset</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodrset">WindSmtp::rset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重置会话，当前传输被取消</dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>send</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsend">WindMail::send()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送邮件</dd>
+							<dt><b>SEND_PHP</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constSEND_PHP">WindMail::SEND_PHP</a></dd>
+							<dt><b>SEND_SEND</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constSEND_SEND">WindMail::SEND_SEND</a></dd>
+							<dt><b>SEND_SMTP</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constSEND_SMTP">WindMail::SEND_SMTP</a></dd>
+							<dt><b>setAttachment</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetAttachment">WindMail::setAttachment()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置附件</dd>
+							<dt><b>setBcc</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetBcc">WindMail::setBcc()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置暗送人</dd>
+							<dt><b>setBody</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetBody">WindMail::setBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件展示内容</dd>
+							<dt><b>setBodyText</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetBodyText">WindMail::setBodyText()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件文本展示内容</dd>
+							<dt><b>setCc</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetCc">WindMail::setCc()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置抄送人</dd>
+							<dt><b>setCharset</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetCharset">WindMail::setCharset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件字符</dd>
+							<dt><b>setContentEncode</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetContentEncode">WindMail::setContentEncode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件编码</dd>
+							<dt><b>setContentType</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetContentType">WindMail::setContentType()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件类型</dd>
+							<dt><b>setDate</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetDate">WindMail::setDate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件日期</dd>
+							<dt><b>setEmbed</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetEmbed">WindMail::setEmbed()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置是否是内嵌资源</dd>
+							<dt><b>setFrom</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetFrom">WindMail::setFrom()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置发件人</dd>
+							<dt><b>setMailHeader</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetMailHeader">WindMail::setMailHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件头</dd>
+							<dt><b>setMessageId</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetMessageId">WindMail::setMessageId()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件消息ID</dd>
+							<dt><b>setSubject</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetSubject">WindMail::setSubject()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置邮件主题</dd>
+							<dt><b>setTo</b></dt>
+				<dd>in file WindMail.php, method <a href="mail/WindMail.html#methodsetTo">WindMail::setTo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置收件人</dd>
+							<dt><b>SUBJECT</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constSUBJECT">WindMail::SUBJECT</a></dd>
+							<dt><b>$seperate</b></dt>
+				<dd>in file WindImap.php, variable <a href="mail/protocol/WindImap.html#var$seperate">WindImap::$seperate</a></dd>
+							<dt><b>$seperate</b></dt>
+				<dd>in file WindPop3.php, variable <a href="mail/protocol/WindPop3.html#var$seperate">WindPop3::$seperate</a></dd>
+							<dt><b>$smtp</b></dt>
+				<dd>in file WindSmtp.php, variable <a href="mail/protocol/WindSmtp.html#var$smtp">WindSmtp::$smtp</a></dd>
+							<dt><b>$socket</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$socket">WindSocket::$socket</a></dd>
+							<dt><b>search</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodsearch">WindImap::search()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据搜索条件在处于活动状态的邮箱中搜索邮件，然后显示匹配的邮件编号。</dd>
+							<dt><b>SEEN</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSEEN">WindImap::SEEN</a></dd>
+							<dt><b>select</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodselect">WindImap::select()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;选定某个邮箱（Folder），表示即将对该邮箱（Folder）内的邮件作操作。</dd>
+							<dt><b>setHost</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodsetHost">WindSocket::setHost()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置主机</dd>
+							<dt><b>setPort</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodsetPort">WindSocket::setPort()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置端口</dd>
+							<dt><b>setSocketTimeOut</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodsetSocketTimeOut">WindSocket::setSocketTimeOut()</a></dd>
+							<dt><b>setTag</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodsetTag">WindImap::setTag()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;在imap会话中设置新标答</dd>
+							<dt><b>setTimeout</b></dt>
+				<dd>in file WindSocket.php, method <a href="mail/protocol/WindSocket.html#methodsetTimeout">WindSocket::setTimeout()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置超时</dd>
+							<dt><b>SH_ALL</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_ALL">WindImap::SH_ALL</a></dd>
+							<dt><b>SH_ANSWERED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_ANSWERED">WindImap::SH_ANSWERED</a></dd>
+							<dt><b>SH_BCC</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_BCC">WindImap::SH_BCC</a></dd>
+							<dt><b>SH_BEFORE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_BEFORE">WindImap::SH_BEFORE</a></dd>
+							<dt><b>SH_BODY</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_BODY">WindImap::SH_BODY</a></dd>
+							<dt><b>SH_DELETED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_DELETED">WindImap::SH_DELETED</a></dd>
+							<dt><b>SH_FLAGGED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_FLAGGED">WindImap::SH_FLAGGED</a></dd>
+							<dt><b>SH_FROM</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_FROM">WindImap::SH_FROM</a></dd>
+							<dt><b>SH_KEYWORD</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_KEYWORD">WindImap::SH_KEYWORD</a></dd>
+							<dt><b>SH_NEW</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_NEW">WindImap::SH_NEW</a></dd>
+							<dt><b>SH_RECENT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_RECENT">WindImap::SH_RECENT</a></dd>
+							<dt><b>SH_SEEN</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_SEEN">WindImap::SH_SEEN</a></dd>
+							<dt><b>SH_SINCE</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_SINCE">WindImap::SH_SINCE</a></dd>
+							<dt><b>SH_TEXT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_TEXT">WindImap::SH_TEXT</a></dd>
+							<dt><b>SH_TO</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_TO">WindImap::SH_TO</a></dd>
+							<dt><b>SH_UNANSWERED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_UNANSWERED">WindImap::SH_UNANSWERED</a></dd>
+							<dt><b>SH_UNDELETED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_UNDELETED">WindImap::SH_UNDELETED</a></dd>
+							<dt><b>SH_UNFLAGGED</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_UNFLAGGED">WindImap::SH_UNFLAGGED</a></dd>
+							<dt><b>SH_UNKEYWORD</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_UNKEYWORD">WindImap::SH_UNKEYWORD</a></dd>
+							<dt><b>SH_UNSEEN</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSH_UNSEEN">WindImap::SH_UNSEEN</a></dd>
+							<dt><b>SLIENT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSLIENT">WindImap::SLIENT</a></dd>
+							<dt><b>stat</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodstat">WindPop3::stat()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理请求 server 回送邮箱统计资料，如邮件数、 邮件总字节数</dd>
+							<dt><b>status</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodstatus">WindImap::status()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;查询邮箱的当前状态</dd>
+							<dt><b>store</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodstore">WindImap::store()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;修改指定邮件的属性，包括给邮件打上已读标记、删除标记等</dd>
+							<dt><b>stripStore</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodstripStore">WindImap::stripStore()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;修改指定邮件的属性，包括给邮件打上已读标记、删除标记等</dd>
+							<dt><b>SUBEJCT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constSUBEJCT">WindImap::SUBEJCT</a></dd>
+							<dt><b>subscribe</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodsubscribe">WindImap::subscribe()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;在客户机的活动邮箱列表中增加一个邮箱</dd>
+							<dt><b>S_MESSAGES</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constS_MESSAGES">WindImap::S_MESSAGES</a></dd>
+							<dt><b>S_RECENT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constS_RECENT">WindImap::S_RECENT</a></dd>
+							<dt><b>S_UIDNEXT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constS_UIDNEXT">WindImap::S_UIDNEXT</a></dd>
+							<dt><b>S_UIDVALIDITY</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constS_UIDVALIDITY">WindImap::S_UIDVALIDITY</a></dd>
+							<dt><b>S_UNSEEN</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constS_UNSEEN">WindImap::S_UNSEEN</a></dd>
+							<dt><b>$smtp</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$smtp">WindSmtpMail::$smtp</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindSmtpMail.php, method <a href="mail/sender/WindSmtpMail.html#methodsend">WindSmtpMail::send()</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindSendMail.php, method <a href="mail/sender/WindSendMail.html#methodsend">WindSendMail::send()</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindPhpMail.php, method <a href="mail/sender/WindPhpMail.html#methodsend">WindPhpMail::send()</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file IWindSendMail.php, method <a href="mail/sender/IWindSendMail.html#methodsend">IWindSendMail::send()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送邮件</dd>
+					</dl>
+	</div>
+	<a name="t"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">t</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>t</h2>
+		<dl>
+							<dt><b>TO</b></dt>
+				<dd>in file WindMail.php, class constant <a href="mail/WindMail.html#constTO">WindMail::TO</a></dd>
+							<dt><b>$timeout</b></dt>
+				<dd>in file WindSocket.php, variable <a href="mail/protocol/WindSocket.html#var$timeout">WindSocket::$timeout</a></dd>
+							<dt><b>TAG</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constTAG">WindImap::TAG</a></dd>
+							<dt><b>TEXT</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constTEXT">WindImap::TEXT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;****body中的section*******</dd>
+							<dt><b>TO</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constTO">WindImap::TO</a></dd>
+							<dt><b>top</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methodtop">WindPop3::top()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理 返回 n 号邮件的前 m 行内容，m 必须是自然数</dd>
+							<dt><b>$timeout</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$timeout">WindSmtpMail::$timeout</a><br>&nbsp;&nbsp;&nbsp;&nbsp;请求超时时间</dd>
+					</dl>
+	</div>
+	<a name="u"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">u</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>u</h2>
+		<dl>
+							<dt><b>uid</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methoduid">WindImap::uid()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;UID号是唯一标识邮件系统中邮件的32位证书。</dd>
+							<dt><b>UID</b></dt>
+				<dd>in file WindImap.php, class constant <a href="mail/protocol/WindImap.html#constUID">WindImap::UID</a></dd>
+							<dt><b>uidl</b></dt>
+				<dd>in file WindPop3.php, method <a href="mail/protocol/WindPop3.html#methoduidl">WindPop3::uidl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理 server 返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的。</dd>
+							<dt><b>unsubscribe</b></dt>
+				<dd>in file WindImap.php, method <a href="mail/protocol/WindImap.html#methodunsubscribe">WindImap::unsubscribe()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;来从活动列表中去掉一个邮箱</dd>
+							<dt><b>$username</b></dt>
+				<dd>in file WindSmtpMail.php, variable <a href="mail/sender/WindSmtpMail.html#var$username">WindSmtpMail::$username</a></dd>
+					</dl>
+	</div>
+	<a name="v"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">v</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>v</h2>
+		<dl>
+							<dt><b>very</b></dt>
+				<dd>in file WindSmtp.php, method <a href="mail/protocol/WindSmtp.html#methodvery">WindSmtp::very()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;用于验证指定的用户/邮箱是否存在；由于安全方面的原因，服务器常禁止此命令</dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindMail.php</b></dt>
+				<dd>procedural page <a href="mail/_mail---WindMail.php.html">WindMail.php</a></dd>
+							<dt><b>WindMail</b></dt>
+				<dd>in file WindMail.php, class <a href="mail/WindMail.html">WindMail</a><br>&nbsp;&nbsp;&nbsp;&nbsp;邮件发送类</dd>
+							<dt><b>WindMailBase64.php</b></dt>
+				<dd>procedural page <a href="mail/encode/_mail---encode---WindMailBase64.php.html">WindMailBase64.php</a></dd>
+							<dt><b>WindMailQp.php</b></dt>
+				<dd>procedural page <a href="mail/encode/_mail---encode---WindMailQp.php.html">WindMailQp.php</a></dd>
+							<dt><b>WindMailBase64</b></dt>
+				<dd>in file WindMailBase64.php, class <a href="mail/encode/WindMailBase64.html">WindMailBase64</a><br>&nbsp;&nbsp;&nbsp;&nbsp;完成邮件传输过程中Base64的编码和解码</dd>
+							<dt><b>WindMailQp</b></dt>
+				<dd>in file WindMailQp.php, class <a href="mail/encode/WindMailQp.html">WindMailQp</a><br>&nbsp;&nbsp;&nbsp;&nbsp;完成邮件传输过程中Qp的编码和解码</dd>
+							<dt><b>WindMailException.php</b></dt>
+				<dd>procedural page <a href="mail/exception/_mail---exception---WindMailException.php.html">WindMailException.php</a></dd>
+							<dt><b>WindMailException</b></dt>
+				<dd>in file WindMailException.php, class <a href="mail/exception/WindMailException.html">WindMailException</a></dd>
+							<dt><b>WindImap.php</b></dt>
+				<dd>procedural page <a href="mail/protocol/_mail---protocol---WindImap.php.html">WindImap.php</a></dd>
+							<dt><b>WindPop3.php</b></dt>
+				<dd>procedural page <a href="mail/protocol/_mail---protocol---WindPop3.php.html">WindPop3.php</a></dd>
+							<dt><b>WindSmtp.php</b></dt>
+				<dd>procedural page <a href="mail/protocol/_mail---protocol---WindSmtp.php.html">WindSmtp.php</a></dd>
+							<dt><b>WindSocket.php</b></dt>
+				<dd>procedural page <a href="mail/protocol/_mail---protocol---WindSocket.php.html">WindSocket.php</a></dd>
+							<dt><b>WindImap</b></dt>
+				<dd>in file WindImap.php, class <a href="mail/protocol/WindImap.html">WindImap</a><br>&nbsp;&nbsp;&nbsp;&nbsp;imap协议封装</dd>
+							<dt><b>WindPop3</b></dt>
+				<dd>in file WindPop3.php, class <a href="mail/protocol/WindPop3.html">WindPop3</a><br>&nbsp;&nbsp;&nbsp;&nbsp;pop3协议</dd>
+							<dt><b>WindSmtp</b></dt>
+				<dd>in file WindSmtp.php, class <a href="mail/protocol/WindSmtp.html">WindSmtp</a><br>&nbsp;&nbsp;&nbsp;&nbsp;邮件传输协议操作</dd>
+							<dt><b>WindSocket</b></dt>
+				<dd>in file WindSocket.php, class <a href="mail/protocol/WindSocket.html">WindSocket</a><br>&nbsp;&nbsp;&nbsp;&nbsp;socket套接字操作</dd>
+							<dt><b>WindPhpMail.php</b></dt>
+				<dd>procedural page <a href="mail/sender/_mail---sender---WindPhpMail.php.html">WindPhpMail.php</a></dd>
+							<dt><b>WindSendMail.php</b></dt>
+				<dd>procedural page <a href="mail/sender/_mail---sender---WindSendMail.php.html">WindSendMail.php</a></dd>
+							<dt><b>WindSmtpMail.php</b></dt>
+				<dd>procedural page <a href="mail/sender/_mail---sender---WindSmtpMail.php.html">WindSmtpMail.php</a></dd>
+							<dt><b>WindPhpMail</b></dt>
+				<dd>in file WindPhpMail.php, class <a href="mail/sender/WindPhpMail.html">WindPhpMail</a><br>&nbsp;&nbsp;&nbsp;&nbsp;使用php内部函数发送邮件</dd>
+							<dt><b>WindSendMail</b></dt>
+				<dd>in file WindSendMail.php, class <a href="mail/sender/WindSendMail.html">WindSendMail</a><br>&nbsp;&nbsp;&nbsp;&nbsp;使用sendmail发送邮件</dd>
+							<dt><b>WindSmtpMail</b></dt>
+				<dd>in file WindSmtpMail.php, class <a href="mail/sender/WindSmtpMail.html">WindSmtpMail</a><br>&nbsp;&nbsp;&nbsp;&nbsp;邮件发送</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

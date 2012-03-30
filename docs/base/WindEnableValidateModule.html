@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindEnableValidateModule</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">base<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                    
+                                                                                                                                                                                                                                                                                                                            		[ <a href="../classtrees_base.html" class="menu">class tree: base</a> ]
+		[ <a href="../elementindex_base.html" class="menu">index: base</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">base</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../base/IWindApplication.html">IWindApplication</a>    	 <br />
+	    		<a href="../base/IWindFactory.html">IWindFactory</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../base/WindActionException.html">WindActionException</a>    	 <br />
+	    		<a href="../base/WindClassProxy.html">WindClassProxy</a>    	 <br />
+	    		<a href="../base/WindEnableValidateModule.html">WindEnableValidateModule</a>    	 <br />
+	    		<a href="../base/WindErrorMessage.html">WindErrorMessage</a>    	 <br />
+	    		<a href="../base/WindException.html">WindException</a>    	 <br />
+	    		<a href="../base/WindFactory.html">WindFactory</a>    	 <br />
+	    		<a href="../base/WindFinalException.html">WindFinalException</a>    	 <br />
+	    		<a href="../base/WindForwardException.html">WindForwardException</a>    	 <br />
+	    		<a href="../base/WindFrontController.html">WindFrontController</a>    	 <br />
+	    		<a href="../base/WindHelper.html">WindHelper</a>    	 <br />
+	    		<a href="../base/WindModule.html">WindModule</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindEnableValidateModule</h1>
+Source Location: /base/WindEnableValidateModule.php<br /><br />
+
+<h2 class="class-name">Class WindEnableValidateModule</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>表单验证基类
+</strong></p>
+<span class="description"><p>注入：验证器/异常处理器</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_base---WindEnableValidateModule.php.html">/base/WindEnableValidateModule.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindEnableValidateModule.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindEnableValidateModule.html#var$errorAction">$errorAction</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#var$_errors">$_errors</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#var$_validatorClass">$_validatorClass</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindEnableValidateModule.html#methodgetErrorAction">getErrorAction</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#methodgetErrors">getErrors</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#methodgetValidator">getValidator</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#methodvalidate">validate</a></li>
+		  		  <li><a href="../base/WindEnableValidateModule.html#methodvalidateRules">validateRules</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																															<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$errorAction" title="details" class="var-name-summary">$errorAction</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">错误处理action</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">array</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_errors" title="details" class="var-name-summary">$_errors</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">验证中产生的错误信息</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_validatorClass" title="details" class="var-name-summary">$_validatorClass</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">验证类</td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getErrorAction" title="details" class="method-name">getErrorAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回验证出错时使用的错误errorAction</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getErrors" title="details" class="method-name">getErrors</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回验证中产生的错误信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../utility/WindValidator.html">WindValidator</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getValidator" title="details" class="method-name">getValidator</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回验证器</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#validate" title="details" class="method-name">validate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">验证方法</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#validateRules" title="details" class="method-name">validateRules</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回验证规则组成的数组</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$errorAction" id="$errorAction"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$errorAction</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 25]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>错误处理action
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_errors" id="$_errors"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>&nbsp;&nbsp;
+			<span class="var-name">$_errors</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 37]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>验证中产生的错误信息
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_validatorClass" id="$_validatorClass"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$_validatorClass</span>
+			 = <span class="var-default"> 'WIND:utility.WindValidator'</span>			<span class="smalllinenumber">[line 19]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>验证类
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodgetErrorAction" id="getErrorAction"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getErrorAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 61]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getErrorAction(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回验证出错时使用的错误errorAction
+</strong></p>
+<span class="description"><p>errorAction的格式可以用/分割m,c,a三个部分:完整的方式为m/c/a</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetErrors" id="getErrors"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getErrors</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 50]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array getErrors(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回验证中产生的错误信息
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetValidator" id="getValidator"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getValidator</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 127]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../utility/WindValidator.html">WindValidator</a> getValidator(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回验证器
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 验证器创建失败抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodvalidate" id="validate"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">validate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 91]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void validate(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>验证方法
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodvalidateRules" id="validateRules"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">validateRules</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 82]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array validateRules(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回验证规则组成的数组
+</strong></p>
+<span class="description"><p>每一个验证规则都需要如下格式:  <ol><li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'field'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'name'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//验证的字段名</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'default'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'test'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//如果字段为空</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'args'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'args1'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'args2'</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//validator验证方法接受的其他参数(必须在被验证参数的后面)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'validator'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'isEmpty'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//执行的验证方法(该方法必须在$_validatorClass指向的验证类中存在并可公开访问，并且该方法返回boolean类型)</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'message'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'name&nbsp;is&nbsp;empty'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//验证失败时返回的错误信息</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+</ol>  验证规则可以采用<a href="../utility/WindUtility.html#methodbuildValidateRule">WindUtility::buildValidateRule()</a>方法进行构造.</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:31 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

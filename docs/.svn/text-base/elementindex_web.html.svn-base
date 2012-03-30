@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package web Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">web<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                
+                                                                                                                                                                                		[ <a href="classtrees_web.html" class="menu">class tree: web</a> ]
+		[ <a href="elementindex_web.html" class="menu">index: web</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">web</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="web/IWindController.html">IWindController</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="web/WindController.html">WindController</a>    	 <br />
+	    		<a href="web/WindDispatcher.html">WindDispatcher</a>    	 <br />
+	    		<a href="web/WindErrorHandler.html">WindErrorHandler</a>    	 <br />
+	    		<a href="web/WindForward.html">WindForward</a>    	 <br />
+	    		<a href="web/WindSimpleController.html">WindSimpleController</a>    	 <br />
+	    		<a href="web/WindUrlHelper.html">WindUrlHelper</a>    	 <br />
+	    		<a href="web/WindWebApplication.html">WindWebApplication</a>    	 <br />
+	  </div>
+  <div class="package">
+	filter<br />	    <span style="padding-left: 1em;">		<a href="web/filter/WindFormFilter.html">WindFormFilter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package web</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+							<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_web.html#a">a</a> ]
+	[ <a href="elementindex_web.html#b">b</a> ]
+	[ <a href="elementindex_web.html#c">c</a> ]
+	[ <a href="elementindex_web.html#d">d</a> ]
+	[ <a href="elementindex_web.html#e">e</a> ]
+	[ <a href="elementindex_web.html#f">f</a> ]
+	[ <a href="elementindex_web.html#g">g</a> ]
+	[ <a href="elementindex_web.html#h">h</a> ]
+	[ <a href="elementindex_web.html#i">i</a> ]
+	[ <a href="elementindex_web.html#m">m</a> ]
+	[ <a href="elementindex_web.html#p">p</a> ]
+	[ <a href="elementindex_web.html#r">r</a> ]
+	[ <a href="elementindex_web.html#s">s</a> ]
+	[ <a href="elementindex_web.html#t">t</a> ]
+	[ <a href="elementindex_web.html#u">u</a> ]
+	[ <a href="elementindex_web.html#v">v</a> ]
+	[ <a href="elementindex_web.html#w">w</a> ]
+	[ <a href="elementindex_web.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#method__construct">WindWebApplication::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;应用初始化操作</dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>addMessage</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodaddMessage">WindSimpleController::addMessage()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;添加错误信息</dd>
+							<dt><b>afterAction</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodafterAction">WindSimpleController::afterAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;action操作结束后调用</dd>
+							<dt><b>argsToUrl</b></dt>
+				<dd>in file WindUrlHelper.php, method <a href="web/WindUrlHelper.html#methodargsToUrl">WindUrlHelper::argsToUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数组格式的参数列表转换为Url格式，并将url进行编码处理</dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>beforeAction</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodbeforeAction">WindSimpleController::beforeAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;action操作开始前调用</dd>
+							<dt><b>beforeAction</b></dt>
+				<dd>in file WindErrorHandler.php, method <a href="web/WindErrorHandler.html#methodbeforeAction">WindErrorHandler::beforeAction()</a></dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>checkProcess</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodcheckProcess">WindWebApplication::checkProcess()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;检查请求的合法性</dd>
+							<dt><b>checkUrl</b></dt>
+				<dd>in file WindUrlHelper.php, method <a href="web/WindUrlHelper.html#methodcheckUrl">WindUrlHelper::checkUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;url检查</dd>
+							<dt><b>createUrl</b></dt>
+				<dd>in file WindUrlHelper.php, method <a href="web/WindUrlHelper.html#methodcreateUrl">WindUrlHelper::createUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造并返回Url地址</dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>$defaultModule</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$defaultModule">WindWebApplication::$defaultModule</a></dd>
+							<dt><b>$dispatcher</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$dispatcher">WindWebApplication::$dispatcher</a></dd>
+							<dt><b>$display</b></dt>
+				<dd>in file WindDispatcher.php, variable <a href="web/WindDispatcher.html#var$display">WindDispatcher::$display</a></dd>
+							<dt><b>dispatch</b></dt>
+				<dd>in file WindDispatcher.php, method <a href="web/WindDispatcher.html#methoddispatch">WindDispatcher::dispatch()</a></dd>
+							<dt><b>dispatchWithAction</b></dt>
+				<dd>in file WindDispatcher.php, method <a href="web/WindDispatcher.html#methoddispatchWithAction">WindDispatcher::dispatchWithAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重定向请求到新的action操作</dd>
+							<dt><b>dispatchWithRedirect</b></dt>
+				<dd>in file WindDispatcher.php, method <a href="web/WindDispatcher.html#methoddispatchWithRedirect">WindDispatcher::dispatchWithRedirect()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重定向请求到新的url地址</dd>
+							<dt><b>doAction</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/IWindController.html#methoddoAction">IWindController::doAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理请求并返回Forward对象</dd>
+							<dt><b>doAction</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methoddoAction">WindSimpleController::doAction()</a></dd>
+							<dt><b>doDispatch</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methoddoDispatch">WindWebApplication::doDispatch()</a></dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>$error</b></dt>
+				<dd>in file WindErrorHandler.php, variable <a href="web/WindErrorHandler.html#var$error">WindErrorHandler::$error</a></dd>
+							<dt><b>$errorCode</b></dt>
+				<dd>in file WindErrorHandler.php, variable <a href="web/WindErrorHandler.html#var$errorCode">WindErrorHandler::$errorCode</a></dd>
+							<dt><b>$errorDir</b></dt>
+				<dd>in file WindErrorHandler.php, variable <a href="web/WindErrorHandler.html#var$errorDir">WindErrorHandler::$errorDir</a></dd>
+							<dt><b>$errorMessage</b></dt>
+				<dd>in file WindSimpleController.php, variable <a href="web/WindSimpleController.html#var$errorMessage">WindSimpleController::$errorMessage</a></dd>
+					</dl>
+	</div>
+	<a name="f"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">f</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>f</h2>
+		<dl>
+							<dt><b>$forward</b></dt>
+				<dd>in file WindSimpleController.php, variable <a href="web/WindSimpleController.html#var$forward">WindSimpleController::$forward</a></dd>
+							<dt><b>forwardAction</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodforwardAction">WindSimpleController::forwardAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重定向一个请求到另外的action</dd>
+							<dt><b>forwardAction</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodforwardAction">WindForward::forwardAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将请求重定向到另外一个Action操作</dd>
+							<dt><b>forwardRedirect</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodforwardRedirect">WindSimpleController::forwardRedirect()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重定向一个请求到另外的URL</dd>
+							<dt><b>forwardRedirect</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodforwardRedirect">WindForward::forwardRedirect()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;url重定向</dd>
+							<dt><b>$form</b></dt>
+				<dd>in file WindFormFilter.php, variable <a href="web/filter/WindFormFilter.html#var$form">WindFormFilter::$form</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证的表单类</dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>getAction</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetAction">WindForward::getAction()</a></dd>
+							<dt><b>getArgs</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetArgs">WindForward::getArgs()</a></dd>
+							<dt><b>getComponent</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetComponent">WindWebApplication::getComponent()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得组件对象</dd>
+							<dt><b>getErrorMessage</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodgetErrorMessage">WindSimpleController::getErrorMessage()</a></dd>
+							<dt><b>getForward</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodgetForward">WindSimpleController::getForward()</a></dd>
+							<dt><b>getGlobal</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetGlobal">WindWebApplication::getGlobal()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取全局变量</dd>
+							<dt><b>getInput</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodgetInput">WindSimpleController::getInput()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得输入数据</dd>
+							<dt><b>getIsReAction</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetIsReAction">WindForward::getIsReAction()</a></dd>
+							<dt><b>getIsRedirect</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetIsRedirect">WindForward::getIsRedirect()</a></dd>
+							<dt><b>getModules</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetModules">WindWebApplication::getModules()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得module配置,$name为空时返回当前module配置</dd>
+							<dt><b>getRequest</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetRequest">WindWebApplication::getRequest()</a></dd>
+							<dt><b>getResponse</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetResponse">WindWebApplication::getResponse()</a></dd>
+							<dt><b>getUrl</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetUrl">WindForward::getUrl()</a></dd>
+							<dt><b>getUrlArgs</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetUrlArgs">WindWebApplication::getUrlArgs()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取urlArg值</dd>
+							<dt><b>getVars</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetVars">WindForward::getVars()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回当前forward对象中存储的变量信息</dd>
+							<dt><b>getWindFactory</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodgetWindFactory">WindWebApplication::getWindFactory()</a></dd>
+							<dt><b>getWindView</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodgetWindView">WindForward::getWindView()</a></dd>
+					</dl>
+	</div>
+	<a name="h"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">h</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>h</h2>
+		<dl>
+							<dt><b>$handlerAdapter</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$handlerAdapter">WindWebApplication::$handlerAdapter</a></dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>IWindController</b></dt>
+				<dd>in file WindSimpleController.php, class <a href="web/IWindController.html">IWindController</a><br>&nbsp;&nbsp;&nbsp;&nbsp;应用控制器接口定义类</dd>
+					</dl>
+	</div>
+	<a name="m"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">m</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>m</h2>
+		<dl>
+							<dt><b>$maxForwrd</b></dt>
+				<dd>in file WindDispatcher.php, variable <a href="web/WindDispatcher.html#var$maxForwrd">WindDispatcher::$maxForwrd</a><br>&nbsp;&nbsp;&nbsp;&nbsp;存储请求的队列信息</dd>
+					</dl>
+	</div>
+	<a name="p"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">p</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>p</h2>
+		<dl>
+							<dt><b>postHandle</b></dt>
+				<dd>in file WindFormFilter.php, method <a href="web/filter/WindFormFilter.html#methodpostHandle">WindFormFilter::postHandle()</a></dd>
+							<dt><b>preHandle</b></dt>
+				<dd>in file WindFormFilter.php, method <a href="web/filter/WindFormFilter.html#methodpreHandle">WindFormFilter::preHandle()</a></dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>$request</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$request">WindWebApplication::$request</a></dd>
+							<dt><b>$response</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$response">WindWebApplication::$response</a></dd>
+							<dt><b>resolveAction</b></dt>
+				<dd>in file WindUrlHelper.php, method <a href="web/WindUrlHelper.html#methodresolveAction">WindUrlHelper::resolveAction()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析ControllerPath,并返回解析后的结果集</dd>
+							<dt><b>resolveActionFilter</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodresolveActionFilter">WindSimpleController::resolveActionFilter()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;action过滤链策略部署</dd>
+							<dt><b>resolveActionMapping</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodresolveActionMapping">WindWebApplication::resolveActionMapping()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析action过滤链的配置信息</dd>
+							<dt><b>resolvedActionMethod</b></dt>
+				<dd>in file WindController.php, method <a href="web/WindController.html#methodresolvedActionMethod">WindController::resolvedActionMethod()</a></dd>
+							<dt><b>resolvedActionMethod</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodresolvedActionMethod">WindSimpleController::resolvedActionMethod()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析action操作方法名称</dd>
+							<dt><b>resolvedActionName</b></dt>
+				<dd>in file WindController.php, method <a href="web/WindController.html#methodresolvedActionName">WindController::resolvedActionName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析action操作方法名称</dd>
+							<dt><b>run</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodrun">WindWebApplication::run()</a></dd>
+							<dt><b>run</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodrun">WindSimpleController::run()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;默认的操作处理方法</dd>
+							<dt><b>run</b></dt>
+				<dd>in file WindErrorHandler.php, method <a href="web/WindErrorHandler.html#methodrun">WindErrorHandler::run()</a></dd>
+							<dt><b>run</b></dt>
+				<dd>in file WindController.php, method <a href="web/WindController.html#methodrun">WindController::run()</a></dd>
+							<dt><b>runProcess</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodrunProcess">WindWebApplication::runProcess()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;执行请求的进程</dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>saveToken</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsaveToken">WindSimpleController::saveToken()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;保存token令牌</dd>
+							<dt><b>sendErrorMessage</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodsendErrorMessage">WindWebApplication::sendErrorMessage()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;处理错误请求</dd>
+							<dt><b>setAction</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetAction">WindForward::setAction()</a></dd>
+							<dt><b>setArgs</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetArgs">WindForward::setArgs()</a></dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodsetConfig">WindWebApplication::setConfig()</a></dd>
+							<dt><b>setDefaultTemplateName</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetDefaultTemplateName">WindSimpleController::setDefaultTemplateName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置默认的模板名称</dd>
+							<dt><b>setErrorMessage</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetErrorMessage">WindSimpleController::setErrorMessage()</a></dd>
+							<dt><b>setForward</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetForward">WindSimpleController::setForward()</a></dd>
+							<dt><b>setGlobal</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetGlobal">WindSimpleController::setGlobal()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置模板数据</dd>
+							<dt><b>setGlobal</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodsetGlobal">WindWebApplication::setGlobal()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置全局变量</dd>
+							<dt><b>setIsReAction</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetIsReAction">WindForward::setIsReAction()</a></dd>
+							<dt><b>setIsRedirect</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetIsRedirect">WindForward::setIsRedirect()</a></dd>
+							<dt><b>setLayout</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetLayout">WindSimpleController::setLayout()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置布局页面</dd>
+							<dt><b>setModules</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodsetModules">WindWebApplication::setModules()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;添加module配置</dd>
+							<dt><b>setOutput</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetOutput">WindSimpleController::setOutput()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置模板数据</dd>
+							<dt><b>setTemplate</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetTemplate">WindSimpleController::setTemplate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置页面模板</dd>
+							<dt><b>setTemplateExt</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetTemplateExt">WindSimpleController::setTemplateExt()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置模板文件的扩展名</dd>
+							<dt><b>setTemplatePath</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetTemplatePath">WindSimpleController::setTemplatePath()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置模板路径,模板目录地址,支持命名空间方式</dd>
+							<dt><b>setTheme</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetTheme">WindSimpleController::setTheme()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置当前主题信息</dd>
+							<dt><b>setThemePackage</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodsetThemePackage">WindSimpleController::setThemePackage()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置主题包</dd>
+							<dt><b>setUrl</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetUrl">WindForward::setUrl()</a></dd>
+							<dt><b>setUrlArgs</b></dt>
+				<dd>in file WindWebApplication.php, method <a href="web/WindWebApplication.html#methodsetUrlArgs">WindWebApplication::setUrlArgs()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置urlargs值</dd>
+							<dt><b>setVars</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetVars">WindForward::setVars()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置当前forward对象中存储的变量</dd>
+							<dt><b>setWindView</b></dt>
+				<dd>in file WindForward.php, method <a href="web/WindForward.html#methodsetWindView">WindForward::setWindView()</a></dd>
+							<dt><b>showMessage</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodshowMessage">WindSimpleController::showMessage()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送一个错误请求</dd>
+					</dl>
+	</div>
+	<a name="t"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">t</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>t</h2>
+		<dl>
+							<dt><b>$token</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$token">WindWebApplication::$token</a></dd>
+					</dl>
+	</div>
+	<a name="u"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">u</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>u</h2>
+		<dl>
+							<dt><b>urlToArgs</b></dt>
+				<dd>in file WindUrlHelper.php, method <a href="web/WindUrlHelper.html#methodurlToArgs">WindUrlHelper::urlToArgs()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;url字符串转化为数组格式</dd>
+					</dl>
+	</div>
+	<a name="v"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">v</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>v</h2>
+		<dl>
+							<dt><b>validateToken</b></dt>
+				<dd>in file WindSimpleController.php, method <a href="web/WindSimpleController.html#methodvalidateToken">WindSimpleController::validateToken()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证令牌</dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>$windFactory</b></dt>
+				<dd>in file WindWebApplication.php, variable <a href="web/WindWebApplication.html#var$windFactory">WindWebApplication::$windFactory</a></dd>
+							<dt><b>$windView</b></dt>
+				<dd>in file WindForward.php, variable <a href="web/WindForward.html#var$windView">WindForward::$windView</a><br>&nbsp;&nbsp;&nbsp;&nbsp;定义视图处理器</dd>
+							<dt><b>WindController.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindController.php.html">WindController.php</a></dd>
+							<dt><b>WindDispatcher.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindDispatcher.php.html">WindDispatcher.php</a></dd>
+							<dt><b>WindErrorHandler.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindErrorHandler.php.html">WindErrorHandler.php</a></dd>
+							<dt><b>WindForward.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindForward.php.html">WindForward.php</a></dd>
+							<dt><b>WindSimpleController.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindSimpleController.php.html">WindSimpleController.php</a></dd>
+							<dt><b>WindUrlHelper.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindUrlHelper.php.html">WindUrlHelper.php</a></dd>
+							<dt><b>WindWebApplication.php</b></dt>
+				<dd>procedural page <a href="web/_web---WindWebApplication.php.html">WindWebApplication.php</a></dd>
+							<dt><b>WindController</b></dt>
+				<dd>in file WindController.php, class <a href="web/WindController.html">WindController</a><br>&nbsp;&nbsp;&nbsp;&nbsp;操作控制器,管理一组用于处理用户的请求的处理操作.</dd>
+							<dt><b>WindDispatcher</b></dt>
+				<dd>in file WindDispatcher.php, class <a href="web/WindDispatcher.html">WindDispatcher</a><br>&nbsp;&nbsp;&nbsp;&nbsp;请求分发重定向处理类</dd>
+							<dt><b>WindErrorHandler</b></dt>
+				<dd>in file WindErrorHandler.php, class <a href="web/WindErrorHandler.html">WindErrorHandler</a><br>&nbsp;&nbsp;&nbsp;&nbsp;系统默认的错误处理类</dd>
+							<dt><b>WindForward</b></dt>
+				<dd>in file WindForward.php, class <a href="web/WindForward.html">WindForward</a><br>&nbsp;&nbsp;&nbsp;&nbsp;操作转发类,该类携带了操作转发信息以及后续处理信息给主应用控制器</dd>
+							<dt><b>WindSimpleController</b></dt>
+				<dd>in file WindSimpleController.php, class <a href="web/WindSimpleController.html">WindSimpleController</a><br>&nbsp;&nbsp;&nbsp;&nbsp;操作控制器,管理用户的请求处理操作.</dd>
+							<dt><b>WindUrlHelper</b></dt>
+				<dd>in file WindUrlHelper.php, class <a href="web/WindUrlHelper.html">WindUrlHelper</a><br>&nbsp;&nbsp;&nbsp;&nbsp;url帮助类,协助处理url的相关请求</dd>
+							<dt><b>WindWebApplication</b></dt>
+				<dd>in file WindWebApplication.php, class <a href="web/WindWebApplication.html">WindWebApplication</a><br>&nbsp;&nbsp;&nbsp;&nbsp;应用控制器,协调处理用户请求,处理,跳转分发等工作</dd>
+							<dt><b>WindFormFilter.php</b></dt>
+				<dd>procedural page <a href="web/filter/_web---filter---WindFormFilter.php.html">WindFormFilter.php</a></dd>
+							<dt><b>WindFormFilter</b></dt>
+				<dd>in file WindFormFilter.php, class <a href="web/filter/WindFormFilter.html">WindFormFilter</a><br>&nbsp;&nbsp;&nbsp;&nbsp;form表单拦截器</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

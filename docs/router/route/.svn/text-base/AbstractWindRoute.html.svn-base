@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class AbstractWindRoute</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">router<br /><div class="header-top-right-subpackage">route</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                          
+                                                                                                                                      		[ <a href="../../classtrees_router.html" class="menu">class tree: router</a> ]
+		[ <a href="../../elementindex_router.html" class="menu">index: router</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">router</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+	route<br />	    <span style="padding-left: 1em;">		<a href="../../router/route/AbstractWindRoute.html">AbstractWindRoute</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../router/route/WindRewriteRoute.html">WindRewriteRoute</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+		    		<a href="../../router/AbstractWindRouter.html">AbstractWindRouter</a>    	 <br />
+	    		<a href="../../router/WindMutilAppRouter.html">WindMutilAppRouter</a>    	 <br />
+	    		<a href="../../router/WindRouter.html">WindRouter</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: AbstractWindRoute</h1>
+Source Location: /router/route/AbstractWindRoute.php<br /><br />
+
+<h2 class="class-name">Class AbstractWindRoute</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>路由协议
+</strong></p>
+<span class="description"><p>职责: 1. url匹配并解析url生成参数列表; 2. 根据解析规则反向构建url  &lt;note&gt;<strong>注意:</strong>路由协议类是继承了拦截过滤器的接口实现,实现多路由协议支持&lt;/note&gt;</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_router---route---AbstractWindRoute.php.html">/router/route/AbstractWindRoute.php</a> [<span class="field">line 14</span>]
+		</p>
+
+		
+		<pre><a href="../../base/WindModule.html">WindModule</a>
+   |
+   --<a href="../../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a>
+      |
+      --AbstractWindRoute</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-23</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: AbstractWindRoute.php 3330 2012-01-15 13:49:24Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#var$params">$params</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#var$pattern">$pattern</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#var$reverse">$reverse</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#methodbuild">build</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#methodmatch">match</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#methodpostHandle">postHandle</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#methodpreHandle">preHandle</a></li>
+		  		  <li><a href="../../router/route/AbstractWindRoute.html#methodsetConfig">setConfig</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../router/route/WindRewriteRoute.html">WindRewriteRoute</a></td>
+					<td>
+											基于rewrite和二级域名的路由协议
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#var$interceptorChain">WindHandlerInterceptor::$interceptorChain</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#var$result">WindHandlerInterceptor::$result</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#methodhandle">WindHandlerInterceptor::handle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的执行入口</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#methodpostHandle">WindHandlerInterceptor::postHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的后置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#methodpreHandle">WindHandlerInterceptor::preHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的前置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../filter/WindHandlerInterceptor.html#methodsetHandlerInterceptorChain">WindHandlerInterceptor::setHandlerInterceptorChain()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置拦截链对象</span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																															<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$params" title="details" class="var-name-summary">$params</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$pattern" title="details" class="var-name-summary">$pattern</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$reverse" title="details" class="var-name-summary">$reverse</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#build" title="details" class="method-name">build</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据匹配的路由规则，构建Url</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#match" title="details" class="method-name">match</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">路由规则匹配方法，返回匹配到的参数列表</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#postHandle" title="details" class="method-name">postHandle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#preHandle" title="details" class="method-name">preHandle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setConfig" title="details" class="method-name">setConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$params" id="$params"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$params</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 17]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#var$params">WindRewriteRoute::$params</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$pattern" id="$pattern"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$pattern</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 15]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#var$pattern">WindRewriteRoute::$pattern</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$reverse" id="$reverse"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$reverse</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 16]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#var$reverse">WindRewriteRoute::$reverse</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodbuild" id="build"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">build</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 27]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string build(
+<a href="../../router/AbstractWindRouter.html">AbstractWindRouter</a>
+$router, string
+$action, [array
+$args = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据匹配的路由规则，构建Url
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$router:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$action:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#methodbuild">WindRewriteRoute::build()</a>
+								: 在此路由协议的基础上组装url
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodmatch" id="match"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">match</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 35]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array match(
+<a href="../../http/request/WindHttpRequest.html">WindHttpRequest</a>
+$request&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>路由规则匹配方法，返回匹配到的参数列表
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../../http/request/WindHttpRequest.html">WindHttpRequest</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#methodmatch">WindRewriteRoute::match()</a>
+								: 路由解析
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpostHandle" id="postHandle"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">postHandle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 47]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void postHandle(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../filter/WindHandlerInterceptor.html#methodpostHandle">WindHandlerInterceptor::postHandle()</a></dt>
+						<dd>拦截器的后置操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpreHandle" id="preHandle"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">preHandle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 40]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void preHandle(
+[
+$request = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../filter/WindHandlerInterceptor.html#methodpreHandle">WindHandlerInterceptor::preHandle()</a></dt>
+						<dd>拦截器的前置操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetConfig" id="setConfig"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 52]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setConfig(
+
+$config&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$config:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></dt>
+						<dd>设置类配置</dd>
+					</dl>
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../router/route/WindRewriteRoute.html#methodsetConfig">WindRewriteRoute::setConfig()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:25 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

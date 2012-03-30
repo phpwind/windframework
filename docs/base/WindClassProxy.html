@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindClassProxy</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">base<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                    
+                                                                                                                                                                                                                                                                                                                            		[ <a href="../classtrees_base.html" class="menu">class tree: base</a> ]
+		[ <a href="../elementindex_base.html" class="menu">index: base</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">base</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../base/IWindApplication.html">IWindApplication</a>    	 <br />
+	    		<a href="../base/IWindFactory.html">IWindFactory</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../base/WindActionException.html">WindActionException</a>    	 <br />
+	    		<a href="../base/WindClassProxy.html">WindClassProxy</a>    	 <br />
+	    		<a href="../base/WindEnableValidateModule.html">WindEnableValidateModule</a>    	 <br />
+	    		<a href="../base/WindErrorMessage.html">WindErrorMessage</a>    	 <br />
+	    		<a href="../base/WindException.html">WindException</a>    	 <br />
+	    		<a href="../base/WindFactory.html">WindFactory</a>    	 <br />
+	    		<a href="../base/WindFinalException.html">WindFinalException</a>    	 <br />
+	    		<a href="../base/WindForwardException.html">WindForwardException</a>    	 <br />
+	    		<a href="../base/WindFrontController.html">WindFrontController</a>    	 <br />
+	    		<a href="../base/WindHelper.html">WindHelper</a>    	 <br />
+	    		<a href="../base/WindModule.html">WindModule</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindClassProxy</h1>
+Source Location: /base/WindClassProxy.php<br /><br />
+
+<h2 class="class-name">Class WindClassProxy</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>类代理定义
+</strong></p>
+<span class="description"><p>通过使用类代理机制,可以实现对类方法或属性的监听过滤机制.<ol><li><div class="src-line">&nbsp;<span class="src-comm">//相关组件配置,只需设置&nbsp;proxy为true,就可以通过组件工厂创建一个具有代理功能的类实例对象.</span></div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">component&nbsp;name</span>=<span class="src-str">'windApplication'&nbsp;</span><span class="src-id">path</span>=<span class="src-str">'WIND:web.WindWebApplication'</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">scope</span>=<span class="src-str">'singleton'&nbsp;</span><span class="src-id">proxy</span>=<span class="src-str">'true'</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">properties</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">property&nbsp;name</span>=<span class="src-str">'dispatcher'&nbsp;</span><span class="src-id">ref</span>=<span class="src-str">'dispatcher'&nbsp;</span>/&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">property&nbsp;name</span>=<span class="src-str">'handlerAdapter'&nbsp;</span><span class="src-id">ref</span>=<span class="src-str">'router'&nbsp;</span>/&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;/<span class="src-id">properties</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;/<span class="src-id">component</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$object&nbsp;</span>=&nbsp;<span class="src-id"><a href="../default/Wind.html">Wind</a></span><span class="src-sym">::</span><a href="../default/Wind.html#methodgetApp">getApp</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getFactory</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getInstance</span><span class="src-sym">(</span><span class="src-str">'windApplication'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$object</span><span class="src-sym">-&gt;</span><a href="../base/WindClassProxy.html#methodregisterEventListener">registerEventListener</a><span class="src-sym">(</span><span class="src-str">'runProcess'</span><span class="src-sym">,&nbsp;</span><span class="src-key">new&nbsp;</span><span class="src-id">Listener</span><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></p></span>
+		<p class="notes">
+			Located in <a class="field" href="_base---WindClassProxy.php.html">/base/WindClassProxy.php</a> [<span class="field">line 23</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindClassProxy.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindClassProxy.html#var$_className">$_className</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#var$_classPath">$_classPath</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#var$_instance">$_instance</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#var$_listener">$_listener</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindClassProxy.html#method__construct">__construct</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#methodregisterEventListener">registerEventListener</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#methodregisterTargetObject">registerTargetObject</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method_getClassName">_getClassName</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method_getClassPath">_getClassPath</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method_getInstance">_getInstance</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method_setClassName">_setClassName</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method_setClassPath">_setClassPath</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method__call">__call</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method__get">__get</a></li>
+		  		  <li><a href="../base/WindClassProxy.html#method__set">__set</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constEVENT_TYPE_GETTER" title="details" class="const-name-summary">EVENT_TYPE_GETTER</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constEVENT_TYPE_METHOD" title="details" class="const-name-summary">EVENT_TYPE_METHOD</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constEVENT_TYPE_SETTER" title="details" class="const-name-summary">EVENT_TYPE_SETTER</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																					<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_className" title="details" class="var-name-summary">$_className</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_classPath" title="details" class="var-name-summary">$_classPath</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_instance" title="details" class="var-name-summary">$_instance</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_listener" title="details" class="var-name-summary">$_listener</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindClassProxy</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#registerEventListener" title="details" class="method-name">registerEventListener</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">注册事件以及事件监听类</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../base/WindClassProxy.html">WindClassProxy</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#registerTargetObject" title="details" class="method-name">registerTargetObject</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">注册目标对象,如果已经注册了不重复注册</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_getClassName" title="details" class="method-name">_getClassName</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前代理对象的真实类名称</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_getClassPath" title="details" class="method-name">_getClassPath</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前代理对象的真实类的路径信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">object</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_getInstance" title="details" class="method-name">_getInstance</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前代理对象的真实类对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_setClassName" title="details" class="method-name">_setClassName</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置类名称</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_setClassPath" title="details" class="method-name">_setClassPath</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置类路径</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__call" title="details" class="method-name">__call</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">监听类方法</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__get" title="details" class="method-name">__get</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">监听属性调用</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__set" title="details" class="method-name">__set</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">该方法用于监听类属性</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="var$_className" id="$_className"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$_className</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 40]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_classPath" id="$_classPath"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$_classPath</span>
+			 = <span class="var-default"> ''</span>			<span class="smalllinenumber">[line 41]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_instance" id="$_instance"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$_instance</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 42]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_listener" id="$_listener"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$_listener</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 43]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 48]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindClassProxy __construct(
+[
+$targetObject = null], object
+$targetObj&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">object</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetObj:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要被代理监听的类对象实例  默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetObject:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodregisterEventListener" id="registerEventListener"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">registerEventListener</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 66]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void registerEventListener(
+stinrg
+$event, object
+$listener, [string
+$type = self::EVENT_TYPE_METHOD]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>注册事件以及事件监听类
+</strong></p>
+<span class="description"><p>通过调用该方法,将事件以及对事件的监听方法注册进来,当事件方法被调用的时候监听的方法被触发.例:<ol><li><div class="src-line">&nbsp;&lt;<span class="src-id">component&nbsp;name</span>=<span class="src-str">'windApplication'&nbsp;</span><span class="src-id">path</span>=<span class="src-str">'WIND:web.WindWebApplication'</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">scope</span>=<span class="src-str">'singleton'&nbsp;</span><span class="src-id">proxy</span>=<span class="src-str">'true'</span>&gt;...&lt;/<span class="src-id">component</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$object&nbsp;</span>=&nbsp;<span class="src-id"><a href="../default/Wind.html">Wind</a></span><span class="src-sym">::</span><a href="../default/Wind.html#methodgetApp">getApp</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getFactory</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getInstance</span><span class="src-sym">(</span><span class="src-str">'windApplication'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$object</span><span class="src-sym">-&gt;</span><a href="../base/WindClassProxy.html#methodregisterEventListener">registerEventListener</a><span class="src-sym">(</span><span class="src-str">'runProcess'</span><span class="src-sym">,&nbsp;</span><span class="src-key">new&nbsp;</span><span class="src-id">Listener</span><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">stinrg</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$event:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 被监听的事件</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">object</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$listener:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 事件监听器</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 事件监听类型</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodregisterTargetObject" id="registerTargetObject"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">registerTargetObject</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 87]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../base/WindClassProxy.html">WindClassProxy</a> registerTargetObject(
+object
+$targetObject&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>注册目标对象,如果已经注册了不重复注册
+</strong></p>
+<span class="description"><p>WindFactory中创建类代理的一段例子:<ol><li><div class="src-line">&nbsp;<span class="src-var">$instance&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id">Object</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$this</span><span class="src-sym">-&gt;</span><span class="src-id">addClassDefinitions</span><span class="src-sym">(</span><span class="src-var">$alias</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'path'&nbsp;</span>=&gt;&nbsp;<span class="src-var">$proxy</span><span class="src-sym">,&nbsp;</span><span class="src-str">'scope'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'prototype'</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$proxy&nbsp;</span>=&nbsp;<span class="src-var">$this</span><span class="src-sym">-&gt;</span><span class="src-id">getInstance</span><span class="src-sym">(</span><span class="src-var">$alias</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$proxy</span><span class="src-sym">-&gt;</span><a href="../base/WindClassProxy.html#methodregisterTargetObject">registerTargetObject</a><span class="src-sym">(</span><span class="src-var">$instance</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$instance</span><span class="src-sym">-&gt;</span><span class="src-id">_proxy&nbsp;</span>=&nbsp;<span class="src-var">$proxy</span><span class="src-sym">;</span></div></li>
+</ol>&lt;note&gt;<strong>注意:</strong>$instance继承自WindModule&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">object</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$targetObject:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_getClassName" id="_getClassName"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">_getClassName</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 205]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string _getClassName(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前代理对象的真实类名称
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_getClassPath" id="_getClassPath"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">_getClassPath</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 214]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string _getClassPath(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前代理对象的真实类的路径信息
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_getInstance" id="_getInstance"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">_getInstance</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 196]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>object _getInstance(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前代理对象的真实类对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_setClassName" id="_setClassName"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">_setClassName</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 224]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void _setClassName(
+string
+$className&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置类名称
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$className:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_setClassPath" id="_setClassPath"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">_setClassPath</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 234]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void _setClassPath(
+string
+$classPath&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置类路径
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$classPath:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__call" id="__call"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 147]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed __call(
+string
+$methodName, array
+$args&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>监听类方法
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$methodName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 方法名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 方法参数</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__get" id="__get"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 126]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed __get(
+string
+$propertyName&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>监听属性调用
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$propertyName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 属性名</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Deprecated:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__set" id="__set"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">__set</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 106]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed __set(
+string
+$propertyName, mixed
+$value&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>该方法用于监听类属性
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$propertyName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 属性名称</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 属性值</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Deprecated:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+																		| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constEVENT_TYPE_GETTER" id="EVENT_TYPE_GETTER"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">EVENT_TYPE_GETTER</span>
+			 = <span class="var-default"> 'getter'</span>
+			<span class="smalllinenumber">[line 26]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constEVENT_TYPE_METHOD" id="EVENT_TYPE_METHOD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">EVENT_TYPE_METHOD</span>
+			 = <span class="var-default"> 'method'</span>
+			<span class="smalllinenumber">[line 24]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constEVENT_TYPE_SETTER" id="EVENT_TYPE_SETTER"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">EVENT_TYPE_SETTER</span>
+			 = <span class="var-default"> 'setter'</span>
+			<span class="smalllinenumber">[line 25]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:28 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

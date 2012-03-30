@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindActionFilter</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">filter<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                        
+                                                                                                                                                                                                                                        		[ <a href="../classtrees_filter.html" class="menu">class tree: filter</a> ]
+		[ <a href="../elementindex_filter.html" class="menu">index: filter</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">filter</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../filter/WindActionFilter.html">WindActionFilter</a>    	 <br />
+	    		<a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a>    	 <br />
+	    		<a href="../filter/WindHandlerInterceptorChain.html">WindHandlerInterceptorChain</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindActionFilter</h1>
+Source Location: /filter/WindActionFilter.php<br /><br />
+
+<h2 class="class-name">Class WindActionFilter</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>action拦截器父类
+</strong></p>
+<span class="description"><p>继承实现拦截链preHandle（前置）和postHandle（后置）职责.将实现的拦截链添加到应用配置中,使之生效:  例如实现MyFilter,则需要在应用配置中添加如下配置:  <ol><li><div class="src-line">&nbsp;<span class="src-str">'filters'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'class'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'WIND:filter.WindFilterChain'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//设置使用的拦截链实现</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'filter1'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'class'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'MYAPP:filter.MyFilter'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//设置设置实现的MyFilter类路径,MYAPP必须是一个有效的经过注册的命名空间</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'pattern'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'*'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//此处设置该拦截规则应用的范围,*意味着所有的action都将会应用该拦截规则</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">)</span></div></li>
+</ol>  关于pattern的设置说明如下：  <ul><li>*：则所有的请求都将会应用该拦截器</li><li>moduleA*: 则所有配置的moduleA模块下的请求都将会应用该拦截器</li><li>moduleA_index*: 则moduleA模块下的indexController下的所有Action请求都将会应用该拦截器</li><li>moduleA_index_add*: 则module模块下的indexController下的addAction将会应用该拦截器</li></ul>  用户可以在filter中添加自己的特殊配置:比如:  <ol><li><div class="src-line">&nbsp;<span class="src-str">'filters'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'class'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'WIND:filter.WindFilterChain'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'filter1'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'class'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'MYAPP:filter.TestFilter'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'pattern'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'*'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'isOpen'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'1'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//添加的配置</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">)</span></div></li>
+</ol>  则在自己的TestFilter中设置一个属性名为isOpen同时设置该属性为protected权限,那么在使用的时候该配置的值将会赋值给该属性.</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_filter---WindActionFilter.php.html">/filter/WindActionFilter.php</a> [<span class="field">line 43</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --<a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a>
+      |
+      --WindActionFilter</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindActionFilter.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../filter/WindActionFilter.html#var$errorMessage">$errorMessage</a></li>
+		  		  <li><a href="../filter/WindActionFilter.html#var$forward">$forward</a></li>
+		  		  <li><a href="../filter/WindActionFilter.html#var$router">$router</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../filter/WindActionFilter.html#method__construct">__construct</a></li>
+		  		  <li><a href="../filter/WindActionFilter.html#methodgetInput">getInput</a></li>
+		  		  <li><a href="../filter/WindActionFilter.html#methodsetGlobal">setGlobal</a></li>
+		  		  <li><a href="../filter/WindActionFilter.html#methodsetOutput">setOutput</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/filter/WindFormFilter.html">WindFormFilter</a></td>
+					<td>
+											form表单拦截器
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#var$interceptorChain">WindHandlerInterceptor::$interceptorChain</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#var$result">WindHandlerInterceptor::$result</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodhandle">WindHandlerInterceptor::handle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的执行入口</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodpostHandle">WindHandlerInterceptor::postHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的后置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodpreHandle">WindHandlerInterceptor::preHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">拦截器的前置操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../filter/WindHandlerInterceptor.html#methodsetHandlerInterceptorChain">WindHandlerInterceptor::setHandlerInterceptorChain()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置拦截链对象</span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																															<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$errorMessage" title="details" class="var-name-summary">$errorMessage</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">错误处理类</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$forward" title="details" class="var-name-summary">$forward</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">action跳转类</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$router" title="details" class="var-name-summary">$router</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">路由对象</td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindActionFilter</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">构造函数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array|string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getInput" title="details" class="method-name">getInput</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从指定源中根据输入的参数名获得输入数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setGlobal" title="details" class="method-name">setGlobal</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置全局模板数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setOutput" title="details" class="method-name">setOutput</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置模板数据</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$errorMessage" id="$errorMessage"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;
+			<span class="var-name">$errorMessage</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 55]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>错误处理类
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$forward" id="$forward"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;
+			<span class="var-name">$forward</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 49]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>action跳转类
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$router" id="$router"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;
+			<span class="var-name">$router</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 61]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>路由对象
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 73]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindActionFilter __construct(
+<a href="../web/WindForward.html">WindForward</a>
+$forward, <a href="../base/WindErrorMessage.html">WindErrorMessage</a>
+$errorMessage, <a href="../router/AbstractWindRouter.html">AbstractWindRouter</a>
+$router, [array
+$args = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>构造函数
+</strong></p>
+<span class="description"><p>初始化类属性</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../web/WindForward.html">WindForward</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forward:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置当前的forward对象</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$errorMessage:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置错误处理的errorMessage</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../router/AbstractWindRouter.html">AbstractWindRouter</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$router:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 路由对象</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 接受数组传递,数组以关联数组的方式给出,如果存在属性和关联数组中的key相同则将该key对应值设置给该属性.</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetInput" id="getInput"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getInput</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 124]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array|string getInput(
+string
+$name, [string
+$type = ''], [string
+$callback = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从指定源中根据输入的参数名获得输入数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要获取的值的key</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取数据源,可以是(GET POST COOKIE)中的一个,每种都将从各自的源中去获取对应的数值:  <ul><li>GET: 将从$_GET中去获取数据</li><li>POST: 将从$_POST中去获取数据</li><li>COOKIE: 将从$_COOKIE中去获取数据</li><li>其他值: 将依次从request对象的attribute,$_GET,$_POST,$_COOKIE,$_REQUEST,$_ENV,$_SERVER中去尝试获取该值.</li></ul>  该参数默认为空</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$callback:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 回调函数,缺省值为空数组,该回调函数支持数组格式,即可以是调用类中的方法</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>当有$callback的时候返回一个数组，其有两个元素：  <ul><li>第一个元素: 获得的用户输入的值</li><li>第二个元素：执行$callback之后返回的值</li></ul></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetGlobal" id="setGlobal"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setGlobal</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 101]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setGlobal(
+string|array|object 
+$data, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置全局模板数据
+</strong></p>
+<span class="description"><p>设置为Global的参数数据,将可以在所有子模板中共用,在模板中的通过{@G:varName}的方式去获取变量</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array|object </span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要设置的数据</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 参数的名字,默认为空，如果key为空，并且$data是数组或是对象的时候，则$data中的元素将会作为单独的参数保存到Global数据中.</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetOutput" id="setOutput"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setOutput</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 89]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setOutput(
+string|array|object 
+$data, [string
+$key = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置模板数据
+</strong></p>
+<span class="description"><p>此方法设置的参数,作用域仅仅只是在当前模板中可用,调用的方法为{$varName}</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array|object </span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要设置输出的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 参数的名字,默认为空，如果key为空，并且$data是数组或是对象的时候，则$data中的元素将会作为单独的参数保存到输出数据中.</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:28 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

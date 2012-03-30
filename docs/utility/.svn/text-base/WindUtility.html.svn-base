@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindUtility</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">utility<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                
+                                                                		[ <a href="../classtrees_utility.html" class="menu">class tree: utility</a> ]
+		[ <a href="../elementindex_utility.html" class="menu">index: utility</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">utility</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../utility/WindArray.html">WindArray</a>    	 <br />
+	    		<a href="../utility/WindConvert.html">WindConvert</a>    	 <br />
+	    		<a href="../utility/WindDate.html">WindDate</a>    	 <br />
+	    		<a href="../utility/WindFile.html">WindFile</a>    	 <br />
+	    		<a href="../utility/WindFolder.html">WindFolder</a>    	 <br />
+	    		<a href="../utility/WindGeneralDate.html">WindGeneralDate</a>    	 <br />
+	    		<a href="../utility/WindImage.html">WindImage</a>    	 <br />
+	    		<a href="../utility/WindJson.html">WindJson</a>    	 <br />
+	    		<a href="../utility/WindPack.html">WindPack</a>    	 <br />
+	    		<a href="../utility/WindSecurity.html">WindSecurity</a>    	 <br />
+	    		<a href="../utility/WindSecurityToken.html">WindSecurityToken</a>    	 <br />
+	    		<a href="../utility/WindString.html">WindString</a>    	 <br />
+	    		<a href="../utility/WindUtility.html">WindUtility</a>    	 <br />
+	    		<a href="../utility/WindValidator.html">WindValidator</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindUtility</h1>
+Source Location: /utility/WindUtility.php<br /><br />
+
+<h2 class="class-name">Class WindUtility</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>通用工具库
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_utility---WindUtility.php.html">/utility/WindUtility.php</a> [<span class="field">line 11</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindUtility.php 3389 2012-03-12 15:44:22Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../utility/WindUtility.html#methodbuildValidateRule">buildValidateRule</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodevalExpression">evalExpression</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodgenerateRandStr">generateRandStr</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodlcfirst">lcfirst</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodmergeArray">mergeArray</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodresolveExpression">resolveExpression</a></li>
+		  		  <li><a href="../utility/WindUtility.html#methodstrtr">strtr</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+												<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">array</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#buildValidateRule" title="details" class="method-name">buildValidateRule</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通用组装测试验证规则</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">boolean</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#evalExpression" title="details" class="method-name">evalExpression</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">执行简单的条件表达式</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#generateRandStr" title="details" class="method-name">generateRandStr</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得随机数字符串</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#lcfirst" title="details" class="method-name">lcfirst</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将字符串首字母小写</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">array</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#mergeArray" title="details" class="method-name">mergeArray</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">递归合并两个数组</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">array</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#resolveExpression" title="details" class="method-name">resolveExpression</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">解析表达式</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#strtr" title="details" class="method-name">strtr</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">对字符串中的参数进行替换</td></tr>
+				</div>
+																																																																								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+<a name="methodbuildValidateRule" id="buildValidateRule"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method buildValidateRule</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 143]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static array buildValidateRule(
+string
+$field, string
+$validator, [array
+$args = array()], [string
+$default = null], [string
+$message = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通用组装测试验证规则
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$field:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 验证字段名称</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$validator:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 验证方法</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 验证方法中传递的其他参数,需在待验证字段值的后面,默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$default:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 验证失败是设置的默认值,默认为null</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$message:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 验证失败是返回的错误信息,默认为空字串</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回验证规则  <ul><li>field: 验证字段名称</li><li>validator: 验证方法</li><li>args: 验证方法中传递的其他参数,需在待验证字段值的后面,缺省为空数组</li><li>default: 验证失败是设置的默认值,缺省为null</li><li>message: 验证失败是返回的错误信息,默认为'提示：XX验证失败'</li></ul></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodevalExpression" id="evalExpression"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method evalExpression</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 49]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static boolean evalExpression(
+string
+$v1, string
+$v2, string
+$operator&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>执行简单的条件表达式
+</strong></p>
+<span class="description"><p>只能执行==、！=、&lt;、&gt;、&lt;=、&gt;=简单的比较</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$v1:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 左边的操作数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$v2:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 右边的操作数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$operator:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 操作符号</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgenerateRandStr" id="generateRandStr"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method generateRandStr</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 111]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string generateRandStr(
+int
+$length&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得随机数字符串
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$length:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 随机数的长度</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>随机获得的字串</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlcfirst" id="lcfirst"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method lcfirst</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 98]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string lcfirst(
+string
+$str&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将字符串首字母小写
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$str:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待处理的字符串</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回处理后的字符串</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodmergeArray" id="mergeArray"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method mergeArray</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 76]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static array mergeArray(
+array
+$array1, array
+$array2&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>递归合并两个数组
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$array1:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 数组1</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$array2:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 数组2</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>合并后的数组</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresolveExpression" id="resolveExpression"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method resolveExpression</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 28]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static array resolveExpression(
+string
+$expression&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>解析表达式
+</strong></p>
+<span class="description"><p>表达式格式: namespace:arg1.arg2.arg3.arg4.arg5==value  返回: array($namespace, $param1, $operator, $param1)</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expression:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待解析的表达式</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回解析后的表达式,由表达式的各项组成的数组:  <ul><li>第一个元素: 命名空间</li><li>第二个元素: 表达式的左边操作数</li><li>第三个元素: 表达式的操作符</li><li>第四个元素： 表达式的右边操作数</li></ul></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstrtr" id="strtr"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method strtr</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 168]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string strtr(
+string
+$str, string
+$from, [string
+$to = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>对字符串中的参数进行替换
+</strong></p>
+<span class="description"><p>该函优化了php strtr()实现, 在进行数组方式的字符替换时支持了两种模式的字符替换:</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$str:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$from:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$to:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 可选参数,默认值为''</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td><a href="../i18n/WindLangResource.html#methodgetMessage">WindLangResource::getMessage()</a></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:43 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package convert Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">convert<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                  
+                                                                              		[ <a href="classtrees_convert.html" class="menu">class tree: convert</a> ]
+		[ <a href="elementindex_convert.html" class="menu">index: convert</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">convert</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="convert/IWindConverter.html">IWindConverter</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="convert/WindGeneralConverter.html">WindGeneralConverter</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package convert</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+							<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_convert.html#c">c</a> ]
+	[ <a href="elementindex_convert.html#e">e</a> ]
+	[ <a href="elementindex_convert.html#i">i</a> ]
+	[ <a href="elementindex_convert.html#t">t</a> ]
+	[ <a href="elementindex_convert.html#u">u</a> ]
+	[ <a href="elementindex_convert.html#w">w</a> ]
+<br /><br />
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>chsConvert</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodchsConvert">WindGeneralConverter::chsConvert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;BIG5toGBK</dd>
+							<dt><b>chstoUNICODE</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodchstoUNICODE">WindGeneralConverter::chstoUNICODE()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;GBK,BIG5 to UNICODE</dd>
+							<dt><b>chstoUTF8</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodchstoUTF8">WindGeneralConverter::chstoUTF8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;BIG5,GBK to UTF8</dd>
+							<dt><b>chsUTF8toU</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodchsUTF8toU">WindGeneralConverter::chsUTF8toU()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;BIG5,GBK to Unicode</dd>
+							<dt><b>convert</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodconvert">WindGeneralConverter::convert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码转化</dd>
+							<dt><b>convert</b></dt>
+				<dd>in file IWindConverter.php, method <a href="convert/IWindConverter.html#methodconvert">IWindConverter::convert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码转化</dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>$encodeLang</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$encodeLang">WindGeneralConverter::$encodeLang</a></dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>$iconvEnabled</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$iconvEnabled">WindGeneralConverter::$iconvEnabled</a></dd>
+							<dt><b>$IndexPoint</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$IndexPoint">WindGeneralConverter::$IndexPoint</a></dd>
+							<dt><b>IWindConverter.php</b></dt>
+				<dd>procedural page <a href="convert/_convert---IWindConverter.php.html">IWindConverter.php</a></dd>
+							<dt><b>initConvert</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodinitConvert">WindGeneralConverter::initConvert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化类</dd>
+							<dt><b>IWindConverter</b></dt>
+				<dd>in file IWindConverter.php, class <a href="convert/IWindConverter.html">IWindConverter</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码转化器通用接口定义</dd>
+					</dl>
+	</div>
+	<a name="t"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">t</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>t</h2>
+		<dl>
+							<dt><b>$tableEncode</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$tableEncode">WindGeneralConverter::$tableEncode</a></dd>
+							<dt><b>$tableHandle</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$tableHandle">WindGeneralConverter::$tableHandle</a></dd>
+							<dt><b>$tableIndex</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$tableIndex">WindGeneralConverter::$tableIndex</a></dd>
+							<dt><b>$tableName</b></dt>
+				<dd>in file WindGeneralConverter.php, variable <a href="convert/WindGeneralConverter.html#var$tableName">WindGeneralConverter::$tableName</a></dd>
+					</dl>
+	</div>
+	<a name="u"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">u</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>u</h2>
+		<dl>
+							<dt><b>unicodeToUTF8</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodunicodeToUTF8">WindGeneralConverter::unicodeToUTF8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;unicode to utf8</dd>
+							<dt><b>utf8toCHS</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodutf8toCHS">WindGeneralConverter::utf8toCHS()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;UTF8 to GBK,BIG5</dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindGeneralConverter.php</b></dt>
+				<dd>procedural page <a href="convert/_convert---WindGeneralConverter.php.html">WindGeneralConverter.php</a></dd>
+							<dt><b>WindGeneralConverter</b></dt>
+				<dd>in file WindGeneralConverter.php, method <a href="convert/WindGeneralConverter.html#methodWindGeneralConverter">WindGeneralConverter::WindGeneralConverter()</a></dd>
+							<dt><b>WindGeneralConverter</b></dt>
+				<dd>in file WindGeneralConverter.php, class <a href="convert/WindGeneralConverter.html">WindGeneralConverter</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通用编码转化类</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

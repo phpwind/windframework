@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindResultSet</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">db<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="../classtrees_db.html" class="menu">class tree: db</a> ]
+		[ <a href="../elementindex_db.html" class="menu">index: db</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">db</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>    	 <br />
+	    		<a href="../db/WindConnection.html">WindConnection</a>    	 <br />
+	    		<a href="../db/WindConnectionManager.html">WindConnectionManager</a>    	 <br />
+	    		<a href="../db/WindResultSet.html">WindResultSet</a>    	 <br />
+	    		<a href="../db/WindSqlStatement.html">WindSqlStatement</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../db/exception/WindDbException.html">WindDbException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mysql<br />	    <span style="padding-left: 1em;">		<a href="../db/mysql/WindMysqlPdoAdapter.html">WindMysqlPdoAdapter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindResultSet</h1>
+Source Location: /db/WindResultSet.php<br /><br />
+
+<h2 class="class-name">Class WindResultSet</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>sql查询结果集处理
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_db---WindResultSet.php.html">/db/WindResultSet.php</a> [<span class="field">line 11</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-23</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindResultSet.php 3389 2012-03-12 15:44:22Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../db/WindResultSet.html#method__construct">__construct</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodcolumnCount">columnCount</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodfetch">fetch</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodfetchAll">fetchAll</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodfetchColumn">fetchColumn</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodfetchObject">fetchObject</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodrowCount">rowCount</a></li>
+		  		  <li><a href="../db/WindResultSet.html#methodsetFetchMode">setFetchMode</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindResultSet</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">number</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#columnCount" title="details" class="method-name">columnCount</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回结果集中的列数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetch" title="details" class="method-name">fetch</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得结果集的下一行</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchAll" title="details" class="method-name">fetchAll</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回所有的查询结果</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string|bool</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchColumn" title="details" class="method-name">fetchColumn</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从下一行记录中获得下标是$index的值，如果获取失败则返回false</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">object</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchObject" title="details" class="method-name">fetchObject</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得结果集中的下一行，同时根据设置的类返回如果没有设置则返回的使StdClass对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#rowCount" title="details" class="method-name">rowCount</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回最后一条Sql语句的影响行数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setFetchMode" title="details" class="method-name">setFetchMode</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置获取模式</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 35]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindResultSet __construct(
+<a href="../db/WindSqlStatement.html">WindSqlStatement</a>
+$sqlStatement, [int
+$fetchMode = 0], [int
+$fetchType = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sqlStatement:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预处理对象</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcolumnCount" id="columnCount"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">columnCount</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 73]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>number columnCount(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回结果集中的列数
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetch" id="fetch"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetch</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 84]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array fetch(
+[int
+$fetchMode = 0], [int
+$fetchType = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得结果集的下一行
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，设置Statement的属性设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchAll" id="fetchAll"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchAll</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 115]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array fetchAll(
+[string
+$index = ''], [int
+$fetchMode = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回所有的查询结果
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$index:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 输出数组下标</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchColumn" id="fetchColumn"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetchColumn</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 135]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string|bool fetchColumn(
+[int
+$index = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从下一行记录中获得下标是$index的值，如果获取失败则返回false
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$index:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 列下标</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchObject" id="fetchObject"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchObject</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 150]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>object fetchObject(
+[string
+$className = ''], [array
+$ctor_args = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得结果集中的下一行，同时根据设置的类返回如果没有设置则返回的使StdClass对象
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$className:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 使用的类</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ctor_args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 初始化参数</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrowCount" id="rowCount"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">rowCount</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 64]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int rowCount(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回最后一条Sql语句的影响行数
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetFetchMode" id="setFetchMode"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setFetchMode</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 51]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setFetchMode(
+int
+$fetchMode, [boolean
+$flush = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置获取模式
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置获取的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM...</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$flush:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否统一设置所有PDOStatement中的获取方式</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:39 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

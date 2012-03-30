@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package cache Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">cache<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                          
+                                                                                                                                      		[ <a href="classtrees_cache.html" class="menu">class tree: cache</a> ]
+		[ <a href="elementindex_cache.html" class="menu">index: cache</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">cache</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="cache/IWindCacheDependency.html">IWindCacheDependency</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="cache/AbstractWindCache.html">AbstractWindCache</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="cache/exception/WindCacheException.html">WindCacheException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	dependency<br />	    <span style="padding-left: 1em;">		<a href="cache/dependency/WindResolvedCrashDependency.html">WindResolvedCrashDependency</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package cache</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+							<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_cache.html#a">a</a> ]
+	[ <a href="elementindex_cache.html#b">b</a> ]
+	[ <a href="elementindex_cache.html#c">c</a> ]
+	[ <a href="elementindex_cache.html#d">d</a> ]
+	[ <a href="elementindex_cache.html#e">e</a> ]
+	[ <a href="elementindex_cache.html#f">f</a> ]
+	[ <a href="elementindex_cache.html#g">g</a> ]
+	[ <a href="elementindex_cache.html#h">h</a> ]
+	[ <a href="elementindex_cache.html#i">i</a> ]
+	[ <a href="elementindex_cache.html#s">s</a> ]
+	[ <a href="elementindex_cache.html#w">w</a> ]
+	[ <a href="elementindex_cache.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindResolvedCrashDependency.php, method <a href="cache/dependency/WindResolvedCrashDependency.html#method__construct">WindResolvedCrashDependency::__construct()</a></dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>AbstractWindCache</b></dt>
+				<dd>in file AbstractWindCache.php, class <a href="cache/AbstractWindCache.html">AbstractWindCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;缓存策略实现的基类</dd>
+							<dt><b>add</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodadd">AbstractWindCache::add()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;增加一个条目到缓存服务器</dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodaddValue">AbstractWindCache::addValue()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;执行添加操作</dd>
+							<dt><b>AbstractWindCache.php</b></dt>
+				<dd>procedural page <a href="cache/_cache---AbstractWindCache.php.html">AbstractWindCache.php</a></dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>batchDelete</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodbatchDelete">AbstractWindCache::batchDelete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过key批量删除缓存数据</dd>
+							<dt><b>batchGet</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodbatchGet">AbstractWindCache::batchGet()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过key批量获取缓存数据</dd>
+							<dt><b>buildData</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodbuildData">AbstractWindCache::buildData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造保存的数据</dd>
+							<dt><b>buildSecurityKey</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodbuildSecurityKey">AbstractWindCache::buildSecurityKey()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数据key计算生成安全的key</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>clear</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodclear">AbstractWindCache::clear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;清楚缓存，过期及所有缓存</dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>DATA</b></dt>
+				<dd>in file AbstractWindCache.php, class constant <a href="cache/AbstractWindCache.html#constDATA">AbstractWindCache::DATA</a><br>&nbsp;&nbsp;&nbsp;&nbsp;标志存储数据</dd>
+							<dt><b>decrement</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methoddecrement">AbstractWindCache::decrement()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将元素的值减小value</dd>
+							<dt><b>delete</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methoddelete">AbstractWindCache::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除缓存数据</dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methoddeleteValue">AbstractWindCache::deleteValue()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;需要实现的删除操作</dd>
+							<dt><b>DEPENDENCY</b></dt>
+				<dd>in file AbstractWindCache.php, class constant <a href="cache/AbstractWindCache.html#constDEPENDENCY">AbstractWindCache::DEPENDENCY</a><br>&nbsp;&nbsp;&nbsp;&nbsp;配置文件中标志缓存依赖名称的定义</dd>
+							<dt><b>DEPENDENCYCLASS</b></dt>
+				<dd>in file AbstractWindCache.php, class constant <a href="cache/AbstractWindCache.html#constDEPENDENCYCLASS">AbstractWindCache::DEPENDENCYCLASS</a><br>&nbsp;&nbsp;&nbsp;&nbsp;缓存依赖的类名称</dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>EXPIRE</b></dt>
+				<dd>in file AbstractWindCache.php, class constant <a href="cache/AbstractWindCache.html#constEXPIRE">AbstractWindCache::EXPIRE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间的定义)</dd>
+					</dl>
+	</div>
+	<a name="f"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">f</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>f</h2>
+		<dl>
+							<dt><b>formatData</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodformatData">AbstractWindCache::formatData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;格式化输出</dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>get</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodget">AbstractWindCache::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据缓存key获取指定缓存</dd>
+							<dt><b>getExpire</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodgetExpire">AbstractWindCache::getExpire()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回过期时间设置</dd>
+							<dt><b>getKeyPrefix</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodgetKeyPrefix">AbstractWindCache::getKeyPrefix()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回缓存Key值前缀</dd>
+							<dt><b>getSecurityCode</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodgetSecurityCode">AbstractWindCache::getSecurityCode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得缓存key计算中加入的安全码</dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodgetValue">AbstractWindCache::getValue()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;执行获取操作</dd>
+					</dl>
+	</div>
+	<a name="h"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">h</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>h</h2>
+		<dl>
+							<dt><b>hasChanged</b></dt>
+				<dd>in file IWindCacheDependency.php, method <a href="cache/IWindCacheDependency.html#methodhasChanged">IWindCacheDependency::hasChanged()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;检查是否有变更</dd>
+							<dt><b>hasChanged</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodhasChanged">AbstractWindCache::hasChanged()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断数据是否已经被更新</dd>
+							<dt><b>hasChanged</b></dt>
+				<dd>in file WindResolvedCrashDependency.php, method <a href="cache/dependency/WindResolvedCrashDependency.html#methodhasChanged">WindResolvedCrashDependency::hasChanged()</a></dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>IWindCacheDependency.php</b></dt>
+				<dd>procedural page <a href="cache/_cache---IWindCacheDependency.php.html">IWindCacheDependency.php</a></dd>
+							<dt><b>increment</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodincrement">AbstractWindCache::increment()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将指定元素的值增加value</dd>
+							<dt><b>injectDependent</b></dt>
+				<dd>in file IWindCacheDependency.php, method <a href="cache/IWindCacheDependency.html#methodinjectDependent">IWindCacheDependency::injectDependent()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化依赖设置</dd>
+							<dt><b>IWindCacheDependency</b></dt>
+				<dd>in file IWindCacheDependency.php, class <a href="cache/IWindCacheDependency.html">IWindCacheDependency</a><br>&nbsp;&nbsp;&nbsp;&nbsp;缓存依赖基类</dd>
+							<dt><b>injectDependent</b></dt>
+				<dd>in file WindResolvedCrashDependency.php, method <a href="cache/dependency/WindResolvedCrashDependency.html#methodinjectDependent">WindResolvedCrashDependency::injectDependent()</a></dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>set</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodset">AbstractWindCache::set()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存  如果key不存在，添加缓存；否则，将会替换已有key的缓存。</dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodsetConfig">AbstractWindCache::setConfig()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置配置信息</dd>
+							<dt><b>setExpire</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodsetExpire">AbstractWindCache::setExpire()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存过期时间</dd>
+							<dt><b>setKeyPrefix</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodsetKeyPrefix">AbstractWindCache::setKeyPrefix()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置key前缀</dd>
+							<dt><b>setSecurityCode</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodsetSecurityCode">AbstractWindCache::setSecurityCode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存key计算中加入的安全码</dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file AbstractWindCache.php, method <a href="cache/AbstractWindCache.html#methodsetValue">AbstractWindCache::setValue()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;执行设置操作</dd>
+							<dt><b>STORETIME</b></dt>
+				<dd>in file AbstractWindCache.php, class constant <a href="cache/AbstractWindCache.html#constSTORETIME">AbstractWindCache::STORETIME</a><br>&nbsp;&nbsp;&nbsp;&nbsp;标志存储时间</dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindResolvedCrashDependency.php</b></dt>
+				<dd>procedural page <a href="cache/dependency/_cache---dependency---WindResolvedCrashDependency.php.html">WindResolvedCrashDependency.php</a></dd>
+							<dt><b>WindResolvedCrashDependency</b></dt>
+				<dd>in file WindResolvedCrashDependency.php, class <a href="cache/dependency/WindResolvedCrashDependency.html">WindResolvedCrashDependency</a><br>&nbsp;&nbsp;&nbsp;&nbsp;cache依赖实现,通过该实现解决大并发时cache(memcached)的值突然失效</dd>
+							<dt><b>WindCacheException.php</b></dt>
+				<dd>procedural page <a href="cache/exception/_cache---exception---WindCacheException.php.html">WindCacheException.php</a></dd>
+							<dt><b>WindCacheException</b></dt>
+				<dd>in file WindCacheException.php, class <a href="cache/exception/WindCacheException.html">WindCacheException</a><br>&nbsp;&nbsp;&nbsp;&nbsp;缓存的异常类</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

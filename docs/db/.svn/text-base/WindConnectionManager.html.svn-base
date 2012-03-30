@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindConnectionManager</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">db<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="../classtrees_db.html" class="menu">class tree: db</a> ]
+		[ <a href="../elementindex_db.html" class="menu">index: db</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">db</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>    	 <br />
+	    		<a href="../db/WindConnection.html">WindConnection</a>    	 <br />
+	    		<a href="../db/WindConnectionManager.html">WindConnectionManager</a>    	 <br />
+	    		<a href="../db/WindResultSet.html">WindResultSet</a>    	 <br />
+	    		<a href="../db/WindSqlStatement.html">WindSqlStatement</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../db/exception/WindDbException.html">WindDbException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mysql<br />	    <span style="padding-left: 1em;">		<a href="../db/mysql/WindMysqlPdoAdapter.html">WindMysqlPdoAdapter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindConnectionManager</h1>
+Source Location: /db/WindConnectionManager.php<br /><br />
+
+<h2 class="class-name">Class WindConnectionManager</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-vars">Properties</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>数据库链接管理
+</strong></p>
+<span class="description"><p>配置说明：<ol><li><div class="src-line">&nbsp;<span class="src-num">1.&nbsp;</span><span class="src-id">当没有任何策略部署时&nbsp;，默认返回当前配置中的第一个链接句柄</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-num">2.&nbsp;</span><span class="src-id">当没有任何策略部署时，如果在sql语句中有链接句柄指定时则返回指定的链接句柄</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">例如：</span><span class="src-str">'{db1:tableName}'</span><span class="src-id">返回db1指定的链接句柄</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-num">3.&nbsp;</span><span class="src-id">如果当前有策略部署时，则按照策略部署规则返回</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-num">4.&nbsp;</span><a href="../db/WindConnectionManager.html#methodcreateStatement">createStatement</a><span class="src-sym">(</span><span class="src-var">$sql&nbsp;</span>=&nbsp;<span class="src-id">null</span><span class="src-sym">,&nbsp;</span><span class="src-var">$forceMaster&nbsp;</span>=&nbsp;<span class="src-id">false</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">当</span><span class="src-var">$forceMaster为true时则强制主链接</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">配置格式如下：</span></div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">connections&nbsp;except</span>=<span class="src-str">'*:db1;user*,tablename2:db1|db2;'</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">connection&nbsp;name</span>=<span class="src-str">'db1'</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">dsn</span>&gt;<a href="http://www.php.net/mysql">mysql</a>:<span class="src-id">host</span>=<span class="src-id">localhost</span><span class="src-sym">;</span><span class="src-id">dbname</span>=<span class="src-id">test</span>&lt;/<span class="src-id">dsn</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">user</span>&gt;<span class="src-id">root</span>&lt;/<span class="src-id">user</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">pwd</span>&gt;<span class="src-id">root</span>&lt;/<span class="src-id">pwd</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">charset</span>&gt;<span class="src-id">utf8</span>&lt;/<span class="src-id">charset</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">tablePrefix</span>&gt;<span class="src-id">pw_</span>&lt;/<span class="src-id">tablePrefix</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;/<span class="src-id">connection</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">connection&nbsp;name</span>=<span class="src-str">'db2'</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">dsn</span>&gt;<a href="http://www.php.net/mysql">mysql</a>:<span class="src-id">host</span>=<span class="src-id">localhost</span><span class="src-sym">;</span><span class="src-id">dbname</span>=<span class="src-id">test</span>&lt;/<span class="src-id">dsn</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">user</span>&gt;<span class="src-id">root</span>&lt;/<span class="src-id">user</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">pwd</span>&gt;<span class="src-id">root</span>&lt;/<span class="src-id">pwd</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">charset</span>&gt;<span class="src-id">utf8</span>&lt;/<span class="src-id">charset</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;<span class="src-id">tablePrefix</span>&gt;<span class="src-id">pw_</span>&lt;/<span class="src-id">tablePrefix</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;/<span class="src-id">connection</span>&gt;</div></li>
+<li><div class="src-line">&nbsp;&lt;/<span class="src-id">connections</span>&gt;</div></li>
+</ol></p></span>
+		<p class="notes">
+			Located in <a class="field" href="_db---WindConnectionManager.php.html">/db/WindConnectionManager.php</a> [<span class="field">line 37</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --<a href="../db/WindConnection.html">WindConnection</a>
+      |
+      --WindConnectionManager</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-23</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindConnectionManager.php 3397 2012-03-14 08:49:50Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../db/WindConnectionManager.html#methodcreateStatement">createStatement</a></li>
+		  		  <li><a href="../db/WindConnectionManager.html#methodgetDbHandle">getDbHandle</a></li>
+		  		  <li><a href="../db/WindConnectionManager.html#methodinit">init</a></li>
+		  		  <li><a href="../db/WindConnectionManager.html#methodparseQueryString">parseQueryString</a></li>
+		  		  <li><a href="../db/WindConnectionManager.html#method_initConfig">_initConfig</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../db/WindConnection.html">WindConnection</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_attributes">WindConnection::$_attributes</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_charset">WindConnection::$_charset</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_dbHandle">WindConnection::$_dbHandle</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_driverName">WindConnection::$_driverName</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_dsn">WindConnection::$_dsn</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_pwd">WindConnection::$_pwd</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_tablePrefix">WindConnection::$_tablePrefix</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#var$_user">WindConnection::$_user</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../db/WindConnection.html">WindConnection</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#method__construct">WindConnection::__construct()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodclose">WindConnection::close()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">关闭数据库连接</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodcreateStatement">WindConnection::createStatement()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">接受一条sql语句，并返回sqlStatement对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodcreateTable">WindConnection::createTable()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">创建表,返回是否创建成功</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodexecute">WindConnection::execute()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">执行一条sql语句 同时返回影响行数</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodgetAttribute">WindConnection::getAttribute()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">获得链接相关属性设置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodgetDbHandle">WindConnection::getDbHandle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回数据库链接对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodgetDriverName">WindConnection::getDriverName()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回DB驱动类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodgetTablePrefix">WindConnection::getTablePrefix()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">获得表前缀</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodinit">WindConnection::init()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">初始化DB句柄</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodlastInsertId">WindConnection::lastInsertId()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回最后一条插入的数据值,当传一个'name'给该方法,则返回'name'对应的列值</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodparseQueryString">WindConnection::parseQueryString()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">解析当前查询语句,并返回解析后结果</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodquery">WindConnection::query()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">执行一条查询同时返回结果集</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodquote">WindConnection::quote()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">sql元数据安全过滤,并返回过滤后值</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodquoteArray">WindConnection::quoteArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤数组变量，将数组变量转换为字符串，并用逗号分隔每个数组元素支持多维数组</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodquoteMultiArray">WindConnection::quoteMultiArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤二维数组将数组变量转换为多组的sql字符串</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodsetAttribute">WindConnection::setAttribute()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置链接相关属性</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodsetConfig">WindConnection::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">(non-PHPdoc)</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodsetTablePrefix">WindConnection::setTablePrefix()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置表前缀</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodsqlMetadata">WindConnection::sqlMetadata()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤SQL元数据，数据库对象(如表名字，字段等)</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#methodsqlSingle">WindConnection::sqlSingle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤数组值并返回(insert/update)sql语句形式</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../db/WindConnection.html#method_initConfig">WindConnection::_initConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置信息，初始化当前连接对象</span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#createStatement" title="details" class="method-name">createStatement</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getDbHandle" title="details" class="method-name">getDbHandle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#init" title="details" class="method-name">init</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#parseQueryString" title="details" class="method-name">parseQueryString</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#_initConfig" title="details" class="method-name">_initConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+					</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodcreateStatement" id="createStatement"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">createStatement</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 79]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void createStatement(
+[
+$sql = null], [
+$forceMaster = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sql:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$forceMaster:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../db/WindConnection.html#methodcreateStatement">WindConnection::createStatement()</a></dt>
+						<dd>接受一条sql语句，并返回sqlStatement对象</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetDbHandle" id="getDbHandle"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getDbHandle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 87]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void getDbHandle(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../db/WindConnection.html#methodgetDbHandle">WindConnection::getDbHandle()</a></dt>
+						<dd>返回数据库链接对象</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodinit" id="init"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">init</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 95]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void init(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../db/WindConnection.html#methodinit">WindConnection::init()</a></dt>
+						<dd>初始化DB句柄</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodparseQueryString" id="parseQueryString"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">parseQueryString</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void parseQueryString(
+
+$sql&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sql:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../db/WindConnection.html#methodparseQueryString">WindConnection::parseQueryString()</a></dt>
+						<dd>解析当前查询语句,并返回解析后结果</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method_initConfig" id="_initConfig"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">_initConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 203]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void _initConfig(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../db/WindConnection.html#method_initConfig">WindConnection::_initConfig()</a></dt>
+						<dd>根据配置信息，初始化当前连接对象</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:29 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,1382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindPop3</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">mail<br /><div class="header-top-right-subpackage">protocol</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                              
+                                                                                                                                                                  		[ <a href="../../classtrees_mail.html" class="menu">class tree: mail</a> ]
+		[ <a href="../../elementindex_mail.html" class="menu">index: mail</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">mail</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="../../mail/sender/IWindSendMail.html">IWindSendMail</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindPhpMail.html">WindPhpMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindSendMail.html">WindSendMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindSmtpMail.html">WindSmtpMail</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	protocol<br />	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindImap.html">WindImap</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindPop3.html">WindPop3</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindSmtp.html">WindSmtp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindSocket.html">WindSocket</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+		    		<a href="../../mail/WindMail.html">WindMail</a>    	 <br />
+	  </div>
+  <div class="package">
+	encode<br />	    <span style="padding-left: 1em;">		<a href="../../mail/encode/WindMailBase64.html">WindMailBase64</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/encode/WindMailQp.html">WindMailQp</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../../mail/exception/WindMailException.html">WindMailException</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindPop3</h1>
+Source Location: /mail/protocol/WindPop3.php<br /><br />
+
+<h2 class="class-name">Class WindPop3</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>pop3协议
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_mail---protocol---WindPop3.php.html">/mail/protocol/WindPop3.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qian Su &lt;<a href="mailto:aoxue.1988.su.qian@163.com">aoxue.1988.su.qian@163.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindPop3.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#var$pop3">$pop3</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#var$request">$request</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#var$resonse">$resonse</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#var$seperate">$seperate</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#method__construct">__construct</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#method__destruct">__destruct</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodbuildResponse">buildResponse</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodclose">close</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodcommunicate">communicate</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methoddele">dele</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodgetList">getList</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodgetMailContent">getMailContent</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodlogin">login</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodnoop">noop</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodopen">open</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodquit">quit</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodrequest">request</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodresponse">response</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodresponseLine">responseLine</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodretr">retr</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodrset">rset</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodstat">stat</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methodtop">top</a></li>
+		  		  <li><a href="../../mail/protocol/WindPop3.html#methoduidl">uidl</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constCRLF" title="details" class="const-name-summary">CRLF</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																					<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../../mail/protocol/WindSocket.html">WindSocket</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$pop3" title="details" class="var-name-summary">$pop3</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$request" title="details" class="var-name-summary">$request</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$resonse" title="details" class="var-name-summary">$resonse</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$seperate" title="details" class="var-name-summary">$seperate</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindPop3</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__destruct" title="details" class="method-name">__destruct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">Array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#buildResponse" title="details" class="method-name">buildResponse</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">外理响应内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#close" title="details" class="method-name">close</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">结否会话,关闭pop3服务器</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#communicate" title="details" class="method-name">communicate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">进行一次网络传输通信</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#dele" title="details" class="method-name">dele</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理 server 标记删除，QUIT 命令执行时才真正删除</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getList" title="details" class="method-name">getList</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理 server 返回指定邮件的大小等</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getMailContent" title="details" class="method-name">getMailContent</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获取解析后的内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#login" title="details" class="method-name">login</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">登陆pop3</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#noop" title="details" class="method-name">noop</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理 server 返回一个肯定的响应</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#open" title="details" class="method-name">open</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">打开pop3服务器,建立连接</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#quit" title="details" class="method-name">quit</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">希望结束会话。如果 server 处于&quot;处理&quot; 状态，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#request" title="details" class="method-name">request</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">发送pop3命令</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#response" title="details" class="method-name">response</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">验证请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#responseLine" title="details" class="method-name">responseLine</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">pop3响应请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#retr" title="details" class="method-name">retr</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处处理 server 返回邮件的全部文本</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#rset" title="details" class="method-name">rset</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理撤消所有的 DELE 命令</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stat" title="details" class="method-name">stat</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理请求 server 回送邮箱统计资料，如邮件数、 邮件总字节数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#top" title="details" class="method-name">top</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理 返回 n 号邮件的前 m 行内容，m 必须是自然数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#uidl" title="details" class="method-name">uidl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">处理 server 返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的。</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="var$pop3" id="$pop3"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../../mail/protocol/WindSocket.html">WindSocket</a></span>&nbsp;&nbsp;
+			<span class="var-name">$pop3</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$request" id="$request"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$request</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 24]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$resonse" id="$resonse"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$resonse</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 26]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$seperate" id="$seperate"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$seperate</span>
+			 = <span class="var-default"> ' '</span>			<span class="smalllinenumber">[line 22]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 28]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindPop3 __construct(
+
+$host, 
+$port&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$host:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$port:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__destruct" id="__destruct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 257]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void __destruct(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbuildResponse" id="buildResponse"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">buildResponse</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 163]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>Array buildResponse(
+string
+$response&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>外理响应内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$response:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodclose" id="close"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">close</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 141]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void close(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>结否会话,关闭pop3服务器
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcommunicate" id="communicate"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">communicate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 186]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array communicate(
+string
+$request, [boolean
+$ifmulti = false], [baoolean
+$ifbuild = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>进行一次网络传输通信
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 发竤的请求命令</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ifmulti:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否返回多行响应文本，否则为一行</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">baoolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ifbuild:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否对响应进行处理</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddele" id="dele"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">dele</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 96]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string dele(
+int
+$n&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理 server 标记删除，QUIT 命令执行时才真正删除
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$n:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetList" id="getList"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getList</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 76]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getList(
+[int
+$n = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理 server 返回指定邮件的大小等
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$n:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetMailContent" id="getMailContent"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getMailContent</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 240]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void getMailContent(
+$content
+$content, [$sep
+$sep = &quot;\n\n&quot;]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获取解析后的内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$content</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$sep</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sep:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlogin" id="login"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">login</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 47]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string login(
+string
+$username, string
+$password&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>登陆pop3
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$username:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 用户名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$password:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 密码</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodnoop" id="noop"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">noop</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 123]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string noop(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理 server 返回一个肯定的响应
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodopen" id="open"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">open</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 36]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string open(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>打开pop3服务器,建立连接
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodquit" id="quit"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">quit</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 134]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string quit(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>希望结束会话。如果 server 处于&quot;处理&quot; 状态，
+</strong></p>
+<span class="description"><p>则现在进入&quot;更新&quot;状态，删除那些标记成删除的邮件。  如果 server 处于&quot;认可&quot;状态，则结束会话时 server  不进入&quot;更新&quot;状态 。</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrequest" id="request"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">request</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 195]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void request(
+string
+$request&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>发送pop3命令
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresponse" id="response"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">response</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 206]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string response(
+[boolean
+$multi = false], [int
+$timeout = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>验证请求
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$multi:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$timeout:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresponseLine" id="responseLine"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">responseLine</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 151]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void responseLine(
+[int
+$timeout = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>pop3响应请求
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$timeout:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodretr" id="retr"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">retr</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 87]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string retr(
+int
+$n&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处处理 server 返回邮件的全部文本
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$n:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrset" id="rset"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">rset</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 104]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string rset(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理撤消所有的 DELE 命令
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstat" id="stat"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stat</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 56]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stat(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理请求 server 回送邮箱统计资料，如邮件数、 邮件总字节数
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodtop" id="top"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">top</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 114]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string top(
+int
+$n, [int
+$m = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理 返回 n 号邮件的前 m 行内容，m 必须是自然数
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$n:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$m:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件前多少行</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoduidl" id="uidl"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">uidl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 65]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string uidl(
+[int
+$n = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>处理 server 返回用于该指定邮件的唯一标识， 如果没有指定，返回所有的。
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$n:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 指定邮件</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+																		| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constCRLF" id="CRLF"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">CRLF</span>
+			 = <span class="var-default"> &quot;\r\n&quot;</span>
+			<span class="smalllinenumber">[line 15]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:39 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

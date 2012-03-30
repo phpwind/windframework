@@ -1,0 +1,3701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindImap</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">mail<br /><div class="header-top-right-subpackage">protocol</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                              
+                                                                                                                                                                  		[ <a href="../../classtrees_mail.html" class="menu">class tree: mail</a> ]
+		[ <a href="../../elementindex_mail.html" class="menu">index: mail</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">mail</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="../../mail/sender/IWindSendMail.html">IWindSendMail</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	sender<br />	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindPhpMail.html">WindPhpMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindSendMail.html">WindSendMail</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/sender/WindSmtpMail.html">WindSmtpMail</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	protocol<br />	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindImap.html">WindImap</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindPop3.html">WindPop3</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindSmtp.html">WindSmtp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/protocol/WindSocket.html">WindSocket</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+		    		<a href="../../mail/WindMail.html">WindMail</a>    	 <br />
+	  </div>
+  <div class="package">
+	encode<br />	    <span style="padding-left: 1em;">		<a href="../../mail/encode/WindMailBase64.html">WindMailBase64</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../mail/encode/WindMailQp.html">WindMailQp</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../../mail/exception/WindMailException.html">WindMailException</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindImap</h1>
+Source Location: /mail/protocol/WindImap.php<br /><br />
+
+<h2 class="class-name">Class WindImap</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>imap协议封装
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_mail---protocol---WindImap.php.html">/mail/protocol/WindImap.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qian Su &lt;<a href="mailto:aoxue.1988.su.qian@163.com">aoxue.1988.su.qian@163.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindImap.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../../mail/protocol/WindImap.html#var$imap">$imap</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#var$request">$request</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#var$resonse">$resonse</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#var$seperate">$seperate</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodcapability">capability</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodcheck">check</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodclose">close</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodcommunicate">communicate</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodcopy">copy</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodcreate">create</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methoddelete">delete</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodexamine">examine</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodexpunge">expunge</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetch">fetch</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchBySection">fetchBySection</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchHeader">fetchHeader</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchHeaderFields">fetchHeaderFields</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchHeaderNotFields">fetchHeaderNotFields</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchMime">fetchMime</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchPartialOfSection">fetchPartialOfSection</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfetchText">fetchText</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodfolderOfmail">folderOfmail</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodgetTag">getTag</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodlogin">login</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodlogout">logout</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodlsub">lsub</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodopen">open</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodrename">rename</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodrequest">request</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodresponse">response</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodresponseLine">responseLine</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodsearch">search</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodselect">select</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodsetTag">setTag</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodstatus">status</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodstore">store</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodstripStore">stripStore</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodsubscribe">subscribe</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methoduid">uid</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#method__construct">__construct</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#method__destruct">__destruct</a></li>
+		  		  <li><a href="../../mail/protocol/WindImap.html#methodunsubscribe">unsubscribe</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constALL" title="details" class="const-name-summary">ALL</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constANSWERED" title="details" class="const-name-summary">ANSWERED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constBCC" title="details" class="const-name-summary">BCC</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constBODY" title="details" class="const-name-summary">BODY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constBODYSTRUCTUR" title="details" class="const-name-summary">BODYSTRUCTUR</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constCC" title="details" class="const-name-summary">CC</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constCONTENTENCODE" title="details" class="const-name-summary">CONTENTENCODE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constCONTENTTYPE" title="details" class="const-name-summary">CONTENTTYPE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constCRLF" title="details" class="const-name-summary">CRLF</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDATE" title="details" class="const-name-summary">DATE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDELETED" title="details" class="const-name-summary">DELETED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDELIVERED" title="details" class="const-name-summary">DELIVERED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDRAFT" title="details" class="const-name-summary">DRAFT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFAST" title="details" class="const-name-summary">FAST</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFLAG" title="details" class="const-name-summary">FLAG</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFLAGGED" title="details" class="const-name-summary">FLAGGED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFLAGS" title="details" class="const-name-summary">FLAGS</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFROM" title="details" class="const-name-summary">FROM</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constFULL" title="details" class="const-name-summary">FULL</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constHEADER" title="details" class="const-name-summary">HEADER</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constINTERNALDATE" title="details" class="const-name-summary">INTERNALDATE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constMESSAGEID" title="details" class="const-name-summary">MESSAGEID</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constMIMEVERSION" title="details" class="const-name-summary">MIMEVERSION</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRECEIVED" title="details" class="const-name-summary">RECEIVED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRECENT" title="details" class="const-name-summary">RECENT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constREPLY" title="details" class="const-name-summary">REPLY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRETURNPATH" title="details" class="const-name-summary">RETURNPATH</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRFC822" title="details" class="const-name-summary">RFC822</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRFC822HEADER" title="details" class="const-name-summary">RFC822HEADER</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRFC822SIZE" title="details" class="const-name-summary">RFC822SIZE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constRFC822TEXT" title="details" class="const-name-summary">RFC822TEXT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSEEN" title="details" class="const-name-summary">SEEN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_ALL" title="details" class="const-name-summary">SH_ALL</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_ANSWERED" title="details" class="const-name-summary">SH_ANSWERED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_BCC" title="details" class="const-name-summary">SH_BCC</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_BEFORE" title="details" class="const-name-summary">SH_BEFORE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_BODY" title="details" class="const-name-summary">SH_BODY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_DELETED" title="details" class="const-name-summary">SH_DELETED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_FLAGGED" title="details" class="const-name-summary">SH_FLAGGED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_FROM" title="details" class="const-name-summary">SH_FROM</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_KEYWORD" title="details" class="const-name-summary">SH_KEYWORD</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_NEW" title="details" class="const-name-summary">SH_NEW</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_RECENT" title="details" class="const-name-summary">SH_RECENT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_SEEN" title="details" class="const-name-summary">SH_SEEN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_SINCE" title="details" class="const-name-summary">SH_SINCE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_TEXT" title="details" class="const-name-summary">SH_TEXT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_TO" title="details" class="const-name-summary">SH_TO</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_UNANSWERED" title="details" class="const-name-summary">SH_UNANSWERED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_UNDELETED" title="details" class="const-name-summary">SH_UNDELETED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_UNFLAGGED" title="details" class="const-name-summary">SH_UNFLAGGED</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_UNKEYWORD" title="details" class="const-name-summary">SH_UNKEYWORD</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSH_UNSEEN" title="details" class="const-name-summary">SH_UNSEEN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSLIENT" title="details" class="const-name-summary">SLIENT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSUBEJCT" title="details" class="const-name-summary">SUBEJCT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constS_MESSAGES" title="details" class="const-name-summary">S_MESSAGES</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constS_RECENT" title="details" class="const-name-summary">S_RECENT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constS_UIDNEXT" title="details" class="const-name-summary">S_UIDNEXT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constS_UIDVALIDITY" title="details" class="const-name-summary">S_UIDVALIDITY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constS_UNSEEN" title="details" class="const-name-summary">S_UNSEEN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constTAG" title="details" class="const-name-summary">TAG</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constTEXT" title="details" class="const-name-summary">TEXT</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">****body中的section*******</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constTO" title="details" class="const-name-summary">TO</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constUID" title="details" class="const-name-summary">UID</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description"></td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																					<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../../mail/protocol/WindSocket.html">WindSocket</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$imap" title="details" class="var-name-summary">$imap</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$request" title="details" class="var-name-summary">$request</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$resonse" title="details" class="var-name-summary">$resonse</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">mixed</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$seperate" title="details" class="var-name-summary">$seperate</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description"></td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#capability" title="details" class="method-name">capability</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回IMAP服务器支持的功能列表，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#check" title="details" class="method-name">check</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">在邮箱设置一个检查点,确保内存中的磁盘缓冲数据都被写到了磁盘上。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#close" title="details" class="method-name">close</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">结束对当前Folder（文件夹/邮箱）的访问，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#communicate" title="details" class="method-name">communicate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">一次imap会号</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#copy" title="details" class="method-name">copy</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">把邮件从一个邮箱复制到另一个邮箱</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#create" title="details" class="method-name">create</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">创建指定名字的新邮箱。邮箱名称通常是带路径的文件夹全名。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#delete" title="details" class="method-name">delete</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">除指定名字的文件夹。文件夹名字通常是带路径的文件夹全名，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#examine" title="details" class="method-name">examine</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">以只读方式打开邮箱</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#expunge" title="details" class="method-name">expunge</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">不关闭邮箱的情况下删除所有的标志为、DELETED的邮件。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetch" title="details" class="method-name">fetch</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的文本信息，且仅用于显示的目的。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchBySection" title="details" class="method-name">fetchBySection</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回邮件的中的某一指定部分，返回的部分用section来表示，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchHeader" title="details" class="method-name">fetchHeader</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的头信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchHeaderFields" title="details" class="method-name">fetchHeaderFields</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的头的字段信息,可能造成不安全，慎用</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchHeaderNotFields" title="details" class="method-name">fetchHeaderNotFields</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的头已排除字段信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchMime" title="details" class="method-name">fetchMime</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的MIME</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchPartialOfSection" title="details" class="method-name">fetchPartialOfSection</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回邮件的中的某一指定部分，返回的部分用section来表示，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fetchText" title="details" class="method-name">fetchText</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">读取邮件的Text</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#folderOfmail" title="details" class="method-name">folderOfmail</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">LIST命令用于列出邮箱中已有的文件夹，有点像操作系统的列目录命令</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getTag" title="details" class="method-name">getTag</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">取得imap会号中的标签</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#login" title="details" class="method-name">login</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">登陆</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#logout" title="details" class="method-name">logout</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">结束本次IMAP会话。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#lsub" title="details" class="method-name">lsub</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">修正了LIST命令，LIST返回用户$HOME目录下所有的文件，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#open" title="details" class="method-name">open</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">打开一个imap连接</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#rename" title="details" class="method-name">rename</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">RENAME命令可以修改文件夹的名称，它使用两个参数：当前邮箱名和新邮箱名，</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#request" title="details" class="method-name">request</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">发送imap会话请求命令</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#response" title="details" class="method-name">response</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">验证请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#responseLine" title="details" class="method-name">responseLine</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">imap会话响应请求</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#search" title="details" class="method-name">search</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据搜索条件在处于活动状态的邮箱中搜索邮件，然后显示匹配的邮件编号。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#select" title="details" class="method-name">select</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">选定某个邮箱（Folder），表示即将对该邮箱（Folder）内的邮件作操作。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTag" title="details" class="method-name">setTag</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">在imap会话中设置新标答</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#status" title="details" class="method-name">status</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">查询邮箱的当前状态</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#store" title="details" class="method-name">store</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">修改指定邮件的属性，包括给邮件打上已读标记、删除标记等</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripStore" title="details" class="method-name">stripStore</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">修改指定邮件的属性，包括给邮件打上已读标记、删除标记等</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#subscribe" title="details" class="method-name">subscribe</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">在客户机的活动邮箱列表中增加一个邮箱</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#uid" title="details" class="method-name">uid</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">UID号是唯一标识邮件系统中邮件的32位证书。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindImap</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__destruct" title="details" class="method-name">__destruct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#unsubscribe" title="details" class="method-name">unsubscribe</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">来从活动列表中去掉一个邮箱</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="var$imap" id="$imap"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../../mail/protocol/WindSocket.html">WindSocket</a></span>&nbsp;&nbsp;
+			<span class="var-name">$imap</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 345]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$request" id="$request"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$request</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 349]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$resonse" id="$resonse"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$resonse</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 351]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$seperate" id="$seperate"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>&nbsp;&nbsp;
+			<span class="var-name">$seperate</span>
+			 = <span class="var-default"> ' '</span>			<span class="smalllinenumber">[line 347]</span>
+		</span>
+	</div>
+
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodcapability" id="capability"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">capability</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 646]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void capability(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回IMAP服务器支持的功能列表，
+</strong></p>
+<span class="description"><p>服务器收到客户机发送的CAPABILITY命令后将返回该服务器所支持的功能。</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcheck" id="check"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">check</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 604]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void check(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>在邮箱设置一个检查点,确保内存中的磁盘缓冲数据都被写到了磁盘上。
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodclose" id="close"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">close</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 541]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void close(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>结束对当前Folder（文件夹/邮箱）的访问，
+</strong></p>
+<span class="description"><p>关闭邮箱该邮箱中所有标志为DELETED的邮件就被从物理上删除</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcommunicate" id="communicate"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">communicate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 707]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string communicate(
+string
+$request, [
+&$response = null], string
+$response&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>一次imap会号
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 请求</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$response:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 响应</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$response:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcopy" id="copy"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">copy</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 638]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string copy(
+int
+$soruce, string
+$dst&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>把邮件从一个邮箱复制到另一个邮箱
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$soruce:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望从活动邮箱中复制的邮件的标号</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dst:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 望邮件被复制到的邮箱</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcreate" id="create"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">create</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 383]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void create(
+
+$folder, string
+$folder;, string
+1&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>创建指定名字的新邮箱。邮箱名称通常是带路径的文件夹全名。
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$folder;:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">1:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$folder:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">delete</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 393]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string delete(
+string
+$folder&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>除指定名字的文件夹。文件夹名字通常是带路径的文件夹全名，
+</strong></p>
+<span class="description"><p>当邮箱被删除后，其中的邮件也不复存在。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$folder:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodexamine" id="examine"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">examine</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 558]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string examine(
+string
+$mailbox&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>以只读方式打开邮箱
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mailbox:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 邮箱</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodexpunge" id="expunge"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">expunge</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 549]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void expunge(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>不关闭邮箱的情况下删除所有的标志为、DELETED的邮件。
+</strong></p>
+<span class="description"><p>EXPUNGE删除的邮件将不可以恢复。</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetch" id="fetch"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetch</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 432]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void fetch(
+int|string
+$mail, [string
+$datanames = self::ALL]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的文本信息，且仅用于显示的目的。
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$datanames:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchBySection" id="fetchBySection"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchBySection</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 494]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchBySection(
+int|string
+$mail, [int|string
+$section = self::TEXT]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回邮件的中的某一指定部分，返回的部分用section来表示，
+</strong></p>
+<span class="description"><p>section部分包含的信息通常是代表某一部分的一个数字或者是下面的某一个部分：  HEADER, HEADER.FIELDS, HEADER.FIELDS.NOT, MIME, and TEXT。  如果section部分是空的话，那就代表返回全部的信息，包括头信息。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$section:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 返回的部分</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchHeader" id="fetchHeader"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetchHeader</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 441]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchHeader(
+int|string
+$mail&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的头信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchHeaderFields" id="fetchHeaderFields"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchHeaderFields</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 451]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchHeaderFields(
+int|string
+$mail, [string
+$field = self::DATE]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的头的字段信息,可能造成不安全，慎用
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$field:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 头字段(DATE\SUBJECT\FROM\TO\MESSAGEID\CONTENTTYPE)</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchHeaderNotFields" id="fetchHeaderNotFields"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetchHeaderNotFields</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 462]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchHeaderNotFields(
+int|string
+$mail, [string
+$field = self::DATE]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的头已排除字段信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$field:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 头字段(DATE\SUBJECT\FROM\TO\MESSAGEID\CONTENTTYPE)</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchMime" id="fetchMime"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchMime</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 472]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchMime(
+int|string
+$mail&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的MIME
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchPartialOfSection" id="fetchPartialOfSection"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fetchPartialOfSection</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 509]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchPartialOfSection(
+int|string
+$mail, int
+$start, int
+$end, [int:string
+$section = self::TEXT]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回邮件的中的某一指定部分，返回的部分用section来表示，
+</strong></p>
+<span class="description"><p>section部分包含的信息通常是代表某一部分的一个数字或者是下面的某一个部分：  HEADER, HEADER.FIELDS, HEADER.FIELDS.NOT, MIME, and TEXT。  如果section部分是空的话，那就代表返回全部的信息，包括头信息。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$start:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 返回的部分的开始</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$end:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 返回的部分的结束</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int:string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$section:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 返回的部分</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfetchText" id="fetchText"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">fetchText</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 481]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string fetchText(
+int|string
+$mail&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>读取邮件的Text
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望读取的邮件号或者邮冒号分隔的区段</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfolderOfmail" id="folderOfmail"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">folderOfmail</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 414]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string folderOfmail(
+[string
+$base = ''], [string
+$template = '*']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>LIST命令用于列出邮箱中已有的文件夹，有点像操作系统的列目录命令
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$base:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 用户登陆目录</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$template:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 显示的邮箱名。可以使用通配符&quot;*&quot;。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetTag" id="getTag"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getTag</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 723]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getTag(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>取得imap会号中的标签
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlogin" id="login"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">login</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 374]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string login(
+string
+$username, string
+$password&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>登陆
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$username:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$password:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlogout" id="logout"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">logout</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 653]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void logout(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>结束本次IMAP会话。
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlsub" id="lsub"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">lsub</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 585]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string lsub(
+string
+$folder, string
+$mailbox&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>修正了LIST命令，LIST返回用户$HOME目录下所有的文件，
+</strong></p>
+<span class="description"><p>但LSUB命令只显示那些使用SUBSCRIBE命令设置为活动邮箱的文件</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$folder:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 邮箱路径</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mailbox:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 邮箱名。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodopen" id="open"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">open</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 363]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string open(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>打开一个imap连接
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrename" id="rename"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">rename</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 404]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string rename(
+string
+$old, string
+$new&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>RENAME命令可以修改文件夹的名称，它使用两个参数：当前邮箱名和新邮箱名，
+</strong></p>
+<span class="description"><p>两个参数的命名符合标准路径命名规则。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$old:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 当前邮箱名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$new:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 新邮箱名，</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrequest" id="request"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">request</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 661]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void request(
+string
+$request&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>发送imap会话请求命令
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$request:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresponse" id="response"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">response</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 684]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string response(
+[
+$endTag = '*'], [int
+$timeout = null], boolean
+$multi&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>验证请求
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$multi:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$timeout:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$endTag:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresponseLine" id="responseLine"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">responseLine</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 671]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void responseLine(
+[int
+$timeout = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>imap会话响应请求
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$timeout:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsearch" id="search"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">search</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 615]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string search(
+[string
+$criteria = self::SH_ALL], [string
+$value = null], string
+$charset&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据搜索条件在处于活动状态的邮箱中搜索邮件，然后显示匹配的邮件编号。
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$criteria:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 查询条件参数，明确查询的关键字</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 查询条件参数，明确查询的关键字的值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$charset:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 字符集标志,缺省的标志符是US-ASCⅡ</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodselect" id="select"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">select</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 423]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void select(
+string
+$folder&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>选定某个邮箱（Folder），表示即将对该邮箱（Folder）内的邮件作操作。
+</strong></p>
+<span class="description"><p>邮箱标志的当前状态也返回给了用户，同时返回的还有一些关于邮件和邮箱的附加信息。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$folder:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTag" id="setTag"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setTag</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 715]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTag(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>在imap会话中设置新标答
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstatus" id="status"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">status</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 595]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string status(
+string
+$mailbox, [string
+$params = self::S_MESSAGES]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>查询邮箱的当前状态
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mailbox:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要查询的邮箱名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 客户机需要查询的项目列表,S_MESSAGES\S_RECENT\S_UIDNEXT\S_UIDVALIDITY\S_UNSEEN</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstore" id="store"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">store</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 520]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string store(
+INT|string
+$mail, [string
+$flags = self::FLAGS], [STRING|ARRAY
+$attribute = self::ANSWERED]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>修改指定邮件的属性，包括给邮件打上已读标记、删除标记等
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">INT|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$flags:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> imap中的邮件标记,值为SLIENT和FLAGS两种类型</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">STRING|ARRAY</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$attribute:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 标记属性(DELETED\ANSWERED\RECENT\DRAFT\FLAGGED)</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripStore" id="stripStore"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">stripStore</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 532]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripStore(
+INT|string
+$mail, [string
+$flags = self::FLAGS], [STRING|ARRAY
+$attribute = self::DELETED]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>修改指定邮件的属性，包括给邮件打上已读标记、删除标记等
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">INT|string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mail:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$flags:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> imap中的邮件标记,值为SLIENT和FLAGS两种类型</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">STRING|ARRAY</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$attribute:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 标记属性(DELETED\ANSWERED\RECENT\DRAFT\FLAGGED)</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsubscribe" id="subscribe"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">subscribe</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 566]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void subscribe(
+string
+$mailbox&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>在客户机的活动邮箱列表中增加一个邮箱
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mailbox:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望添加的邮箱名。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoduid" id="uid"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">uid</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 628]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void uid(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>UID号是唯一标识邮件系统中邮件的32位证书。
+</strong></p>
+<span class="description"><p>通常这些命令都使用顺序号来标识邮箱中的邮件，  使用UID可以使IMAP客户机记住不同IMAP会话中的邮件。</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 355]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindImap __construct(
+
+$host, 
+$port&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$host:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$port:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__destruct" id="__destruct"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 727]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void __destruct(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodunsubscribe" id="unsubscribe"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">unsubscribe</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 574]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void unsubscribe(
+string
+$mailbox&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>来从活动列表中去掉一个邮箱
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$mailbox:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 希望去掉的邮箱名。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+																		| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constALL" id="ALL"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">ALL</span>
+			 = <span class="var-default"> 'ALL'</span>
+			<span class="smalllinenumber">[line 73]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constANSWERED" id="ANSWERED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">ANSWERED</span>
+			 = <span class="var-default"> '\Answered'</span>
+			<span class="smalllinenumber">[line 32]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constBCC" id="BCC"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">BCC</span>
+			 = <span class="var-default"> 'Bcc'</span>
+			<span class="smalllinenumber">[line 156]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constBODY" id="BODY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">BODY</span>
+			 = <span class="var-default"> 'BODY'</span>
+			<span class="smalllinenumber">[line 78]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constBODYSTRUCTUR" id="BODYSTRUCTUR"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">BODYSTRUCTUR</span>
+			 = <span class="var-default"> 'BODYSTRUCTUR'</span>
+			<span class="smalllinenumber">[line 98]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constCC" id="CC"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">CC</span>
+			 = <span class="var-default"> 'Cc'</span>
+			<span class="smalllinenumber">[line 151]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constCONTENTENCODE" id="CONTENTENCODE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">CONTENTENCODE</span>
+			 = <span class="var-default"> 'Content-Transfer-Encoding'</span>
+			<span class="smalllinenumber">[line 181]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constCONTENTTYPE" id="CONTENTTYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">CONTENTTYPE</span>
+			 = <span class="var-default"> 'Content-Type'</span>
+			<span class="smalllinenumber">[line 176]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constCRLF" id="CRLF"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">CRLF</span>
+			 = <span class="var-default"> &quot;\r\n&quot;</span>
+			<span class="smalllinenumber">[line 15]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDATE" id="DATE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DATE</span>
+			 = <span class="var-default"> 'Date'</span>
+			<span class="smalllinenumber">[line 136]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDELETED" id="DELETED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DELETED</span>
+			 = <span class="var-default"> '\Deleted'</span>
+			<span class="smalllinenumber">[line 42]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDELIVERED" id="DELIVERED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DELIVERED</span>
+			 = <span class="var-default"> 'Delivered-To'</span>
+			<span class="smalllinenumber">[line 161]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDRAFT" id="DRAFT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DRAFT</span>
+			 = <span class="var-default"> '\Draft'</span>
+			<span class="smalllinenumber">[line 47]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFAST" id="FAST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FAST</span>
+			 = <span class="var-default"> 'FAST'</span>
+			<span class="smalllinenumber">[line 83]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFLAG" id="FLAG"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FLAG</span>
+			 = <span class="var-default"> 'FLAGS'</span>
+			<span class="smalllinenumber">[line 93]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFLAGGED" id="FLAGGED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FLAGGED</span>
+			 = <span class="var-default"> '\Flagged'</span>
+			<span class="smalllinenumber">[line 37]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFLAGS" id="FLAGS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FLAGS</span>
+			 = <span class="var-default"> 'FLAGS'</span>
+			<span class="smalllinenumber">[line 60]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFROM" id="FROM"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FROM</span>
+			 = <span class="var-default"> 'From'</span>
+			<span class="smalllinenumber">[line 141]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constFULL" id="FULL"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">FULL</span>
+			 = <span class="var-default"> 'FULL'</span>
+			<span class="smalllinenumber">[line 88]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constHEADER" id="HEADER"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">HEADER</span>
+			 = <span class="var-default"> 'HEADER'</span>
+			<span class="smalllinenumber">[line 339]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constINTERNALDATE" id="INTERNALDATE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">INTERNALDATE</span>
+			 = <span class="var-default"> 'INTERNALDATE'</span>
+			<span class="smalllinenumber">[line 103]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constMESSAGEID" id="MESSAGEID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">MESSAGEID</span>
+			 = <span class="var-default"> 'Message-Id'</span>
+			<span class="smalllinenumber">[line 191]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constMIMEVERSION" id="MIMEVERSION"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">MIMEVERSION</span>
+			 = <span class="var-default"> 'MIME-Version'</span>
+			<span class="smalllinenumber">[line 186]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRECEIVED" id="RECEIVED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RECEIVED</span>
+			 = <span class="var-default"> 'Received'</span>
+			<span class="smalllinenumber">[line 196]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRECENT" id="RECENT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RECENT</span>
+			 = <span class="var-default"> '\Recent'</span>
+			<span class="smalllinenumber">[line 52]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constREPLY" id="REPLY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">REPLY</span>
+			 = <span class="var-default"> 'Reply-To'</span>
+			<span class="smalllinenumber">[line 166]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRETURNPATH" id="RETURNPATH"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RETURNPATH</span>
+			 = <span class="var-default"> 'Return-Path'</span>
+			<span class="smalllinenumber">[line 201]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRFC822" id="RFC822"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RFC822</span>
+			 = <span class="var-default"> 'RFC822'</span>
+			<span class="smalllinenumber">[line 108]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRFC822HEADER" id="RFC822HEADER"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RFC822HEADER</span>
+			 = <span class="var-default"> 'RFC822.HEADER'</span>
+			<span class="smalllinenumber">[line 118]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRFC822SIZE" id="RFC822SIZE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RFC822SIZE</span>
+			 = <span class="var-default"> 'RFC822.SIZE'</span>
+			<span class="smalllinenumber">[line 113]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constRFC822TEXT" id="RFC822TEXT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">RFC822TEXT</span>
+			 = <span class="var-default"> 'RFC822.TEXT'</span>
+			<span class="smalllinenumber">[line 123]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSEEN" id="SEEN"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SEEN</span>
+			 = <span class="var-default"> '\seen'</span>
+			<span class="smalllinenumber">[line 27]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_ALL" id="SH_ALL"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_ALL</span>
+			 = <span class="var-default"> 'ALL'</span>
+			<span class="smalllinenumber">[line 237]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_ANSWERED" id="SH_ANSWERED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_ANSWERED</span>
+			 = <span class="var-default"> 'ANSWERED'</span>
+			<span class="smalllinenumber">[line 247]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_BCC" id="SH_BCC"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_BCC</span>
+			 = <span class="var-default"> 'BCC'</span>
+			<span class="smalllinenumber">[line 252]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_BEFORE" id="SH_BEFORE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_BEFORE</span>
+			 = <span class="var-default"> 'BEFORE'</span>
+			<span class="smalllinenumber">[line 257]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_BODY" id="SH_BODY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_BODY</span>
+			 = <span class="var-default"> 'BODY'</span>
+			<span class="smalllinenumber">[line 262]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_DELETED" id="SH_DELETED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_DELETED</span>
+			 = <span class="var-default"> 'DELETED'</span>
+			<span class="smalllinenumber">[line 267]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_FLAGGED" id="SH_FLAGGED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_FLAGGED</span>
+			 = <span class="var-default"> 'FLAGGED'</span>
+			<span class="smalllinenumber">[line 272]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_FROM" id="SH_FROM"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_FROM</span>
+			 = <span class="var-default"> 'FROM'</span>
+			<span class="smalllinenumber">[line 277]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_KEYWORD" id="SH_KEYWORD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_KEYWORD</span>
+			 = <span class="var-default"> 'KEYWORD'</span>
+			<span class="smalllinenumber">[line 282]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_NEW" id="SH_NEW"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_NEW</span>
+			 = <span class="var-default"> 'NEW'</span>
+			<span class="smalllinenumber">[line 242]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_RECENT" id="SH_RECENT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_RECENT</span>
+			 = <span class="var-default"> 'RECENT'</span>
+			<span class="smalllinenumber">[line 287]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_SEEN" id="SH_SEEN"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_SEEN</span>
+			 = <span class="var-default"> 'SEEN'</span>
+			<span class="smalllinenumber">[line 292]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_SINCE" id="SH_SINCE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_SINCE</span>
+			 = <span class="var-default"> 'SINCE'</span>
+			<span class="smalllinenumber">[line 297]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_TEXT" id="SH_TEXT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_TEXT</span>
+			 = <span class="var-default"> 'TEXT'</span>
+			<span class="smalllinenumber">[line 302]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_TO" id="SH_TO"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_TO</span>
+			 = <span class="var-default"> 'TO'</span>
+			<span class="smalllinenumber">[line 307]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_UNANSWERED" id="SH_UNANSWERED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_UNANSWERED</span>
+			 = <span class="var-default"> 'UNANSWERED'</span>
+			<span class="smalllinenumber">[line 312]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_UNDELETED" id="SH_UNDELETED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_UNDELETED</span>
+			 = <span class="var-default"> 'UNDELETED'</span>
+			<span class="smalllinenumber">[line 317]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_UNFLAGGED" id="SH_UNFLAGGED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_UNFLAGGED</span>
+			 = <span class="var-default"> 'UNFLAGGED'</span>
+			<span class="smalllinenumber">[line 332]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_UNKEYWORD" id="SH_UNKEYWORD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_UNKEYWORD</span>
+			 = <span class="var-default"> 'UNKEYWORD'</span>
+			<span class="smalllinenumber">[line 322]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSH_UNSEEN" id="SH_UNSEEN"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SH_UNSEEN</span>
+			 = <span class="var-default"> 'UNSEEN'</span>
+			<span class="smalllinenumber">[line 327]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSLIENT" id="SLIENT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SLIENT</span>
+			 = <span class="var-default"> 'FLAGS.SLIENT'</span>
+			<span class="smalllinenumber">[line 65]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSUBEJCT" id="SUBEJCT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">SUBEJCT</span>
+			 = <span class="var-default"> 'Subject'</span>
+			<span class="smalllinenumber">[line 171]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constS_MESSAGES" id="S_MESSAGES"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">S_MESSAGES</span>
+			 = <span class="var-default"> 'MESSAGES'</span>
+			<span class="smalllinenumber">[line 209]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constS_RECENT" id="S_RECENT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">S_RECENT</span>
+			 = <span class="var-default"> 'RECENT'</span>
+			<span class="smalllinenumber">[line 214]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constS_UIDNEXT" id="S_UIDNEXT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">S_UIDNEXT</span>
+			 = <span class="var-default"> 'UIDNEXT'</span>
+			<span class="smalllinenumber">[line 219]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constS_UIDVALIDITY" id="S_UIDVALIDITY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">S_UIDVALIDITY</span>
+			 = <span class="var-default"> 'UIDVALIDITY'</span>
+			<span class="smalllinenumber">[line 224]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constS_UNSEEN" id="S_UNSEEN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">S_UNSEEN</span>
+			 = <span class="var-default"> 'UNSEEN'</span>
+			<span class="smalllinenumber">[line 229]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constTAG" id="TAG"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">TAG</span>
+			 = <span class="var-default"> 'Tag'</span>
+			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constTEXT" id="TEXT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">TEXT</span>
+			 = <span class="var-default"> 'TEXT'</span>
+			<span class="smalllinenumber">[line 337]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>****body中的section*******
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constTO" id="TO"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">TO</span>
+			 = <span class="var-default"> 'To'</span>
+			<span class="smalllinenumber">[line 146]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constUID" id="UID"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">UID</span>
+			 = <span class="var-default"> 'UID'</span>
+			<span class="smalllinenumber">[line 128]</span>
+		</span>
+	</div>
+
+		
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:35 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

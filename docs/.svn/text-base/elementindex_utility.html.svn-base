@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package utility Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">utility<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                    
+                                                                                                                                                                                                            		[ <a href="classtrees_utility.html" class="menu">class tree: utility</a> ]
+		[ <a href="elementindex_utility.html" class="menu">index: utility</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">utility</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="utility/WindArray.html">WindArray</a>    	 <br />
+	    		<a href="utility/WindConvert.html">WindConvert</a>    	 <br />
+	    		<a href="utility/WindDate.html">WindDate</a>    	 <br />
+	    		<a href="utility/WindFile.html">WindFile</a>    	 <br />
+	    		<a href="utility/WindFolder.html">WindFolder</a>    	 <br />
+	    		<a href="utility/WindGeneralDate.html">WindGeneralDate</a>    	 <br />
+	    		<a href="utility/WindImage.html">WindImage</a>    	 <br />
+	    		<a href="utility/WindJson.html">WindJson</a>    	 <br />
+	    		<a href="utility/WindPack.html">WindPack</a>    	 <br />
+	    		<a href="utility/WindSecurity.html">WindSecurity</a>    	 <br />
+	    		<a href="utility/WindSecurityToken.html">WindSecurityToken</a>    	 <br />
+	    		<a href="utility/WindString.html">WindString</a>    	 <br />
+	    		<a href="utility/WindUtility.html">WindUtility</a>    	 <br />
+	    		<a href="utility/WindValidator.html">WindValidator</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package utility</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+							<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_utility.html#a">a</a> ]
+	[ <a href="elementindex_utility.html#b">b</a> ]
+	[ <a href="elementindex_utility.html#c">c</a> ]
+	[ <a href="elementindex_utility.html#d">d</a> ]
+	[ <a href="elementindex_utility.html#e">e</a> ]
+	[ <a href="elementindex_utility.html#f">f</a> ]
+	[ <a href="elementindex_utility.html#g">g</a> ]
+	[ <a href="elementindex_utility.html#h">h</a> ]
+	[ <a href="elementindex_utility.html#i">i</a> ]
+	[ <a href="elementindex_utility.html#j">j</a> ]
+	[ <a href="elementindex_utility.html#l">l</a> ]
+	[ <a href="elementindex_utility.html#m">m</a> ]
+	[ <a href="elementindex_utility.html#o">o</a> ]
+	[ <a href="elementindex_utility.html#p">p</a> ]
+	[ <a href="elementindex_utility.html#r">r</a> ]
+	[ <a href="elementindex_utility.html#s">s</a> ]
+	[ <a href="elementindex_utility.html#t">t</a> ]
+	[ <a href="elementindex_utility.html#u">u</a> ]
+	[ <a href="elementindex_utility.html#v">v</a> ]
+	[ <a href="elementindex_utility.html#w">w</a> ]
+	[ <a href="elementindex_utility.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#method__construct">WindGeneralDate::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据输入的日期格式转化为时间戳进行属性time初始化</dd>
+							<dt><b>__toString</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#method__toString">WindGeneralDate::__toString()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;对象转化为字符串，魔术方法</dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>APPEND_WRITE</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constAPPEND_WRITE">WindFile::APPEND_WRITE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以追加写入方式打开文件，具有较强的平台移植性</dd>
+							<dt><b>APPEND_WRITEREAD</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constAPPEND_WRITEREAD">WindFile::APPEND_WRITEREAD</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以追加读写入方式打开文件，具有较强的平台移植性</dd>
+							<dt><b>arrayToJson</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodarrayToJson">WindJson::arrayToJson()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数组转化成json格式对象</dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>buildValidateRule</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodbuildValidateRule">WindUtility::buildValidateRule()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通用组装测试验证规则</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>callBack</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodcallBack">WindPack::callBack()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;回调函数调用</dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodclear">WindFolder::clear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除指定目录下的文件</dd>
+							<dt><b>clearRecur</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodclearRecur">WindFolder::clearRecur()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;递归的删除目录</dd>
+							<dt><b>complexConvert</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodcomplexConvert">WindJson::complexConvert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;复杂的json格式转换,支持object array格式</dd>
+							<dt><b>convert</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodconvert">WindConvert::convert()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码转换</dd>
+							<dt><b>createToken</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodcreateToken">WindSecurity::createToken()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;创建token令牌串</dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>dateAdd</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methoddateAdd">WindDate::dateAdd()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回向指定日期追加指定间隔类型的一段时间间隔后的日期</dd>
+							<dt><b>dateDiff</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methoddateDiff">WindDate::dateDiff()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取两个日期的差</dd>
+							<dt><b>datePart</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methoddatePart">WindDate::datePart()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取日期的某部分</dd>
+							<dt><b>decode</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methoddecode">WindJson::decode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将json格式数据解密</dd>
+							<dt><b>decrypt</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methoddecrypt">WindSecurity::decrypt()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解密字符串</dd>
+							<dt><b>DEFAULT_FORMAT</b></dt>
+				<dd>in file WindGeneralDate.php, class constant <a href="utility/WindGeneralDate.html#constDEFAULT_FORMAT">WindGeneralDate::DEFAULT_FORMAT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;默认格式化</dd>
+							<dt><b>del</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methoddel">WindFile::del()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除文件</dd>
+							<dt><b>deleteToken</b></dt>
+				<dd>in file WindSecurityToken.php, method <a href="utility/WindSecurityToken.html#methoddeleteToken">WindSecurityToken::deleteToken()</a></dd>
+							<dt><b>DIGIT</b></dt>
+				<dd>in file WindGeneralDate.php, class constant <a href="utility/WindGeneralDate.html#constDIGIT">WindGeneralDate::DIGIT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;数字展示</dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>encode</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodencode">WindJson::encode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数据用json加密</dd>
+							<dt><b>encrypt</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodencrypt">WindSecurity::encrypt()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;字符串加密</dd>
+							<dt><b>escapeArrayHTML</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodescapeArrayHTML">WindSecurity::escapeArrayHTML()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;转义字符串</dd>
+							<dt><b>escapeHTML</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodescapeHTML">WindSecurity::escapeHTML()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;转义输出字符串</dd>
+							<dt><b>escapePath</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodescapePath">WindSecurity::escapePath()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;路径检查转义</dd>
+							<dt><b>evalExpression</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodevalExpression">WindUtility::evalExpression()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;执行简单的条件表达式</dd>
+					</dl>
+	</div>
+	<a name="f"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">f</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>f</h2>
+		<dl>
+							<dt><b>FILL</b></dt>
+				<dd>in file WindGeneralDate.php, class constant <a href="utility/WindGeneralDate.html#constFILL">WindGeneralDate::FILL</a><br>&nbsp;&nbsp;&nbsp;&nbsp;填充展示</dd>
+							<dt><b>filterArrayWithKey</b></dt>
+				<dd>in file WindArray.php, method <a href="utility/WindArray.html#methodfilterArrayWithKey">WindArray::filterArrayWithKey()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;按指定key合并两个数组</dd>
+							<dt><b>format</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodformat">WindDate::format()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;格式化输出</dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>GBK</b></dt>
+				<dd>in file WindString.php, class constant <a href="utility/WindString.html#constGBK">WindString::GBK</a></dd>
+							<dt><b>gbkToUtf8</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodgbkToUtf8">WindConvert::gbkToUtf8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;gbk转为utf8编码</dd>
+							<dt><b>generateGUID</b></dt>
+				<dd>in file WindSecurity.php, method <a href="utility/WindSecurity.html#methodgenerateGUID">WindSecurity::generateGUID()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取唯一标识符串,标识符串的长度为16个字节,128位.</dd>
+							<dt><b>generateRandStr</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodgenerateRandStr">WindUtility::generateRandStr()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得随机数字符串</dd>
+							<dt><b>get12Hours</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodget12Hours">WindGeneralDate::get12Hours()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的12小时制时间</dd>
+							<dt><b>get24Hours</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodget24Hours">WindGeneralDate::get24Hours()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的24小时制时间</dd>
+							<dt><b>getChinaDate</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetChinaDate">WindDate::getChinaDate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得中国日期时间</dd>
+							<dt><b>getChinaWeek</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetChinaWeek">WindDate::getChinaWeek()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得中国的星期</dd>
+							<dt><b>getContentBySuffix</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodgetContentBySuffix">WindPack::getContentBySuffix()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据文件后缀得取对应的mime内容</dd>
+							<dt><b>getContentFromFile</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodgetContentFromFile">WindPack::getContentFromFile()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;从文件读取内容</dd>
+							<dt><b>getDay</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDay">WindGeneralDate::getDay()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的天数</dd>
+							<dt><b>getDayOfMonth</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDayOfMonth">WindGeneralDate::getDayOfMonth()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;表示当前日期为该月中的第几天。</dd>
+							<dt><b>getDayOfWeek</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDayOfWeek">WindGeneralDate::getDayOfWeek()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;表示当前日期是该星期中的第几天。</dd>
+							<dt><b>getDayOfYear</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDayOfYear">WindGeneralDate::getDayOfYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;所表示当前日期是该年中的第几天。</dd>
+							<dt><b>getDaysInMonth</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDaysInMonth">WindGeneralDate::getDaysInMonth()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前时间所在月的天数</dd>
+							<dt><b>getDaysInMonth</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetDaysInMonth">WindDate::getDaysInMonth()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取该月的天数</dd>
+							<dt><b>getDaysInYear</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetDaysInYear">WindGeneralDate::getDaysInYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前时间所在年的天数</dd>
+							<dt><b>getDaysInYear</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetDaysInYear">WindDate::getDaysInYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取该年的天数</dd>
+							<dt><b>getImgInfo</b></dt>
+				<dd>in file WindImage.php, method <a href="utility/WindImage.html#methodgetImgInfo">WindImage::getImgInfo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得图片的信息,返回图片的源及图片的高度和宽度</dd>
+							<dt><b>getInfo</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodgetInfo">WindFile::getInfo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得文件信息</dd>
+							<dt><b>getInfo</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodgetInfo">WindFolder::getInfo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得目录信息</dd>
+							<dt><b>getLastDate</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetLastDate">WindDate::getLastDate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;比较两个时间返回离现在最近的一个时间</dd>
+							<dt><b>getLocalTimeZone</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetLocalTimeZone">WindGeneralDate::getLocalTimeZone()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的本地时区</dd>
+							<dt><b>getMicroTime</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetMicroTime">WindDate::getMicroTime()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取微秒数</dd>
+							<dt><b>getMinutes</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetMinutes">WindGeneralDate::getMinutes()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的分钟</dd>
+							<dt><b>getMonth</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetMonth">WindGeneralDate::getMonth()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获当前日期的取月份</dd>
+							<dt><b>getNow</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetNow">WindGeneralDate::getNow()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得当前日期时间对象</dd>
+							<dt><b>getPackList</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodgetPackList">WindPack::getPackList()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得被打包的文件列表</dd>
+							<dt><b>getPeriodOfTime</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetPeriodOfTime">WindDate::getPeriodOfTime()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得一天中的时段</dd>
+							<dt><b>getRealDaysInMonthsOfYear</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetRealDaysInMonthsOfYear">WindDate::getRealDaysInMonthsOfYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;得到一年中每个月真实的天数</dd>
+							<dt><b>getRFCDate</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetRFCDate">WindDate::getRFCDate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得RFC格式的日期与时间</dd>
+							<dt><b>getSeconds</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetSeconds">WindGeneralDate::getSeconds()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的秒数</dd>
+							<dt><b>getSuffix</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodgetSuffix">WindFile::getSuffix()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得文件后缀</dd>
+							<dt><b>getTimeStamp</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetTimeStamp">WindDate::getTimeStamp()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得时间戳</dd>
+							<dt><b>getTimeZone</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetTimeZone">WindDate::getTimeZone()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取时区</dd>
+							<dt><b>getToken</b></dt>
+				<dd>in file WindSecurityToken.php, method <a href="utility/WindSecurityToken.html#methodgetToken">WindSecurityToken::getToken()</a></dd>
+							<dt><b>getTokenName</b></dt>
+				<dd>in file WindSecurityToken.php, method <a href="utility/WindSecurityToken.html#methodgetTokenName">WindSecurityToken::getTokenName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;token名称处理</dd>
+							<dt><b>getUTCDate</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodgetUTCDate">WindDate::getUTCDate()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取UTC日期格式</dd>
+							<dt><b>getWeek</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetWeek">WindGeneralDate::getWeek()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的星期</dd>
+							<dt><b>getWeekOfYear</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetWeekOfYear">WindGeneralDate::getWeekOfYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断当前日期所在年的第几周</dd>
+							<dt><b>getYear</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodgetYear">WindGeneralDate::getYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取当前日期的年份</dd>
+					</dl>
+	</div>
+	<a name="h"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">h</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>h</h2>
+		<dl>
+							<dt><b>hasChinese</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasChinese">WindValidator::hasChinese()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有中文</dd>
+							<dt><b>hasEmail</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasEmail">WindValidator::hasEmail()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是有合法的email</dd>
+							<dt><b>hasHtml</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasHtml">WindValidator::hasHtml()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有html标记</dd>
+							<dt><b>hasIdCard</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasIdCard">WindValidator::hasIdCard()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有合法的身份证号</dd>
+							<dt><b>hasIpv4</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasIpv4">WindValidator::hasIpv4()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有合法的ipv4地址</dd>
+							<dt><b>hasIpv6</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasIpv6">WindValidator::hasIpv6()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有合法的ipV6</dd>
+							<dt><b>hasScript</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasScript">WindValidator::hasScript()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有客户端脚本</dd>
+							<dt><b>hasUrl</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodhasUrl">WindValidator::hasUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否有合法的URL</dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>isChinese</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisChinese">WindValidator::isChinese()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是中文</dd>
+							<dt><b>isDir</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodisDir">WindFolder::isDir()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断输入是否为目录</dd>
+							<dt><b>isEmail</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisEmail">WindValidator::isEmail()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的email</dd>
+							<dt><b>isFile</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodisFile">WindFile::isFile()</a></dd>
+							<dt><b>isHtml</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisHtml">WindValidator::isHtml()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的html标记</dd>
+							<dt><b>isIdCard</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisIdCard">WindValidator::isIdCard()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的身份证号</dd>
+							<dt><b>isIpv4</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisIpv4">WindValidator::isIpv4()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的IP</dd>
+							<dt><b>isIpv6</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisIpv6">WindValidator::isIpv6()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的ipV6</dd>
+							<dt><b>isLeapYear</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodisLeapYear">WindDate::isLeapYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断是否是闰年</dd>
+							<dt><b>isLeapYear</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodisLeapYear">WindGeneralDate::isLeapYear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断是否是闰年</dd>
+							<dt><b>isLegalLength</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisLegalLength">WindValidator::isLegalLength()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证字符串的长度</dd>
+							<dt><b>isNegative</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisNegative">WindValidator::isNegative()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是负数</dd>
+							<dt><b>isNonNegative</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisNonNegative">WindValidator::isNonNegative()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是非负数</dd>
+							<dt><b>isPositive</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisPositive">WindValidator::isPositive()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是正数</dd>
+							<dt><b>isQQ</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisQQ">WindValidator::isQQ()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是QQ号码</dd>
+							<dt><b>isRequired</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisRequired">WindValidator::isRequired()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是不能为空</dd>
+							<dt><b>isScript</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisScript">WindValidator::isScript()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的客户端脚本</dd>
+							<dt><b>isTelNumber</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisTelNumber">WindValidator::isTelNumber()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是手机号码</dd>
+							<dt><b>isTelPhone</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisTelPhone">WindValidator::isTelPhone()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是电话号码</dd>
+							<dt><b>isUrl</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisUrl">WindValidator::isUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是合法的url</dd>
+							<dt><b>isZipcode</b></dt>
+				<dd>in file WindValidator.php, method <a href="utility/WindValidator.html#methodisZipcode">WindValidator::isZipcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;验证是否是邮政编码</dd>
+					</dl>
+	</div>
+	<a name="j"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">j</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>j</h2>
+		<dl>
+							<dt><b>jsonDecode</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodjsonDecode">WindString::jsonDecode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将json格式数据解密</dd>
+							<dt><b>jsonEncode</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodjsonEncode">WindString::jsonEncode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数据用json加密</dd>
+							<dt><b>jsonToString</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodjsonToString">WindJson::jsonToString()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将json格式转成php string类型</dd>
+							<dt><b>JSON_IN_ARR</b></dt>
+				<dd>in file WindJson.php, class constant <a href="utility/WindJson.html#constJSON_IN_ARR">WindJson::JSON_IN_ARR</a></dd>
+							<dt><b>JSON_IN_CMT</b></dt>
+				<dd>in file WindJson.php, class constant <a href="utility/WindJson.html#constJSON_IN_CMT">WindJson::JSON_IN_CMT</a></dd>
+							<dt><b>JSON_IN_OBJ</b></dt>
+				<dd>in file WindJson.php, class constant <a href="utility/WindJson.html#constJSON_IN_OBJ">WindJson::JSON_IN_OBJ</a></dd>
+							<dt><b>JSON_IN_STR</b></dt>
+				<dd>in file WindJson.php, class constant <a href="utility/WindJson.html#constJSON_IN_STR">WindJson::JSON_IN_STR</a></dd>
+							<dt><b>JSON_SLICE</b></dt>
+				<dd>in file WindJson.php, class constant <a href="utility/WindJson.html#constJSON_SLICE">WindJson::JSON_SLICE</a></dd>
+					</dl>
+	</div>
+	<a name="l"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">l</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>l</h2>
+		<dl>
+							<dt><b>lcfirst</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodlcfirst">WindUtility::lcfirst()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将字符串首字母小写</dd>
+					</dl>
+	</div>
+	<a name="m"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">m</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>m</h2>
+		<dl>
+							<dt><b>makeThumb</b></dt>
+				<dd>in file WindImage.php, method <a href="utility/WindImage.html#methodmakeThumb">WindImage::makeThumb()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;生成略缩图</dd>
+							<dt><b>makeWatermark</b></dt>
+				<dd>in file WindImage.php, method <a href="utility/WindImage.html#methodmakeWatermark">WindImage::makeWatermark()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;给图片制作水印</dd>
+							<dt><b>mergeArray</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodmergeArray">WindUtility::mergeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;递归合并两个数组</dd>
+							<dt><b>mergeArrayWithKey</b></dt>
+				<dd>in file WindArray.php, method <a href="utility/WindArray.html#methodmergeArrayWithKey">WindArray::mergeArrayWithKey()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;按指定key合并两个数组</dd>
+							<dt><b>mk</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodmk">WindFolder::mk()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;创建目录</dd>
+							<dt><b>mkRecur</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodmkRecur">WindFolder::mkRecur()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;递归的创建目录</dd>
+					</dl>
+	</div>
+	<a name="o"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">o</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>o</h2>
+		<dl>
+							<dt><b>objectToJson</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodobjectToJson">WindJson::objectToJson()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将对象转化成json格式对象</dd>
+					</dl>
+	</div>
+	<a name="p"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">p</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>p</h2>
+		<dl>
+							<dt><b>packFromDir</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodpackFromDir">WindPack::packFromDir()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,</dd>
+							<dt><b>packFromFileList</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodpackFromFileList">WindPack::packFromFileList()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将给出的文件列表进行打包</dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>read</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodread">WindFolder::read()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取文件列表</dd>
+							<dt><b>read</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodread">WindFile::read()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;读取文件</dd>
+							<dt><b>READ</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constREAD">WindFile::READ</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以读的方式打开文件，具有较强的平台移植性</dd>
+							<dt><b>readContentFromDir</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodreadContentFromDir">WindPack::readContentFromDir()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;从各个目录中取得对应的每个文件的内容</dd>
+							<dt><b>readContentFromFileList</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodreadContentFromFileList">WindPack::readContentFromFileList()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;从文件列表中取得对应的每个文件的内容</dd>
+							<dt><b>READWRITE</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constREADWRITE">WindFile::READWRITE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以读写的方式打开文件，具有较强的平台移植性</dd>
+							<dt><b>READ_ALL</b></dt>
+				<dd>in file WindFolder.php, class constant <a href="utility/WindFolder.html#constREAD_ALL">WindFolder::READ_ALL</a></dd>
+							<dt><b>READ_DIR</b></dt>
+				<dd>in file WindFolder.php, class constant <a href="utility/WindFolder.html#constREAD_DIR">WindFolder::READ_DIR</a></dd>
+							<dt><b>READ_FILE</b></dt>
+				<dd>in file WindFolder.php, class constant <a href="utility/WindFolder.html#constREAD_FILE">WindFolder::READ_FILE</a></dd>
+							<dt><b>rebuildArrayWithKey</b></dt>
+				<dd>in file WindArray.php, method <a href="utility/WindArray.html#methodrebuildArrayWithKey">WindArray::rebuildArrayWithKey()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;按指定KEY重新生成数组</dd>
+							<dt><b>resolveExpression</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodresolveExpression">WindUtility::resolveExpression()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析表达式</dd>
+							<dt><b>rm</b></dt>
+				<dd>in file WindFolder.php, method <a href="utility/WindFolder.html#methodrm">WindFolder::rm()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除目录</dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>savePhpData</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodsavePhpData">WindFile::savePhpData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;保存文件</dd>
+							<dt><b>saveToken</b></dt>
+				<dd>in file WindSecurityToken.php, method <a href="utility/WindSecurityToken.html#methodsaveToken">WindSecurityToken::saveToken()</a></dd>
+							<dt><b>setContentInjectionCallBack</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodsetContentInjectionCallBack">WindPack::setContentInjectionCallBack()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置回调</dd>
+							<dt><b>setTime</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodsetTime">WindGeneralDate::setTime()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重新设置当前日期与时间</dd>
+							<dt><b>setTimezone</b></dt>
+				<dd>in file WindDate.php, method <a href="utility/WindDate.html#methodsetTimezone">WindDate::setTimezone()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置时区</dd>
+							<dt><b>stringToJson</b></dt>
+				<dd>in file WindJson.php, method <a href="utility/WindJson.html#methodstringToJson">WindJson::stringToJson()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将字符串转化成json格式对象</dd>
+							<dt><b>stripComment</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripComment">WindPack::stripComment()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;去除注释</dd>
+							<dt><b>stripImport</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripImport">WindPack::stripImport()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;去除多余的文件导入信息</dd>
+							<dt><b>stripNR</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripNR">WindPack::stripNR()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;去除换行</dd>
+							<dt><b>stripPhpIdentify</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripPhpIdentify">WindPack::stripPhpIdentify()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;去除php标识</dd>
+							<dt><b>stripSpace</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripSpace">WindPack::stripSpace()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;去除空格符</dd>
+							<dt><b>stripStrByRule</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripStrByRule">WindPack::stripStrByRule()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据指定规则替换指定内容中相应的内容</dd>
+							<dt><b>stripWhiteSpaceByPhp</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripWhiteSpaceByPhp">WindPack::stripWhiteSpaceByPhp()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过php自身方式去除指定文件的注释及空白</dd>
+							<dt><b>stripWhiteSpaceBySelf</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripWhiteSpaceBySelf">WindPack::stripWhiteSpaceBySelf()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过正则方式去除指定文件的注释及空白</dd>
+							<dt><b>stripWhiteSpaceByToken</b></dt>
+				<dd>in file WindPack.php, method <a href="utility/WindPack.html#methodstripWhiteSpaceByToken">WindPack::stripWhiteSpaceByToken()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过token方式去除指定文件的注释及空白</dd>
+							<dt><b>STRIP_PHP</b></dt>
+				<dd>in file WindPack.php, class constant <a href="utility/WindPack.html#constSTRIP_PHP">WindPack::STRIP_PHP</a><br>&nbsp;&nbsp;&nbsp;&nbsp;利用php自身的函数打包</dd>
+							<dt><b>STRIP_SELF</b></dt>
+				<dd>in file WindPack.php, class constant <a href="utility/WindPack.html#constSTRIP_SELF">WindPack::STRIP_SELF</a><br>&nbsp;&nbsp;&nbsp;&nbsp;使用正则打包</dd>
+							<dt><b>STRIP_TOKEN</b></dt>
+				<dd>in file WindPack.php, class constant <a href="utility/WindPack.html#constSTRIP_TOKEN">WindPack::STRIP_TOKEN</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通过token方式打包</dd>
+							<dt><b>strlen</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodstrlen">WindString::strlen()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;求取字符串长度</dd>
+							<dt><b>strlenForGbk</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodstrlenForGbk">WindString::strlenForGbk()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以gbk求取字符串长度</dd>
+							<dt><b>strlenForUtf8</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodstrlenForUtf8">WindString::strlenForUtf8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以utf8求取字符串长度</dd>
+							<dt><b>strtr</b></dt>
+				<dd>in file WindUtility.php, method <a href="utility/WindUtility.html#methodstrtr">WindUtility::strtr()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;对字符串中的参数进行替换</dd>
+							<dt><b>substr</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodsubstr">WindString::substr()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;截取字符串,支持字符编码,默认为utf-8</dd>
+							<dt><b>substrForGbk</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodsubstrForGbk">WindString::substrForGbk()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以gbk格式截取的字符串编码</dd>
+							<dt><b>substrForUtf8</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodsubstrForUtf8">WindString::substrForUtf8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以utf8格式截取的字符串编码</dd>
+					</dl>
+	</div>
+	<a name="t"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">t</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>t</h2>
+		<dl>
+							<dt><b>$token</b></dt>
+				<dd>in file WindSecurityToken.php, variable <a href="utility/WindSecurityToken.html#var$token">WindSecurityToken::$token</a><br>&nbsp;&nbsp;&nbsp;&nbsp;url token</dd>
+							<dt><b>$tokenContainer</b></dt>
+				<dd>in file WindSecurityToken.php, variable <a href="utility/WindSecurityToken.html#var$tokenContainer">WindSecurityToken::$tokenContainer</a><br>&nbsp;&nbsp;&nbsp;&nbsp;令牌容器</dd>
+							<dt><b>TEXT</b></dt>
+				<dd>in file WindGeneralDate.php, class constant <a href="utility/WindGeneralDate.html#constTEXT">WindGeneralDate::TEXT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;文本展示</dd>
+							<dt><b>toString</b></dt>
+				<dd>in file WindGeneralDate.php, method <a href="utility/WindGeneralDate.html#methodtoString">WindGeneralDate::toString()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;格式化时间输出</dd>
+					</dl>
+	</div>
+	<a name="u"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">u</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>u</h2>
+		<dl>
+							<dt><b>unicodeToUTF8</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodunicodeToUTF8">WindConvert::unicodeToUTF8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;unicode编码转化为utf8编码</dd>
+							<dt><b>UTF8</b></dt>
+				<dd>in file WindString.php, class constant <a href="utility/WindString.html#constUTF8">WindString::UTF8</a></dd>
+							<dt><b>utf8ToUnicode</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodutf8ToUnicode">WindConvert::utf8ToUnicode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;utf8编码转化为unicode</dd>
+							<dt><b>utf8ToUTF16BE</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodutf8ToUTF16BE">WindConvert::utf8ToUTF16BE()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;utf8编码转为utf16BE</dd>
+							<dt><b>utf16beToUTF8</b></dt>
+				<dd>in file WindConvert.php, method <a href="utility/WindConvert.html#methodutf16beToUTF8">WindConvert::utf16beToUTF8()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;utf16be编码转化为utf8编码</dd>
+					</dl>
+	</div>
+	<a name="v"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">v</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>v</h2>
+		<dl>
+							<dt><b>validateToken</b></dt>
+				<dd>in file WindSecurityToken.php, method <a href="utility/WindSecurityToken.html#methodvalidateToken">WindSecurityToken::validateToken()</a></dd>
+							<dt><b>varToString</b></dt>
+				<dd>in file WindString.php, method <a href="utility/WindString.html#methodvarToString">WindString::varToString()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将变量的值转换为字符串</dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindSecurityToken.php</b></dt>
+				<dd>procedural page <a href="utility/_token---WindSecurityToken.php.html">WindSecurityToken.php</a></dd>
+							<dt><b>WindArray.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindArray.php.html">WindArray.php</a></dd>
+							<dt><b>WindConvert.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindConvert.php.html">WindConvert.php</a></dd>
+							<dt><b>WindDate.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindDate.php.html">WindDate.php</a></dd>
+							<dt><b>WindFile.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindFile.php.html">WindFile.php</a></dd>
+							<dt><b>WindFolder.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindFolder.php.html">WindFolder.php</a></dd>
+							<dt><b>WindGeneralDate.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindGeneralDate.php.html">WindGeneralDate.php</a></dd>
+							<dt><b>WindImage.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindImage.php.html">WindImage.php</a></dd>
+							<dt><b>WindJson.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindJson.php.html">WindJson.php</a></dd>
+							<dt><b>WindPack.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindPack.php.html">WindPack.php</a></dd>
+							<dt><b>WindSecurity.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindSecurity.php.html">WindSecurity.php</a></dd>
+							<dt><b>WindString.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindString.php.html">WindString.php</a></dd>
+							<dt><b>WindUtility.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindUtility.php.html">WindUtility.php</a></dd>
+							<dt><b>WindValidator.php</b></dt>
+				<dd>procedural page <a href="utility/_utility---WindValidator.php.html">WindValidator.php</a></dd>
+							<dt><b>WindArray</b></dt>
+				<dd>in file WindArray.php, class <a href="utility/WindArray.html">WindArray</a><br>&nbsp;&nbsp;&nbsp;&nbsp;数组工具类</dd>
+							<dt><b>WindConvert</b></dt>
+				<dd>in file WindConvert.php, class <a href="utility/WindConvert.html">WindConvert</a><br>&nbsp;&nbsp;&nbsp;&nbsp;编码转化类</dd>
+							<dt><b>WindDate</b></dt>
+				<dd>in file WindDate.php, class <a href="utility/WindDate.html">WindDate</a><br>&nbsp;&nbsp;&nbsp;&nbsp;日期的换算与计算</dd>
+							<dt><b>WindFile</b></dt>
+				<dd>in file WindFile.php, class <a href="utility/WindFile.html">WindFile</a><br>&nbsp;&nbsp;&nbsp;&nbsp;文件工具类</dd>
+							<dt><b>WindFolder</b></dt>
+				<dd>in file WindFolder.php, class <a href="utility/WindFolder.html">WindFolder</a><br>&nbsp;&nbsp;&nbsp;&nbsp;文件夹工具类</dd>
+							<dt><b>WindGeneralDate</b></dt>
+				<dd>in file WindGeneralDate.php, class <a href="utility/WindGeneralDate.html">WindGeneralDate</a><br>&nbsp;&nbsp;&nbsp;&nbsp;是将日期转化为一个对象去操作</dd>
+							<dt><b>WindImage</b></dt>
+				<dd>in file WindImage.php, class <a href="utility/WindImage.html">WindImage</a><br>&nbsp;&nbsp;&nbsp;&nbsp;图片处理类库</dd>
+							<dt><b>WindJson</b></dt>
+				<dd>in file WindJson.php, class <a href="utility/WindJson.html">WindJson</a><br>&nbsp;&nbsp;&nbsp;&nbsp;json格式转换类</dd>
+							<dt><b>WindPack</b></dt>
+				<dd>in file WindPack.php, class <a href="utility/WindPack.html">WindPack</a><br>&nbsp;&nbsp;&nbsp;&nbsp;程序打包工具</dd>
+							<dt><b>WindSecurity</b></dt>
+				<dd>in file WindSecurity.php, class <a href="utility/WindSecurity.html">WindSecurity</a><br>&nbsp;&nbsp;&nbsp;&nbsp;字符、路径过滤等安全处理</dd>
+							<dt><b>WindSecurityToken</b></dt>
+				<dd>in file WindSecurityToken.php, class <a href="utility/WindSecurityToken.html">WindSecurityToken</a><br>&nbsp;&nbsp;&nbsp;&nbsp;token令牌安全类</dd>
+							<dt><b>WindString</b></dt>
+				<dd>in file WindString.php, class <a href="utility/WindString.html">WindString</a><br>&nbsp;&nbsp;&nbsp;&nbsp;字符串格式化</dd>
+							<dt><b>WindUtility</b></dt>
+				<dd>in file WindUtility.php, class <a href="utility/WindUtility.html">WindUtility</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通用工具库</dd>
+							<dt><b>WindValidator</b></dt>
+				<dd>in file WindValidator.php, class <a href="utility/WindValidator.html">WindValidator</a><br>&nbsp;&nbsp;&nbsp;&nbsp;通用验证类</dd>
+							<dt><b>WRITE</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constWRITE">WindFile::WRITE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以写的方式打开文件，具有较强的平台移植性</dd>
+							<dt><b>write</b></dt>
+				<dd>in file WindFile.php, method <a href="utility/WindFile.html#methodwrite">WindFile::write()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;写文件</dd>
+							<dt><b>WRITEREAD</b></dt>
+				<dd>in file WindFile.php, class constant <a href="utility/WindFile.html#constWRITEREAD">WindFile::WRITEREAD</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以读写的方式打开文件，具有较强的平台移植性</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package strategy Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">strategy<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                            
+                                                                                                                                                    		[ <a href="classtrees_strategy.html" class="menu">class tree: strategy</a> ]
+		[ <a href="elementindex_strategy.html" class="menu">index: strategy</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">strategy</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="strategy/WindApcCache.html">WindApcCache</a>    	 <br />
+	    		<a href="strategy/WindDbCache.html">WindDbCache</a>    	 <br />
+	    		<a href="strategy/WindEacceleratorCache.html">WindEacceleratorCache</a>    	 <br />
+	    		<a href="strategy/WindFileCache.html">WindFileCache</a>    	 <br />
+	    		<a href="strategy/WindMemCache.html">WindMemCache</a>    	 <br />
+	    		<a href="strategy/WindWinCache.html">WindWinCache</a>    	 <br />
+	    		<a href="strategy/WindXCache.html">WindXCache</a>    	 <br />
+	    		<a href="strategy/WindZendCache.html">WindZendCache</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package strategy</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+							<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_strategy.html#a">a</a> ]
+	[ <a href="elementindex_strategy.html#b">b</a> ]
+	[ <a href="elementindex_strategy.html#c">c</a> ]
+	[ <a href="elementindex_strategy.html#d">d</a> ]
+	[ <a href="elementindex_strategy.html#g">g</a> ]
+	[ <a href="elementindex_strategy.html#i">i</a> ]
+	[ <a href="elementindex_strategy.html#m">m</a> ]
+	[ <a href="elementindex_strategy.html#s">s</a> ]
+	[ <a href="elementindex_strategy.html#w">w</a> ]
+	[ <a href="elementindex_strategy.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#method__construct">WindXCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#method__construct">WindZendCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#method__construct">WindWinCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#method__construct">WindMemCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#method__construct">WindDbCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#method__construct">WindEacceleratorCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#method__construct">WindApcCache::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#methodaddValue">WindWinCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methodaddValue">WindXCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#methodaddValue">WindZendCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodaddValue">WindMemCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodaddValue">WindFileCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodaddValue">WindDbCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#methodaddValue">WindEacceleratorCache::addValue()</a></dd>
+							<dt><b>addValue</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#methodaddValue">WindApcCache::addValue()</a></dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>batchDelete</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodbatchDelete">WindDbCache::batchDelete()</a></dd>
+							<dt><b>batchGet</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodbatchGet">WindDbCache::batchGet()</a></dd>
+							<dt><b>buildSecurityKey</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodbuildSecurityKey">WindFileCache::buildSecurityKey()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据用户key计算获取真是缓存文件</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>$compress</b></dt>
+				<dd>in file WindMemCache.php, variable <a href="strategy/WindMemCache.html#var$compress">WindMemCache::$compress</a><br>&nbsp;&nbsp;&nbsp;&nbsp;是否对缓存采取压缩存储</dd>
+							<dt><b>$connection</b></dt>
+				<dd>in file WindDbCache.php, variable <a href="strategy/WindDbCache.html#var$connection">WindDbCache::$connection</a><br>&nbsp;&nbsp;&nbsp;&nbsp;链接句柄</dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#methodclear">WindWinCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#methodclear">WindZendCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodclear">WindMemCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methodclear">WindXCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodclear">WindFileCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodclear">WindDbCache::clear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;清除缓存数据</dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#methodclear">WindEacceleratorCache::clear()</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#methodclear">WindApcCache::clear()</a></dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>decrement</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methoddecrement">WindMemCache::decrement()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#methoddeleteValue">WindWinCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methoddeleteValue">WindXCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#methoddeleteValue">WindZendCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methoddeleteValue">WindMemCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#methoddeleteValue">WindApcCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#methoddeleteValue">WindEacceleratorCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methoddeleteValue">WindFileCache::deleteValue()</a></dd>
+							<dt><b>deleteValue</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methoddeleteValue">WindDbCache::deleteValue()</a></dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>getCacheDirectoryLevel</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodgetCacheDirectoryLevel">WindFileCache::getCacheDirectoryLevel()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回缓存存放的目录下子目录的长度</dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#methodgetValue">WindWinCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methodgetValue">WindXCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#methodgetValue">WindZendCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodgetValue">WindMemCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodgetValue">WindFileCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodgetValue">WindDbCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#methodgetValue">WindEacceleratorCache::getValue()</a></dd>
+							<dt><b>getValue</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#methodgetValue">WindApcCache::getValue()</a></dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>increment</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodincrement">WindMemCache::increment()</a></dd>
+					</dl>
+	</div>
+	<a name="m"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">m</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>m</h2>
+		<dl>
+							<dt><b>$memcache</b></dt>
+				<dd>in file WindMemCache.php, variable <a href="strategy/WindMemCache.html#var$memcache">WindMemCache::$memcache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;memcache缓存操作句柄</dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>setCacheDir</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodsetCacheDir">WindFileCache::setCacheDir()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存目录</dd>
+							<dt><b>setCacheDirectoryLevel</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodsetCacheDirectoryLevel">WindFileCache::setCacheDirectoryLevel()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存存放的目录下子目录的长度</dd>
+							<dt><b>setCacheFileSuffix</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodsetCacheFileSuffix">WindFileCache::setCacheFileSuffix()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置缓存文件的后缀</dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methodsetConfig">WindXCache::setConfig()</a></dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodsetConfig">WindMemCache::setConfig()</a></dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodsetConfig">WindFileCache::setConfig()</a></dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodsetConfig">WindDbCache::setConfig()</a></dd>
+							<dt><b>setConnection</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodsetConnection">WindDbCache::setConnection()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置链接对象</dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindZendCache.php, method <a href="strategy/WindZendCache.html#methodsetValue">WindZendCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindWinCache.php, method <a href="strategy/WindWinCache.html#methodsetValue">WindWinCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindXCache.php, method <a href="strategy/WindXCache.html#methodsetValue">WindXCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindFileCache.php, method <a href="strategy/WindFileCache.html#methodsetValue">WindFileCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindEacceleratorCache.php, method <a href="strategy/WindEacceleratorCache.html#methodsetValue">WindEacceleratorCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindApcCache.php, method <a href="strategy/WindApcCache.html#methodsetValue">WindApcCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindDbCache.php, method <a href="strategy/WindDbCache.html#methodsetValue">WindDbCache::setValue()</a></dd>
+							<dt><b>setValue</b></dt>
+				<dd>in file WindMemCache.php, method <a href="strategy/WindMemCache.html#methodsetValue">WindMemCache::setValue()</a></dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindApcCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindApcCache.php.html">WindApcCache.php</a></dd>
+							<dt><b>WindDbCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindDbCache.php.html">WindDbCache.php</a></dd>
+							<dt><b>WindEacceleratorCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindEacceleratorCache.php.html">WindEacceleratorCache.php</a></dd>
+							<dt><b>WindFileCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindFileCache.php.html">WindFileCache.php</a></dd>
+							<dt><b>WindMemCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindMemCache.php.html">WindMemCache.php</a></dd>
+							<dt><b>WindWinCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindWinCache.php.html">WindWinCache.php</a></dd>
+							<dt><b>WindXCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindXCache.php.html">WindXCache.php</a></dd>
+							<dt><b>WindZendCache.php</b></dt>
+				<dd>procedural page <a href="strategy/_cache---strategy---WindZendCache.php.html">WindZendCache.php</a></dd>
+							<dt><b>WindApcCache</b></dt>
+				<dd>in file WindApcCache.php, class <a href="strategy/WindApcCache.html">WindApcCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;ApcCache缓存策略实现类</dd>
+							<dt><b>WindDbCache</b></dt>
+				<dd>in file WindDbCache.php, class <a href="strategy/WindDbCache.html">WindDbCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Db缓存策略实现</dd>
+							<dt><b>WindEacceleratorCache</b></dt>
+				<dd>in file WindEacceleratorCache.php, class <a href="strategy/WindEacceleratorCache.html">WindEacceleratorCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;WindEacceleratorCache实现Eaccelerator动态内容缓存功能。</dd>
+							<dt><b>WindFileCache</b></dt>
+				<dd>in file WindFileCache.php, class <a href="strategy/WindFileCache.html">WindFileCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;file缓存策略实现</dd>
+							<dt><b>WindMemCache</b></dt>
+				<dd>in file WindMemCache.php, class <a href="strategy/WindMemCache.html">WindMemCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;memCache策略实现</dd>
+							<dt><b>WindWinCache</b></dt>
+				<dd>in file WindWinCache.php, class <a href="strategy/WindWinCache.html">WindWinCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;wincache缓存策略实现类</dd>
+							<dt><b>WindXCache</b></dt>
+				<dd>in file WindXCache.php, class <a href="strategy/WindXCache.html">WindXCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;WindXCache封装了xCache实现缓存策略</dd>
+							<dt><b>WindZendCache</b></dt>
+				<dd>in file WindZendCache.php, class <a href="strategy/WindZendCache.html">WindZendCache</a><br>&nbsp;&nbsp;&nbsp;&nbsp;ApcCache缓存策略实现类</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

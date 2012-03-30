@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindMysqlPdoAdapter</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">db<br /><div class="header-top-right-subpackage">mysql</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="../../classtrees_db.html" class="menu">class tree: db</a> ]
+		[ <a href="../../elementindex_db.html" class="menu">index: db</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">db</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>    	 <br />
+	    		<a href="../../db/WindConnection.html">WindConnection</a>    	 <br />
+	    		<a href="../../db/WindConnectionManager.html">WindConnectionManager</a>    	 <br />
+	    		<a href="../../db/WindResultSet.html">WindResultSet</a>    	 <br />
+	    		<a href="../../db/WindSqlStatement.html">WindSqlStatement</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../../db/exception/WindDbException.html">WindDbException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mysql<br />	    <span style="padding-left: 1em;">		<a href="../../db/mysql/WindMysqlPdoAdapter.html">WindMysqlPdoAdapter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindMysqlPdoAdapter</h1>
+Source Location: /db/mysql/WindMysqlPdoAdapter.php<br /><br />
+
+<h2 class="class-name">Class WindMysqlPdoAdapter</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>mysql类型数据库连接类
+</strong></p>
+<span class="description"><p>mysql类型数据库连接类,用于连接mysql数据库.该类继承了{@see AbstractWindPdoAdapter},是基于pdo的数据连接方式.  使用该数据库连接类型需要启动pdo支持.配置方式:<ol><li><div class="src-line">&nbsp;<a href="http://www.php.net/mysql">mysql</a>:<span class="src-id">host</span>=<span class="src-id">localhost</span><span class="src-sym">;</span><span class="src-id">dbname</span>=<span class="src-id">test</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//':'前面部分标明了链接类型为mysql.</span></div></li>
+</ol></p></span>
+		<p class="notes">
+			Located in <a class="field" href="_db---mysql---WindMysqlPdoAdapter.php.html">/db/mysql/WindMysqlPdoAdapter.php</a> [<span class="field">line 18</span>]
+		</p>
+
+		
+		<pre>PDO
+   |
+   --<a href="../../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>
+      |
+      --WindMysqlPdoAdapter</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-22</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindMysqlPdoAdapter.php 3113 2011-11-11 07:28:09Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodcreateTable">createTable</a></li>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodfieldMeta">fieldMeta</a></li>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodquoteArray">quoteArray</a></li>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodquoteMultiArray">quoteMultiArray</a></li>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodsetCharset">setCharset</a></li>
+		  		  <li><a href="../../db/mysql/WindMysqlPdoAdapter.html#methodsqlSingle">sqlSingle</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodcreateTable">AbstractWindPdoAdapter::createTable()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">添加数据表</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodfieldMeta">AbstractWindPdoAdapter::fieldMeta()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤SQL元数据，数据库对象(如表名字，字段等)</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodquote">AbstractWindPdoAdapter::quote()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodquoteArray">AbstractWindPdoAdapter::quoteArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤数组并将数组变量转换为sql字符串</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodquoteMultiArray">AbstractWindPdoAdapter::quoteMultiArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤二维数组将数组变量转换为多组的sql字符串</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodsetCharset">AbstractWindPdoAdapter::setCharset()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置连接数据库是所用的编码方式</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#methodsqlSingle">AbstractWindPdoAdapter::sqlSingle()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">过滤数组并组装单条 key=value 形式的SQL查询语句值(insert/update)</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../db/AbstractWindPdoAdapter.html#method_getPdoDataType">AbstractWindPdoAdapter::_getPdoDataType()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">获得绑定参数的类型</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#createTable" title="details" class="method-name">createTable</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">创建数据表</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#fieldMeta" title="details" class="method-name">fieldMeta</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#quoteArray" title="details" class="method-name">quoteArray</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">过滤数组并将数组变量转换为sql字符串</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#quoteMultiArray" title="details" class="method-name">quoteMultiArray</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">过滤二维数组将数组变量转换为多组的sql字符串</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setCharset" title="details" class="method-name">setCharset</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#sqlSingle" title="details" class="method-name">sqlSingle</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">组装单条 key=value 形式的SQL查询语句值 insert/update</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+																| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodcreateTable" id="createTable"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">createTable</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 49]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean createTable(
+string
+$tableName, string|array
+$values, [boolean
+$replace = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>创建数据表
+</strong></p>
+<span class="description"><p>添加数据表,支持三个参数'数据表明,字段定义,是否覆盖已存在表'.'$values'举例如下,当数据表名称未定义,或者当'fields'字段未定义,或者为空时抛出异常:  <ol><li><div class="src-line">&nbsp;<span class="src-var">$values&nbsp;</span>=&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'fields'&nbsp;</span>=&gt;&nbsp;<span class="src-str">&quot;`id`&nbsp;smallint(5)&nbsp;unsigned&nbsp;NOT&nbsp;NULL&nbsp;auto_increment,</span></div></li>
+<li><div class="src-line"><span class="src-str">&nbsp;`name`&nbsp;varchar(30)&nbsp;NOT&nbsp;NULL&nbsp;default&nbsp;'',PRIMARY&nbsp;KEY&nbsp;&nbsp;(`id`)&quot;</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'charset'&nbsp;</span>=&gt;&nbsp;<span class="src-str">&quot;utf-8&quot;</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'autoIncrement'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'id'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'engine'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'InnerDB'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol>  &lt;note&gt;<strong>注意:</strong>最后一个参数'$replace',有两个取值'true,false',当值为false时表示如果数据表存在不创建新表,  值为true时则删除已经存在的数据表并创建新表&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$tableName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 数据表名称</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string|array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$values:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 数据表字段信息</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 如果表已经存在是否覆盖,接收两个值true|false</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td><a href="../../db/AbstractWindPdoAdapter.html#methodcreateTable">AbstractWindPdoAdapter::createTable()</a></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodcreateTable">AbstractWindPdoAdapter::createTable()</a></dt>
+						<dd>添加数据表</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodfieldMeta" id="fieldMeta"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">fieldMeta</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 123]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void fieldMeta(
+
+$data&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodfieldMeta">AbstractWindPdoAdapter::fieldMeta()</a></dt>
+						<dd>过滤SQL元数据，数据库对象(如表名字，字段等)</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodquoteArray" id="quoteArray"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">quoteArray</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 73]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void quoteArray(
+
+$variable&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>过滤数组并将数组变量转换为sql字符串
+</strong></p>
+<span class="description"><p>对数组中的值进行安全过滤,并转化为mysql支持的values的格式,如下例子:  <ol><li><div class="src-line">&nbsp;<span class="src-var">$variable&nbsp;</span>=&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'a'</span><span class="src-sym">,</span><span class="src-str">'b'</span><span class="src-sym">,</span><span class="src-str">'c'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<a href="../../db/mysql/WindMysqlPdoAdapter.html#methodquoteArray">quoteArray</a><span class="src-sym">(</span><span class="src-var">$variable</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//return&nbsp;string:&nbsp;('a','b','c')</span></div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$variable:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td><a href="../../db/AbstractWindPdoAdapter.html#methodquoteArray">AbstractWindPdoAdapter::quoteArray()</a></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodquoteArray">AbstractWindPdoAdapter::quoteArray()</a></dt>
+						<dd>过滤数组并将数组变量转换为sql字符串</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodquoteMultiArray" id="quoteMultiArray"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">quoteMultiArray</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 93]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void quoteMultiArray(
+
+$var&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>过滤二维数组将数组变量转换为多组的sql字符串
+</strong></p>
+<span class="description"><p><ol><li><div class="src-line">&nbsp;<span class="src-var">$var&nbsp;</span>=&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'a1'</span><span class="src-sym">,</span><span class="src-str">'b1'</span><span class="src-sym">,</span><span class="src-str">'c1'</span><span class="src-sym">)</span><span class="src-sym">,</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'a2'</span><span class="src-sym">,</span><span class="src-str">'b2'</span><span class="src-sym">,</span><span class="src-str">'c2'</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">quoteMultiArrray</span><span class="src-sym">(</span><span class="src-var">$var</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-comm">//return&nbsp;string:&nbsp;('a1','b1','c1'),('a2','b2','c2')</span></div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$var:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td><a href="../../db/AbstractWindPdoAdapter.html#methodquoteMultiArray">AbstractWindPdoAdapter::quoteMultiArray()</a></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodquoteMultiArray">AbstractWindPdoAdapter::quoteMultiArray()</a></dt>
+						<dd>过滤二维数组将数组变量转换为多组的sql字符串</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetCharset" id="setCharset"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setCharset</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 23]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setCharset(
+
+$charset&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$charset:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodsetCharset">AbstractWindPdoAdapter::setCharset()</a></dt>
+						<dd>设置连接数据库是所用的编码方式</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsqlSingle" id="sqlSingle"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">sqlSingle</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 111]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string sqlSingle(
+array
+$array&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>组装单条 key=value 形式的SQL查询语句值 insert/update
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$array:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td><a href="../../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../db/AbstractWindPdoAdapter.html#methodsqlSingle">AbstractWindPdoAdapter::sqlSingle()</a></dt>
+						<dd>过滤数组并组装单条 key=value 形式的SQL查询语句值(insert/update)</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:38 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

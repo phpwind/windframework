@@ -1,0 +1,1309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindSqlStatement</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">db<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                          
+                                                                                                                                                                                                                                                      		[ <a href="../classtrees_db.html" class="menu">class tree: db</a> ]
+		[ <a href="../elementindex_db.html" class="menu">index: db</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">db</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../db/AbstractWindPdoAdapter.html">AbstractWindPdoAdapter</a>    	 <br />
+	    		<a href="../db/WindConnection.html">WindConnection</a>    	 <br />
+	    		<a href="../db/WindConnectionManager.html">WindConnectionManager</a>    	 <br />
+	    		<a href="../db/WindResultSet.html">WindResultSet</a>    	 <br />
+	    		<a href="../db/WindSqlStatement.html">WindSqlStatement</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../db/exception/WindDbException.html">WindDbException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mysql<br />	    <span style="padding-left: 1em;">		<a href="../db/mysql/WindMysqlPdoAdapter.html">WindMysqlPdoAdapter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindSqlStatement</h1>
+Source Location: /db/WindSqlStatement.php<br /><br />
+
+<h2 class="class-name">Class WindSqlStatement</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>sql语句处理类,该类封装了基础的sql处理方法
+</strong></p>
+<span class="description"><p>实现了基础的,数据绑定,参数绑定以及基础查询接口.  通过调用'WindConnection'的'createStatement()'方法,可以获得一个statement对象.</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_db---WindSqlStatement.php.html">/db/WindSqlStatement.php</a> [<span class="field">line 16</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt; 2011-9-23</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindSqlStatement.php 3431 2012-03-21 14:37:51Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../db/WindSqlStatement.html#method__construct">__construct</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindColumn">bindColumn</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindColumns">bindColumns</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindParam">bindParam</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindParams">bindParams</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindValue">bindValue</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodbindValues">bindValues</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodexecute">execute</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetColumns">getColumns</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetConnection">getConnection</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetOne">getOne</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetQueryString">getQueryString</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetStatement">getStatement</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodgetValue">getValue</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodinit">init</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodlastInsertId">lastInsertId</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodquery">query</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodqueryAll">queryAll</a></li>
+		  		  <li><a href="../db/WindSqlStatement.html#methodupdate">update</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindSqlStatement</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindColumn" title="details" class="method-name">bindColumn</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定输出结果集的列到PHP变量</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindColumns" title="details" class="method-name">bindColumns</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">批量绑定输出结果集的列到PHP变量</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindParam" title="details" class="method-name">bindParam</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">参数绑定</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindParams" title="details" class="method-name">bindParams</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">批量绑定变量</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindValue" title="details" class="method-name">bindValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">参数绑定</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindSqlStatement.html">WindSqlStatement</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#bindValues" title="details" class="method-name">bindValues</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">调用bindValue的批量绑定参数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">rowCount</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#execute" title="details" class="method-name">execute</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回影响行数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getColumns" title="details" class="method-name">getColumns</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得需要绑定的结果输出的列值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindConnection.html">WindConnection</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getConnection" title="details" class="method-name">getConnection</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得PDO链接对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getOne" title="details" class="method-name">getOne</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回一行查询结果</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getQueryString" title="details" class="method-name">getQueryString</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得查询的预定义语句</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">PDOStatement</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getStatement" title="details" class="method-name">getStatement</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得PDOStatement对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getValue" title="details" class="method-name">getValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回查询到的结果集中某一个列的值</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#init" title="details" class="method-name">init</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">初始化数据库链接信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#lastInsertId" title="details" class="method-name">lastInsertId</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../db/WindResultSet.html">WindResultSet</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#query" title="details" class="method-name">query</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回查询结果</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#queryAll" title="details" class="method-name">queryAll</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回查询结果</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int|boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#update" title="details" class="method-name">update</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">绑定参数，执行SQL语句，并返回更新影响行数</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 48]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindSqlStatement __construct(
+<a href="../db/WindConnection.html">WindConnection</a>
+$connection, string
+$query&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../db/WindConnection.html">WindConnection</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$connection:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> WindConnection对象</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$query:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindColumn" id="bindColumn"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">bindColumn</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 163]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindColumn(
+mixed
+$column, [mixed
+&$param = ''], [int
+$type = null], [int
+$maxlen = null], [mixed
+$driverdata = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定输出结果集的列到PHP变量
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$column:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要被绑定的字段列表，可以是字段名，也可以是字段的对应的下标</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$param:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要被绑定的php变量</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 参数的数据类型 PDO::PARAM_*</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$maxlen:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> A hint for pre-allocation.</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$driverdata:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> Optional parameter(s) for the driver.</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindColumn()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindColumns" id="bindColumns"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">bindColumns</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 188]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindColumns(
+array
+$columns, [array
+&$param = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>批量绑定输出结果集的列到PHP变量
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$columns:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待绑定的列</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$param:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要绑定的php变量</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindColumn()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindParam" id="bindParam"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">bindParam</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 65]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindParam(
+mixed
+$parameter, mixed
+&$variable, [int
+$dataType = null], [int
+$length = null], [mixed
+$driverOptions = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>参数绑定
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$parameter:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句的待绑定的位置</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$variable:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 绑定的值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dataType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 值的类型(PDO::PARAM_STR/PDO::PARAM_INT...)</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$length:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 绑定值的长度</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$driverOptions:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindParam()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindParams" id="bindParams"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">bindParams</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 92]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindParams(
+
+&$parameters, array
+$parameters&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>批量绑定变量
+</strong></p>
+<span class="description"><p>如果是一维数组，则使用key=&gt;value的形式，key代表变量位置，value代表替换的值，而替换值需要的类型则通过该值的类型来判断---不准确  如果是一个二维数组，则允许，key=&gt;array(0=&gt;value, 1=&gt;data_type, 2=&gt;length, 3=&gt;driver_options)的方式来传递变量。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$parameters:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$parameters:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindParam()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindValue" id="bindValue"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">bindValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindValue(
+string
+$parameter, string
+$value, [int
+$data_type = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>参数绑定
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$parameter:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句的待绑定的位置</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 绑定的值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data_type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 值的类型</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindValue()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbindValues" id="bindValues"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">bindValues</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 139]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindSqlStatement.html">WindSqlStatement</a> bindValues(
+array
+$values&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>调用bindValue的批量绑定参数
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$values:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 待绑定的参数值</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>PDOStatement::bindValue()</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodexecute" id="execute"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">execute</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 277]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>rowCount execute(
+[array
+$params = array()], [boolean
+$rowCount = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回影响行数
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> --  绑定的参数和bindValues的参数一样</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$rowCount:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否返回受印象行数</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetColumns" id="getColumns"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getColumns</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 331]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array getColumns(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得需要绑定的结果输出的列值
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetConnection" id="getConnection"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getConnection</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 313]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindConnection.html">WindConnection</a> getConnection(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得PDO链接对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetOne" id="getOne"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getOne</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 257]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array getOne(
+[array
+$params = array()], [int
+$fetchMode = 0], [int
+$fetchType = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回一行查询结果
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句中需要绑定的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetQueryString" id="getQueryString"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getQueryString</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 304]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getQueryString(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得查询的预定义语句
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetStatement" id="getStatement"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getStatement</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 322]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>PDOStatement getStatement(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得PDOStatement对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetValue" id="getValue"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 243]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getValue(
+[array
+$params = array()], [int
+$column = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回查询到的结果集中某一个列的值
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句中需要绑定的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$column:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 列的下标，默认为0即第一列</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodinit" id="init"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">init</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 341]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void init(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>初始化数据库链接信息
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodlastInsertId" id="lastInsertId"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">lastInsertId</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 266]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void lastInsertId(
+[
+$name = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$name:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodquery" id="query"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 216]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../db/WindResultSet.html">WindResultSet</a> query(
+[array
+$params = array()], [int
+$fetchMode = 0], [int
+$fetchType = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回查询结果
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句中需要绑定的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodqueryAll" id="queryAll"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">queryAll</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 230]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array queryAll(
+[array
+$params = array()], [string
+$index = ''], [int
+$fetchMode = 0], [int
+$fetchType = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回查询结果
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句中需要绑定的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$index:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 返回的数组的下标对应的字段</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchMode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获得结果集的模式PDO::FETCH_BOTH/PDO::FETCH_ASSOC/PDO::FETCH_NUM</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fetchType:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 设置结果集的读取方式，PDO::FETCH_ORI_NEXT/PDO::FETCH_ORI_PRE，注意要使用该属性，必须通过setAttribute设置PDO::ATTR_CURSOR=PDO::CURSOR_SCROLL</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回处理后的结果</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodupdate" id="update"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">update</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 204]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int|boolean update(
+[array
+$params = array()], [boolean
+$rowCount = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>绑定参数，执行SQL语句，并返回更新影响行数
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$params:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 预定义语句中需要绑定的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$rowCount:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否返回影响行数</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindDbException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:41 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

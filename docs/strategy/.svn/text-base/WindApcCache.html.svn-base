@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindApcCache</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">strategy<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                      
+                                                                                                          		[ <a href="../classtrees_strategy.html" class="menu">class tree: strategy</a> ]
+		[ <a href="../elementindex_strategy.html" class="menu">index: strategy</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">strategy</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../strategy/WindApcCache.html">WindApcCache</a>    	 <br />
+	    		<a href="../strategy/WindDbCache.html">WindDbCache</a>    	 <br />
+	    		<a href="../strategy/WindEacceleratorCache.html">WindEacceleratorCache</a>    	 <br />
+	    		<a href="../strategy/WindFileCache.html">WindFileCache</a>    	 <br />
+	    		<a href="../strategy/WindMemCache.html">WindMemCache</a>    	 <br />
+	    		<a href="../strategy/WindWinCache.html">WindWinCache</a>    	 <br />
+	    		<a href="../strategy/WindXCache.html">WindXCache</a>    	 <br />
+	    		<a href="../strategy/WindZendCache.html">WindZendCache</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindApcCache</h1>
+Source Location: /cache/strategy/WindApcCache.php<br /><br />
+
+<h2 class="class-name">Class WindApcCache</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-vars">Properties</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-consts">Constants</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>ApcCache缓存策略实现类
+</strong></p>
+<span class="description"><p>ApcCache继承AbstractWindCache类,并实现该类的提供的各自操作接口.  提供对方访问接口如下:  <ul><li>set($key, $value, $expire): 继承自<a href="../cache/AbstractWindCache.html#methodset">AbstractWindCache::set()</a>.</li><li>get($key): 继承自<a href="../cache/AbstractWindCache.html#methodget">AbstractWindCache::get()</a>.</li><li>delete($key): 继承自<a href="../cache/AbstractWindCache.html#methoddelete">AbstractWindCache::delete()</a>.</li><li>batchGet($keys): 继承自<a href="../cache/AbstractWindCache.html#methodbatchGet">AbstractWindCache::batchGet()</a>.</li><li>batchDelete($keys): 继承自<a href="../cache/AbstractWindCache.html#methodbatchDelete">AbstractWindCache::batchDelete()</a>.</li><li>setConfig($config): 继承自<a href="../cache/AbstractWindCache.html#methodsetConfig">AbstractWindCache::setConfig()</a>.</li></ul>  该缓存策略从AbstractWindCache类中继承三个配置项：  <ol><li><div class="src-line">&nbsp;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'security-code'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//继承自AbstractWindCache,安全码配置</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'key-prefix'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//继承自AbstractWindCache,缓存key前缀</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expires'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'0'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//继承自AbstractWindCache,缓存过期时间配置</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-sym">)</span></div></li>
+</ol>  <em>使用方式：</em><br />  1、您可以像使用普通的类一样使用该组件,如下:  <ol><li><div class="src-line">&nbsp;<span class="src-id"><a href="../default/Wind.html">Wind</a></span><span class="src-sym">::</span><a href="../default/Wind.html#methodimport">import</a><span class="src-sym">(</span><span class="src-str">'WIND:cache.strategy.WindApcCache'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$cache&nbsp;</span>=&nbsp;<span class="src-key">new&nbsp;</span><span class="src-id"><a href="../strategy/WindApcCache.html">WindApcCache</a></span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$cache</span><span class="src-sym">-&gt;</span><a href="../cache/AbstractWindCache.html#methodset">set</a><span class="src-sym">(</span><span class="src-str">'name'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'windframework'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></p><p>2、同时作为组件,WindApcCache也允许用户通过组件配置得方式,通过框架的组件机制来获得该缓存对象进行操作.  在应用配置中的组件配置块(components),配置使用该组件如下：  <ol><li><div class="src-line">&nbsp;&nbsp;<span class="src-str">'apcCache'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'path'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'WIND:cache.strategy.WindApcCache'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'scope'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'singleton'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'config'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'security-code'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'key-prefix'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-str">'expires'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+</ol>  在应用中通过如下方式使用:  <ol><li><div class="src-line">&nbsp;<span class="src-var">$cache&nbsp;</span>=&nbsp;<span class="src-id"><a href="../default/Wind.html">Wind</a></span><span class="src-sym">::</span><a href="../default/Wind.html#methodgetApp">getApp</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getComponent</span><span class="src-sym">(</span><span class="src-str">'apcCache'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//注意这里的apcCache组件名称和配置的组件名称需要对应</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$cache</span><span class="src-sym">-&gt;</span><a href="../cache/AbstractWindCache.html#methodset">set</a><span class="src-sym">(</span><span class="src-str">'name'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'wf'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol>  关于组件配置的相关说明请参考组件配置一章.</p><p>&lt;note&gt;<strong>注意:</strong>要使用ApcCache组件,需要安装apc扩展支持.&lt;/note&gt;</p><p>the last known user to change this file in the repository  &lt;LastChangedBy: xiaoxiao &gt;</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_cache---strategy---WindApcCache.php.html">/cache/strategy/WindApcCache.php</a> [<span class="field">line 61</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --<a href="../cache/AbstractWindCache.html">AbstractWindCache</a>
+      |
+      --WindApcCache</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>xiaoxiao &lt;<a href="mailto:xiaoxia.xuxx@aliyun-inc.com">xiaoxia.xuxx@aliyun-inc.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindApcCache.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../strategy/WindApcCache.html#method__construct">__construct</a></li>
+		  		  <li><a href="../strategy/WindApcCache.html#methodaddValue">addValue</a></li>
+		  		  <li><a href="../strategy/WindApcCache.html#methodclear">clear</a></li>
+		  		  <li><a href="../strategy/WindApcCache.html#methoddeleteValue">deleteValue</a></li>
+		  		  <li><a href="../strategy/WindApcCache.html#methodgetValue">getValue</a></li>
+		  		  <li><a href="../strategy/WindApcCache.html#methodsetValue">setValue</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-consts">Constants</a>
+    			    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../cache/AbstractWindCache.html">AbstractWindCache</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodadd">AbstractWindCache::add()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">增加一个条目到缓存服务器</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodaddValue">AbstractWindCache::addValue()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">执行添加操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodbatchDelete">AbstractWindCache::batchDelete()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">通过key批量删除缓存数据</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodbatchGet">AbstractWindCache::batchGet()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">通过key批量获取缓存数据</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodbuildData">AbstractWindCache::buildData()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">构造保存的数据</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodbuildSecurityKey">AbstractWindCache::buildSecurityKey()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">将数据key计算生成安全的key</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodclear">AbstractWindCache::clear()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">清楚缓存，过期及所有缓存</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methoddecrement">AbstractWindCache::decrement()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">将元素的值减小value</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methoddelete">AbstractWindCache::delete()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">删除缓存数据</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methoddeleteValue">AbstractWindCache::deleteValue()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">需要实现的删除操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodformatData">AbstractWindCache::formatData()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">格式化输出</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodget">AbstractWindCache::get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据缓存key获取指定缓存</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodgetExpire">AbstractWindCache::getExpire()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回过期时间设置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodgetKeyPrefix">AbstractWindCache::getKeyPrefix()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回缓存Key值前缀</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodgetSecurityCode">AbstractWindCache::getSecurityCode()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">获得缓存key计算中加入的安全码</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodgetValue">AbstractWindCache::getValue()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">执行获取操作</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodhasChanged">AbstractWindCache::hasChanged()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">判断数据是否已经被更新</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodincrement">AbstractWindCache::increment()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">将指定元素的值增加value</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodset">AbstractWindCache::set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置缓存  如果key不存在，添加缓存；否则，将会替换已有key的缓存。</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodsetConfig">AbstractWindCache::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodsetExpire">AbstractWindCache::setExpire()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置缓存过期时间</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodsetKeyPrefix">AbstractWindCache::setKeyPrefix()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置key前缀</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodsetSecurityCode">AbstractWindCache::setSecurityCode()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置缓存key计算中加入的安全码</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#methodsetValue">AbstractWindCache::setValue()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">执行设置操作</span>
+										</dd>
+																	</dl>
+							</blockquote>
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../cache/AbstractWindCache.html">AbstractWindCache</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#constDATA">AbstractWindCache::DATA</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#constDEPENDENCY">AbstractWindCache::DEPENDENCY</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#constDEPENDENCYCLASS">AbstractWindCache::DEPENDENCYCLASS</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#constEXPIRE">AbstractWindCache::EXPIRE</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../cache/AbstractWindCache.html#constSTORETIME">AbstractWindCache::STORETIME</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+							    		    			    				| <a href="#sec-consts">Constants</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">WindApcCache</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">构造函数</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#addValue" title="details" class="method-name">addValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#clear" title="details" class="method-name">clear</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#deleteValue" title="details" class="method-name">deleteValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getValue" title="details" class="method-name">getValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setValue" title="details" class="method-name">setValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+																			| <a href="#sec-consts">Constants</a>
+									</div>
+		<div class="info-box-body">
+					</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-consts">Constants</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 70]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>WindApcCache __construct(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>构造函数
+</strong></p>
+<span class="description"><p>判断是否有安装apc扩展,如果没有安装将会抛出cache异常</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindCacheException 当没有安装apc扩展的时候</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodaddValue" id="addValue"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">addValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 107]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void addValue(
+
+$key, 
+$value, [
+$expires = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../cache/AbstractWindCache.html#methodaddValue">AbstractWindCache::addValue()</a></dt>
+						<dd>执行添加操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodclear" id="clear"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">clear</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 100]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void clear(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../cache/AbstractWindCache.html#methodclear">AbstractWindCache::clear()</a></dt>
+						<dd>清楚缓存，过期及所有缓存</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddeleteValue" id="deleteValue"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">deleteValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 93]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void deleteValue(
+
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../cache/AbstractWindCache.html#methoddeleteValue">AbstractWindCache::deleteValue()</a></dt>
+						<dd>需要实现的删除操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetValue" id="getValue"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 86]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void getValue(
+
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../cache/AbstractWindCache.html#methodgetValue">AbstractWindCache::getValue()</a></dt>
+						<dd>执行获取操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetValue" id="setValue"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 79]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setValue(
+
+$key, 
+$value, [
+$expires = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../cache/AbstractWindCache.html#methodsetValue">AbstractWindCache::setValue()</a></dt>
+						<dd>执行设置操作</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:28 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

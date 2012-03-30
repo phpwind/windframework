@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package parser Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">parser<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                                            
+                                    		[ <a href="classtrees_parser.html" class="menu">class tree: parser</a> ]
+		[ <a href="elementindex_parser.html" class="menu">index: parser</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">parser</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="parser/IWindConfigParser.html">IWindConfigParser</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="parser/WindConfigParser.html">WindConfigParser</a>    	 <br />
+	    		<a href="parser/WindIniParser.html">WindIniParser</a>    	 <br />
+	    		<a href="parser/WindPropertiesParser.html">WindPropertiesParser</a>    	 <br />
+	    		<a href="parser/WindXmlParser.html">WindXmlParser</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package parser</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+					<li><a href="elementindex_http.html">http</a></li>
+					<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+							<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_parser.html#a">a</a> ]
+	[ <a href="elementindex_parser.html#c">c</a> ]
+	[ <a href="elementindex_parser.html#g">g</a> ]
+	[ <a href="elementindex_parser.html#i">i</a> ]
+	[ <a href="elementindex_parser.html#l">l</a> ]
+	[ <a href="elementindex_parser.html#n">n</a> ]
+	[ <a href="elementindex_parser.html#p">p</a> ]
+	[ <a href="elementindex_parser.html#r">r</a> ]
+	[ <a href="elementindex_parser.html#w">w</a> ]
+	[ <a href="elementindex_parser.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#method__construct">WindXmlParser::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化xml解析器</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindPropertiesParser.php, method <a href="parser/WindPropertiesParser.html#method__construct">WindPropertiesParser::__construct()</a></dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>arrayToXml</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodarrayToXml">WindXmlParser::arrayToXml()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将一个数组转换为xml</dd>
+							<dt><b>ARRAY_SEP</b></dt>
+				<dd>in file WindPropertiesParser.php, class constant <a href="parser/WindPropertiesParser.html#constARRAY_SEP">WindPropertiesParser::ARRAY_SEP</a></dd>
+							<dt><b>ARRAY_SEP</b></dt>
+				<dd>in file WindIniParser.php, class constant <a href="parser/WindIniParser.html#constARRAY_SEP">WindIniParser::ARRAY_SEP</a><br>&nbsp;&nbsp;&nbsp;&nbsp;ini中分割数组的标识</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>COMMENT</b></dt>
+				<dd>in file WindPropertiesParser.php, class constant <a href="parser/WindPropertiesParser.html#constCOMMENT">WindPropertiesParser::COMMENT</a></dd>
+							<dt><b>CONFIG_INI</b></dt>
+				<dd>in file WindConfigParser.php, class constant <a href="parser/WindConfigParser.html#constCONFIG_INI">WindConfigParser::CONFIG_INI</a></dd>
+							<dt><b>CONFIG_PHP</b></dt>
+				<dd>in file WindConfigParser.php, class constant <a href="parser/WindConfigParser.html#constCONFIG_PHP">WindConfigParser::CONFIG_PHP</a></dd>
+							<dt><b>CONFIG_PROPERTIES</b></dt>
+				<dd>in file WindConfigParser.php, class constant <a href="parser/WindConfigParser.html#constCONFIG_PROPERTIES">WindConfigParser::CONFIG_PROPERTIES</a></dd>
+							<dt><b>CONFIG_XML</b></dt>
+				<dd>in file WindConfigParser.php, class constant <a href="parser/WindConfigParser.html#constCONFIG_XML">WindConfigParser::CONFIG_XML</a></dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>getAttributes</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodgetAttributes">WindXmlParser::getAttributes()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得节点的属性</dd>
+							<dt><b>getChilds</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodgetChilds">WindXmlParser::getChilds()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得节点的所有子节点</dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>IWindConfigParser</b></dt>
+				<dd>in file IWindConfigParser.php, class <a href="parser/IWindConfigParser.html">IWindConfigParser</a><br>&nbsp;&nbsp;&nbsp;&nbsp;配置解析的接口定义</dd>
+							<dt><b>IWindConfigParser.php</b></dt>
+				<dd>procedural page <a href="parser/_parser---IWindConfigParser.php.html">IWindConfigParser.php</a></dd>
+					</dl>
+	</div>
+	<a name="l"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">l</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>l</h2>
+		<dl>
+							<dt><b>LPROCESS</b></dt>
+				<dd>in file WindPropertiesParser.php, class constant <a href="parser/WindPropertiesParser.html#constLPROCESS">WindPropertiesParser::LPROCESS</a></dd>
+					</dl>
+	</div>
+	<a name="n"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">n</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>n</h2>
+		<dl>
+							<dt><b>NAME</b></dt>
+				<dd>in file WindXmlParser.php, class constant <a href="parser/WindXmlParser.html#constNAME">WindXmlParser::NAME</a></dd>
+					</dl>
+	</div>
+	<a name="p"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">p</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>p</h2>
+		<dl>
+							<dt><b>parse</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodparse">WindXmlParser::parse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析xml文件</dd>
+							<dt><b>parse</b></dt>
+				<dd>in file IWindConfigParser.php, method <a href="parser/IWindConfigParser.html#methodparse">IWindConfigParser::parse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析组件的配置文件</dd>
+							<dt><b>parse</b></dt>
+				<dd>in file WindPropertiesParser.php, method <a href="parser/WindPropertiesParser.html#methodparse">WindPropertiesParser::parse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析properties文件里的内容</dd>
+							<dt><b>parse</b></dt>
+				<dd>in file WindIniParser.php, method <a href="parser/WindIniParser.html#methodparse">WindIniParser::parse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;解析数据</dd>
+							<dt><b>parse</b></dt>
+				<dd>in file WindConfigParser.php, method <a href="parser/WindConfigParser.html#methodparse">WindConfigParser::parse()</a></dd>
+							<dt><b>parseToXml</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodparseToXml">WindXmlParser::parseToXml()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数据转换成xml格式</dd>
+							<dt><b>parseXmlStream</b></dt>
+				<dd>in file WindXmlParser.php, method <a href="parser/WindXmlParser.html#methodparseXmlStream">WindXmlParser::parseXmlStream()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将数据内容解析成数组格式</dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>RPROCESS</b></dt>
+				<dd>in file WindPropertiesParser.php, class constant <a href="parser/WindPropertiesParser.html#constRPROCESS">WindPropertiesParser::RPROCESS</a></dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindConfigParser.php</b></dt>
+				<dd>procedural page <a href="parser/_parser---WindConfigParser.php.html">WindConfigParser.php</a></dd>
+							<dt><b>WindIniParser.php</b></dt>
+				<dd>procedural page <a href="parser/_parser---WindIniParser.php.html">WindIniParser.php</a></dd>
+							<dt><b>WindPropertiesParser.php</b></dt>
+				<dd>procedural page <a href="parser/_parser---WindPropertiesParser.php.html">WindPropertiesParser.php</a></dd>
+							<dt><b>WindXmlParser.php</b></dt>
+				<dd>procedural page <a href="parser/_parser---WindXmlParser.php.html">WindXmlParser.php</a></dd>
+							<dt><b>WindConfigParser</b></dt>
+				<dd>in file WindConfigParser.php, class <a href="parser/WindConfigParser.html">WindConfigParser</a><br>&nbsp;&nbsp;&nbsp;&nbsp;配置文件解析类</dd>
+							<dt><b>WindIniParser</b></dt>
+				<dd>in file WindIniParser.php, class <a href="parser/WindIniParser.html">WindIniParser</a><br>&nbsp;&nbsp;&nbsp;&nbsp;ini 格式文件解析</dd>
+							<dt><b>WindPropertiesParser</b></dt>
+				<dd>in file WindPropertiesParser.php, class <a href="parser/WindPropertiesParser.html">WindPropertiesParser</a><br>&nbsp;&nbsp;&nbsp;&nbsp;properties格式文件解析</dd>
+							<dt><b>WindXmlParser</b></dt>
+				<dd>in file WindXmlParser.php, class <a href="parser/WindXmlParser.html">WindXmlParser</a><br>&nbsp;&nbsp;&nbsp;&nbsp;xml文件解析</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,2153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class AbstractWindCache</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">cache<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                  
+                                                                                                                                                                                                                                                                                                              		[ <a href="../classtrees_cache.html" class="menu">class tree: cache</a> ]
+		[ <a href="../elementindex_cache.html" class="menu">index: cache</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">cache</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../cache/AbstractWindCache.html">AbstractWindCache</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../cache/exception/WindCacheException.html">WindCacheException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	dependency<br />	    <span style="padding-left: 1em;">		<a href="../cache/dependency/WindResolvedCrashDependency.html">WindResolvedCrashDependency</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: AbstractWindCache</h1>
+Source Location: /cache/AbstractWindCache.php<br /><br />
+
+<h2 class="class-name">Class AbstractWindCache</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-vars">Properties</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>缓存策略实现的基类
+</strong></p>
+<span class="description"><p>该基类继承了框架的基类WindModule,用以提供实现组件的一些特性.同时该类作为缓存策略的基类定义了通用的对方访问接口,及子类需要实现的抽象接口.  定义了缓存可以访问的接口如下:  <ul><li><a href="../cache/AbstractWindCache.html#methodset">set</a>: 保存缓存数据,需要子类实现<a href="../cache/AbstractWindCache.html#methodsetValue">setValue()</a>方法实现对应具体的方法.</li><li><a href="../cache/AbstractWindCache.html#methodget">get</a>: 获得缓存数据,需要子类实现<a href="../cache/AbstractWindCache.html#methodgetValue">getValue()</a>方法来实现对应具体的方法.</li><li><a href="../cache/AbstractWindCache.html#methodbatchGet">batchGet</a>: 批量获取缓存数据.</li><li><a href="../cache/AbstractWindCache.html#methoddelete">delete</a>: 删除缓存数据,需要子类实现<a href="../cache/AbstractWindCache.html#methoddeleteValue">deleteValue()</a>方法来实现对应具体的方法.</li><li><a href="../cache/AbstractWindCache.html#methodbatchDelete">batchDelete</a>: 批量删除缓存数据.</li></ul>  该基类支持三个配置项<a href="../cache/AbstractWindCache.html#methodsetConfig">setConfig()</a>，所有继承该类的子类都拥有对该三个配置项的配置。</p><p>the last known user to change this file in the repository  &lt;$LastChangedBy: yishuo $&gt;</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_cache---AbstractWindCache.php.html">/cache/AbstractWindCache.php</a> [<span class="field">line 24</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --AbstractWindCache</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Su Qian &lt;<a href="mailto:aoxue.1988.su.qian@163.com">aoxue.1988.su.qian@163.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: AbstractWindCache.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodadd">add</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodaddValue">addValue</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodbatchDelete">batchDelete</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodbatchGet">batchGet</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodbuildData">buildData</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodbuildSecurityKey">buildSecurityKey</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodclear">clear</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methoddecrement">decrement</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methoddelete">delete</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methoddeleteValue">deleteValue</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodformatData">formatData</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodget">get</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodgetExpire">getExpire</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodgetKeyPrefix">getKeyPrefix</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodgetSecurityCode">getSecurityCode</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodgetValue">getValue</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodhasChanged">hasChanged</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodincrement">increment</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodset">set</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodsetConfig">setConfig</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodsetExpire">setExpire</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodsetKeyPrefix">setKeyPrefix</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodsetSecurityCode">setSecurityCode</a></li>
+		  		  <li><a href="../cache/AbstractWindCache.html#methodsetValue">setValue</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+												| <a href="#sec-vars">Properties</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+							</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindEacceleratorCache.html">WindEacceleratorCache</a></td>
+					<td>
+											WindEacceleratorCache实现Eaccelerator动态内容缓存功能。
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindZendCache.html">WindZendCache</a></td>
+					<td>
+											ApcCache缓存策略实现类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindApcCache.html">WindApcCache</a></td>
+					<td>
+											ApcCache缓存策略实现类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindMemCache.html">WindMemCache</a></td>
+					<td>
+											memCache策略实现
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindWinCache.html">WindWinCache</a></td>
+					<td>
+											wincache缓存策略实现类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindXCache.html">WindXCache</a></td>
+					<td>
+											WindXCache封装了xCache实现缓存策略
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindDbCache.html">WindDbCache</a></td>
+					<td>
+											Db缓存策略实现
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../strategy/WindFileCache.html">WindFileCache</a></td>
+					<td>
+											file缓存策略实现
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+						| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+												| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDATA" title="details" class="const-name-summary">DATA</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">标志存储数据</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDEPENDENCY" title="details" class="const-name-summary">DEPENDENCY</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">配置文件中标志缓存依赖名称的定义</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constDEPENDENCYCLASS" title="details" class="const-name-summary">DEPENDENCYCLASS</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">缓存依赖的类名称</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constEXPIRE" title="details" class="const-name-summary">EXPIRE</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间的定义)</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSTORETIME" title="details" class="const-name-summary">STORETIME</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">标志存储时间</td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+							    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#add" title="details" class="method-name">add</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">增加一个条目到缓存服务器</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#addValue" title="details" class="method-name">addValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">执行添加操作</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#batchDelete" title="details" class="method-name">batchDelete</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通过key批量删除缓存数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#batchGet" title="details" class="method-name">batchGet</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通过key批量获取缓存数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#buildData" title="details" class="method-name">buildData</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">构造保存的数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#buildSecurityKey" title="details" class="method-name">buildSecurityKey</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将数据key计算生成安全的key</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#clear" title="details" class="method-name">clear</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">清楚缓存，过期及所有缓存</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#decrement" title="details" class="method-name">decrement</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将元素的值减小value</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#delete" title="details" class="method-name">delete</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">删除缓存数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#deleteValue" title="details" class="method-name">deleteValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">需要实现的删除操作</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#formatData" title="details" class="method-name">formatData</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">格式化输出</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#get" title="details" class="method-name">get</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据缓存key获取指定缓存</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getExpire" title="details" class="method-name">getExpire</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回过期时间设置</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getKeyPrefix" title="details" class="method-name">getKeyPrefix</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回缓存Key值前缀</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getSecurityCode" title="details" class="method-name">getSecurityCode</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">获得缓存key计算中加入的安全码</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getValue" title="details" class="method-name">getValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">执行获取操作</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#hasChanged" title="details" class="method-name">hasChanged</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">判断数据是否已经被更新</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#increment" title="details" class="method-name">increment</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将指定元素的值增加value</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#set" title="details" class="method-name">set</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置缓存  如果key不存在，添加缓存；否则，将会替换已有key的缓存。</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setConfig" title="details" class="method-name">setConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置配置信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setExpire" title="details" class="method-name">setExpire</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置缓存过期时间</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setKeyPrefix" title="details" class="method-name">setKeyPrefix</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置key前缀</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setSecurityCode" title="details" class="method-name">setSecurityCode</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置缓存key计算中加入的安全码</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setValue" title="details" class="method-name">setValue</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">执行设置操作</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+									</div>
+		<div class="info-box-body">
+					</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-vars">Properties</a>
+																			| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodadd" id="add"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">add</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 154]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean add(
+string
+$key, string
+$value, [int
+$expires = 0], [<a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$dependency = null], <a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$denpendency&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>增加一个条目到缓存服务器
+</strong></p>
+<span class="description"><p>方法在缓存服务器之前不存在key时， 以key作为key存储一个变量var到缓存服务器。  &lt;note&gt;<strong>注意：</strong>新的元素的值不会小于0。 并且在元素不存在时不能创建它&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存缓存数据的键。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存缓存数据。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的过期时间,0表示永不过期</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$denpendency:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存依赖</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dependency:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>成功时返回 TRUE， 或者在失败时返回 FALSE. 如果这个key已经存在返回FALSE。</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodaddValue" id="addValue"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">addValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 96]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean addValue(
+string
+$key, string
+$value, [int
+$expires = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>执行添加操作
+</strong></p>
+<span class="description"><p>当数据key不存在的时候添加，如果key已经存在则添加失败</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的唯一key</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据值，该值是一个含有有效数据的序列化的字符串</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据保存的有效时间，单位为秒，默认时间为0即永不过期</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 缓存失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindEacceleratorCache.html#methodaddValue">WindEacceleratorCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindZendCache.html#methodaddValue">WindZendCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindApcCache.html#methodaddValue">WindApcCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methodaddValue">WindMemCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindWinCache.html#methodaddValue">WindWinCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodaddValue">WindXCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodaddValue">WindDbCache::addValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodaddValue">WindFileCache::addValue()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbatchDelete" id="batchDelete"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">batchDelete</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 216]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean batchDelete(
+array
+$keys&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通过key批量删除缓存数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$keys:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要批量删除的缓存key组成的组数</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindDbCache.html#methodbatchDelete">WindDbCache::batchDelete()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbatchGet" id="batchGet"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">batchGet</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 187]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array batchGet(
+array
+$keys&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通过key批量获取缓存数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$keys:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 批量缓存的key集合</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回批量key对应的缓存数据组成的缓存数据数组</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindDbCache.html#methodbatchGet">WindDbCache::batchGet()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbuildData" id="buildData"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">buildData</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 267]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array buildData(
+string
+$value, [int
+$expires = 0], [<a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$dependency = null], <a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$denpendency&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>构造保存的数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存缓存数据。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的过期时间,0表示永不过期</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$denpendency:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存依赖</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dependency:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodbuildSecurityKey" id="buildSecurityKey"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">buildSecurityKey</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 328]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string buildSecurityKey(
+string
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将数据key计算生成安全的key
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 真实的缓存key</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>加入安全码计算之后返回的保存key</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindFileCache.html#methodbuildSecurityKey">WindFileCache::buildSecurityKey()</a>
+								: 根据用户key计算获取真是缓存文件
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodclear" id="clear"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">clear</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean clear(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>清楚缓存，过期及所有缓存
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindEacceleratorCache.html#methodclear">WindEacceleratorCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindZendCache.html#methodclear">WindZendCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindApcCache.html#methodclear">WindApcCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methodclear">WindMemCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindWinCache.html#methodclear">WindWinCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodclear">WindXCache::clear()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodclear">WindDbCache::clear()</a>
+								: 清除缓存数据
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodclear">WindFileCache::clear()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddecrement" id="decrement"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">decrement</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 250]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int decrement(
+string
+$key, [int
+$step = 1]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将元素的值减小value
+</strong></p>
+<span class="description"><p>如果指定的key 对应的元素不是数值类型并且不能被转换为数值， 会将此值修改为value.  &lt;note&gt;<strong>注意：</strong>新的元素的值不会小于0。 并且在元素不存在时不能创建它&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 将要增加值的元素的key。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$step:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> value参数指要将指定元素的值减小多少。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>成功的时候返回元素的新值，失败的时候返回false。</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindMemCache.html#methoddecrement">WindMemCache::decrement()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">delete</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 202]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean delete(
+string
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>删除缓存数据
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取缓存数据的标识，即键</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindCacheException 删除失败时抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddeleteValue" id="deleteValue"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">deleteValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 113]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean deleteValue(
+string
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>需要实现的删除操作
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要删除的缓存数据的key</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindEacceleratorCache.html#methoddeleteValue">WindEacceleratorCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindZendCache.html#methoddeleteValue">WindZendCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindApcCache.html#methoddeleteValue">WindApcCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methoddeleteValue">WindMemCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindWinCache.html#methoddeleteValue">WindWinCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methoddeleteValue">WindXCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methoddeleteValue">WindDbCache::deleteValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methoddeleteValue">WindFileCache::deleteValue()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodformatData" id="formatData"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">formatData</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 293]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed formatData(
+string
+$key, string
+$value&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>格式化输出
+</strong></p>
+<span class="description"><p>将从缓存对象中获得的缓存源数据进行格式化输出.该源数据是一个格式良好的数组的序列化字符串,需要反序列化获得源数组.  如果没有数据,则返回false  如果含有数据,则返回该数据</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存的key值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存的数据的序列化值</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回保存的真实数据,如果没有数值则返回false</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 173]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed get(
+string
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据缓存key获取指定缓存
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 获取缓存数据的标识,即键</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回被缓存的数据</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindCacheException 获取失败时抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetExpire" id="getExpire"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getExpire</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 378]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int getExpire(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回过期时间设置
+</strong></p>
+<span class="description"><p>单位为秒，默认值为0永不过期</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>缓存过期时间，默认为0永不过期，单位为秒</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetKeyPrefix" id="getKeyPrefix"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getKeyPrefix</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 340]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getKeyPrefix(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回缓存Key值前缀
+</strong></p>
+<span class="description"><p>默认值为null无任何前缀添加</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回key前缀</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetSecurityCode" id="getSecurityCode"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getSecurityCode</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 358]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getSecurityCode(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>获得缓存key计算中加入的安全码
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetValue" id="getValue"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 105]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getValue(
+string
+$key&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>执行获取操作
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的唯一key</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>缓存的数据</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 缓存数据获取失败抛出异常</td>
+  </tr>
+</table>
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindEacceleratorCache.html#methodgetValue">WindEacceleratorCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindZendCache.html#methodgetValue">WindZendCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindApcCache.html#methodgetValue">WindApcCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methodgetValue">WindMemCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindWinCache.html#methodgetValue">WindWinCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodgetValue">WindXCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodgetValue">WindDbCache::getValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodgetValue">WindFileCache::getValue()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodhasChanged" id="hasChanged"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">hasChanged</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 309]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean hasChanged(
+string
+$key, array
+$data&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>判断数据是否已经被更新
+</strong></p>
+<span class="description"><p>如果缓存中有数据,则检查缓存依赖是否已经变更,如果变更则删除缓存,并且返回true.  如果没有更新则返回false.</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存的key</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存中的数据</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>true表示缓存已变更,false表示缓存未变改</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodincrement" id="increment"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">increment</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 232]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int increment(
+string
+$key, [int
+$step = 1]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将指定元素的值增加value
+</strong></p>
+<span class="description"><p>如果指定的key 对应的元素不是数值类型并且不能被转换为数值， 会将此值修改为value.  &lt;note&gt;<strong>注意：</strong>不会在key对应元素不存在时创建元素。&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 将要增加值的元素的key。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$step:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 参数value表明要将指定元素值增加多少。</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>成功时返回新的元素值失败时返回false。</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindMemCache.html#methodincrement">WindMemCache::increment()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodset" id="set"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">set</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 133]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean set(
+string
+$key, string
+$value, [int
+$expires = 0], [<a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$dependency = null], <a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a>
+$denpendency&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置缓存  如果key不存在，添加缓存；否则，将会替换已有key的缓存。
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存缓存数据的键。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存缓存数据。</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的过期时间,0表示永不过期</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$denpendency:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存依赖</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../cache/IWindCacheDependency.html">IWindCacheDependency</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dependency:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindCacheException 缓存失败时抛出异常</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetConfig" id="setConfig"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 405]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setConfig(
+array
+$config&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置配置信息
+</strong></p>
+<span class="description"><p>支持三个配置项:  <ul><li><em>security-code</em>: 安全码配置</li><li><em>key-prefix</em>: key前缀设置</li><li><em>expires</em>: 缓存过期时间配置,单位为秒,默认为0</li></ul></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$config:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存配置信息</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></dt>
+						<dd>设置类配置</dd>
+					</dl>
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindMemCache.html#methodsetConfig">WindMemCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodsetConfig">WindXCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodsetConfig">WindDbCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodsetConfig">WindFileCache::setConfig()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetExpire" id="setExpire"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setExpire</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 389]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setExpire(
+int
+$expire&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置缓存过期时间
+</strong></p>
+<span class="description"><p>单位为秒,默认为0永不过期</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expire:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存过期时间,单位为秒,默认为0永不过期</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetKeyPrefix" id="setKeyPrefix"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setKeyPrefix</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 349]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setKeyPrefix(
+sting
+$keyPrefix&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置key前缀
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">sting</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$keyPrefix:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> key的前缀</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetSecurityCode" id="setSecurityCode"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setSecurityCode</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 367]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setSecurityCode(
+string
+$securityCode&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置缓存key计算中加入的安全码
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$securityCode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 安全码</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetValue" id="setValue"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setValue</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 83]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean setValue(
+string
+$key, string
+$value, [int
+$expires = 0]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>执行设置操作
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$key:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据的唯一key</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据值，该值是一个含有有效数据的序列化的字符串</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$expires:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 缓存数据保存的有效时间，单位为秒，默认时间为0即永不过期</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>WindException 缓存失败的时候抛出异常</td>
+  </tr>
+</table>
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../strategy/WindEacceleratorCache.html#methodsetValue">WindEacceleratorCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindZendCache.html#methodsetValue">WindZendCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindApcCache.html#methodsetValue">WindApcCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methodsetValue">WindMemCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindWinCache.html#methodsetValue">WindWinCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodsetValue">WindXCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodsetValue">WindDbCache::setValue()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodsetValue">WindFileCache::setValue()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+										| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constDATA" id="DATA"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DATA</span>
+			 = <span class="var-default"> 'data'</span>
+			<span class="smalllinenumber">[line 60]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>标志存储数据
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDEPENDENCY" id="DEPENDENCY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DEPENDENCY</span>
+			 = <span class="var-default"> 'dependency'</span>
+			<span class="smalllinenumber">[line 66]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>配置文件中标志缓存依赖名称的定义
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constDEPENDENCYCLASS" id="DEPENDENCYCLASS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">DEPENDENCYCLASS</span>
+			 = <span class="var-default"> 'dependencyclass'</span>
+			<span class="smalllinenumber">[line 48]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>缓存依赖的类名称
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constEXPIRE" id="EXPIRE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">EXPIRE</span>
+			 = <span class="var-default"> 'expires'</span>
+			<span class="smalllinenumber">[line 72]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>配置文件中标志过期时间名称定义(也包含缓存元数据中过期时间的定义)
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSTORETIME" id="STORETIME"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">STORETIME</span>
+			 = <span class="var-default"> 'store'</span>
+			<span class="smalllinenumber">[line 54]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>标志存储时间
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

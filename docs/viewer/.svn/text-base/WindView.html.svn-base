@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindView</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">viewer<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                              
+                                                  		[ <a href="../classtrees_viewer.html" class="menu">class tree: viewer</a> ]
+		[ <a href="../elementindex_viewer.html" class="menu">index: viewer</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">viewer</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../viewer/IWindView.html">IWindView</a>    	 <br />
+	    		<a href="../viewer/IWindViewerResolver.html">IWindViewerResolver</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../viewer/AbstractWindTemplateCompiler.html">AbstractWindTemplateCompiler</a>    	 <br />
+	    		<a href="../viewer/AbstractWindViewTemplate.html">AbstractWindViewTemplate</a>    	 <br />
+	    		<a href="../viewer/WindLayout.html">WindLayout</a>    	 <br />
+	    		<a href="../viewer/WindRender.html">WindRender</a>    	 <br />
+	    		<a href="../viewer/WindView.html">WindView</a>    	 <br />
+	  </div>
+  <div class="package">
+	resolver<br />	    <span style="padding-left: 1em;">		<a href="../viewer/resolver/WindNormalViewerResolver.html">WindNormalViewerResolver</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	compiler<br />	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerAction.html">WindTemplateCompilerAction</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerComponent.html">WindTemplateCompilerComponent</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerCss.html">WindTemplateCompilerCss</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerEcho.html">WindTemplateCompilerEcho</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerInternal.html">WindTemplateCompilerInternal</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerLang.html">WindTemplateCompilerLang</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerPage.html">WindTemplateCompilerPage</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerScript.html">WindTemplateCompilerScript</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerTemplate.html">WindTemplateCompilerTemplate</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindTemplateCompilerToken.html">WindTemplateCompilerToken</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../viewer/compiler/WindViewTemplate.html">WindViewTemplate</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../viewer/exception/WindViewException.html">WindViewException</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindView</h1>
+Source Location: /viewer/WindView.php<br /><br />
+
+<h2 class="class-name">Class WindView</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../viewer/IWindView.html">IWindView</a></li>            </ul>
+        </p>
+        		<p align="center" class="short-description"><strong>视图处理器
+</strong></p>
+<span class="description"><p><em>WindView</em>是基础的视图处理器,职责：进行视图渲染.<br />  他实现自接口<em>IWindView</em>,该类依赖<em>WindViewerResolver</em>完成视图渲染工作<br />  <em>WindView</em>支持丰富的配置信息，可以通过修改相关配置来改变视图输出行为.<em>template-dir</em>  :模板目录,支持命名空间格式:WIND:template,当命名空间为空时以当前app的rootpath为默认命名空间;<em>template-ext</em>  :模板后缀,默认为htm,可以通过配置该值来改变模板的后缀名称;<em>is-compile</em>  :是否开启模板自动编译,当开启自动编译时程序会根据编译文件是否存在或者是否已经过期来判断是否需要进行重新编译.支持'0'和'1'两种输入,默认值为'0'.<em>compile-dir</em>  :模板编译目录,输入规则同'template-dir'.(注意:该目录需要可写权限).  默认配置支持如下：<ol><li><div class="src-line">&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'template-dir'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'template'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'template-ext'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'htm'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'is-compile'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'compile-dir'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'DATA:template'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'compile-ext'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'tpl'</span><span class="src-sym">,&nbsp;</span><span class="src-comm">//模板后缀</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'layout'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,&nbsp;</span><span class="src-comm">//布局文件</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'theme'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,&nbsp;</span><span class="src-comm">//主题包位置</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'htmlspecialchars'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'true'</span><span class="src-sym">,&nbsp;</span><span class="src-comm">//是否开启对输出模板变量进行过滤</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">)</span></div></li>
+</ol>  该类的组件配置格式：<ol><li><div class="src-line">&nbsp;<span class="src-str">'windView'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'path'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'WIND:viewer.WindView'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'scope'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'prototype'</span><span class="src-sym">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="src-comm">//注意:命名空间为'prototype'</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'config'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'template-dir'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'template'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'template-ext'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'htm'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'is-compile'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'0'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'compile-dir'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'compile.template'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'compile-ext'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'tpl'</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'layout'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'theme'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">)</span><span class="src-sym">,</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'properties'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-str">'viewResolver'&nbsp;</span>=&gt;&nbsp;<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'ref'&nbsp;</span>=&gt;&nbsp;<span class="src-str">'viewResolver'</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">))</span></div></li>
+</ol>  &lt;note&gt;<strong>注意:</strong>框架默认视图组件,通过修改组件配置修改默认视图组件.(详细操作参考组件配置定义)&lt;/note&gt;</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_viewer---WindView.php.html">/viewer/WindView.php</a> [<span class="field">line 46</span>]
+		</p>
+
+		
+		<pre><a href="../base/WindModule.html">WindModule</a>
+   |
+   --WindView</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindView.php 3269 2011-12-21 06:16:00Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../viewer/WindView.html#var$compileDir">$compileDir</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$compileExt">$compileExt</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$htmlspecialchars">$htmlspecialchars</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$isCompile">$isCompile</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$layout">$layout</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$templateDir">$templateDir</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$templateExt">$templateExt</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$templateName">$templateName</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$theme">$theme</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$viewResolver">$viewResolver</a></li>
+		  		  <li><a href="../viewer/WindView.html#var$windLayout">$windLayout</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../viewer/WindView.html#methodgetCompileFile">getCompileFile</a></li>
+		  		  <li><a href="../viewer/WindView.html#methodgetViewTemplate">getViewTemplate</a></li>
+		  		  <li><a href="../viewer/WindView.html#methodrender">render</a></li>
+		  		  <li><a href="../viewer/WindView.html#methodsetConfig">setConfig</a></li>
+		  		  <li><a href="../viewer/WindView.html#methodsetTheme">setTheme</a></li>
+		  		  <li><a href="../viewer/WindView.html#methodsetThemePackage">setThemePackage</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+												| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_config">WindModule::$_config</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_proxy">WindModule::$_proxy</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#var$_typeValidation">WindModule::$_typeValidation</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../base/WindModule.html">WindModule</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetConfig">WindModule::getConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据配置名取得相应的配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetRequest">WindModule::getRequest()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpRequest对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetResponse">WindModule::getResponse()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindHttpResponse对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodgetSystemFactory">WindModule::getSystemFactory()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回当前应用的WindFactory对象</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置类配置</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodsetDelayAttributes">WindModule::setDelayAttributes()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">设置延迟加载类属性相关组件配置信息</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodtoArray">WindModule::toArray()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">返回该对象的数组类型</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#methodwriteTableCloneProperty">WindModule::writeTableCloneProperty()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">类对象clone白名单</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__call">WindModule::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__call</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__clone">WindModule::__clone()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载魔术方法__clone</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__get">WindModule::__get()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__get</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../base/WindModule.html#method__set">WindModule::__set()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">重载了魔术方法__set</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																																																																															<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$compileDir" title="details" class="var-name-summary">$compileDir</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板编译文件生成目录,目录定义规则同<em>templateDir</em></td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$compileExt" title="details" class="var-name-summary">$compileExt</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板编译文件生成后缀,默认值为'tpl'</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">boolean</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$htmlspecialchars" title="details" class="var-name-summary">$htmlspecialchars</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">是否对模板变量进行html字符过滤</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">int</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$isCompile" title="details" class="var-name-summary">$isCompile</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">是否开启模板自动编译</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$layout" title="details" class="var-name-summary">$layout</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板布局文件</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$templateDir" title="details" class="var-name-summary">$templateDir</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板目录</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$templateExt" title="details" class="var-name-summary">$templateExt</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板文件的扩展名</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$templateName" title="details" class="var-name-summary">$templateName</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">模板名称</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">string</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$theme" title="details" class="var-name-summary">$theme</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">主题包目录</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$viewResolver" title="details" class="var-name-summary">$viewResolver</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">视图解析引擎,通过组件配置改变该类型</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../viewer/WindLayout.html">WindLayout</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$windLayout" title="details" class="var-name-summary">$windLayout</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">视图布局管理器</td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getCompileFile" title="details" class="method-name">getCompileFile</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回模板的编译文件绝对路径地址</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getViewTemplate" title="details" class="method-name">getViewTemplate</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回模板绝对路径信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#render" title="details" class="method-name">render</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setConfig" title="details" class="method-name">setConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setTheme" title="details" class="method-name">setTheme</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition"></td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setThemePackage" title="details" class="method-name">setThemePackage</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置当前主题包的位置</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+										| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$compileDir" id="$compileDir"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$compileDir</span>
+						<span class="smalllinenumber">[line 87]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板编译文件生成目录,目录定义规则同<em>templateDir</em>
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$compileExt" id="$compileExt"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$compileExt</span>
+			 = <span class="var-default"> 'tpl'</span>			<span class="smalllinenumber">[line 93]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板编译文件生成后缀,默认值为'tpl'
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$htmlspecialchars" id="$htmlspecialchars"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>&nbsp;&nbsp;
+			<span class="var-name">$htmlspecialchars</span>
+			 = <span class="var-default"> true</span>			<span class="smalllinenumber">[line 72]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>是否对模板变量进行html字符过滤
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$isCompile" id="$isCompile"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">int</span>&nbsp;&nbsp;
+			<span class="var-name">$isCompile</span>
+			 = <span class="var-default"> 0</span>			<span class="smalllinenumber">[line 81]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>是否开启模板自动编译
+</strong></p>
+<span class="description"><p>接受两种输入值0和1<ol><li>0   关闭,不进行模板编译</li><li>1  进行模板编译</li></ol></p></span>	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$layout" id="$layout"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$layout</span>
+						<span class="smalllinenumber">[line 99]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板布局文件
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$templateDir" id="$templateDir"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$templateDir</span>
+						<span class="smalllinenumber">[line 54]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板目录
+</strong></p>
+<span class="description"><p>支持命名空间格式:<em>WIND:template</em>,  当命名空间为空时以当前<em>app</em>的<em>rootpath</em>为默认命名空间</p></span>	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$templateExt" id="$templateExt"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$templateExt</span>
+						<span class="smalllinenumber">[line 60]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板文件的扩展名
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$templateName" id="$templateName"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$templateName</span>
+						<span class="smalllinenumber">[line 66]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>模板名称
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$theme" id="$theme"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>&nbsp;&nbsp;
+			<span class="var-name">$theme</span>
+			 = <span class="var-default">array('theme' =&gt; '', 'package' =&gt; '')</span>			<span class="smalllinenumber">[line 105]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>主题包目录
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$viewResolver" id="$viewResolver"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../viewer/resolver/WindViewerResolver.html">WindViewerResolver</a></span>&nbsp;&nbsp;
+			<span class="var-name">$viewResolver</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 111]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>视图解析引擎,通过组件配置改变该类型
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$windLayout" id="$windLayout"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../viewer/WindLayout.html">WindLayout</a></span>&nbsp;&nbsp;
+			<span class="var-name">$windLayout</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 117]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>视图布局管理器
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodgetCompileFile" id="getCompileFile"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getCompileFile</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 197]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getCompileFile(
+[string
+$template = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回模板的编译文件绝对路径地址
+</strong></p>
+<span class="description"><p>根据模板的逻辑名称,返回模板的绝对路径信息,支持命名空间方式定义模板信息.<ol><li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;$compileDir/templateName.$ext</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'subTemplateDir.templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;$compileDir/subTemplateDir_templateName.$ext</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'namespace:templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;$compileDir/__external_subDir_templateName.$ext</span></div></li>
+</ol>  &lt;note&gt;<strong>注意:</strong>$template为空则返回当前的模板的路径信息.&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$template:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 模板名称, 默认值为空, 为空则返回当前模板的编译文件</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetViewTemplate" id="getViewTemplate"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getViewTemplate</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 173]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getViewTemplate(
+[string
+$template = ''], [string
+$ext = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回模板绝对路径信息
+</strong></p>
+<span class="description"><p>根据模板的逻辑名称,返回模板的绝对路径信息,支持命名空间方式定义模板信息.<ol><li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;$templateDir/templateName.$ext</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'subTemplateDir.templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;$templateDir/subTemplateDir/templateName.$ext</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$template</span>=<span class="src-str">'namespace:templateName'</span><span class="src-sym">;&nbsp;</span><span class="src-comm">//return&nbsp;namespace:templateName.$ext</span></div></li>
+</ol>  &lt;note&gt;<strong>注意:</strong>$template为空则返回当前的模板的路径信息.模板文件后缀名可以通过修改配置进行修改.&lt;/note&gt;</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$template:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 模板名称, 默认值为空 , 为空则返回当前模板的绝对地址</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ext:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 模板后缀, 默认值为空, 为空则返回使用默认的后缀</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodrender" id="render"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">render</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 122]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void render(
+[
+$display = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$display:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../viewer/IWindView.html#methodrender">IWindView::render()</a></dt>
+						<dd>视图渲染方法</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetConfig" id="setConfig"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 147]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setConfig(
+
+$config&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$config:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../base/WindModule.html#methodsetConfig">WindModule::setConfig()</a></dt>
+						<dd>设置类配置</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetTheme" id="setTheme"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setTheme</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 227]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setTheme(
+string
+$theme&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$theme:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetThemePackage" id="setThemePackage"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setThemePackage</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 220]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setThemePackage(
+string
+$package&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置当前主题包的位置
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$package:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:43 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

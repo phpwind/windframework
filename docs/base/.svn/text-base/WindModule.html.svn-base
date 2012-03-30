@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindModule</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">base<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                    
+                                                                                                                                                                                                                                                                                                                            		[ <a href="../classtrees_base.html" class="menu">class tree: base</a> ]
+		[ <a href="../elementindex_base.html" class="menu">index: base</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">base</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../base/IWindApplication.html">IWindApplication</a>    	 <br />
+	    		<a href="../base/IWindFactory.html">IWindFactory</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../base/WindActionException.html">WindActionException</a>    	 <br />
+	    		<a href="../base/WindClassProxy.html">WindClassProxy</a>    	 <br />
+	    		<a href="../base/WindEnableValidateModule.html">WindEnableValidateModule</a>    	 <br />
+	    		<a href="../base/WindErrorMessage.html">WindErrorMessage</a>    	 <br />
+	    		<a href="../base/WindException.html">WindException</a>    	 <br />
+	    		<a href="../base/WindFactory.html">WindFactory</a>    	 <br />
+	    		<a href="../base/WindFinalException.html">WindFinalException</a>    	 <br />
+	    		<a href="../base/WindForwardException.html">WindForwardException</a>    	 <br />
+	    		<a href="../base/WindFrontController.html">WindFrontController</a>    	 <br />
+	    		<a href="../base/WindHelper.html">WindHelper</a>    	 <br />
+	    		<a href="../base/WindModule.html">WindModule</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindModule</h1>
+Source Location: /base/WindModule.php<br /><br />
+
+<h2 class="class-name">Class WindModule</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>所有module的基础抽象类
+</strong></p>
+<span class="description"><p>在module类中基本实现了对组件特性的支持,包括:配置解析,延迟加载,类代理以及提供获取基础对象的方法.  如果需要用组件配置管理方式创建类对象,需要继承该类.支持config路径解析.</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_base---WindModule.php.html">/base/WindModule.php</a> [<span class="field">line 14</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindModule.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindModule.html#var$_config">$_config</a></li>
+		  		  <li><a href="../base/WindModule.html#var$_proxy">$_proxy</a></li>
+		  		  <li><a href="../base/WindModule.html#var$_typeValidation">$_typeValidation</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../base/WindModule.html#methodgetConfig">getConfig</a></li>
+		  		  <li><a href="../base/WindModule.html#methodgetRequest">getRequest</a></li>
+		  		  <li><a href="../base/WindModule.html#methodgetResponse">getResponse</a></li>
+		  		  <li><a href="../base/WindModule.html#methodgetSystemFactory">getSystemFactory</a></li>
+		  		  <li><a href="../base/WindModule.html#methodsetConfig">setConfig</a></li>
+		  		  <li><a href="../base/WindModule.html#methodsetDelayAttributes">setDelayAttributes</a></li>
+		  		  <li><a href="../base/WindModule.html#methodtoArray">toArray</a></li>
+		  		  <li><a href="../base/WindModule.html#methodwriteTableCloneProperty">writeTableCloneProperty</a></li>
+		  		  <li><a href="../base/WindModule.html#method__call">__call</a></li>
+		  		  <li><a href="../base/WindModule.html#method__clone">__clone</a></li>
+		  		  <li><a href="../base/WindModule.html#method__get">__get</a></li>
+		  		  <li><a href="../base/WindModule.html#method__set">__set</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../base/WindErrorMessage.html">WindErrorMessage</a></td>
+					<td>
+											错误消息类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../dao/WindDao.html">WindDao</a></td>
+					<td>
+											提供的DAO的父类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../dao/WindDaoFactory.html">WindDaoFactory</a></td>
+					<td>
+											Dao工厂
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../mail/sender/WindSendMail.html">WindSendMail</a></td>
+					<td>
+											使用sendmail发送邮件
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../mail/sender/WindSmtpMail.html">WindSmtpMail</a></td>
+					<td>
+											邮件发送
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../i18n/WindLangResource.html">WindLangResource</a></td>
+					<td>
+											语言资源基础实现
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/WindWebApplication.html">WindWebApplication</a></td>
+					<td>
+											应用控制器,协调处理用户请求,处理,跳转分发等工作
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/WindSimpleController.html">WindSimpleController</a></td>
+					<td>
+											操作控制器,管理用户的请求处理操作.
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/WindDispatcher.html">WindDispatcher</a></td>
+					<td>
+											请求分发重定向处理类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../web/WindForward.html">WindForward</a></td>
+					<td>
+											操作转发类,该类携带了操作转发信息以及后续处理信息给主应用控制器
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../utility/WindSecurityToken.html">WindSecurityToken</a></td>
+					<td>
+											token令牌安全类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../cache/AbstractWindCache.html">AbstractWindCache</a></td>
+					<td>
+											缓存策略实现的基类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/WindView.html">WindView</a></td>
+					<td>
+											视图处理器
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/AbstractWindViewTemplate.html">AbstractWindViewTemplate</a></td>
+					<td>
+											模板编译抽象类定义
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/resolver/WindNormalViewerResolver.html">WindNormalViewerResolver</a></td>
+					<td>
+											通用视图解析渲染
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../viewer/WindLayout.html">WindLayout</a></td>
+					<td>
+											视图布局对象
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../http/cookie/WindNormalCookie.html">WindNormalCookie</a></td>
+					<td>
+											将cookie作为对象操作
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../http/session/WindSession.html">WindSession</a></td>
+					<td>
+											会话机制，依赖Cache机制实现，应用可以根据自己的需求配置需要的存储方式实现会话存储
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../db/WindConnection.html">WindConnection</a></td>
+					<td>
+											数据库链接,提供了数据库连接服务,以及基本的数据操作方法.
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../convert/WindGeneralConverter.html">WindGeneralConverter</a></td>
+					<td>
+											通用编码转化类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../filter/WindHandlerInterceptorChain.html">WindHandlerInterceptorChain</a></td>
+					<td>
+											拦截链基类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../filter/WindHandlerInterceptor.html">WindHandlerInterceptor</a></td>
+					<td>
+											拦截器基类
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../log/WindLogger.html">WindLogger</a></td>
+					<td>
+											日志记录
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																															<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">array</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_config" title="details" class="var-name-summary">$_config</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">配置数据</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../base/WindClassProxy.html">WindClassProxy</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_proxy" title="details" class="var-name-summary">$_proxy</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">代理类对象</td></tr>
+				</div>
+													<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary">boolean</span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$_typeValidation" title="details" class="var-name-summary">$_typeValidation</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">是否进行类型验证</td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getConfig" title="details" class="method-name">getConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据配置名取得相应的配置</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../http/request/WindHttpRequest.html">WindHttpRequest</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getRequest" title="details" class="method-name">getRequest</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前应用的WindHttpRequest对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../http/response/WindHttpResponse.html">WindHttpResponse</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getResponse" title="details" class="method-name">getResponse</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前应用的WindHttpResponse对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result"><a href="../base/WindFactory.html">WindFactory</a></span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getSystemFactory" title="details" class="method-name">getSystemFactory</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回当前应用的WindFactory对象</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setConfig" title="details" class="method-name">setConfig</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置类配置</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setDelayAttributes" title="details" class="method-name">setDelayAttributes</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置延迟加载类属性相关组件配置信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#toArray" title="details" class="method-name">toArray</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">返回该对象的数组类型</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#writeTableCloneProperty" title="details" class="method-name">writeTableCloneProperty</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">类对象clone白名单</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__call" title="details" class="method-name">__call</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重载了魔术方法__call</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__clone" title="details" class="method-name">__clone</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重载魔术方法__clone</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__get" title="details" class="method-name">__get</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重载了魔术方法__get</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__set" title="details" class="method-name">__set</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">重载了魔术方法__set</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$_config" id="$_config"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>&nbsp;&nbsp;
+			<span class="var-name">$_config</span>
+			 = <span class="var-default">array()</span>			<span class="smalllinenumber">[line 26]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>配置数据
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_proxy" id="$_proxy"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../base/WindClassProxy.html">WindClassProxy</a></span>&nbsp;&nbsp;
+			<span class="var-name">$_proxy</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 20]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>代理类对象
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="var$_typeValidation" id="$_typeValidation"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>&nbsp;&nbsp;
+			<span class="var-name">$_typeValidation</span>
+			 = <span class="var-default"> false</span>			<span class="smalllinenumber">[line 33]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>是否进行类型验证
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Deprecated:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodgetConfig" id="getConfig"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 144]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed getConfig(
+[string
+$configName = ''], [string
+$subConfigName = ''], [string
+$default = ''], [array
+$config = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据配置名取得相应的配置
+</strong></p>
+<span class="description"><p>当<em>configName</em>为空时则返回整个配置.当配置值不存在时返回默认值.默认值默认为空</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$configName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 键名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$subConfigName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 二级键名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$default:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认值</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$config:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 外部配置</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetRequest" id="getRequest"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getRequest</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 198]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../http/request/WindHttpRequest.html">WindHttpRequest</a> getRequest(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前应用的WindHttpRequest对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../web/WindWebApplication.html#methodgetRequest">WindWebApplication::getRequest()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetResponse" id="getResponse"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getResponse</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 207]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../http/response/WindHttpResponse.html">WindHttpResponse</a> getResponse(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前应用的WindHttpResponse对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../web/WindWebApplication.html#methodgetResponse">WindWebApplication::getResponse()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetSystemFactory" id="getSystemFactory"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getSystemFactory</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 189]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code><a href="../base/WindFactory.html">WindFactory</a> getSystemFactory(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回当前应用的WindFactory对象
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetConfig" id="setConfig"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setConfig</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 161]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setConfig(
+string|array
+$config&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置类配置
+</strong></p>
+<span class="description"><p>设置类配置信息,如果配置已经存在,则将以存在配置和输入配置进行合并. 重复配置后者将覆盖前者.  支持配置路径解析,当输入值为配置路径时则会调用配置解析器进行解析并自动缓存当前配置值.(缓存是由wind_config中的isCache配置值决定是否开启)</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string|array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$config:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../i18n/WindLangResource.html#methodsetConfig">WindLangResource::setConfig()</a>
+							</li>
+					<li>
+				<a href="../web/WindWebApplication.html#methodsetConfig">WindWebApplication::setConfig()</a>
+							</li>
+					<li>
+				<a href="../cache/AbstractWindCache.html#methodsetConfig">AbstractWindCache::setConfig()</a>
+								: 设置配置信息
+							</li>
+					<li>
+				<a href="../strategy/WindMemCache.html#methodsetConfig">WindMemCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindXCache.html#methodsetConfig">WindXCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindDbCache.html#methodsetConfig">WindDbCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../strategy/WindFileCache.html#methodsetConfig">WindFileCache::setConfig()</a>
+							</li>
+					<li>
+				<a href="../viewer/WindView.html#methodsetConfig">WindView::setConfig()</a>
+							</li>
+					<li>
+				<a href="../http/cookie/WindNormalCookie.html#methodsetConfig">WindNormalCookie::setConfig()</a>
+								: 配置设置
+							</li>
+					<li>
+				<a href="../db/WindConnection.html#methodsetConfig">WindConnection::setConfig()</a>
+								: (non-PHPdoc)
+							</li>
+					<li>
+				<a href="../router/AbstractWindRouter.html#methodsetConfig">AbstractWindRouter::setConfig()</a>
+							</li>
+					<li>
+				<a href="../router/WindMutilAppRouter.html#methodsetConfig">WindMutilAppRouter::setConfig()</a>
+							</li>
+					<li>
+				<a href="../router/route/AbstractWindRoute.html#methodsetConfig">AbstractWindRoute::setConfig()</a>
+							</li>
+					<li>
+				<a href="../router/route/WindRewriteRoute.html#methodsetConfig">WindRewriteRoute::setConfig()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetDelayAttributes" id="setDelayAttributes"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">setDelayAttributes</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 217]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setDelayAttributes(
+array
+$delayAttributes&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置延迟加载类属性相关组件配置信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$delayAttributes:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodtoArray" id="toArray"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">toArray</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 123]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array toArray(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>返回该对象的数组类型
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodwriteTableCloneProperty" id="writeTableCloneProperty"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">writeTableCloneProperty</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 180]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array writeTableCloneProperty(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>类对象clone白名单
+</strong></p>
+<span class="description"><p>当类对象被clone时,会访问该方法,该方法返回该类中需要被同时clone的类属性名称,默认返回空数组</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__call" id="__call"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 78]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed __call(
+string
+$methodName, array
+$args&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重载了魔术方法__call
+</strong></p>
+<span class="description"><p>当类的方法访问不到时调用该方法,在这里的实现是配置类属性对象的延迟加载策略  <ol><li><div class="src-line">&nbsp;<span class="src-comm">//延迟访问某个属性,当使用这种方式调用时该方法被调用,并访问该类中的$_delayAttributes属性,并创建该属性对象并返回</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-var">$this</span><span class="src-sym">-&gt;</span><span class="src-id">_getMethodName</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$methodName:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__clone" id="__clone"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">__clone</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 111]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void __clone(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重载魔术方法__clone
+</strong></p>
+<span class="description"><p>当clone类对象时该方法被调用,通过配置白名单选择是否clone类中的属性对象.</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Deprecated:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__get" id="__get"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 61]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed __get(
+string
+$propertyName&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重载了魔术方法__get
+</strong></p>
+<span class="description"><p>当属性访问不到时该方法被调用,该方法会尝试去访问对应属性的getter并返回对应的值,如果不存在则什么也不做</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$propertyName:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="method__set" id="__set"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">__set</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 49]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void __set(
+string
+$propertyName, mixed
+$value&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>重载了魔术方法__set
+</strong></p>
+<span class="description"><p>当属性访问不到时该方法被调用,该方法会尝试去访问对应属性的setter设置器,如果不存在则什么也不做</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$propertyName:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$value:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:37 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

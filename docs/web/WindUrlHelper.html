@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindUrlHelper</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">web<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                                            
+                                    		[ <a href="../classtrees_web.html" class="menu">class tree: web</a> ]
+		[ <a href="../elementindex_web.html" class="menu">index: web</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">web</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../web/IWindController.html">IWindController</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../web/WindController.html">WindController</a>    	 <br />
+	    		<a href="../web/WindDispatcher.html">WindDispatcher</a>    	 <br />
+	    		<a href="../web/WindErrorHandler.html">WindErrorHandler</a>    	 <br />
+	    		<a href="../web/WindForward.html">WindForward</a>    	 <br />
+	    		<a href="../web/WindSimpleController.html">WindSimpleController</a>    	 <br />
+	    		<a href="../web/WindUrlHelper.html">WindUrlHelper</a>    	 <br />
+	    		<a href="../web/WindWebApplication.html">WindWebApplication</a>    	 <br />
+	  </div>
+  <div class="package">
+	filter<br />	    <span style="padding-left: 1em;">		<a href="../web/filter/WindFormFilter.html">WindFormFilter</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindUrlHelper</h1>
+Source Location: /web/WindUrlHelper.php<br /><br />
+
+<h2 class="class-name">Class WindUrlHelper</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>url帮助类,协助处理url的相关请求
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_web---WindUrlHelper.php.html">/web/WindUrlHelper.php</a> [<span class="field">line 11</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindUrlHelper.php 3277 2011-12-28 09:57:47Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../web/WindUrlHelper.html#methodargsToUrl">argsToUrl</a></li>
+		  		  <li><a href="../web/WindUrlHelper.html#methodcheckUrl">checkUrl</a></li>
+		  		  <li><a href="../web/WindUrlHelper.html#methodcreateUrl">createUrl</a></li>
+		  		  <li><a href="../web/WindUrlHelper.html#methodresolveAction">resolveAction</a></li>
+		  		  <li><a href="../web/WindUrlHelper.html#methodurlToArgs">urlToArgs</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+												<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#argsToUrl" title="details" class="method-name">argsToUrl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将数组格式的参数列表转换为Url格式，并将url进行编码处理</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#checkUrl" title="details" class="method-name">checkUrl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">url检查</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">string</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#createUrl" title="details" class="method-name">createUrl</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">构造并返回Url地址</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">array</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#resolveAction" title="details" class="method-name">resolveAction</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">解析ControllerPath,并返回解析后的结果集</td></tr>
+				</div>
+																<div class="method-definition">
+					<tr><td class="method-definition">static
+											<span class="method-result">array</span>&nbsp;&nbsp;
+					</td>
+					<td class="method-definition"><a href="#urlToArgs" title="details" class="method-name">urlToArgs</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">url字符串转化为数组格式</td></tr>
+				</div>
+																																																								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																			| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+<a name="methodargsToUrl" id="argsToUrl"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method argsToUrl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 77]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string argsToUrl(
+array
+$args, [boolean
+$encode = true], [string
+$separator = '&amp;=']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将数组格式的参数列表转换为Url格式，并将url进行编码处理
+</strong></p>
+<span class="description"><p><ol><li><div class="src-line"><span class="src-id">参数</span>:<span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'b'</span>=&gt;<span class="src-str">'b'</span><span class="src-sym">,</span><span class="src-str">'c'</span>=&gt;<span class="src-str">'index'</span><span class="src-sym">,</span><span class="src-str">'d'</span>=&gt;<span class="src-str">'d'</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">分割符</span>:&nbsp;<span class="src-str">'&amp;='</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">转化结果</span>:<span class="src-sym">&amp;</span><span class="src-id">b</span>=<span class="src-id">b</span><span class="src-sym">&amp;</span><span class="src-id">c</span>=<span class="src-id">index</span><span class="src-sym">&amp;</span><span class="src-id">d</span>=<span class="src-id">d</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-id">如果分割符为</span>:&nbsp;<span class="src-str">'/'&nbsp;</span><span class="src-id">则转化结果为</span>:&nbsp;/<span class="src-id">b</span>/<span class="src-id">b</span>/<span class="src-id">c</span>/<span class="src-id">index</span>/<span class="src-id">d</span>/<span class="src-id">d</span>/</div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$encode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否进行url编码 默认值为true</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$separator:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> url分隔符 支持双字符,前一个字符用于分割参数对,后一个字符用于分割键值对</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcheckUrl" id="checkUrl"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method checkUrl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 22]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string checkUrl(
+string
+$url, [boolean
+$absolute = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>url检查
+</strong></p>
+<span class="description"><p>当$absolute === true且url不包含协议部分时,默认加上当前应用的协议部分.</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$url:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要检查合法性的url</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolute:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否为绝对路径</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcreateUrl" id="createUrl"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method createUrl</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 121]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static string createUrl(
+string
+$action, [array
+$args = array()], [string
+$anchor = ''], [<a href="../router/route/AbstractWindRoute.html">AbstractWindRoute</a>
+$route = null], [boolean
+$absolute = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>构造并返回Url地址
+</strong></p>
+<span class="description"><p>将根据是否开启url重写来分别构造相对应的url</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$action:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 执行的操作</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 附带的参数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$anchor:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> url锚点</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"><a href="../router/route/AbstractWindRoute.html">AbstractWindRoute</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$route:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolute:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否返回绝对地址</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>返回url地址</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodresolveAction" id="resolveAction"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">static method resolveAction</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 102]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static array resolveAction(
+
+$action, [array
+$args = array()], string
+$controllerPath&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>解析ControllerPath,并返回解析后的结果集
+</strong></p>
+<span class="description"><p>返回值:array(action,controller,module,args)  <ol><li><div class="src-line"><span class="src-id">action格式</span>:<span class="src-str">'/module/controller/action/?a=a&amp;b=b&amp;c=c&amp;'</span><span class="src-sym">,</span><span class="src-id">前边用斜线分割mca信息</span><span class="src-sym">,</span><span class="src-id">后边用问号分割参数列表</span>.</div></li>
+</ol></p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$controllerPath:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$args:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 默认值为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$action:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodurlToArgs" id="urlToArgs"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">static method urlToArgs</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 41]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>static array urlToArgs(
+string
+$url, [boolean
+$decode = true], [string
+$separator = '&amp;=']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>url字符串转化为数组格式
+</strong></p>
+<span class="description"><p>效果同'argsToUrl'相反</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$url:&nbsp;</span></td>
+				<td>
+							</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$decode:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否需要进行url反编码处理</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$separator:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> url的分隔符</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:42 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>phpDocumentor Parser Errors and Warnings</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">strategy<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                      
+                                                                                                          		[ <a href="classtrees_strategy.html" class="menu">class tree: strategy</a> ]
+		[ <a href="elementindex_strategy.html" class="menu">index: strategy</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">strategy</div>
+            <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_default.html">default</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_log.html">log</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a href="#Post-parsing">Post-parsing</a><br>
+<a href="#AbstractWindFtp.php">AbstractWindFtp.php</a><br>
+<a href="#AbstractWindHttp.php">AbstractWindHttp.php</a><br>
+<a href="#AbstractWindPdoAdapter.php">AbstractWindPdoAdapter.php</a><br>
+<a href="#AbstractWindRoute.php">AbstractWindRoute.php</a><br>
+<a href="#AbstractWindRouter.php">AbstractWindRouter.php</a><br>
+<a href="#AbstractWindTemplateCompiler.php">AbstractWindTemplateCompiler.php</a><br>
+<a href="#AbstractWindUpload.php">AbstractWindUpload.php</a><br>
+<a href="#AbstractWindViewTemplate.php">AbstractWindViewTemplate.php</a><br>
+<a href="#IWindApplication.php">IWindApplication.php</a><br>
+<a href="#IWindCacheDependency.php">IWindCacheDependency.php</a><br>
+<a href="#IWindConfigParser.php">IWindConfigParser.php</a><br>
+<a href="#IWindConverter.php">IWindConverter.php</a><br>
+<a href="#IWindFactory.php">IWindFactory.php</a><br>
+<a href="#IWindHttpContainer.php">IWindHttpContainer.php</a><br>
+<a href="#IWindLangResource.php">IWindLangResource.php</a><br>
+<a href="#IWindMailEncoder.php">IWindMailEncoder.php</a><br>
+<a href="#IWindRequest.php">IWindRequest.php</a><br>
+<a href="#IWindResponse.php">IWindResponse.php</a><br>
+<a href="#IWindSecurity.php">IWindSecurity.php</a><br>
+<a href="#IWindSecurityToken.php">IWindSecurityToken.php</a><br>
+<a href="#IWindSendMail.php">IWindSendMail.php</a><br>
+<a href="#IWindView.php">IWindView.php</a><br>
+<a href="#IWindViewerResolver.php">IWindViewerResolver.php</a><br>
+<a href="#Wind.php">Wind.php</a><br>
+<a href="#WindActionException.php">WindActionException.php</a><br>
+<a href="#WindActionFilter.php">WindActionFilter.php</a><br>
+<a href="#WindApcCache.php">WindApcCache.php</a><br>
+<a href="#WindArray.php">WindArray.php</a><br>
+<a href="#WindCacheException.php">WindCacheException.php</a><br>
+<a href="#WindClassProxy.php">WindClassProxy.php</a><br>
+<a href="#WindConfigParser.php">WindConfigParser.php</a><br>
+<a href="#WindConnection.php">WindConnection.php</a><br>
+<a href="#WindConnectionManager.php">WindConnectionManager.php</a><br>
+<a href="#WindController.php">WindController.php</a><br>
+<a href="#WindConvert.php">WindConvert.php</a><br>
+<a href="#WindCookie.php">WindCookie.php</a><br>
+<a href="#WindDao.php">WindDao.php</a><br>
+<a href="#WindDaoCacheListener.php">WindDaoCacheListener.php</a><br>
+<a href="#WindDaoException.php">WindDaoException.php</a><br>
+<a href="#WindDaoFactory.php">WindDaoFactory.php</a><br>
+<a href="#WindDate.php">WindDate.php</a><br>
+<a href="#WindDbCache.php">WindDbCache.php</a><br>
+<a href="#WindDbException.php">WindDbException.php</a><br>
+<a href="#WindDebug.php">WindDebug.php</a><br>
+<a href="#WindDispatcher.php">WindDispatcher.php</a><br>
+<a href="#WindEacceleratorCache.php">WindEacceleratorCache.php</a><br>
+<a href="#WindEnableValidateModule.php">WindEnableValidateModule.php</a><br>
+<a href="#WindErrorHandler.php">WindErrorHandler.php</a><br>
+<a href="#WindErrorMessage.php">WindErrorMessage.php</a><br>
+<a href="#WindException.php">WindException.php</a><br>
+<a href="#WindFactory.php">WindFactory.php</a><br>
+<a href="#WindFile.php">WindFile.php</a><br>
+<a href="#WindFileCache.php">WindFileCache.php</a><br>
+<a href="#WindFinalException.php">WindFinalException.php</a><br>
+<a href="#WindFolder.php">WindFolder.php</a><br>
+<a href="#WindFormFilter.php">WindFormFilter.php</a><br>
+<a href="#WindFormUpload.php">WindFormUpload.php</a><br>
+<a href="#WindForward.php">WindForward.php</a><br>
+<a href="#WindForwardException.php">WindForwardException.php</a><br>
+<a href="#WindFrontController.php">WindFrontController.php</a><br>
+<a href="#WindFtp.php">WindFtp.php</a><br>
+<a href="#WindFtpUpload.php">WindFtpUpload.php</a><br>
+<a href="#WindGeneralConverter.php">WindGeneralConverter.php</a><br>
+<a href="#WindGeneralDate.php">WindGeneralDate.php</a><br>
+<a href="#WindHandlerInterceptor.php">WindHandlerInterceptor.php</a><br>
+<a href="#WindHandlerInterceptorChain.php">WindHandlerInterceptorChain.php</a><br>
+<a href="#WindHelper.php">WindHelper.php</a><br>
+<a href="#WindHttpCurl.php">WindHttpCurl.php</a><br>
+<a href="#WindHttpRequest.php">WindHttpRequest.php</a><br>
+<a href="#WindHttpResponse.php">WindHttpResponse.php</a><br>
+<a href="#WindHttpSocket.php">WindHttpSocket.php</a><br>
+<a href="#WindHttpStream.php">WindHttpStream.php</a><br>
+<a href="#WindI18nException.php">WindI18nException.php</a><br>
+<a href="#WindImage.php">WindImage.php</a><br>
+<a href="#WindImap.php">WindImap.php</a><br>
+<a href="#WindIniParser.php">WindIniParser.php</a><br>
+<a href="#WindJson.php">WindJson.php</a><br>
+<a href="#WindLangResource.php">WindLangResource.php</a><br>
+<a href="#WindLayout.php">WindLayout.php</a><br>
+<a href="#WindList.php">WindList.php</a><br>
+<a href="#WindLogger.php">WindLogger.php</a><br>
+<a href="#WindMail.php">WindMail.php</a><br>
+<a href="#WindMailBase64.php">WindMailBase64.php</a><br>
+<a href="#WindMailException.php">WindMailException.php</a><br>
+<a href="#WindMailQp.php">WindMailQp.php</a><br>
+<a href="#WindMcryptCbc.php">WindMcryptCbc.php</a><br>
+<a href="#WindMemCache.php">WindMemCache.php</a><br>
+<a href="#WindMimeType.php">WindMimeType.php</a><br>
+<a href="#WindModule.php">WindModule.php</a><br>
+<a href="#WindMutilAppRouter.php">WindMutilAppRouter.php</a><br>
+<a href="#WindMysqlPdoAdapter.php">WindMysqlPdoAdapter.php</a><br>
+<a href="#WindNormalCookie.php">WindNormalCookie.php</a><br>
+<a href="#WindNormalViewerResolver.php">WindNormalViewerResolver.php</a><br>
+<a href="#WindPack.php">WindPack.php</a><br>
+<a href="#WindPhpMail.php">WindPhpMail.php</a><br>
+<a href="#WindPop3.php">WindPop3.php</a><br>
+<a href="#WindPropertiesParser.php">WindPropertiesParser.php</a><br>
+<a href="#WindQueue.php">WindQueue.php</a><br>
+<a href="#WindResolvedCrashDependency.php">WindResolvedCrashDependency.php</a><br>
+<a href="#WindResultSet.php">WindResultSet.php</a><br>
+<a href="#WindRewriteRoute.php">WindRewriteRoute.php</a><br>
+<a href="#WindRouter.php">WindRouter.php</a><br>
+<a href="#WindSecurity.php">WindSecurity.php</a><br>
+<a href="#WindSecurityToken.php">WindSecurityToken.php</a><br>
+<a href="#WindSendMail.php">WindSendMail.php</a><br>
+<a href="#WindSession.php">WindSession.php</a><br>
+<a href="#WindSessionHandler.php">WindSessionHandler.php</a><br>
+<a href="#WindSimpleController.php">WindSimpleController.php</a><br>
+<a href="#WindSmtp.php">WindSmtp.php</a><br>
+<a href="#WindSmtpMail.php">WindSmtpMail.php</a><br>
+<a href="#WindSocket.php">WindSocket.php</a><br>
+<a href="#WindSocketFtp.php">WindSocketFtp.php</a><br>
+<a href="#WindSortedList.php">WindSortedList.php</a><br>
+<a href="#WindSqlStatement.php">WindSqlStatement.php</a><br>
+<a href="#WindStack.php">WindStack.php</a><br>
+<a href="#WindString.php">WindString.php</a><br>
+<a href="#WindTemplateCompilerAction.php">WindTemplateCompilerAction.php</a><br>
+<a href="#WindTemplateCompilerComponent.php">WindTemplateCompilerComponent.php</a><br>
+<a href="#WindTemplateCompilerCss.php">WindTemplateCompilerCss.php</a><br>
+<a href="#WindTemplateCompilerEcho.php">WindTemplateCompilerEcho.php</a><br>
+<a href="#WindTemplateCompilerInternal.php">WindTemplateCompilerInternal.php</a><br>
+<a href="#WindTemplateCompilerLang.php">WindTemplateCompilerLang.php</a><br>
+<a href="#WindTemplateCompilerPage.php">WindTemplateCompilerPage.php</a><br>
+<a href="#WindTemplateCompilerScript.php">WindTemplateCompilerScript.php</a><br>
+<a href="#WindTemplateCompilerTemplate.php">WindTemplateCompilerTemplate.php</a><br>
+<a href="#WindTemplateCompilerToken.php">WindTemplateCompilerToken.php</a><br>
+<a href="#WindUrlHelper.php">WindUrlHelper.php</a><br>
+<a href="#WindUtility.php">WindUtility.php</a><br>
+<a href="#WindValidator.php">WindValidator.php</a><br>
+<a href="#WindView.php">WindView.php</a><br>
+<a href="#WindViewerResolver.php">WindViewerResolver.php</a><br>
+<a href="#WindViewException.php">WindViewException.php</a><br>
+<a href="#WindViewTemplate.php">WindViewTemplate.php</a><br>
+<a href="#WindWebApplication.php">WindWebApplication.php</a><br>
+<a href="#WindWebFrontController.php">WindWebFrontController.php</a><br>
+<a href="#WindWinCache.php">WindWinCache.php</a><br>
+<a href="#WindXCache.php">WindXCache.php</a><br>
+<a href="#WindXmlParser.php">WindXmlParser.php</a><br>
+<a href="#WindXxtea.php">WindXxtea.php</a><br>
+<a href="#WindZendCache.php">WindZendCache.php</a><br>
+<a name="AbstractWindCache.php"></a>
+<h1>AbstractWindCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 23</b> - DocBlock would be page-level, but precedes class "AbstractWindCache", use another DocBlock to document the file<br>
+<a name="AbstractWindFtp.php"></a>
+<h1>AbstractWindFtp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "AbstractWindFtp", use another DocBlock to document the file<br>
+<a name="AbstractWindHttp.php"></a>
+<h1>AbstractWindHttp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "AbstractWindHttp", use another DocBlock to document the file<br>
+<a name="AbstractWindPdoAdapter.php"></a>
+<h1>AbstractWindPdoAdapter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "AbstractWindPdoAdapter", use another DocBlock to document the file<br>
+<a name="AbstractWindRoute.php"></a>
+<h1>AbstractWindRoute.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "AbstractWindRoute", use another DocBlock to document the file<br>
+<a name="AbstractWindRouter.php"></a>
+<h1>AbstractWindRouter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "AbstractWindRouter", use another DocBlock to document the file<br>
+<a name="AbstractWindTemplateCompiler.php"></a>
+<h1>AbstractWindTemplateCompiler.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "AbstractWindTemplateCompiler", use another DocBlock to document the file<br>
+<a name="AbstractWindUpload.php"></a>
+<h1>AbstractWindUpload.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "AbstractWindUpload", use another DocBlock to document the file<br>
+<a name="AbstractWindViewTemplate.php"></a>
+<h1>AbstractWindViewTemplate.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "AbstractWindViewTemplate", use another DocBlock to document the file<br>
+<a name="IWindApplication.php"></a>
+<h1>IWindApplication.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "IWindApplication", use another DocBlock to document the file<br>
+<a name="IWindCacheDependency.php"></a>
+<h1>IWindCacheDependency.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindCacheDependency", use another DocBlock to document the file<br>
+<a name="IWindConfigParser.php"></a>
+<h1>IWindConfigParser.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindConfigParser", use another DocBlock to document the file<br>
+<a name="IWindConverter.php"></a>
+<h1>IWindConverter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindConverter", use another DocBlock to document the file<br>
+<a name="IWindFactory.php"></a>
+<h1>IWindFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "IWindFactory", use another DocBlock to document the file<br>
+<a name="IWindHttpContainer.php"></a>
+<h1>IWindHttpContainer.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "IWindHttpContainer", use another DocBlock to document the file<br>
+<a name="IWindLangResource.php"></a>
+<h1>IWindLangResource.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindLangResource", use another DocBlock to document the file<br>
+<a name="IWindMailEncoder.php"></a>
+<h1>IWindMailEncoder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindMailEncoder", use another DocBlock to document the file<br>
+<a name="IWindRequest.php"></a>
+<h1>IWindRequest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "IWindRequest", use another DocBlock to document the file<br>
+<a name="IWindResponse.php"></a>
+<h1>IWindResponse.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "IWindResponse", use another DocBlock to document the file<br>
+<a name="IWindSecurity.php"></a>
+<h1>IWindSecurity.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "IWindSecurity", use another DocBlock to document the file<br>
+<a name="IWindSecurityToken.php"></a>
+<h1>IWindSecurityToken.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "IWindSecurityToken", use another DocBlock to document the file<br>
+<h2>Errors:</h2><br>
+<b>Error on line 49</b> - Unclosed code tag in DocBlock, parsing will be incorrect<br>
+<a name="IWindSendMail.php"></a>
+<h1>IWindSendMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "IWindSendMail", use another DocBlock to document the file<br>
+<a name="IWindView.php"></a>
+<h1>IWindView.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "IWindView", use another DocBlock to document the file<br>
+<a name="IWindViewerResolver.php"></a>
+<h1>IWindViewerResolver.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - DocBlock would be page-level, but precedes class "IWindViewerResolver", use another DocBlock to document the file<br>
+<a name="Wind.php"></a>
+<h1>Wind.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - no @package tag was used in a DocBlock for class Wind<br>
+<b>Warning on line 308</b> - File "/var/www/trunk/wind/Wind.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="WindActionException.php"></a>
+<h1>WindActionException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindActionException", use another DocBlock to document the file<br>
+<a name="WindActionFilter.php"></a>
+<h1>WindActionFilter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 42</b> - DocBlock would be page-level, but precedes class "WindActionFilter", use another DocBlock to document the file<br>
+<a name="WindApcCache.php"></a>
+<h1>WindApcCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 60</b> - DocBlock would be page-level, but precedes class "WindApcCache", use another DocBlock to document the file<br>
+<a name="WindArray.php"></a>
+<h1>WindArray.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindArray", use another DocBlock to document the file<br>
+<a name="WindCacheException.php"></a>
+<h1>WindCacheException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindCacheException", use another DocBlock to document the file<br>
+<a name="WindClassProxy.php"></a>
+<h1>WindClassProxy.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "WindClassProxy", use another DocBlock to document the file<br>
+<a name="WindConfigParser.php"></a>
+<h1>WindConfigParser.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "WindConfigParser", use another DocBlock to document the file<br>
+<a name="WindConnection.php"></a>
+<h1>WindConnection.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 32</b> - DocBlock would be page-level, but precedes class "WindConnection", use another DocBlock to document the file<br>
+<a name="WindConnectionManager.php"></a>
+<h1>WindConnectionManager.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 36</b> - DocBlock would be page-level, but precedes class "WindConnectionManager", use another DocBlock to document the file<br>
+<a name="WindController.php"></a>
+<h1>WindController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindController", use another DocBlock to document the file<br>
+<a name="WindConvert.php"></a>
+<h1>WindConvert.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindConvert", use another DocBlock to document the file<br>
+<a name="WindCookie.php"></a>
+<h1>WindCookie.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindCookie", use another DocBlock to document the file<br>
+<a name="WindDao.php"></a>
+<h1>WindDao.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindDao", use another DocBlock to document the file<br>
+<a name="WindDaoCacheListener.php"></a>
+<h1>WindDaoCacheListener.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindDaoCacheListener", use another DocBlock to document the file<br>
+<a name="WindDaoException.php"></a>
+<h1>WindDaoException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindDaoException", use another DocBlock to document the file<br>
+<a name="WindDaoFactory.php"></a>
+<h1>WindDaoFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindDaoFactory", use another DocBlock to document the file<br>
+<a name="WindDate.php"></a>
+<h1>WindDate.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindDate", use another DocBlock to document the file<br>
+<a name="WindDbCache.php"></a>
+<h1>WindDbCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 70</b> - DocBlock would be page-level, but precedes class "WindDbCache", use another DocBlock to document the file<br>
+<a name="WindDbException.php"></a>
+<h1>WindDbException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindDbException", use another DocBlock to document the file<br>
+<a name="WindDebug.php"></a>
+<h1>WindDebug.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 170</b> - File "/var/www/trunk/wind/log/WindDebug.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="WindDispatcher.php"></a>
+<h1>WindDispatcher.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindDispatcher", use another DocBlock to document the file<br>
+<a name="WindEacceleratorCache.php"></a>
+<h1>WindEacceleratorCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 58</b> - DocBlock would be page-level, but precedes class "WindEacceleratorCache", use another DocBlock to document the file<br>
+<a name="WindEnableValidateModule.php"></a>
+<h1>WindEnableValidateModule.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindEnableValidateModule", use another DocBlock to document the file<br>
+<a name="WindErrorHandler.php"></a>
+<h1>WindErrorHandler.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindErrorHandler", use another DocBlock to document the file<br>
+<a name="WindErrorMessage.php"></a>
+<h1>WindErrorMessage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindErrorMessage", use another DocBlock to document the file<br>
+<a name="WindException.php"></a>
+<h1>WindException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindException", use another DocBlock to document the file<br>
+<a name="WindFactory.php"></a>
+<h1>WindFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindFactory", use another DocBlock to document the file<br>
+<a name="WindFile.php"></a>
+<h1>WindFile.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindFile", use another DocBlock to document the file<br>
+<a name="WindFileCache.php"></a>
+<h1>WindFileCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 62</b> - DocBlock would be page-level, but precedes class "WindFileCache", use another DocBlock to document the file<br>
+<a name="WindFinalException.php"></a>
+<h1>WindFinalException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindFinalException", use another DocBlock to document the file<br>
+<a name="WindFolder.php"></a>
+<h1>WindFolder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindFolder", use another DocBlock to document the file<br>
+<a name="WindFormFilter.php"></a>
+<h1>WindFormFilter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 39</b> - DocBlock would be page-level, but precedes class "WindFormFilter", use another DocBlock to document the file<br>
+<a name="WindFormUpload.php"></a>
+<h1>WindFormUpload.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindFormUpload", use another DocBlock to document the file<br>
+<a name="WindForward.php"></a>
+<h1>WindForward.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindForward", use another DocBlock to document the file<br>
+<a name="WindForwardException.php"></a>
+<h1>WindForwardException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindForwardException", use another DocBlock to document the file<br>
+<a name="WindFrontController.php"></a>
+<h1>WindFrontController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindFrontController", use another DocBlock to document the file<br>
+<a name="WindFtp.php"></a>
+<h1>WindFtp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindFtp", use another DocBlock to document the file<br>
+<a name="WindFtpUpload.php"></a>
+<h1>WindFtpUpload.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindFtpUpload", use another DocBlock to document the file<br>
+<a name="WindGeneralConverter.php"></a>
+<h1>WindGeneralConverter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindGeneralConverter", use another DocBlock to document the file<br>
+<a name="WindGeneralDate.php"></a>
+<h1>WindGeneralDate.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindGeneralDate", use another DocBlock to document the file<br>
+<a name="WindHandlerInterceptor.php"></a>
+<h1>WindHandlerInterceptor.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "WindHandlerInterceptor", use another DocBlock to document the file<br>
+<a name="WindHandlerInterceptorChain.php"></a>
+<h1>WindHandlerInterceptorChain.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - DocBlock would be page-level, but precedes class "WindHandlerInterceptorChain", use another DocBlock to document the file<br>
+<a name="WindHelper.php"></a>
+<h1>WindHelper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindHelper", use another DocBlock to document the file<br>
+<a name="WindHttpCurl.php"></a>
+<h1>WindHttpCurl.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindHttpCurl", use another DocBlock to document the file<br>
+<a name="WindHttpRequest.php"></a>
+<h1>WindHttpRequest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindHttpRequest", use another DocBlock to document the file<br>
+<a name="WindHttpResponse.php"></a>
+<h1>WindHttpResponse.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "WindHttpResponse", use another DocBlock to document the file<br>
+<a name="WindHttpSocket.php"></a>
+<h1>WindHttpSocket.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindHttpSocket", use another DocBlock to document the file<br>
+<a name="WindHttpStream.php"></a>
+<h1>WindHttpStream.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindHttpStream", use another DocBlock to document the file<br>
+<a name="WindI18nException.php"></a>
+<h1>WindI18nException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "WindI18nException", use another DocBlock to document the file<br>
+<a name="WindImage.php"></a>
+<h1>WindImage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindImage", use another DocBlock to document the file<br>
+<a name="WindImap.php"></a>
+<h1>WindImap.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindImap", use another DocBlock to document the file<br>
+<a name="WindIniParser.php"></a>
+<h1>WindIniParser.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 31</b> - DocBlock would be page-level, but precedes class "WindIniParser", use another DocBlock to document the file<br>
+<a name="WindJson.php"></a>
+<h1>WindJson.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindJson", use another DocBlock to document the file<br>
+<a name="WindLangResource.php"></a>
+<h1>WindLangResource.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - example file " 支持解析格式: LANG:login.fail.expty" does not exist<br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindLangResource", use another DocBlock to document the file<br>
+<a name="WindLayout.php"></a>
+<h1>WindLayout.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 34</b> - DocBlock would be page-level, but precedes class "WindLayout", use another DocBlock to document the file<br>
+<a name="WindList.php"></a>
+<h1>WindList.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "WindList", use another DocBlock to document the file<br>
+<a name="WindLogger.php"></a>
+<h1>WindLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 25</b> - DocBlock would be page-level, but precedes class "WindLogger", use another DocBlock to document the file<br>
+<a name="WindMail.php"></a>
+<h1>WindMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindMail", use another DocBlock to document the file<br>
+<a name="WindMailBase64.php"></a>
+<h1>WindMailBase64.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "WindMailBase64", use another DocBlock to document the file<br>
+<a name="WindMailException.php"></a>
+<h1>WindMailException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "WindMailException", use another DocBlock to document the file<br>
+<a name="WindMailQp.php"></a>
+<h1>WindMailQp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "WindMailQp", use another DocBlock to document the file<br>
+<a name="WindMcryptCbc.php"></a>
+<h1>WindMcryptCbc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindMcryptCbc", use another DocBlock to document the file<br>
+<a name="WindMemCache.php"></a>
+<h1>WindMemCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 82</b> - DocBlock would be page-level, but precedes class "WindMemCache", use another DocBlock to document the file<br>
+<a name="WindMimeType.php"></a>
+<h1>WindMimeType.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "WindMimeType", use another DocBlock to document the file<br>
+<a name="WindModule.php"></a>
+<h1>WindModule.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindModule", use another DocBlock to document the file<br>
+<a name="WindMutilAppRouter.php"></a>
+<h1>WindMutilAppRouter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindMutilAppRouter", use another DocBlock to document the file<br>
+<a name="WindMysqlPdoAdapter.php"></a>
+<h1>WindMysqlPdoAdapter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindMysqlPdoAdapter", use another DocBlock to document the file<br>
+<a name="WindNormalCookie.php"></a>
+<h1>WindNormalCookie.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindNormalCookie", use another DocBlock to document the file<br>
+<a name="WindNormalViewerResolver.php"></a>
+<h1>WindNormalViewerResolver.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindNormalViewerResolver", use another DocBlock to document the file<br>
+<a name="WindPack.php"></a>
+<h1>WindPack.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindPack", use another DocBlock to document the file<br>
+<a name="WindPhpMail.php"></a>
+<h1>WindPhpMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindPhpMail", use another DocBlock to document the file<br>
+<a name="WindPop3.php"></a>
+<h1>WindPop3.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindPop3", use another DocBlock to document the file<br>
+<a name="WindPropertiesParser.php"></a>
+<h1>WindPropertiesParser.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 31</b> - DocBlock would be page-level, but precedes class "WindPropertiesParser", use another DocBlock to document the file<br>
+<a name="WindQueue.php"></a>
+<h1>WindQueue.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindQueue", use another DocBlock to document the file<br>
+<a name="WindResolvedCrashDependency.php"></a>
+<h1>WindResolvedCrashDependency.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindResolvedCrashDependency", use another DocBlock to document the file<br>
+<a name="WindResultSet.php"></a>
+<h1>WindResultSet.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindResultSet", use another DocBlock to document the file<br>
+<a name="WindRewriteRoute.php"></a>
+<h1>WindRewriteRoute.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - DocBlock would be page-level, but precedes class "WindRewriteRoute", use another DocBlock to document the file<br>
+<a name="WindRouter.php"></a>
+<h1>WindRouter.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 36</b> - DocBlock would be page-level, but precedes class "WindRouter", use another DocBlock to document the file<br>
+<a name="WindSecurity.php"></a>
+<h1>WindSecurity.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindSecurity", use another DocBlock to document the file<br>
+<a name="WindSecurityToken.php"></a>
+<h1>WindSecurityToken.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindSecurityToken", use another DocBlock to document the file<br>
+<a name="WindSendMail.php"></a>
+<h1>WindSendMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindSendMail", use another DocBlock to document the file<br>
+<a name="WindSession.php"></a>
+<h1>WindSession.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 47</b> - DocBlock would be page-level, but precedes class "WindSession", use another DocBlock to document the file<br>
+<a name="WindSessionHandler.php"></a>
+<h1>WindSessionHandler.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindSessionHandler", use another DocBlock to document the file<br>
+<a name="WindSimpleController.php"></a>
+<h1>WindSimpleController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindSimpleController", use another DocBlock to document the file<br>
+<b>Warning on line 49</b> - Unknown tag "@return　void" used<br>
+<b>Warning on line 78</b> - example file "<pre>
+ $filters = array(array('expression'=>'', 'class'=>'', args=array()));
+ </pre>" does not exist<br>
+<a name="WindSmtp.php"></a>
+<h1>WindSmtp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindSmtp", use another DocBlock to document the file<br>
+<a name="WindSmtpMail.php"></a>
+<h1>WindSmtpMail.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 25</b> - DocBlock would be page-level, but precedes class "WindSmtpMail", use another DocBlock to document the file<br>
+<a name="WindSocket.php"></a>
+<h1>WindSocket.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindSocket", use another DocBlock to document the file<br>
+<a name="WindSocketFtp.php"></a>
+<h1>WindSocketFtp.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "WindSocketFtp", use another DocBlock to document the file<br>
+<a name="WindSortedList.php"></a>
+<h1>WindSortedList.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "WindSortedList", use another DocBlock to document the file<br>
+<a name="WindSqlStatement.php"></a>
+<h1>WindSqlStatement.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - DocBlock would be page-level, but precedes class "WindSqlStatement", use another DocBlock to document the file<br>
+<a name="WindStack.php"></a>
+<h1>WindStack.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "WindStack", use another DocBlock to document the file<br>
+<a name="WindString.php"></a>
+<h1>WindString.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindString", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerAction.php"></a>
+<h1>WindTemplateCompilerAction.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerAction", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerComponent.php"></a>
+<h1>WindTemplateCompilerComponent.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerComponent", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerCss.php"></a>
+<h1>WindTemplateCompilerCss.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerCss", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerEcho.php"></a>
+<h1>WindTemplateCompilerEcho.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerEcho", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerInternal.php"></a>
+<h1>WindTemplateCompilerInternal.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerInternal", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerLang.php"></a>
+<h1>WindTemplateCompilerLang.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerLang", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerPage.php"></a>
+<h1>WindTemplateCompilerPage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerPage", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerScript.php"></a>
+<h1>WindTemplateCompilerScript.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerScript", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerTemplate.php"></a>
+<h1>WindTemplateCompilerTemplate.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerTemplate", use another DocBlock to document the file<br>
+<a name="WindTemplateCompilerToken.php"></a>
+<h1>WindTemplateCompilerToken.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "WindTemplateCompilerToken", use another DocBlock to document the file<br>
+<a name="WindUrlHelper.php"></a>
+<h1>WindUrlHelper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindUrlHelper", use another DocBlock to document the file<br>
+<a name="WindUtility.php"></a>
+<h1>WindUtility.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindUtility", use another DocBlock to document the file<br>
+<b>Warning on line 167</b> - Unknown tag "@example<pre>" used<br>
+<a name="WindValidator.php"></a>
+<h1>WindValidator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "WindValidator", use another DocBlock to document the file<br>
+<a name="WindView.php"></a>
+<h1>WindView.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 45</b> - DocBlock would be page-level, but precedes class "WindView", use another DocBlock to document the file<br>
+<a name="WindViewerResolver.php"></a>
+<h1>WindViewerResolver.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 28</b> - DocBlock would be page-level, but precedes class "WindViewerResolver", use another DocBlock to document the file<br>
+<a name="WindViewException.php"></a>
+<h1>WindViewException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindViewException", use another DocBlock to document the file<br>
+<a name="WindViewTemplate.php"></a>
+<h1>WindViewTemplate.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 34</b> - DocBlock would be page-level, but precedes class "WindViewTemplate", use another DocBlock to document the file<br>
+<a name="WindWebApplication.php"></a>
+<h1>WindWebApplication.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "WindWebApplication", use another DocBlock to document the file<br>
+<a name="WindWebFrontController.php"></a>
+<h1>WindWebFrontController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindWebFrontController", use another DocBlock to document the file<br>
+<a name="WindWinCache.php"></a>
+<h1>WindWinCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 60</b> - DocBlock would be page-level, but precedes class "WindWinCache", use another DocBlock to document the file<br>
+<a name="WindXCache.php"></a>
+<h1>WindXCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 61</b> - DocBlock would be page-level, but precedes class "WindXCache", use another DocBlock to document the file<br>
+<a name="WindXmlParser.php"></a>
+<h1>WindXmlParser.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindXmlParser", use another DocBlock to document the file<br>
+<a name="WindXxtea.php"></a>
+<h1>WindXxtea.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "WindXxtea", use another DocBlock to document the file<br>
+<a name="WindZendCache.php"></a>
+<h1>WindZendCache.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 60</b> - DocBlock would be page-level, but precedes class "WindZendCache", use another DocBlock to document the file<br>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:45 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

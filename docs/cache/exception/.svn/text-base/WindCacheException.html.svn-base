@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindCacheException</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">cache<br /><div class="header-top-right-subpackage">exception</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                  
+                                                                                                                                                                                                                                                                                                              		[ <a href="../../classtrees_cache.html" class="menu">class tree: cache</a> ]
+		[ <a href="../../elementindex_cache.html" class="menu">index: cache</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">cache</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../../cache/IWindCacheDependency.html">IWindCacheDependency</a>    	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../../cache/AbstractWindCache.html">AbstractWindCache</a>    	 <br />
+	  </div>
+  <div class="package">
+	exception<br />	    <span style="padding-left: 1em;">		<a href="../../cache/exception/WindCacheException.html">WindCacheException</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	dependency<br />	    <span style="padding-left: 1em;">		<a href="../../cache/dependency/WindResolvedCrashDependency.html">WindResolvedCrashDependency</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindCacheException</h1>
+Source Location: /cache/exception/WindCacheException.php<br /><br />
+
+<h2 class="class-name">Class WindCacheException</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+													| <a href="#sec-methods">Methods</a>
+														| <a href="#sec-consts">Constants</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>缓存的异常类
+</strong></p>
+<span class="description"><p>the last known user to change this file in the repository  &lt;$LastChangedBy: yishuo $&gt;</p></span>
+		<p class="notes">
+			Located in <a class="field" href="_cache---exception---WindCacheException.php.html">/cache/exception/WindCacheException.php</a> [<span class="field">line 13</span>]
+		</p>
+
+		
+		<pre>Exception
+   |
+   --<a href="../../base/WindException.html">WindException</a>
+      |
+      --WindCacheException</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qiong Wu &lt;<a href="mailto:papa0924@gmail.com">papa0924@gmail.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindCacheException.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+															| <a href="#sec-methods">Methods</a>
+							    		    			    				| <a href="#sec-consts">Constants</a>
+    			    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../../base/WindException.html">WindException</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#method__construct">WindException::__construct()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">异常构造函数</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#methodbuildMessage">WindException::buildMessage()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">根据exception code返回构建的异常信息描述</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#methodmessageMapper">WindException::messageMapper()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">自定义异常号的对应异常信息</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+													<p>Inherited From <span class="classname"><a href="../../base/WindException.html">WindException</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_METHOD_NOT_EXIST">WindException::ERROR_CLASS_METHOD_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_NOT_EXIST">WindException::ERROR_CLASS_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CLASS_TYPE_ERROR">WindException::ERROR_CLASS_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_CONFIG_ERROR">WindException::ERROR_CONFIG_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_OBJECT_NOT_EXIST">WindException::ERROR_OBJECT_NOT_EXIST</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_PARAMETER_TYPE_ERROR">WindException::ERROR_PARAMETER_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_RETURN_TYPE_ERROR">WindException::ERROR_RETURN_TYPE_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../../base/WindException.html#constERROR_SYSTEM_ERROR">WindException::ERROR_SYSTEM_ERROR</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition"></span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+																		| <a href="#sec-consts">Constants</a>
+														| <span class="disabled">Methods</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:28 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,1421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class WindPack</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">utility<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                                                                                                                                                
+                                                                		[ <a href="../classtrees_utility.html" class="menu">class tree: utility</a> ]
+		[ <a href="../elementindex_utility.html" class="menu">index: utility</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">utility</div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../utility/WindArray.html">WindArray</a>    	 <br />
+	    		<a href="../utility/WindConvert.html">WindConvert</a>    	 <br />
+	    		<a href="../utility/WindDate.html">WindDate</a>    	 <br />
+	    		<a href="../utility/WindFile.html">WindFile</a>    	 <br />
+	    		<a href="../utility/WindFolder.html">WindFolder</a>    	 <br />
+	    		<a href="../utility/WindGeneralDate.html">WindGeneralDate</a>    	 <br />
+	    		<a href="../utility/WindImage.html">WindImage</a>    	 <br />
+	    		<a href="../utility/WindJson.html">WindJson</a>    	 <br />
+	    		<a href="../utility/WindPack.html">WindPack</a>    	 <br />
+	    		<a href="../utility/WindSecurity.html">WindSecurity</a>    	 <br />
+	    		<a href="../utility/WindSecurityToken.html">WindSecurityToken</a>    	 <br />
+	    		<a href="../utility/WindString.html">WindString</a>    	 <br />
+	    		<a href="../utility/WindUtility.html">WindUtility</a>    	 <br />
+	    		<a href="../utility/WindValidator.html">WindValidator</a>    	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../li_default.html">default</a><br />
+              <a href="../li_.html"></a><br />
+              <a href="../li_base.html">base</a><br />
+              <a href="../li_cache.html">cache</a><br />
+              <a href="../li_collections.html">collections</a><br />
+              <a href="../li_convert.html">convert</a><br />
+              <a href="../li_dao.html">dao</a><br />
+              <a href="../li_db.html">db</a><br />
+              <a href="../li_filter.html">filter</a><br />
+              <a href="../li_ftp.html">ftp</a><br />
+              <a href="../li_http.html">http</a><br />
+              <a href="../li_i18n.html">i18n</a><br />
+              <a href="../li_log.html">log</a><br />
+              <a href="../li_mail.html">mail</a><br />
+              <a href="../li_parser.html">parser</a><br />
+              <a href="../li_router.html">router</a><br />
+              <a href="../li_security.html">security</a><br />
+              <a href="../li_strategy.html">strategy</a><br />
+              <a href="../li_token.html">token</a><br />
+              <a href="../li_upload.html">upload</a><br />
+              <a href="../li_utility.html">utility</a><br />
+              <a href="../li_viewer.html">viewer</a><br />
+              <a href="../li_web.html">web</a><br />
+              <a href="../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: WindPack</h1>
+Source Location: /utility/WindPack.php<br /><br />
+
+<h2 class="class-name">Class WindPack</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+														| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+						</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>程序打包工具
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_utility---WindPack.php.html">/utility/WindPack.php</a> [<span class="field">line 12</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Qian Su &lt;<a href="mailto:aoxue.1988.su.qian@163.com">aoxue.1988.su.qian@163.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindPack.php 3258 2011-12-19 14:37:34Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../utility/WindPack.html#methodcallBack">callBack</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodgetContentBySuffix">getContentBySuffix</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodgetContentFromFile">getContentFromFile</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodgetPackList">getPackList</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodpackFromDir">packFromDir</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodpackFromFileList">packFromFileList</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodreadContentFromDir">readContentFromDir</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodreadContentFromFileList">readContentFromFileList</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodsetContentInjectionCallBack">setContentInjectionCallBack</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripComment">stripComment</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripImport">stripImport</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripNR">stripNR</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripPhpIdentify">stripPhpIdentify</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripSpace">stripSpace</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripStrByRule">stripStrByRule</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripWhiteSpaceByPhp">stripWhiteSpaceByPhp</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripWhiteSpaceBySelf">stripWhiteSpaceBySelf</a></li>
+		  		  <li><a href="../utility/WindPack.html#methodstripWhiteSpaceByToken">stripWhiteSpaceByToken</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									| <span class="disabled">Constants Summary</span> | <a href="#sec-consts">Constants Detail</a>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+							<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSTRIP_PHP" title="details" class="const-name-summary">STRIP_PHP</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">利用php自身的函数打包</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSTRIP_SELF" title="details" class="const-name-summary">STRIP_SELF</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">使用正则打包</td></tr>
+				</div>
+								<div class="var-title">
+					<tr>
+					<td class="var-title"><a href="#constSTRIP_TOKEN" title="details" class="const-name-summary">STRIP_TOKEN</a>&nbsp;&nbsp;</td>
+					<td class="const-summary-description">通过token方式打包</td></tr>
+				</div>
+								</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+									    		    			    				| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+    			    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																																																																																																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#callBack" title="details" class="method-name">callBack</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">回调函数调用</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getContentBySuffix" title="details" class="method-name">getContentBySuffix</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据文件后缀得取对应的mime内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getContentFromFile" title="details" class="method-name">getContentFromFile</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从文件读取内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getPackList" title="details" class="method-name">getPackList</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">取得被打包的文件列表</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#packFromDir" title="details" class="method-name">packFromDir</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#packFromFileList" title="details" class="method-name">packFromFileList</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将给出的文件列表进行打包</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#readContentFromDir" title="details" class="method-name">readContentFromDir</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从各个目录中取得对应的每个文件的内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array:</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#readContentFromFileList" title="details" class="method-name">readContentFromFileList</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从文件列表中取得对应的每个文件的内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#setContentInjectionCallBack" title="details" class="method-name">setContentInjectionCallBack</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置回调</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripComment" title="details" class="method-name">stripComment</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">去除注释</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripImport" title="details" class="method-name">stripImport</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">去除多余的文件导入信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripNR" title="details" class="method-name">stripNR</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">去除换行</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripPhpIdentify" title="details" class="method-name">stripPhpIdentify</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">去除php标识</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripSpace" title="details" class="method-name">stripSpace</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">去除空格符</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripStrByRule" title="details" class="method-name">stripStrByRule</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">根据指定规则替换指定内容中相应的内容</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripWhiteSpaceByPhp" title="details" class="method-name">stripWhiteSpaceByPhp</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通过php自身方式去除指定文件的注释及空白</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripWhiteSpaceBySelf" title="details" class="method-name">stripWhiteSpaceBySelf</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通过正则方式去除指定文件的注释及空白</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#stripWhiteSpaceByToken" title="details" class="method-name">stripWhiteSpaceByToken</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">通过token方式去除指定文件的注释及空白</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+																					| <a href="#sec-const-summary">Constants Summary</a> | <a href="#sec-consts">Constants Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodcallBack" id="callBack"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">callBack</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 382]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string callBack(
+string
+$content, [string
+$replace = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>回调函数调用
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 被回调的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 替换内容，默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetContentBySuffix" id="getContentBySuffix"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getContentBySuffix</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 329]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getContentBySuffix(
+string
+$content, string
+$suffix, [string
+$replace = ' ']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据文件后缀得取对应的mime内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要打包的内容内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$suffix:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件后缀类型</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 替换的字串，默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetContentFromFile" id="getContentFromFile"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getContentFromFile</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 306]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string getContentFromFile(
+string
+$filename&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从文件读取内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$filename:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件名</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>如果给出的文件不是一个有效文件则返回false</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetPackList" id="getPackList"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">getPackList</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 296]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array getPackList(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>取得被打包的文件列表
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpackFromDir" id="packFromDir"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">packFromDir</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 54]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean packFromDir(
+mixed
+$dir, string
+$dst, [string
+$packMethod = WindPack::STRIP_PHP], [boolean
+$compress = true], [string
+$absolutePath = ''], [array
+$ndir = array('.','..','.svn')], [array
+$suffix = array()], [array
+$nfile = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将指定文件类型且指定文件夹下的所指定文件打包成一个易阅读的文件,
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dir:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要打包的目录</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dst:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件名</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$packMethod:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包方式,默认为stripWhiteSpaceByPhp</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$compress:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否压缩，默认为true</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolutePath:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件路径,默认为空</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ndir:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不须要打包的目录，默认包括'.', '..', '.svn'三个</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$suffix:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不允许打包的文件类型，默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$nfile:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不允许打包的文件，默认为空数组</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpackFromFileList" id="packFromFileList"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">packFromFileList</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 82]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean packFromFileList(
+mixed
+$fileList, string
+$dst, [method
+$packMethod = WindPack::STRIP_PHP], [boolean
+$compress = true], [string
+$absolutePath = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将给出的文件列表进行打包
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fileList:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件列表</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dst:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包文件的存放位置</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">method</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$packMethod:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包的方式，默认为stripWhiteSpaceByPhp</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$compress:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包是否采用压缩的方式，默认为true</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolutePath:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件路径,默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodreadContentFromDir" id="readContentFromDir"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">readContentFromDir</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 156]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array readContentFromDir(
+[string
+$packMethod = WindPack::STRIP_PHP], [mixed
+$dir = array()], [string
+$absolutePath = ''], [array
+$ndir = array('.','..','.svn')], [array
+$suffix = array()], [array
+$nfile = array()]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从各个目录中取得对应的每个文件的内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$packMethod:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包方式，默认为stripWhiteSpaceByPhp</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dir:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 目录名，默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolutePath:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 绝对路径名，默认为空</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ndir:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不须要打包的目录，默认包括'.', '..', '.svn'三个</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$suffix:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不允许打包的文件类型，默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$nfile:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 不允许打包的文件，默认为空数组</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodreadContentFromFileList" id="readContentFromFileList"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">readContentFromFileList</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 191]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array: readContentFromFileList(
+mixed
+$fileList, [method
+$packMethod = WindPack::STRIP_PHP], [string
+$absolutePath = ''], [
+&$content = array()], array
+$content&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从文件列表中取得对应的每个文件的内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$fileList:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件列表</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">method</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$packMethod:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 打包方式，默认为stripWhiteSpaceByPhp</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$absolutePath:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 绝对路径名，默认为空</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存文件内容，默认为空数组</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">&$content:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsetContentInjectionCallBack" id="setContentInjectionCallBack"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">setContentInjectionCallBack</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 369]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void setContentInjectionCallBack(
+array
+$contentInjectionCallBack, [string
+$position = 'before']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置回调
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$contentInjectionCallBack:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 回调函数</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$position:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 调用位置(before|after)默认为before</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Author:</strong>&nbsp;&nbsp;</td><td>Qiong Wu</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripComment" id="stripComment"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stripComment</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 221]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripComment(
+string
+$content, [mixed
+$replace = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>去除注释
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要去除的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要替换的文本</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripImport" id="stripImport"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">stripImport</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 277]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripImport(
+string
+$content, [mixed
+$replace = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>去除多余的文件导入信息
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要处理的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 用来替换将匹配出来的结果，默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripNR" id="stripNR"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stripNR</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 232]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripNR(
+string
+$content, [mixed
+$replace = array('\n','\r\n','\r')]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>去除换行
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要去除的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要替换的文本</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripPhpIdentify" id="stripPhpIdentify"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">stripPhpIdentify</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 254]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripPhpIdentify(
+string
+$content, [mixed
+$replace = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>去除php标识
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要处理的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 将php标识替换为该值，默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripSpace" id="stripSpace"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stripSpace</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 243]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripSpace(
+string
+$content, [mixed
+$replace = ' ']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>去除空格符
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要去除的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 要替换的文本,默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripStrByRule" id="stripStrByRule"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">stripStrByRule</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 266]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripStrByRule(
+string
+$content, string
+$rule, [$mixed
+$replace = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>根据指定规则替换指定内容中相应的内容
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$content:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要处理的内容</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$rule:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 需要匹配的正则</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$replace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 用来替换将匹配出来的结果，默认为空</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripWhiteSpaceByPhp" id="stripWhiteSpaceByPhp"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stripWhiteSpaceByPhp</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 104]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripWhiteSpaceByPhp(
+string
+$filename&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通过php自身方式去除指定文件的注释及空白
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$filename:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件名</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripWhiteSpaceBySelf" id="stripWhiteSpaceBySelf"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">stripWhiteSpaceBySelf</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 115]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripWhiteSpaceBySelf(
+string
+$filename, [boolean
+$compress = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通过正则方式去除指定文件的注释及空白
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$filename:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件名字</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$compress:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 是否采用压缩，默认为true</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodstripWhiteSpaceByToken" id="stripWhiteSpaceByToken"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">stripWhiteSpaceByToken</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 127]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>string stripWhiteSpaceByToken(
+string
+$filename&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>通过token方式去除指定文件的注释及空白
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$filename:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 文件名称</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-const-summary">Constants Summary</a> | <span class="disabled">Constants Detail</span>
+																		| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<a name="constSTRIP_PHP" id="STRIP_PHP"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">STRIP_PHP</span>
+			 = <span class="var-default"> 'stripWhiteSpaceByPhp'</span>
+			<span class="smalllinenumber">[line 26]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>利用php自身的函数打包
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSTRIP_SELF" id="STRIP_SELF"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">STRIP_SELF</span>
+			 = <span class="var-default"> 'stripWhiteSpaceBySelf'</span>
+			<span class="smalllinenumber">[line 19]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>使用正则打包
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="constSTRIP_TOKEN" id="STRIP_TOKEN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-name">STRIP_TOKEN</span>
+			 = <span class="var-default"> 'stripWhiteSpaceByToken'</span>
+			<span class="smalllinenumber">[line 33]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>通过token方式打包
+</strong></p>
+	
+
+	<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:38 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

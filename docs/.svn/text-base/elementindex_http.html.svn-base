@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Package http Element Index</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">http<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                                  
+                                                                                                                                                                                              		[ <a href="classtrees_http.html" class="menu">class tree: http</a> ]
+		[ <a href="elementindex_http.html" class="menu">index: http</a> ]
+            [ <a href="elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">http</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="http/IWindHttpContainer.html">IWindHttpContainer</a>    	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="http/request/IWindRequest.html">IWindRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="http/response/IWindResponse.html">IWindResponse</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	transfer<br />	    <span style="padding-left: 1em;">		<a href="http/transfer/AbstractWindHttp.html">AbstractWindHttp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="http/transfer/WindHttpCurl.html">WindHttpCurl</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="http/transfer/WindHttpSocket.html">WindHttpSocket</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="http/transfer/WindHttpStream.html">WindHttpStream</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="http/request/WindHttpRequest.html">WindHttpRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="http/response/WindHttpResponse.html">WindHttpResponse</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	cookie<br />	    <span style="padding-left: 1em;">		<a href="http/cookie/WindCookie.html">WindCookie</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="http/cookie/WindNormalCookie.html">WindNormalCookie</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mime<br />	    <span style="padding-left: 1em;">		<a href="http/mime/WindMimeType.html">WindMimeType</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session<br />	    <span style="padding-left: 1em;">		<a href="http/session/WindSession.html">WindSession</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session-handler<br />	    <span style="padding-left: 1em;">		<a href="http/session-handler/AbstractWindSessionHandler.html">AbstractWindSessionHandler</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="http/session-handler/WindSessionHandler.html">WindSessionHandler</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="li_upload.html">upload</a><br />
+              <a href="li_default.html">default</a><br />
+              <a href="li_base.html">base</a><br />
+              <a href="li_.html"></a><br />
+              <a href="li_collections.html">collections</a><br />
+              <a href="li_router.html">router</a><br />
+              <a href="li_dao.html">dao</a><br />
+              <a href="li_mail.html">mail</a><br />
+              <a href="li_wind.html">wind</a><br />
+              <a href="li_i18n.html">i18n</a><br />
+              <a href="li_utility.html">utility</a><br />
+              <a href="li_http.html">http</a><br />
+              <a href="li_web.html">web</a><br />
+              <a href="li_token.html">token</a><br />
+              <a href="li_strategy.html">strategy</a><br />
+              <a href="li_cache.html">cache</a><br />
+              <a href="li_viewer.html">viewer</a><br />
+              <a href="li_ftp.html">ftp</a><br />
+              <a href="li_db.html">db</a><br />
+              <a href="li_convert.html">convert</a><br />
+              <a href="li_filter.html">filter</a><br />
+              <a href="li_security.html">security</a><br />
+              <a href="li_parser.html">parser</a><br />
+              <a href="li_log.html">log</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a name="top"></a>
+<h1>Element index for package http</h1>
+	<h3>Package indexes</h3>
+	<ul>
+				<li><a href="elementindex_upload.html">upload</a></li>
+					<li><a href="elementindex_default.html">default</a></li>
+					<li><a href="elementindex_base.html">base</a></li>
+					<li><a href="elementindex_.html"></a></li>
+					<li><a href="elementindex_collections.html">collections</a></li>
+					<li><a href="elementindex_router.html">router</a></li>
+					<li><a href="elementindex_dao.html">dao</a></li>
+					<li><a href="elementindex_mail.html">mail</a></li>
+					<li><a href="elementindex_wind.html">wind</a></li>
+					<li><a href="elementindex_i18n.html">i18n</a></li>
+					<li><a href="elementindex_utility.html">utility</a></li>
+							<li><a href="elementindex_web.html">web</a></li>
+					<li><a href="elementindex_token.html">token</a></li>
+					<li><a href="elementindex_strategy.html">strategy</a></li>
+					<li><a href="elementindex_cache.html">cache</a></li>
+					<li><a href="elementindex_viewer.html">viewer</a></li>
+					<li><a href="elementindex_ftp.html">ftp</a></li>
+					<li><a href="elementindex_db.html">db</a></li>
+					<li><a href="elementindex_convert.html">convert</a></li>
+					<li><a href="elementindex_filter.html">filter</a></li>
+					<li><a href="elementindex_security.html">security</a></li>
+					<li><a href="elementindex_parser.html">parser</a></li>
+					<li><a href="elementindex_log.html">log</a></li>
+			</ul>
+	[ <a href="elementindex_http.html#a">a</a> ]
+	[ <a href="elementindex_http.html#b">b</a> ]
+	[ <a href="elementindex_http.html#c">c</a> ]
+	[ <a href="elementindex_http.html#d">d</a> ]
+	[ <a href="elementindex_http.html#e">e</a> ]
+	[ <a href="elementindex_http.html#f">f</a> ]
+	[ <a href="elementindex_http.html#g">g</a> ]
+	[ <a href="elementindex_http.html#h">h</a> ]
+	[ <a href="elementindex_http.html#i">i</a> ]
+	[ <a href="elementindex_http.html#m">m</a> ]
+	[ <a href="elementindex_http.html#n">n</a> ]
+	[ <a href="elementindex_http.html#o">o</a> ]
+	[ <a href="elementindex_http.html#p">p</a> ]
+	[ <a href="elementindex_http.html#r">r</a> ]
+	[ <a href="elementindex_http.html#s">s</a> ]
+	[ <a href="elementindex_http.html#t">t</a> ]
+	[ <a href="elementindex_http.html#u">u</a> ]
+	[ <a href="elementindex_http.html#w">w</a> ]
+	[ <a href="elementindex_http.html#_">_</a> ]
+<br /><br />
+	<a name="_"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">_</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>_</h2>
+		<dl>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#method__construct">WindNormalCookie::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#method__construct">WindHttpRequest::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化Request对象</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#method__construct">WindSession::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构造函数</dd>
+							<dt><b>_COOKIE</b></dt>
+				<dd>in file AbstractWindHttp.php, class constant <a href="http/transfer/AbstractWindHttp.html#const_COOKIE">AbstractWindHttp::_COOKIE</a></dd>
+							<dt><b>_DATA</b></dt>
+				<dd>in file AbstractWindHttp.php, class constant <a href="http/transfer/AbstractWindHttp.html#const_DATA">AbstractWindHttp::_DATA</a></dd>
+							<dt><b>_HEADER</b></dt>
+				<dd>in file AbstractWindHttp.php, class constant <a href="http/transfer/AbstractWindHttp.html#const_HEADER">AbstractWindHttp::_HEADER</a></dd>
+							<dt><b>__clone</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#method__clone">AbstractWindHttp::__clone()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;防止克隆</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#method__construct">WindHttpStream::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#method__construct">WindHttpSocket::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#method__construct">WindHttpCurl::__construct()</a></dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#method__construct">AbstractWindHttp::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;声明受保护的构造函数,避免在类的外界实例化</dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#method__destruct">WindHttpStream::__destruct()</a></dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#method__destruct">WindHttpSocket::__destruct()</a></dd>
+							<dt><b>__destruct</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#method__destruct">WindHttpCurl::__destruct()</a></dd>
+					</dl>
+	</div>
+	<a name="a"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">a</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>a</h2>
+		<dl>
+							<dt><b>addCookie</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodaddCookie">WindHttpResponse::addCookie()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;添加cookie信息</dd>
+							<dt><b>addHeader</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodaddHeader">WindHttpResponse::addHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置响应头信息，如果已经设置过同名的响应头，该方法将增加一个同名的响应头</dd>
+							<dt><b>AbstractWindSessionHandler</b></dt>
+				<dd>in file WindSessionHandler.php, class <a href="http/session-handler/AbstractWindSessionHandler.html">AbstractWindSessionHandler</a><br>&nbsp;&nbsp;&nbsp;&nbsp;注册sessionHandler的接口定义类</dd>
+							<dt><b>AbstractWindHttp</b></dt>
+				<dd>in file AbstractWindHttp.php, class <a href="http/transfer/AbstractWindHttp.html">AbstractWindHttp</a></dd>
+							<dt><b>AbstractWindHttp.php</b></dt>
+				<dd>procedural page <a href="http/transfer/_http---transfer---AbstractWindHttp.php.html">AbstractWindHttp.php</a></dd>
+					</dl>
+	</div>
+	<a name="b"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">b</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>b</h2>
+		<dl>
+							<dt><b>buildArray</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodbuildArray">AbstractWindHttp::buildArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以指定分隔符的形式来将数组转化成字符串</dd>
+							<dt><b>buildQuery</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodbuildQuery">AbstractWindHttp::buildQuery()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;构请查询字符串</dd>
+					</dl>
+	</div>
+	<a name="c"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">c</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>c</h2>
+		<dl>
+							<dt><b>clearBody</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodclearBody">WindHttpResponse::clearBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;清理响应体信息</dd>
+							<dt><b>clearHeaders</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodclearHeaders">WindHttpResponse::clearHeaders()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;清除响应头信息</dd>
+							<dt><b>codeMap</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodcodeMap">WindHttpResponse::codeMap()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;状态码映射</dd>
+							<dt><b>commit</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodcommit">WindSession::commit()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;写入session之后关闭session</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methodclose">WindSessionHandler::close()</a></dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodclose">AbstractWindSessionHandler::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;关闭会话存储存储机制</dd>
+							<dt><b>$cookie</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$cookie">AbstractWindHttp::$cookie</a></dd>
+							<dt><b>clear</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodclear">AbstractWindHttp::clear()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;请空数据，重新发送请求</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodclose">WindHttpStream::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;释放资源</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodclose">WindHttpSocket::close()</a></dd>
+							<dt><b>close</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodclose">AbstractWindHttp::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;关闭请求</dd>
+							<dt><b>close</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodclose">WindHttpCurl::close()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;释放资源</dd>
+					</dl>
+	</div>
+	<a name="d"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">d</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>d</h2>
+		<dl>
+							<dt><b>delete</b></dt>
+				<dd>in file IWindHttpContainer.php, method <a href="http/IWindHttpContainer.html#methoddelete">IWindHttpContainer::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除容器中的值</dd>
+							<dt><b>$domain</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$domain">WindNormalCookie::$domain</a></dd>
+							<dt><b>delete</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methoddelete">WindNormalCookie::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;移除cookie值</dd>
+							<dt><b>delete</b></dt>
+				<dd>in file WindCookie.php, method <a href="http/cookie/WindCookie.html#methoddelete">WindCookie::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据cookie的名字删除cookie</dd>
+							<dt><b>deleteAll</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methoddeleteAll">WindNormalCookie::deleteAll()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;移除全部cookie值</dd>
+							<dt><b>deleteAll</b></dt>
+				<dd>in file WindCookie.php, method <a href="http/cookie/WindCookie.html#methoddeleteAll">WindCookie::deleteAll()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;移除全部cookie</dd>
+							<dt><b>delete</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methoddelete">WindSession::delete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;删除数据</dd>
+							<dt><b>destroy</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methoddestroy">WindSession::destroy()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;清除会话信息</dd>
+							<dt><b>$dataStore</b></dt>
+				<dd>in file WindSessionHandler.php, variable <a href="http/session-handler/AbstractWindSessionHandler.html#var$dataStore">AbstractWindSessionHandler::$dataStore</a><br>&nbsp;&nbsp;&nbsp;&nbsp;保存session数据的实例</dd>
+							<dt><b>destroy</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methoddestroy">WindSessionHandler::destroy()</a></dd>
+							<dt><b>destroy</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methoddestroy">AbstractWindSessionHandler::destroy()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;销毁与指定的会话ID相关联的数据</dd>
+							<dt><b>$data</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$data">AbstractWindHttp::$data</a></dd>
+					</dl>
+	</div>
+	<a name="e"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">e</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>e</h2>
+		<dl>
+							<dt><b>$encode</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$encode">WindNormalCookie::$encode</a></dd>
+							<dt><b>$expires</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$expires">WindNormalCookie::$expires</a></dd>
+							<dt><b>exist</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodexist">WindNormalCookie::exist()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断cookie值是否存在</dd>
+							<dt><b>exist</b></dt>
+				<dd>in file WindCookie.php, method <a href="http/cookie/WindCookie.html#methodexist">WindCookie::exist()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;判断cookie是否存在</dd>
+							<dt><b>$eno</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$eno">AbstractWindHttp::$eno</a></dd>
+							<dt><b>$err</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$err">AbstractWindHttp::$err</a></dd>
+					</dl>
+	</div>
+	<a name="f"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">f</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>f</h2>
+		<dl>
+							<dt><b>FTP</b></dt>
+				<dd>in file WindHttpStream.php, class constant <a href="http/transfer/WindHttpStream.html#constFTP">WindHttpStream::FTP</a></dd>
+							<dt><b>FTPS</b></dt>
+				<dd>in file WindHttpStream.php, class constant <a href="http/transfer/WindHttpStream.html#constFTPS">WindHttpStream::FTPS</a></dd>
+					</dl>
+	</div>
+	<a name="g"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">g</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>g</h2>
+		<dl>
+							<dt><b>get</b></dt>
+				<dd>in file IWindHttpContainer.php, method <a href="http/IWindHttpContainer.html#methodget">IWindHttpContainer::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取容器中的内容值</dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodget">WindNormalCookie::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取cookie值</dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindCookie.php, method <a href="http/cookie/WindCookie.html#methodget">WindCookie::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得指定名称的cookie值</dd>
+							<dt><b>getDomain</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodgetDomain">WindNormalCookie::getDomain()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取cookie的域</dd>
+							<dt><b>getExpirs</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodgetExpirs">WindNormalCookie::getExpirs()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取cookie的过期时间</dd>
+							<dt><b>getPath</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodgetPath">WindNormalCookie::getPath()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取cookie的路径</dd>
+							<dt><b>getMime</b></dt>
+				<dd>in file WindMimeType.php, method <a href="http/mime/WindMimeType.html#methodgetMime">WindMimeType::getMime()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据内容的类型返回mime类型</dd>
+							<dt><b>getType</b></dt>
+				<dd>in file WindMimeType.php, method <a href="http/mime/WindMimeType.html#methodgetType">WindMimeType::getType()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据请求的mime类型获得返回内容类型</dd>
+							<dt><b>getAcceptCharset</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetAcceptCharset">WindHttpRequest::getAcceptCharset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回客户端程序可以能够进行解码的数据编码方式</dd>
+							<dt><b>getAcceptLanguage</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetAcceptLanguage">WindHttpRequest::getAcceptLanguage()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回客户端程序期望服务器返回哪个国家的语言文档</dd>
+							<dt><b>getAcceptTypes</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetAcceptTypes">WindHttpRequest::getAcceptTypes()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回当前请求头中 Accept: 项的内容，</dd>
+							<dt><b>getAttribute</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetAttribute">WindHttpRequest::getAttribute()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;根据名称获得服务器和执行环境信息</dd>
+							<dt><b>getBaseUrl</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetBaseUrl">WindHttpRequest::getBaseUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取基础URL</dd>
+							<dt><b>getClientIp</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetClientIp">WindHttpRequest::getClientIp()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回访问IP</dd>
+							<dt><b>getCookie</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetCookie">WindHttpRequest::getCookie()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回cookie的值</dd>
+							<dt><b>getEnv</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetEnv">WindHttpRequest::getEnv()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回ENV的值</dd>
+							<dt><b>getGet</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetGet">WindHttpRequest::getGet()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得$_GET值</dd>
+							<dt><b>getHeader</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetHeader">WindHttpRequest::getHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取Http头信息</dd>
+							<dt><b>getHostInfo</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetHostInfo">WindHttpRequest::getHostInfo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得主机信息，包含协议信息，主机名，访问端口信息</dd>
+							<dt><b>getIsAjaxRequest</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetIsAjaxRequest">WindHttpRequest::getIsAjaxRequest()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回该请求是否为ajax请求</dd>
+							<dt><b>getPathInfo</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetPathInfo">WindHttpRequest::getPathInfo()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回包含由客户端提供的、跟在真实脚本名称之后并且在查询语句（query string）之前的路径信息</dd>
+							<dt><b>getPost</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetPost">WindHttpRequest::getPost()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取请求的表单数据</dd>
+							<dt><b>getProtocol</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetProtocol">WindHttpRequest::getProtocol()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回请求页面时通信协议的名称和版本</dd>
+							<dt><b>getQuery</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetQuery">WindHttpRequest::getQuery()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取请求数据</dd>
+							<dt><b>getRemoteHost</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRemoteHost">WindHttpRequest::getRemoteHost()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回浏览当前页面的用户的主机名</dd>
+							<dt><b>getRemotePort</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRemotePort">WindHttpRequest::getRemotePort()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得用户机器上连接到 Web 服务器所使用的端口号</dd>
+							<dt><b>getRequest</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRequest">WindHttpRequest::getRequest()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得用户请求的数据</dd>
+							<dt><b>getRequestMethod</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRequestMethod">WindHttpRequest::getRequestMethod()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得请求的方法</dd>
+							<dt><b>getRequestType</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRequestType">WindHttpRequest::getRequestType()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得请求类型</dd>
+							<dt><b>getRequestUri</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetRequestUri">WindHttpRequest::getRequestUri()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化请求的资源标识符</dd>
+							<dt><b>getScheme</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetScheme">WindHttpRequest::getScheme()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取请求链接协议</dd>
+							<dt><b>getScript</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetScript">WindHttpRequest::getScript()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回执行脚本名称</dd>
+							<dt><b>getScriptUrl</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetScriptUrl">WindHttpRequest::getScriptUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回当前执行脚本的绝对路径</dd>
+							<dt><b>getServer</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetServer">WindHttpRequest::getServer()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回Server的值</dd>
+							<dt><b>getServerName</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetServerName">WindHttpRequest::getServerName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回当前运行脚本所在的服务器的主机名。</dd>
+							<dt><b>getServerPort</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetServerPort">WindHttpRequest::getServerPort()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回服务端口号</dd>
+							<dt><b>getSession</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetSession">WindHttpRequest::getSession()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回session的值</dd>
+							<dt><b>getUrlReferer</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetUrlReferer">WindHttpRequest::getUrlReferer()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回浏览器发送Referer请求头</dd>
+							<dt><b>getUserAgent</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodgetUserAgent">WindHttpRequest::getUserAgent()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回User-Agent头字段用于指定浏览器或者其他客户端程序的类型和名字</dd>
+							<dt><b>getBody</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodgetBody">WindHttpResponse::getBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取响应内容</dd>
+							<dt><b>getCharset</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodgetCharset">WindHttpResponse::getCharset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得输出的编码方式</dd>
+							<dt><b>getData</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodgetData">WindHttpResponse::getData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得保存输出数据</dd>
+							<dt><b>getHeaders</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodgetHeaders">WindHttpResponse::getHeaders()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取响应头信息</dd>
+							<dt><b>getResponseType</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodgetResponseType">WindHttpResponse::getResponseType()</a></dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodget">WindSession::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得数据</dd>
+							<dt><b>getCurrentId</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodgetCurrentId">WindSession::getCurrentId()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得sessionId</dd>
+							<dt><b>getCurrentName</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodgetCurrentName">WindSession::getCurrentName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获得当前session的名字</dd>
+							<dt><b>gc</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methodgc">WindSessionHandler::gc()</a></dd>
+							<dt><b>gc</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodgc">AbstractWindSessionHandler::gc()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;对存储系统中的数据进行垃圾收集</dd>
+							<dt><b>get</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodget">AbstractWindHttp::get()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;get方式传值</dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodget">WindHttpSocket::get()</a></dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodget">WindHttpStream::get()</a></dd>
+							<dt><b>get</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodget">WindHttpCurl::get()</a></dd>
+							<dt><b>GET</b></dt>
+				<dd>in file AbstractWindHttp.php, class constant <a href="http/transfer/AbstractWindHttp.html#constGET">AbstractWindHttp::GET</a></dd>
+							<dt><b>getError</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodgetError">WindHttpSocket::getError()</a></dd>
+							<dt><b>getError</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodgetError">WindHttpStream::getError()</a></dd>
+							<dt><b>getError</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodgetError">AbstractWindHttp::getError()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;取得http通信中的错误</dd>
+							<dt><b>getError</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodgetError">WindHttpCurl::getError()</a></dd>
+							<dt><b>getInstance</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodgetInstance">WindHttpStream::getInstance()</a></dd>
+							<dt><b>getInstance</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodgetInstance">WindHttpCurl::getInstance()</a></dd>
+							<dt><b>getInstance</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodgetInstance">AbstractWindHttp::getInstance()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;获取http单例对象,对象唯一访问入口</dd>
+							<dt><b>getInstance</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodgetInstance">WindHttpSocket::getInstance()</a></dd>
+					</dl>
+	</div>
+	<a name="h"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">h</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>h</h2>
+		<dl>
+							<dt><b>$httponly</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$httponly">WindNormalCookie::$httponly</a></dd>
+							<dt><b>$header</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$header">AbstractWindHttp::$header</a></dd>
+							<dt><b>$httpResource</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$httpResource">AbstractWindHttp::$httpResource</a></dd>
+							<dt><b>HTTP</b></dt>
+				<dd>in file WindHttpStream.php, class constant <a href="http/transfer/WindHttpStream.html#constHTTP">WindHttpStream::HTTP</a></dd>
+							<dt><b>HTTPS</b></dt>
+				<dd>in file WindHttpStream.php, class constant <a href="http/transfer/WindHttpStream.html#constHTTPS">WindHttpStream::HTTPS</a></dd>
+					</dl>
+	</div>
+	<a name="i"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">i</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>i</h2>
+		<dl>
+							<dt><b>IWindHttpContainer.php</b></dt>
+				<dd>procedural page <a href="http/_http---IWindHttpContainer.php.html">IWindHttpContainer.php</a></dd>
+							<dt><b>isRegistered</b></dt>
+				<dd>in file IWindHttpContainer.php, method <a href="http/IWindHttpContainer.html#methodisRegistered">IWindHttpContainer::isRegistered()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;检测变量是否已经被注册</dd>
+							<dt><b>IWindHttpContainer</b></dt>
+				<dd>in file IWindHttpContainer.php, class <a href="http/IWindHttpContainer.html">IWindHttpContainer</a><br>&nbsp;&nbsp;&nbsp;&nbsp;http容器类接口定义</dd>
+							<dt><b>isRegistered</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodisRegistered">WindNormalCookie::isRegistered()</a></dd>
+							<dt><b>IWindRequest.php</b></dt>
+				<dd>procedural page <a href="http/request/_http---request---IWindRequest.php.html">IWindRequest.php</a></dd>
+							<dt><b>INPUT_TYPE_COOKIE</b></dt>
+				<dd>in file IWindRequest.php, class constant <a href="http/request/IWindRequest.html#constINPUT_TYPE_COOKIE">IWindRequest::INPUT_TYPE_COOKIE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;常量定义COOKIE的别名</dd>
+							<dt><b>INPUT_TYPE_GET</b></dt>
+				<dd>in file IWindRequest.php, class constant <a href="http/request/IWindRequest.html#constINPUT_TYPE_GET">IWindRequest::INPUT_TYPE_GET</a><br>&nbsp;&nbsp;&nbsp;&nbsp;常量定义GET的别名</dd>
+							<dt><b>INPUT_TYPE_POST</b></dt>
+				<dd>in file IWindRequest.php, class constant <a href="http/request/IWindRequest.html#constINPUT_TYPE_POST">IWindRequest::INPUT_TYPE_POST</a><br>&nbsp;&nbsp;&nbsp;&nbsp;常量定义POST的别名</dd>
+							<dt><b>isDelete</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodisDelete">WindHttpRequest::isDelete()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回请求是否为DELETE请求类型</dd>
+							<dt><b>isGet</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodisGet">WindHttpRequest::isGet()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回请求是否为GET请求类型</dd>
+							<dt><b>isPost</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodisPost">WindHttpRequest::isPost()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回请求是否为POST请求类型</dd>
+							<dt><b>isPut</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodisPut">WindHttpRequest::isPut()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;返回请求是否为PUT请求类型</dd>
+							<dt><b>isSecure</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodisSecure">WindHttpRequest::isSecure()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;请求是否使用的是HTTPS安全链接</dd>
+							<dt><b>IWindRequest</b></dt>
+				<dd>in file IWindRequest.php, class <a href="http/request/IWindRequest.html">IWindRequest</a><br>&nbsp;&nbsp;&nbsp;&nbsp;request接口定义</dd>
+							<dt><b>IWindResponse.php</b></dt>
+				<dd>procedural page <a href="http/response/_http---response---IWindResponse.php.html">IWindResponse.php</a></dd>
+							<dt><b>isSendedHeader</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodisSendedHeader">WindHttpResponse::isSendedHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;是否已经发送了响应头部</dd>
+							<dt><b>IWindResponse</b></dt>
+				<dd>in file IWindResponse.php, class <a href="http/response/IWindResponse.html">IWindResponse</a><br>&nbsp;&nbsp;&nbsp;&nbsp;response的接口定义</dd>
+							<dt><b>isRegistered</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodisRegistered">WindSession::isRegistered()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;检测变量是否已经被注册</dd>
+							<dt><b>$instance</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$instance">AbstractWindHttp::$instance</a></dd>
+					</dl>
+	</div>
+	<a name="m"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">m</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>m</h2>
+		<dl>
+							<dt><b>$mimes</b></dt>
+				<dd>in file WindMimeType.php, variable <a href="http/mime/WindMimeType.html#var$mimes">WindMimeType::$mimes</a></dd>
+					</dl>
+	</div>
+	<a name="n"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">n</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>n</h2>
+		<dl>
+							<dt><b>normalizeRequest</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodnormalizeRequest">WindHttpRequest::normalizeRequest()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;初始化request对象</dd>
+					</dl>
+	</div>
+	<a name="o"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">o</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>o</h2>
+		<dl>
+							<dt><b>open</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methodopen">WindSessionHandler::open()</a></dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodopen">AbstractWindSessionHandler::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;在开始会话时调用初始化会话信息</dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodopen">WindHttpStream::open()</a></dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodopen">WindHttpSocket::open()</a></dd>
+							<dt><b>open</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodopen">WindHttpCurl::open()</a></dd>
+							<dt><b>open</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodopen">AbstractWindHttp::open()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;打开一个http请求</dd>
+					</dl>
+	</div>
+	<a name="p"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">p</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>p</h2>
+		<dl>
+							<dt><b>$path</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$path">WindNormalCookie::$path</a></dd>
+							<dt><b>$prefix</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$prefix">WindNormalCookie::$prefix</a></dd>
+							<dt><b>post</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodpost">WindHttpStream::post()</a></dd>
+							<dt><b>post</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodpost">WindHttpSocket::post()</a></dd>
+							<dt><b>post</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodpost">WindHttpCurl::post()</a></dd>
+							<dt><b>POST</b></dt>
+				<dd>in file AbstractWindHttp.php, class constant <a href="http/transfer/AbstractWindHttp.html#constPOST">AbstractWindHttp::POST</a></dd>
+							<dt><b>post</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodpost">AbstractWindHttp::post()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送post请求</dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>read</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodread">AbstractWindSessionHandler::read()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;从存储中装载session数据</dd>
+							<dt><b>read</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methodread">WindSessionHandler::read()</a></dd>
+							<dt><b>registerHandler</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodregisterHandler">AbstractWindSessionHandler::registerHandler()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置session的存储方法及注册session中各个handler</dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodrequest">WindHttpSocket::request()</a></dd>
+							<dt><b>request</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodrequest">AbstractWindHttp::request()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送请求</dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodrequest">WindHttpCurl::request()</a></dd>
+							<dt><b>request</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodrequest">WindHttpStream::request()</a></dd>
+							<dt><b>requestByArray</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodrequestByArray">AbstractWindHttp::requestByArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;以数组格式请求</dd>
+							<dt><b>requestByArray</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodrequestByArray">WindHttpSocket::requestByArray()</a></dd>
+							<dt><b>requestByArray</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodrequestByArray">WindHttpStream::requestByArray()</a></dd>
+							<dt><b>requestByArray</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodrequestByArray">WindHttpCurl::requestByArray()</a></dd>
+							<dt><b>resonseLine</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodresonseLine">WindHttpSocket::resonseLine()</a></dd>
+							<dt><b>resonseLine</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodresonseLine">WindHttpStream::resonseLine()</a></dd>
+							<dt><b>resonseLine</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodresonseLine">WindHttpCurl::resonseLine()</a></dd>
+							<dt><b>resonseLine</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodresonseLine">AbstractWindHttp::resonseLine()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;响应用户请求，只返回一行数据</dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodresponse">WindHttpStream::response()</a></dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodresponse">WindHttpCurl::response()</a></dd>
+							<dt><b>response</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodresponse">AbstractWindHttp::response()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;响应用户的请求</dd>
+							<dt><b>response</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodresponse">WindHttpSocket::response()</a></dd>
+					</dl>
+	</div>
+	<a name="s"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">s</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>s</h2>
+		<dl>
+							<dt><b>set</b></dt>
+				<dd>in file IWindHttpContainer.php, method <a href="http/IWindHttpContainer.html#methodset">IWindHttpContainer::set()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;向容器中设置值</dd>
+							<dt><b>$secure</b></dt>
+				<dd>in file WindNormalCookie.php, variable <a href="http/cookie/WindNormalCookie.html#var$secure">WindNormalCookie::$secure</a></dd>
+							<dt><b>set</b></dt>
+				<dd>in file WindCookie.php, method <a href="http/cookie/WindCookie.html#methodset">WindCookie::set()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置cookie</dd>
+							<dt><b>set</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodset">WindNormalCookie::set()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置cookie</dd>
+							<dt><b>setConfig</b></dt>
+				<dd>in file WindNormalCookie.php, method <a href="http/cookie/WindNormalCookie.html#methodsetConfig">WindNormalCookie::setConfig()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;配置设置</dd>
+							<dt><b>setAttribute</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodsetAttribute">WindHttpRequest::setAttribute()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置属性数据</dd>
+							<dt><b>setServerPort</b></dt>
+				<dd>in file WindHttpRequest.php, method <a href="http/request/WindHttpRequest.html#methodsetServerPort">WindHttpRequest::setServerPort()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置服务端口号</dd>
+							<dt><b>sendBody</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsendBody">WindHttpResponse::sendBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送响应内容</dd>
+							<dt><b>sendError</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsendError">WindHttpResponse::sendError()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送一个错误的响应信息</dd>
+							<dt><b>sendHeaders</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsendHeaders">WindHttpResponse::sendHeaders()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送响应头部信息</dd>
+							<dt><b>sendRedirect</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsendRedirect">WindHttpResponse::sendRedirect()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;重定向一个响应信息</dd>
+							<dt><b>sendResponse</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsendResponse">WindHttpResponse::sendResponse()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送响应信息</dd>
+							<dt><b>setBody</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetBody">WindHttpResponse::setBody()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置响应内容</dd>
+							<dt><b>setCharset</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetCharset">WindHttpResponse::setCharset()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置输出的编码方式</dd>
+							<dt><b>setData</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetData">WindHttpResponse::setData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置保存输出数据</dd>
+							<dt><b>setHeader</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetHeader">WindHttpResponse::setHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置响应头信息，如果已经设置过同名的响应头，该方法将用新的设置取代原来的头字段</dd>
+							<dt><b>setResponseType</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetResponseType">WindHttpResponse::setResponseType()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置当前请求的返回类型</dd>
+							<dt><b>setStatus</b></dt>
+				<dd>in file WindHttpResponse.php, method <a href="http/response/WindHttpResponse.html#methodsetStatus">WindHttpResponse::setStatus()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置响应头状态码</dd>
+							<dt><b>set</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodset">WindSession::set()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置数据</dd>
+							<dt><b>setCurrentId</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodsetCurrentId">WindSession::setCurrentId()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置当前session的Id</dd>
+							<dt><b>setCurrentName</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodsetCurrentName">WindSession::setCurrentName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置当前session的名字</dd>
+							<dt><b>setDataStoreHandler</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodsetDataStoreHandler">WindSession::setDataStoreHandler()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置链接对象</dd>
+							<dt><b>start</b></dt>
+				<dd>in file WindSession.php, method <a href="http/session/WindSession.html#methodstart">WindSession::start()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;开启session</dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindHttpSocket.php, method <a href="http/transfer/WindHttpSocket.html#methodsend">WindHttpSocket::send()</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodsend">WindHttpStream::send()</a></dd>
+							<dt><b>send</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsend">AbstractWindHttp::send()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;发送请求底层操作</dd>
+							<dt><b>send</b></dt>
+				<dd>in file WindHttpCurl.php, method <a href="http/transfer/WindHttpCurl.html#methodsend">WindHttpCurl::send()</a></dd>
+							<dt><b>setCookie</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetCookie">AbstractWindHttp::setCookie()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置cookie</dd>
+							<dt><b>setCookies</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetCookies">AbstractWindHttp::setCookies()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;批量设置要传送的cookie</dd>
+							<dt><b>setData</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetData">AbstractWindHttp::setData()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置data</dd>
+							<dt><b>setDatas</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetDatas">AbstractWindHttp::setDatas()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;批量设置要传送的数据</dd>
+							<dt><b>setHeader</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetHeader">AbstractWindHttp::setHeader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置http头</dd>
+							<dt><b>setHeaders</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetHeaders">AbstractWindHttp::setHeaders()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;批量设置http头</dd>
+							<dt><b>setUrl</b></dt>
+				<dd>in file AbstractWindHttp.php, method <a href="http/transfer/AbstractWindHttp.html#methodsetUrl">AbstractWindHttp::setUrl()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置url</dd>
+							<dt><b>setWrapper</b></dt>
+				<dd>in file WindHttpStream.php, method <a href="http/transfer/WindHttpStream.html#methodsetWrapper">WindHttpStream::setWrapper()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;设置通信协议</dd>
+							<dt><b>SOCKET</b></dt>
+				<dd>in file WindHttpStream.php, class constant <a href="http/transfer/WindHttpStream.html#constSOCKET">WindHttpStream::SOCKET</a></dd>
+					</dl>
+	</div>
+	<a name="t"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">t</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>t</h2>
+		<dl>
+							<dt><b>$timeout</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$timeout">AbstractWindHttp::$timeout</a></dd>
+					</dl>
+	</div>
+	<a name="u"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">u</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>u</h2>
+		<dl>
+							<dt><b>$url</b></dt>
+				<dd>in file AbstractWindHttp.php, variable <a href="http/transfer/AbstractWindHttp.html#var$url">AbstractWindHttp::$url</a></dd>
+					</dl>
+	</div>
+	<a name="w"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">w</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>w</h2>
+		<dl>
+							<dt><b>WindNormalCookie.php</b></dt>
+				<dd>procedural page <a href="http/cookie/_http---cookie---WindNormalCookie.php.html">WindNormalCookie.php</a></dd>
+							<dt><b>WindCookie.php</b></dt>
+				<dd>procedural page <a href="http/cookie/_utility---WindCookie.php.html">WindCookie.php</a></dd>
+							<dt><b>WindCookie</b></dt>
+				<dd>in file WindCookie.php, class <a href="http/cookie/WindCookie.html">WindCookie</a><br>&nbsp;&nbsp;&nbsp;&nbsp;cookie操作类</dd>
+							<dt><b>WindNormalCookie</b></dt>
+				<dd>in file WindNormalCookie.php, class <a href="http/cookie/WindNormalCookie.html">WindNormalCookie</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将cookie作为对象操作</dd>
+							<dt><b>WindMimeType.php</b></dt>
+				<dd>procedural page <a href="http/mime/_http---mime---WindMimeType.php.html">WindMimeType.php</a></dd>
+							<dt><b>WindMimeType</b></dt>
+				<dd>in file WindMimeType.php, class <a href="http/mime/WindMimeType.html">WindMimeType</a></dd>
+							<dt><b>WindHttpRequest.php</b></dt>
+				<dd>procedural page <a href="http/request/_http---request---WindHttpRequest.php.html">WindHttpRequest.php</a></dd>
+							<dt><b>WindHttpRequest</b></dt>
+				<dd>in file WindHttpRequest.php, class <a href="http/request/WindHttpRequest.html">WindHttpRequest</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Request对象</dd>
+							<dt><b>WindHttpResponse.php</b></dt>
+				<dd>procedural page <a href="http/response/_http---response---WindHttpResponse.php.html">WindHttpResponse.php</a></dd>
+							<dt><b>WindHttpResponse</b></dt>
+				<dd>in file WindHttpResponse.php, class <a href="http/response/WindHttpResponse.html">WindHttpResponse</a><br>&nbsp;&nbsp;&nbsp;&nbsp;response实现类</dd>
+							<dt><b>W_ACCEPTED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_ACCEPTED">WindHttpResponse::W_ACCEPTED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (202)</dd>
+							<dt><b>W_BAD_GATEWAY</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_BAD_GATEWAY">WindHttpResponse::W_BAD_GATEWAY</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (502)</dd>
+							<dt><b>W_BAD_REQUEST</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_BAD_REQUEST">WindHttpResponse::W_BAD_REQUEST</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (400)</dd>
+							<dt><b>W_CONFLICT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_CONFLICT">WindHttpResponse::W_CONFLICT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (409)</dd>
+							<dt><b>W_CONTINUE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_CONTINUE">WindHttpResponse::W_CONTINUE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (100)</dd>
+							<dt><b>W_CREATED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_CREATED">WindHttpResponse::W_CREATED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (201)</dd>
+							<dt><b>W_EXPECTATION_FAILED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_EXPECTATION_FAILED">WindHttpResponse::W_EXPECTATION_FAILED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (417)</dd>
+							<dt><b>W_FORBIDDEN</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_FORBIDDEN">WindHttpResponse::W_FORBIDDEN</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (403)</dd>
+							<dt><b>W_FOUND</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_FOUND">WindHttpResponse::W_FOUND</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (302)</dd>
+							<dt><b>W_GATEWAY_TIMEOUT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_GATEWAY_TIMEOUT">WindHttpResponse::W_GATEWAY_TIMEOUT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (504)</dd>
+							<dt><b>W_GONE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_GONE">WindHttpResponse::W_GONE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (410)</dd>
+							<dt><b>W_HTTP_VERSION_NOT_SUPPORTED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_HTTP_VERSION_NOT_SUPPORTED">WindHttpResponse::W_HTTP_VERSION_NOT_SUPPORTED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (505)</dd>
+							<dt><b>W_INTERNAL_SERVER_ERROR</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_INTERNAL_SERVER_ERROR">WindHttpResponse::W_INTERNAL_SERVER_ERROR</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (500)</dd>
+							<dt><b>W_LENGTH_REQUIRED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_LENGTH_REQUIRED">WindHttpResponse::W_LENGTH_REQUIRED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (411)</dd>
+							<dt><b>W_METHOD_NOT_ALLOWED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_METHOD_NOT_ALLOWED">WindHttpResponse::W_METHOD_NOT_ALLOWED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (405)</dd>
+							<dt><b>W_MOVED_PERMANENTLY</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_MOVED_PERMANENTLY">WindHttpResponse::W_MOVED_PERMANENTLY</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (301)</dd>
+							<dt><b>W_MOVED_TEMPORARILY</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_MOVED_TEMPORARILY">WindHttpResponse::W_MOVED_TEMPORARILY</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (302)</dd>
+							<dt><b>W_MULTIPLE_CHOICES</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_MULTIPLE_CHOICES">WindHttpResponse::W_MULTIPLE_CHOICES</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (300)</dd>
+							<dt><b>W_NON_AUTHORITATIVE_INFORMATION</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NON_AUTHORITATIVE_INFORMATION">WindHttpResponse::W_NON_AUTHORITATIVE_INFORMATION</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (203)</dd>
+							<dt><b>W_NOT_ACCEPTABLE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NOT_ACCEPTABLE">WindHttpResponse::W_NOT_ACCEPTABLE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (406)</dd>
+							<dt><b>W_NOT_FOUND</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NOT_FOUND">WindHttpResponse::W_NOT_FOUND</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (404)</dd>
+							<dt><b>W_NOT_IMPLEMENTED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NOT_IMPLEMENTED">WindHttpResponse::W_NOT_IMPLEMENTED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (501)</dd>
+							<dt><b>W_NOT_MODIFIED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NOT_MODIFIED">WindHttpResponse::W_NOT_MODIFIED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (304)</dd>
+							<dt><b>W_NO_CONTENT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_NO_CONTENT">WindHttpResponse::W_NO_CONTENT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (204)</dd>
+							<dt><b>W_OK</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_OK">WindHttpResponse::W_OK</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (200)</dd>
+							<dt><b>W_PARTIAL_CONTENT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_PARTIAL_CONTENT">WindHttpResponse::W_PARTIAL_CONTENT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (206)</dd>
+							<dt><b>W_PAYMENT_REQUIRED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_PAYMENT_REQUIRED">WindHttpResponse::W_PAYMENT_REQUIRED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (402)</dd>
+							<dt><b>W_PRECONDITION_FAILED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_PRECONDITION_FAILED">WindHttpResponse::W_PRECONDITION_FAILED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (412)</dd>
+							<dt><b>W_PROXY_AUTHENTICATION_REQUIRED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_PROXY_AUTHENTICATION_REQUIRED">WindHttpResponse::W_PROXY_AUTHENTICATION_REQUIRED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (407)</dd>
+							<dt><b>W_REQUESTED_RANGE_NOT_SATISFIABLE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_REQUESTED_RANGE_NOT_SATISFIABLE">WindHttpResponse::W_REQUESTED_RANGE_NOT_SATISFIABLE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (416)</dd>
+							<dt><b>W_REQUEST_ENTITY_TOO_LARGE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_REQUEST_ENTITY_TOO_LARGE">WindHttpResponse::W_REQUEST_ENTITY_TOO_LARGE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (413)</dd>
+							<dt><b>W_REQUEST_TIMEOUT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_REQUEST_TIMEOUT">WindHttpResponse::W_REQUEST_TIMEOUT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (408)</dd>
+							<dt><b>W_REQUEST_URI_TOO_LONG</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_REQUEST_URI_TOO_LONG">WindHttpResponse::W_REQUEST_URI_TOO_LONG</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (414)</dd>
+							<dt><b>W_RESET_CONTENT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_RESET_CONTENT">WindHttpResponse::W_RESET_CONTENT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (205)</dd>
+							<dt><b>W_SEE_OTHER</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_SEE_OTHER">WindHttpResponse::W_SEE_OTHER</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (303)</dd>
+							<dt><b>W_SERVICE_UNAVAILABLE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_SERVICE_UNAVAILABLE">WindHttpResponse::W_SERVICE_UNAVAILABLE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (503)</dd>
+							<dt><b>W_SWITCHING_PROTOCOLS</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_SWITCHING_PROTOCOLS">WindHttpResponse::W_SWITCHING_PROTOCOLS</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (101) indicating the server is switching protocols  according to Upgrade header.</dd>
+							<dt><b>W_TEMPORARY_REDIRECT</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_TEMPORARY_REDIRECT">WindHttpResponse::W_TEMPORARY_REDIRECT</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (307)</dd>
+							<dt><b>W_UNAUTHORIZED</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_UNAUTHORIZED">WindHttpResponse::W_UNAUTHORIZED</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (401)</dd>
+							<dt><b>W_UNSUPPORTED_MEDIA_TYPE</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_UNSUPPORTED_MEDIA_TYPE">WindHttpResponse::W_UNSUPPORTED_MEDIA_TYPE</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (415)</dd>
+							<dt><b>W_USE_PROXY</b></dt>
+				<dd>in file WindHttpResponse.php, class constant <a href="http/response/WindHttpResponse.html#constW_USE_PROXY">WindHttpResponse::W_USE_PROXY</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Status code (305)</dd>
+							<dt><b>WindSession.php</b></dt>
+				<dd>procedural page <a href="http/session/_http---session---WindSession.php.html">WindSession.php</a></dd>
+							<dt><b>WindSession</b></dt>
+				<dd>in file WindSession.php, class <a href="http/session/WindSession.html">WindSession</a><br>&nbsp;&nbsp;&nbsp;&nbsp;会话机制，依赖Cache机制实现，应用可以根据自己的需求配置需要的存储方式实现会话存储</dd>
+							<dt><b>WindSessionHandler.php</b></dt>
+				<dd>procedural page <a href="http/session-handler/_http---session---handler---WindSessionHandler.php.html">WindSessionHandler.php</a></dd>
+							<dt><b>WindSessionHandler</b></dt>
+				<dd>in file WindSessionHandler.php, class <a href="http/session-handler/WindSessionHandler.html">WindSessionHandler</a><br>&nbsp;&nbsp;&nbsp;&nbsp;注册session处理的方法</dd>
+							<dt><b>write</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/WindSessionHandler.html#methodwrite">WindSessionHandler::write()</a></dd>
+							<dt><b>write</b></dt>
+				<dd>in file WindSessionHandler.php, method <a href="http/session-handler/AbstractWindSessionHandler.html#methodwrite">AbstractWindSessionHandler::write()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;将sessionID对应的数据写到存储</dd>
+							<dt><b>WindHttpCurl.php</b></dt>
+				<dd>procedural page <a href="http/transfer/_http---transfer---WindHttpCurl.php.html">WindHttpCurl.php</a></dd>
+							<dt><b>WindHttpSocket.php</b></dt>
+				<dd>procedural page <a href="http/transfer/_http---transfer---WindHttpSocket.php.html">WindHttpSocket.php</a></dd>
+							<dt><b>WindHttpStream.php</b></dt>
+				<dd>procedural page <a href="http/transfer/_http---transfer---WindHttpStream.php.html">WindHttpStream.php</a></dd>
+							<dt><b>WindHttpCurl</b></dt>
+				<dd>in file WindHttpCurl.php, class <a href="http/transfer/WindHttpCurl.html">WindHttpCurl</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Enter description here ...</dd>
+							<dt><b>WindHttpSocket</b></dt>
+				<dd>in file WindHttpSocket.php, class <a href="http/transfer/WindHttpSocket.html">WindHttpSocket</a><br>&nbsp;&nbsp;&nbsp;&nbsp;socket操作</dd>
+							<dt><b>WindHttpStream</b></dt>
+				<dd>in file WindHttpStream.php, class <a href="http/transfer/WindHttpStream.html">WindHttpStream</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Enter description here ...</dd>
+					</dl>
+	</div>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:24 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

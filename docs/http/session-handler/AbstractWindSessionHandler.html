@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class AbstractWindSessionHandler</title>
+	<link rel="stylesheet" type="text/css" href="../../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">http<br /><div class="header-top-right-subpackage">session-handler</div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                                                                                                                                                    
+                                                                                                                                                                                                            		[ <a href="../../classtrees_http.html" class="menu">class tree: http</a> ]
+		[ <a href="../../elementindex_http.html" class="menu">index: http</a> ]
+            [ <a href="../../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">http</div>
+            <br />
+            <b>Interfaces:</b><br />
+        <div class="package">
+		    		<a href="../../http/IWindHttpContainer.html">IWindHttpContainer</a>    	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="../../http/request/IWindRequest.html">IWindRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="../../http/response/IWindResponse.html">IWindResponse</a>    </span>	 <br />
+	  </div>
+                  <b>Classes:</b><br />
+        <div class="package">
+	transfer<br />	    <span style="padding-left: 1em;">		<a href="../../http/transfer/AbstractWindHttp.html">AbstractWindHttp</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpCurl.html">WindHttpCurl</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpSocket.html">WindHttpSocket</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/transfer/WindHttpStream.html">WindHttpStream</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	request<br />	    <span style="padding-left: 1em;">		<a href="../../http/request/WindHttpRequest.html">WindHttpRequest</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	response<br />	    <span style="padding-left: 1em;">		<a href="../../http/response/WindHttpResponse.html">WindHttpResponse</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	cookie<br />	    <span style="padding-left: 1em;">		<a href="../../http/cookie/WindCookie.html">WindCookie</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/cookie/WindNormalCookie.html">WindNormalCookie</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	mime<br />	    <span style="padding-left: 1em;">		<a href="../../http/mime/WindMimeType.html">WindMimeType</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session<br />	    <span style="padding-left: 1em;">		<a href="../../http/session/WindSession.html">WindSession</a>    </span>	 <br />
+	  </div>
+  <div class="package">
+	session-handler<br />	    <span style="padding-left: 1em;">		<a href="../../http/session-handler/AbstractWindSessionHandler.html">AbstractWindSessionHandler</a>    </span>	 <br />
+	    <span style="padding-left: 1em;">		<a href="../../http/session-handler/WindSessionHandler.html">WindSessionHandler</a>    </span>	 <br />
+	  </div>
+                  <br />
+      <b>Packages:</b>
+  <div class="package">
+              <a href="../../li_default.html">default</a><br />
+              <a href="../../li_.html"></a><br />
+              <a href="../../li_base.html">base</a><br />
+              <a href="../../li_cache.html">cache</a><br />
+              <a href="../../li_collections.html">collections</a><br />
+              <a href="../../li_convert.html">convert</a><br />
+              <a href="../../li_dao.html">dao</a><br />
+              <a href="../../li_db.html">db</a><br />
+              <a href="../../li_filter.html">filter</a><br />
+              <a href="../../li_ftp.html">ftp</a><br />
+              <a href="../../li_http.html">http</a><br />
+              <a href="../../li_i18n.html">i18n</a><br />
+              <a href="../../li_log.html">log</a><br />
+              <a href="../../li_mail.html">mail</a><br />
+              <a href="../../li_parser.html">parser</a><br />
+              <a href="../../li_router.html">router</a><br />
+              <a href="../../li_security.html">security</a><br />
+              <a href="../../li_strategy.html">strategy</a><br />
+              <a href="../../li_token.html">token</a><br />
+              <a href="../../li_upload.html">upload</a><br />
+              <a href="../../li_utility.html">utility</a><br />
+              <a href="../../li_viewer.html">viewer</a><br />
+              <a href="../../li_web.html">web</a><br />
+              <a href="../../li_wind.html">wind</a><br />
+      	</div>
+      
+    </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: AbstractWindSessionHandler</h1>
+Source Location: /http/session/handler/WindSessionHandler.php<br /><br />
+
+<h2 class="class-name">Class AbstractWindSessionHandler</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+							| <a href="#sec-descendants">Descendants</a>
+				
+											| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>注册sessionHandler的接口定义类
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_http---session---handler---WindSessionHandler.php.html">/http/session/handler/WindSessionHandler.php</a> [<span class="field">line 72</span>]
+		</p>
+
+		
+		<pre></pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>xiaoxia.xu &lt;<a href="mailto:xiaoxia.xuxx@aliyun-inc.com">xiaoxia.xuxx@aliyun-inc.com</a>&gt;</li>
+			 		  			 		  			 		  			 		  			 		  		</ul>
+		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>$Id: WindSessionHandler.php 2973 2011-10-15 19:22:48Z yishuo $</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>©2003-2103 phpwind.com</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td><a href="http://www.windframework.com">http://www.windframework.com</a></td></tr>
+	</table>
+		</td>
+
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_vars">Properties</a></strong></p>
+		<ul>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#var$dataStore">$dataStore</a></li>
+		  		</ul>
+		</td>
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodclose">close</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methoddestroy">destroy</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodgc">gc</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodopen">open</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodread">read</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodregisterHandler">registerHandler</a></li>
+		  		  <li><a href="../../http/session-handler/AbstractWindSessionHandler.html#methodwrite">write</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+	<a name="sec-descendants"></a>
+	<div class="info-box">
+		<div class="info-box-title">Descendants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <span class="disabled">Descendants</span>
+															| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+														| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+									</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Child Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../http/session-handler/WindSessionHandler.html">WindSessionHandler</a></td>
+					<td>
+											注册session处理的方法
+										</td>
+				</tr>
+							</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Property Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+									| <span class="disabled">Property Summary</span> | <a href="#sec-vars">Properties Detail</a>
+												| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+			<table border="0" cellspacing="0" cellpadding="0" class="var-summary">
+																			<div class="var-title">
+					<tr><td class="var-title"><span class="var-type-summary"><a href="../../cache/AbstractWindCache.html">AbstractWindCache</a></span>&nbsp;&nbsp;</td>
+					<td class="var-title"><a href="#$dataStore" title="details" class="var-name-summary">$dataStore</a>&nbsp;&nbsp;</td>
+					<td class="var-summary-description">保存session数据的实例</td></tr>
+				</div>
+										</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+							    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#close" title="details" class="method-name">close</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">关闭会话存储存储机制</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#destroy" title="details" class="method-name">destroy</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">销毁与指定的会话ID相关联的数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#gc" title="details" class="method-name">gc</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">对存储系统中的数据进行垃圾收集</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#open" title="details" class="method-name">open</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">在开始会话时调用初始化会话信息</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#read" title="details" class="method-name">read</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">从存储中装载session数据</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#registerHandler" title="details" class="method-name">registerHandler</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">设置session的存储方法及注册session中各个handler</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#write" title="details" class="method-name">write</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">将sessionID对应的数据写到存储</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Properties</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+													| <a href="#sec-var-summary">Property Summary</a> | <span class="disabled">Properties Detail</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+												</div>
+		<div class="info-box-body">
+			<a name="var$dataStore" id="$dataStore"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type"><a href="../../cache/AbstractWindCache.html">AbstractWindCache</a></span>&nbsp;&nbsp;
+			<span class="var-name">$dataStore</span>
+			 = <span class="var-default"> null</span>			<span class="smalllinenumber">[line 78]</span>
+		</span>
+	</div>
+
+	<p align="center" class="short-description"><strong>保存session数据的实例
+</strong></p>
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+<br />
+
+
+	
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+							| <a href="#sec-descendants">Descendants</a>
+																		| <a href="#sec-var-summary">Property Summary</a> | <a href="#sec-vars">Properties Detail</a>
+																	| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="methodclose" id="close"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">close</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 98]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean close(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>关闭会话存储存储机制
+</strong></p>
+<span class="description"><p>在页面执行完的时候执行</p></span>
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methodclose">WindSessionHandler::close()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddestroy" id="destroy"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">destroy</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 143]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void destroy(
+string
+$sessID&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>销毁与指定的会话ID相关联的数据
+</strong></p>
+<span class="description"><p>在执行session_destroy的时候执行。</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessID:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 会话ID</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methoddestroy">WindSessionHandler::destroy()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgc" id="gc"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">gc</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 133]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void gc(
+int
+$maxlifetime&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>对存储系统中的数据进行垃圾收集
+</strong></p>
+<span class="description"><p>在执行session过期策略的时候执行，注意，session的过期并不是时时的，需要根据php.ini中的配置项：  session.gc_probability = 1  session.gc_divisor = 1000  执行的概率是gc_probability/gc_divisor .  session.gc_maxlifetime = 1440  设置的session的过期时间</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$maxlifetime:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 过期时间单位秒</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methodgc">WindSessionHandler::gc()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodopen" id="open"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">open</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 89]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean open(
+string
+$savePath, string
+$sessionName&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>在开始会话时调用初始化会话信息
+</strong></p>
+<span class="description"><p>用以从从保存的介质中获取session数据</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$savePath:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 保存的地址</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessionName:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 会话的名字</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methodopen">WindSessionHandler::open()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodread" id="read"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">read</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 119]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void read(
+
+$sessID, string
+$sessid&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>从存储中装载session数据
+</strong></p>
+<span class="description"><p>在执行session_start的时候执行在open之后</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessid:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 会话ID</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessID:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methodread">WindSessionHandler::read()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodregisterHandler" id="registerHandler"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">registerHandler</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 151]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void registerHandler(
+<a href="../../cache/AbstractWindCache.html">AbstractWindCache</a>
+$dataStore&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>设置session的存储方法及注册session中各个handler
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type"><a href="../../cache/AbstractWindCache.html">AbstractWindCache</a></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$dataStore:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 存储方式</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodwrite" id="write"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">write</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 109]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void write(
+string
+$sessID, mixed
+$sessData&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>将sessionID对应的数据写到存储
+</strong></p>
+<span class="description"><p>在sessionClose之前执行写入session数据的</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessID:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 会话ID</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$sessData:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> 该会话产生的数据</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Abstract:</strong>&nbsp;&nbsp;</td><td></td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Access:</strong>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+<br />
+
+
+		
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../../http/session-handler/WindSessionHandler.html#methodwrite">WindSessionHandler::write()</a>
+							</li>
+				</ul>
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Fri, 30 Mar 2012 11:43:40 +0800 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.4</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
