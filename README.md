@@ -21,7 +21,7 @@ windframework是一个轻量级的php开源框架。它以组件工厂为核心�
 ##环境要求：
 
 * php5.1.2及以上版本。
-* 可发布的web环境，apache或aginx
+* 可发布的web环境，apache或nginx
 
 ##开始我们的helloworld之旅
 
