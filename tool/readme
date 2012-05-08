@@ -1,0 +1,29 @@
+Wind Tool：
+
+wind tool工具包，包含了一组工程工具。用于快速创建wind框架工程、自定义方式创建wind框架工程、效率优化等。
+支持命令行模式（cmd，sh），web可视化模式等。
+
+快速工程创建：
+install.php\sh
+系统将会自动生成工程目录、启动脚本（index.php）、应用配置文件（config.php）、默认controller等，如下：
+/wind						---框架目录
+/data						---缓存目录
+/template					---模板目录
+/src/controller				---业务逻辑处理
+	IndexController.php
+/conf						---配置目录
+	config.php
+/www						---web可访问资源目录
+	index.php
+
+注： 默认情况下生成的配置文件为php格式
+
+分为‘自定义’、‘标准’两种模式。
+自定义模式：
+用户可以自定义：
+1. 目录结构
+2. 目录名称
+...
+
+1. 快速创建wind工程，支持自定义工程目录结构
+2. 效率优化,支持'预加载处理'、'核心打包加载'
