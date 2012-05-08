@@ -1,24 +1,23 @@
-<div class="grid cc mb10">
-	<div class="bA">
-		<div class="content">
-<!--#if(isset($userInfo)):#-->
+
+<!--#if($userInfo):#-->
 			<div class="mb10 f16 b">恭喜您,注册成功!</div>
 			<div class="mb10 f14">&rsaquo;&rsaquo;<a href="{@WindUrlHelper::createUrl('run')}">返回登录</a></div>
 <!--#else:#-->
-			<div class="mb10 f16 b">用户注册</div>
-			<form name="reg" action="{@WindUrlHelper::createUrl('dreg')}" method="post">
-			<dl class="mb10">
-				<dt>姓名<span class="s1">*</span></dt>
+<h2 class="h"><strong>用户注册</strong></h2>
+<form name="reg" action="{@WindUrlHelper::createUrl('dreg')}" method="post">
+			<div class="login">
+			<dl>
+				<dt><label>帐号</label></dt>
 				<dd><input name="username" type="text" class="input" ></dd>
 			</dl>
-			<dl class="mb10">
-				<dt>密码<span class="s1">*</span></dt>
+			<dl>
+				<dt><label>密码</label></dt>
 				<dd><input name="password" type="text" class="input"></dd>
 			</dl>
-			<span class="btn" style="margin:0 0;"><span><button type="submit">提 交</button></span></span>
-			<span class="bt" style="margin:0 0;"><span><button type="button"  onclick="javascript:document.location.href='{@WindUrlHelper::createUrl('run')}';">返回登录</button></span></span>
+			<dl>
+				<dd><button type="submit">提 交</button>
+				<button type="button" onclick="javascript:document.location.href='{@WindUrlHelper::createUrl('run')}';">返回登录</button></dd>
+			</dl>
+			</div>
 			</form>
 <!--#endif;#-->
-		</div>
-	</div>
-</div>

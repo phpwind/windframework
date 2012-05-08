@@ -1,5 +1,4 @@
 <?php
-Wind::import('model.UserForm');
 /**
  * 默认的 controller
  *
@@ -10,53 +9,27 @@ Wind::import('model.UserForm');
  * @package demos.blog.controller
  */
 class IndexController extends WindController {
-	/**
-	 * @var UserForm
-	 */
-	private $userInfo;
-	/**
-	 * @var WindSession
-	 */
-	private $session;
 
 	/* (non-PHPdoc)
 	 * @see WindSimpleController::beforeAction()
 	 */
 	public function beforeAction($handlerAdapter) {
 		parent::beforeAction($handlerAdapter);
-		$this->session = $this->getSystemFactory()->getInstance('windSession');
-		$this->userInfo = $this->session->get('user');
 		$this->setLayout('layout');
-		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'images');
-		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'css');
 		$this->setOutput('utf8', 'charset');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/template/images', 'images');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/template/images', 'css');
 	}
 
 	/* (non-PHPdoc)
 	 * @see WindController::run()
 	 */
 	public function run() {
-		$this->setOutput($this->userInfo, 'userInfo');
+		Wind::import('service.UserForm');
+		$userService = $this->load();
+		$userInfo = $userService->isLogin();
+		$this->setOutput($userInfo, 'userInfo');
 		$this->setTemplate('index');
-	}
-
-	/**
-	 * 用户登录
-	 */
-	public function loginAction() {
-		if ($this->userInfo) $this->showMessage('已登录，请先注销.');
-		/* @var $userForm UserForm */
-		$userForm = $this->getInput("userForm");
-		if (!$userForm) $this->showMessage('获取用户登录数据失败');
-		
-		/* @var $db WindConnection */
-		$db = $this->getSystemFactory()->getInstance('db');
-		$stmt = $db->createStatement('SELECT userid FROM user WHERE username=:username AND password =:password');
-		if (!$stmt->getValue(array('username' => $userForm->getUsername(), 'password' => $userForm->getPassword()))) {
-			$this->showMessage('登录失败.');
-		}
-		$this->session->set('user', $userForm);
-		$this->forwardRedirect(WindUrlHelper::createUrl('run'));
 	}
 
 	/**
@@ -67,20 +40,29 @@ class IndexController extends WindController {
 	}
 
 	/**
+	 * 用户登录
+	 */
+	public function loginAction() {
+		$userService = $this->load();
+		$userInfo = $userService->isLogin();
+		if ($userInfo) $this->showMessage('已登录~');
+		
+		/* @var $userForm UserForm */
+		$userForm = $this->getInput("userForm");
+		if (!$userForm) $this->showMessage('获取用户登录数据失败');
+		
+		if (!$userService->login($userForm)) $this->showMessage('登录失败.');
+		$this->forwardRedirect(WindUrlHelper::createUrl('run'));
+	}
+
+	/**
 	 * 处理用户注册表单
 	 */
 	public function dregAction() {
-		$this->session->destroy();
-		if ($userForm = $this->getInput("userForm")) {
-			$db = $this->getSystemFactory()->getInstance('db');
-			$stmt = $db->createStatement('SELECT * FROM user WHERE username=:username');
-			if ($stmt->getOne(array(':username' => $userForm->getUsername()))) $this->showMessage('该用户已经注册.');
-			if (!$db->execute(
-				"INSERT INTO user SET " . $db->sqlSingle(
-					array('username' => $userForm->getUsername(), 'password' => $userForm->getPassword())))) $this->showMessage(
-				'注册失败.');
-			$this->setOutput($userForm, 'userInfo');
-		}
+		$userService = $this->load();
+		$userForm = $this->getInput("userForm");
+		if (!$userService->register($userForm)) $this->showMessage('注册失败.');
+		$this->setOutput($userForm, 'userInfo');
 		$this->setTemplate('reg');
 	}
 
@@ -88,7 +70,14 @@ class IndexController extends WindController {
 	 * 用户退出
 	 */
 	public function logoutAction() {
-		$this->session->destroy();
+		$this->load()->logout();
 		$this->forwardRedirect(WindUrlHelper::createUrl('run'));
+	}
+
+	/**
+	 * @return UserService
+	 */
+	private function load() {
+		return Wind::getApp()->getWindFactory()->createInstance(Wind::import('service.UserService'));
 	}
 }

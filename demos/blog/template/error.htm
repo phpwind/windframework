@@ -1,17 +1,16 @@
 <div class="grid cc mb10">
 	<div class="bA">
 		<div class="content">
-<ul>
+<ol>
 	<!--#foreach ($errors as $key => $error):
-		$key = $key + 1;
 		if(!WIND_DEBUG)
 			$error = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $error);#-->
-	<li>{$key}. {$error}</li>
+	<li>{$error}</li>
 	<!--#endforeach;#-->
-</ul>
+</ol>
 <br>
-<div class="mb10 f14"><a href='{@WindUrlHelper::createUrl('run')}'>&rsaquo;&rsaquo;返回首页</a></div>
-<h2 class="f14 b">You Can Get Help In:</h2>
+<div class="mb10 f14"><a href="{@WindUrlHelper::createUrl('run')}">&rsaquo;&rsaquo;返回首页</a></div>
+<h2 class="h"><strong>You Can Get Help In:</strong></h2>
 <p><?php echo "The server encountered an internal error and failed to process your request. 
 Please try again later. If this error is temporary, reloading the page might resolve the problem.
 \nIf you are able to contact the administrator report this error message.

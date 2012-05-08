@@ -1,0 +1,447 @@
+@charset "utf-8";
+/*
+===================
+@copyright: Copyright 2012,phpwind.com
+@author: yanchixia@aliyun-inc.com
+===================
+*/
+/*
+===================
+初始化【请勿修改】
+===================
+*/
+html,body, 
+div, dl, dt, dd, ul, p, th, td,
+h1, h2, h3, h4, h5, h6, 
+pre, code, form, 
+fieldset, legend{
+	margin: 0;
+	padding: 0;
+}
+cite, 
+em, 
+strong, 
+th {
+	font-style: normal;
+}
+td, 
+th, 
+div {
+	word-break:break-all;
+	word-wrap:break-word;
+}
+table {
+	border-collapse: collapse;
+	border-spacing:0;
+}
+th {
+	text-align: left;
+	font-weight:100;
+}
+ol li {
+	list-style: decimal outside;
+}
+ol{
+	padding:0 0 0 18px;
+	margin:0;
+}
+li {
+	list-style:none;
+}
+img {
+	border: 0;
+}
+html {
+	-webkit-text-size-adjust:none;
+}
+
+/*
+===================
+清除浮动【请勿修改】
+>>	cc	作用于父模型
+>>	c		作用于浮动模型后，父模型区域里
+===================
+*/
+.cc{
+	zoom:1;
+}
+.cc:after{
+	content:'\20';
+	display:block;
+	height:0;
+	clear:both;
+	visibility: hidden;
+}
+
+/*
+===================
+结构
+===================
+*/
+html{
+	overflow-y:scroll;
+}
+body{
+	background:url(bg.png);
+	font:14px/1.5 Arial "Microsoft Yahei";
+}
+.head_wrap{
+	background:url(head.png);
+	height:90px;
+}
+.main_wrap{
+	border-top:1px solid #ffffff;
+	min-height:600px;
+}
+.head,
+.main{
+	width:800px;
+	margin:0 auto;
+}
+.main{
+	padding:20px 0;
+}
+a{
+	color:#3a7cbb;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:underline;
+}
+
+/*
+===================
+logo
+===================
+*/
+.logo{
+	float:left;
+	margin:25px 0 0 0;
+}
+
+/*
+===================
+导航
+===================
+*/
+.nav{
+	float:right;
+	padding-top:42px;
+}
+.nav li{
+	float:left;
+	margin-left:30px;
+	padding:15px 0;
+	position:relative;
+}
+.nav li a{
+	color:#fff;
+	font-size:14px;
+	font-weight:700;
+	text-decoration:none;
+}
+.nav li.current em{
+	position:absolute;
+	width:0;
+	height:0;
+	padding:0;
+	bottom:0;
+	left:50%;
+	margin-left:-8px;
+	border-bottom:8px #fff solid;
+	border-top:8px transparent dashed;
+	border-right:8px transparent dashed;
+	border-left:8px transparent dashed;
+	overflow:hidden;
+}
+
+/*
+===================
+底部
+===================
+*/
+.footer_wrap{
+	background:#000;
+	padding:5px;
+	color:#999;
+	text-align:center;
+	font-size:12px;
+}
+
+/*
+===================
+通用标题
+===================
+*/
+.h{
+	font-size:16px;
+	font-weight:400;
+	padding:10px 0;
+	background:url(hr.png) 0 bottom repeat-x;
+}
+
+/*
+===================
+首页框架简介
+===================
+*/
+.home_info{
+	padding:15px 0;
+	font-size:14px;
+	color:#666;
+	line-height:1.8;
+}
+
+/*
+===================
+下载
+===================
+*/
+.home_down{
+	padding:15px 0;
+	color:#666;
+}
+.home_down .downlink{
+	height:56px;
+	margin-bottom:15px;
+}
+.home_down .other{
+	padding-bottom:10px;
+}
+.home_down .other a{
+	margin-right:20px;
+}
+
+/*
+===================
+下载按钮
+===================
+*/
+.zip_down,
+.tar_down{
+	float:left;
+	height:56px;
+	width:211px;
+	overflow:hidden;
+	text-indent:-2000em;
+	background:url(down.png) no-repeat;
+	margin-right:20px;
+}
+.zip_down:hover{
+	background-position:0 -56px;
+}
+.tar_down{
+	background-position:0 -112px;
+}
+.tar_down:hover{
+	background-position:0 -168px;
+}
+
+/*
+===================
+优点
+===================
+*/
+.home_actor{
+	padding:15px 0;
+}
+.home_actor li{
+	float:left;
+	width:49.8%;
+	height:120px;
+	padding:15px 0 0;
+	font-size:16px;
+	color:#666;
+}
+.home_actor li span{
+	overflow:hidden;
+	float:left;
+	width:280px;
+}
+.home_actor li:hover span{
+	color:#115cb7;
+}
+.home_actor li p{
+	float:left;
+	width:300px;
+	font-size:12px;
+	color:#999;
+}
+.home_actor li:hover p{
+	color:#333;
+}
+.home_actor li em{
+	width:30px;
+	height:30px;
+	float:left;
+	margin-right:15px;
+	background:url(num.png) no-repeat;
+	text-indent:-2000em;
+	overflow:hidden;
+}
+.home_actor li em.num_1{
+	background-position:0 0;
+}
+.home_actor li em.num_2{
+	background-position:-30px 0;
+}
+.home_actor li em.num_3{
+	background-position:-60px 0;
+}
+.home_actor li em.num_4{
+	background-position:-90px 0;
+}
+.home_actor li em.num_5{
+	background-position:-120px 0;
+}
+.home_actor li em.num_6{
+	background-position:-150px 0;
+}
+.home_actor li em.num_7{
+	background-position:-180px 0;
+}
+.home_actor li em.num_8{
+	background-position:-210px 0;
+}
+.home_actor li em.num_9{
+	background-position:-240px 0;
+}
+.home_actor li em.num_10{
+	background-position:-270px 0;
+}
+.home_actor li em.num_11{
+	background-position:-300px 0;
+}
+.home_actor li em.num_12{
+	background-position:-330px 0;
+}
+.home_actor li em.num_13{
+	background-position:-360px 0;
+}
+.home_actor li em.num_14{
+	background-position:-390px 0;
+}
+.home_actor li em.num_15{
+	background-position:-420px 0;
+}
+.home_actor li em.num_16{
+	background-position:-450px 0;
+}
+.home_actor li em.num_17{
+	background-position:-480px 0;
+}
+.home_actor li:hover{
+	color:#333;
+}
+
+/*
+===================
+项目背景
+===================
+*/
+.project_bg{
+	padding:20px 0;
+	color:#444;
+}
+.project_bg p{
+	padding:0 0 20px;
+	line-height:1.8;
+	text-indent:2em;
+}
+
+/*
+===================
+框架介绍
+===================
+*/
+.framework_info{
+	padding:0;
+	color:#444;
+}
+.framework_info h3{
+	padding-top:20px;
+	font-size:16px;
+	margin-bottom:10px;
+	color:#074179;
+}
+.framework_info h4{
+	font-size:14px;
+	margin-bottom:10px;
+	color:#5183b2;
+}
+.framework_info p{
+	padding:0 0 20px;
+	line-height:1.8;
+	text-indent:2em;
+}
+.framework_info .thumb{
+	padding:10px;
+	background:#fff;
+	border:1px solid #e4e4e4;
+	text-align:center;
+	margin-bottom:10px;
+	overflow:hidden;
+}
+.framework_info .thumb p{
+	padding:10px 0 0;
+}
+.framework_info ol{
+	margin-left:3em;
+	margin-bottom:20px;
+}
+
+.code{
+	border:1px solid #e4e4e4;
+	min-height:200px;
+	margin-bottom:20px;
+	background:#fff;
+}
+
+
+
+
+
+
+
+.login{
+	padding:50px 20px;
+}
+.login dd{
+	padding:5px 0 20px;
+}
+.login .input{
+	padding:4px 4px;
+	font-size:100%;
+	line-height:18px;
+	border:1px solid #ccc;
+	background-color:#fff;
+	box-shadow:2px 2px 2px #f0f0f0 inset;
+	vertical-align: middle;
+  margin: 0;
+	font-family: inherit;
+	color:#333;
+	width:200px;
+}
+.input:focus{
+	outline:1px solid #99d8f5;
+	border-color:#99d8f5;
+}
+.login button{
+	overflow:visible;
+	padding:0 0px;
+	cursor:pointer;
+	height:30px;
+	text-align:center;
+	width:80px;
+}
+
+
+
+
+
+
+
+
+
+
+

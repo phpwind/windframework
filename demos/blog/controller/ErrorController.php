@@ -16,8 +16,8 @@ class ErrorController extends WindErrorHandler {
 	 */
 	public function run() {
 		$this->setLayout('layout');
-		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'images');
-		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/static/images', 'css');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/template/images', 'images');
+		$this->setGlobal($this->getRequest()->getBaseUrl(true) . '/template/images', 'css');
 		$topic = "Blog Error";
 		$this->setOutput($topic, "errorHeader");
 		$this->setOutput($this->urlReferer, "baseUrl");
