@@ -14,7 +14,7 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	/**
 	 * @var array
 	 */
-	protected $tags = array();
+	protected $tags= array();
 	/**
 	 * @var WindViewTemplate
 	 */
@@ -31,6 +31,10 @@ abstract class AbstractWindTemplateCompiler extends WindHandlerInterceptor {
 	 * @var WindHttpResponse
 	 */
 	protected $response = null;
+	/**
+	 * @var array
+	 */
+	protected $_propertiesCache = array();
 
 	/**
 	 * 初始化标签解析器

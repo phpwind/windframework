@@ -27,7 +27,8 @@ Wind::import('WIND:viewer.exception.WindViewException');
  * @package viewer
  */
 class WindViewerResolver extends WindNormalViewerResolver implements IWindViewerResolver {
-
+	private $template = 'WIND:viewer.compiler.WindViewTemplate';
+	
 	/* (non-PHPdoc)
 	 * @see IWindViewerResolver::windFetch()
 	 */
@@ -68,7 +69,7 @@ class WindViewerResolver extends WindNormalViewerResolver implements IWindViewer
 			return array($compileFile, ($forceOutput ? WindFile::read($compileFile) : ''));
 		}
 		/* @var $_windTemplate WindViewTemplate */
-		$_windTemplate = Wind::getApp()->getWindFactory()->getInstance('template');
+		$_windTemplate = WindFactory::createInstance(Wind::import($this->template));
 		$_output = $_windTemplate->compile($templateFile, $this);
 		$readOnly === false && WindFile::write($compileFile, $_output);
 		return array($compileFile, $_output);

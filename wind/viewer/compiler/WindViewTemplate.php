@@ -1,6 +1,6 @@
 <?php
 Wind::import('WIND:viewer.AbstractWindViewTemplate');
-Wind::import('WIND:utility.WindUtility');
+Wind::import('WIND:utility.WindFile');
 /**
  * 模板编译类
  * 
@@ -61,7 +61,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 			$content = preg_replace('/\?>(\s|\n)*?<\?php/i', "\r\n", $content);
 			return $content;
 		} catch (Exception $e) {
-			throw new WindViewException('[component.viewer.WindViewTemplate.doCompile] compile fail.' . $e->getMessage(), 
+			throw new WindViewException(
+				'[component.viewer.WindViewTemplate.doCompile] compile fail.' . $e->getMessage(), 
 				WindViewException::ERROR_SYSTEM_ERROR);
 		}
 	}
@@ -102,8 +103,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		}
 		$_compilerClass = Wind::import($compiler);
 		$this->windHandlerInterceptorChain->addInterceptors(
-			new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, $this->getRequest(), 
-				$this->getResponse()));
+			new $_compilerClass($this->_compilerCache, $this, $windViewerResolver, 
+				$this->getRequest(), $this->getResponse()));
 		$this->_compilerCache = array();
 		return $content;
 	}
@@ -114,19 +115,22 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return array
 	 */
 	protected function getTags() {
-		$_tags['internal'] = $this->createTag('internal', 'WIND:viewer.compiler.WindTemplateCompilerInternal', 
-			'/<\?php(.|\n)*?\?>/i');
+		/*$_tags['internal'] = $this->createTag('internal', 'WIND:viewer.compiler.WindTemplateCompilerInternal', 
+			'/<\?php(.|\n)*?\?>/i');*/
 		/*标签体增加在该位置*/
-		$_tags['template'] = $this->createTag('template', 'WIND:viewer.compiler.WindTemplateCompilerTemplate');
+		$_tags['template'] = $this->createTag('template', 
+			'WIND:viewer.compiler.WindTemplateCompilerTemplate');
 		$_tags['page'] = $this->createTag('page', 'WIND:viewer.compiler.WindTemplateCompilerPage');
-		$_tags['action'] = $this->createTag('action', 'WIND:viewer.compiler.WindTemplateCompilerAction');
+		$_tags['action'] = $this->createTag('action', 
+			'WIND:viewer.compiler.WindTemplateCompilerAction');
 		//$_tags['component'] = $this->createTag('component', 'WIND:viewer.compiler.WindTemplateCompilerComponent');
-		$_tags['token'] = $this->createTag('token', 'WIND:viewer.compiler.WindTemplateCompilerToken');
+		$_tags['token'] = $this->createTag('token', 
+			'WIND:viewer.compiler.WindTemplateCompilerToken');
 		$_tags['lang'] = $this->createTag('lang', 'WIND:viewer.compiler.WindTemplateCompilerLang');
 		$_tags = array_merge($_tags, $this->getConfig('support-tags', '', array()));
 		/*标签解析结束*/
-		$_tags['expression'] = $this->createTag('expression', 'WIND:viewer.compiler.WindTemplateCompilerEcho', 
-			'/({@|{\$[\w$]{1})[^}{@\n]*}/i');
+		$_tags['expression'] = $this->createTag('expression', 
+			'WIND:viewer.compiler.WindTemplateCompilerEcho', '/({@|{\$[\w$]{1})[^}{@\n]*}/i');
 		//$_tags['echo'] = $this->createTag('echo', 'WIND:viewer.compiler.WindTemplateCompilerEcho', '/\$[\w_]+/i');
 		/* 块编译标签，嵌套变量处理 */
 		//$_tags['script1'] = $this->createTag('script1', 'WIND:viewer.compiler.WindTemplateCompilerScript', '/<!--\[[\w\s]*\]>(.|\n)*<!\[[\w\s]*\]-->/Ui');

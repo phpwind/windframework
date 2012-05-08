@@ -1,6 +1,7 @@
 <?php
 Wind::import('WIND:viewer.AbstractWindTemplateCompiler');
 Wind::import('WIND:utility.WindSecurity');
+Wind::import('WIND:utility.WindJson');
 /**
  * 变量输出编译类
  * 

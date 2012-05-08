@@ -52,7 +52,7 @@ class WindFormFilter extends WindActionFilter {
 	public function preHandle() {
 		if (!$this->form) return null;
 		$className = Wind::import($this->form);
-		$form = $this->getSystemFactory()->createInstance($className);
+		$form = WindFactory::createInstance($className);
 		$methods = get_class_methods($form);
 		foreach ($methods as $method) {
 			if ((0 !== strpos($method, 'set')) || ('' == ($_tmp = substr($method, 3)))) continue;

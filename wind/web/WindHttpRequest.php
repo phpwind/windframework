@@ -1,5 +1,5 @@
 <?php
-Wind::import('WIND:http.request.IWindRequest');
+Wind::import('WIND:base.IWindRequest');
 /**
  * Request对象
  *
@@ -11,35 +11,52 @@ Wind::import('WIND:http.request.IWindRequest');
  * @subpackage request
  */
 class WindHttpRequest implements IWindRequest {
-	
 	/**
 	 * 访问的端口号
-	 * 
+	 *
 	 * @var int
 	 */
-	private $_port = null;
-	
+	protected $_port = null;
 	/**
-	 * 客户端IP
-	 * 
+	 * 请求路径信息
+	 *
 	 * @var string
 	 */
-	private $_clientIp = null;
+	protected $_hostInfo = null;
+	/**
+	 * 客户端IP
+	 *
+	 * @var string
+	 */
+	protected $_clientIp = null;
 	
 	/**
 	 * 语言
-	 * 
+	 *
 	 * @var string
 	 */
-	private $_language = null;
+	protected $_language = null;
 	
 	/**
 	 * 路径信息
-	 * 
+	 *
 	 * @var string
 	 */
-	private $_pathInfo = null;
+	protected $_pathInfo = null;
 	
+	/**
+	 * 请求参数信息
+	 *
+	 * @var array
+	 */
+	protected $_attribute = array();
+	
+	/**
+	 * 应答对象
+	 *
+	 * @var WindHttpResponse
+	 */
+	protected $_response = null;
 	/**
 	 * 请求脚本url
 	 * 
@@ -60,28 +77,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @var string
 	 */
 	private $_baseUrl = null;
-	
-	/**
-	 * 请求路径信息
-	 *
-	 * @var string
-	 */
-	private $_hostInfo = null;
-	
-	/**
-	 * 请求参数信息
-	 * 
-	 * @var array
-	 */
-	private $_attribute = array();
-	
-	/**
-	 * 应答对象
-	 * 
-	 * @var WindHttpResponse
-	 */
-	private $_response = null;
-	
+
 	/**
 	 * 初始化Request对象
 	 *
@@ -97,29 +93,15 @@ class WindHttpRequest implements IWindRequest {
 	 */
 	protected function normalizeRequest() {
 		if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-			if (isset($_GET)) $_GET = $this->stripSlashes($_GET);
-			if (isset($_POST)) $_POST = $this->stripSlashes($_POST);
-			if (isset($_REQUEST)) $_REQUEST = $this->stripSlashes($_REQUEST);
-			if (isset($_COOKIE)) $_COOKIE = $this->stripSlashes($_COOKIE);
+			if (isset($_GET)) $_GET = $this->_stripSlashes($_GET);
+			if (isset($_POST)) $_POST = $this->_stripSlashes($_POST);
+			if (isset($_REQUEST)) $_REQUEST = $this->_stripSlashes($_REQUEST);
+			if (isset($_COOKIE)) $_COOKIE = $this->_stripSlashes($_COOKIE);
 		}
 	}
-
-	/**
-	 * 采用stripslashes反转义特殊字符
-	 *
-	 * @param array|string $data 待反转义的数据
-	 * @return array|string 反转义之后的数据
-	 */
-	private function stripSlashes(&$data) {
-		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
-	}
-
-	/**
-	 * 设置属性数据
-	 * 
-	 * @param string|array|object $data 需要设置的数据
-	 * @param string $key 设置的数据保存用的key,默认为空,当数组和object类型的时候将会执行array_merge操作
-	 * @return void
+	
+	/* (non-PHPdoc)
+	 * @see IWindRequest::setAttribute()
 	 */
 	public function setAttribute($data, $key = '') {
 		if ($key) {
@@ -129,15 +111,9 @@ class WindHttpRequest implements IWindRequest {
 		if (is_object($data)) $data = get_object_vars($data);
 		if (is_array($data)) $this->_attribute = array_merge($this->_attribute, $data);
 	}
-
-	/**
-	 * 根据名称获得服务器和执行环境信息
-	 * 
-	 * 主要获取的依次顺序为：_attribute、$_GET、$_POST、$_COOKIE、$_REQUEST、$_ENV、$_SERVER
-	 * 
-	 * @param string $name 获取数据的key值
-	 * @param string $defaultValue 设置缺省值,当获取值失败的时候返回缺省值,默认该值为空字串
-	 * @return string|object|array 返回获得值
+	
+	/* (non-PHPdoc)
+	 * @see IWindRequest::getAttribute()
 	 */
 	public function getAttribute($key, $defaultValue = '') {
 		if (isset($this->_attribute[$key]))
@@ -162,7 +138,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 获得用户请求的数据
 	 * 
 	 * 返回$_GET,$_POST的值,未设置则返回$defaultValue
-	 * 
 	 * @param string $key 获取的参数name,默认为null将获得$_GET和$_POST两个数组的所有值
 	 * @param mixed $defaultValue 当获取值失败的时候返回缺省值,默认值为null
 	 * @return mixed
@@ -175,23 +150,9 @@ class WindHttpRequest implements IWindRequest {
 	}
 
 	/**
-	 * 获取请求数据
-	 * 
-	 * 将从$_GET中获取数据
-	 * 
-	 * @param string $name 待获取的变量名,默认为null
-	 * @param string $default 如果获取变量失败则返回该值,默认为null
-	 * @return mixed
-	 */
-	public function getQuery($name = null, $defaultValue = null) {
-		return $this->getGet($name, $defaultValue);
-	}
-
-	/**
 	 * 获取请求的表单数据
 	 * 
 	 * 从$_POST获得值
-	 * 
 	 * @param string $name 获取的变量名,默认为null,当为null的时候返回$_POST数组
 	 * @param string $defaultValue 当获取变量失败的时候返回该值,默认为null
 	 * @return mixed
@@ -217,7 +178,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回cookie的值
 	 * 
 	 * 如果$name=null则返回所有Cookie值
-	 * 
 	 * @param string $name 获取的变量名,如果该值为null则返回$_COOKIE数组,默认为null
 	 * @param string $defaultValue 当获取变量失败的时候返回该值,默认该值为null
 	 * @return mixed
@@ -231,7 +191,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回session的值
 	 * 
 	 * 如果$name=null则返回所有SESSION值
-	 * 
 	 * @param string $name 获取的变量名,如果该值为null则返回$_SESSION数组,默认为null
 	 * @param string $defaultValue 当获取变量失败的时候返回该值,默认该值为null
 	 * @return mixed
@@ -245,7 +204,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回Server的值
 	 * 
 	 * 如果$name为空则返回所有Server的值
-	 * 
 	 * @param string $name 获取的变量名,如果该值为null则返回$_SERVER数组,默认为null
 	 * @param string $defaultValue 当获取变量失败的时候返回该值,默认该值为null
 	 * @return mixed
@@ -259,7 +217,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回ENV的值
 	 * 
 	 * 如果$name为null则返回所有$_ENV的值
-	 * 
 	 * @param string $name 获取的变量名,如果该值为null则返回$_ENV数组,默认为null
 	 * @param string $defaultValue 当获取变量失败的时候返回该值,默认该值为null
 	 * @return mixed
@@ -273,7 +230,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 获取请求链接协议
 	 * 
 	 * 如果是安全链接请求则返回https否则返回http
-	 * 
 	 * @return string 
 	 */
 	public function getScheme() {
@@ -282,7 +238,6 @@ class WindHttpRequest implements IWindRequest {
 
 	/**
 	 * 返回请求页面时通信协议的名称和版本
-	 * 
 	 * @return string
 	 */
 	public function getProtocol() {
@@ -293,7 +248,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回访问IP
 	 * 
 	 * 如果获取请求IP失败,则返回0.0.0.0
-	 * 
 	 * @return string 
 	 */
 	public function getClientIp() {
@@ -305,7 +259,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 获得请求的方法
 	 * 
 	 * 将返回POST\GET\DELETE等HTTP请求方式
-	 * 
 	 * @return string 
 	 */
 	public function getRequestMethod() {
@@ -316,7 +269,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 获得请求类型
 	 * 
 	 * 如果是web请求将返回web
-	 * 
 	 * @return string  
 	 */
 	public function getRequestType() {
@@ -327,7 +279,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回该请求是否为ajax请求
 	 * 
 	 * 如果是ajax请求将返回true,否则返回false
-	 * 
 	 * @return boolean 
 	 */
 	public function getIsAjaxRequest() {
@@ -338,7 +289,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求是否使用的是HTTPS安全链接
 	 * 
 	 * 如果是安全请求则返回true否则返回false
-	 * 
 	 * @return boolean
 	 */
 	public function isSecure() {
@@ -349,7 +299,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回请求是否为GET请求类型
 	 * 
 	 * 如果请求是GET方式请求则返回true，否则返回false
-	 * 
 	 * @return boolean 
 	 */
 	public function isGet() {
@@ -464,6 +413,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回: a=test
 	 * </pre>
 	 * 
+	 * @see IWindRequest::getPathInfo()
 	 * @return string
 	 * @throws WindException
 	 */
@@ -484,7 +434,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 2]如果: $absolute = true:
 	 * 返回： http://www.phpwind.net/example
 	 * </pre>
-	 * 
 	 * @param boolean $absolute 是否返回主机信息
 	 * @return string
 	 * @throws WindException 当返回信息失败的时候抛出异常
@@ -501,7 +450,7 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回： http://www.phpwind.net/
 	 * </pre>
-	 * 
+	 * @see IWindRequest::getHostInfo()
 	 * @return string
 	 * @throws WindException 获取主机信息失败的时候抛出异常
 	 */
@@ -515,20 +464,14 @@ class WindHttpRequest implements IWindRequest {
 	 * 
 	 * 如果脚本运行于虚拟主机中
 	 * 该名称是由那个虚拟主机所设置的值决定
-	 * 
 	 * @return string
 	 */
 	public function getServerName() {
 		return $this->getServer('SERVER_NAME', '');
 	}
-
-	/**
-	 * 返回服务端口号
-	 * 
-	 * https链接的默认端口号为443
-	 * http链接的默认端口号为80
-	 * 
-	 * @return int
+	
+	/* (non-PHPdoc)
+	 * @see IWindRequest::getServerPort()
 	 */
 	public function getServerPort() {
 		if (!$this->_port) {
@@ -543,7 +486,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 
 	 * https链接的默认端口号为443
 	 * http链接的默认端口号为80
-	 * 
 	 * @param int $port 设置的端口号
 	 */
 	public function setServerPort($port) {
@@ -608,19 +550,14 @@ class WindHttpRequest implements IWindRequest {
 	 * 返回客户端程序可以能够进行解码的数据编码方式
 	 * 
 	 * 这里的编码方式通常指某种压缩方式
-	 * 
 	 * @return string|''
 	 */
 	public function getAcceptCharset() {
 		return $this->getServer('HTTP_ACCEPT_ENCODING', '');
 	}
-
-	/**
-	 * 返回客户端程序期望服务器返回哪个国家的语言文档 
-	 * 
-	 * Accept-Language: en-us,zh-cn
-	 * 
-	 * @return string
+	
+	/* (non-PHPdoc)
+	 * @see IWindRequest::getAcceptLanguage()
 	 */
 	public function getAcceptLanguage() {
 		if (!$this->_language) {
@@ -631,12 +568,23 @@ class WindHttpRequest implements IWindRequest {
 	}
 
 	/**
+	 * @see IWindRequest::getResponse()
+	 * @return WindHttpResponse
+	 */
+	public function getResponse() {
+		if ($this->_response === null) {
+			$this->_response = new WindHttpResponse();
+			$this->_response->setHeader('Content-type', 'text/html;charset=utf8');
+		}
+		return $this->_response;
+	}
+
+	/**
 	 * 返回访问的IP地址
 	 * 
 	 * <pre>Example:
 	 * 返回：127.0.0.1
 	 * </pre>
-	 * 
 	 * @return string 
 	 */
 	private function _getClientIp() {
@@ -668,7 +616,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求： http://www.phpwind.net/example/index.php?a=test
 	 * 则返回: /example/index.php?a=test
 	 * </pre>
-	 * 
 	 * @throws WindException 处理错误抛出异常
 	 */
 	private function _initRequestUri() {
@@ -692,7 +639,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: /example/index.php
 	 * </pre>
-	 * 
 	 * @throws WindException 当获取失败的时候抛出异常
 	 */
 	private function _initScriptUrl() {
@@ -722,7 +668,6 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回： http://www.phpwind.net/
 	 * </pre>
-	 * 
 	 * @throws WindException 获取主机信息失败的时候抛出异常
 	 */
 	private function _initHostInfo() {
@@ -743,11 +688,10 @@ class WindHttpRequest implements IWindRequest {
 	 * 请求: http://www.phpwind.net/example/index.php?a=test
 	 * 返回: a=test
 	 * </pre>
-	 * 
 	 * @throws WindException
 	 */
 	private function _initPathInfo() {
-		$requestUri = urldecode($this->getRequestUri());
+		$requestUri = $this->getRequestUri();
 		$scriptUrl = $this->getScriptUrl();
 		$baseUrl = $this->getBaseUrl();
 		if (strpos($requestUri, $scriptUrl) === 0)
@@ -760,6 +704,16 @@ class WindHttpRequest implements IWindRequest {
 			throw new WindException(__CLASS__ . ' determine the entry path info failed!!');
 		if (($pos = strpos($pathInfo, '?')) !== false) $pathInfo = substr($pathInfo, $pos + 1);
 		$this->_pathInfo = trim($pathInfo, '/');
+	}
+
+	/**
+	 * 采用stripslashes反转义特殊字符
+	 *
+	 * @param array|string $data 待反转义的数据
+	 * @return array|string 反转义之后的数据
+	 */
+	private function _stripSlashes(&$data) {
+		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
 	}
 
 }

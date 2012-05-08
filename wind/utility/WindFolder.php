@@ -1,5 +1,5 @@
 <?php
-Wind::import('WIND:utlity.WindFile');
+Wind::import('WIND:utility.WindFile');
 /**
  * 文件夹工具类
  *

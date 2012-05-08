@@ -18,6 +18,14 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @var WindErrorMessage
 	 */
 	protected $errorMessage = null;
+	/**
+	 * @var WindHttpRequest
+	 */
+	protected $request = null;
+	/**
+	 * @var WindHttpResponse
+	 */
+	protected $response = null;
 
 	/**
 	 * 默认的操作处理方法
@@ -167,13 +175,13 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 		} else {
 			$value = '';
 			switch (strtolower($type)) {
-				case IWindRequest::INPUT_TYPE_GET:
+				case 'get':
 					$value = $this->getRequest()->getGet($name);
 					break;
-				case IWindRequest::INPUT_TYPE_POST:
+				case 'post':
 					$value = $this->getRequest()->getPost($name);
 					break;
-				case IWindRequest::INPUT_TYPE_COOKIE:
+				case 'cookie':
 					$value = $this->getRequest()->getCookie($name);
 					break;
 				default:
@@ -316,7 +324,6 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	public function setErrorMessage($errorMessage) {
 		$this->errorMessage = $errorMessage;
 	}
-
 }
 
 /**
@@ -335,6 +342,8 @@ interface IWindController {
 	 * 处理请求并返回Forward对象
 	 * 
 	 * @param WindRouter $handlerAdapter
+	 * @param WindHttpRequest $request
+	 * @param WindHttpResponse $response
 	 * @return WindForward|null
 	 */
 	public function doAction($handlerAdapter);

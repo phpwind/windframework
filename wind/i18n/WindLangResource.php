@@ -75,14 +75,15 @@ class WindLangResource extends WindModule implements IWindLangResource {
 	 */
 	protected function translate($message) {
 		$package = $file = '';
-		if (strpos($message, ':') != false) list($package, $message) = explode(':', $message, 2);
-		if (strpos($message, '.') != false) list($file, $key) = explode('.', $message, 2);
+		$_message = $message;
+		if (strpos($_message, ':') != false) list($package, $_message) = explode(':', $_message, 2);
+		if (strpos($_message, '.') != false) list($file, $key) = explode('.', $_message, 2);
 		$path = $this->resolvedPath($package);
 		if (is_file($path . '/' . $file . $this->suffix)) {
 			$path = $path . '/' . $file . $this->suffix;
 		} elseif (is_file($path . '/' . $this->default . $this->suffix)) {
 			$path = $path . '/' . $this->default . $this->suffix;
-			$key = $message;
+			$key = $_message;
 			$file = $this->default;
 		} else
 			return $message;
@@ -99,7 +100,7 @@ class WindLangResource extends WindModule implements IWindLangResource {
 			}
 			$this->_messages[$path] = $messages;
 		}
-		return isset($this->_messages[$path][$key]) ? $this->_messages[$path][$key] : $key;
+		return isset($this->_messages[$path][$key]) ? $this->_messages[$path][$key] : $message;
 	}
 
 	/**

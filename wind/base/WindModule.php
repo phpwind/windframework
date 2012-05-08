@@ -25,18 +25,11 @@ class WindModule {
 	 */
 	protected $_config = array();
 	/**
-	 * 是否进行类型验证
-	 * 
-	 * @deprecated
-	 * @var boolean
-	 */
-	protected $_typeValidation = false;
-	/**
 	 * 在延迟加载策略中使用,保存需要延迟加载的属性配置信息
 	 * 
 	 * @var array
 	 */
-	private $_delayAttributes = array();
+	protected $_delayAttributes = array();
 
 	/**
 	 * 重载了魔术方法__set
@@ -86,32 +79,19 @@ class WindModule {
 				if (isset($_property['value'])) {
 					$_value = $_property['value'];
 				} elseif (isset($_property['ref'])) {
-					$_value = $this->getSystemFactory()->getInstance($_property['ref'], $args);
+					$_value = Wind::getApp()->getWindFactory()->getInstance($_property['ref'], 
+						$args);
 				} elseif (isset($_property['path'])) {
 					$_className = Wind::import($_property['path']);
-					$_value = $this->getSystemFactory()->createInstance($_className, $args);
+					$_value = WindFactory::createInstance($_className, $args);
 				}
 				$this->$_propertyName = $_value;
-			
-		//unset($this->delayAttributes[$_propertyName]);
+				
+			/*unset($this->delayAttributes[$_propertyName]);*/
 			}
 			return $this->$_propertyName;
 		} elseif ($_prefix == '_set') {
 			$this->$_propertyName = $args[0];
-		}
-	}
-
-	/**
-	 * 重载魔术方法__clone
-	 * 
-	 * 当clone类对象时该方法被调用,通过配置白名单选择是否clone类中的属性对象.
-	 * @deprecated
-	 * @return void
-	 */
-	public function __clone() {
-		foreach ($this->writeTableCloneProperty() as $value) {
-			if (!is_object($this->$value) || !isset($this->$value)) continue;
-			$this->$value = clone $this->$value;
 		}
 	}
 
@@ -161,33 +141,14 @@ class WindModule {
 	public function setConfig($config) {
 		if ($config) {
 			if (is_string($config)) {
-				$config = Wind::getApp()->getComponent('configParser')->parse($config, get_class($this), false, 
-					Wind::getApp()->getComponent('windCache'));
+				$config = Wind::getApp()->getComponent('configParser')->parse($config, 
+					get_class($this), false, Wind::getApp()->getComponent('windCache'));
 			}
 			if (!empty($this->_config)) {
 				$this->_config = array_merge($this->_config, (array) $config);
 			} else
 				$this->_config = $config;
 		}
-	}
-
-	/**
-	 * 类对象clone白名单
-	 * 
-	 * 当类对象被clone时,会访问该方法,该方法返回该类中需要被同时clone的类属性名称,默认返回空数组
-	 * @return array
-	 */
-	protected function writeTableCloneProperty() {
-		return array();
-	}
-
-	/**
-	 * 返回当前应用的WindFactory对象
-	 * 
-	 * @return WindFactory
-	 */
-	protected function getSystemFactory() {
-		return Wind::getApp()->getWindFactory();
 	}
 
 	/**

@@ -17,15 +17,13 @@ define('WIND_PATH', dirname(__FILE__) . '/');
  * @version $Id$
  */
 class Wind {
+	public static $_imports = array();
+	public static $_classes = array();
+	
 	private static $_extensions = 'php';
-	private static $_imports = array();
-	private static $_classes = array();
 	private static $_isAutoLoad = true;
 	private static $_namespace = array();
 	private static $_includePaths = array();
-	/**
-	 * @var WindFrontController
-	 */
 	private static $_frontController = null;
 
 	/**
@@ -36,6 +34,7 @@ class Wind {
 	 */
 	public static function application($appName = '', $config = array()) {
 		if (self::$_frontController === null) {
+			Wind::import('WIND:web.WindWebFrontController');
 			self::$_frontController = new WindWebFrontController($appName, $config);
 		}
 		return self::$_frontController;
@@ -90,7 +89,8 @@ class Wind {
 		if ($isPackage) {
 			$filePath = substr($filePath, 0, $pos + 1);
 			$dirPath = self::getRealPath(trim($filePath, '.'), false);
-			if (false === ($files = scandir($dirPath, 0))) throw new Exception(
+			self::register($dirPath, '', true);
+			/*if (false === ($files = scandir($dirPath, 0))) throw new Exception(
 				'[Wind.import] the file ' . $dirPath . ' open failed!');
 			foreach ($files as $file) {
 				if ($file === '.' || $file === '..' || ($pos = strrpos($file, '.')) === 0) continue;
@@ -99,7 +99,7 @@ class Wind {
 					self::_setImport($fileName, $filePath . $fileName);
 				} elseif ($recursivePackage && is_dir($dirPath . '/' . $file))
 					self::import($filePath . $file . '.' . '*', $recursivePackage);
-			}
+			}*/
 		} else
 			self::_setImport($fileName, $filePath);
 		return $fileName;
@@ -116,17 +116,20 @@ class Wind {
 	 */
 	public static function register($path, $alias = '', $includePath = false, $reset = false) {
 		if (!$path) return;
-		$alias = strtolower($alias);
 		if (!empty($alias)) {
-			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = rtrim($path, '/') . '/';
+			$alias = strtolower($alias);
+			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = rtrim(
+				$path, '/') . '/';
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
 				self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
+				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(
+					self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
-			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
+			if (set_include_path(
+				'.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
 				throw new Exception('[wind.register] set include path error.');
 			}
 		}
@@ -151,24 +154,10 @@ class Wind {
 	public static function autoLoad($className, $path = '') {
 		if ($path)
 			include $path . '.' . self::$_extensions;
-		elseif (isset(self::$_classes[$className]))
+		elseif (isset(self::$_classes[$className])) {
 			include self::$_classes[$className] . '.' . self::$_extensions;
-	}
-
-	/**
-	 * @param string $key
-	 * @return string|array
-	 */
-	public static function getImports($key = '') {
-		return $key ? self::$_imports[$key] : self::$_imports;
-	}
-
-	/**
-	 * 设置imports信息
-	 * @param array $imports
-	 */
-	public static function setImports($imports) {
-		self::$_imports = array_merge(self::$_imports, $imports);
+		} else
+			include $className . '.' . self::$_extensions;
 	}
 
 	/**
@@ -226,15 +215,6 @@ class Wind {
 	}
 
 	/**
-	 * 清理Wind import变量信息
-	 * @return void
-	 */
-	public static function clear() {
-		self::$_imports = array();
-		self::$_classes = array();
-	}
-
-	/**
 	 * @param string $className
 	 * @param string $classPath
 	 * @return void
@@ -256,9 +236,11 @@ class Wind {
 	 */
 	private static function _loadBaseLib() {
 		self::$_classes = array(
-			'WindFrontController' => 'base/WindFrontController', 
+			'AbstractWindFrontController' => 'base/AbstractWindFrontController', 
 			'IWindApplication' => 'base/IWindApplication', 
 			'IWindFactory' => 'base/IWindFactory', 
+			'IWindRequest' => 'base/IWindRequest', 
+			'IWindResponse' => 'base/IWindResponse', 
 			'WindActionException' => 'base/WindActionException', 
 			'WindClassProxy' => 'base/WindClassProxy', 
 			'WindEnableValidateModule' => 'base/WindEnableValidateModule', 
@@ -272,37 +254,7 @@ class Wind {
 			'WindActionFilter' => 'filter/WindActionFilter', 
 			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
 			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
-			'WindFormFilter' => 'web/filter/WindFormFilter', 
-			'WindController' => 'web/WindController', 
-			'WindDispatcher' => 'web/WindDispatcher', 
-			'WindErrorHandler' => 'web/WindErrorHandler', 
-			'WindForward' => 'web/WindForward', 
-			'WindWebFrontController' => 'web/WindWebFrontController', 
-			'WindSimpleController' => 'web/WindSimpleController', 
-			'WindUrlHelper' => 'web/WindUrlHelper', 
-			'WindWebApplication' => 'web/WindWebApplication', 
-			'AbstractWindRouter' => 'router/AbstractWindRouter', 
-			'AbstractWindRoute' => 'router/route/AbstractWindRoute', 
-			'WindRewriteRoute' => 'router/route/WindRewriteRoute', 
-			'WindRouter' => 'router/WindRouter', 
-			'IWindRequest' => 'http/request/IWindRequest', 
-			'WindHttpRequest' => 'http/request/WindHttpRequest', 
-			'IWindResponse' => 'http/response/IWindResponse', 
-			'WindHttpResponse' => 'http/response/WindHttpResponse', 
-			'WindArray' => 'utility/WindArray', 
-			'WindConvert' => 'utility/WindConvert', 
-			'WindCookie' => 'utility/WindCookie', 
-			'WindDate' => 'utility/WindDate', 
-			'WindFile' => 'utility/WindFile', 
-			'WindFolder' => 'utility/WindFolder', 
-			'WindGeneralDate' => 'utility/WindGeneralDate', 
-			'WindImage' => 'utility/WindImage', 
-			'WindJson' => 'utility/WindJson', 
-			'WindPack' => 'utility/WindPack', 
-			'WindSecurity' => 'utility/WindSecurity', 
-			'WindString' => 'utility/WindString', 
-			'WindUtility' => 'utility/WindUtility', 
-			'WindValidator' => 'utility/WindValidator');
+			'WindUtility' => 'utility/WindUtility');
 	}
 }
 

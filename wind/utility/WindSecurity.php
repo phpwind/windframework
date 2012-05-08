@@ -68,7 +68,7 @@ class WindSecurity {
 	public static function decrypt($str, $key, $iv = '') {
 		if (!$str || !is_string($str)) throw new WindException(
 			'[utility.WindSecurity.dncrypt] security string is required.', WindException::ERROR_PARAMETER_TYPE_ERROR);
-		if (!$key || !is_string($key)) throw new WindException('[utlity.WindSecurity.decrypt] security key is required.', 
+		if (!$key || !is_string($key)) throw new WindException('[utility.WindSecurity.decrypt] security key is required.', 
 			WindException::ERROR_PARAMETER_TYPE_ERROR);
 		
 		$size = mcrypt_get_block_size(MCRYPT_DES, MCRYPT_MODE_CBC);

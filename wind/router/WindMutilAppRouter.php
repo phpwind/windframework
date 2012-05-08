@@ -1,4 +1,5 @@
 <?php
+Wind::import('WIND:router.WindRouter');
 /**
  * 多应用支持路由协议解析器
  *

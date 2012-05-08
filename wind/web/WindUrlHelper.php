@@ -51,7 +51,7 @@ class WindUrlHelper {
 		$args = array();
 		for ($i = 0; $i < count($url); $i = $i + 2) {
 			if (!isset($url[$i]) || !isset($url[$i + 1])) continue;
-			$_v = $decode ? urldecode($url[$i + 1]) : $url[$i + 1];
+			$_v = $decode ? rawurldecode($url[$i + 1]) : $url[$i + 1];
 			$_k = $url[$i];
 			if (strpos($_k, self::$_sep) === 0) {
 				$_k = substr($_k, strlen(self::$_sep));
@@ -81,11 +81,11 @@ class WindUrlHelper {
 		!$_sep2 && $_sep2 = $_sep1;
 		$_tmp = '';
 		foreach ((array) $args as $key => $value) {
-			if (is_array($value) || is_object($value))
-				$_tmp .= self::$_sep . "$key" . $_sep2 . urlencode(serialize($value));
-			else
-				$_tmp .= "$key" . $_sep2 . urlencode($value);
-			$_tmp .= $_sep1;
+			if (is_array($value) || is_object($value)) {
+				$value = serialize($value);
+				$_tmp .= self::$_sep;
+			}
+			$_tmp .= "$key" . $_sep2 . ($encode ? rawurlencode($value) : $value) . $_sep1;
 		}
 		return trim($_tmp, $_sep1 . $_sep2);
 	}

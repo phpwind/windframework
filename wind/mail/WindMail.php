@@ -83,7 +83,7 @@ class WindMail {
 	//邮件编码
 	const ENCODE_7BIT = '7bit';
 	const ENCODE_8BIT = '8bit';
-	const ENCODE_QP = 'quoted-printable';
+	const ENCODE_QP = 'qp';
 	const ENCODE_BASE64 = 'base64';
 	const ENCODE_BINARY = 'binary';
 	
@@ -464,6 +464,8 @@ class WindMail {
 	 */
 	private function _encode($message, $encode = '') {
 		$encode || $encode = $this->encode;
+		if (in_array($encode, array(self::ENCODE_7BIT, self::ENCODE_8BIT)))
+			$encode = self::ENCODE_BINARY;
 		$mailEncoder = Wind::import("WIND:mail.encode.WindMail" . ucfirst($encode));
 		if (!class_exists($mailEncoder)) throw new WindMailException(
 			'[mail.WindMail._encode] encod class for ' . $encode . ' is not exist.');
@@ -481,6 +483,8 @@ class WindMail {
 	 */
 	private function _encodeHeader($message, $encode = '') {
 		$encode || $encode = $this->encode;
+		if (in_array($encode, array(self::ENCODE_7BIT, self::ENCODE_8BIT)))
+			$encode = self::ENCODE_BINARY;
 		$mailEncoder = Wind::import("WIND:mail.encode.WindMail" . ucfirst($encode));
 		if (!class_exists($mailEncoder)) throw new WindMailException(
 			'[mail.WindMail._encode] encod class for ' . $encode . ' is not exist.');

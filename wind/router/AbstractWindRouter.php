@@ -40,7 +40,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @return string
 	 */
 	abstract public function assemble($action, $args = array(), $route = '');
-
+	
 	/* (non-PHPdoc)
 	 * @see WindModule::setConfig()
 	 */
@@ -57,7 +57,8 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 				if (!isset($route['class'])) continue;
 				$instance = WindFactory::createInstance(Wind::import($route['class']));
 				$instance->setConfig($route);
-				$this->addRoute($routeName, $instance, (isset($route['default']) && $route['default'] === true));
+				$this->addRoute($routeName, $instance, 
+					(isset($route['default']) && $route['default'] === true));
 			}
 		}
 	}
@@ -70,14 +71,24 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	 * @return void
 	 */
 	protected function setParams($params, $request) {
-		$_GET = array_merge($_GET, $params);
+		foreach ($params as $key => $value) {
+			if ($key === $this->actionKey) {
+				$this->setAction($value);
+			} elseif ($key === $this->controllerKey) {
+				$this->setController($value);
+			} elseif ($key === $this->moduleKey) {
+				$this->setModule($value);
+			}
+			$_GET[$key] = $value;
+		}
+		/*$_GET = array_merge($_GET, $params);
 		$action = isset($params[$this->actionKey]) ? $params[$this->actionKey] : $request->getRequest($this->actionKey);
 		$controller = isset($params[$this->controllerKey]) ? $params[$this->controllerKey] : $request->getRequest(
 			$this->controllerKey);
 		$module = isset($params[$this->moduleKey]) ? $params[$this->moduleKey] : $request->getRequest($this->moduleKey);
 		$action && $this->setAction($action);
 		$controller && $this->setController($controller);
-		$module && $this->setModule($module);
+		$module && $this->setModule($module);*/
 	}
 
 	/**
@@ -197,7 +208,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function setActionKey($actionKey) {
 		$this->actionKey = $actionKey;
 	}
-	
+
 	/**
 	 * 返回默认的module值
 	 * 
@@ -206,7 +217,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function getDefaultModule() {
 		return $this->_module;
 	}
-	
+
 	/**
 	 * 返回默认的controller值
 	 * 
@@ -215,7 +226,7 @@ abstract class AbstractWindRouter extends WindHandlerInterceptorChain {
 	public function getDefaultController() {
 		return $this->_controller;
 	}
-	
+
 	/**
 	 * 返回默认的action值
 	 * 

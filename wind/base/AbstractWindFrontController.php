@@ -8,20 +8,25 @@
  * @version $Id$
  * @package base
  */
-class WindFrontController {
+abstract class AbstractWindFrontController {
 	/**
+	 * 组件配置地址
+	 * 
 	 * @var string
 	 */
-	protected $componentConfig = 'WIND:components_config.php';
+	protected $components = '';
 	/**
-	 * @var WindHttpRequest
+	 * request类型定义
+	 * 
+	 * @var string
 	 */
-	protected $request = null;
+	protected $request = '';
 	/**
+	 * 组件工程实例对象
+	 * 
 	 * @var WindFactory
 	 */
 	protected $factory = null;
-	
 	/**
 	 * 应用配置
 	 * 
@@ -39,13 +44,7 @@ class WindFrontController {
 	 *
 	 * @var array
 	 */
-	protected $_app = array();
-	/**
-	 * 当前应用app名称数组
-	 * 
-	 * @var array
-	 */
-	private $_appActiveQueue = array();
+	private $_app = array();
 	/**
 	 * @var WindHandlerInterceptorChain
 	 */
@@ -57,49 +56,25 @@ class WindFrontController {
 	 */
 	public function __construct($appName, $config) {
 		$appName && $this->_appName = $appName;
-		$this->factory = new WindFactory(@include (Wind::getRealPath($this->componentConfig, true)));
-		if ($config) {
-			is_string($config) && $config = $this->factory->getInstance('configParser')->parse($config);
-			if (isset($config['isclosed']) && $config['isclosed']) {
-				WindHelper::triggerError('Sorry, Site has been closed!', 
-					(!empty($config['isclosed-tpl']) ? $config['isclosed-tpl'] : ''));
-			}
-			if (!empty($config['components'])) {
-				if (!empty($config['components']['resource'])) {
-					$config['components'] = $this->factory->getInstance('configParser')->parse(
-						Wind::getRealPath($config['components']['resource'], true, true));
-				}
-				$this->factory->loadClassDefinitions($config['components']);
-			}
-			$this->initConfig($config);
-		}
+		$this->_loadBaseLib();
+		$this->factory = new WindFactory(@include (Wind::getRealPath($this->components, true)));
+		$this->request = WindFactory::createInstance(Wind::import($this->request));
+		if ($config) $this->initConfig($config);
 	}
 
 	/**
-	 * 初始化配置信息
+	 * 创建并返回应用
+	 *
+	 * @return WindWebApplication
+	 */
+	abstract protected function _createApplication();
+
+	/**
+	 * 预加载系统文件
 	 * 
-	 * @param array $config
+	 * @return void
 	 */
-	protected function initConfig($config) {
-		foreach ($config['web-apps'] as $key => $value) {
-			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
-				$value['root-path'], false);
-			Wind::register($rootPath, $key, true);
-			$this->_config[$key] = $value;
-		}
-	}
-
-	/**
-	 * 创建并执行当前应用,单应用访问入口
-	 */
-	public function run() {
-		$this->_appName || $this->_appName = 'default';
-		$this->request || $this->request = new WindHttpRequest();
-		/* @var $router WindRouter */
-		$router = $this->factory->getInstance('router');
-		$router->route($this->request);
-		$this->_run($this->createApplication());
-	}
+	abstract protected function _loadBaseLib();
 
 	/**
 	 * 创建并返回应用
@@ -108,15 +83,25 @@ class WindFrontController {
 	 */
 	public function createApplication() {
 		if (!isset($this->_app[$this->_appName])) {
+			$application = $this->_createApplication();
 			/* @var $application WindWebApplication */
-			$application = $this->factory->getInstance('windApplication', 
-				array($this->request, new WindHttpResponse(), $this->factory));
 			if (!empty($this->_config[$this->_appName])) {
 				$application->setConfig($this->_config[$this->_appName]);
 			}
 			$this->_app[$this->_appName] = $application;
 		}
 		return $this->_app[$this->_appName];
+	}
+
+	/**
+	 * 创建并执行当前应用,单应用访问入口
+	 */
+	public function run() {
+		$this->_appName || $this->_appName = 'default';
+		/* @var $router WindRouter */
+		$router = $this->factory->getInstance('router');
+		$router->route($this->request);
+		$this->_run();
 	}
 
 	/**
@@ -168,8 +153,7 @@ class WindFrontController {
 	 */
 	public function getApp($appName = '') {
 		$appName || $appName = $this->_appName;
-		if (isset($this->_app[$appName])) return $this->_app[$appName];
-		return null;
+		return isset($this->_app[$appName]) ? $this->_app[$appName] : null;
 	}
 
 	/**
@@ -198,20 +182,44 @@ class WindFrontController {
 	 * 
 	 * 配合过滤链策略部署,可以通过{@see AbstractWindFrontController::registeFilter}
 	 * 方法注册过滤器,当应用被执行时会判断当前时候有初始化过滤链对象,并选择是否是通过过滤链方式执行应用
-	 * @param WindWebApplication $application
 	 * @return void
 	 */
-	protected function _run($application) {
-		array_push($this->_appActiveQueue, $this->_appName);
+	protected function _run() {
+		$application = $this->createApplication();
 		$this->beforRun();
 		if ($this->_chain !== null) {
-			$this->_chain->setCallBack(array($application, 'run'), array());
+			$this->_chain->setCallBack(array($application, 'run'), 
+				array($application->getConfig('filters')));
 			$this->_chain->getHandler()->handle();
 		} else
-			$application->run();
+			$application->run($application->getConfig('filters'));
 		$this->afterRun();
-		array_pop($this->_appActiveQueue);
-		$this->_appName = end($this->_appActiveQueue);
+	}
+
+	/**
+	 * 初始化配置信息
+	 *
+	 * @param array $config
+	 */
+	protected function initConfig($config) {
+		is_string($config) && $config = $this->factory->getInstance('configParser')->parse($config);
+		if (isset($config['isclosed']) && $config['isclosed']) {
+			WindHelper::triggerError('Sorry, Site has been closed!', 
+				(!empty($config['isclosed-tpl']) ? $config['isclosed-tpl'] : ''));
+		}
+		if (!empty($config['components'])) {
+			if (!empty($config['components']['resource'])) {
+				$config['components'] = $this->factory->getInstance('configParser')->parse(
+					Wind::getRealPath($config['components']['resource'], true, true));
+			}
+			$this->factory->loadClassDefinitions($config['components']);
+		}
+		foreach ($config['web-apps'] as $key => $value) {
+			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
+				$value['root-path'], false);
+			Wind::register($rootPath, $key, true);
+			$this->_config[$key] = $value;
+		}
 	}
 }
 ?>

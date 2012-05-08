@@ -145,15 +145,17 @@ class WindDbCache extends AbstractWindCache {
 	 * @see AbstractWindCache::batchGet()
 	 */
 	public function batchGet(array $keys) {
-		foreach ($keys as $key => $value) {
-			$keys[$key] = $this->buildSecurityKey($value);
+		$_temp = array();
+		foreach ($keys as $value) {
+			$_temp[$value] = $this->buildSecurityKey($value);
 		}
 		list($sql, $result) = array('', array());
 		$sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE `' . $this->keyField . '` IN ' . $this->getConnection()->quoteArray(
-		$keys) . ' AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
+		$_temp) . ' AND (`' . $this->expireField . '`=0 OR `' . $this->expireField . '`>?)';
 		$data = $this->getConnection()->createStatement($sql)->queryAll(array(time()));
+		$_keys = array_flip($_temp);
 		foreach ($data as $tmp) {
-			$result[] = $this->formatData(array_search($tmp[$this->keyField], $keys), $tmp[$this->valueField]);
+			$result[$_keys[$tmp[$this->keyField]]] = $this->formatData($_keys[$tmp[$this->keyField]], $tmp[$this->valueField]);
 		}
 		return $result;
 	}

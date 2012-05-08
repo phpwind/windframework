@@ -11,45 +11,95 @@ Wind::import('WIND:http.transfer.AbstractWindHttp');
  * @subpackage transfer
  */
 final class WindHttpSocket extends AbstractWindHttp {
-	
 	private $host = '';
-	private $port = 0;
+	private $port = 80;
 	private $path = '';
 	private $query = '';
-	
-	protected function __construct($url = '', $timeout = 5) {
-		parent::__construct($url, $timeout);
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#open()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::createHttpHandler()
 	 */
-	public function open() {
-		if (null === $this->httpResource) {
-			$url = parse_url($this->url);
-			$this->host = $url['host'];
-			$this->port = isset($url['port']) && $url['port'] ? $url['port'] : 80;
-			$this->path = isset($url['path']) && $url['path'] ? $url['path'] : '/';
-			$this->path .= $url['query'] ? '?' . $url['query'] : '';
-			$this->query = $url['query'];
-			$this->httpResource = fsockopen($this->host, $this->port, $this->eno, $this->err, $this->timeout);
+	protected function createHttpHandler() {
+		if (!function_exists('fsockopen')) {
+			throw new WindHttpTransferException(
+				'[http.transfer.WindHttpSocket.createHttpHandler] initialize fsock failed, fsockopen is not exist.');
 		}
-		return $this->httpResource;
+		$url = parse_url($this->url);
+		$this->host = $url['host'];
+		$this->port = isset($url['port']) ? $url['port'] : 80;
+		$this->path = isset($url['path']) ? $url['path'] : '/';
+		$this->path .= $url['query'] ? '?' . $url['query'] : '';
+		$this->query = $url['query'];
+		return fsockopen($this->host, $this->port, $this->eno, $this->err, $this->timeout);
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#request()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::request()
 	 */
 	public function request($name, $value = null) {
-		return fputs($this->httpResource, ($value ? $name . ': ' . $value : $name) . "\n");
+		return fputs($this->getHttpHandler(), ($value ? $name . ': ' . $value : $name) . "\n");
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#requestByArray()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::response()
 	 */
-	public function requestByArray($request = array()) {
+	public function response() {
+		$response = '';
+		while (!feof($this->getHttpHandler())) {
+			$response .= fgets($this->getHttpHandler());
+		}
+		return $response;
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::close()
+	 */
+	public function close() {
+		if ($this->httpHandler === null) return;
+		fclose($this->httpHandler);
+		$this->httpHandler = null;
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::getError()
+	 */
+	public function getError() {
+		return $this->err ? $this->eno . ':' . $this->err : '';
+	}
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::send()
+	 */
+	public function send($method = self::GET, $options = array()) {
+		switch (strtoupper($method)) {
+			case self::GET:
+				if ($this->data) {
+					$_url = WindUrlHelper::argsToUrl($this->data);
+					$data = (isset($this->query) ? $this->query . '&' : '') . $_url;
+				}
+				break;
+			case self::POST:
+				if ($this->data) {
+					$data = WindUrlHelper::argsToUrl($this->data, false);
+					$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+					$this->setHeader('Content-Length', strlen($data));
+				}
+				break;
+			default:
+				break;
+		}
+		
+		$this->setHeader("Host", $this->host);
+		$this->setHeader('User-Agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)');
+		$this->setHeader('Connection', 'Close');
+		if ($this->cookie) {
+			$_cookit = WindUrlHelper::argsToUrl($this->cookie, false, ';=');
+			$this->setHeader("Cookie", $_cookit);
+		}
+		$this->setHeader($options);
+		
 		$_request = '';
-		foreach ($request as $key => $value) {
+		foreach ($this->header as $key => $value) {
 			if (is_string($key)) {
 				$_request .= $key . ': ' . $value;
 			}
@@ -58,106 +108,10 @@ final class WindHttpSocket extends AbstractWindHttp {
 			}
 			$_request .= "\n";
 		}
-		fputs($this->httpResource, $_request);
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#resonseLine()
-	 */
-	public function response() {
-		$response = '';
-		while (!feof($this->httpResource)) {
-			$response .= fgets($this->httpResource);
-		}
-		return $response;
-	}
-	
-	/**
-	 *  @see wind/component/http/base/WindHttp#response()
-	 */
-	public function resonseLine(){
-		return feof($this->httpResource) ? '' : fgets($this->httpResource);
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#close()
-	 */
-	public function close() {
-		if ($this->httpResource) {
-			fclose($this->httpResource);
-			$this->httpResource = null;
-		}
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#getError()
-	 */
-	public function getError() {
-		return $this->err ? $this->eno . ':' . $this->err : '';
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#post()
-	 */
-	public function post($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
-		$url && $this->setUrl($url);
-		$header && is_array($header) && $this->setHeaders($header);
-		$cookie && is_array($cookie) && $this->setCookies($cookie);
-		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::POST, $option);
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#get()
-	 */
-	public function get($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
-		$url && $this->setUrl($url);
-		$header && is_array($header) && $this->setHeaders($header);
-		$cookie && is_array($cookie) && $this->setCookies($cookie);
-		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::GET, $option);
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#send()
-	 */
-	public function send($method = self::GET, $options = array()) {
-		if (self::GET === $method && $this->data) {
-			$url = parse_url($this->url);
-			$get = self::buildQuery($this->data, '&');
-			$this->url .= ($url['query'] ? '&' : '?') . $get;
-		}
-		$this->open();
-		$this->setHeader("Host", $this->host);
-		$this->setHeader('User-Agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)');
-		if ($this->cookie && $this->cookie) {
-			$this->setHeader("Cookie", self::buildQuery($this->cookie, ';'));
-		}
-		if (self::POST === $method && $this->data) {
-			$data = self::buildQuery($this->data, '&');
-			$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-			$this->setHeader('Content-Length', strlen($data));
-		}
-		if ($options) {
-			$this->setHeaders($options);
-		}
-		$this->setHeader('Connection', 'Close');
+		$this->request($_request);
 		$this->request($method . " " . $this->path . " HTTP/1.1");
-		$this->requestByArray($this->header);
-		if ($data) {
-			$this->request("\n" . $data);
-		}
+		if ($data) $this->request("\n" . $data);
 		$this->request("\n");
 		return $this->response();
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#getInstance()
-	 */
-	public static function getInstance($url = '') {
-		if (null === self::$instance || false === (self::$instance instanceof self)) {
-			self::$instance = new self($url);
-		}
-		return self::$instance;
-	}
-	
-	public function __destruct() {
-		$this->close();
 	}
 }

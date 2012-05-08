@@ -124,13 +124,13 @@ abstract class WindActionFilter extends WindHandlerInterceptor {
 	protected function getInput($name, $type = '', $callback = array()) {
 		$value = '';
 		switch (strtolower($type)) {
-			case IWindRequest::INPUT_TYPE_GET:
+			case 'get':
 				$value = $this->getRequest()->getGet($name, null);
 				break;
-			case IWindRequest::INPUT_TYPE_POST:
+			case 'post':
 				$value = $this->getRequest()->getPost($name, null);
 				break;
-			case IWindRequest::INPUT_TYPE_COOKIE:
+			case 'cookie':
 				$value = $this->getRequest()->getCookie($name, null);
 				break;
 			default:

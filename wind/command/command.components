@@ -1,0 +1,44 @@
+<?php 
+
+return array(
+	'router' => array(
+		'path' => 'WIND:command.WindCommandRouter',
+		'scope' => 'application',
+	),
+	'windView' => array(
+		'path' => 'WIND:command.WindCommandView',
+		'scope' => 'prototype',
+	),
+	'db' => array(
+		'path' => 'WIND:db.WindConnection',
+		'scope' => 'singleton'
+	),
+	'configParser' => array(
+		'path' => 'WIND:parser.WindConfigParser',
+		'scope' => 'singleton',
+	),
+	'errorMessage' => array(
+		'path' => 'WIND:base.WindErrorMessage',
+		'scope' => 'prototype',
+	),
+	'windLogger' => array(
+		'path' => 'WIND:log.WindLogger',
+		'scope' => 'singleton',
+		'destroy' => 'flush',
+		'constructor-args' => array(
+			'0' => array(
+				'value' => 'DATA:log',
+			),
+			'1' => array(
+				'value' => '2',
+			),
+		),
+	),
+	'i18n' => array(
+		'path' => 'WIND:i18n.WindLangResource',
+		'scope' => 'singleton',
+		'config' => array(
+			'path' => 'i18n',
+		),
+	)
+);

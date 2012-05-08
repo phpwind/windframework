@@ -1,145 +1,97 @@
 <?php
 Wind::import('WIND:http.transfer.AbstractWindHttp');
 /**
- * Enter description here ...
- *
  * @author Qian Su <aoxue.1988.su.qian@163.com>
  * @copyright ©2003-2103 phpwind.com
- * @license http://www.windframework.com
+ * @license http://www.phpwind.com/license.php
  * @version $Id$
  * @package http
  * @subpackage transfer
  */
 final class WindHttpCurl extends AbstractWindHttp {
-	
-	protected function __construct($url = '', $timeout = 5) {
-		parent::__construct($url, $timeout);
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#open()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::createHttpHandler()
 	 */
-	public function open() {
-		if (null === $this->httpResource) {
-			$this->httpResource = curl_init();
+	protected function createHttpHandler() {
+		if (!function_exists('curl_init')) {
+			throw new WindHttpTransferException(
+				'[http.transfer.WindHttpCurl.createHttpHandler] initialize curl failed, curl_init is not exist.');
 		}
-		return $this->httpResource;
+		return curl_init();
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#request()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::request()
 	 */
 	public function request($name, $value = null) {
-		return curl_setopt($this->httpResource, $name, $value);
+		return curl_setopt($this->getHttpHandler(), $name, $value);
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#requestByArray()
-	 */
-	public function requestByArray($opt = array()) {
-		return curl_setopt_array($this->httpResource, $opt);
-	}
-	
+
 	/* 
 	 * @see wind/component/http/base/WindHttp#response()
 	 */
 	public function response() {
-		return curl_exec($this->httpResource);
+		return curl_exec($this->getHttpHandler());
 	}
-	
-	/**
-	 * @see wind/component/http/base/WindHttp#resonseLine()
-	 */
-	public function resonseLine(){
-		return '';
-	}
-	
-	/**
-	 * 释放资源
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::close()
 	 */
 	public function close() {
-		if ($this->httpResource) {
-			curl_close($this->httpResource);
-			$this->httpResource = null;
-		}
+		if (null === $this->httpHandler) return;
+		curl_close($this->httpHandler);
+		$this->httpHandler = null;
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#getError()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::getError()
 	 */
 	public function getError() {
-		$this->err = curl_error($this->httpResource);
-		$this->eno = curl_errno($this->httpResource);
+		$this->err = curl_error($this->getHttpHandler());
+		$this->eno = curl_errno($this->getHttpHandler());
 		return $this->err ? $this->eno . ':' . $this->err : '';
 	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#post()
-	 */
-	public function post($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
-		$url && $this->setUrl($url);
-		$header && is_array($header) && $this->setHeaders($header);
-		$cookie && is_array($cookie) && $this->setCookies($cookie);
-		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::POST, $option);
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#get()
-	 */
-	public function get($url = '', $data = array(), $header = array(), $cookie = array(), $option = array()) {
-		$url && $this->setUrl($url);
-		$header && is_array($header) && $this->setHeaders($header);
-		$cookie && is_array($cookie) && $this->setCookies($cookie);
-		$data && is_array($data) && $this->setDatas($data);
-		return $this->send(self::GET, $option);
-	}
-	/* 
-	 * @see wind/component/http/base/WindHttp#send()
+
+	/* (non-PHPdoc)
+	 * @see AbstractWindHttp::send()
 	 */
 	public function send($method = self::GET, $options = array()) {
-		if (null === $this->httpResource) {
-			$this->open();
-		}
 		$this->request(CURLOPT_HEADER, 0);
 		$this->request(CURLOPT_FOLLOWLOCATION, 1);
 		$this->request(CURLOPT_RETURNTRANSFER, 1);
 		$this->request(CURLOPT_TIMEOUT, $this->timeout);
-		if ($options && is_array($options)) {
-			$this->requestByArray($options);
+		if ($options && is_array($options)) curl_setopt_array($this->getHttpHandler(), $options);
+		
+		switch (strtoupper($method)) {
+			case self::GET:
+				if ($this->data) {
+					$_url = WindUrlHelper::argsToUrl($this->data);
+					$url = parse_url($this->url);
+					$this->url .= (isset($url['query']) ? '&' : '?') . $_url;
+				}
+				break;
+			case self::POST:
+				if ($this->data) {
+					$this->request(CURLOPT_POST, 1);
+					$_url = WindUrlHelper::argsToUrl($this->data, false);
+					$this->request(CURLOPT_POSTFIELDS, $_url);
+				}
+				break;
+			default:
+				break;
 		}
-		if (self::GET === $method && $this->data) {
-			$get = self::buildQuery($this->data, '&');
-			$url = parse_url($this->url);
-			$sep = isset($url['query']) ? '&' : '?';
-			$this->url .= $sep . $get;
+		if ($this->cookie) {
+			$_cookie = WindUrlHelper::argsToUrl($this->cookie, false, ';=');
+			$this->request(CURLOPT_COOKIE, $_cookie);
 		}
-		if (self::POST === $method && $this->data) {
-			$this->request(CURLOPT_POST, 1);
-			$this->request(CURLOPT_POSTFIELDS, self::buildQuery($this->data, '&'));
-		}
-		if ($this->cookie && $this->cookie) {
-			$this->request(CURLOPT_COOKIE, self::buildQuery($this->cookie, ';'));
-		}
-		if (empty($this->header)) {
-			$this->setHeader('User-Agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1');
-		}
-		$this->request(CURLOPT_HTTPHEADER, self::buildArray($this->header, ':'));
+		if (empty($this->header)) $this->setHeader('User-Agent', 
+			'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1');
+		$_header = WindUrlHelper::argsToUrl($this->header, false, ':=');
+		$this->request(CURLOPT_HTTPHEADER, $_header);
 		$this->request(CURLOPT_URL, $this->url);
+		
 		return $this->response();
-	}
-	
-	/* 
-	 * @see wind/component/http/base/WindHttp#requestByArray()
-	 */
-	public static function getInstance($url = '') {
-		if (null === self::$instance || false === (self::$instance instanceof self)) {
-			self::$instance = new self($url);
-		}
-		return self::$instance;
-	}
-	
-	public function __destruct() {
-		$this->close();
 	}
 }
 

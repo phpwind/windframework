@@ -10,7 +10,7 @@
  */
 class WindString {
 	
-	const UTF8 = 'utf8';
+	const UTF8 = 'utf-8';
 	
 	const GBK = 'gbk';
 
@@ -46,12 +46,13 @@ class WindString {
 	public static function strlen($string, $charset = self::UTF8) {
 		$len = strlen($string);
 		$i = $count = 0;
+		$charset = strtolower(substr($charset, 0, 3));
 		while ($i < $len) {
 			if (ord($string[$i]) <= 129)
 				$i++;
 			else
-				switch (strtolower($charset)) {
-					case self::UTF8:
+				switch ($charset) {
+					case 'utf':
 						$i += 3;
 						break;
 					default:

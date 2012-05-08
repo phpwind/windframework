@@ -1,27 +1,29 @@
 <?php
+Wind::import('WIND:base.AbstractWindFrontController');
 /**
  * 应用前端控制器
- * 
+ *
  * 应用前端控制器，负责根据应用配置启动应用，多应用管理，多应用的配置管理等.
+ *
  * @author Qiong Wu <papa0924@gmail.com> 2011-10-12
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
  * @version $Id: WindFrontController.php 2966 2011-10-14 06:41:59Z yishuo $
  * @package wind
  */
-class WindWebFrontController extends WindFrontController {
+class WindWebFrontController extends AbstractWindFrontController {
+	protected $components = 'WIND:web.web.components';
+	protected $request = 'WIND:web.WindHttpRequest';
 	private $_configStateQueue = array();
 
-	/** 
+	/**
 	 * 创建并执行当前应用
-	 * 
-	 * @param string $appName
-	 * @param string|array $config
+	 *
+	 * @param string $appName        	
+	 * @param string|array $config        	
 	 * @return void
 	 */
 	public function multiRun() {
-		$this->request || $this->request = new WindHttpRequest();
-		
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
 		if ($this->_appName) {
@@ -38,30 +40,37 @@ class WindWebFrontController extends WindFrontController {
 				$this->_config[$this->_appName]);
 			$this->_configStateQueue[] = $this->_appName;
 		}
-		$this->_run($this->createApplication());
+		$this->_run();
 	}
-
-	/**
-	 * 返回对应app的配置信息
-	 * 
-	 * @param string $appName
-	 * @return array
+	
+	/*
+	 * (non-PHPdoc) @see AbstractWindFrontController::createApplication()
 	 */
-	public function getConfig($appName) {
-		return isset($this->_config[$appName]) ? $this->_config[$appName] : array();
+	protected function _createApplication() {
+		Wind::import('WIND:web.WindWebApplication');
+		$application = new WindWebApplication($this->request, $this->factory);
+		$application->setDelayAttributes(
+			array(
+				'dispatcher' => array('ref' => 'dispatcher'), 
+				'handlerAdapter' => array('ref' => 'router')));
+		return $application;
 	}
-
-	/**
-	 * 设置app配置
-	 * 
-	 * 设置app配置到当前应用,适用于动态挂载一个app
-	 * @param string $appName
-	 * @param array $config
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindFrontController::_loadBaseLib()
 	 */
-	public function setConfig($appName, $config) {
-		if (isset($this->_config[$appName])) return;
-		if (!$config || !is_array($config)) return;
-		$this->_config[$appName] = $config;
+	protected function _loadBaseLib() {
+		Wind::$_classes += array(
+			'WindController' => 'web/WindController', 
+			'WindDispatcher' => 'web/WindDispatcher', 
+			'WindErrorHandler' => 'web/WindErrorHandler', 
+			'WindForward' => 'web/WindForward', 
+			'WindHttpRequest' => 'web/WindHttpRequest', 
+			'WindHttpResponse' => 'web/WindHttpResponse', 
+			'WindSimpleController' => 'web/WindSimpleController', 
+			'WindUrlHelper' => 'web/WindUrlHelper', 
+			'WindWebApplication' => 'web/WindWebApplication', 
+			'WindFormFilter' => 'web/filter/WindFormFilter');
 	}
 
 }

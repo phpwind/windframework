@@ -1,4 +1,5 @@
 <?php
+Wind::import('WIND:utility.WindFolder');
 Wind::import('WIND:viewer.IWindView');
 /**
  * 视图处理器
@@ -135,7 +136,7 @@ class WindView extends WindModule implements IWindView {
 				$content = $layout->parser($this->layout, $viewResolver);
 			} else
 				$content = $viewResolver->windFetch();
-			$this->getResponse()->setBody($content, $this->templateName);
+			Wind::getApp()->getResponse()->setBody($content, $this->templateName);
 		} else {
 			echo $viewResolver->windFetch();
 		}
@@ -153,7 +154,8 @@ class WindView extends WindModule implements IWindView {
 			$this->compileExt = $this->getConfig('compile-ext', '', $this->compileExt);
 			$this->isCompile = $this->getConfig('is-compile', '', $this->isCompile);
 			$this->layout = $this->getConfig('layout', '', $this->layout);
-			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', $this->htmlspecialchars);
+			$this->htmlspecialchars = $this->getConfig('htmlspecialchars', '', 
+				$this->htmlspecialchars);
 			$this->setThemePackage($this->getConfig('theme-package'));
 		}
 	}

@@ -83,7 +83,7 @@ class WindResultSet {
 	 */
 	public function fetch($fetchMode = 0, $fetchType = 0) {
 		if ($fetchMode === 0) $fetchMode = $this->_fetchMode;
-		if ($fetchType === 0) $fetchMode = $this->_fetchType;
+		if ($fetchType === 0) $fetchType = $this->_fetchType;
 		return $this->_fetch($fetchMode, $fetchType);
 	}
 

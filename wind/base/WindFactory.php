@@ -40,24 +40,33 @@ class WindFactory implements IWindFactory {
 		$definition = isset($this->classDefinitions[$alias]) ? $this->classDefinitions[$alias] : array();
 		if (isset($this->prototype[$alias])) {
 			$instance = clone $this->prototype[$alias];
-			if (isset($definition['destroy'])) $this->destories[] = array($instance, $definition['destroy']);
+			if (isset($definition['destroy'])) $this->destories[] = array(
+				$instance, 
+				$definition['destroy']);
 		} elseif (isset($this->instances[$alias])) {
 			$instance = $this->instances[$alias];
 		} else {
-			if (!$definition) throw new WindException(
-				'[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');
-			if (isset($definition['constructor-args']) && !$args) $this->buildArgs($definition['constructor-args'], 
-				$args);
-			if (!isset($definition['className'])) $definition['className'] = Wind::import(@$definition['path']);
+			if (!$definition) return null; /*throw new WindException(
+				'[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');*/
+			if (isset($definition['constructor-args']) && !$args) $this->buildArgs(
+				$definition['constructor-args'], $args);
+			if (!isset($definition['className'])) $definition['className'] = Wind::import(
+				@$definition['path']);
 			$instance = $this->createInstance($definition['className'], $args);
-			if (isset($definition['config'])) $this->resolveConfig($definition['config'], $alias, $instance);
-			if (isset($definition['properties'])) $this->buildProperties($definition['properties'], $instance);
-			if (isset($definition['initMethod'])) $this->executeInitMethod($definition['initMethod'], $instance);
+			if (isset($definition['config'])) $this->resolveConfig($definition['config'], $alias, 
+				$instance);
+			if (isset($definition['properties'])) $this->buildProperties($definition['properties'], 
+				$instance);
+			if (isset($definition['initMethod'])) $this->executeInitMethod(
+				$definition['initMethod'], $instance);
 			!isset($definition['scope']) && $definition['scope'] = 'application';
 			$this->setScope($alias, $definition['scope'], $instance);
-			if (isset($definition['destroy'])) $this->destories[$alias] = array($instance, $definition['destroy']);
+			if (isset($definition['destroy'])) $this->destories[$alias] = array(
+				$instance, 
+				$definition['destroy']);
 		}
-		if (isset($definition['proxy'])) $instance = $this->setProxyForClass($definition['proxy'], $instance);
+		if (isset($definition['proxy'])) $instance = $this->setProxyForClass($definition['proxy'], 
+			$instance);
 		return $instance;
 	}
 
@@ -66,7 +75,8 @@ class WindFactory implements IWindFactory {
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
-			if (!$className || !class_exists($className)) throw new WindException('class is not exist.');
+			if (!$className || !class_exists($className)) throw new WindException(
+				'class is not exist.');
 			if (empty($args)) {
 				return new $className();
 			} else {
@@ -74,7 +84,8 @@ class WindFactory implements IWindFactory {
 				return call_user_func_array(array($reflection, 'newInstance'), (array) $args);
 			}
 		} catch (Exception $e) {
-			throw new WindException('[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
+			throw new WindException(
+				'[base.WindFactory] create instance \'' . $className . '\' fail.' . $e->getMessage(), 
 				WindException::ERROR_CLASS_NOT_EXIST);
 		}
 	}
@@ -123,7 +134,8 @@ class WindFactory implements IWindFactory {
 			if (!isset($this->classDefinitions[$alias]) || $merge === false)
 				$this->classDefinitions[$alias] = $definition;
 			else
-				$this->classDefinitions[$alias] = WindUtility::mergeArray($this->classDefinitions[$alias], $definition);
+				$this->classDefinitions[$alias] = WindUtility::mergeArray(
+					$this->classDefinitions[$alias], $definition);
 		}
 	}
 
@@ -224,7 +236,7 @@ class WindFactory implements IWindFactory {
 	 * @return void
 	 */
 	protected function resolveConfig($config, $alias, $instance) {
-		if (isset($config['resource'])) {
+		if (!empty($config['resource'])) {
 			$_configPath = Wind::getRealPath($config['resource'], true, true);
 			$configParser = $this->getInstance('configParser');
 			$config = $configParser->parse($_configPath, $alias, false);
@@ -264,8 +276,7 @@ class WindFactory implements IWindFactory {
 	protected function setProxyForClass($proxy, $instance) {
 		if (!$proxy) return $instance;
 		if (true === $proxy) $proxy = $this->proxyType;
-		$this->addClassDefinitions($proxy, array('path' => $proxy, 'scope' => 'prototype'));
-		$proxy = $this->getInstance($proxy);
+		$proxy = self::createInstance(Wind::import($proxy));
 		$proxy->registerTargetObject($instance);
 		$instance->_proxy = $proxy;
 		return $proxy;
@@ -296,7 +307,8 @@ class WindFactory implements IWindFactory {
 					$_value = $this->createInstance($_className);
 				}
 				$_setter = 'set' . ucfirst(trim($key, '_'));
-				if (method_exists($instance, $_setter)) call_user_func_array(array($instance, $_setter), array($_value));
+				if (method_exists($instance, $_setter)) call_user_func_array(
+					array($instance, $_setter), array($_value));
 			}
 		} else
 			$instance->setDelayAttributes($properties);

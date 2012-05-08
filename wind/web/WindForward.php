@@ -18,6 +18,10 @@ class WindForward extends WindModule {
 	 */
 	protected $windView = null;
 	/**
+	 * @see WindModule::_delayAttributes
+	 */
+	protected $_delayAttributes = array('windView' => array('ref' => 'windView'));
+	/**
 	 * 存储变量
 	 * 
 	 * @var array
@@ -119,9 +123,15 @@ class WindForward extends WindModule {
 		if ($this->windView === null) {
 			$this->_getWindView();
 			$module = Wind::getApp()->getModules();
-			if (isset($module['template-dir'])) $this->windView->templateDir = $module['template-dir'];
-			if (isset($module['compile-dir'])) $this->windView->compileDir = $module['compile-dir'];
-			if (isset($module['theme-package'])) $this->windView->setThemePackage($module['theme-package']);
+			if (isset($module['template-path'])) {
+				$this->windView->templateDir = $module['template-path'];
+			}
+			if (isset($module['compile-path'])) {
+				$this->windView->compileDir = $module['compile-path'];
+			}
+			if (isset($module['theme-path'])) {
+				$this->windView->setThemePackage($module['theme-path']);
+			}
 		}
 		return $this->windView;
 	}
