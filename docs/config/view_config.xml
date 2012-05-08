@@ -14,7 +14,7 @@
 	<!-- 布局文件配置 -->
 	<layout></layout>
 	<!-- 主题包位置 -->
-	<theme></theme>
+	<theme-package></theme-package>
 	<!-- 是否开启对输出模板变量进行过滤 -->
 	<htmlspecialchars>true</htmlspecialchars>
 </WIND>

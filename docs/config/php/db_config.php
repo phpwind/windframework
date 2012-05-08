@@ -32,7 +32,7 @@ return array(
 		//except: 配置多链接的分配规则
 		##每组规则将会以;号分割，*为通配符，：号则表示规则中的表名和链接分割
 		##比如如下： 所有的表名都将走db1链接，user开头的表和tablename2表将会走主db1 从db2的策略
-		'except' => '*:(db1);user*,tablename2:(db1|db2);',
+		'except' => '*:db1;user*,tablename2:db1|db2;',
 		//各个链接的配置，配置格式如单个链接的配置
 		'db1' => array(
 			'dsn' => 'mysql:host=localhost;dbname=test',

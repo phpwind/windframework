@@ -5,7 +5,7 @@
  * 第二部分是模板编译标签的配置,用户可以配置自己定义的编译解析规则
  */
 
-//第一部分：试图组件的配置
+//第一部分：视图组件的配置
 return array(
 	//指定模板路径
 	'template-dir' => 'template',
@@ -20,7 +20,7 @@ return array(
 	//布局文件配置
 	'layout' => '',
 	//主题包位置
-	'theme' => '',
+	'theme-package' => '',
 	//是否开启对输出模板变量进行过滤
 	'htmlspecialchars' => true,
 	

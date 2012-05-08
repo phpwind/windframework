@@ -1,86 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WIND>
+
+	<!-- 站点是否关闭设置 -->
+	<isclose>1</isclose>
+	<!-- 站点关闭后转向的模板路径 -->
+	<isclose-tpl>TEST:template.closed.htm</isclose-tpl>
+	
+	<!-- 组件个性配置，一下的组件配置将会替换掉compontents_config下的对应的组件的配置，同时这里也可以增加自己的组件 -->
+	<components>
+	    <!-- 比如配置一个db组件 -->
+		<!-- db相关配置，如果设置了resource则系统会默认找到resource指向的文件作为db配置信息.DB的配置config内容参照DOCS下的db_config配置 -->
+		<component name='db'>
+			<config resource="db_config.php" />
+		</component>
+		<!-- 比如配置一个router组件 -->
+		<!-- router组件主要允许用户配置module/controller/action的访问别名及各自缺省值，同时允许设置urlWrite规则 -->
+		<component name='router'>
+			<config>
+				<!-- 当开启多应用时候，可配置路径中app的规则 -->
+				<app>
+					<url-param>p</url-param>
+					<default-value>default</default-value>
+				</app>
+				<module>
+					<url-param>m</url-param>
+					<default-value>default</default-value>
+				</module>
+				<controller>
+					<url-param>c</url-param>
+					<default-value>index</default-value>
+				</controller>
+				<action>
+					<url-param>a</url-param>
+					<default-value>run</default-value>
+				</action>
+				<routes>
+					<route name='WindRoute'>
+						<class>WIND:router.route.WindRewriteRoute</class> 
+						<pattern>^http[s]?:\/\/[^\/]+(\/\w+)?(\/\w+)?(\/\w+)?.*$</pattern>
+						<params>
+							<param name='a' map='3' defualt='run' />
+							<param name='c' map='2'/>
+							<param name='m' map='1'/>
+						</params> 
+					</route>
+				</routes>
+			</config>
+		</component>
+	</components>
+		
 	<!-- 应用配置:
 	     name: 保证每个应用唯一性，同时，name为default的应用将会作为缺省的应用配置，其他应用的配置将会和default配置进行merge；
 	     class: 指向components中的name -->
-	<web-app name='default' class='windWebApp'>
-		<!-- 组件个性配置，一下的组件配置将会替换掉compontents_config下的对应的组件的配置，同时这里也可以增加自己的组件 -->
-		<components>
-		    <!-- 比如配置一个db组件 -->
-			<!-- db相关配置，如果设置了resource则系统会默认找到resource指向的文件作为db配置信息.DB的配置config内容参照DOCS下的db_config配置 -->
-			<component name='db'>
-				<config resource="db_config.php" />
-			</component>
-			<!-- 比如配置一个router组件 -->
-			<!-- router组件主要允许用户配置module/controller/action的访问别名及各自缺省值，同时允许设置urlWrite规则 -->
-			<component name='router'>
-				<config>
-					<module>
-						<url-param>m</url-param>
-						<default-value>default</default-value>
-					</module>
-					<controller>
-						<url-param>c</url-param>
-						<default-value>index</default-value>
-					</controller>
-					<action>
-						<url-param>a</url-param>
-						<default-value>run</default-value>
-					</action>
-					<routes>
-						<route name='WindRoute'>
-							<class>WIND:router.route.WindRoute</class> 
-							<params>
-								<param name='script'>
-									<map>1</map>
-									<default>index.php</default>
-								</param>
-								<param name='a' map='2' defualt='run' />
-								<param name='c' map='3'/>
-								<param name='m' map='4'/>
-							</params> 
-						</route>
-					</routes>
-				</config>
-			</component>
-		</components>
+	<web-apps>
+		<web-app name='default' class='windApplication'>
 		
-		<!-- iscache属性控制windCache组件是否可用，如果关闭则windCache组件将不可用,通过Wind::getApp()->getComponent('windCache'); -->
-		<iscache>1</iscache>
-		
-		<!-- charset属性控制输出的编码方式 -->
-		<charset>utf-8</charset>
-	    
-	    <!-- 过滤链配置，可以配置通用的，同时也可以配置Module级别的，controller级别的，action级别的 ；
-	         class: 配置过滤链的实现 -->
-		<filters class='WIND:filter.WindFilterChain'>
-		    <!-- 过滤器配置
-		    	name: 过滤器的名字：唯一
-		    	class: 过滤器的实现：
-		    	pattern：*：则所有的请求都将会应用该过滤器
-		    	         module*: 则所有module模块的请求都将会应用该过滤器
-		    	         module_index*: 则module模块下的indexController下的所有Action请求都将会应用该过滤器
-		    	         module_index_add*: 则module模块下的indexController下的addAction将会应用该过滤器
-		    	form: 使用框架提供的formFilter的时候配置给该filter指明需要使用的form
-		    	其他配置项：将会传递给配置的filter相同配置项的属性
-		    -->
-			<filter name='filter' class='WIND:web.filter.WindFormFilter' pattern='*' form=""/>
-		</filters>
-		
-		<!-- 模块配置： 可以通过设定多个<module></module>来设置多组模块配置，每组模块以name来相互区分 -->
-		<modules>
-			<!-- name: 模块的名字 path: 模块的路径（采用命名空间的方式) -->
-			<module name='default'>
-				<controller-path>controller</controller-path>
-				<!-- 指定该模块下的controller的后缀格式 -->
-				<controller-suffix>Controller</controller-suffix>
-				<!-- 配置该模块的error处理的action controller类 -->
-				<error-handler>WIND:web.WindErrorHandler</error-handler>
-				<!-- 指定模板路径 -->
-				<template-dir>template</template-dir>
-				<!-- 模板编译文件存放路径 -->
-				<compile-dir>data.template</compile-dir>
-			</module>
-		</modules>
-	</web-app>
+			<!-- iscache属性控制windCache组件是否可用，如果关闭则windCache组件将不可用,通过Wind::getApp()->getComponent('windCache'); -->
+			<iscache>1</iscache>
+			
+			<!-- charset属性控制输出的编码方式 -->
+			<charset>utf-8</charset>
+		    
+		    <!-- 过滤链配置，可以配置通用的，同时也可以配置Module级别的，controller级别的，action级别的 ；
+		         class: 配置过滤链的实现 -->
+			<filters class='WIND:filter.WindFilterChain'>
+			    <!-- 过滤器配置
+			    	name: 过滤器的名字：唯一
+			    	class: 过滤器的实现：
+			    	pattern：*：则所有的请求都将会应用该过滤器
+			    	         module/*: 则所有module模块的请求都将会应用该过滤器
+			    	         module/index/*: 则module模块下的indexController下的所有Action请求都将会应用该过滤器
+			    	         module/index/add: 则module模块下的indexController下的addAction将会应用该过滤器
+			    	form: 使用框架提供的formFilter的时候配置给该filter指明需要使用的form
+			    	其他配置项：将会传递给配置的filter相同配置项的属性
+			    -->
+				<filter name='filter' class='WIND:web.filter.WindFormFilter' pattern='*' form=""/>
+			</filters>
+			
+			<!-- 模块配置： 可以通过设定多个<module></module>来设置多组模块配置，每组模块以name来相互区分 -->
+			<modules>
+				<!-- name: 模块的名字 path: 模块的路径（采用命名空间的方式) -->
+				<module name='default'>
+					<controller-path>controller</controller-path>
+					<!-- 指定该模块下的controller的后缀格式 -->
+					<controller-suffix>Controller</controller-suffix>
+					<!-- 配置该模块的error处理的action controller类 -->
+					<error-handler>WIND:web.WindErrorHandler</error-handler>
+					<!-- 指定模板路径 -->
+					<template-dir>template</template-dir>
+					<!-- 模板编译文件存放路径 -->
+					<compile-dir>data.template</compile-dir>
+				</module>
+			</modules>
+		</web-app>
+	</web-apps>
+	
 </WIND>
