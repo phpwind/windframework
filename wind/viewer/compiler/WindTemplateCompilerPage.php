@@ -58,7 +58,7 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 	 * @var array
 	 */
 	protected $args = array();
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
@@ -67,15 +67,18 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		empty($this->page) && $this->page = '1';
 		empty($this->count) && $this->count = '0';
 		empty($this->per) && $this->per = '0';
-		empty($this->url) && $this->url = '';
+		if (empty($this->url))
+			$this->url = '';
+		elseif (strpos($this->url, '?') === false)
+			$this->url .= '?';
 		empty($this->args) && $this->args = 'array()';
 		$_return = array();
 		$_return[] = '<?php $__tplPageCount=(int)' . $this->count . ';';
 		$_return[] = '$__tplPagePer=(int)' . $this->per . ';';
 		$_return[] = '$__tplPageTotal=(int)' . $this->total . ';';
-		$_return[] = '$__tplPageCurrent=(int)' . $this->page . ';'; 
-		$_return[] = '$__tplPageUrl="' . $this->url . '";'; 
-		$_return[] = '$__tplPageArgs=' . $this->args . ';'; 
+		$_return[] = '$__tplPageCurrent=(int)' . $this->page . ';';
+		$_return[] = '$__tplPageUrl="' . $this->url . '";';
+		$_return[] = '$__tplPageArgs=' . $this->args . ';';
 		$_return[] = 'if($__tplPageCount > 0 && $__tplPagePer > 0){';
 		$_return[] = '$__tplPageTotal = ceil($__tplPageCount / $__tplPagePer);}';
 		$_return[] = '$__tplPageCurrent > $__tplPageTotal && $__tplPageCurrent = $__tplPageTotal;';
@@ -97,14 +100,14 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		list(, $content) = $this->windViewerResolver->compile($this->tpl, '', true);
 		$arrPageTags = array('$total', '$page', '$url', '$count', '$args');
 		$arrPageVars = array(
-			'$__tplPageTotal',
-			'$__tplPageCurrent',
-			'$__tplPageUrl',
-			'$__tplPageCount',
+			'$__tplPageTotal', 
+			'$__tplPageCurrent', 
+			'$__tplPageUrl', 
+			'$__tplPageCount', 
 			'$__tplPageArgs');
 		return str_ireplace($arrPageTags, $arrPageVars, $content);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::getProperties()
 	 */

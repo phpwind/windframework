@@ -115,8 +115,8 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 	 * @return array
 	 */
 	protected function getTags() {
-		/*$_tags['internal'] = $this->createTag('internal', 'WIND:viewer.compiler.WindTemplateCompilerInternal', 
-			'/<\?php(.|\n)*?\?>/i');*/
+		$_tags['internal'] = $this->createTag('internal', 'WIND:viewer.compiler.WindTemplateCompilerInternal', 
+			'/<\?php.*?\?>/is');
 		/*标签体增加在该位置*/
 		$_tags['template'] = $this->createTag('template', 
 			'WIND:viewer.compiler.WindTemplateCompilerTemplate');
