@@ -713,7 +713,7 @@ class WindHttpRequest implements IWindRequest {
 	 * @return array|string 反转义之后的数据
 	 */
 	private function _stripSlashes(&$data) {
-		return is_array($data) ? array_map(array($this, 'stripSlashes'), $data) : stripslashes($data);
+		return is_array($data) ? array_map(array($this, '_stripSlashes'), $data) : stripslashes($data);
 	}
 
 }
