@@ -206,10 +206,27 @@ logo
 	line-height: 1.2;
 }
 
-.info table{
-	font-size: 11px; 
-	line-height: 1.5;
+table#itab{
+	border:10px solid #E6E6FA;
+	background: #E6E6FA; 	
+	margin: 0 auto;
 }
+#itab thead tr th{font-weight: 800; text-align: center;}
+#itab td,table#itab th{border:1px solid #ccc; vertical-align: top; padding: 0 5px;}
+#itab .linenum{width:15%;}
+
+
+/*
+table #itab{background:#E6E6FA; border-collapse:collapse; border:1px solid #999; width:50em; margin:0 auto}
+#itab caption{font-size:1em; font-weight:normal; color:#a40000}
+#itab thead{background:#E6E6FA}
+#itab td,table#itab th{border:1px solid #ccc}
+#itab td{padding-left:0.8em}
+#itab tfoot{background:#fcc}
+#itab .linenum{width:15%; background:#eee}
+#itab .id-1{width:20%; background:#cf9}
+#itab .id-2{width:25%; background:#eee}
+#itab .id-3{width:30%; background:#9ff}*/
 
 /*
 ===================

@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>文档-windframework</title>
+<link href="../images/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="../images/google-code-prettify/prettify.js"></script>
+<link href="../images/style.css" rel="stylesheet" />
+</head>
+<body onload="prettyPrint()">
+	<div class="head_wrap">
+		<div class="head">
+			<div class="logo"><img src="../images/logo.png"></div>
+			<div class="nav">
+				<ul class="cc">
+					<li><a href="../index.html">首页</a><em></em></li>
+					<li><a href="../framework.html">关于框架</a><em></em></li>
+					<li class="current"><a href="../documents.html">Documents</a><em></em></li>
+					<li><a href="https://github.com/phpwind/windframework/wiki/FAQ">FAQ</a><em></em></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="main_wrap">
+		<div class="main">
+			<h2 class="h"><strong>框架目录结构说明</strong></h2>
+			<div class="info">
+			windframework没有特别的目录定义规则,采用一种松散的目录定义方式。除了主目录下面的
+“Wind.php”,“component_config.php”要重点强调外,其他都是一种组件化的松散的存放方式。<br>
+下面对一些主要的包进行介绍说明:
+			
+<table id="itab">
+<colgroup>
+<col class="linenum">
+<col class="id-1">
+</colgroup>
+<thead>
+<tr><th>包名称</th><th>描述</th></tr>
+</thead>
+<body>
+<tr>
+	<td>base</td>
+	<td>基础核心的定义与实现</td>				
+</tr>
+<tr>
+	<td>web</td>
+	<td>Web MVC组件包,定义了web mvc实现</td>				
+</tr>
+<tr>
+	<td>viewer</td>
+	<td>视图组件,实现了视图渲染,模板编译,布局管理等。包括:
+		 <ol>
+			<li>WindView 视图管理器</li>
+			<li>Resolver 视图渲染器</li>
+			<li>Compiler 模板编译器</li>
+			<li>Layout   视图布局管理</li>
+		</ol>
+   </td>				
+</tr>
+<tr>
+	<td>router</td>
+	<td>路由组件,是MVC流程中比较核心的组件。它实现了输入信息的解析到处理程序的路由工作。支持多路由协议。包括:
+		 <ol>
+			<li>Router 路由器</li>		 
+			<li>Route 路由协议</li>
+		 </ol></td>				
+</tr>
+<tr>
+	<td>parser</td>
+	<td>文件解析器,配置文件解析支持,支持 xml,ini,properties,php四种配置格式的文件解析。</td>				
+</tr>
+<tr>
+	<td>filter</td>
+	<td>拦截过滤器组件,设计模式的实现。是wind框架中一个比较核心的设计模式。被用在多处策略的部署,与功能实现。例如模板编译,多路由协议,代理监听等。</td>				
+</tr>
+<tr>
+	<td>db</td>
+	<td>db组件支持两种数据库连接方式WindConnection和WindConnectionManager,即但连接和多链接方式。WindConnectionManager继承自WindConnection只是增加了多连接的管理,主从读写分离部署支持等能力。db组件,是基于PDO的实现。所以在使用db组件之前需要开启PDO支持。
+</td>
+</tr>
+<tr>
+	<td>convert</td>
+	<td>编码转换</td>
+</tr>
+<tr>
+	<td>cache</td>
+	<td>缓存组件我们为数据缓存定义了通用接口,并作了多种缓存的实现</td>
+</tr>
+<tr>
+	<td>i18n</td>
+	<td>国际化组件</td>
+</tr>
+<tr>
+	<td>log</td>
+	<td>日志组件</td>
+</tr>
+<tr>
+	<td>utility</td>
+	<td>通用工具库</td>
+</tr></body>
+</table>		
+
+
+
+
+	
+		</div>
+		</div>
+	</div>
+	<div class="footer_wrap">
+		<div class="footer">
+			&copy; 2012 windframework
+			<script src="http://s15.cnzz.com/stat.php?id=4164109&web_id=4164109&show=pic1" language="JavaScript"></script>
+		</div>
+	</div>
+</body>
+</html>
