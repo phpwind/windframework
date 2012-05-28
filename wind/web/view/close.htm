@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>{@G:title}</title>
+<title><?php echo $message; ?></title>
 <style>
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,p,blockquote,th,td {
 	margin: 0;
@@ -57,7 +57,7 @@ body {
 }
 
 .wrap {
-	width: 80%;
+	width: 70%;
 	margin: 50px auto;
 	border: 1px solid #ccc;
 	background: #fff;
@@ -133,19 +133,7 @@ ul li:hover {
 <body>
 <div class="wrap">
 <div class="main">
-<h2 class="f14 b">{$errorHeader}:</h2>
-<ul>
-	<!--#foreach ($errors as $key => $error):
-		$key = $key + 1;
-		if(!WIND_DEBUG)
-			$error = str_replace(Wind::getRootPath(Wind::getAppName()), '~/', $error);#-->
-	<li>{$key}. {$error}</li>
-	<!--#endforeach;#-->
-</ul>
-<div class="tips"><?php echo "The server encountered an internal error and failed to process your request. 
-Please try again later. If this error is temporary, reloading the page might resolve the problem.
-\nIf you are able to contact the administrator report this error message.
-(" . Wind::getApp()->getConfig('siteInfo', '', "http://www.windframework.com/") . ")" ; ?></div>
+<?php echo $message;?>
 </div>
 </div>
 </body>

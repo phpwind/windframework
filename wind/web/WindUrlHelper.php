@@ -49,7 +49,8 @@ class WindUrlHelper {
 		}
 		$url = explode($_sep1, trim($url, $_sep1) . $_sep1);
 		$args = array();
-		for ($i = 0; $i < count($url); $i = $i + 2) {
+		$_count = count($url);
+		for ($i = 0; $i < $_count; $i = $i + 2) {
 			if (!isset($url[$i]) || !isset($url[$i + 1])) continue;
 			$_v = $decode ? rawurldecode($url[$i + 1]) : $url[$i + 1];
 			$_k = $url[$i];
@@ -121,14 +122,6 @@ class WindUrlHelper {
 	public static function createUrl($action, $args = array(), $anchor = '', $route = null, $absolute = true) {
 		/* @var $router AbstractWindRouter */
 		$router = Wind::getApp()->getComponent('router');
-		if ($_token = Wind::getApp()->getConfig('url-token')) {
-			/* @var $token WindSecurityToken */
-			$token = Wind::getApp()->getComponent('windToken');
-			$args[$_token] = $token->saveToken($_token);
-		}
-		if ($urlArgs = Wind::getApp()->getUrlArgs()) {
-			$args = array_merge($args, $urlArgs);
-		}
 		$url = $router->assemble($action, $args, $route);
 		$url .= $anchor ? '#' . $anchor : '';
 		return self::checkUrl($url, $absolute);

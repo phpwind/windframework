@@ -32,8 +32,7 @@ class WindCookie {
 	 */
 	public static function set($name, $value = null, $encode = false, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false) {
 		if (empty($name)) return false;
-		$value && $value = serialize($value);
-		$encode && $value = base64_encode($value);
+		$encode && $value && $value = base64_encode(serialize($value));
 		$path = $path ? $path : '/';
 		setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
 		return true;
@@ -63,8 +62,8 @@ class WindCookie {
 	public static function get($name, $dencode = false) {
 		if (self::exist($name)) {
 			$value = $_COOKIE[$name];
-			$value && $dencode && $value = base64_decode($value);
-			return $value ? unserialize($value) : $value;
+			$value && $dencode && $value = unserialize(base64_decode($value));
+			return $value ? $value : $value;
 		}
 		return false;
 	}

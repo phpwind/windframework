@@ -14,7 +14,6 @@ Wind::import('WIND:base.AbstractWindFrontController');
 class WindWebFrontController extends AbstractWindFrontController {
 	protected $components = 'WIND:web.web.components';
 	protected $request = 'WIND:web.WindHttpRequest';
-	private $_configStateQueue = array();
 
 	/**
 	 * 创建并执行当前应用
@@ -26,20 +25,9 @@ class WindWebFrontController extends AbstractWindFrontController {
 	public function multiRun() {
 		/* @var $router WindRouter */
 		$router = $this->factory->getInstance('router');
-		if ($this->_appName) {
-			$router->setApp($this->_appName);
-		} elseif (!$this->getApp()) {
-			$this->_appName = 'default';
-			$router->setApp('default');
-		}
+		$this->_appName && $router->setApp($this->_appName);
 		$router->route($this->request);
 		$this->_appName = $router->getApp();
-		if (!in_array($this->_appName, $this->_configStateQueue) && $this->_appName !== 'default' && isset(
-			$this->_config['default']) && isset($this->_config[$this->_appName])) {
-			$this->_config[$this->_appName] = WindUtility::mergeArray($this->_config['default'], 
-				$this->_config[$this->_appName]);
-			$this->_configStateQueue[] = $this->_appName;
-		}
 		$this->_run();
 	}
 	
@@ -47,7 +35,6 @@ class WindWebFrontController extends AbstractWindFrontController {
 	 * (non-PHPdoc) @see AbstractWindFrontController::createApplication()
 	 */
 	protected function _createApplication() {
-		Wind::import('WIND:web.WindWebApplication');
 		$application = new WindWebApplication($this->request, $this->factory);
 		$application->setDelayAttributes(
 			array(
@@ -57,9 +44,34 @@ class WindWebFrontController extends AbstractWindFrontController {
 	}
 	
 	/* (non-PHPdoc)
+	 * @see AbstractWindFrontController::showErrorMessage()
+	*/
+	protected function showErrorMessage($message, $file, $line, $trace, $errorcode) {
+		if (!empty($this->_config[$this->_appName]['errorDir'])) {
+			$errDir = $this->_config[$this->_appName]['errorDir'];
+		} else
+			$errDir = 'WIND:web.view';
+		$errDir = Wind::getRealPath($errDir, false);
+		if (is_file($errDir . '/' . $errorcode . '.htm')) $this->_errPage = $errorcode;
+		ob_start();
+		require $errDir . '/' . $this->_errPage . '.htm';
+		exit(ob_get_clean());
+	}
+	
+	/* (non-PHPdoc)
 	 * @see AbstractWindFrontController::_loadBaseLib()
 	 */
 	protected function _loadBaseLib() {
+		Wind::$_imports += array(
+			'WIND:web.WindController' => 'WindController', 
+			'WIND:web.WindDispatcher' => 'WindDispatcher', 
+			'WIND:web.WindErrorHandler' => 'WindErrorHandler', 
+			'WIND:web.WindForward' => 'WindForward', 
+			'WIND:web.WindHttpRequest' => 'WindHttpRequest', 
+			'WIND:web.WindHttpResponse' => 'WindHttpResponse', 
+			'WIND:web.WindSimpleController' => 'WindSimpleController', 
+			'WIND:web.WindUrlHelper' => 'WindUrlHelper', 
+			'WIND:web.WindWebApplication' => 'WindWebApplication');
 		Wind::$_classes += array(
 			'WindController' => 'web/WindController', 
 			'WindDispatcher' => 'web/WindDispatcher', 
@@ -69,10 +81,8 @@ class WindWebFrontController extends AbstractWindFrontController {
 			'WindHttpResponse' => 'web/WindHttpResponse', 
 			'WindSimpleController' => 'web/WindSimpleController', 
 			'WindUrlHelper' => 'web/WindUrlHelper', 
-			'WindWebApplication' => 'web/WindWebApplication', 
-			'WindFormFilter' => 'web/filter/WindFormFilter');
+			'WindWebApplication' => 'web/WindWebApplication');
 	}
-
 }
 
 ?>

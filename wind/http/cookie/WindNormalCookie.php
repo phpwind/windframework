@@ -14,7 +14,6 @@ Wind::import('WIND:utility.WindCookie');
 class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	protected $prefix = null;
 	protected $encode = false;
-	protected $expires = null;
 	protected $path = null;
 	protected $domain = null;
 	protected $secure = false;
@@ -25,7 +24,6 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * 
 	 * 根据传入的cookie数据初始化cookie数据
 	 * 
-	 * @param string|int $expires 过期时间,默认为null即会话cookie,随着会话结束将会销毁
 	 * @param boolean $encode 是否使用 MIME base64 对数据进行编码,默认是false即不进行编码
 	 * @param string $prefix cookie前缀,默认为null即没有前缀
 	 * @param string $path cookie保存的路径,默认为null即采用默认
@@ -34,10 +32,9 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * @param boolean $httponly 是否可通过客户端脚本访问,默认为false即客户端脚本可以访问cookie
 	 * @return void
 	 */
-	public function __construct($prefix = null, $encode = false, $expires = null, $path = null, $domain = null, $secure = false, $httponly = false) {
+	public function __construct($prefix = null, $encode = false, $path = null, $domain = null, $secure = false, $httponly = false) {
 		$this->prefix = $prefix;
 		$this->encode = $encode;
-		$this->expires = $expires;
 		$this->domain = $domain;
 		$this->path = $path;
 		$this->secure = $secure;
@@ -55,7 +52,6 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 		parent::setConfig($config);
 		$this->prefix = $this->getConfig('prefix');
 		$this->encode = $this->getConfig('encode');
-		$this->expires = $this->getConfig('expires');
 		$this->domain = $this->getConfig('domain');
 		$this->path = $this->getConfig('path');
 		$this->secure = $this->getConfig('secure');
@@ -67,12 +63,13 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 * 
 	 * @param string $name
 	 * @param mixed $value
+	 * @param int|null $expires 过期时间
 	 * @return boolean
 	 */
-	public function set($name, $value) {
+	public function set($name, $value, $expires = null) {
 		$this->prefix && $name = $this->prefix . $name;
-		return WindCookie::set($name, $value, $this->encode, $this->expires, $this->path, $this->domain, $this->secure, 
-			$this->httponly);
+		return WindCookie::set($name, $value, $this->encode, $expires, $this->path, $this->domain, 
+			$this->secure, $this->httponly);
 	}
 
 	/**
@@ -97,7 +94,7 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 		$this->prefix && $name = $this->prefix . $name;
 		return WindCookie::delete($name);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindHttpContainer::isRegistered()
 	 */
@@ -141,14 +138,5 @@ class WindNormalCookie extends WindModule implements IWindHttpContainer {
 	 */
 	public function getPath() {
 		return $this->path;
-	}
-
-	/**
-	 * 获取cookie的过期时间
-	 * 
-	 * @return mixed 获得cookie的过期时间
-	 */
-	public function getExpirs() {
-		return $this->expires;
 	}
 }

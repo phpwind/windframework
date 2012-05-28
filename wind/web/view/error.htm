@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title><?php echo $topic; ?></title>
+<title><?php echo $message; ?></title>
 <style>
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,p,blockquote,th,td {
 	margin: 0;
@@ -57,7 +57,7 @@ body {
 }
 
 .wrap {
-	width: 80%;
+	width: 70%;
 	margin: 50px auto;
 	border: 1px solid #ccc;
 	background: #fff;
@@ -132,13 +132,16 @@ ul li:hover {
 </head>
 <body>
 <div class="wrap">
-<h1><?php echo $topic; ?></h1>
 <div class="main">
-<h2><?php echo $errmessage; ?></h2>
-<h3><?php echo $file; ?></h3>
+<h2><?php echo "Uncaught error with message '$message'"?></h2>
+<?php if(WIND_DEBUG) {?>
+<h3><?php echo $file,':',$line; ?></h3>
+<?php
+	list($fileLines, $trace) = WindUtility::crash($file, $line, $trace);
+?>
 <ul>
 	<?php foreach($fileLines as $key => $value):
-		if($key == $currentLine):?>
+		if($key == ($line-1)):?>
 	<li class="err"><?php echo $value; ?></li>
 	<?php else: ?>
 	<li><?php echo $value; ?></li>
@@ -151,6 +154,7 @@ ul li:hover {
 	<li><?php echo $value; ?></li>
 	<?php endforeach; ?>
 </ul>
+<?php } ?>
 <div class="tips"><?php echo "The server encountered an internal error and failed to process your request. 
 Please try again later. If this error is temporary, reloading the page might resolve the problem.
 \nIf you are able to contact the administrator report this error message.

@@ -57,7 +57,7 @@ class WindPack {
 		if (!($content = $this->readContentFromDir($packMethod, $dir, $absolutePath, $ndir, $suffix, $nfile))) {
 			return false;
 		}
-		$fileSuffix = WindFile::getFileSuffix($dst);
+		$fileSuffix = WindFile::getsuffix($dst);
 		$replace = $compress ? ' ' : "\n";
 		$content = implode($replace, $content);
 		$content = $this->callBack($content, $replace);

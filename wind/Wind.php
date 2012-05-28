@@ -19,7 +19,6 @@ define('WIND_PATH', dirname(__FILE__) . '/');
 class Wind {
 	public static $_imports = array();
 	public static $_classes = array();
-	
 	private static $_extensions = 'php';
 	private static $_isAutoLoad = true;
 	private static $_namespace = array();
@@ -34,7 +33,7 @@ class Wind {
 	 */
 	public static function application($appName = '', $config = array()) {
 		if (self::$_frontController === null) {
-			Wind::import('WIND:web.WindWebFrontController');
+			self::$_classes['WindWebFrontController'] = 'web/WindWebFrontController';
 			self::$_frontController = new WindWebFrontController($appName, $config);
 		}
 		return self::$_frontController;
@@ -56,9 +55,9 @@ class Wind {
 	 * @see WindFrontController::getApp()
 	 * @return WindWebApplication
 	 */
-	public static function getApp($appName = '') {
+	public static function getApp() {
 		if (self::$_frontController === null) return null;
-		return self::$_frontController->getApp($appName);
+		return self::$_frontController->getApp();
 	}
 
 	/**
@@ -90,16 +89,6 @@ class Wind {
 			$filePath = substr($filePath, 0, $pos + 1);
 			$dirPath = self::getRealPath(trim($filePath, '.'), false);
 			self::register($dirPath, '', true);
-			/*if (false === ($files = scandir($dirPath, 0))) throw new Exception(
-				'[Wind.import] the file ' . $dirPath . ' open failed!');
-			foreach ($files as $file) {
-				if ($file === '.' || $file === '..' || ($pos = strrpos($file, '.')) === 0) continue;
-				if ($pos !== false && substr($file, $pos + 1) === self::$_extensions) {
-					$fileName = substr($file, 0, $pos);
-					self::_setImport($fileName, $filePath . $fileName);
-				} elseif ($recursivePackage && is_dir($dirPath . '/' . $file))
-					self::import($filePath . $file . '.' . '*', $recursivePackage);
-			}*/
 		} else
 			self::_setImport($fileName, $filePath);
 		return $fileName;
@@ -254,7 +243,11 @@ class Wind {
 			'WindActionFilter' => 'filter/WindActionFilter', 
 			'WindHandlerInterceptor' => 'filter/WindHandlerInterceptor', 
 			'WindHandlerInterceptorChain' => 'filter/WindHandlerInterceptorChain', 
-			'WindUtility' => 'utility/WindUtility');
+			'WindUtility' => 'utility/WindUtility', 
+			'WindString' => 'utility/WindString', 
+			'WindFile' => 'utility/WindFile', 
+			'WindJson' => 'utility/WindJson', 
+			'WindSecurity' => 'utility/WindSecurity');
 	}
 }
 

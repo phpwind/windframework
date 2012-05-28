@@ -31,7 +31,7 @@ class WindFactory implements IWindFactory {
 	public function __construct($classDefinitions = array()) {
 		if (is_array($classDefinitions)) $this->classDefinitions = $classDefinitions;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindFactory::getInstance()
 	 */
@@ -46,8 +46,7 @@ class WindFactory implements IWindFactory {
 		} elseif (isset($this->instances[$alias])) {
 			$instance = $this->instances[$alias];
 		} else {
-			if (!$definition) return null; /*throw new WindException(
-				'[factory.WindFactory.getInstance] component \'' . $alias . '\' is not exist.');*/
+			if (!$definition) return null;
 			if (isset($definition['constructor-args']) && !$args) $this->buildArgs(
 				$definition['constructor-args'], $args);
 			if (!isset($definition['className'])) $definition['className'] = Wind::import(
@@ -69,14 +68,12 @@ class WindFactory implements IWindFactory {
 			$instance);
 		return $instance;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindFactory::createInstance()
 	 */
 	static public function createInstance($className, $args = array()) {
 		try {
-			if (!$className || !class_exists($className)) throw new WindException(
-				'class is not exist.');
 			if (empty($args)) {
 				return new $className();
 			} else {
@@ -166,6 +163,8 @@ class WindFactory implements IWindFactory {
 		try {
 			foreach ($this->destories as $call)
 				call_user_func_array($call, array());
+			$this->instances = array();
+			$this->destories = array();
 		} catch (Exception $e) {
 			throw new WindException($e->getMessage());
 		}

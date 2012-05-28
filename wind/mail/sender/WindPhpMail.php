@@ -15,7 +15,7 @@ class WindPhpMail implements IWindSendMail {
 	/* (non-PHPdoc)
 	 * @see IWindSendMail::send()
 	 */
-	public function send(WindMail $mail, $config = array()) {
+	public function send($mail, $config = array()) {
 		$to = '';
 		foreach ($mail->getRecipients() as $key => $value)
 			$to .= $to ? ', ' . $value : $value;

@@ -101,9 +101,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		} catch (WindForwardException $e) {
 			$this->doDispatch($e->getForward());
 		} catch (WindActionException $e) {
-			$this->sendErrorMessage($e);
+			$this->sendErrorMessage(($e->getError() ? $e->getError() : $e->getMessage()), 
+				$e->getCode());
 		} catch (WindException $e) {
-			$this->sendErrorMessage($e);
+			$this->sendErrorMessage($e->getMessage(), $e->getCode());
 		}
 	}
 	
@@ -158,26 +159,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$_args = func_get_args();
 		array_unshift($_args, 'G');
 		return call_user_func_array(array($this->response, 'getData'), $_args);
-	}
-
-	/**
-	 * 获取urlArg值
-	 *
-	 * @return array
-	 */
-	public function getUrlArgs() {
-		return $this->getGlobal('__url__');
-	}
-
-	/**
-	 * 设置urlargs值
-	 *
-	 * @param string $data        	
-	 * @param string $key        	
-	 */
-	public function setUrlArgs($data, $key) {
-		if (!$key || !$data) return;
-		$this->setGlobal(array($key => $data), '__url__');
 	}
 
 	/**
@@ -306,37 +287,36 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * 处理错误请求
 	 *
 	 * 根据错误请求的相关信息,将程序转向到错误处理句柄进行错误处理
-	 * @param WindActionException actionException
+	 * @param WindErrorMessage $errorMessage
+	 * @param int $errorcode
 	 * @return void
-	 * @throws WindFinalException
 	 */
-	protected function sendErrorMessage($exception) {
-		$moduleName = $this->handlerAdapter->getModule();
-		if ($moduleName === 'error') throw new WindFinalException($exception->getMessage());
-		$errorMessage = null;
-		if ($exception instanceof WindActionException) $errorMessage = $exception->getError();
-		if (!$errorMessage) {
+	protected function sendErrorMessage($errorMessage, $errorcode) {
+		if (is_string($errorMessage)) {
+			$_tmp = $errorMessage;
+			/* @var $errorMessage WindErrorMessage */
 			$errorMessage = $this->getComponent('errorMessage');
-			$errorMessage->addError($exception->getMessage());
+			$errorMessage->addError($_tmp);
 		}
+		/* @var $router WindRouter */
+		$moduleName = $this->handlerAdapter->getModule();
+		if ($moduleName === 'error') throw new WindFinalException($errorMessage->getError(0));
+		
 		if (!$_errorAction = $errorMessage->getErrorAction()) {
 			$module = $this->getModules($moduleName);
-			if (empty($module)) $module = $this->getModules('default');
-			preg_match("/([a-zA-Z]*)$/", @$module['error-handler'], $matchs);
-			$_errorHandler = trim(substr(@$module['error-handler'], 0, -(strlen(@$matchs[0]) + 1)));
-			$_errorAction = 'error/' . @$matchs[0] . '/run/';
+			$_errorClass = Wind::import(@$module['error-handler']);
+			$_errorAction = 'error/' . $_errorClass . '/run/';
 			$this->setModules('error', 
 				array(
-					'controller-path' => $_errorHandler, 
+					'controller-path' => array_search($_errorClass, Wind::$_imports), 
 					'controller-suffix' => '', 
 					'error-handler' => ''));
 		}
 		/* @var $forward WindForward */
 		$forward = $this->getComponent('forward');
-		$forward->forwardAction($_errorAction, 
-			array('__error' => $errorMessage->getError(), '__errorCode' => $exception->getCode()), 
-			false, false);
-		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, false);
+		$error = array('message' => $errorMessage->getError(), 'code' => $errorcode);
+		$forward->forwardAction($_errorAction, array('__error' => $error), false, false);
+		$this->doDispatch($forward);
 	}
 
 	/**

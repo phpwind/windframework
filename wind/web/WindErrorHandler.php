@@ -19,15 +19,17 @@ class WindErrorHandler extends WindController {
 	protected $error = array();
 	protected $errorCode = 0;
 	protected $errorDir = 'WIND:web.view';
-
+	
 	/* (non-PHPdoc)
 	 * @see WindAction::beforeAction()
 	 */
 	public function beforeAction($handlerAdapter) {
-		$this->error = $this->getForward()->getVars('__error');
-		$this->errorCode = (int) $this->getForward()->getVars('__errorCode');
+		$error = $this->getForward()->getVars('__error');
+		$this->error = $error['message'];
+		$this->errorCode = $error['code'];
+		$this->getForward()->setVars(array(), '__error');
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see WindAction::run()
 	 */

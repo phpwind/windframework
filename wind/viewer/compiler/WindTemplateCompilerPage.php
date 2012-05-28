@@ -67,11 +67,12 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		empty($this->page) && $this->page = '1';
 		empty($this->count) && $this->count = '0';
 		empty($this->per) && $this->per = '0';
+		empty($this->args) && $this->args = 'array()';
 		if (empty($this->url))
 			$this->url = '';
-		elseif (strpos($this->url, '?') === false)
+		elseif (strpos($this->url, '$') === false && strpos($this->url, '?') === false)
 			$this->url .= '?';
-		empty($this->args) && $this->args = 'array()';
+		
 		$_return = array();
 		$_return[] = '<?php $__tplPageCount=(int)' . $this->count . ';';
 		$_return[] = '$__tplPagePer=(int)' . $this->per . ';';
@@ -80,11 +81,12 @@ class WindTemplateCompilerPage extends AbstractWindTemplateCompiler {
 		$_return[] = '$__tplPageUrl="' . $this->url . '";';
 		$_return[] = '$__tplPageArgs=' . $this->args . ';';
 		$_return[] = 'if($__tplPageCount > 0 && $__tplPagePer > 0){';
-		$_return[] = '$__tplPageTotal = ceil($__tplPageCount / $__tplPagePer);}';
+		//$_return[] = '$__tplPageTotal = ceil($__tplPageCount / $__tplPagePer);}';
+		
+		$_return[] = '$__tmp = ceil($__tplPageCount / $__tplPagePer);';
+		$_return[] = '($__tplPageTotal !== 0 &&  $__tplPageTotal < $__tmp) || $__tplPageTotal = $__tmp;}';
 		$_return[] = '$__tplPageCurrent > $__tplPageTotal && $__tplPageCurrent = $__tplPageTotal;';
-		$_return[] = 'if ($__tplPageTotal > 1) {';
-		$_return[] = '$__tplPrePage=$__tplPageCurrent <= 1 ? 1 : $__tplPageCurrent - 1;';
-		$_return[] = '$__tplPostPage=$__tplPageCurrent >= $__tplPageTotal ? $__tplPageTotal : $__tplPageCurrent + 1;?>';
+		$_return[] = 'if ($__tplPageTotal > 1) {?>';
 		$_return[] = $this->getTplContent();
 		$_return[] = '<?php } ?>';
 		return implode("\r\n", $_return);

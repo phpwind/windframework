@@ -5,7 +5,7 @@
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $id$
+ * @version $$id$$
  * @package command
  */
 class WindCommandFrontController extends AbstractWindFrontController {
@@ -17,11 +17,11 @@ class WindCommandFrontController extends AbstractWindFrontController {
 	 */
 	protected $request = 'WIND:command.WindCommandRequest';
 	
-	/*
-	 * (non-PHPdoc) @see AbstractWindFrontController::_loadBaseLib()
+	/* (non-PHPdoc)
+	 * @see AbstractWindFrontController::_loadBaseLib()
 	 */
 	protected function _loadBaseLib() {
-		Wind::$_classes += array(
+		return array(
 			'WindCommandApplication' => 'command/WindCommandApplication', 
 			'WindCommandController' => 'command/WindCommandController', 
 			'WindCommandErrorHandler' => 'command/WindCommandErrorHandler', 
@@ -43,5 +43,13 @@ class WindCommandFrontController extends AbstractWindFrontController {
 				'handlerAdapter' => array('ref' => 'router')));
 		return $application;
 	}
+	
+	/* (non-PHPdoc)
+	 * @see AbstractWindFrontController::showErrorMessage()
+	 */
+	protected function showErrorMessage($message, $file, $line, $trace, $errorcode) {
+		// TODO Auto-generated method stub
+	}
+
 }
 ?>

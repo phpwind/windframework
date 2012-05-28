@@ -59,7 +59,8 @@ class WindViewerResolver extends WindNormalViewerResolver implements IWindViewer
 	public function compile($template, $suffix = '', $readOnly = false, $forceOutput = false) {
 		$templateFile = $this->windView->getViewTemplate($template, $suffix);
 		if (!is_file($templateFile)) {
-			throw new WindViewException('[component.viewer.WindViewerResolver.compile] ' . $templateFile, 
+			throw new WindViewException(
+				'[component.viewer.WindViewerResolver.compile] ' . $templateFile, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
 		$compileFile = $this->windView->getCompileFile($template);
@@ -86,8 +87,9 @@ class WindViewerResolver extends WindNormalViewerResolver implements IWindViewer
 	private function checkReCompile($templateFilePath, $compileFilePath) {
 		if (WIND_DEBUG) return true;
 		if ($this->getWindView()->isCompile) {
-			$_c_m_t = @filemtime($compileFilePath);
-			if ((int) $_c_m_t <= (int) @filemtime($templateFilePath)) return true;
+			if (!is_file($compileFilePath)) return true;
+			$_c_m_t = filemtime($compileFilePath);
+			if ((int) $_c_m_t <= (int) filemtime($templateFilePath)) return true;
 		}
 		return false;
 	}

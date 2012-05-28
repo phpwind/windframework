@@ -96,8 +96,6 @@ class WindUtility {
 	 * @return string 返回处理后的字符串
 	 */
 	public static function lcfirst($str) {
-		if (function_exists('lcfirst')) return lcfirst($str);
-		
 		$str[0] = strtolower($str[0]);
 		return $str;
 	}
@@ -174,5 +172,74 @@ class WindUtility {
 			}
 		}
 		return !empty($from) ? strtr($str, $from) : $str;
+	}
+
+	/**
+	 * 错误信息处理方法
+	 *
+	 * @param string $file
+	 * @param string $line
+	 * @param array $trace
+	 */
+	public static function crash($file, $line, $trace) {
+		$msg = '';
+		$count = count($trace);
+		$padLen = strlen($count);
+		foreach ($trace as $key => $call) {
+			if (!isset($call['file']) || $call['file'] == '') {
+				$call['file'] = '~Internal Location~';
+				$call['line'] = 'N/A';
+			}
+			$traceLine = '#' . str_pad(($count - $key), $padLen, "0", STR_PAD_LEFT) . '  ' . self::getCallLine(
+				$call);
+			$trace[$key] = $traceLine;
+		}
+		$fileLines = array();
+		if (is_file($file)) {
+			$currentLine = $line - 1;
+			$fileLines = explode("\n", file_get_contents($file, null, null, 0, 10000000));
+			$topLine = $currentLine - 5;
+			$fileLines = array_slice($fileLines, $topLine > 0 ? $topLine : 0, 10, true);
+			if (($count = count($fileLines)) > 0) {
+				$padLen = strlen($count);
+				foreach ($fileLines as $line => &$fileLine)
+					$fileLine = " " . htmlspecialchars(
+						str_pad($line + 1, $padLen, "0", STR_PAD_LEFT) . ": " . str_replace("\t", 
+							"    ", rtrim($fileLine)), null, "UTF-8");
+			}
+		}
+		return array($fileLines, $trace);
+	}
+
+	/**
+	 * @param array $call
+	 * @return string
+	 */
+	private static function getCallLine($call) {
+		$call_signature = "";
+		if (isset($call['file'])) $call_signature .= $call['file'] . " ";
+		if (isset($call['line'])) $call_signature .= "(" . $call['line'] . ") ";
+		if (isset($call['function'])) {
+			$call_signature .= $call['function'] . "(";
+			if (isset($call['args'])) {
+				foreach ($call['args'] as $arg) {
+					if (is_string($arg))
+						$arg = '"' . (strlen($arg) <= 64 ? $arg : substr($arg, 0, 64) . "…") . '"';
+					else if (is_object($arg))
+						$arg = "[Instance of '" . get_class($arg) . "']";
+					else if ($arg === true)
+						$arg = "true";
+					else if ($arg === false)
+						$arg = "false";
+					else if ($arg === null)
+						$arg = "null";
+					else
+						$arg = strval($arg);
+					$call_signature .= $arg . ',';
+				}
+			}
+			$call_signature = trim($call_signature, ',') . ")";
+		}
+		return $call_signature;
 	}
 }
