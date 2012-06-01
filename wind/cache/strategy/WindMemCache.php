@@ -88,14 +88,6 @@ class WindMemCache extends AbstractWindCache {
 	 * @var WindMemcache 
 	 */
 	protected $memcache = null;
-	
-	/**
-	 * 标志是否是memcached
-	 *
-	 * @var boolean
-	 */
-	private $isMemcached = false;
-	
 	/**
 	 * 是否对缓存采取压缩存储
 	 * 
@@ -112,91 +104,70 @@ class WindMemCache extends AbstractWindCache {
 	 * @throws WindCacheException 如果没有安装memcache扩展则抛出异常
 	 */
 	public function __construct() {
-		if (extension_loaded('Memcached')) {
-			$this->memcache = new Memcached();
-			$this->isMemcached = true;
-		} elseif (extension_loaded('Memcache')) {
-			$this->memcache = new Memcache();
-			$this->isMemcached = false;
-		} else {
-			throw new WindCacheException('WindMemCache requires PHP `Memcache` extension to be loaded !');
-		}
+		$this->memcache = new Memcached();
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
 	 */
 	protected function setValue($key, $value, $expire = 0) {
-		return $this->isMemcached ? $this->memcache->set($key, $value, (int) $expire) : $this->memcache->set($key, 
-			$value, $this->compress, (int) $expire);
+		return $this->memcache->set($key, $value, (int) $expire);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::addValue()
 	 */
 	protected function addValue($key, $value, $expires = 0) {
-		return $this->isMemcached ? $this->memcache->add($key, $value, (int) $expires) : $this->memcache->add($key, 
-			$value, $this->compress, (int) $expires);
+		return $this->memcache->add($key, $value, (int) $expires);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::getValue()
 	 */
 	protected function getValue($key) {
-		return $this->isMemcached ? $this->memcache->get($key) : $this->memcache->get($key, $this->compress);
+		return $this->memcache->get($key);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::deleteValue()
 	 */
 	protected function deleteValue($key) {
 		return $this->memcache->delete($key);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::clear()
 	 */
 	public function clear() {
 		return $this->memcache->flush();
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::increment()
 	 */
 	public function increment($key, $step = 1) {
 		return $this->memcache->increment($this->buildSecurityKey($key), $step);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::decrement()
 	 */
 	public function decrement($key, $step = 1) {
 		return $this->memcache->decrement($this->buildSecurityKey($key), $step);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
-		$this->compress = $this->getConfig('compress', '', '0');
 		$servers = $this->getConfig('servers', '', array());
-		$defaultServer = array(
-			'host' => '', 
-			'port' => '', 
-			'pconn' => true, 
-			'weight' => 1, 
-			'timeout' => 1, 
-			'retry' => 15, 
-			'status' => true, 
-			'fcallback' => null);
 		foreach ((array) $servers as $server) {
 			if (!is_array($server)) throw new WindException('The memcache config is incorrect');
 			if (!isset($server['host'])) throw new WindException('The memcache server ip address is not exist');
 			if (!isset($server['port'])) throw new WindException('The memcache server port is not exist');
-			$args = array_merge($defaultServer, $server);
-			$args = $this->isMemcached ? array($args['host'], $args['port'], $args['weight']) : array_values($args);
-			call_user_func_array(array($this->memcache, 'addServer'), $args);
+			$this->memcache->addServer($server['host'], $server['port'], 
+				isset($server['weight']) ? $server['weight'] : null);
 		}
 	}
 }

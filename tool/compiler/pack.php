@@ -8,33 +8,34 @@ error_reporting(E_ALL);
 define('WIND_DEBUG', 1);
 define('EXT', '.php');
 define('_COMPILE_PATH', dirname(__FILE__) . '/');
-include '../wind/Wind.php';
+include '../../wind/Wind.php';
 
+//检查是否在命令行下以及目录是否可写
 if (!$_SERVER['argv']) e('Script should be run at command line');
 if (!is_writable(WIND_PATH)) e('WIND_PATH not writable');
+
+//检查输入的路径
 $folders = array_slice($_SERVER['argv'], 1);
-if (empty($folders) || array_search('--help', $folders)) {
-	$message = <<<EOD
+if (empty($folders) || in_array('--help', $folders)) {
+	$message = <<<EOA
 	这是一个动态编译脚本，你可以输入需要打包的文件夹进行打包。\n
 	每一个输入的目录可被注册为命名空间，你可以通过这个命令空间来引入这个目录里打包好的类。\n
 	例如：php compile.php ../wind/base ../wind/cache [...] \n
 	对于'../wind/base'默认将用'BASE:'作为别名，你也可以输入自定义的'WIND:base'来作为这个目录的别名 \n
 	注：此处的别名必须是你使用Wind::import方法导入类将使用的真实目录别名
-EOD;
+EOA;
 	e($message);
 }
 
+//遍历各个路径
 $classes = $imports = $fileList = array();
 foreach ($folders as $folder) {
 	$alias = '';
 	if (!is_dir($folder)) e("'$folder' is not a real directory!\n");
 	$alias = strtoupper(basename($folder)) . ':';
-	$message = <<<EOD
-	'$folder' is to be register as '$alias' ? (Y|N) 
-EOD;
-	$r = getLine($message);
+	$r = getLine("'$folder' is to be register as '$alias' ? (Y|N) ");
 	if (strtolower($r[0]) != 'y') $alias = getLine(
-		'please input the relative path using namespace: ');
+		'Please input the relative path using namespace: ');
 	$fileList += readRecur(realpath($folder), $alias);
 }
 
@@ -47,6 +48,7 @@ $pack->packFromFileList($fileList, _COMPILE_PATH . 'wind_basic.php', WindPack::S
 $message = array();
 $message[] = "COMPILE: pack core file successful~";
 
+/*装载imports和classes*/
 $data = '<?php Wind::$_imports += ' . var_export($imports, true) . ';' . 'Wind::$_classes += ' . var_export(
 	$classes, true) . ';';
 WindFile::write(_COMPILE_PATH . 'wind_imports.php', $data);

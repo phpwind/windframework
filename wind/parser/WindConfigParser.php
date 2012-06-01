@@ -14,15 +14,12 @@ Wind::import('WIND:parser.IWindConfigParser');
  * @package parser
  */
 class WindConfigParser implements IWindConfigParser {
-	
 	const CONFIG_XML = '.XML';
-	
 	const CONFIG_PHP = '.PHP';
-	
 	const CONFIG_INI = '.INI';
-	
 	const CONFIG_PROPERTIES = '.PROPERTIES';
-
+	private $configs = array();
+	
 	/* (non-PHPdoc)
      * @see IWindConfigParser::parse()
      */
@@ -54,9 +51,8 @@ class WindConfigParser implements IWindConfigParser {
 	 */
 	private function setCache($alias, $append, $cache, $data) {
 		if ($append) {
-			$_config = (array) $cache->get($append);
-			$_config[$alias] = $data;
-			$cache->set($append, $_config);
+			$this->configs[$alias] = $data;
+			$cache->set($append, $this->configs);
 		} else {
 			$cache->set($alias, $data);
 		}
@@ -72,9 +68,9 @@ class WindConfigParser implements IWindConfigParser {
 	 */
 	private function getCache($alias, $append, $cache) {
 		if (!$append) return $cache->get($alias);
-		
-		$config = $cache->get($append);
-		return isset($config[$alias]) ? $config[$alias] : array();
+		if (isset($this->configs[$alias])) return $this->configs[$alias];
+		$this->configs = $cache->get($append);
+		return isset($this->configs[$alias]) ? $this->configs[$alias] : array();
 	}
 
 	/**

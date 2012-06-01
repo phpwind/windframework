@@ -60,19 +60,6 @@ Wind::import('WIND:cache.AbstractWindCache');
  */
 class WindWinCache extends AbstractWindCache {
 
-	/**
-	 * 构造函数
-	 * 
-	 * 如果没有安装wincache扩展,则抛出异常
-	 * 
-	 * @throws WindCacheException 当没有安装winCache扩展的时候抛出
-	 */
-	public function __construct() {
-		if (!function_exists('wincache_ucache_get')) {
-			throw new WindCacheException('The wincache extension must be loaded !');
-		}
-	}
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
 	 */

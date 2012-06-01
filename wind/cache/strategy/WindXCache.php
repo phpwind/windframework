@@ -77,19 +77,6 @@ class WindXCache extends AbstractWindCache {
 	 */
 	private $authPwd = '';
 
-	/**
-	 * 构造函数
-	 * 
-	 * 如果没有安装xcache扩展则抛出异常
-	 * 
-	 * @throws WindCacheException 如果没有安装xcache扩展
-	 */
-	public function __construct() {
-		if (!extension_loaded('xcache')) {
-			throw new WindCacheException('The xcache extension must be loaded !');
-		}
-	}
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
 	 */

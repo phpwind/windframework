@@ -33,7 +33,7 @@ return array(
 	),
 	'db' => array(
 		'path' => 'WIND:db.WindConnection',
-		'scope' => 'singleton'
+		'scope' => 'application',
 	),
 	'configParser' => array(
 		'path' => 'WIND:parser.WindConfigParser',

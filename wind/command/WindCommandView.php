@@ -6,7 +6,7 @@ Wind::import('WIND:viewer.IWindView');
  * @author Shi Long <long.shi@alibaba-inc.com>
  * @copyright ©2003-2103 phpwind.com
  * @license http://www.windframework.com
- * @version $id$
+ * @version $Id$
  * @package command
  */
 class WindCommandView extends WindModule implements IWindView {

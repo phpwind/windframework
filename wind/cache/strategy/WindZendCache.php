@@ -60,19 +60,6 @@ Wind::import('WIND:cache.AbstractWindCache');
  */
 class WindZendCache extends AbstractWindCache {
 
-	/**
-	 * 构造函数
-	 * 
-	 * 如果没有安装zend_cache扩展,则抛出异常
-	 * 
-	 * @throws WindCacheException 当没有安装zend_cache扩展的时候抛出异常
-	 */
-	public function __construct() {
-		if (!function_exists('zend_shm_cache_fetch')) {
-			throw new WindCacheException('The zend cache extension must be loaded !');
-		}
-	}
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
 	 */

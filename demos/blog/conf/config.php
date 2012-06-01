@@ -21,9 +21,9 @@ return array(
 					//应用控制器后缀定义
 					'controller-suffix' => 'Controller', 
 					//模板目录定义
-					'template-dir' => 'template',
+					'template-path' => 'template',
 					//编译文件目录定义
-					'compile-dir' => 'data.compile',
+					'compile-path' => 'data.compile',
 					//错误处理句柄定义
 					'error-handler' => 'controller.ErrorController',
 				)

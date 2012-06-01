@@ -1,0 +1,14 @@
+<?php
+/**
+ * php command [-p projName]
+ * 
+ * @author Shi Long <long.shi@alibaba-inc.com> 2010-11-2
+ * @link http://www.phpwind.com
+ * @copyright Copyright &copy; 2003-2010 phpwind.com
+ * @license
+ */
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+//为了兼容类似php generator/command 统一使用绝对路径
+require_once dirname(dirname(__DIR__)) . '/wind/Wind.php';
+Wind::register(dirname(dirname(__DIR__)), 'PROJ');
+Wind::console('command', __DIR__ . '/conf/config.php')->run();

@@ -50,13 +50,6 @@ class WindHttpRequest implements IWindRequest {
 	 * @var array
 	 */
 	protected $_attribute = array();
-	
-	/**
-	 * 应答对象
-	 *
-	 * @var WindHttpResponse
-	 */
-	protected $_response = null;
 	/**
 	 * 请求脚本url
 	 * 
@@ -572,11 +565,9 @@ class WindHttpRequest implements IWindRequest {
 	 * @return WindHttpResponse
 	 */
 	public function getResponse() {
-		if ($this->_response === null) {
-			$this->_response = new WindHttpResponse();
-			$this->_response->setHeader('Content-type', 'text/html;charset=utf8');
-		}
-		return $this->_response;
+		$response = new WindHttpResponse();
+		$response->setHeader('Content-type', 'text/html;charset=utf8');
+		return $response;
 	}
 
 	/**
@@ -715,5 +706,4 @@ class WindHttpRequest implements IWindRequest {
 	private function _stripSlashes(&$data) {
 		return is_array($data) ? array_map(array($this, '_stripSlashes'), $data) : stripslashes($data);
 	}
-
 }

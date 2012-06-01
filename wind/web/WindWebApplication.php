@@ -10,28 +10,22 @@
  */
 class WindWebApplication extends WindModule implements IWindApplication {
 	/**
-	 *
 	 * @var WindHttpRequest
 	 */
 	protected $request;
 	/**
-	 *
 	 * @var WindHttpResponse
 	 */
 	protected $response;
 	/**
-	 *
 	 * @var WindFactory
 	 */
 	protected $windFactory = null;
 	/**
-	 *
 	 * @var WindDispatcher
 	 */
 	protected $dispatcher = null;
-	protected $token = '';
 	/**
-	 *
 	 * @var WindRouter
 	 */
 	protected $handlerAdapter = null;
@@ -52,32 +46,29 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$this->request = $request;
 		$this->windFactory = $factory;
 	}
-	
-	/*
-	 * (non-PHPdoc) @see IWindApplication::doDispatch()
+
+	/**
+	 * 请求处理完毕后，进一步分发
+	 *
+	 * @param WindForward $forward
+	 * @param boolean $display
 	 */
 	public function doDispatch($forward, $display = false) {
 		if ($forward === null) return;
 		$this->_getDispatcher()->dispatch($forward, $this->handlerAdapter, $display);
 	}
 	
-	/*
-	 * (non-PHPdoc) @see IWindApplication::run()
+	/* (non-PHPdoc)
+	 * @see IWindApplication::run()
 	 */
-	public function run($filters = array()) {
+	public function run($filters = false) {
 		try {
-			$this->checkProcess();
-			$module = $this->getModules();
-			$handlerPath = $module['controller-path'] . '.' . ucfirst(
-				$this->handlerAdapter->getController()) . $module['controller-suffix'];
-			if (1 === $module['_verified'] && !file_exists(Wind::getRealPath($handlerPath))) {
+			$module = $this->getModules($this->_getHandlerAdapter()->getModule());
+			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
+			$className = Wind::import($handlerPath);
+			if (!class_exists($className)) {
 				$handlerPath = $this->defaultModule['controller-path'] . '.' . ucfirst(
 					$this->handlerAdapter->getController()) . $this->defaultModule['controller-suffix'];
-			}
-			
-			if (WIND_DEBUG & 2) {
-				Wind::getApp()->getComponent('windLogger')->info(
-					'[web.WindWebApplication.run] \r\n\taction handl:' . $handlerPath, 'wind.core');
 			}
 			$this->windFactory->addClassDefinitions($handlerPath, 
 				array(
@@ -88,28 +79,21 @@ class WindWebApplication extends WindModule implements IWindApplication {
 						'errorMessage' => array('ref' => 'errorMessage'), 
 						'forward' => array('ref' => 'forward'))));
 			
-			try {
-				$handler = $this->windFactory->getInstance($handlerPath);
-			} catch (WindException $e) {
-				throw new WindActionException(
-					'[web.WindWebApplication.run] the page ' . $handlerPath . ' you requested does not found on this server.', 
-					404);
-			}
-			$filters && $this->resolveActionFilters($filters, $handler);
+			$handler = $this->windFactory->getInstance($handlerPath);
+			$filters && $this->resolveActionFilters($handler);
 			$forward = $handler->doAction($this->handlerAdapter);
 			$this->doDispatch($forward);
 		} catch (WindForwardException $e) {
 			$this->doDispatch($e->getForward());
 		} catch (WindActionException $e) {
-			$this->sendErrorMessage(($e->getError() ? $e->getError() : $e->getMessage()), 
-				$e->getCode());
+			$this->sendErrorMessage(($e->getError() ? $e->getError() : $e->getMessage()), $e->getCode());
 		} catch (WindException $e) {
 			$this->sendErrorMessage($e->getMessage(), $e->getCode());
 		}
 	}
 	
-	/*
-	 * (non-PHPdoc) @see WindModule::setConfig()
+	/* (non-PHPdoc)
+	 * @see WindModule::setConfig()
 	 */
 	public function setConfig($config) {
 		parent::setConfig($config);
@@ -119,18 +103,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$charset = $this->getConfig('charset', '', 'utf-8');
 		$this->getResponse()->setHeader('Content-type', 'text/html;charset=' . $charset);
 		$this->getResponse()->setCharset($charset);
-	}
-
-	/**
-	 * 执行请求的进程
-	 *
-	 * @param IWindController $handler        	
-	 * @return void
-	 * @throws WindFinalException
-	 */
-	public function runProcess($handler) {
-		if (!$handler instanceof IWindController) throw new WindFinalException();
-		return $handler->doAction($this->handlerAdapter, $this->request, $this->response);
 	}
 
 	/**
@@ -216,9 +188,8 @@ class WindWebApplication extends WindModule implements IWindApplication {
 					if (strrchr($_key, '-') !== '-path') continue;
 					$_module[$_key] = strtr($_module[$_key], $_replace);
 				}
-				$_module['_verified'] = 1;
-			} else
-				$_module['_verified'] = 2;
+			}
+			$_module['_verified'] = true;
 			$this->_config['modules'][$name] = $_module;
 		}
 		return $_module;
@@ -233,20 +204,33 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	public function getComponent($componentName) {
 		return $this->windFactory->getInstance($componentName);
 	}
+	
+	/**
+	 * 手动注册actionFilter
+	 *
+	 * 参数为数组格式：
+	 * @param array $filters
+	 */
+	public function registeActionFilter($filters) {
+		if (!$filters) return;
+		if (empty($this->_config['filters']))
+			$this->_config['filters'] = $filters;
+		else
+			$this->_config['filters'] += $filters;
+	}
 
 	/**
 	 * 解析action过滤链的配置信息
 	 *
-	 * @param array $filters        	
 	 * @param WindSimpleController $handler        	
 	 * @return void
 	 */
-	protected function resolveActionFilters($filters, &$handler) {
+	protected function resolveActionFilters(&$handler) {
+		if (!$filters = $this->getConfig('filters')) return;
 		/* @var $cache AbstractWindCache */
 		$_filters = array();
 		if ($cache = $this->getComponent('windCache')) {
-			$key = md5(serialize($filters));
-			$_filters = $cache->get($key);
+			$_filters = $cache->get('filters');
 		}
 		$_token = $this->handlerAdapter->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
 		if (!isset($_filters[$_token])) {
@@ -265,7 +249,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 				}
 				$_filters[$_token][] = $_filter;
 			}
-			$cache && $cache->set($key, $_filters);
+			$cache && $cache->set('filters', $_filters);
 		}
 		if (empty($_filters[$_token])) return;
 		/* @var $proxy WindClassProxy */
@@ -274,11 +258,7 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		foreach ($_filters[$_token] as $value) {
 			$proxy->registerEventListener('doAction', 
 				$this->windFactory->createInstance(Wind::import($value['class']), 
-					array(
-						$handler->getForward(), 
-						$handler->getErrorMessage(), 
-						$this->handlerAdapter, 
-						$value)));
+					array($handler->getForward(), $handler->getErrorMessage(), $this->handlerAdapter, $value)));
 		}
 		$handler = $proxy;
 	}
@@ -317,23 +297,6 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$error = array('message' => $errorMessage->getError(), 'code' => $errorcode);
 		$forward->forwardAction($_errorAction, array('__error' => $error), false, false);
 		$this->doDispatch($forward);
-	}
-
-	/**
-	 * 检查请求的合法性
-	 *
-	 * 检查请求的合法性,当判断请求不合法时,抛出一个终止异常并终止当前进程
-	 * @return void
-	 * @throws WindFinalException
-	 */
-	protected function checkProcess() {
-		$token = $this->_getHandlerAdapter()->getModule() . '/' . $this->handlerAdapter->getController() . '/' . $this->handlerAdapter->getAction();
-		if (strcasecmp($token, $this->token) === 0) {
-			throw new WindFinalException(
-				'[WindWebApplication.checkProcess] dulplicat request \'' . $token . '\'', 
-				WindException::ERROR_SYSTEM_ERROR);
-		}
-		$this->token = $token;
 	}
 
 	/**

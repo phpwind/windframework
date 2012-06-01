@@ -21,13 +21,13 @@ abstract class AbstractWindFrontController {
 	 * 
 	 * @var string
 	 */
-	protected $request = '';
+	private $_request = null;
 	/**
 	 * 组件工程实例对象
 	 * 
 	 * @var WindFactory
 	 */
-	protected $factory = null;
+	private $_factory = null;
 	/**
 	 * 应用配置
 	 * 
@@ -50,6 +50,11 @@ abstract class AbstractWindFrontController {
 	 * @var WindHandlerInterceptorChain
 	 */
 	private $_chain = null;
+	/**
+	 * @var AbstractWindCache
+	 */
+	private $_cache = null;
+	private $_cached = false;
 	protected $_errPage = 'error';
 
 	/**
@@ -60,10 +65,7 @@ abstract class AbstractWindFrontController {
 		set_error_handler(array($this, '_errorHandle'), error_reporting());
 		set_exception_handler(array($this, '_exceptionHandle'));
 		$appName && $this->_appName = $appName;
-		$this->_loadBaseLib();
-		$this->factory = new WindFactory(@include (Wind::getRealPath($this->components, true)));
-		$this->request = WindFactory::createInstance(Wind::import($this->request));
-		if ($config) $this->initConfig($config);
+		$this->_config = $config;
 	}
 
 	/**
@@ -90,18 +92,21 @@ abstract class AbstractWindFrontController {
 	/**
 	 * 创建并返回应用实例
 	 * 
+	 * @deprecated
 	 * @return WindWebApplication
 	 */
 	public function createApplication() {
 		if ($this->_app === null) {
 			$application = $this->_createApplication();
 			/* @var $application WindWebApplication */
-			if (!empty($this->_config[$this->_appName])) {
-				if ($this->_appName !== 'default' && isset($this->_config['default'])) {
-					$this->_config[$this->_appName] = WindUtility::mergeArray(
-						$this->_config['default'], $this->_config[$this->_appName]);
+			if (!empty($this->_config['web-apps'][$this->_appName])) {
+				if ($this->_appName !== 'default' && isset($this->_config['web-apps']['default']) && !isset(
+					$this->_config['web-apps'][$this->_appName]['_merged'])) {
+					$this->_config['web-apps'][$this->_appName] = WindUtility::mergeArray(
+						$this->_config['web-apps']['default'], $this->_config['web-apps'][$this->_appName]);
+					$this->_config['web-apps'][$this->_appName]['_merged'] = true;
 				}
-				$application->setConfig($this->_config[$this->_appName]);
+				$application->setConfig($this->_config['web-apps'][$this->_appName]);
 			}
 			$this->_app = $application;
 		}
@@ -112,10 +117,12 @@ abstract class AbstractWindFrontController {
 	 * 创建并执行当前应用,单应用访问入口
 	 */
 	public function run() {
+		$this->initConfig();
+		
 		$this->_appName || $this->_appName = 'default';
 		/* @var $router WindRouter */
-		$router = $this->factory->getInstance('router');
-		$router->route($this->request);
+		$router = $this->getFactory()->getInstance('router');
+		$router->route($this->getRequest());
 		$this->_run();
 	}
 
@@ -142,11 +149,16 @@ abstract class AbstractWindFrontController {
 	 */
 	public function registeComponent($componentInstance, $componentName, $scope = 'application') {
 		switch ($componentName) {
+			case 'windCache':
+				$this->_cache = $componentInstance;
+				$this->_cache->setKeyPrefix($this->_appName . '_system_');
+				$this->getFactory()->registInstance($this->_cache, $componentName, 'application');
+				break;
 			case 'request':
-				$this->request = $componentInstance;
+				$this->_request = $componentInstance;
 				break;
 			default:
-				$this->factory->registInstance($componentInstance, $componentName, $scope);
+				$this->getFactory()->registInstance($componentInstance, $componentName, $scope);
 				break;
 		}
 	}
@@ -171,6 +183,38 @@ abstract class AbstractWindFrontController {
 	}
 
 	/**
+	 * @return WindHttpRequest
+	 */
+	public function getRequest() {
+		if ($this->_request === null) {
+			Wind::$_classes['WindHttpRequest'] = 'web/WindHttpRequest';
+			$this->_request = WindFactory::createInstance('WindHttpRequest');
+		}
+		return $this->_request;
+	}
+
+	/**
+	 * @return WindFactory
+	 */
+	public function getFactory() {
+		if ($this->_factory === null) {
+			if ($this->_cache !== null && ($classes = $this->_cache->get('classes'))) {
+				$imports = $this->_cache->get('imports');
+				$classes && Wind::$_classes += $classes;
+				$imports && Wind::$_imports += $imports;
+				$this->_factory = $this->_cache->get('factory');
+				$this->_config = $this->_cache->get('config');
+				$this->_cached = true;
+			}
+			if (!$this->_factory) {
+				$this->_loadBaseLib();
+				$this->_factory = new WindFactory(@include ($this->components));
+			}
+		}
+		return $this->_factory;
+	}
+
+	/**
 	 * 异常处理句柄
 	 *
 	 * @param Exception $exception
@@ -185,8 +229,7 @@ abstract class AbstractWindFrontController {
 		}
 		$file = @$trace[0]['file'];
 		$line = @$trace[0]['line'];
-		$this->showErrorMessage($exception->getMessage(), $file, $line, $trace, 
-			$exception->getCode());
+		$this->showErrorMessage($exception->getMessage(), $file, $line, $trace, $exception->getCode());
 	}
 
 	/**
@@ -227,15 +270,20 @@ abstract class AbstractWindFrontController {
 	protected function _run() {
 		$application = $this->createApplication();
 		if ($this->_chain !== null) {
-			$this->_chain->setCallBack(array($application, 'run'), 
-				array($application->getConfig('filters')));
-			$this->_chain->getHandler()->handle();
+			$this->_chain->setCallBack(array($application, 'run'), array(true));
+			$this->_chain->getHandler()->handle($this);
 		} else
 			$application->run($application->getConfig('filters'));
 		restore_error_handler();
 		restore_exception_handler();
-		$this->getApp()->getResponse()->sendResponse();
-		$this->getApp()->getWindFactory()->executeDestroyMethod();
+		$this->_app->getResponse()->sendResponse();
+		$this->_app->getWindFactory()->executeDestroyMethod();
+		if ($this->_cache !== null && $this->_cached === false) {
+			$this->_cache->set('factory', $this->_factory);
+			$this->_cache->set('classes', Wind::$_classes);
+			$this->_cache->set('imports', Wind::$_imports);
+			$this->_cache->set('config', $this->_config);
+		}
 	}
 
 	/**
@@ -243,27 +291,31 @@ abstract class AbstractWindFrontController {
 	 *
 	 * @param array $config
 	 */
-	protected function initConfig($config) {
-		is_string($config) && $config = $this->factory->getInstance('configParser')->parse($config);
-		if (isset($config['isclosed']) && $config['isclosed']) {
-			if ($config['isclosed-tpl'])
-				$this->_errPage = $config['isclosed-tpl'];
+	protected function initConfig() {
+		if (!$this->_config) return;
+		if (is_string($this->_config)) {
+			$this->_config = $this->getFactory()->getInstance('configParser')->parse($this->_config);
+		}
+		if (isset($this->_config['isclosed']) && $this->_config['isclosed']) {
+			if ($this->_config['isclosed-tpl'])
+				$this->_errPage = $this->_config['isclosed-tpl'];
 			else
 				$this->_errPage = 'close';
 			throw new Exception('Sorry, Site has been closed!');
 		}
-		if (!empty($config['components'])) {
-			if (!empty($config['components']['resource'])) {
-				$config['components'] = $this->factory->getInstance('configParser')->parse(
-					Wind::getRealPath($config['components']['resource'], true, true));
+		if (!empty($this->_config['components'])) {
+			if (!empty($this->_config['components']['resource'])) {
+				$this->_config['components'] = $this->getFactory()->getInstance('configParser')->parse(
+					Wind::getRealPath($this->_config['components']['resource'], true, true));
 			}
-			$this->factory->loadClassDefinitions($config['components']);
+			$this->getFactory()->loadClassDefinitions($this->_config['components']);
+			unset($this->_config['components']);
 		}
-		foreach ($config['web-apps'] as $key => $value) {
+		if (empty($this->_config['web-apps'])) return;
+		foreach ($this->_config['web-apps'] as $key => $value) {
 			$rootPath = empty($value['root-path']) ? dirname($_SERVER['SCRIPT_FILENAME']) : Wind::getRealPath(
 				$value['root-path'], false);
 			Wind::register($rootPath, $key, true);
-			$this->_config[$key] = $value;
 		}
 	}
 }

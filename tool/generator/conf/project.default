@@ -1,0 +1,8 @@
+<?php
+return array(
+	'dataDir' => 'data',
+	'templateDir' => 'template',
+	'srcDir' => 'src/controller',
+	'confDir' => 'conf',
+	'wwwDir' => 'www'
+);

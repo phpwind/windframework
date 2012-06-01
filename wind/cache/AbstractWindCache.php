@@ -39,7 +39,7 @@ abstract class AbstractWindCache extends WindModule {
 	 * 
 	 * @var int
 	 */
-	private $expire = '';
+	private $expire = 0;
 	/**
 	 * 缓存依赖的类名称
 	 * 
@@ -273,7 +273,7 @@ abstract class AbstractWindCache extends WindModule {
 			self::DEPENDENCYCLASS => '');
 		if (null !== $dependency) {
 			$dependency->injectDependent(self::EXPIRE);
-			$data[self::DEPENDENCY] = serialize($dependency);
+			$data[self::DEPENDENCY] = $dependency;
 			$data[self::DEPENDENCYCLASS] = get_class($dependency);
 		}
 		return $data;
@@ -308,7 +308,7 @@ abstract class AbstractWindCache extends WindModule {
 	 */
 	protected function hasChanged($key, array $data) {
 		if ($data[self::DEPENDENCY]) {
-			$dependency = unserialize($data[self::DEPENDENCY]);
+			$dependency = $data[self::DEPENDENCY];
 			if (!$dependency->hasChanged($this, $key, $data[self::EXPIRE])) return false;
 		} elseif ($data[self::EXPIRE]) {
 			$_overTime = $data[self::EXPIRE] + $data[self::STORETIME];
@@ -326,8 +326,8 @@ abstract class AbstractWindCache extends WindModule {
 	 * @return string 加入安全码计算之后返回的保存key
 	 */
 	protected function buildSecurityKey($key) {
-		return md5(
-			$this->getKeyPrefix() ? $this->getKeyPrefix() . '_' . $key . $this->getSecurityCode() : $key . $this->getSecurityCode());
+		$this->keyPrefix && $key = $this->keyPrefix . '_' . $key;
+		return $key . $this->getSecurityCode();
 	}
 
 	/**

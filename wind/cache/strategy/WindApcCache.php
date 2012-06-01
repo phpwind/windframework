@@ -60,19 +60,6 @@ Wind::import('WIND:cache.AbstractWindCache');
  */
 class WindApcCache extends AbstractWindCache {
 
-	/**
-	 * 构造函数
-	 * 
-	 * 判断是否有安装apc扩展,如果没有安装将会抛出cache异常
-	 * 
-	 * @throws WindCacheException 当没有安装apc扩展的时候
-	 */
-	public function __construct() {
-		if (!extension_loaded('apc')) {
-			throw new WindCacheException('The apc extension must be loaded !');
-		}
-	}
-
 	/* (non-PHPdoc)
 	 * @see AbstractWindCache::setValue()
 	 */

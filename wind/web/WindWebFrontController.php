@@ -12,21 +12,23 @@ Wind::import('WIND:base.AbstractWindFrontController');
  * @package wind
  */
 class WindWebFrontController extends AbstractWindFrontController {
-	protected $components = 'WIND:web.web.components';
-	protected $request = 'WIND:web.WindHttpRequest';
+	protected $components = 'web/web.components';
 
 	/**
 	 * 创建并执行当前应用
 	 *
+	 * @deprecated
 	 * @param string $appName        	
 	 * @param string|array $config        	
 	 * @return void
 	 */
 	public function multiRun() {
+		$this->initConfig();
+		
 		/* @var $router WindRouter */
-		$router = $this->factory->getInstance('router');
+		$router = $this->getFactory()->getInstance('router');
 		$this->_appName && $router->setApp($this->_appName);
-		$router->route($this->request);
+		$router->route($this->getRequest());
 		$this->_appName = $router->getApp();
 		$this->_run();
 	}
@@ -35,11 +37,9 @@ class WindWebFrontController extends AbstractWindFrontController {
 	 * (non-PHPdoc) @see AbstractWindFrontController::createApplication()
 	 */
 	protected function _createApplication() {
-		$application = new WindWebApplication($this->request, $this->factory);
+		$application = new WindWebApplication($this->getRequest(), $this->getFactory());
 		$application->setDelayAttributes(
-			array(
-				'dispatcher' => array('ref' => 'dispatcher'), 
-				'handlerAdapter' => array('ref' => 'router')));
+			array('dispatcher' => array('ref' => 'dispatcher'), 'handlerAdapter' => array('ref' => 'router')));
 		return $application;
 	}
 	
@@ -72,6 +72,7 @@ class WindWebFrontController extends AbstractWindFrontController {
 			'WIND:web.WindSimpleController' => 'WindSimpleController', 
 			'WIND:web.WindUrlHelper' => 'WindUrlHelper', 
 			'WIND:web.WindWebApplication' => 'WindWebApplication');
+		
 		Wind::$_classes += array(
 			'WindController' => 'web/WindController', 
 			'WindDispatcher' => 'web/WindDispatcher', 

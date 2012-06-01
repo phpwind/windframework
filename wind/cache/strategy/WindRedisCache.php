@@ -86,10 +86,6 @@ class WindRedisCache extends AbstractWindCache {
 	 * @throws WindCacheException
 	 */
 	public function __construct() {
-		if (!extension_loaded('redis')) {
-			throw new WindCacheException(
-				'WindRedisCache requires PHP `Redis` extension to be loaded !');
-		}
 		$this->redis = new Redis();
 	}
 
