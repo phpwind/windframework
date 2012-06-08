@@ -11,12 +11,6 @@
  */
 abstract class AbstractWindFrontController {
 	/**
-	 * 组件配置地址，定组件工厂中组件配置的地址
-	 * 
-	 * @var string
-	 */
-	protected $components = '';
-	/**
 	 * request类型定义
 	 * 
 	 * @var string
@@ -88,6 +82,41 @@ abstract class AbstractWindFrontController {
 	 * @return array
 	 */
 	abstract protected function _loadBaseLib();
+
+	/**
+	 * 返回组建定义信息
+	 * 
+	 * 组件的配置标签说明：
+	 * name: 		组件的名字，唯一用于在应用中获取对应组件的对象实例
+	 * path: 		该组件的实现
+	 * scope: 		组件对象的范围： {singleton: 单例; application: 整个应用； prototype: 当前使用}
+	 * initMethod: 在应用对象生成时执行的方法
+	 * destroy： 	在应用结束的时候执行的操作
+	 * proxy：	 	组件是否用代理的方式调用
+	 *
+	 * constructor-args：构造方法的参数
+	 *	constructor-arg：
+	 *		name：参数的位置,起始位置从0开始，第一个参数为0，第二个参数为1
+	 *		参数的值的表示方式有一下几种：
+	 *		ref: 该属性是一个对象，ref的值对应着组件的名字
+	 *		value: 一个字串值
+	 *		path: path指向的类的实例将会被创建传递给该属性
+	 *		
+	 * properties: 属性的配置，表现为组件中的类属性
+	 *	property: 
+	 *		name:属性名称
+	 *		属性值的表示方式有以下几种：
+	 *		ref: 该属性是一个对象，ref的值对应着组件的名字，表现为在组件中获取方式为“_get+属性名()”称来获取
+	 *		value: 一个字串值
+	 *		path: path指向的类的实例将会被创建传递给该属性
+	 * 
+	 *
+	 * config： 组件的配置-该值对应的配置会通过setConfig接口传递给组件；
+	 *	resource: 指定一个外部地址，将会去包含该文件
+	 * 
+	 * @return array()
+	 */
+	abstract protected function _components();
 
 	/**
 	 * 创建并返回应用实例
@@ -187,7 +216,6 @@ abstract class AbstractWindFrontController {
 	 */
 	public function getRequest() {
 		if ($this->_request === null) {
-			Wind::$_classes['WindHttpRequest'] = 'web/WindHttpRequest';
 			$this->_request = WindFactory::createInstance('WindHttpRequest');
 		}
 		return $this->_request;
@@ -208,7 +236,7 @@ abstract class AbstractWindFrontController {
 			}
 			if (!$this->_factory) {
 				$this->_loadBaseLib();
-				$this->_factory = new WindFactory(@include ($this->components));
+				$this->_factory = new WindFactory($this->_components());
 			}
 		}
 		return $this->_factory;
@@ -245,7 +273,7 @@ abstract class AbstractWindFrontController {
 		restore_exception_handler();
 		$trace = debug_backtrace();
 		unset($trace[0]["function"], $trace[0]["args"]);
-		$this->showErrorMessage($errstr, $errfile, $errline, $trace, $errno);
+		$this->showErrorMessage($this->_friendlyErrorType($errno) . ': ' . $errstr, $errfile, $errline, $trace, $errno);
 	}
 
 	/**
@@ -258,7 +286,16 @@ abstract class AbstractWindFrontController {
 	 * @param int $errorcode 错误代码
 	 * @throws WindFinalException
 	 */
-	abstract protected function showErrorMessage($message, $file, $line, $trace, $errorcode);
+	protected function showErrorMessage($message, $file, $line, $trace, $errorcode) {
+		if (WIND_DEBUG & 2) {
+			$log = $message . "\r\n" . $file . ":" . $line . "\r\n";
+			list($fileLines, $trace) = WindUtility::crash($file, $line, $trace);
+			foreach ($trace as $key => $value) {
+				$log .= $value . "\r\n";
+			}
+			Wind::getApp()->getComponent('windLogger')->error($log, 'error');
+		}
+	}
 
 	/**
 	 * 创建并运行当前应用
@@ -305,7 +342,7 @@ abstract class AbstractWindFrontController {
 		}
 		if (!empty($this->_config['components'])) {
 			if (!empty($this->_config['components']['resource'])) {
-				$this->_config['components'] = $this->getFactory()->getInstance('configParser')->parse(
+				$this->_config['components'] += $this->getFactory()->getInstance('configParser')->parse(
 					Wind::getRealPath($this->_config['components']['resource'], true, true));
 			}
 			$this->getFactory()->loadClassDefinitions($this->_config['components']);
@@ -317,6 +354,48 @@ abstract class AbstractWindFrontController {
 				$value['root-path'], false);
 			Wind::register($rootPath, $key, true);
 		}
+	}
+
+	/**
+	 * 返回友好的错误类型名
+	 *
+	 * @param int $type
+	 * @return string|unknown
+	 */
+	private function _friendlyErrorType($type) {
+		switch ($type) {
+			case E_ERROR:
+				return 'E_ERROR';
+			case E_WARNING:
+				return 'E_WARNING';
+			case E_PARSE:
+				return 'E_PARSE';
+			case E_NOTICE:
+				return 'E_NOTICE';
+			case E_CORE_ERROR:
+				return 'E_CORE_ERROR';
+			case E_CORE_WARNING:
+				return 'E_CORE_WARNING';
+			case E_CORE_ERROR:
+				return 'E_COMPILE_ERROR';
+			case E_CORE_WARNING:
+				return 'E_COMPILE_WARNING';
+			case E_USER_ERROR:
+				return 'E_USER_ERROR';
+			case E_USER_WARNING:
+				return 'E_USER_WARNING';
+			case E_USER_NOTICE:
+				return 'E_USER_NOTICE';
+			case E_STRICT:
+				return 'E_STRICT';
+			case E_RECOVERABLE_ERROR:
+				return 'E_RECOVERABLE_ERROR';
+			case E_DEPRECATED:
+				return 'E_DEPRECATED';
+			case E_USER_DEPRECATED:
+				return 'E_USER_DEPRECATED';
+		}
+		return $type;
 	}
 }
 ?>

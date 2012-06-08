@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:base.IWindResponse');
 /**
  * response实现类
  * 

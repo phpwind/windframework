@@ -8,8 +8,6 @@
  * @subpackage transfer
  */
 abstract class AbstractWindHttp {
-	const GET = 'GET';
-	const POST = 'POST';
 	/**  
 	 * 发送的cookie
 	 * 
@@ -65,9 +63,10 @@ abstract class AbstractWindHttp {
 	 * @param string $url
 	 * @param int $timeout
 	 */
-	public function __construct($url = '', $timeout = 5) {
+	public function __construct($url = '', $timeout = 30) {
 		$this->url = $url;
 		$this->timeout = $timeout;
+		$this->httpHandler = $this->createHttpHandler();
 	}
 
 	/**
@@ -92,7 +91,7 @@ abstract class AbstractWindHttp {
 		$this->setHeader($header);
 		$this->setCookie($cookie);
 		$this->setData($data);
-		return $this->send(self::POST, $options);
+		return $this->send('POST', $options);
 	}
 
 	/**
@@ -108,7 +107,7 @@ abstract class AbstractWindHttp {
 		$this->setHeader($header);
 		$this->setCookie($cookie);
 		$this->setData($data);
-		return $this->send(self::GET, $options);
+		return $this->send('GET', $options);
 	}
 
 	/**
@@ -152,9 +151,6 @@ abstract class AbstractWindHttp {
 	 * @return httpResource
 	 */
 	protected function getHttpHandler() {
-		if (null === $this->httpHandler) {
-			$this->httpHandler = $this->createHttpHandler();
-		}
 		return $this->httpHandler;
 	}
 
@@ -172,12 +168,11 @@ abstract class AbstractWindHttp {
 	 * @param string $value
 	 * @return void
 	 */
-	public function setHeader($key, $value = null) {
-		if (!$key) return;
-		if (is_array($key))
-			$this->header = array_merge($this->header, $key);
-		else
-			$this->header[$key] = $value;
+	public function setHeader($value, $key = null) {
+		if (is_array($value)) return $this->header = array_merge($this->header, $value);
+		
+		if ($key === null) $key = count($this->header);
+		if (!isset($this->header[$key])) $this->header[$key] = $value;
 	}
 
 	/**

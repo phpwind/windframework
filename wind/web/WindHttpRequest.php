@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:base.IWindRequest');
 /**
  * Request对象
  *

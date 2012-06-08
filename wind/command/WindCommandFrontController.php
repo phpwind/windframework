@@ -10,33 +10,45 @@
  */
 class WindCommandFrontController extends AbstractWindFrontController {
 	
-	protected $components = 'WIND:command.command.components';
+	protected $components = 'command/command.components';
+	
 	/**
-	 *
-	 * @var IWindRequest
+	 * @return WindHttpRequest
 	 */
-	protected $request = 'WIND:command.WindCommandRequest';
+	public function getRequest() {
+		if ($this->_request === null) {
+			Wind::$_classes['WindCommandRequest'] = 'command/WindCommandRequest';
+			$this->_request = WindFactory::createInstance('WindCommandRequest');
+		}
+		return $this->_request;
+	}
 	
 	/* (non-PHPdoc)
 	 * @see AbstractWindFrontController::_loadBaseLib()
 	 */
 	protected function _loadBaseLib() {
-		return array(
+		Wind::$_imports += array(
+		'WIND:command.WindCommandErrorHandler' => 'WindCommandErrorHandler',
+		'WIND:command.WindCmmandRequest' => 'WindCommandRequest',
+		'WIND:command.WindCommandResponse' => 'WindCommandResponse',
+		'WIND:command.WindCommandController' => 'WindCommandController',
+		'WIND:command.WindCommandApplication' => 'WindCommandApplication');
+		
+		Wind::$_classes += array(
 			'WindCommandApplication' => 'command/WindCommandApplication', 
 			'WindCommandController' => 'command/WindCommandController', 
 			'WindCommandErrorHandler' => 'command/WindCommandErrorHandler', 
 			'WindCommandRequest' => 'command/WindCommandRequest', 
 			'WindCommandResponse' => 'command/WindCommandResponse');
 	}
-
+	
 	/**
 	 * 创建并返回应用
 	 *
 	 * @return WindCommandApplication
 	 */
 	protected function _createApplication() {
-		Wind::import('WIND:command.WindCommandApplication');
-		$application = new WindCommandApplication($this->request, $this->factory);
+		$application = new WindCommandApplication($this->getRequest(), $this->getFactory());
 		$application->setDelayAttributes(
 			array(
 				'windView' => array('ref' => 'windView'), 

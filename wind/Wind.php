@@ -72,10 +72,9 @@ class Wind {
 	 * 加载一个包的参数方式：'WIND:base.*'
 	 * 
 	 * @param string $filePath | 文件路径信息 或者className
-	 * @param boolean $recursivePackage | 当需要加载的路径为文件夹时是否递归它
 	 * @return string|null
 	 */
-	public static function import($filePath, $recursivePackage = false) {
+	public static function import($filePath) {
 		if (!$filePath) return;
 		if (isset(self::$_imports[$filePath])) return self::$_imports[$filePath];
 		if (($pos = strrpos($filePath, '.')) !== false)
@@ -107,18 +106,15 @@ class Wind {
 		if (!$path) return;
 		if (!empty($alias)) {
 			$alias = strtolower($alias);
-			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = rtrim(
-				$path, '/') . '/';
+			if (!isset(self::$_namespace[$alias]) || $reset) self::$_namespace[$alias] = rtrim($path, '/') . '/';
 		}
 		if ($includePath) {
 			if (empty(self::$_includePaths)) {
 				self::$_includePaths = array_unique(explode(PATH_SEPARATOR, get_include_path()));
-				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(
-					self::$_includePaths[$pos]);
+				if (($pos = array_search('.', self::$_includePaths, true)) !== false) unset(self::$_includePaths[$pos]);
 			}
 			array_unshift(self::$_includePaths, $path);
-			if (set_include_path(
-				'.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
+			if (set_include_path('.' . PATH_SEPARATOR . implode(PATH_SEPARATOR, self::$_includePaths)) === false) {
 				throw new Exception('[wind.register] set include path error.');
 			}
 		}

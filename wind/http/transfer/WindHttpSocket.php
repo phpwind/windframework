@@ -15,31 +15,28 @@ final class WindHttpSocket extends AbstractWindHttp {
 	private $port = 80;
 	private $path = '';
 	private $query = '';
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::createHttpHandler()
 	 */
 	protected function createHttpHandler() {
-		if (!function_exists('fsockopen')) {
-			throw new WindHttpTransferException(
-				'[http.transfer.WindHttpSocket.createHttpHandler] initialize fsock failed, fsockopen is not exist.');
-		}
 		$url = parse_url($this->url);
-		$this->host = $url['host'];
+		
+		$this->host = isset($url['host']) ? $url['host'] : '';
 		$this->port = isset($url['port']) ? $url['port'] : 80;
 		$this->path = isset($url['path']) ? $url['path'] : '/';
-		$this->path .= $url['query'] ? '?' . $url['query'] : '';
-		$this->query = $url['query'];
+		$this->query = isset($url['query']) ? '?' . $url['query'] : '';
+		$this->path .= $this->query;
 		return fsockopen($this->host, $this->port, $this->eno, $this->err, $this->timeout);
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::request()
 	 */
 	public function request($name, $value = null) {
-		return fputs($this->getHttpHandler(), ($value ? $name . ': ' . $value : $name) . "\n");
+		return fputs($this->getHttpHandler(), ($value ? $name . ': ' . $value : $name));
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::response()
 	 */
@@ -50,7 +47,7 @@ final class WindHttpSocket extends AbstractWindHttp {
 		}
 		return $response;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::close()
 	 */
@@ -59,59 +56,58 @@ final class WindHttpSocket extends AbstractWindHttp {
 		fclose($this->httpHandler);
 		$this->httpHandler = null;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::getError()
 	 */
 	public function getError() {
 		return $this->err ? $this->eno . ':' . $this->err : '';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindHttp::send()
 	 */
-	public function send($method = self::GET, $options = array()) {
-		switch (strtoupper($method)) {
-			case self::GET:
-				if ($this->data) {
+	public function send($method = 'GET', $options = array()) {
+		$method = strtoupper($method);
+		if ($this->data) {
+			switch ($method) {
+				case 'GET':
 					$_url = WindUrlHelper::argsToUrl($this->data);
-					$data = (isset($this->query) ? $this->query . '&' : '') . $_url;
-				}
-				break;
-			case self::POST:
-				if ($this->data) {
-					$data = WindUrlHelper::argsToUrl($this->data, false);
-					$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-					$this->setHeader('Content-Length', strlen($data));
-				}
-				break;
-			default:
-				break;
+					$getData = ($this->query ? $this->query . '&' : '?') . $_url;
+					$this->path .= $getData;
+					break;
+				case 'POST':
+					$postData = WindUrlHelper::argsToUrl($this->data, false);
+					$this->setHeader('application/x-www-form-urlencoded', 'Content-Type');
+					$this->setHeader(strlen($postData) . "\r\n\r\n" . $postData, 'Content-Length');
+					break;
+				default:
+					break;
+			}
 		}
 		
-		$this->setHeader("Host", $this->host);
-		$this->setHeader('User-Agent', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)');
-		$this->setHeader('Connection', 'Close');
+		$this->setHeader($method . " " . $this->path . " HTTP/1.1");
+		$this->setHeader($this->host, "Host");
+		$this->setHeader('Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)', 'User-Agent');
+		$this->setHeader('Close', 'Connection');
 		if ($this->cookie) {
 			$_cookit = WindUrlHelper::argsToUrl($this->cookie, false, ';=');
-			$this->setHeader("Cookie", $_cookit);
+			$this->setHeader($_cookit, "Cookie");
 		}
-		$this->setHeader($options);
+		$options && $this->setHeader($options);
+		if (!empty($data)) $this->setHeader($data);
 		
 		$_request = '';
 		foreach ($this->header as $key => $value) {
 			if (is_string($key)) {
 				$_request .= $key . ': ' . $value;
-			}
-			if (is_int($key)) {
+			} elseif (is_int($key)) {
 				$_request .= $value;
 			}
-			$_request .= "\n";
+			$_request .= "\r\n";
 		}
-		$this->request($_request);
-		$this->request($method . " " . $this->path . " HTTP/1.1");
-		if ($data) $this->request("\n" . $data);
-		$this->request("\n");
+		
+		$_request && $this->request($_request . "\r\n");
 		return $this->response();
 	}
 }

@@ -14,7 +14,6 @@ class WindCommandApplication extends WindModule implements IWindApplication{
 	 * @var WindCommandView
 	 */
 	protected $windView = null;
-	protected $errorMessage = 'WIND:base.WindErrorMessage';
 	
 	/**
 	 * @var WindCommandRouter

@@ -62,25 +62,25 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @see IWindApplication::run()
 	 */
 	public function run($filters = false) {
+		$module = $this->getModules($this->_getHandlerAdapter()->getModule());
+		$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
+		$className = Wind::import($handlerPath);
+		if (!class_exists($className)) throw new WindException(
+			'Your requested \'' . $handlerPath . '\' was not found on this server.', 404);
+		
+		$this->windFactory->addClassDefinitions($handlerPath, 
+			array(
+				'path' => $handlerPath, 
+				'scope' => 'prototype', 
+				'config' => $this->getConfig('actionmap'), 
+				'properties' => array(
+					'errorMessage' => array('ref' => 'errorMessage'), 
+					'forward' => array('ref' => 'forward'))));
+		
+		$handler = $this->windFactory->getInstance($handlerPath);
+		$filters && $this->resolveActionFilters($handler);
+		
 		try {
-			$module = $this->getModules($this->_getHandlerAdapter()->getModule());
-			$handlerPath = $module['controller-path'] . '.' . ucfirst($this->handlerAdapter->getController()) . $module['controller-suffix'];
-			$className = Wind::import($handlerPath);
-			if (!class_exists($className)) {
-				$handlerPath = $this->defaultModule['controller-path'] . '.' . ucfirst(
-					$this->handlerAdapter->getController()) . $this->defaultModule['controller-suffix'];
-			}
-			$this->windFactory->addClassDefinitions($handlerPath, 
-				array(
-					'path' => $handlerPath, 
-					'scope' => 'prototype', 
-					'config' => $this->getConfig('actionmap'), 
-					'properties' => array(
-						'errorMessage' => array('ref' => 'errorMessage'), 
-						'forward' => array('ref' => 'forward'))));
-			
-			$handler = $this->windFactory->getInstance($handlerPath);
-			$filters && $this->resolveActionFilters($handler);
 			$forward = $handler->doAction($this->handlerAdapter);
 			$this->doDispatch($forward);
 		} catch (WindForwardException $e) {
@@ -201,10 +201,10 @@ class WindWebApplication extends WindModule implements IWindApplication {
 	 * @param string $componentName 组件名称呢个
 	 * @return object
 	 */
-	public function getComponent($componentName) {
-		return $this->windFactory->getInstance($componentName);
+	public function getComponent($componentName, $args = array()) {
+		return $this->windFactory->getInstance($componentName, $args);
 	}
-	
+
 	/**
 	 * 手动注册actionFilter
 	 *

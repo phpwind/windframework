@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:base.AbstractWindFrontController');
 /**
  * 应用前端控制器
  *
@@ -12,7 +11,6 @@ Wind::import('WIND:base.AbstractWindFrontController');
  * @package wind
  */
 class WindWebFrontController extends AbstractWindFrontController {
-	protected $components = 'web/web.components';
 
 	/**
 	 * 创建并执行当前应用
@@ -47,6 +45,7 @@ class WindWebFrontController extends AbstractWindFrontController {
 	 * @see AbstractWindFrontController::showErrorMessage()
 	*/
 	protected function showErrorMessage($message, $file, $line, $trace, $errorcode) {
+		parent::showErrorMessage($message, $file, $line, $trace, $errorcode);
 		if (!empty($this->_config[$this->_appName]['errorDir'])) {
 			$errDir = $this->_config[$this->_appName]['errorDir'];
 		} else
@@ -59,10 +58,61 @@ class WindWebFrontController extends AbstractWindFrontController {
 	}
 	
 	/* (non-PHPdoc)
+	 * @see AbstractWindFrontController::_components()
+	 */
+	protected function _components() {
+		return array(
+			'router' => array('path' => 'WIND:router.WindRouter', 'scope' => 'application'), 
+			'windView' => array(
+				'path' => 'WIND:viewer.WindView', 
+				'scope' => 'application', 
+				'config' => array(
+					'template-dir' => 'template', 
+					'template-ext' => 'htm', 
+					'is-compile' => '1', 
+					'compile-dir' => 'compile.template', 
+					'compile-ext' => 'tpl', 
+					'layout' => '', 
+					'theme' => '', 
+					'htmlspecialchars' => true), 
+				'properties' => array(
+					'viewResolver' => array('path' => 'WIND:viewer.resolver.WindViewerResolver'), 
+					'windLayout' => array('path' => 'WIND:viewer.WindLayout'))), 
+			'template' => array('path' => 'WIND:viewer.compiler.WindViewTemplate', 'scope' => 'prototype'), 
+			'db' => array('path' => 'WIND:db.WindConnection', 'scope' => 'application'), 
+			'configParser' => array('path' => 'WIND:parser.WindConfigParser', 'scope' => 'singleton'), 
+			'dispatcher' => array('path' => 'WIND:web.WindDispatcher', 'scope' => 'application'), 
+			'forward' => array(
+				'path' => 'WIND:web.WindForward', 
+				'scope' => 'prototype', 
+				'properties' => array('windView' => array('ref' => 'windView'))), 
+			'errorMessage' => array('path' => 'WIND:base.WindErrorMessage', 'scope' => 'prototype'), 
+			'windLogger' => array(
+				'path' => 'WIND:log.WindLogger', 
+				'scope' => 'singleton', 
+				'destroy' => 'flush', 
+				'constructor-args' => array('0' => array('value' => 'DATA:log'), '1' => array('value' => '2'))), 
+			'i18n' => array(
+				'path' => 'WIND:i18n.WindLangResource', 
+				'scope' => 'singleton', 
+				'config' => array('path' => 'i18n')));
+	}
+	
+	/* (non-PHPdoc)
 	 * @see AbstractWindFrontController::_loadBaseLib()
 	 */
 	protected function _loadBaseLib() {
 		Wind::$_imports += array(
+			'WIND:i18n.WindLangResource' => 'WindLangResource', 
+			'WIND:log.WindLogger' => 'WindLogger', 
+			'WIND:core.web.WindErrorMessage' => 'WindErrorMessage', 
+			'WIND:web.WindForward' => 'WindForward', 
+			'WIND:web.WindDispatcher' => 'WindDispatcher', 
+			'WIND:parser.WindConfigParser' => 'WindConfigParser', 
+			'WIND:db.WindConnection' => 'WindConnection', 
+			'WIND:viewer.compiler.WindViewTemplate' => 'WindViewTemplate', 
+			'WIND:viewer.WindView' => 'WindView', 
+			'WIND:router.WindRouter' => 'WindRouter', 
 			'WIND:web.WindController' => 'WindController', 
 			'WIND:web.WindDispatcher' => 'WindDispatcher', 
 			'WIND:web.WindErrorHandler' => 'WindErrorHandler', 
@@ -74,6 +124,16 @@ class WindWebFrontController extends AbstractWindFrontController {
 			'WIND:web.WindWebApplication' => 'WindWebApplication');
 		
 		Wind::$_classes += array(
+			'WindLangResource' => 'i18n/WindLangResource', 
+			'WindLogger' => 'log/WindLogger', 
+			'WindErrorMessage' => 'core/web/WindErrorMessage', 
+			'WindForward' => 'web/WindForward', 
+			'WindDispatcher' => 'web/WindDispatcher', 
+			'WindConfigParser' => 'parser/WindConfigParser', 
+			'WindConnection' => 'db/WindConnection', 
+			'WindViewTemplate' => 'viewer/compiler/WindViewTemplate', 
+			'WindView' => 'viewer/WindView', 
+			'WindRouter' => 'router/WindRouter', 
 			'WindController' => 'web/WindController', 
 			'WindDispatcher' => 'web/WindDispatcher', 
 			'WindErrorHandler' => 'web/WindErrorHandler', 

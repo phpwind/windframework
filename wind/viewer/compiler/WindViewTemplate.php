@@ -120,7 +120,7 @@ class WindViewTemplate extends AbstractWindViewTemplate {
 		/*标签体增加在该位置*/
 		$_tags['template'] = $this->createTag('template', 
 			'WIND:viewer.compiler.WindTemplateCompilerTemplate');
-		$_tags['page'] = $this->createTag('page', 'WIND:viewer.compiler.WindTemplateCompilerPage');
+		//$_tags['page'] = $this->createTag('page', 'WIND:viewer.compiler.WindTemplateCompilerPage');
 		$_tags['action'] = $this->createTag('action', 
 			'WIND:viewer.compiler.WindTemplateCompilerAction');
 		//$_tags['component'] = $this->createTag('component', 'WIND:viewer.compiler.WindTemplateCompilerComponent');
