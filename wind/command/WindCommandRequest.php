@@ -24,6 +24,19 @@ class WindCommandRequest implements IWindRequest {
 	private $_response = null;
 
 	/**
+	 * 获得用户请求的数据
+	 * 
+	 * @param string $key 获取的参数name,默认为null将获得$_GET和$_POST两个数组的所有值
+	 * @param mixed $defaultValue 当获取值失败的时候返回缺省值,默认值为null
+	 * @return mixed
+	 */
+	public function getRequest($key, $defaultValue = null) {
+		if (isset($_SERVER[$key])) return $_SERVER[$key];
+		if (isset($_ENV[$key])) return $_ENV[$key];
+		return $defaultValue;
+	}
+
+	/**
 	 * 根据名称获得服务器和执行环境信息
 	 * 
 	 * 主要获取的依次顺序为：_attribute、$_SERVER、$_ENV
@@ -67,35 +80,35 @@ class WindCommandRequest implements IWindRequest {
 	public function getRequestType() {
 		return 'command';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getPathInfo()
 	 */
 	public function getPathInfo() {
 		return '';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getHostInfo()
 	 */
 	public function getHostInfo() {
 		return '';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getServerName()
 	 */
 	public function getServerName() {
 		return '';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getServerPort()
 	 */
 	public function getServerPort() {
 		return '';
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getResponse()
 	 */
@@ -105,14 +118,13 @@ class WindCommandRequest implements IWindRequest {
 		}
 		return $this->_response;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRequest::getAcceptLanguage()
 	 */
 	public function getAcceptLanguage() {
 		return '';
 	}
-
 }
 
 ?>

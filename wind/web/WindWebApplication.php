@@ -67,17 +67,9 @@ class WindWebApplication extends WindModule implements IWindApplication {
 		$className = Wind::import($handlerPath);
 		if (!class_exists($className)) throw new WindException(
 			'Your requested \'' . $handlerPath . '\' was not found on this server.', 404);
-		
-		$this->windFactory->addClassDefinitions($handlerPath, 
-			array(
-				'path' => $handlerPath, 
-				'scope' => 'prototype', 
-				'config' => $this->getConfig('actionmap'), 
-				'properties' => array(
-					'errorMessage' => array('ref' => 'errorMessage'), 
-					'forward' => array('ref' => 'forward'))));
-		
-		$handler = $this->windFactory->getInstance($handlerPath);
+		$handler = new $className();
+		$handler->setDelayAttributes(
+			array('errorMessage' => array('ref' => 'errorMessage'), 'forward' => array('ref' => 'forward')));
 		$filters && $this->resolveActionFilters($handler);
 		
 		try {

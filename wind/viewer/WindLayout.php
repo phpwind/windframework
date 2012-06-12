@@ -49,16 +49,16 @@ class WindLayout extends WindModule {
 	 * @param WindViewerResolver $viewer
 	 * @return void
 	 */
-	public function parser($layout, $viewer) {
-		$this->viewer = $viewer;
+	public function parser($layout, $__viewer) {
+		$this->viewer = $__viewer;
 		if (method_exists($this->viewer, 'compile')) {
-			list($tpl) = $this->viewer->compile($layout);
+			list($__tpl) = $this->viewer->compile($layout);
 		} else
-			$tpl = $this->viewer->getWindView()->getViewTemplate($layout);
+			$__tpl = $this->viewer->getWindView()->getViewTemplate($layout);
 		
 		ob_start();
-		if (!@include ($tpl)) {
-			throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $tpl, 
+		if (!@include ($__tpl)) {
+			throw new WindViewException('[component.viewer.WindLayout.parser] layout file ' . $__tpl, 
 				WindViewException::VIEW_NOT_EXIST);
 		}
 		return ob_get_clean();

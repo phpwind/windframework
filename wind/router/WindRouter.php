@@ -39,7 +39,7 @@ class WindRouter extends AbstractWindRouter {
 	 * @var WindHttpRequest
 	 */
 	private $request = null;
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindRouter::route()
 	 */
@@ -48,11 +48,16 @@ class WindRouter extends AbstractWindRouter {
 		$this->_controller = $this->controller;
 		$this->_module = $this->module;
 		$this->request = $request;
-		$this->setCallBack(array($this, 'defaultRoute'));
-		$params = $this->getHandler()->handle($request);
-		$params && $this->setParams($params, $request);
+		if (!empty($this->_config['routes'])) {
+			$params = $this->getHandler()->handle($request);
+			$params && $this->setParams($params, $request);
+		} else {
+			$this->action = $request->getRequest($this->actionKey, $this->_action);
+			$this->controller = $request->getRequest($this->controllerKey, $this->_controller);
+			$this->module = $request->getRequest($this->moduleKey, $this->_module);
+		}
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::assemble()
 	 */
@@ -68,18 +73,6 @@ class WindRouter extends AbstractWindRouter {
 			$_url = $this->request->getScript() . '?' . WindUrlHelper::argsToUrl($args);
 		}
 		return $_url;
-	}
-
-	/**
-	 * 默认路由规则
-	 * 
-	 * 默认情况下仅仅解析路由相关参数值
-	 * @param WindHttpRequest $request
-	 * @return array
-	 */
-	public function defaultRoute($request) {
-		$pathinfo = $request->getPathInfo();
-		return $pathinfo ? WindUrlHelper::urlToArgs($pathinfo) : array();
 	}
 }
 ?>

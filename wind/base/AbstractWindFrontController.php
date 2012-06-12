@@ -15,13 +15,13 @@ abstract class AbstractWindFrontController {
 	 * 
 	 * @var string
 	 */
-	private $_request = null;
+	protected $_request = null;
 	/**
 	 * 组件工程实例对象
 	 * 
 	 * @var WindFactory
 	 */
-	private $_factory = null;
+	protected $_factory = null;
 	/**
 	 * 应用配置
 	 * 
@@ -293,7 +293,7 @@ abstract class AbstractWindFrontController {
 			foreach ($trace as $key => $value) {
 				$log .= $value . "\r\n";
 			}
-			Wind::getApp()->getComponent('windLogger')->error($log, 'error');
+			Wind::getApp()->getComponent('windLogger')->error($log, 'error', true);
 		}
 	}
 

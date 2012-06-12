@@ -29,8 +29,8 @@ abstract class WindController extends WindSimpleController {
 				WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		}
 		$method = new ReflectionMethod($this, $action);
-		if ($method->isAbstract() || !$method->isPublic()) throw new WindException(
-			'[web.WindController.resolvedActionMethod]', WindException::ERROR_CLASS_METHOD_NOT_EXIST);
+		if ($method->isProtected()) throw new WindException('[web.WindController.resolvedActionMethod]', 
+			WindException::ERROR_CLASS_METHOD_NOT_EXIST);
 		return $action;
 	}
 

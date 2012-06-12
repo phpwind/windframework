@@ -31,10 +31,11 @@ class Wind {
 	 * @param WindFactory $factory
 	 * @return WindFrontController
 	 */
-	public static function application($appName = '', $config = array()) {
+	public static function application($appName = '', $config = array(), $type = 'Web') {
 		if (self::$_frontController === null) {
-			self::$_classes['WindWebFrontController'] = 'web/WindWebFrontController';
-			self::$_frontController = new WindWebFrontController($appName, $config);
+			$_className = 'Wind' . $type . 'FrontController';
+			self::$_classes[$_className] = strtolower($type) . '/Wind' . $type . 'FrontController';
+			self::$_frontController = new $_className($appName, $config);
 		}
 		return self::$_frontController;
 	}

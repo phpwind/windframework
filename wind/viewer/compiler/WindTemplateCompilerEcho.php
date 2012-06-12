@@ -18,7 +18,7 @@ Wind::import('WIND:utility.WindJson');
  * @subpackage compiler
  */
 class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindTemplateCompiler::compile()
 	 */
@@ -49,7 +49,7 @@ class WindTemplateCompilerEcho extends AbstractWindTemplateCompiler {
 				$content = '<?php strip_tags(' . $_output . ');?>';
 				break;
 			default:
-				$content = '<?php echo WindSecurity::escapeHTML(' . $_output . ');?>';
+				$content = '<?php echo htmlspecialchars(' . $_output . ', ENT_QUOTES);?>';
 		}
 		return $content;
 	}

@@ -33,7 +33,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	 * @return void
 	 */
 	abstract public function run();
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindController::doAction()
 	 */
@@ -132,7 +132,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	protected function forwardRedirect($url) {
 		$this->getForward()->forwardRedirect($url);
 	}
-
+	
 	/* 数据处理 */
 	/**
 	 * 设置模板数据
@@ -190,7 +190,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 			return $callback ? array($value, call_user_func_array($callback, array($value))) : $value;
 		}
 	}
-
+	
 	/* 模板处理 */
 	/**
 	 * 设置页面模板
@@ -251,7 +251,7 @@ abstract class WindSimpleController extends WindModule implements IWindControlle
 	protected function setLayout($layout) {
 		$this->getForward()->getWindView()->layout = $layout;
 	}
-
+	
 	/* 错误处理 */
 	/**
 	 * 添加错误信息
@@ -347,6 +347,5 @@ interface IWindController {
 	 * @return WindForward|null
 	 */
 	public function doAction($handlerAdapter);
-
 }
 ?>

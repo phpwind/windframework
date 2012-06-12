@@ -39,26 +39,30 @@ class WindUrlHelper {
 	 * @return array
 	 */
 	public static function urlToArgs($url, $decode = true, $separator = '&=') {
-		!$separator && $separator = '&=';
-		false !== ($pos = strpos($url, '?')) && $url = substr($url, $pos + 1);
-		$_sep1 = substr($separator, 0, 1);
-		if ($_sep2 = substr($separator, 1, 1)) {
-			$__sep1 = preg_quote($_sep1, '/');
-			$url = preg_replace('/' . $__sep1 . '[\w+]' . $__sep1 . '/i', $_sep1, $url);
-			$url = str_replace($_sep2, $_sep1, $url);
-		}
-		$url = explode($_sep1, trim($url, $_sep1) . $_sep1);
+		if (strlen($separator) !== 2) return array();
+		if (false !== $pos = strpos($url, '?')) $url = substr($url, $pos + 1);
+		$url = explode($separator[0], trim($url, $separator[0]));
 		$args = array();
-		$_count = count($url);
-		for ($i = 0; $i < $_count; $i = $i + 2) {
-			if (!isset($url[$i]) || !isset($url[$i + 1])) continue;
-			$_v = $decode ? rawurldecode($url[$i + 1]) : $url[$i + 1];
-			$_k = $url[$i];
-			if (strpos($_k, self::$_sep) === 0) {
-				$_k = substr($_k, strlen(self::$_sep));
-				$_v = unserialize($_v);
+		if ($separator[0] === $separator[1]) {
+			$_count = count($url);
+			for ($i = 0; $i < $_count; $i += 2) {
+				if (!isset($url[$i + 1])) {
+					$args[] = $decode ? rawurldecode($url[$i]) : $url[$i];
+					continue;
+				}
+				$_k = $decode ? rawurldecode($url[$i]) : $url[$i];
+				$_v = $decode ? rawurldecode($url[$i + 1]) : $url[$i + 1];
+				$args[$_k] = $_v;
 			}
-			$args[$_k] = $_v;
+		} else {
+			foreach ($url as $value) {
+				if (strpos($value, $separator[1]) === false) {
+					$args[] = $decode ? rawurldecode($value) : $value;
+					continue;
+				}
+				list($__k, $__v) = explode($separator[1], $value);
+				$args[$__k] = $decode && $__v ? rawurldecode($__v) : $__v;
+			}
 		}
 		return $args;
 	}
@@ -76,19 +80,18 @@ class WindUrlHelper {
 	 * @return string
 	 */
 	public static function argsToUrl($args, $encode = true, $separator = '&=') {
-		!$separator && $separator = '&=';
-		$_sep1 = substr($separator, 0, 1);
-		$_sep2 = substr($separator, 1, 1);
-		!$_sep2 && $_sep2 = $_sep1;
+		if (strlen($separator) !== 2) return;
 		$_tmp = '';
 		foreach ((array) $args as $key => $value) {
-			if (is_array($value) || is_object($value)) {
-				$value = serialize($value);
-				$_tmp .= self::$_sep;
+			$value = $encode ? rawurlencode($value) : $value;
+			if (is_int($key)) {
+				$value && $_tmp .= $value . $separator[0];
+				continue;
 			}
-			$_tmp .= "$key" . $_sep2 . ($encode ? rawurlencode($value) : $value) . $_sep1;
+			$key = ($encode ? rawurlencode($key) : $key);
+			$_tmp .= $key . $separator[1] . $value . $separator[0];
 		}
-		return trim($_tmp, $_sep1 . $_sep2);
+		return trim($_tmp, $separator[0]);
 	}
 
 	/**

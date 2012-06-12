@@ -35,12 +35,16 @@ class CompilePack {
 	 * @param string $packPath 打包文件存放路径
 	 * @param $boolean
 	 */
-	public function pack($files, $packPath = '') {
+	public function pack($files, $packPath = '', $namespace = '') {
+		$namespace = explode(' ', $namespace);
+		$i = 0;
 		foreach ($files as $filePath) {
 			if (!$filePath = realpath($filePath)) continue;
 			$_dir = dirname($filePath);
-			$namespace = array(strtoupper(basename($_dir)), $_dir . '/');
-			$this->_import($filePath, $namespace);
+			$_n = isset($namespace[$i]) ? $namespace[$i] : basename($_dir);
+			$_n = array(strtoupper($_n), $_dir . '/');
+			$this->_import($filePath, $_n);
+			$i++;
 		}
 		if ($this->_p && $this->fileList) {
 			Wind::import('WIND:utility.WindPack');

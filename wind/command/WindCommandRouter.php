@@ -10,7 +10,13 @@ Wind::import('WIND:router.AbstractWindRouter');
  * @package command
  */
 class WindCommandRouter extends AbstractWindRouter {
-	protected $paramKey = 'p';
+	protected $moduleKey = '-m,module,--module';
+	protected $controllerKey = '-c,controller,--controller';
+	protected $actionKey = '-a,action,--action';
+	protected $helpKey = '-h,help,--help';
+	protected $paramKey = '-p,param,--param';
+	protected $help = false;
+	protected $cmd = '';
 	/**
 	 * @var WindCommandRequest
 	 */
@@ -24,11 +30,30 @@ class WindCommandRouter extends AbstractWindRouter {
 		$this->_action = $this->action;
 		$this->_controller = $this->controller;
 		$this->_module = $this->module;
-		$this->setCallBack(array($this, 'defaultRoute'));
-		$params = $this->getHandler()->handle($request);
-		$params && $this->setParams($params, $request);
+		if (!empty($this->_config['routes'])) {
+			$params = $this->getHandler()->handle($request);
+			$this->setParams($params, $request);
+		} else {
+			$args = $request->getRequest('argv', array());
+			$this->cmd = $args[0];
+			$_count = count($args);
+			for ($i = 1; $i < $_count; $i++) {
+				if (in_array($args[$i], explode(',', $this->helpKey))) {
+					$this->help = true;
+				} elseif (in_array($args[$i], explode(',', $this->moduleKey))) {
+					$this->module = $args[++$i];
+				} elseif (in_array($args[$i], explode(',', $this->controllerKey))) {
+					$this->controller = $args[++$i];
+				} elseif (in_array($args[$i], explode(',', $this->actionKey))) {
+					$this->action = $args[++$i];
+				} elseif (in_array($args[$i], explode(',', $this->paramKey))) {
+					$_SERVER['argv'] = array_slice($args, $i + 1);
+					break;
+				}
+			}
+		}
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::assemble()
 	 */
@@ -37,63 +62,34 @@ class WindCommandRouter extends AbstractWindRouter {
 	}
 	
 	/* (non-PHPdoc)
-	 * @see AbstractWindRouter::setConfig()
-	 */
-	public function setConfig($config) {
-		parent::setConfig($config);
-		$this->paramKey = $this->getConfig('paramKey', '', $this->paramKey);
-	}
-	
-	/**
-	 * 默认路由规则
-	 * 
-	 * @param WindCommandRequest $request
-	 * @return array
-	 */
-	public function defaultRoute($request) {
-		$args = $request->getAttribute('argv', array());
-		$help = false;
-		$sort = array();
-		$continue_k = '';
-		foreach ($args as $k => $v) {
-			if ($v === '--help') {
-				$help = true;
-				continue;
-			}
-			if (strpos($v, '-') === 0) {
-				$continue_k = substr($v, 1);
-			} elseif ($continue_k !== '') {
-				if ($continue_k == $this->paramKey) {
-					$sort[$continue_k] = (array)$sort[$continue_k];
-					$sort[$continue_k][] = $v;
-				} 
-				else
-					$sort[$continue_k] = $v;
-			}
-		}
-		if ($help) {
-			$params = array();
-			isset($sort[$this->moduleKey]) && $params[$this->moduleKey] = $sort[$this->moduleKey];
-			isset($sort[$this->controllerKey]) && $params[$this->controllerKey] = $sort[$this->controllerKey];
-			isset($sort[$this->actionKey]) && $params[$this->actionKey] = $sort[$this->actionKey];
-			$sort[$this->actionKey] = 'help';
-			$sort[$this->paramKey] = array($params);
-			return $sort;
-		}
-		return $sort;
-	}
-	
-	/* (non-PHPdoc)
 	 * @see AbstractWindRouter::setParams()
 	 */
 	protected function setParams($params, $request) {
 		/* @var $request WindCommandRequest */
-		isset($params[$this->paramKey]) && $_SERVER['argv'] = $params[$this->paramKey];
+		$_SERVER['argv'] = isset($params[$this->paramKey]) ? $params[$this->paramKey] : array();
 		isset($params[$this->moduleKey]) && $this->setModule($params[$this->moduleKey]);
 		isset($params[$this->controllerKey]) && $this->setController($params[$this->controllerKey]);
 		isset($params[$this->actionKey]) && $this->setAction($params[$this->actionKey]);
 	}
-	
+
+	/**
+	 * 是否是请求帮助
+	 *
+	 * @return boolean
+	 */
+	public function isHelp() {
+		return $this->help;
+	}
+
+	/**
+	 * 返回当前命令
+	 *
+	 * @return string
+	 */
+	public function getCmd() {
+		return $this->cmd;
+	}
+
 	/**
 	 * @return string
 	 */

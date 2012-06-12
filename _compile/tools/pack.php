@@ -37,19 +37,19 @@ $params = '-' . $params;
 $_p = strpos($params, 'p');
 $_r = strpos($params, 'r');
 
-$packFile = '';
+$packFile = $namespace = '';
 if ($_p) {
 	$packFile = CompileCmdHelp::getInput("Enter folder in which to save the pack file (default: /home/you/):");
 	if (!$packFile) {
 		$processUser = posix_getpwuid(posix_geteuid());
-		$packFile = '/home/' . $processUser['name'] . '/';
+		$packFile = '/home/' . $processUser['name'] . '/wind_basic.php';
 	}
-	$packFile .= 'wind_basic.php';
+	$namespace = CompileCmdHelp::getInput("Enter namespace for folder (default: folder name):");
 }
 
 try {
 	$pack = new CompilePack($_r, $_p);
-	$pack->pack($files, $packFile);
+	$pack->pack($files, $packFile, $namespace);
 } catch (Exception $e) {
 	CompileCmdHelp::showError($e->getMessage());
 }

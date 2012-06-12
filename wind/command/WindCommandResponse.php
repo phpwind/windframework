@@ -1,5 +1,4 @@
 <?php
-Wind::import('WIND:http.response.IWindResponse');
 /**
  * 命令行模式的response
  *
@@ -10,8 +9,8 @@ Wind::import('WIND:http.response.IWindResponse');
  * @package command
  */
 class WindCommandResponse implements IWindResponse {
-	
 	private $_output = '';
+	private $charset = 'utf-8';
 
 	/**
 	 * 发送响应信息
@@ -37,63 +36,62 @@ class WindCommandResponse implements IWindResponse {
 	public function getHeaders() {
 		return array();
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::getData()
 	 */
 	public function getData() {
 		return array();
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::setData()
 	 */
 	public function setData($data, $key = '') {
 		return false;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::getCharset()
 	 */
 	public function getCharset() {
-		return '';
+		return $this->charset;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::setCharset()
 	 */
 	public function setCharset($_charset) {
-		return false;
+		return $this->charset = $_charset;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::setBody()
 	 */
 	public function setBody($content, $name = 'default') {
 		return false;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::sendError()
 	 */
 	public function sendError($status = self::W_NOT_FOUND, $message = '') {
 		return false;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::sendBody()
 	 */
 	public function sendBody() {
 		return false;
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see IWindResponse::sendHeaders()
 	 */
 	public function sendHeaders() {
 		return false;
 	}
-
 }
 
 ?>
