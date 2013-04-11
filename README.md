@@ -1,3 +1,5 @@
+基于最新的windframework开发的phpwind9请点击-> https://github.com/phpwind/nextwind
+
 ##关于框架
 
 windframework是一个轻量级的php开源框架。它以组件工厂为核心，提供了像MVC，数据持久化，视图模板引擎等应用技术。此外`windframework`采取了一种组件化的开发模式。虽然目前的组件库还不算丰富健壮，但是基于这种开发模式，使组件的扩展变得非常的容易。`windframework`拥有一个强健的内核，它实现了基于配置的Ioc控制反转技术。开发者只需要简单的配置，就可以实现类的依赖注入，完全实现了类与类的松耦合。当然它的美妙之处还不仅于此。
